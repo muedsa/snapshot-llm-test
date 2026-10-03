@@ -1,0 +1,116 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A05",
+  "title": "不规则采样与缺测的仪表报告",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T15:44:00+08:00",
+  "ended_at": "2026-10-03T16:30:00+08:00",
+  "wall_clock_seconds": 2760.0,
+  "requests": {
+    "requests_total": 16,
+    "render_success": 15,
+    "render_failed": 1,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 16
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 52915,
+    "first_request_at": "2026-10-03T12:16:03.5318795+08:00",
+    "last_request_at": "2026-10-03T12:22:10.3984372+08:00"
+  },
+  "iterations": {
+    "iterations_total": 7,
+    "iterations_by_type": {
+      "syntax-fix": 2,
+      "simplify": 1,
+      "baseline": 1,
+      "visual": 3
+    },
+    "visual_iterations": 3,
+    "image_reviews": 4
+  },
+  "dsl_versions": 11,
+  "final_pngs": 1,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 5,
+  "tool_usage_file": "tmp\\20261003-114508-flashmax\\A05\\tool-usage.jsonl",
+  "outputs": [
+    "sensor-report.png",
+    "sensor-report.snapshot",
+    "normalized-data.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A05",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A05",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "空单元格一律记为 null，绝不按 0 处理；图中线段在缺测处断开，无插值、无虚线补值。",
+    "温度缺测 09:15、11:40 → 3 段；湿度缺测 09:40 → 2 段；压差 12 点齐全 → 1 段。",
+    "压差负值出现在 09:40 / 10:10 / 10:50 三个实际采样点，措辞为「出现负值的实际采样区段」，未声称区间内每一刻为负。",
+    "三图共用同一 x 映射与同一组 15 分钟参考线（严格对齐）。"
+  ],
+  "final_image": {
+    "file": "sensor-report.png",
+    "width": 1440,
+    "height": 1000,
+    "format": "PNG",
+    "viewed": true
+  },
+  "series_stats": {
+    "temperature_c": {
+      "valid": 10,
+      "missing": 2,
+      "min": 19.2,
+      "max": 23.1,
+      "segments": 3
+    },
+    "humidity_pct": {
+      "valid": 11,
+      "missing": 1,
+      "min": 34.0,
+      "max": 41.0,
+      "segments": 2
+    },
+    "pressure_kpa": {
+      "valid": 12,
+      "missing": 0,
+      "min": -0.8,
+      "max": 1.3,
+      "segments": 1
+    }
+  },
+  "requirements_checked": {
+    "canvas_1440x1000": true,
+    "three_charts_shared_real_time_axis": true,
+    "aligned_vertical_reference_lines": true,
+    "temperature_humidity_lines_break_at_missing": true,
+    "no_interpolation_or_dashed_fill": true,
+    "pressure_has_zero_line": true,
+    "individual_sample_markers": true,
+    "per_chart_axis_unit": true,
+    "negative_pressure_span_labelled_as_sampled_segment": true,
+    "valid_counts_and_min_max_listed": true,
+    "twelve_row_table_present": true,
+    "table_missing_symbol_dash": true,
+    "legend_for_missing_and_breaks": true,
+    "body_font_min_20": true,
+    "axis_and_table_font_min_18": true
+  }
+}

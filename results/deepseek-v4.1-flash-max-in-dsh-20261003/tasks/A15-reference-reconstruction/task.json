@@ -1,0 +1,40 @@
+{
+  "id": "A15",
+  "title": "复杂界面视觉复刻",
+  "category": "视觉复刻",
+  "challenge": "密集参考界面的空间估计、字体近似和多区域回归。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "inputs/reference.png 是1440×900参考界面，inputs/content.json 仅提供原样文本和\n数值以减少OCR歧义，不提供几何坐标。用Snapshot DSL重建参考图的布局、背景、\n侧栏、卡片、图表、表格、状态标签和主要装饰。禁止直接嵌入参考图或裁块当素材。\n输出尺寸保持1440×900，所有主要结构与信息完整，不改成自己的新设计。\n观察原尺寸、缩略与局部放大；主区边界/卡片边界/图表零线/导航选中态等关键\n锚点应与参考一致（允许±8像素），颜色可小幅近似，字体从实际服务列表中选择。\n重建图表的比例与标记，而不是只放相同数字；表格3行顺序与状态编码准确。\n至少记录12个视觉锚点的参考估计坐标和重建坐标，涵盖画布四象限、图表和表格。\n交付 reconstruction-audit.json 与 comparison.md：用可测误差及实际视觉说明\n残余差异。不要求DSL树与参考来源一致，不必宣称不存在的逐像素完全复刻。\n",
+  "inputs": [
+    "inputs/content.json",
+    "inputs/reference.png"
+  ],
+  "required_outputs": [
+    {
+      "filename": "reconstructed.png",
+      "dsl": "reconstructed.snapshot",
+      "width": 1440,
+      "height": 900,
+      "purpose": "参考界面复刻"
+    }
+  ],
+  "additional_outputs": [
+    "reconstruction-audit.json",
+    "comparison.md"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A15/",
+  "temp_dir_template": "tmp/{run_id}/A15/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

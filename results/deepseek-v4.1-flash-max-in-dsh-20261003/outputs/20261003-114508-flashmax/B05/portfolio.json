@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "task_id": "B05",
+  "run_id": "20261003-114508-flashmax",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets (no supporting assets were needed: every frame is pure DSL; there is no Image element anywhere in the portfolio)",
+  "curatorial_statement": "Ten screens of one invented product, Kelpline, shown in the order a real Saturday trip would touch them: decide, understand, prepare, choose the day, hand over, go to sea, go wrong, plan the margin, share ashore, learn. One design language (hull navy, chart paper, teal/amber/red semantics) and one signature mark - the tide curve - drawn at four different scales. All place names, the vessel, the people, the weather models and the harbour notices are fictional; the tides, bearings, fuel and drift numbers are computed by tools/b05_data.py, so the ten screens cannot contradict each other.",
+  "fictional_disclosure": {
+    "fictional": [
+      "Brindlemouth harbour, Carrow Ness, Gannet Skerry, Old Keel Bank, The Apron",
+      "the vessel Petrel, skipper M. Ellery, crew D. Trelawn, shore contact T. Ellery",
+      "the harbour master's notices, phone numbers and the other eight vessels",
+      "the weather models Nimbus-HR, Pelagic-9 and Coastal-Meso",
+      "the 2026 season log and its three close calls"
+    ],
+    "computed": [
+      "tide curve, extremes, gate windows, stream speed and direction",
+      "leg bearings and distances, ETAs, tide at arrival",
+      "fuel burn, reserve and margins under three scenarios",
+      "drift datum, search box areas, sweep times",
+      "sunrise, sunset, civil dusk"
+    ],
+    "not_verified": [
+      "no user testing, field trial or expert review was performed",
+      "the tide is a synthetic four-constituent sum, not a real port's predictions",
+      "the weather table is hand-authored, not model output"
+    ]
+  },
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "Dawn go/no-go card",
+      "audience": "Skipper of a 5.8 m open launch, at the kitchen table at 05:40 before a Saturday trip",
+      "use_context": "Phone, dark room, one hand, before sunrise (sunrise 06:33)",
+      "user_goal": "Decide whether to launch today, and file the float plan before leaving the house",
+      "content_basis": "Computed by tools/b05_data.py: four-constituent harmonic tide, route geodesy, fuel arithmetic, solar times. Port, vessel and people are fictional.",
+      "visual_intent": "Verdict first: one word at 64 px, then the four checks that produced it, then the tide curve that justifies the timing",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        500,
+        1060
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Stack absolute positioning, LINEAR gradient, rotated-segment polyline tide curve, gate shading, event markers, rounded dark cards, mono+CJK fonts",
+      "completion_criteria": "The GO/NO-GO verdict is readable in under two seconds at arm's length; every number matches b05-data.json; nothing overlaps at 100 %",
+      "visual_review": "Viewed case-01.v1 (B05-REQ-0004) and case-01.final (B05-REQ-0026)",
+      "request_ids": [
+        "B05-REQ-0026"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 3714,
+        "service_request_id": "2cdf985e-549f-462b-a853-0087c09c7e95",
+        "ended_at": "2026-10-03T13:04:14.3439520+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-01.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-002"
+      ],
+      "iteration_note": "B05-IT-002 (visual, v1 -> v2/final)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-02",
+      "title": "Tide and stream day chart",
+      "audience": "The same skipper, planning properly the evening before, and any small-craft user who wants the whole tidal day on one screen",
+      "use_context": "Desktop or chart table, 1600x1000, read while planning",
+      "user_goal": "Find the two bank-crossing windows and the slack-water times, and know how much water the crossing needs",
+      "content_basis": "Harmonic tide curve, stream model from the rate of rise, rule-of-twelfths table and gate windows computed by tools/b05_data.py",
+      "visual_intent": "An instrument panel: luminous curve on navy, green gate bands, red deadline, and a stream strip of per-hour arrows under it",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "24-hour polyline with 5-minute sampling, column fill under the curve, dashed deadline, event markers, per-hour rotated arrows, bars",
+      "completion_criteria": "Both gate windows and both planned crossings can be read off without arithmetic; the stream direction is unambiguous; the right rail answers 'how much water'",
+      "visual_review": "Viewed case-02.v1 (B05-REQ-0006) and case-02.v2/final (B05-REQ-0010, 0027)",
+      "request_ids": [
+        "B05-REQ-0027"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 3057,
+        "service_request_id": "e1a37d1d-3a58-4e14-8659-935c146e894e",
+        "ended_at": "2026-10-03T13:04:17.4435336+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-02.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-003"
+      ],
+      "iteration_note": "B05-IT-003 (visual + shared kit fix, v1 -> v2/final)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-03",
+      "title": "Passage plan (A4, laminated)",
+      "audience": "Skipper and crew in the cockpit; also the shore contact who reads the same plan",
+      "use_context": "A4 portrait, printed and laminated, read in daylight and spray",
+      "user_goal": "Fly the route: legs, bearings, ETAs, tide at each arrival, abort criteria and the escape route if the bank gate fails",
+      "content_basis": "Leg bearings and distances from real geodesy on fictional waypoints; ETAs from the day plan; tide at arrival from the harmonic model",
+      "visual_intent": "A working document, not a poster: dense leg table, a chart sketch with the escape route, then the abort and emergency blocks",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        1240,
+        1754
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Scanline-filled coastline polygon, lat/lon graticule, dashed escape route, arrow heads, zebra table rows, per-row gate colouring",
+      "completion_criteria": "Every leg has bearing, distance, ETA and arrival height; the bank-crossing rows are marked; the escape route is drawn; no two blocks overlap",
+      "visual_review": "Viewed case-03.v1 (B05-REQ-0008), v2 (0011) and v3/final (0012, 0028)",
+      "request_ids": [
+        "B05-REQ-0028"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 2833,
+        "service_request_id": "0a85f2da-2f75-471c-8cbd-4f0aec44825c",
+        "ended_at": "2026-10-03T13:04:20.2830620+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-03.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-004"
+      ],
+      "iteration_note": "B05-IT-004 + B05-IT-005 (visual, v1 -> v2 -> v3/final)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-04",
+      "title": "Five-morning weather windows",
+      "audience": "The skipper deciding which of the next five mornings to take off work for",
+      "use_context": "Desktop, 1600x1000, read the evening before with the family calendar open",
+      "user_goal": "Pick the safest morning window and know what would cancel it",
+      "content_basis": "Hand-authored three-model window table consistent with the tide gates and the route; model names Nimbus-HR / Pelagic-9 / Coastal-Meso are invented",
+      "visual_intent": "A comparison matrix where colour carries the verdict and dots carry model agreement, with the three Saturday wind curves plotted underneath",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Grid of filled cells with per-cell accent bars, small-multiple polyline chart, agreement dots, decision band",
+      "completion_criteria": "The best and worst windows are obvious at a glance, the reason is stated in words, and model disagreement is visible rather than hidden",
+      "visual_review": "Viewed case-04.v1 (400 error, B05-REQ-0013) and v2/final (0014, 0015, 0029)",
+      "request_ids": [
+        "B05-REQ-0029"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 3170,
+        "service_request_id": "af8f26bd-7dd9-4c60-87a4-aa6d2720bc1a",
+        "ended_at": "2026-10-03T13:04:23.4609618+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-04.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-006"
+      ],
+      "iteration_note": "B05-IT-006 (syntax-fix) + B05-IT-007 (visual)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-05",
+      "title": "Float plan and shore watch",
+      "audience": "The shore contact (a family member ashore) and the skipper filing the plan",
+      "use_context": "Phone, mid-morning at home, no specialist knowledge",
+      "user_goal": "Understand exactly when to expect contact, what happens if it does not come, and what to do at each escalation step",
+      "content_basis": "Check-in ladder and escalation times derived from the day plan and the drift model; shore-contact view derived from the same route and position data",
+      "visual_intent": "Quiet, light, reassuring: one navy filing card, then a ladder with times and a red escalation block that is impossible to misread",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        500,
+        1060
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Light card stack, timeline with connector line, inline mini-chart of the route (filled coastline plus polyline), status pills",
+      "completion_criteria": "A non-sailor can say what happens at 15:38, 16:08 and 16:38 without help; the number of check-ins is explicit",
+      "visual_review": "Viewed case-05.v2 (B05-REQ-0016) and case-05.final (0030)",
+      "request_ids": [
+        "B05-REQ-0030"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 1974,
+        "service_request_id": "52250aba-bf0c-44d2-bb7a-4718f8e113e0",
+        "ended_at": "2026-10-03T13:04:25.4421681+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-05.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-008"
+      ],
+      "iteration_note": "B05-IT-008 (visual)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-06",
+      "title": "On-water glance display",
+      "audience": "The skipper at the helm, wet hands, gloves, bright sunlight, engine idling on a drift",
+      "use_context": "Tablet on a RAM mount at the console, 1180x820, read from 1 m in direct sun",
+      "user_goal": "Know speed, depth, the bank gate countdown and the fuel state without reading a menu",
+      "content_basis": "Position, time, depth and fuel state consistent with the day plan; gate state from the harmonic model at 11:05; fuel burn from the fuel model",
+      "visual_intent": "Glanceable instrument: four big tiles, 104 px numerals, one loud red CLOSED card, compass tape across the top",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        1180,
+        820
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Compass ribbon generated from the heading (1 deg = 3 px), huge numerals, progress bar, colour-coded state cards",
+      "completion_criteria": "Every value is readable at a glance in sunlight; the CLOSED gate is unambiguous; the return plan is on the same screen",
+      "visual_review": "Viewed case-06.v2 (B05-REQ-0017) and case-06.v4 (0036)",
+      "request_ids": [
+        "B05-REQ-0036"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 2089,
+        "service_request_id": "148f41f1-5991-4bc3-aeec-86df9f866178",
+        "ended_at": "2026-10-03T13:05:00.7202496+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-06.v4.png"
+      },
+      "iteration_ids": [
+        "B05-IT-009"
+      ],
+      "iteration_note": "B05-IT-009 (visual)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-07",
+      "title": "Overdue: drift datum and search boxes",
+      "audience": "Coastguard watch officer and the shore contact, 20 minutes into an overdue alarm",
+      "use_context": "Desktop in the ops room or at home, dark theme, high stress, 1600x1000",
+      "user_goal": "See where the boat probably is, in what order to search, and what is still missing from the picture",
+      "content_basis": "Drift model in tools/b05_data.py: 3.5 % leeway on 18 kn of wind plus the tidal stream at 15:52, giving 1.16 kn toward 047 deg and three growing boxes",
+      "visual_intent": "Red on near-black, one chart carrying the whole story, numbers kept quiet so the boxes and the LKP dominate",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Equirectangular projection, scanline-filled ellipses, drift arrows, badge markers, probability bars, dark-red cards",
+      "completion_criteria": "Box order, probability, area and sweep time are all legible; the assumptions behind the drift are stated on the image; nothing claims more certainty than the model has",
+      "visual_review": "Viewed case-07.v1 (B05-REQ-0018), v2 (0020) and final (0032)",
+      "request_ids": [
+        "B05-REQ-0032"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 3133,
+        "service_request_id": "b76eee91-a916-45aa-8fd9-63d7a4d86082",
+        "ended_at": "2026-10-03T13:04:30.6025247+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-07.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-010"
+      ],
+      "iteration_note": "B05-IT-010 + B05-IT-011 (visual)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-08",
+      "title": "Fuel and range planner",
+      "audience": "The skipper deciding how much fuel to take and what to do if the wind gets up on the return leg",
+      "use_context": "Tablet at home or on the boat before slipping, dark instrument panel",
+      "user_goal": "See where 36 L goes in three scenarios, and know the range at each speed before committing to a long drift",
+      "content_basis": "Burn 8.2 L/h at 12 kn and 1.1 L/h drifting with a 20 % reserve, computed per leg and per drift minute by tools/b05_data.py",
+      "visual_intent": "A ladder rather than a pie: one stacked bar per scenario, so the reserve is visibly the part you never plan to touch",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1180,
+        820
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Stacked segment bars with in-segment labels, horizontal range bars, scenario table, amber recommendation card",
+      "completion_criteria": "The 12 kn headwind case and its margin are the most prominent numbers; range by speed shows the slow-down option; no column overflows its card",
+      "visual_review": "Viewed case-08.v1 (B05-REQ-0019) and v2/final (0021, 0033)",
+      "request_ids": [
+        "B05-REQ-0033"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 3414,
+        "service_request_id": "a03b5eae-1a9c-48f0-ac31-04f50f92543f",
+        "ended_at": "2026-10-03T13:04:34.0245994+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-08.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-012"
+      ],
+      "iteration_note": "B05-IT-012 (visual)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-09",
+      "title": "Harbour office e-ink noticeboard",
+      "audience": "Everyone on the pontoon: berth holders, visiting crews, the harbour master",
+      "use_context": "800x1200 e-ink panel in the harbour office window, read from 2-3 m, refreshed at 07:30",
+      "user_goal": "One look tells you which boats are out, who is late, what is closed and what the weather is doing",
+      "content_basis": "Fleet list, notices, gate windows and the yellow wind warning, all consistent with the tide model and the passage plan",
+      "visual_intent": "Paper-like greyscale with a single red accent: no gradients, no shadows, heavy rules, type sized for three metres",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        800,
+        1200
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "E-ink palette, table with highlight row, tag blocks, wrapping notice text, split gate / warning panel",
+      "completion_criteria": "The Petrel row is findable in under three seconds; the warning and the gate times are both visible without scrolling; nothing is clipped",
+      "visual_review": "Viewed case-09.v1 (B05-REQ-0022) and v3/final (0024, 0034)",
+      "request_ids": [
+        "B05-REQ-0034"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 2636,
+        "service_request_id": "43b1f6bf-cdf0-4fd8-9c24-c529860b38e0",
+        "ended_at": "2026-10-03T13:04:36.6682949+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-09.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-013"
+      ],
+      "iteration_note": "B05-IT-013 (visual)",
+      "unresolved_issues": []
+    },
+    {
+      "id": "case-10",
+      "title": "Season debrief",
+      "audience": "The skipper at the end of the season, deciding what to change next year",
+      "use_context": "Desktop or tablet at home, 1600x1000, unhurried",
+      "user_goal": "See the season's patterns and adopt three or four concrete rules for next year",
+      "content_basis": "26-trip log, monthly distance and trip counts, forecast-error series and three logged close calls with the rule each one produced",
+      "visual_intent": "Calm analytics: bar chart of the season, a red error line that rises as the season goes on, and a navy card that turns observations into rules",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Bar chart with per-bar labels, line chart with a shaded threshold band, KPI tiles, checkbox row",
+      "completion_criteria": "Every chart is readable without the caption; the three close calls each end in a rule; the season totals match the log",
+      "visual_review": "Viewed case-10.v1 (B05-REQ-0023) and v3/final (0025, 0035)",
+      "request_ids": [
+        "B05-REQ-0035"
+      ],
+      "request_evidence": {
+        "http_status": 200,
+        "content_type": "image/png",
+        "duration_ms": 2665,
+        "service_request_id": "6011a663-752b-46ca-a421-af23648095af",
+        "ended_at": "2026-10-03T13:04:39.3413507+08:00",
+        "response_file": "tmp\\20261003-114508-flashmax\\B05\\render\\case-10.final.png"
+      },
+      "iteration_ids": [
+        "B05-IT-014"
+      ],
+      "iteration_note": "B05-IT-014 (visual)",
+      "unresolved_issues": []
+    }
+  ],
+  "final_collection_review": "All ten finals were opened at 100 % in journey order after the per-case passes. The shared facts hold across the set: HW 05:10 / LW 11:25 / HW 17:30 / LW 23:35, the 2.50 m bank gate with windows 02:15-08:10 and 14:55-20:20, launch 06:25, cross out 06:35 at 3.71 m, cross back 14:58 at 2.55 m, alongside 15:08, 19.5 L of 36 L planned with a 12 kn headwind case at 22.9 L, 2 POB, sunset 17:44. The set is deliberately not ten variations of one layout: four devices (phone, desktop, A4 print, e-ink board), four lighting conditions (pre-dawn dark, daylight instrument, sunlight glance, paper) and one deliberate break in tone (case-07). What I would still change with more time: the case-02 stream strip is denser than it needs to be at 1-hour resolution, and case-06 would benefit from a night variant to check the same layout under red light.",
+  "unresolved_issues": []
+}

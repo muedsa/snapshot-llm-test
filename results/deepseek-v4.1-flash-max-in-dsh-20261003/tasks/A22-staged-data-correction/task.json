@@ -1,0 +1,125 @@
+{
+  "id": "A22",
+  "title": "真实数据更正与局部回归",
+  "category": "多轮协作",
+  "challenge": "预置三轮需求连续执行，保留每轮并验证回归。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "本题按预置要求自动执行三轮。先完成第一轮：用 inputs/monthly.csv 制作1600×1000经营驾驶舱，公式、KPI、\n图表和表格要求与本题以下说明一致。四KPI为总净收入、总经营利润、总订单、\n总体转化率；净收入=收入−退款，利润=净收入−operating_cost；总体率=总订单/\n总sessions。图中有净收入/利润共用零起点柱图、六行月份/净收入/利润/退款率/\n转化率表，以及仅根据实际数值成立的主结论。所有月份原样，正文≥22。\n在 round-01/ 交付 dashboard.png/.snapshot、computed-data.json 和 layout-map.json\n（KPI、图、表、标题区域的边界及主样式）。生成脚本和参数留在临时目录。\n实际查看图并归档第一轮后，立即读取rounds/round-02.md应用修订并完成第二轮，\n再读取rounds/round-03.md完成第三轮，不等待用户消息。后续在已有作品上更新，\n保留旧版、真实计算与视觉回归证据。每轮报告/指标与三轮任务汇总按AGENTS保存。\n",
+  "inputs": [
+    "inputs/monthly.csv"
+  ],
+  "required_outputs": [
+    {
+      "filename": "round-01/dashboard.png",
+      "dsl": "round-01/dashboard.snapshot",
+      "width": 1600,
+      "height": 1000,
+      "purpose": "第1轮 dashboard"
+    },
+    {
+      "filename": "round-02/dashboard.png",
+      "dsl": "round-02/dashboard.snapshot",
+      "width": 1600,
+      "height": 1000,
+      "purpose": "第2轮 dashboard"
+    },
+    {
+      "filename": "round-03/dashboard.png",
+      "dsl": "round-03/dashboard.snapshot",
+      "width": 1600,
+      "height": 1000,
+      "purpose": "第3轮 dashboard"
+    }
+  ],
+  "additional_outputs": [
+    "computed-data.json",
+    "layout-map.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": 1,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A22/",
+  "temp_dir_template": "tmp/{run_id}/A22/",
+  "suite_instructions_file": "../../AGENTS.md",
+  "round_execution": "preloaded_sequential",
+  "blind_feedback": false,
+  "rounds": [
+    {
+      "round": 1,
+      "requirements_file": "TASK.md",
+      "output_subdirectory": "round-01",
+      "required_outputs": [
+        {
+          "filename": "round-01/dashboard.png",
+          "dsl": "round-01/dashboard.snapshot",
+          "width": 1600,
+          "height": 1000,
+          "purpose": "第1轮 dashboard"
+        }
+      ],
+      "additional_outputs": [
+        "computed-data.json",
+        "layout-map.json"
+      ],
+      "common_outputs": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ]
+    },
+    {
+      "round": 2,
+      "requirements_file": "rounds/round-02.md",
+      "output_subdirectory": "round-02",
+      "required_outputs": [
+        {
+          "filename": "round-02/dashboard.png",
+          "dsl": "round-02/dashboard.snapshot",
+          "width": 1600,
+          "height": 1000,
+          "purpose": "第2轮 dashboard"
+        }
+      ],
+      "additional_outputs": [
+        "computed-data.json",
+        "layout-map.json",
+        "change-audit.json"
+      ],
+      "common_outputs": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ]
+    },
+    {
+      "round": 3,
+      "requirements_file": "rounds/round-03.md",
+      "output_subdirectory": "round-03",
+      "required_outputs": [
+        {
+          "filename": "round-03/dashboard.png",
+          "dsl": "round-03/dashboard.snapshot",
+          "width": 1600,
+          "height": 1000,
+          "purpose": "第3轮 dashboard"
+        }
+      ],
+      "additional_outputs": [
+        "computed-data.json",
+        "layout-map.json",
+        "change-audit.json"
+      ],
+      "common_outputs": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ]
+    }
+  ]
+}

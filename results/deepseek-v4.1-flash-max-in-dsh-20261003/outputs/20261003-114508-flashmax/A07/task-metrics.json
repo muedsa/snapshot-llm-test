@@ -1,0 +1,150 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A07",
+  "title": "三线换乘图与路线核验",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T17:34:00+08:00",
+  "ended_at": "2026-10-03T18:58:00+08:00",
+  "wall_clock_seconds": 5040.0,
+  "requests": {
+    "requests_total": 13,
+    "render_success": 11,
+    "render_failed": 2,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 13
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 41724,
+    "first_request_at": "2026-10-03T12:33:45.0174911+08:00",
+    "last_request_at": "2026-10-03T12:40:34.4752635+08:00"
+  },
+  "iterations": {
+    "iterations_total": 6,
+    "iterations_by_type": {
+      "alternative": 3,
+      "visual": 3
+    },
+    "visual_iterations": 3,
+    "image_reviews": 3
+  },
+  "dsl_versions": 8,
+  "final_pngs": 2,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 4,
+  "tool_usage_file": "tmp\\20261003-114508-flashmax\\A07\\tool-usage.jsonl",
+  "outputs": [
+    "network-map.png",
+    "network-map.snapshot",
+    "travel-card.png",
+    "travel-card.snapshot",
+    "routes.json",
+    "map-geometry.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A07",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A07",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "换乘 = 改变乘坐线路，第一次上车不计；边数 = 站序长度 − 1（站数同时给出，避免混淆）。",
+    "三条查询：S01→S11 = 6 边 / 1 换乘（S04 换乘）；S13→S12 = 6 边 / 1 换乘（S05 换乘）；S07→S16 = 4 边 / 1 换乘（S08 换乘）。",
+    "无障碍：换乘站只有 S04、S08 是无障碍站；S01→S11 与 S07→S16 的普通路线即可作无障碍旅程，S13→S12 因在 S05 换乘而不可用，替代路线 6 边 / 2 换乘（S08、S04 换乘）。",
+    "地图为八向示意图：几何求解器硬校验八向合法、节点间距 ≥70px、无站落在异线、全部在画布内；未因无障碍约束删除任何线路或车站。"
+  ],
+  "final_images": [
+    {
+      "file": "network-map.png",
+      "width": 1600,
+      "height": 1000,
+      "format": "PNG",
+      "viewed": true
+    },
+    {
+      "file": "travel-card.png",
+      "width": 720,
+      "height": 1280,
+      "format": "PNG",
+      "viewed": true
+    }
+  ],
+  "routes_summary": [
+    {
+      "query": "S01->S11",
+      "plain": {
+        "edges": 6,
+        "stations": 7,
+        "transfers": 1,
+        "accessible_ok": true
+      },
+      "accessible": {
+        "edges": 6,
+        "transfers": 1
+      },
+      "needs_alternative": false
+    },
+    {
+      "query": "S13->S12",
+      "plain": {
+        "edges": 6,
+        "stations": 7,
+        "transfers": 1,
+        "accessible_ok": false
+      },
+      "accessible": {
+        "edges": 6,
+        "transfers": 2
+      },
+      "needs_alternative": true
+    },
+    {
+      "query": "S07->S16",
+      "plain": {
+        "edges": 4,
+        "stations": 5,
+        "transfers": 1,
+        "accessible_ok": true
+      },
+      "accessible": {
+        "edges": 4,
+        "transfers": 1
+      },
+      "needs_alternative": false
+    }
+  ],
+  "requirements_checked": {
+    "adjacent_stations_connected_per_line_order": true,
+    "shared_station_is_the_only_transfer": true,
+    "crossing_without_station_is_not_a_transfer": true,
+    "colour_plus_line_letter": true,
+    "all_16_station_names_and_ids": true,
+    "octilinear_45_90": true,
+    "non_geographic_disclaimer": true,
+    "inaccessible_can_be_ridden_through_but_not_used_as_endpoint_or_transfer": true,
+    "no_line_removed_for_accessibility": true,
+    "accessibility_status_labelled_with_legend": true,
+    "three_queries_min_edges_then_min_transfers": true,
+    "transfer_definition_first_boarding_excluded": true,
+    "edges_not_confused_with_stations": true,
+    "travel_card_shows_3_plain_and_accessible_verdict": true,
+    "accessible_alternative_given_when_needed": true,
+    "map_label_font_min_20": true,
+    "card_body_font_min_20": true,
+    "two_images_share_one_visual_system": true
+  }
+}

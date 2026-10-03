@@ -1,0 +1,142 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A06",
+  "title": "十四节点依赖图与反馈回路",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T16:34:00+08:00",
+  "ended_at": "2026-10-03T17:26:00+08:00",
+  "wall_clock_seconds": 3120.0,
+  "requests": {
+    "requests_total": 13,
+    "render_success": 13,
+    "render_failed": 0,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 13
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 41890,
+    "first_request_at": "2026-10-03T12:24:31.9332564+08:00",
+    "last_request_at": "2026-10-03T12:30:03.0269362+08:00"
+  },
+  "iterations": {
+    "iterations_total": 5,
+    "iterations_by_type": {
+      "syntax-fix": 1,
+      "redesign": 1,
+      "visual": 3
+    },
+    "visual_iterations": 3,
+    "image_reviews": 5
+  },
+  "dsl_versions": 10,
+  "final_pngs": 1,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 4,
+  "tool_usage_file": "tmp\\20261003-114508-flashmax\\A06\\tool-usage.jsonl",
+  "outputs": [
+    "dependency-map.png",
+    "dependency-map.snapshot",
+    "graph-audit.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A06",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A06",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "反馈边 N09→N08、N10→N08 不参与拓扑排序；Kahn 算法只在 16 条 solid_edges 上运行，14 节点全部出队，先决关系无环。",
+    "分层结果：L00 N01 | L01 N02,N03 | L02 N04,N05 | L03 N06,N07 | L04 N08 | L05 N09 | L06 N10 | L07 N11 | L08 N12 | L09 N13 | L10 N14。",
+    "最长先决路径按节点数 11 个 / 10 条边：N01→N02→N04→N07→N08→N09→N10→N11→N12→N13→N14（有多解，报告中给出一条）。",
+    "行 = 拓扑层（上→下），所以每条先决边都指向更靠下的层，不存在指向过去层的布局歧义。"
+  ],
+  "final_image": {
+    "file": "dependency-map.png",
+    "width": 1600,
+    "height": 1000,
+    "format": "PNG",
+    "viewed": true
+  },
+  "audit_summary": {
+    "nodes": 14,
+    "solid_edges": 16,
+    "feedback_edges": 2,
+    "layers": {
+      "0": [
+        "N01"
+      ],
+      "1": [
+        "N02",
+        "N03"
+      ],
+      "2": [
+        "N04",
+        "N05"
+      ],
+      "3": [
+        "N06",
+        "N07"
+      ],
+      "4": [
+        "N08"
+      ],
+      "5": [
+        "N09"
+      ],
+      "6": [
+        "N10"
+      ],
+      "7": [
+        "N11"
+      ],
+      "8": [
+        "N12"
+      ],
+      "9": [
+        "N13"
+      ],
+      "10": [
+        "N14"
+      ]
+    },
+    "longest_path_nodes": 11,
+    "feedback": [
+      [
+        "N09",
+        "N08"
+      ],
+      [
+        "N10",
+        "N08"
+      ]
+    ]
+  },
+  "requirements_checked": {
+    "all_14_nodes_with_labels": true,
+    "every_edge_direction_visible": true,
+    "feedback_edges_dashed_with_own_legend": true,
+    "feedback_edges_not_drawn_as_prerequisites": true,
+    "crossing_without_joint_is_not_a_dependency": true,
+    "positions_show_order_and_parallelism": true,
+    "no_prerequisite_points_to_a_past_layer": true,
+    "in_figure_explanation_of_both_feedback_paths": true,
+    "node_font_min_22": true,
+    "annotation_font_min_18": true,
+    "not_a_plain_list": true
+  }
+}

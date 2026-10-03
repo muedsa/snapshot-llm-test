@@ -1,0 +1,330 @@
+{
+  "schema": "a06-graph-audit/1",
+  "run_id": "20261003-114508-flashmax",
+  "title": "从需求到可复现交付",
+  "source_file": "tasks/A06-dependency-graph/inputs/graph.json",
+  "counts": {
+    "nodes": 14,
+    "solid_edges": 16,
+    "feedback_edges": 2
+  },
+  "labels": {
+    "N01": "需求冻结",
+    "N02": "输入检查",
+    "N03": "字体查询",
+    "N04": "数据计算",
+    "N05": "内容规划",
+    "N06": "版式系统",
+    "N07": "图表生成",
+    "N08": "DSL构建",
+    "N09": "首轮渲染",
+    "N10": "视觉检查",
+    "N11": "问题修复",
+    "N12": "回归渲染",
+    "N13": "产物校验",
+    "N14": "交付归档"
+  },
+  "topological_layers": {
+    "0": [
+      "N01"
+    ],
+    "1": [
+      "N02",
+      "N03"
+    ],
+    "2": [
+      "N04",
+      "N05"
+    ],
+    "3": [
+      "N06",
+      "N07"
+    ],
+    "4": [
+      "N08"
+    ],
+    "5": [
+      "N09"
+    ],
+    "6": [
+      "N10"
+    ],
+    "7": [
+      "N11"
+    ],
+    "8": [
+      "N12"
+    ],
+    "9": [
+      "N13"
+    ],
+    "10": [
+      "N14"
+    ]
+  },
+  "layer_index": {
+    "N01": 0,
+    "N02": 1,
+    "N03": 1,
+    "N04": 2,
+    "N05": 2,
+    "N06": 3,
+    "N07": 3,
+    "N08": 4,
+    "N09": 5,
+    "N10": 6,
+    "N11": 7,
+    "N12": 8,
+    "N13": 9,
+    "N14": 10
+  },
+  "topological_order": [
+    "N01",
+    "N02",
+    "N03",
+    "N04",
+    "N05",
+    "N07",
+    "N06",
+    "N08",
+    "N09",
+    "N10",
+    "N11",
+    "N12",
+    "N13",
+    "N14"
+  ],
+  "acyclic_check": {
+    "method": "Kahn 算法只在 solid_edges 上运行",
+    "result": "14 个节点全部出队，先决关系无环",
+    "feedback_edges_excluded": [
+      [
+        "N09",
+        "N08"
+      ],
+      [
+        "N10",
+        "N08"
+      ]
+    ]
+  },
+  "neighbours": {
+    "N01": {
+      "in": [],
+      "out": [
+        "N02",
+        "N03"
+      ],
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    "N02": {
+      "in": [
+        "N01"
+      ],
+      "out": [
+        "N04",
+        "N05"
+      ],
+      "in_degree": 1,
+      "out_degree": 2
+    },
+    "N03": {
+      "in": [
+        "N01"
+      ],
+      "out": [
+        "N06"
+      ],
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    "N04": {
+      "in": [
+        "N02"
+      ],
+      "out": [
+        "N07",
+        "N13"
+      ],
+      "in_degree": 1,
+      "out_degree": 2
+    },
+    "N05": {
+      "in": [
+        "N02"
+      ],
+      "out": [
+        "N06"
+      ],
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    "N06": {
+      "in": [
+        "N03",
+        "N05"
+      ],
+      "out": [
+        "N08"
+      ],
+      "in_degree": 2,
+      "out_degree": 1
+    },
+    "N07": {
+      "in": [
+        "N04"
+      ],
+      "out": [
+        "N08"
+      ],
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    "N08": {
+      "in": [
+        "N06",
+        "N07"
+      ],
+      "out": [
+        "N09"
+      ],
+      "in_degree": 2,
+      "out_degree": 1
+    },
+    "N09": {
+      "in": [
+        "N08"
+      ],
+      "out": [
+        "N10"
+      ],
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    "N10": {
+      "in": [
+        "N09"
+      ],
+      "out": [
+        "N11"
+      ],
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    "N11": {
+      "in": [
+        "N10"
+      ],
+      "out": [
+        "N12"
+      ],
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    "N12": {
+      "in": [
+        "N11"
+      ],
+      "out": [
+        "N13"
+      ],
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    "N13": {
+      "in": [
+        "N04",
+        "N12"
+      ],
+      "out": [
+        "N14"
+      ],
+      "in_degree": 2,
+      "out_degree": 1
+    },
+    "N14": {
+      "in": [
+        "N13"
+      ],
+      "out": [],
+      "in_degree": 1,
+      "out_degree": 0
+    }
+  },
+  "longest_prerequisite_path": {
+    "measured_by": "节点数",
+    "node_count": 11,
+    "edge_count": 10,
+    "path": [
+      "N01",
+      "N02",
+      "N04",
+      "N07",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ],
+    "path_labels": [
+      "N01 需求冻结",
+      "N02 输入检查",
+      "N04 数据计算",
+      "N07 图表生成",
+      "N08 DSL构建",
+      "N09 首轮渲染",
+      "N10 视觉检查",
+      "N11 问题修复",
+      "N12 回归渲染",
+      "N13 产物校验",
+      "N14 交付归档"
+    ],
+    "tie_note": "按节点数计算的最长先决路径可能多解；此处给出至少一条（N01→N02→N04→N07→N08→N09→N10→N11→N12→N13→N14）。",
+    "all_distances": {
+      "N01": 1,
+      "N02": 2,
+      "N03": 2,
+      "N04": 3,
+      "N05": 3,
+      "N06": 4,
+      "N07": 4,
+      "N08": 5,
+      "N09": 6,
+      "N10": 7,
+      "N11": 8,
+      "N12": 9,
+      "N13": 10,
+      "N14": 11
+    }
+  },
+  "feedback_edges": [
+    {
+      "from": "N09",
+      "to": "N08",
+      "from_label": "首轮渲染",
+      "to_label": "DSL构建",
+      "excluded_from_topological_order": true,
+      "is_dag_edge": false,
+      "same_venue_note": "首轮渲染 回流到 DSL构建，构成回路，故不参与拓扑分层"
+    },
+    {
+      "from": "N10",
+      "to": "N08",
+      "from_label": "视觉检查",
+      "to_label": "DSL构建",
+      "excluded_from_topological_order": true,
+      "is_dag_edge": false,
+      "same_venue_note": "视觉检查 回流到 DSL构建，构成回路，故不参与拓扑分层"
+    }
+  ],
+  "layout_contract": {
+    "node_columns": "列 = 拓扑层，层号从左到右递增",
+    "edge_direction_rule": "每条先决边的箭头都由较小层指向较大层，图中不存在指向过去层的先决边",
+    "parallelism": "同一列内的节点互为并行分支（层内没有先决关系）",
+    "feedback_rendering": "反馈边用虚线 + 专用图例，沿图底部与左侧专用通道绕行，不画成普通先决依赖",
+    "crossing_rule": "交叉线在没有连接点时不构成新的依赖——图中所有线段只在端点相连"
+  }
+}

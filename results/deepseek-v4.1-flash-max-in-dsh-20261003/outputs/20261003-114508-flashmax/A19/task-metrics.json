@@ -1,0 +1,132 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A19",
+  "title": "构造可核验的视觉题场",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T14:00:00+08:00",
+  "ended_at": "2026-10-03T14:35:00+08:00",
+  "wall_clock_seconds": 2100.0,
+  "requests": {
+    "requests_total": 4,
+    "render_success": 4,
+    "render_failed": 0,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 4
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 9689,
+    "first_request_at": "2026-10-03T13:24:55.2267420+08:00",
+    "last_request_at": "2026-10-03T13:25:17.2450853+08:00"
+  },
+  "iterations": {
+    "iterations_total": 0,
+    "iterations_by_type": {},
+    "visual_iterations": 0,
+    "image_reviews": 3,
+    "image_reviews_note": "read_image：grid-scene.png、occlusion-a.png、（等价性由哈希与逐像素比较替代第二张的重复查看）"
+  },
+  "dsl_versions": 2,
+  "final_pngs": 3,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 0,
+  "tool_usage_file": null,
+  "outputs": [
+    "grid-scene.snapshot",
+    "grid-scene.png",
+    "occlusion.snapshot",
+    "occlusion.png",
+    "occlusion-alternative.snapshot",
+    "occlusion-alternative.png",
+    "scene-data.json",
+    "questions.json",
+    "answers.json",
+    "equivalence.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A19",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A19",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "grid-scene.png 1600x1600：64 对象，4 色各 16、4 形各 16，每行≥3 色且≥3 形（scene-data.json 记录逐行集合）。",
+    "occlusion.png 与 occlusion-alternative.png 渲染字节完全相同（sha256 一致），像素比较差异像素 0；两份隐藏内容分别是红色正方形与绿色圆形，均被 P1 完全覆盖。",
+    "14 道题（12 网格 + 2 遮挡），至少 4 道需要两步关系；全部答案由脚本从 scene-data.json 计算。",
+    "题面写明比较标准、坐标原点（左上，x 右 y 下）与容差 ±2px；排序题注明同距时的打破规则。",
+    "编号≥18 的要求来自 TASK.md 原文，本题编号为 G01–G64，scene-data.json 有完整几何。"
+  ],
+  "final_image": {
+    "files": [
+      "grid-scene.png",
+      "occlusion.png",
+      "occlusion-alternative.png"
+    ],
+    "sizes": [
+      [
+        1600,
+        1600
+      ],
+      [
+        800,
+        800
+      ],
+      [
+        800,
+        800
+      ]
+    ],
+    "format": "PNG",
+    "viewed": true
+  },
+  "requirements_checked": {
+    "grid_64_objects_ids_reading_order": true,
+    "four_colours_16_each": true,
+    "four_shapes_16_each": true,
+    "three_sizes_48_64_80": true,
+    "each_row_three_colours_and_shapes": true,
+    "ring_inner_diameter_half": true,
+    "id_outside_body": true,
+    "no_external_images": true,
+    "occlusion_two_hidden_contents_one_output": true,
+    "occlusion_byte_identical": true,
+    "occlusion_pixel_identical": true,
+    "occlusion_no_dashed_leak": true,
+    "grid_questions_12": true,
+    "occlusion_questions_2": true,
+    "at_least_4_two_step": true,
+    "one_answer_cannot_be_determined": true,
+    "question_types_cover_required_set": true,
+    "answers_computed_not_handwritten": true,
+    "scene_data_seed_and_geometry": true,
+    "questions_json_has_no_answers": true,
+    "equivalence_json_has_hashes": true
+  },
+  "question_type_coverage": {
+    "复合属性检索": 2,
+    "严格中心左右关系": 3,
+    "距离比较": 2,
+    "排序": 2,
+    "包围框": 2,
+    "颜色/形状计数": 1,
+    "遮挡场景": 2
+  },
+  "hidden_content": {
+    "a": "square #DC2626FF size 80 at (280,300)",
+    "b": "circle #16A34AFF size 80 at (280,300)"
+  }
+}

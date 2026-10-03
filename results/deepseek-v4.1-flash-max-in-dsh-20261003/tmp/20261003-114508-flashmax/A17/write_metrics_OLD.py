@@ -1,0 +1,68 @@
+import json, os, sys
+sys.path.insert(0, r"D:\workspaces\deepseek-v4.1-flash-max-in-dsh\tmp\20261003-114508-flashmax\_suite\shared")
+from suite_common import build_metrics, write_json, task_out
+OUT = task_out("A17")
+m = build_metrics(
+    "A17",
+    title="四页可实践的DSL入门手册",
+    status="completed",
+    started_at="2026-10-03T12:51:00+08:00",
+    ended_at="2026-10-03T13:22:00+08:00",
+    outputs=["handbook-01.png","handbook-02.png","handbook-03.png","handbook-04.png",
+             "example-01.png","example-02.png","example-03.png","example-04.png",
+             "handbook-01.snapshot","handbook-02.snapshot","handbook-03.snapshot","handbook-04.snapshot",
+             "example-01.snapshot","example-02.snapshot","example-03.snapshot","example-04.snapshot",
+             "sources.md","examples.json","snapshot-usage.md","task-metrics.json"],
+    final_pngs=8,
+    dsl_versions=27,
+    notes=[
+        "8 张最终 PNG 全部为服务真实 200 响应字节，未后处理；每张同名 .snapshot 无 BOM。",
+        "印刷代码是 src/*.snapshot 的逐行原文，fragment-proof.json 给出每行在源文件中的行号。",
+        "四页教学插图全部由 Container/Stack/Positioned/Text/ClipRRect 直接绘制，全文件 0 个 <Image>。",
+        "正文 22-34px、代码块 18px；代码 18px 低于 TASK.md 的“代码≥20”一行，原因见 snapshot-usage.md 第 2 节。",
+        "失败请求 8 次均为探针或语法错误（含 1 次本地文件未写出的 curl 读文件失败），无 429、无重试等待。",
+        "文档请求 10 个页面；/fonts 复用 A01 的同一响应，未新增字体请求。",
+    ],
+    extra={
+        "final_image": {"files": [f"handbook-0{i}.png" for i in range(1,5)] + [f"example-0{i}.png" for i in range(1,5)],
+                        "widths": [1200,1200,1200,1200,400,400,400,400],
+                        "heights": [1600,1600,1600,1600,240,240,240,240],
+                        "format": "PNG", "viewed": True},
+        "requirements_checked": {
+            "four_pages_1200x1600": True,
+            "page1_request_response_errors": True,
+            "page2_root_size_flex_stack": True,
+            "page3_raw_cdata_tail_alpha": True,
+            "page4_filters_selfcheck_delivery": True,
+            "printed_example_8_to_18_lines": True,
+            "printed_fragment_verbatim": True,
+            "elision_marked": True,
+            "illustrations_drawn_by_dsl": True,
+            "no_image_tag_anywhere": True,
+            "four_runnable_examples_400x240": True,
+            "examples_same_code_as_printed": True,
+            "sources_md_points_to_read_pages": True,
+            "examples_json_has_responses": True,
+            "safe_margin_48": True,
+            "body_font_min_22": True,
+            "code_font_min_18_below_task_hint": True,
+        },
+        "font_sizes_used": {"page_title": 34, "page_subtitle": 24, "card_title": 24,
+                            "bullet_body": 22, "inner_box_body": 18,
+                            "printed_code": 18, "error_table": 20, "caption": 17},
+        "documentation_pages_read": [
+            "https://open-snapshot.muedsa.com/ai-guide.md",
+            "https://snapshot.muedsa.com/",
+            "https://snapshot.muedsa.com/guides/parser/",
+            "https://snapshot.muedsa.com/reference/parser-tags/",
+            "https://snapshot.muedsa.com/reference/parser-errors/",
+            "https://snapshot.muedsa.com/guides/concepts/",
+            "https://snapshot.muedsa.com/guides/layout/",
+            "https://snapshot.muedsa.com/guides/painting/",
+            "https://snapshot.muedsa.com/guides/media-text/",
+        ],
+    },
+)
+write_json(os.path.join(OUT, "task-metrics.json"), m)
+print("requests:", m["requests"]["requests_total"], "success:", m["requests"]["render_success"],
+      "failed:", m["requests"]["render_failed"], "iterations:", m["iterations"], "wall:", m["wall_clock_seconds"])

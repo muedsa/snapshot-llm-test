@@ -1,0 +1,170 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A11",
+  "title": "文字保真与跨页结算单",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T13:04:28+08:00",
+  "ended_at": "2026-10-03T13:10:35+08:00",
+  "wall_clock_seconds": 367.0,
+  "requests": {
+    "requests_total": 18,
+    "render_success": 15,
+    "render_failed": 3,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 18
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 39019,
+    "first_request_at": "2026-10-03T13:04:30.8104452+08:00",
+    "last_request_at": "2026-10-03T13:10:02.8732741+08:00"
+  },
+  "iterations": {
+    "iterations_total": 9,
+    "iterations_by_type": {
+      "alternative": 1,
+      "syntax-fix": 2,
+      "baseline": 3,
+      "visual": 2,
+      "retry": 1
+    },
+    "visual_iterations": 2,
+    "image_reviews": 5
+  },
+  "dsl_versions": 18,
+  "final_pngs": 2,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 5,
+  "tool_usage_file": "tmp\\20261003-114508-flashmax\\A11\\tool-usage.jsonl",
+  "outputs": [
+    "invoice-page-01.png",
+    "invoice-page-01.snapshot",
+    "invoice-page-02.png",
+    "invoice-page-02.snapshot",
+    "invoice-audit.json",
+    "text-map.json",
+    "render-check.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A11",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A11",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "关键机制发现：本服务解析器不解码 XML 实体，&amp; 会原样渲染；裸 < 直接 400；内容用 <![CDATA[…]]> 承载，需要保空格的行用 <Raw><![CDATA[…]]></Raw>（且 Raw 必须在 Text 内）。",
+    "金额：小计 4,124.30，折扣 180.00（税前），计税基数 3,944.30，税额 236.66（236.658000→四舍五入），运费 35.00，应付 4,215.96；decimal.Decimal + ROUND_HALF_UP 量化到 0.01。",
+    "实测字宽系数（两张度量探针）：等宽 0.5000em、汉字/假名 0.9952em、比例拉丁大写 0.6106em、小写 0.5769em、数字 0.5385em、空格 0.5641em——套件原先沿用的 0.60/0.55 已被实测取代。",
+    "渲染结果核对：合计 6 行金额右边缘最大差 1px（小数点列对齐）；四行原样文字实测墨迹宽度179/180/304/552px 对比等宽模型 182/182/308/560px，双空格与反斜杠均保留；PAID / 已结算 三段墨迹纵向重叠、块高 45px 属单行共用基线。",
+    "18 次提交中 2 次失败，均为真实 400 PARSE_ERROR（Raw 未包 Text；裸 < 字符）。"
+  ],
+  "final_images": [
+    {
+      "file": "invoice-page-01.png",
+      "width": 1200,
+      "height": 1600,
+      "format": "PNG",
+      "sha256": "fbbad2dec096cde37e96b0fdc2cf97ee6747a9ffb8316918824fd9a33deb6ba8",
+      "viewed": true
+    },
+    {
+      "file": "invoice-page-02.png",
+      "width": 1200,
+      "height": 1600,
+      "format": "PNG",
+      "sha256": "8c63f1c7c6ee047dc6dbd78bbb92233f2989072d9e8c3fce4927465e456beccd",
+      "viewed": true
+    }
+  ],
+  "image_views": {
+    "total": 10,
+    "read_image_calls": [
+      "probe-bare.png",
+      "probe-raw-bare.png",
+      "probe-bare2.png",
+      "probe-cdata.png",
+      "probe-rawcdata.png",
+      "invoice-page-01.v1.png",
+      "invoice-page-01.v3.png",
+      "invoice-page-02.v3.png",
+      "invoice-page-01.v5.png",
+      "invoice-page-02.v5.png"
+    ]
+  },
+  "amounts": {
+    "goods_subtotal": "4,124.30",
+    "discount": "180.00",
+    "taxable_base": "3,944.30",
+    "tax_raw": "236.658000",
+    "tax": "236.66",
+    "shipping": "35.00",
+    "amount_due": "4,215.96"
+  },
+  "render_checks": {
+    "totals_right_edge_spread_px": 1,
+    "totals_decimal_column_aligned": true,
+    "table_header_overlap": false,
+    "item_row_overlap": false,
+    "literal_width_vs_model": [
+      {
+        "line": 1,
+        "measured": 179,
+        "model": 182.0
+      },
+      {
+        "line": 2,
+        "measured": 180,
+        "model": 182.0
+      },
+      {
+        "line": 3,
+        "measured": 304,
+        "model": 308.0
+      },
+      {
+        "line": 4,
+        "measured": 552,
+        "model": 560.0
+      }
+    ],
+    "rich_text_single_line": true,
+    "rich_text_vertical_overlap": true
+  },
+  "requirements_checked": {
+    "two_pages_1200x1600": true,
+    "all_content_from_invoice_json": true,
+    "parties_id_date_currency": true,
+    "four_sku_rows_with_cn_en_jp_names": true,
+    "qty_unit_price_line_amount": true,
+    "subtotal_discount_net_tax_shipping_due": true,
+    "tax_order_from_notes": true,
+    "decimal_fixed_point_round_half_up": true,
+    "amount_decimal_points_aligned": true,
+    "page2_four_notes_verbatim": true,
+    "page2_four_literal_lines_verbatim": true,
+    "double_spaces_preserved": true,
+    "backslash_angle_brackets_ampersand_not_escaped": true,
+    "english_instruction_line_typeset_not_executed": true,
+    "rich_text_paid_slash_cjk_shared_baseline": true,
+    "status_mark_does_not_change_amount_due": true,
+    "fonts_queried_cjk_jp_latin_covered": true,
+    "page_numbers_repeated_header_same_id": true,
+    "body_min_24_footnote_min_20": true,
+    "safe_margin_48": true,
+    "invoice_audit_and_text_map": true
+  }
+}

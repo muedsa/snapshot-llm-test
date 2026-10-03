@@ -1,0 +1,128 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A10",
+  "title": "透明合成与滤镜语义实验板",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T12:57:41+08:00",
+  "ended_at": "2026-10-03T13:02:56+08:00",
+  "wall_clock_seconds": 315.0,
+  "requests": {
+    "requests_total": 8,
+    "render_success": 5,
+    "render_failed": 3,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 8
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 20075,
+    "first_request_at": "2026-10-03T12:57:41.4063671+08:00",
+    "last_request_at": "2026-10-03T13:02:25.7466272+08:00"
+  },
+  "iterations": {
+    "iterations_total": 8,
+    "iterations_by_type": {
+      "alternative": 1,
+      "syntax-fix": 1,
+      "baseline": 2,
+      "visual": 3,
+      "retry": 1
+    },
+    "visual_iterations": 3,
+    "image_reviews": 5
+  },
+  "dsl_versions": 5,
+  "final_pngs": 1,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 5,
+  "tool_usage_file": "tmp\\20261003-114508-flashmax\\A10\\tool-usage.jsonl",
+  "outputs": [
+    "compositing-lab.png",
+    "compositing-lab.snapshot",
+    "composite-audit.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A10",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A10",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "先做 900×480 语义探针再排版：ClipRRect 能限定 BackdropFilter，ImageFiltered 只糊子树，MULTIPLY 停在子树绘制边界内并给透明间隙着色。",
+    "① 实测重叠点 (127, 63, 191) 与 128/255 精确模型完全一致；② 组 Opacity 实测 (126, 126, 255)，比理想 127.5 低 1–2 个色阶（离屏图层 8bit 量化，原因为推测）。",
+    "8 次渲染请求里 3 次失败：1 次真实 400 PARSE_ERROR（探针嵌套 Positioned），2 次是生成脚本断言中止导致 curl 打不开 DSL，未到达服务。",
+    "六格全部通过像素级判定：③卡内锐利跳变 0.06% / 卡外 6.06%；④文字 p99 梯度 9.0 vs ③ 214.3；⑤ 区外滤色像素 0；⑥ 圆外滤色像素 0（最大滤色半径 99.57 ≤ 100）。"
+  ],
+  "final_image": {
+    "file": "compositing-lab.png",
+    "width": 1440,
+    "height": 1100,
+    "format": "PNG",
+    "sha256": "242dbe329b89e7960091ebf3ae7e1bc85ba4fe42ed2e19abb1990370aeb6dfca",
+    "viewed": true
+  },
+  "image_views": {
+    "total": 7,
+    "read_image_calls": [
+      "probe-a10.png",
+      "compositing-lab.v1.png",
+      "crop-v2-p3.png",
+      "crop-v2-p4.png",
+      "crop-v3-p4.png",
+      "compositing-lab.v3.png",
+      "compositing-lab.v4.png"
+    ]
+  },
+  "measurements": {
+    "P1_overlap_measured": [
+      127,
+      63,
+      191
+    ],
+    "P2_overlap_measured": [
+      126,
+      126,
+      255
+    ],
+    "P1_equals_expected": true,
+    "P2_within_2_levels_of_ideal": true,
+    "P3_background_blurred_text_sharp": true,
+    "P4_text_blurred_stripes_sharp": true,
+    "P5_tint_confined": true,
+    "P6_clipped": true
+  },
+  "requirements_checked": {
+    "canvas_1440x1100": true,
+    "title_text_present": true,
+    "six_areas_320x240_white": true,
+    "three_cols_two_rows_gap_48": true,
+    "numbers_and_captions_outside_areas": true,
+    "panel_1_two_rects_own_alpha": true,
+    "panel_2_opaque_rects_in_opacity_group": true,
+    "sample_point_180_100_sampled": true,
+    "panel_3_backdrop_blur_only": true,
+    "panel_4_subtree_blur": true,
+    "panel_5_multiply_then_blur_with_gap_dark_shadow": true,
+    "panel_6_round_clip_of_panel_5": true,
+    "sigma_6_everywhere": true,
+    "card_240x160_radius20_text24": true,
+    "stripes_cross_card_edge_outside_sharp": true,
+    "descriptions_at_least_20px": true,
+    "composite_audit_expected_and_measured": true,
+    "explicit_visual_judgements_3_to_6": true
+  }
+}

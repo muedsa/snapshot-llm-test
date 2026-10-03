@@ -1,0 +1,110 @@
+错误处理与扩展
+文本与空白规则
+ Section titled “文本与空白规则”
+<Text> 中的普通文本会 trim；<Raw> 原样保留；
+非文本标签内只能出现缩进、换行等纯空白；
+& 不会进行 HTML 实体解码；&amp; 会保留为字面量；
+文本中需要 < 或 > 时使用 CDATA；
+支持 <!-- ... --> 注释（包括 <!----> 空注释）；可放在根标签前后、标签之间或文本中，内容不会进入元素树或文本；
+CDATA 内的 <!-- ... --> 是普通文本；<!DOCTYPE ...> 仍不支持；
+标签可以在 EOF 时自动闭合，但不建议依赖此行为；
+不匹配的结束标签可能被忽略，因此应在输入前做格式校验或依赖测试覆盖。
+ &#x3C;Text fontSize="20">
+ &#x3C;Raw>&#x3C;![CDATA[保留空白与 &#x3C;tag> 字符]]>&#x3C;/Raw>
+&#x3C;/Text>
+ 字符]]>">
+ParseException
+ Section titled “ParseException”
+结构和属性解析错误统一包装为 ParseException，包含行、列和字符偏移，cause 保留底层异常。典型字符串类似：
+Pos[3:18]~72: Attr [color] unsupported CSS color [not-a-color]
+解析阶段错误
+ Section titled “解析阶段错误”
+条件 | 典型错误 | 
+首标签不是 Snapshot | First tag must be 'Snapshot' | 
+输入为空或全是空白 | Document must contain root element [Snapshot] | 
+第二次出现 Snapshot | Tag 'Snapshot' only be used as the first | 
+未知标签 | Unknown element tag | 
+重复属性 | exist duplicate attr | 
+叶子标签出现子节点 | can not have child element | 
+单子节点标签出现第二个子节点 | only can have one child | 
+普通容器内出现文本 | Not Support RAWTEXT | 
+注释直到 EOF 仍未遇到 --> | Unexpectedly reached end of file (EOF) in input state [COMMENT] | 
+<!DOCTYPE ...> 等不支持的标记声明 | Unexpected character '<' in input state [MARKUP_DECLARATION_OPEN] | 
+构建 Widget 阶段错误
+ Section titled “构建 Widget 阶段错误”
+条件 | 表现 | 
+Image / Emoji 未指定来源或同时指定两种来源 | 必须且只能设置 url 或 dataUri | 
+Data URI 格式或图片数据错误 | 指向 dataUri 属性值 | 
+颜色或 Insets 格式错误 | 对应 AttrDefine 的格式异常；颜色支持的写法见标签与属性参考 | 
+枚举名无效 | IllegalArgumentException 被包装 | 
+Text 中出现非行内标签 | Unknown inline span type | 
+Raw / Emoji / WidgetSpan 用在 Text 外 | can only be used in the Text | 
+WidgetSpan 缺少子标签 | must have exactly one child element | 
+Expanded / Flexible / Spacer 不在 Flex、Row 或 Column 直属层级 | must be a direct child of Flex, Row or Column | 
+Expanded 使用 fit 属性 | does not support attr [fit] | 
+Opacity 超出 0 到 1 | 参数范围异常 | 
+Transform 缺少矩阵或矩阵格式错误 | Attr [matrix] 对应格式异常 | 
+约束的最小值大于最大值 | BoxConstraints 参数异常 | 
+装饰线修饰参数缺少 decoration | Attr [decoration] is required | 
+前景画笔修饰参数缺少 foregroundColor | Attr [foregroundColor] is required | 
+fontFeatures、textShadow 或 strut* 格式错误 | 对应属性名及属性值起始位置 | 
+根标签 Snapshot 的属性在 parse() 时校验；其余标签属性在建树阶段校验。属性错误通常指向属性值的起始位置；缺少必填属性时指向标签起始位置。
+渲染阶段错误
+ Section titled “渲染阶段错误”
+渲染错误不一定是 ParseException：
+条件 | 异常 | 
+Snapshot 没有根 Widget | IllegalStateException | 
+根布局尺寸为 0 | IllegalArgumentException: layout size is empty | 
+根布局尺寸无限 | IllegalArgumentException: layout size is infinite | 
+图片重复平铺预计超过 ImageRepeatConfig.maxTileCount | IllegalArgumentException；默认上限为 100,000 个矩形 | 
+HTTP 服务错误映射
+ Section titled “HTTP 服务错误映射”
+建议将错误分层映射：
+try {
+ val element = Parser().parse(StringReader(body))
+ val contentType = when (element.type) {
+ "png" -> ContentType.Image.PNG
+ "jpg" -> ContentType.Image.JPEG
+ "webp" -> ContentType.parse("image/webp")
+ else -> error("Unsupported image type")
+ }
+ call.respondBytes(element.snapshot(), contentType)
+} catch (e: ParseException) {
+ call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid document")
+} catch (e: IllegalArgumentException) {
+ call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: "Invalid layout")
+} catch (e: IllegalStateException) {
+ call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: "Invalid widget tree")
+}
+ ContentType.Image.PNG &#x22;jpg&#x22; -> ContentType.Image.JPEG &#x22;webp&#x22; -> ContentType.parse(&#x22;image/webp&#x22;) else -> error(&#x22;Unsupported image type&#x22;) } call.respondBytes(element.snapshot(), contentType)} catch (e: ParseException) { call.respond(HttpStatusCode.BadRequest, e.message ?: &#x22;Invalid document&#x22;)} catch (e: IllegalArgumentException) { call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: &#x22;Invalid layout&#x22;)} catch (e: IllegalStateException) { call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: &#x22;Invalid widget tree&#x22;)}">
+根标签的 type 决定实际编码格式；不要把所有响应都标记为 image/png。
+ 异常映射不能替代安全限制
+对公网服务还必须增加请求体上限、标签深度限制、URL 与解析后 IP 校验、网络超时、图片大小限制、总体渲染超时及并发限制。网络图片应使用自行实现的安全 NetworkImageCache，不要直接依赖默认实现。
+Parser 实例生命周期
+ Section titled “Parser 实例生命周期”
+ Parser 实例可以复用
+Parser.parse() 会先清空元素栈和根元素并创建新的 Tokenizer，因此同一实例可以重复解析多个文档；一次调用抛出异常也不会污染下一次调用。
+例如：
+val parser = Parser()
+fun render(source: String): ByteArray =
+ parser.parse(StringReader(source)).snapshot()
+parse() 使用 @Synchronized，所以共享实例是串行入口。同一个 Parser 可安全接收并发调用，但这些调用不会并行执行。高并发服务应使用多个实例或实例池；复用期间不要并发修改 WidgetParserManager。
+自定义标签
+ Section titled “自定义标签”
+WidgetParserManager.withDefaults() 每次返回独立的默认注册表；也可通过 copy() 复制已有配置。不要使用已弃用的全局 DEFAULT_MANAGER：
+val manager = WidgetParserManager.withDefaults().also { it.register(MyCardParser()) }
+class MyParser : Parser(manager)
+一个标签解析器需要声明标签名、容器模式和 Widget 构建逻辑：
+class MyCardParser : WidgetParser {
+ override val id: String = "MyCard"
+ override val containerMode = ContainerMode.SINGLE
+ override fun buildWidget(element: Element): Widget {
+ return Container(
+ width = 320f,
+ padding = EdgeInsets.all(16f),
+ ).also { WidgetParser.createWidgetForChildElement(it, element.children) }
+ }
+}
+ContainerMode.NONE 禁止子节点，SINGLE 最多一个，MULTIPLE 允许多个。属性应通过 AttrDefine 和 WidgetParser.parseAttrValue 解析，以保留位置跟踪和统一异常格式。
+新增普通 Widget 标签只需注册 Parser；新增 Text 内的行内 Span 类型还需要扩展 Element.parseInlineSpan() 的分支。
+ 上一页标签与属性参考 下一页DSL 语言服务

@@ -1,0 +1,132 @@
+def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rounds", default="1,2,3",
+                    help="which rounds to author; each round is archived before the next")
+    args = ap.parse_args()
+    want = [int(x) for x in args.rounds.split(",") if x.strip()]
+    os.makedirs(TMP, exist_ok=True)
+    plan = []
+    for rnd in want:
+        sub = os.path.join(OUT, f"round-{rnd:02d}")
+        os.makedirs(sub, exist_ok=True)
+        rec = {"round": rnd, "files": [], "layout": {}}
+        for name, key, fn in (("launch-portrait", "portrait", portrait),
+                              ("launch-wide", "wide", wide)):
+            d, measured, bg, geom = fn(rnd)
+            dsl = d.finish()
+            dsl_path = os.path.join(sub, f"{name}.snapshot")
+            with open(dsl_path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(dsl)
+            with open(os.path.join(TMP, f"{name}.r{rnd}.snapshot"), "w",
+                      encoding="utf-8", newline="\n") as fh:
+                fh.write(dsl)
+            rec["files"].append(os.path.relpath(dsl_path, ROOT).replace("\\", "/"))
+            rec["layout"][key] = dict(card=geom["card"], texts=measured, bg_stack=bg)
+        plan.append(rec)
+
+    # ---- tokens
+    for rnd in want:
+        tok = dict(LIGHT_TOKENS if rnd == 3 else DARK_TOKENS)
+        tok = json.loads(json.dumps(tok))
+        tok["task"] = "A21"
+        tok["round"] = rnd
+        tok["brand"] = {"name": BRAND, "product": "叠光 Layerlight",
+                        "primary_accent": tok["color"]["accent"]}
+        tok["fixed_copy"] = {"eyebrow": EYEBROW, "datetime": DT, "speakers": SPEAKERS,
+                             "url": URL}
+        tok["round_notes"] = {
+            1: "dark launch theme, one-line headline",
+            2: "dark launch theme kept; headline replaced by the 3-line long title; "
+               "sponsors and entry condition added",
+            3: "light theme; identical copy and brand mark; english tagline added above "
+               "the url; all normal text >= 4.5:1 against the composited background",
+        }[rnd]
+        if rnd == 3:
+            tok["theme"] = "light"
+        else:
+            tok["theme"] = "dark"
+        with open(os.path.join(OUT, f"round-{rnd:02d}", "design-tokens.json"), "w",
+                  encoding="utf-8") as fh:
+            json.dump(tok, fh, ensure_ascii=False, indent=2)
+
+    # ---- content maps
+    for rnd in want:
+        base_content = {1: ROUND1_CONTENT, 2: ROUND2_CONTENT, 3: ROUND3_CONTENT}[rnd]
+        cm = {"task": "A21", "round": rnd, "canvas": {"portrait": [1080, 1350],
+                                                      "wide": [1440, 810]},
+              "elements": []}
+        entries = []
+        for item in base_content:
+            rows = []
+            for layout in ("portrait", "wide"):
+                rec = next(r for r in plan if r["round"] == rnd)
+                found = [m for m in rec["layout"][layout]["texts"] if m["text"] == item["text"]]
+                for f in found:
+                    rows.append(dict(layout=layout, x=None, y=f["y"], size=f["size"],
+                                     color=f["color"]))
+            entries.append(dict(id=item["id"], text=item["text"], role=item["role"],
+                                placements=rows))
+        cm["elements"] = entries
+        cm["brand_mark"] = {
+            "name": "layerlight-mark",
+            "components": 5,
+            "parts": ["rounded container", "light bar A", "light bar B", "light bar C",
+                      "baseline rail"],
+            "geometry_ratio": DARK_TOKENS["brand_mark"]["bar_geometry_ratio"],
+            "changed_between_rounds": "colour only (round 3 light theme); geometry fixed"}
+        cm["fixed_across_rounds"] = ["datetime", "speakers", "eyebrow", "url", "brand_mark"]
+        cm["round_deltas"] = {
+            1: ["initial launch poster"],
+            2: ["title -> 3-line long title (>=48px, <=3 lines)",
+                "added sponsors: " + SPONSORS, "added entry condition: " + CTA],
+            3: ["dark -> light theme", "added english tagline: " + ENGLISH,
+                "all normal text re-checked against the composited background"],
+        }[rnd]
+        cm["expansion_bands"] = {"portrait": {"top": [0, 0, 1080, 96],
+                                              "bottom": [0, 1254, 1080, 96]},
+                                 "wide": {"top": [0, 0, 1440, 96],
+                                          "bottom": [0, 714, 1440, 96]},
+                                 "note": "kept free of copy in every round"}
+        cm["requirement_visibility"] = (
+            "rounds/round-02.md and rounds/round-03.md are preloaded and readable from "
+            "the start; execution was sequential (round 1 archived before round 2 was "
+            "applied), not blind feedback.")
+        with open(os.path.join(OUT, f"round-{rnd:02d}", "content-map.json"), "w",
+                  encoding="utf-8") as fh:
+            json.dump(cm, fh, ensure_ascii=False, indent=2)
+
+    # ---- round 3 contrast audit (>=6 body-contrast pairs per image)
+    if 3 in want:
+        audit = {"task": "A21", "round": 3, "standard": "WCAG 2.x contrast ratio",
+                 "threshold": 4.5,
+                 "method": "each text colour composited over the real background stack "
+                           "of its own region (page -> soft glow -> white card)",
+                 "images": {}}
+        for name, fn in (("launch-portrait", portrait), ("launch-wide", wide)):
+            d, measured, bg, geom = fn(3)
+            stack = [LIGHT["page"], LIGHT["card"]]
+            items = []
+            for m in measured:
+                over = m.get("over", stack[-1])
+                base = composite(over, stack[-1])
+                bg_hex = "#%02X%02X%02X" % (round(base[0]), round(base[1]), round(base[2]))
+                items.append(dict(text=m["text"], size=m["size"], color=m["color"],
+                                  background=bg_hex,
+                                  role="body" if m["size"] < 48 else "display",
+                                  contrast_ratio=round(contrast(m["color"], bg_hex), 2),
+                                  passes=round(contrast(m["color"], bg_hex), 2) >= 4.5))
+            audit["images"][name] = dict(
+                size=[d.w, d.h], background_stack=stack, pairs=items,
+                pairs_checked=len(items),
+                body_pairs_checked=sum(1 for i in items if i["role"] == "body"),
+                all_pass=all(i["passes"] for i in items))
+        with open(os.path.join(OUT, "round-03", "contrast-audit.json"), "w",
+                  encoding="utf-8") as fh:
+            json.dump(audit, fh, ensure_ascii=False, indent=2)
+
+    print(json.dumps({"ok": True, "plan": [r["files"] for r in plan]}, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()

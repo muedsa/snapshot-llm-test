@@ -1,0 +1,207 @@
+{
+  "schema": "a04-analysis/1",
+  "generated_at": "2026-10-03T12:10:29.882003+08:00",
+  "timezone": "+08:00",
+  "source_file": "tasks/A04-conversion-paradox/inputs/conversion.csv",
+  "row_definition": "每行 = 某期某渠道的访问数（visits）与成交数（conversions）",
+  "units": {
+    "visits": "次",
+    "conversions": "次",
+    "rate": "%"
+  },
+  "exact_fractions": {
+    "前期|直接访问": "2400/8000",
+    "前期|推广访问": "200/2000",
+    "后期|直接访问": "700/2000",
+    "后期|推广访问": "960/8000"
+  },
+  "channel_cells": {
+    "前期|直接访问": {
+      "period": "前期",
+      "channel": "直接访问",
+      "visits": 8000,
+      "conversions": 2400,
+      "rate": 0.3,
+      "rate_pct": 30.0,
+      "fraction": "2400/8000"
+    },
+    "前期|推广访问": {
+      "period": "前期",
+      "channel": "推广访问",
+      "visits": 2000,
+      "conversions": 200,
+      "rate": 0.1,
+      "rate_pct": 10.0,
+      "fraction": "200/2000"
+    },
+    "后期|直接访问": {
+      "period": "后期",
+      "channel": "直接访问",
+      "visits": 2000,
+      "conversions": 700,
+      "rate": 0.35,
+      "rate_pct": 35.0,
+      "fraction": "700/2000"
+    },
+    "后期|推广访问": {
+      "period": "后期",
+      "channel": "推广访问",
+      "visits": 8000,
+      "conversions": 960,
+      "rate": 0.12,
+      "rate_pct": 12.0,
+      "fraction": "960/8000"
+    }
+  },
+  "period_totals": {
+    "前期": {
+      "visits": 10000,
+      "conversions": 2600,
+      "rate": 0.26,
+      "rate_pct": 26.0,
+      "fraction": "2600/10000",
+      "mix": {
+        "直接访问": 0.8,
+        "推广访问": 0.2
+      },
+      "mix_pct": {
+        "直接访问": 80.0,
+        "推广访问": 20.0
+      }
+    },
+    "后期": {
+      "visits": 10000,
+      "conversions": 1660,
+      "rate": 0.166,
+      "rate_pct": 16.6,
+      "fraction": "1660/10000",
+      "mix": {
+        "直接访问": 0.2,
+        "推广访问": 0.8
+      },
+      "mix_pct": {
+        "直接访问": 20.0,
+        "推广访问": 80.0
+      }
+    }
+  },
+  "naive_channel_average_pct": {
+    "前期": 20.0,
+    "后期": 23.5
+  },
+  "naive_average_note": "两期都列出渠道比例的算术平均值，仅用于对照；本图所有总体值都用总成交数 ÷ 总访问数，不使用该平均值。",
+  "weighted_formula": {
+    "period_overall": "总体转化率 = 该期成交数之和 ÷ 该期访问数之和",
+    "as_weighted_mix": "总体转化率 = Σ(渠道访问份额 × 渠道转化率)",
+    "workings": {
+      "前期": "80.0% × 30.0% + 20.0% × 10.0% = 26.0%",
+      "后期": "20.0% × 35.0% + 80.0% × 12.0% = 16.6%"
+    },
+    "weighted_recomputed_pct": {
+      "前期": 26.0,
+      "后期": 16.6
+    },
+    "must_not": [
+      "不得平均两个渠道的转化率（会得到 20.00% / 23.50%，与真实总体 26.00% / 16.60% 都不符）",
+      "不得把同期不同渠道的绝对成交数（2400 与 200）当成转化率"
+    ]
+  },
+  "displayed_percentages": {
+    "channel_rates_pct": {
+      "前期|直接访问": 30.0,
+      "前期|推广访问": 10.0,
+      "后期|直接访问": 35.0,
+      "后期|推广访问": 12.0
+    },
+    "overall_rates_pct": {
+      "前期": 26.0,
+      "后期": 16.6
+    },
+    "visits_mix_pct": {
+      "前期": {
+        "直接访问": 80.0,
+        "推广访问": 20.0
+      },
+      "后期": {
+        "直接访问": 20.0,
+        "推广访问": 80.0
+      }
+    },
+    "decimals": 2
+  },
+  "decomposition": {
+    "formula": "Δ总体率 = Σ(份额变化 × 前期渠道率) + Σ(前期份额 × 渠道率变化) + 交互项",
+    "mix_effect_pp": -12.0,
+    "rate_effect_pp": 4.4,
+    "interaction_pp": -1.8,
+    "total_change_pp": -9.4,
+    "check_sum_pp": -9.4,
+    "per_channel": [
+      {
+        "channel": "直接访问",
+        "mix_component": -18.0,
+        "rate_component": 4.0,
+        "interaction_component": -3.0
+      },
+      {
+        "channel": "推广访问",
+        "mix_component": 6.0,
+        "rate_component": 0.4,
+        "interaction_component": 1.2
+      }
+    ],
+    "reading": "份额结构变化贡献 -12.00pp，渠道自身转化率变化贡献 +4.40pp，交互项 -1.80pp；合计 -9.40pp。"
+  },
+  "conclusion": {
+    "statement": "两个渠道的转化率都上升（直接 30.00%→35.00%、推广 10.00%→12.00%），总体转化率却从 26.00% 降到 16.60%（-9.40pp）：因为访问构成从「直接 80% / 推广 20%」翻转为「直接 20% / 推广 80%」，高转化渠道的占比大幅下降。",
+    "evidence": {
+      "direct_rate_change_pp": 5.0,
+      "promo_rate_change_pp": 2.0,
+      "overall_change_pp": -9.4,
+      "direct_share_change_pp": -60.0,
+      "mix_effect_pp": -12.0,
+      "rate_effect_pp": 4.4,
+      "total_visits_each_period": {
+        "前期": 10000,
+        "后期": 10000
+      },
+      "total_conversions_each_period": {
+        "前期": 2600,
+        "后期": 1660
+      }
+    }
+  },
+  "causal_limits": {
+    "statement": "该数据不能证明因果关系。",
+    "points": [
+      "这是两个期的汇总计数，没有随机分组、没有对照，也没有时间趋势控制；渠道份额变化可能同时受投放预算、季节、活动排期等多个未观测因素影响。",
+      "「直接访问」与「推广访问」的人群本身不同（主动回访 vs 被投放触达），期与期之间的人群构成也可能变化，转化率差异不能只归因于渠道质量。",
+      "样本只有两期各 10,000 次访问、四个格子，无法估计置信区间或做显著性检验；-9.40pp 的总体变化里，结构效应占 -12.00pp，渠道效应占 +4.40pp，剩余为交互项。",
+      "图上所有数值都是描述性统计，不能读成「推广渠道变差了」或「直接访问变好了」的原因。"
+    ]
+  },
+  "chart_specs": {
+    "channel_rate_chart": {
+      "axis_pct": [
+        0,
+        40
+      ],
+      "tick_step_pct": 5,
+      "note": "两期同尺度 0—40%，四条柱共用同一零起点"
+    },
+    "mix_stacked_chart": {
+      "band_width": 240,
+      "note": "每期等长（=100% 访问），分段宽度按真实份额"
+    },
+    "overall_chart": {
+      "axis_pct": [
+        0,
+        40
+      ],
+      "note": "与渠道率图同一 0—40% 尺度，可直接比较高度"
+    },
+    "audit_table": {
+      "note": "列出四个格子的分子分母与百分比，可逐个核对"
+    }
+  }
+}

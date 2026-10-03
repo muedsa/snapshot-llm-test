@@ -1,0 +1,2380 @@
+{
+  "task": "A09",
+  "image": "transform-atlas.png",
+  "canvas": [
+    1600,
+    1200
+  ],
+  "grid": {
+    "cols": 4,
+    "rows": 3,
+    "cell": [
+      300,
+      250
+    ],
+    "gap": 32,
+    "origin": [
+      152,
+      193
+    ]
+  },
+  "stamp": {
+    "size": [
+      120,
+      120
+    ],
+    "pivot": [
+      60,
+      60
+    ],
+    "rectangles": [
+      {
+        "xywh": [
+          8,
+          8,
+          28,
+          92
+        ],
+        "color": "#E54B4B"
+      },
+      {
+        "xywh": [
+          36,
+          72,
+          68,
+          28
+        ],
+        "color": "#2364DB"
+      },
+      {
+        "xywh": [
+          64,
+          8,
+          40,
+          28
+        ],
+        "color": "#EAB53B"
+      }
+    ],
+    "dot": {
+      "center": [
+        91,
+        49
+      ],
+      "radius": 8,
+      "color": "#111111"
+    }
+  },
+  "matrix_convention": {
+    "order": "column-major",
+    "flat_order": "(a,b,0,0,c,d,0,0,0,0,1,0,tx,ty,0,1)",
+    "meaning": "local x 轴映射到画布向量 (a,b)，local y 轴映射到 (c,d)，平移为 (tx,ty)；画布点 = A·u + t，A = [[a, c], [b, d]]",
+    "composition": "操作按 transforms.json 列表顺序依次作用，每步围绕本地枢轴 (60,60)：A = A_n·…·A_1，t = 格中心 − A·(60,60)。枢轴因此是复合变换的不动点，必然落在格的几何中心 (ox+150, oy+125)。",
+    "operation_semantics": {
+      "rotate_clockwise_deg": "A = [[cos t, -sin t], [sin t, cos t]]，t 为角度；像素 y 向下，因此这是图像方向的顺时针",
+      "mirror_horizontal": "A = [[-1, 0], [0, 1]]，关于过枢轴的竖轴左右镜像",
+      "mirror_vertical": "A = [[1, 0], [0, -1]]，关于过枢轴的横轴上下镜像",
+      "scale_uniform": "A = s·I",
+      "scale_xy": "A = diag(sx, sy)"
+    },
+    "shape_source": "四枚图元的宽高与本地坐标逐字取自 inputs/stamp.json，未在任何地方按最终位置手改形状坐标；一个 Transform 承载整格复合矩阵。"
+  },
+  "cells": [
+    {
+      "id": "T01",
+      "index": 0,
+      "col": 0,
+      "row": 0,
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          0
+        ]
+      ],
+      "short_name": "rot 0°",
+      "cell_origin": [
+        152,
+        193
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        302.0,
+        318.0
+      ],
+      "matrix_column_major_16": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        242.0,
+        258.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        242.0,
+        258.0
+      ],
+      "pivot_canvas": [
+        302.0,
+        318.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": 1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              250.0,
+              266.0
+            ],
+            [
+              278.0,
+              266.0
+            ],
+            [
+              278.0,
+              358.0
+            ],
+            [
+              250.0,
+              358.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              278.0,
+              330.0
+            ],
+            [
+              346.0,
+              330.0
+            ],
+            [
+              346.0,
+              358.0
+            ],
+            [
+              278.0,
+              358.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              306.0,
+              266.0
+            ],
+            [
+              346.0,
+              266.0
+            ],
+            [
+              346.0,
+              294.0
+            ],
+            [
+              306.0,
+              294.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          333.0,
+          307.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        250.0,
+        266.0,
+        346.0,
+        358.0
+      ],
+      "transformed_bbox_size": [
+        96.0,
+        92.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 19,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.102
+      }
+    },
+    {
+      "id": "T02",
+      "index": 1,
+      "col": 1,
+      "row": 0,
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "short_name": "rot 90°",
+      "cell_origin": [
+        484,
+        193
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        634.0,
+        318.0
+      ],
+      "matrix_column_major_16": [
+        6.123233995736766e-17,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        694.0,
+        258.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          6.123233995736766e-17,
+          -1.0
+        ],
+        [
+          1.0,
+          6.123233995736766e-17
+        ]
+      ],
+      "translation": [
+        694.0,
+        258.0
+      ],
+      "pivot_canvas": [
+        634.0,
+        318.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": 1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              686.0,
+              266.0
+            ],
+            [
+              686.0,
+              294.0
+            ],
+            [
+              594.0,
+              294.0
+            ],
+            [
+              594.0,
+              266.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              622.0,
+              294.0
+            ],
+            [
+              622.0,
+              362.0
+            ],
+            [
+              594.0,
+              362.0
+            ],
+            [
+              594.0,
+              294.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              686.0,
+              322.0
+            ],
+            [
+              686.0,
+              362.0
+            ],
+            [
+              658.0,
+              362.0
+            ],
+            [
+              658.0,
+              322.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          645.0,
+          349.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        594.0,
+        266.0,
+        686.0,
+        362.0
+      ],
+      "transformed_bbox_size": [
+        92.0,
+        96.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 18,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.105
+      }
+    },
+    {
+      "id": "T03",
+      "index": 2,
+      "col": 2,
+      "row": 0,
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          180
+        ]
+      ],
+      "short_name": "rot 180°",
+      "cell_origin": [
+        816,
+        193
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        966.0,
+        318.0
+      ],
+      "matrix_column_major_16": [
+        -1.0,
+        1.2246467991473532e-16,
+        0.0,
+        0.0,
+        -1.2246467991473532e-16,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1026.0,
+        378.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          -1.0,
+          -1.2246467991473532e-16
+        ],
+        [
+          1.2246467991473532e-16,
+          -1.0
+        ]
+      ],
+      "translation": [
+        1026.0,
+        378.0
+      ],
+      "pivot_canvas": [
+        966.0,
+        318.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": 1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              1018.0,
+              370.0
+            ],
+            [
+              990.0,
+              370.0
+            ],
+            [
+              990.0,
+              278.0
+            ],
+            [
+              1018.0,
+              278.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              990.0,
+              306.0
+            ],
+            [
+              922.0,
+              306.0
+            ],
+            [
+              922.0,
+              278.0
+            ],
+            [
+              990.0,
+              278.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              962.0,
+              370.0
+            ],
+            [
+              922.0,
+              370.0
+            ],
+            [
+              922.0,
+              342.0
+            ],
+            [
+              962.0,
+              342.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          935.0,
+          329.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        922.0,
+        278.0,
+        1018.0,
+        370.0
+      ],
+      "transformed_bbox_size": [
+        96.0,
+        92.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 18,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.09
+      }
+    },
+    {
+      "id": "T04",
+      "index": 3,
+      "col": 3,
+      "row": 0,
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          270
+        ]
+      ],
+      "short_name": "rot 270°",
+      "cell_origin": [
+        1148,
+        193
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        1298.0,
+        318.0
+      ],
+      "matrix_column_major_16": [
+        -1.8369701987210297e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        -1.8369701987210297e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1238.0,
+        378.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          -1.8369701987210297e-16,
+          1.0
+        ],
+        [
+          -1.0,
+          -1.8369701987210297e-16
+        ]
+      ],
+      "translation": [
+        1238.0,
+        378.0
+      ],
+      "pivot_canvas": [
+        1298.0,
+        318.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": 1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              370.0
+            ],
+            [
+              1246.0,
+              342.0
+            ],
+            [
+              1338.0,
+              342.0
+            ],
+            [
+              1338.0,
+              370.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              1310.0,
+              342.0
+            ],
+            [
+              1310.0,
+              274.0
+            ],
+            [
+              1338.0,
+              274.0
+            ],
+            [
+              1338.0,
+              342.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              314.0
+            ],
+            [
+              1246.0,
+              274.0
+            ],
+            [
+              1274.0,
+              274.0
+            ],
+            [
+              1274.0,
+              314.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          1287.0,
+          287.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        1246.0,
+        274.0,
+        1338.0,
+        370.0
+      ],
+      "transformed_bbox_size": [
+        92.0,
+        96.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 17,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.109
+      }
+    },
+    {
+      "id": "T05",
+      "index": 4,
+      "col": 0,
+      "row": 1,
+      "operations": [
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "short_name": "mirror H",
+      "cell_origin": [
+        152,
+        475
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        302.0,
+        600.0
+      ],
+      "matrix_column_major_16": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        362.0,
+        540.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        362.0,
+        540.0
+      ],
+      "pivot_canvas": [
+        302.0,
+        600.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": -1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              354.0,
+              548.0
+            ],
+            [
+              326.0,
+              548.0
+            ],
+            [
+              326.0,
+              640.0
+            ],
+            [
+              354.0,
+              640.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              326.0,
+              612.0
+            ],
+            [
+              258.0,
+              612.0
+            ],
+            [
+              258.0,
+              640.0
+            ],
+            [
+              326.0,
+              640.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              298.0,
+              548.0
+            ],
+            [
+              258.0,
+              548.0
+            ],
+            [
+              258.0,
+              576.0
+            ],
+            [
+              298.0,
+              576.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          271.0,
+          589.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        258.0,
+        548.0,
+        354.0,
+        640.0
+      ],
+      "transformed_bbox_size": [
+        96.0,
+        92.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 19,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.093
+      }
+    },
+    {
+      "id": "T06",
+      "index": 5,
+      "col": 1,
+      "row": 1,
+      "operations": [
+        [
+          "mirror_vertical",
+          true
+        ]
+      ],
+      "short_name": "mirror V",
+      "cell_origin": [
+        484,
+        475
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        634.0,
+        600.0
+      ],
+      "matrix_column_major_16": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        574.0,
+        660.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0
+        ]
+      ],
+      "translation": [
+        574.0,
+        660.0
+      ],
+      "pivot_canvas": [
+        634.0,
+        600.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": -1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              582.0,
+              652.0
+            ],
+            [
+              610.0,
+              652.0
+            ],
+            [
+              610.0,
+              560.0
+            ],
+            [
+              582.0,
+              560.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              610.0,
+              588.0
+            ],
+            [
+              678.0,
+              588.0
+            ],
+            [
+              678.0,
+              560.0
+            ],
+            [
+              610.0,
+              560.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              638.0,
+              652.0
+            ],
+            [
+              678.0,
+              652.0
+            ],
+            [
+              678.0,
+              624.0
+            ],
+            [
+              638.0,
+              624.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          665.0,
+          611.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        582.0,
+        560.0,
+        678.0,
+        652.0
+      ],
+      "transformed_bbox_size": [
+        96.0,
+        92.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 20,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.097
+      }
+    },
+    {
+      "id": "T07",
+      "index": 6,
+      "col": 2,
+      "row": 1,
+      "operations": [
+        [
+          "mirror_horizontal",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "short_name": "mirrorH→rot90",
+      "cell_origin": [
+        816,
+        475
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        966.0,
+        600.0
+      ],
+      "matrix_column_major_16": [
+        -6.123233995736766e-17,
+        -1.0,
+        0.0,
+        0.0,
+        -1.0,
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1026.0,
+        660.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          -6.123233995736766e-17,
+          -1.0
+        ],
+        [
+          -1.0,
+          6.123233995736766e-17
+        ]
+      ],
+      "translation": [
+        1026.0,
+        660.0
+      ],
+      "pivot_canvas": [
+        966.0,
+        600.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": -1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              1018.0,
+              652.0
+            ],
+            [
+              1018.0,
+              624.0
+            ],
+            [
+              926.0,
+              624.0
+            ],
+            [
+              926.0,
+              652.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              954.0,
+              624.0
+            ],
+            [
+              954.0,
+              556.0
+            ],
+            [
+              926.0,
+              556.0
+            ],
+            [
+              926.0,
+              624.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              1018.0,
+              596.0
+            ],
+            [
+              1018.0,
+              556.0
+            ],
+            [
+              990.0,
+              556.0
+            ],
+            [
+              990.0,
+              596.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          977.0,
+          569.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        926.0,
+        556.0,
+        1018.0,
+        652.0
+      ],
+      "transformed_bbox_size": [
+        92.0,
+        96.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 17,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.107
+      }
+    },
+    {
+      "id": "T08",
+      "index": 7,
+      "col": 3,
+      "row": 1,
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ],
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "short_name": "rot90→mirrorH",
+      "cell_origin": [
+        1148,
+        475
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        1298.0,
+        600.0
+      ],
+      "matrix_column_major_16": [
+        -6.123233995736766e-17,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1238.0,
+        540.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          -6.123233995736766e-17,
+          1.0
+        ],
+        [
+          1.0,
+          6.123233995736766e-17
+        ]
+      ],
+      "translation": [
+        1238.0,
+        540.0
+      ],
+      "pivot_canvas": [
+        1298.0,
+        600.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": -1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              548.0
+            ],
+            [
+              1246.0,
+              576.0
+            ],
+            [
+              1338.0,
+              576.0
+            ],
+            [
+              1338.0,
+              548.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              1310.0,
+              576.0
+            ],
+            [
+              1310.0,
+              644.0
+            ],
+            [
+              1338.0,
+              644.0
+            ],
+            [
+              1338.0,
+              576.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              604.0
+            ],
+            [
+              1246.0,
+              644.0
+            ],
+            [
+              1274.0,
+              644.0
+            ],
+            [
+              1274.0,
+              604.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          1287.0,
+          631.0
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        1246.0,
+        548.0,
+        1338.0,
+        644.0
+      ],
+      "transformed_bbox_size": [
+        92.0,
+        96.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1204,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 17,
+        "subpixel_max_delta_px": 0.266,
+        "subpixel_mean_delta_px": 0.109
+      }
+    },
+    {
+      "id": "T09",
+      "index": 8,
+      "col": 0,
+      "row": 2,
+      "operations": [
+        [
+          "scale_uniform",
+          0.75
+        ]
+      ],
+      "short_name": "scale 0.75",
+      "cell_origin": [
+        152,
+        757
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        302.0,
+        882.0
+      ],
+      "matrix_column_major_16": [
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        257.0,
+        837.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          0.75,
+          0.0
+        ],
+        [
+          0.0,
+          0.75
+        ]
+      ],
+      "translation": [
+        257.0,
+        837.0
+      ],
+      "pivot_canvas": [
+        302.0,
+        882.0
+      ],
+      "scale_xy": [
+        0.75,
+        0.75
+      ],
+      "determinant": 0.5625,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              263.0,
+              843.0
+            ],
+            [
+              284.0,
+              843.0
+            ],
+            [
+              284.0,
+              912.0
+            ],
+            [
+              263.0,
+              912.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              284.0,
+              891.0
+            ],
+            [
+              335.0,
+              891.0
+            ],
+            [
+              335.0,
+              912.0
+            ],
+            [
+              284.0,
+              912.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              305.0,
+              843.0
+            ],
+            [
+              335.0,
+              843.0
+            ],
+            [
+              335.0,
+              864.0
+            ],
+            [
+              305.0,
+              864.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          325.25,
+          873.75
+        ],
+        "ellipse_semi_axes": [
+          6.0,
+          6.0
+        ]
+      },
+      "transformed_bbox": [
+        263.0,
+        843.0,
+        335.0,
+        912.0
+      ],
+      "transformed_bbox_size": [
+        72.0,
+        69.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 902,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 17,
+        "subpixel_max_delta_px": 0.492,
+        "subpixel_mean_delta_px": 0.164
+      }
+    },
+    {
+      "id": "T10",
+      "index": 9,
+      "col": 1,
+      "row": 2,
+      "operations": [
+        [
+          "scale_xy",
+          [
+            1.25,
+            0.75
+          ]
+        ]
+      ],
+      "short_name": "scale 1.25/0.75",
+      "cell_origin": [
+        484,
+        757
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        634.0,
+        882.0
+      ],
+      "matrix_column_major_16": [
+        1.25,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        559.0,
+        837.0,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          1.25,
+          0.0
+        ],
+        [
+          0.0,
+          0.75
+        ]
+      ],
+      "translation": [
+        559.0,
+        837.0
+      ],
+      "pivot_canvas": [
+        634.0,
+        882.0
+      ],
+      "scale_xy": [
+        1.25,
+        0.75
+      ],
+      "determinant": 0.9375,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              569.0,
+              843.0
+            ],
+            [
+              604.0,
+              843.0
+            ],
+            [
+              604.0,
+              912.0
+            ],
+            [
+              569.0,
+              912.0
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              604.0,
+              891.0
+            ],
+            [
+              689.0,
+              891.0
+            ],
+            [
+              689.0,
+              912.0
+            ],
+            [
+              604.0,
+              912.0
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              639.0,
+              843.0
+            ],
+            [
+              689.0,
+              843.0
+            ],
+            [
+              689.0,
+              864.0
+            ],
+            [
+              639.0,
+              864.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          672.75,
+          873.75
+        ],
+        "ellipse_semi_axes": [
+          10.0,
+          6.0
+        ]
+      },
+      "transformed_bbox": [
+        569.0,
+        843.0,
+        689.0,
+        912.0
+      ],
+      "transformed_bbox_size": [
+        120.0,
+        69.0
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1206,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 16,
+        "subpixel_max_delta_px": 0.516,
+        "subpixel_mean_delta_px": 0.165
+      }
+    },
+    {
+      "id": "T11",
+      "index": 10,
+      "col": 2,
+      "row": 2,
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "short_name": "rot 30°",
+      "cell_origin": [
+        816,
+        757
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        966.0,
+        882.0
+      ],
+      "matrix_column_major_16": [
+        0.8660254037844387,
+        0.49999999999999994,
+        0.0,
+        0.0,
+        -0.49999999999999994,
+        0.8660254037844387,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        944.0384757729337,
+        800.0384757729337,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          0.8660254037844387,
+          -0.49999999999999994
+        ],
+        [
+          0.49999999999999994,
+          0.8660254037844387
+        ]
+      ],
+      "translation": [
+        944.0384757729337,
+        800.0384757729337
+      ],
+      "pivot_canvas": [
+        966.0,
+        882.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": 1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              946.967,
+              810.967
+            ],
+            [
+              971.215,
+              824.967
+            ],
+            [
+              925.215,
+              904.641
+            ],
+            [
+              900.967,
+              890.641
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              939.215,
+              880.392
+            ],
+            [
+              998.105,
+              914.392
+            ],
+            [
+              984.105,
+              938.641
+            ],
+            [
+              925.215,
+              904.641
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              995.464,
+              838.967
+            ],
+            [
+              1030.105,
+              858.967
+            ],
+            [
+              1016.105,
+              883.215
+            ],
+            [
+              981.464,
+              863.215
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          998.347,
+          887.974
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        900.967,
+        810.967,
+        1030.105,
+        938.641
+      ],
+      "transformed_bbox_size": [
+        129.138,
+        127.674
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1581,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 72,
+        "subpixel_max_delta_px": 0.672,
+        "subpixel_mean_delta_px": 0.196
+      }
+    },
+    {
+      "id": "T12",
+      "index": 11,
+      "col": 3,
+      "row": 2,
+      "operations": [
+        [
+          "mirror_vertical",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "short_name": "mirrorV→rot30",
+      "cell_origin": [
+        1148,
+        757
+      ],
+      "cell_size": [
+        300,
+        250
+      ],
+      "cell_center": [
+        1298.0,
+        882.0
+      ],
+      "matrix_column_major_16": [
+        0.8660254037844387,
+        0.49999999999999994,
+        0.0,
+        0.0,
+        0.49999999999999994,
+        -0.8660254037844387,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1216.0384757729337,
+        903.9615242270663,
+        0.0,
+        1.0
+      ],
+      "matrix_2x2": [
+        [
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          0.49999999999999994,
+          -0.8660254037844387
+        ]
+      ],
+      "translation": [
+        1216.0384757729337,
+        903.9615242270663
+      ],
+      "pivot_canvas": [
+        1298.0,
+        882.0
+      ],
+      "scale_xy": [
+        1.0,
+        1.0
+      ],
+      "determinant": -1.0,
+      "rectangles": [
+        {
+          "index": 0,
+          "color": "#E54B4B",
+          "local_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "corners_canvas": [
+            [
+              1226.967,
+              901.033
+            ],
+            [
+              1251.215,
+              915.033
+            ],
+            [
+              1297.215,
+              835.359
+            ],
+            [
+              1272.967,
+              821.359
+            ]
+          ]
+        },
+        {
+          "index": 1,
+          "color": "#2364DB",
+          "local_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "corners_canvas": [
+            [
+              1283.215,
+              859.608
+            ],
+            [
+              1342.105,
+              893.608
+            ],
+            [
+              1356.105,
+              869.359
+            ],
+            [
+              1297.215,
+              835.359
+            ]
+          ]
+        },
+        {
+          "index": 2,
+          "color": "#EAB53B",
+          "local_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "corners_canvas": [
+            [
+              1275.464,
+              929.033
+            ],
+            [
+              1310.105,
+              949.033
+            ],
+            [
+              1324.105,
+              924.785
+            ],
+            [
+              1289.464,
+              904.785
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91,
+          49
+        ],
+        "local_radius": 8.0,
+        "center_canvas": [
+          1319.347,
+          907.026
+        ],
+        "ellipse_semi_axes": [
+          8.0,
+          8.0
+        ]
+      },
+      "transformed_bbox": [
+        1226.967,
+        821.359,
+        1356.105,
+        949.033
+      ],
+      "transformed_bbox_size": [
+        129.138,
+        127.674
+      ],
+      "pixel_check": {
+        "pixels_checked": 49136,
+        "antialias_band_pixels": 1583,
+        "mismatch_pixels_outside_band": 0,
+        "subpixel_edge_pairs": 70,
+        "subpixel_max_delta_px": 0.602,
+        "subpixel_mean_delta_px": 0.191
+      }
+    }
+  ],
+  "verification": {
+    "requirement": "±1.5 像素的视觉/像素核对（反走样边缘例外）",
+    "tolerance_px": 1.5,
+    "method": [
+      "1) 预测栅格：按 A、t 把 stamp 的四枚图元在 4×超采样网格上分类（叠加顺序 R1、R2、R3、圆点，后画者覆盖先画者），降采样得到每像素的预测类别（背景/红/蓝/黄/圆点）。",
+      "2) 类别一致性：预测为某图元颜色的像素必须真的是该 RGB；预测为卡片背景的像素不得出现任何图元颜色。例外只有反走样带——与预测类别边界相距 ≤1.5px 的像素（3×3 邻域内存在类别变化）。",
+      "3) 亚像素边缘：对每一对相邻的“图元像素 / 纯白卡片像素”，用两像素的颜色覆盖率反解真实边缘位置（像素中心位于 index+0.5，覆盖率线性模型 s = 0.5 + α_q），与预测模型给出的穿越位置比较，偏差必须 ≤1.5px。",
+      "核对区域：每格卡片内部 x∈[ox+2, ox+298]、y∈[oy+42, oy+208]，已避开标题、脚注、圆角与刻度。"
+    ],
+    "pixels_checked": 589632,
+    "mismatch_pixels_outside_band": 0,
+    "subpixel_edge_pairs": 320,
+    "subpixel_max_delta_px": 0.672,
+    "exceptions": "反走样边缘（预测类别边界 ±1.5px 内）不参与颜色一致性判定；纯白判定阈值为每通道 ≤6，因此 25px 淡格线/十字线不进入亚像素样本。",
+    "verdict": "pass"
+  },
+  "order_evidence_T07_T08": {
+    "claim": "两格操作顺序相反，复合矩阵不同：A(T08) = −A(T07)，因此两枚标本互为 180° 旋转",
+    "A_T07": [
+      [
+        -6.123233995736766e-17,
+        -1.0
+      ],
+      [
+        -1.0,
+        6.123233995736766e-17
+      ]
+    ],
+    "A_T08": [
+      [
+        -6.123233995736766e-17,
+        1.0
+      ],
+      [
+        1.0,
+        6.123233995736766e-17
+      ]
+    ],
+    "A_T08_plus_A_T07_is_zero": true,
+    "dot_center_T07": [
+      977.0,
+      569.0
+    ],
+    "dot_center_T08": [
+      1287.0,
+      631.0
+    ],
+    "pixel_check_both_zero_outside_band": true
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A20",
+  "title": "二十四密集点的无重叠标注",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T14:45:00+08:00",
+  "ended_at": "2026-10-03T15:35:00+08:00",
+  "wall_clock_seconds": 3000.0,
+  "requests": {
+    "requests_total": 4,
+    "render_success": 4,
+    "render_failed": 0,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 4
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 11430,
+    "first_request_at": "2026-10-03T13:31:47.2962864+08:00",
+    "last_request_at": "2026-10-03T13:33:34.7094875+08:00"
+  },
+  "iterations": {
+    "iterations_total": 0,
+    "iterations_by_type": {},
+    "visual_iterations": 0,
+    "image_reviews": 5,
+    "image_reviews_note": "read_image：annotated-map.v1.png、v2.png、final.png 各 1 次，中心密集区 3× 放大 2 次"
+  },
+  "dsl_versions": 1,
+  "final_pngs": 1,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 0,
+  "tool_usage_file": null,
+  "outputs": [
+    "annotated-map.snapshot",
+    "annotated-map.png",
+    "label-layout.json",
+    "layout-audit.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A20",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A20",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "最终图 1600x1100 由服务真实 200 响应得到（A20-REQ-0003），未后处理；同名 .snapshot 无 BOM。",
+    "锚点严格按 px = 280 + x/100*1040、py = 160 + (1-y/100)*760 映射，layout-audit.json 的 mapping_errors_over_0.01px 为空（最大误差 0）。",
+    "24 个标签全部保留、无一删除；12px 圆点在本题中不需要缩小（最近两点距离 30.86px > 2×6px），因此 dots_shrunk = 0，规则与判定一并记录。",
+    "标签盒两两间隔 >= 4px、不覆盖任何点、引导线不穿标签文本、不与其它点相碰；线线交叉 1 处（上限 3），交叉处未画连接点。",
+    "指数最高的 3 个点（M10 93 / M08 91 / M23 90）在图例与地图中同时标出。"
+  ],
+  "final_image": {
+    "file": "annotated-map.png",
+    "width": 1600,
+    "height": 1100,
+    "bytes": 177341,
+    "sha256": "f198c8ebe6c62efa74970781dc1621e604afc40ee1926af35e03eed00f2e5708",
+    "viewed": true
+  },
+  "local_zoom_review": {
+    "file": "tmp/20261003-114508-flashmax/A20/zoom-centre.final.png",
+    "region_px": [
+      620,
+      420,
+      1100,
+      760
+    ],
+    "scale": 3.0,
+    "viewed": true,
+    "conclusion": "中心密集区 6 个点（M08–M12、M18）与各自的引导线在 3× 放大下清晰可辨，无压字、无错连"
+  },
+  "layout_audit": {
+    "no_label_intersection": true,
+    "label_gap_at_least_4px": true,
+    "no_line_through_label": true,
+    "crossings_at_most_3": true,
+    "nothing_out_of_canvas": true,
+    "anchors_exactly_mapped": true,
+    "no_label_covers_a_dot": true,
+    "no_line_grazes_another_dot": true,
+    "every_far_label_has_leader": true,
+    "font_at_least_20": true
+  },
+  "counts": {
+    "points": 24,
+    "labels": 24,
+    "dots_shrunk": 0,
+    "labels_with_leader": 24
+  },
+  "crossings": [
+    [
+      "M11",
+      "M10"
+    ]
+  ],
+  "labels_needing_leader": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M08",
+    "M09",
+    "M10",
+    "M11",
+    "M12",
+    "M13",
+    "M14",
+    "M15",
+    "M16",
+    "M17",
+    "M18",
+    "M19",
+    "M20",
+    "M21",
+    "M22",
+    "M23",
+    "M24"
+  ],
+  "font_sizes": {
+    "body": 20,
+    "id": 20,
+    "small": 18,
+    "note": "标签正文与编号均为 20px，满足 >=20 的要求；轴刻度 15px 属图表刻度而非标签正文"
+  }
+}

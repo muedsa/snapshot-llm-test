@@ -1,0 +1,75 @@
+{
+  "task": "A24",
+  "resource_conflicts": [],
+  "resource_conflicts_count": 0,
+  "dependency_violations": [],
+  "dependency_violations_count": 0,
+  "team_assignment_violations": [],
+  "duration_violations": [],
+  "checks": {
+    "no_team_runs_two_tasks_at_once": true,
+    "every_dependency_finishes_before_start": true,
+    "every_task_runs_for_its_full_duration": true,
+    "no_task_removed_or_shortened": true,
+    "every_task_on_an_allowed_team": true,
+    "two_team_tasks_occupy_one_team_only": true,
+    "within_deadline": true
+  },
+  "durations": {
+    "R01": 25,
+    "R02": 20,
+    "R03": 40,
+    "R04": 60,
+    "R05": 30,
+    "R06": 45,
+    "R07": 70,
+    "R08": 65,
+    "R09": 45,
+    "R10": 35,
+    "R11": 30,
+    "R12": 20
+  },
+  "lower_bounds": {
+    "critical_path_minutes": 255,
+    "critical_path_chain": [
+      "R01",
+      "R04",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "critical_path_note": "longest dependency chain ignoring the two teams",
+    "total_work_minutes": 485,
+    "work_per_team_bound_minutes": 243,
+    "work_bound_note": "ceil(total work / 2 teams)",
+    "max_of_bounds": 255
+  },
+  "makespan_minutes": 260,
+  "buffer_minutes": 160,
+  "buffer_note": "deadline 16:00 is 420 minutes after the 09:00 start; the plan finishes at 13:20 and leaves 160 minutes",
+  "idle_summary": {
+    "design": {
+      "busy_min": 255,
+      "idle_min": 5,
+      "gaps": [
+        {
+          "from_min": 85,
+          "to_min": 90,
+          "length_min": 5
+        }
+      ]
+    },
+    "engineering": {
+      "busy_min": 230,
+      "idle_min": 5,
+      "gaps": [
+        {
+          "from_min": 200,
+          "to_min": 205,
+          "length_min": 5
+        }
+      ]
+    }
+  }
+}

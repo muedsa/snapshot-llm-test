@@ -1,0 +1,108 @@
+{
+  "schema": "problem-evidence/1",
+  "task_id": "B06",
+  "run_id": "20261003-114508-flashmax",
+  "disclosure": "Every product, brand, household, patient, council and price structure in this portfolio is invented. Nothing here is a claim about a named real product, and no field research, user interview or measurement on real equipment was carried out. Reference ranges, tax bands, WHO free-sugar guidance and the energy and water figures are published standard values; the per-problem entries below say which is which.",
+  "problems": {
+    "case-01": {
+      "problem": "Multiple prescriptions whose timing rules are printed on the boxes, not on any single sheet.",
+      "evidence_kind": "observable, from the packaging conventions a patient meets",
+      "evidence": "Every UK pharmacy label carries its own spacing and food instructions; the levothyroxine/iron/calcium interactions are standard BNF advice. The clash in this piece is produced by the data model, not asserted: the spacing check in b06_data.py finds exactly two violations in the listed schedule.",
+      "assumptions": [
+        "the patient's own schedule is invented",
+        "the practitioner's rules are the standard published ones"
+      ],
+      "change": "The redesign converts three separate rules into one 24-hour band and one table, and shows the schedule repaired rather than only criticised."
+    },
+    "case-02": {
+      "problem": "Laboratory results are reported as numbers against ranges, with no indication of direction of travel.",
+      "evidence_kind": "observable; reference ranges are published values",
+      "evidence": "The twelve analytes and their adult reference ranges are standard (for example ferritin 30-400 micrograms/L, HbA1c below 42 mmol/mol). Two result sets are used so the direction of change is real, and six of twelve values fall outside range by construction.",
+      "assumptions": [
+        "the patient and the results are invented",
+        "a single previous result is enough to show direction"
+      ],
+      "change": "Ranges become tracks with a hollow marker for the previous value, and out-of-range rows are promoted to full cards with a plain-language line."
+    },
+    "case-03": {
+      "problem": "A bill that rose by a third, with no attribution of the increase.",
+      "evidence_kind": "observable; arithmetic is exact",
+      "evidence": "The four causes are computed so that they sum exactly to the bill difference (printed as a check by b06_data.py: 34.66 = 34.66). Degree days are computed from a synthetic daily temperature series at a 15.5 C base, the standard method.",
+      "assumptions": [
+        "meter readings, tariff and temperatures are invented",
+        "heating works out at 0.68 kWh per degree day for this household"
+      ],
+      "change": "A waterfall names weather as the dominant cause instead of leaving a metre reading to be interpreted, and ranks five actions by pounds."
+    },
+    "case-04": {
+      "problem": "Deductions are listed in an order that hides their proportions.",
+      "evidence_kind": "observable; the bands and rates are the published ones",
+      "evidence": "Income tax at 20 % above a 12,570 allowance, employee NI at 8 % above the same threshold, a 5 % workplace pension and a 9 % Plan 2 student loan repayment produce 2,383.01 net from 3,250 gross; the five parts sum to gross by construction.",
+      "assumptions": [
+        "salary, tax code and loan plan are invented",
+        "Scottish rates, salary sacrifice and benefits in kind are out of scope"
+      ],
+      "change": "The split becomes a flow with percentages inside each destination and one line per deduction explaining what it buys."
+    },
+    "case-05": {
+      "problem": "Cover is sold on inclusions and argued on exclusions.",
+      "evidence_kind": "pattern from standard UK home policy wordings",
+      "evidence": "The eighteen situations are the ones that recur in published ombudsman case summaries: gradual damage, items left in view, loss away from home, security conditions, undeclared building work, outbuilding limits.",
+      "assumptions": [
+        "the policy, insurer and excess are invented",
+        "no real policy wording was reproduced"
+      ],
+      "change": "Situations are sorted by verdict, so the exclusions are as easy to scan as the inclusions, and the six common refusals are named once."
+    },
+    "case-06": {
+      "problem": "Serving sizes on packaging are smaller than what people serve themselves, so the printed percentages understate the day.",
+      "evidence_kind": "observable; the budgets are published values",
+      "evidence": "WHO free-sugar guidance is under 10 % of energy, about 30 g a day for an adult; 6 g of salt and 30 g of fibre are the standard reference values. The 45 g and 80 g portions both come from the data model, so the 36 % versus 64 % comparison is arithmetic, not rhetoric.",
+      "assumptions": [
+        "the product and its composition are invented but typical",
+        "80 g is used as 'a real bowl' from the portion sizes people report, not measured in this project"
+      ],
+      "change": "Two bowls drawn to the portion carry the argument, and the label's notch is shown on the same bar as the real bowl."
+    },
+    "case-07": {
+      "problem": "A connection's feasibility depends on station geometry that is nowhere on the ticket.",
+      "evidence_kind": "observable; walking times are typical values",
+      "evidence": "The eight legs sum to 5.0 minutes against 8.0 available, which is why the delay scenarios flip to 'miss it' at four minutes late. The arithmetic is printed by the data model rather than asserted.",
+      "assumptions": [
+        "the station, platforms and timings are invented",
+        "walking speeds are typical adult-with-bag values, not measured on site"
+      ],
+      "change": "The connection becomes a time budget with the slack shown as a block and four explicit delay outcomes."
+    },
+    "case-08": {
+      "problem": "Fare products are described individually, so the comparison that matters (your pattern against five products) is left to the passenger.",
+      "evidence_kind": "observable; the structure mirrors real urban tariffs",
+      "evidence": "A 15 x 5 grid is computed from five products, and it produces a genuine three-way split: pay-as-you-go wins 29 cells, the annual pass 28 and the 28-day pass 18. The weekly cap never wins, which the notes explain rather than hide.",
+      "assumptions": [
+        "the prices are a realistic structure, not a real operator's tariff",
+        "two journeys per travel day and no airport branch travel"
+      ],
+      "change": "The product list becomes a cost surface with the user's own pattern highlighted."
+    },
+    "case-09": {
+      "problem": "Collection rules are published by material; the decisions people face are objects.",
+      "evidence_kind": "pattern from standard UK kerbside practice",
+      "evidence": "The nine items are the recurring contaminant list in council communications (greasy card, drinking glass, blister packs, pods, batteries, aerosols, textiles, polystyrene, small electricals). The 'smaller than a fist' rule is the usual sorting-screen guidance.",
+      "assumptions": [
+        "the council and its collection days are invented",
+        "the material rules follow common practice, not one named authority"
+      ],
+      "change": "The poster is object-first: nine named items with one verdict each, a reason, and a single fallback rule."
+    },
+    "case-10": {
+      "problem": "Programmes are labelled by temperature and time, not by cost or hygiene.",
+      "evidence_kind": "observable; energy and water figures are typical published values",
+      "evidence": "Six programmes at 0.31-2.10 kWh and 38-78 litres, priced at 24.6p/kWh and 0.31p per litre plus 12p detergent, give 31.4p to 87.8p a wash; the eco 30 programme is 37 % cheaper than cotton 60. Whether 30 C is hygienic enough is stated rather than implied.",
+      "assumptions": [
+        "the machine's consumption figures are typical for a 9 kg A-rated machine",
+        "the tariff is the same invented tariff as the electricity piece"
+      ],
+      "change": "Cost per wash, cost per year and the hygiene limit sit on the same card, so the cheap choice and its limit are read together."
+    }
+  }
+}

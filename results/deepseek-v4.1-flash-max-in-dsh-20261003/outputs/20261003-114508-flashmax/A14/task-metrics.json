@@ -1,0 +1,221 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A14",
+  "title": "八组文案压力测试与批量生成",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T12:59:04+08:00",
+  "ended_at": "2026-10-03T13:05:16+08:00",
+  "wall_clock_seconds": 372.0,
+  "requests": {
+    "requests_total": 44,
+    "render_success": 43,
+    "render_failed": 1,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 44
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 75990,
+    "first_request_at": "2026-10-03T12:59:12.6868788+08:00",
+    "last_request_at": "2026-10-03T13:05:16.5153864+08:00"
+  },
+  "iterations": {
+    "iterations_total": 7,
+    "iterations_by_type": {
+      "retry": 1,
+      "baseline": 1,
+      "syntax-fix": 1,
+      "visual": 3,
+      "requirement-check": 1
+    },
+    "visual_iterations": 3,
+    "image_reviews": 23,
+    "completed_visual_iterations": 3
+  },
+  "dsl_versions": 8,
+  "final_pngs": 8,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 4,
+  "tool_usage_file": "tmp\\20261003-114508-flashmax\\A14\\tool-usage.jsonl",
+  "outputs": [
+    "card-K01.png",
+    "card-K02.png",
+    "card-K03.png",
+    "card-K04.png",
+    "card-K05.png",
+    "card-K06.png",
+    "card-K07.png",
+    "card-K08.png",
+    "card-K01.snapshot",
+    "card-K02.snapshot",
+    "card-K03.snapshot",
+    "card-K04.snapshot",
+    "card-K05.snapshot",
+    "card-K06.snapshot",
+    "card-K07.snapshot",
+    "card-K08.snapshot",
+    "batch-audit.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A14",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A14",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "渲染请求 44 次：成功 43、失败 1（1 次是有意为之的语法探针：字面量 < 触发 400 PARSE_ERROR，错误体已保留）。无 429。",
+    "看图 23 次 read_image：8 张 v6 全部逐张打开 + 8 张最终图逐张打开 + 接触表 1 次 + 早期版本 6 次。",
+    "关键发现：该解析器不做 HTML 实体解码（文档 guides/parser 的「文本中的特殊字符」），含 < 的文本必须用 CDATA，& 与 > 可原样书写。dslkit 的通用转义在本服务上是错的。",
+    "完成视觉迭代 3 次（v1→v3 实体与字号、v3→v6 断行模型、v5→v6 中文禁则）；方案探索 1 次（字号阶梯 72→96）；语法修复 1 次（实体转义）；重试 1 次（字宽探针行距）。",
+    "接触表由 Pillow 从 8 张真实服务 PNG 拼版，只是临时目录里的一致性检查图，不替代 8 张原图。"
+  ],
+  "pixel_audit": {
+    "all_ok": true,
+    "widest_title_line_px": 1042,
+    "available_title_width_px": 1120,
+    "per_card": {
+      "K01": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          552
+        ]
+      },
+      "K02": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          554
+        ]
+      },
+      "K03": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          552
+        ]
+      },
+      "K04": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          552
+        ]
+      },
+      "K05": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          551
+        ]
+      },
+      "K06": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          552
+        ]
+      },
+      "K07": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          552
+        ]
+      },
+      "K08": {
+        "size_ok": true,
+        "safe_margin_40": true,
+        "title_within_zone": true,
+        "badge_and_title_do_not_overlap": true,
+        "body_ink_bbox": [
+          40,
+          140,
+          1159,
+          552
+        ]
+      }
+    }
+  },
+  "title_size_distribution": {
+    "K01": 96,
+    "K02": 96,
+    "K03": 88,
+    "K04": 96,
+    "K05": 80,
+    "K06": 96,
+    "K07": 72,
+    "K08": 72
+  },
+  "title_line_distribution": {
+    "K01": 1,
+    "K02": 2,
+    "K03": 2,
+    "K04": 2,
+    "K05": 2,
+    "K06": 2,
+    "K07": 2,
+    "K08": 3
+  },
+  "dsl_versions_detail": [
+    "batch.v1",
+    "batch.v2",
+    "batch.v3",
+    "batch.v4",
+    "batch.v5",
+    "batch.v6",
+    "probe.advances.v1",
+    "probe.entities.v1/v2"
+  ],
+  "versioning_note": "8 张卡的 .snapshot 在各轮里按同一文件名重写（v1→v6），每一轮的渲染 PNG 都按 card-K0X.vN.png 完整保留；最终 DSL 另存为 card-K0X.v6.snapshot。详见 snapshot-usage.md 第 4 节。",
+  "image_views_file": "tmp/20261003-114508-flashmax/A14/image-views.jsonl"
+}

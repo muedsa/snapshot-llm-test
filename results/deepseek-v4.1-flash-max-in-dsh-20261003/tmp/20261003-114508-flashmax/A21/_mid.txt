@@ -1,0 +1,226 @@
+# ------------------------------------------------------------------------ renderers
+def portrait(rnd: int) -> tuple:
+    """1080x1350 poster. rnd 1/2 = dark launch theme, 3 = light theme."""
+    W, H = 1080, 1350
+    light = rnd == 3
+    t = LIGHT if light else DARK
+    d = Doc(W, H, background=t["page"])
+    tok = LIGHT_TOKENS if light else DARK_TOKENS
+    ty = tok["type"]["portrait"]
+    measured = []
+
+    # ---- decorative background (bottom layer, never overlaps copy boxes)
+    if light:
+        d.box(0, 0, W, 16, t["accent"])
+        d.box(-140, -120, 620, 460, t["glow_teal"], radius=230)
+        d.box(W - 420, H - 470, 620, 400, t["glow_warm"], radius=230)
+    else:
+        d.box(-200, -260, 900, 700, "#0E9F8F1F", radius=360)
+        d.box(W - 520, H - 560, 780, 560, "#1D4ED826", radius=380)
+        d.box(0, 0, W, 16, t["accent"])
+        d.box(0, H - 16, W, 16, "#1E293BFF")
+
+    card_x, card_y, card_w, card_h = 44, 132, 992, 1206
+    card_bottom = card_y + card_h
+    if light:
+        card(d, card_x, card_y, card_w, card_h, radius=26, color=t["card"],
+             border=t["card_edge"], shadow="0 10 30 0 #0F172A1F")
+    mx = 72
+    inner_w = card_w - 2 * (mx - card_x)
+    bg_stack = [t["page"]] + ([t["card"]] if light else [])
+
+    def put(y, s, size, color, weight="NORMAL", tag=None, spacing=None):
+        d.text(mx, y, s, size, color, weight=weight, maxw=inner_w, tag=tag,
+               spacing=spacing)
+        measured.append(dict(text=s, size=size, color=color, y=y))
+        return y + round(size * LINE_HEIGHT)
+
+    def put_plain(y, s, size, color, weight="NORMAL"):
+        d.text(mx, y, s, size, color, weight=weight, maxw=inner_w)
+        return y + round(size * LINE_HEIGHT)
+
+    # ---- brand mark (5 components) inside the top spacing band
+    draw_mark(d, light_mark(96, mx, 176) if light else dark_mark(96, mx, 176))
+
+    # ---- top block: eyebrow / headline (<=3 lines) / speakers / sponsors
+    y = put(306, EYEBROW, ty["meta"] + 2, t["accent"], "BOLD", spacing=1.6) + 20
+    if rnd == 1:
+        lines, tsize = [TAGLINE], ty["title"]
+    else:
+        tsize = 60
+        lines = [R2_TITLE[0], R2_TITLE[1][:8], R2_TITLE[1][8:]]
+    for ln in lines:
+        assert_fits(ln, tsize, inner_w, "portrait-title")
+    th = round(tsize * LINE_HEIGHT)
+    d.box(mx, y + 4, 108, 8, t["accent"], radius=4)
+    ty0 = y + 26
+    for i, ln in enumerate(lines):
+        d.text(mx, ty0 + i * th, ln, tsize, t["head"], weight="BOLD", maxw=inner_w,
+               tag="portrait-title")
+        measured.append(dict(text=ln, size=tsize, color=t["head"], y=ty0 + i * th))
+    y = ty0 + len(lines) * th
+    y = put(y + 70, SPEAKERS, ty["display"], t["head"], "BOLD")
+    if rnd >= 2:
+        y = put(y + 56, SPONSORS, ty["lead"], t["body"])
+    d.box(mx, y + 68, inner_w, 2, t["panel_edge"] if not light else t["card_edge"])
+    for ln in ABOUT:
+        assert_fits(ln, ty["meta"], inner_w, "about")
+        y = put_plain(y + 68, ln, ty["meta"], t["dim"])
+
+    # ---- bottom cluster: english tagline / url / entry chip / date badge
+    if rnd == 3:
+        put(1038, ENGLISH, ty["english"], t["english"], "BOLD", tag="english")
+        put(1092, URL, ty["lead"], t["accent"], "BOLD", tag="url")
+        chip_w = round(text_width(CTA, ty["meta"]) + 56)
+        d.box(mx, 1190, chip_w, 58, t["cta_fill"], radius=29,
+              border=f"1 SOLID {t['cta_edge']}")
+        d.text(mx + 28, 1205, CTA, ty["meta"], t["cta_text"], weight="BOLD",
+               maxw=chip_w - 56, tag="cta")
+        measured.append(dict(text=CTA, size=ty["meta"], color=t["cta_text"], y=1205,
+                             over=t["cta_fill"]))
+        d.box(card_x + card_w - 44 - 314, 1190, 314, 58, t["warm_fill"], radius=29)
+        d.rtext(card_x + card_w - 44 - 26, 1205, DT, ty["meta"], t["warm_text"],
+                weight="BOLD")
+        measured.append(dict(text=DT, size=ty["meta"], color=t["warm_text"], y=1205,
+                             over=t["warm_fill"]))
+    else:
+        put(1042, URL, ty["display"], t["accent_soft"], "BOLD", tag="url")
+        if rnd >= 2:
+            put(1108, DT, ty["display"], t["warm_soft"], "BOLD", tag="datetime")
+            chip_w = round(text_width(CTA, ty["meta"]) + 56)
+            d.box(mx, 1190, chip_w, 58, "#0E9F8F2E", radius=29,
+                  border="1 SOLID #0E9F8F88")
+            d.text(mx + 28, 1205, CTA, ty["meta"], t["accent_soft"], weight="BOLD",
+                   maxw=chip_w - 56, tag="cta")
+            measured.append(dict(text=CTA, size=ty["meta"], color=t["accent_soft"],
+                                 y=1205, over="#0E9F8F2E"))
+        else:
+            put(1100, DT, ty["display"], t["warm_soft"], "BOLD", tag="datetime")
+
+    bad = find_overlaps(measured, mx)
+    if bad:
+        raise AssertionError("portrait text overlaps: " + " | ".join(bad))
+    for m in measured:
+        if m["y"] + round(m["size"] * LINE_HEIGHT) > H - 96:
+            raise AssertionError(f'portrait text enters the bottom band: {m["text"][:20]}')
+    assert y <= 1010, f"portrait copy overruns: y={y}"
+    return d, measured, bg_stack, dict(card=[card_x, card_y, card_w, card_h])
+
+
+def wide(rnd: int) -> tuple:
+    W, H = 1440, 810
+    light = rnd == 3
+    t = LIGHT if light else DARK
+    d = Doc(W, H, background=t["page"])
+    tok = LIGHT_TOKENS if light else DARK_TOKENS
+    ty = tok["type"]["wide"]
+    measured = []
+
+    if light:
+        d.box(0, 0, W, 14, t["accent"])
+        d.box(-180, -200, 900, 620, t["glow_teal"], radius=310)
+        d.box(W - 520, H - 420, 760, 520, t["glow_warm"], radius=260)
+    else:
+        d.box(-260, -300, 1100, 780, "#0E9F8F1F", radius=390)
+        d.box(W - 640, H - 520, 940, 620, "#1D4ED826", radius=320)
+        d.box(0, 0, W, 14, t["accent"])
+        d.box(0, H - 14, W, 14, "#1E293BFF")
+
+    card_x, card_y, card_w, card_h = 48, 108, 1344, 604
+    if light:
+        card(d, card_x, card_y, card_w, card_h, radius=24, color=t["card"],
+             border=t["card_edge"], shadow="0 10 30 0 #0F172A1F")
+    mx = 96
+    inner_w = 760
+    bg_stack = [t["page"]] + ([t["card"]] if light else [])
+
+    def put(y, s, size, color, weight="NORMAL", tag=None, spacing=None):
+        d.text(mx, y, s, size, color, weight=weight, maxw=inner_w, tag=tag,
+               spacing=spacing)
+        measured.append(dict(text=s, size=size, color=color, y=y))
+        return y + round(size * LINE_HEIGHT)
+
+    def put_plain(y, s, size, color, weight="NORMAL"):
+        d.text(mx, y, s, size, color, weight=weight, maxw=inner_w)
+        return y + round(size * LINE_HEIGHT)
+
+    draw_mark(d, light_mark(135, mx, 140) if light else dark_mark(135, mx, 140))
+    y = put(306, EYEBROW, ty["meta"], t["accent"], "BOLD", spacing=1.6) + 16
+    if rnd == 1:
+        assert_fits(TAGLINE, ty["title"], inner_w, "wide-title")
+        d.text(mx, y, TAGLINE, ty["title"], t["head"], weight="BOLD", maxw=inner_w,
+               tag="wide-title")
+        measured.append(dict(text=TAGLINE, size=ty["title"], color=t["head"], y=y))
+        y += round(ty["title"] * LINE_HEIGHT) + 34
+    else:
+        for ln in R2_TITLE:
+            assert_fits(ln, 60, inner_w, "wide-title")
+            d.text(mx, y, ln, 60, t["head"], weight="BOLD", maxw=inner_w,
+                   tag="wide-title")
+            measured.append(dict(text=ln, size=60, color=t["head"], y=y))
+            y += round(60 * LINE_HEIGHT)
+        y += 22
+    y = put(y, SPEAKERS, ty["display"], t["head"], "BOLD")
+    if rnd >= 2:
+        y = put(y + 26, SPONSORS, ty["lead"], t["body"])
+        y += 40
+    d.box(mx, y + 26, inner_w, 2, t["card_edge"] if light else t["panel_edge"])
+    for ln in ABOUT:
+        assert_fits(ln, ty["meta"], inner_w, "wide-about")
+        y = put_plain(y + 26, ln, ty["meta"], t["dim"])
+
+    # ---- right-hand brand panel
+    px, py, pw, ph = 920, 152, 424, 560
+    if light:
+        d.box(px, py, pw, ph, t["card"], radius=22, border=f"1 SOLID {t['card_edge']}")
+    else:
+        d.box(px, py, pw, ph, t["panel"], radius=22, border=f"1 SOLID {t['panel_edge']}")
+        d.box(px + 40, py + 46, 344, 344, "#0E9F8F26", radius=172)
+    draw_mark(d, light_mark(150, px + 137, py + 110) if light
+              else dark_mark(150, px + 137, py + 110))
+    d.text(px, py + 400, EYEBROW, ty["meta"], t["accent"], weight="BOLD", spacing=1.6,
+           maxw=pw, align="CENTER_LEFT")
+    d.text(px, py + 442, DT, ty["display"], t["warm_fill"] if light else t["warm_soft"],
+           weight="BOLD", maxw=pw, align="CENTER_LEFT")
+    measured.append(dict(text=DT, size=ty["display"],
+                         color=t["warm_fill"] if light else t["warm_soft"], y=py + 442,
+                         over=t["card"] if light else t["panel"]))
+
+    # ---- decorative bar stack in the empty bottom strip (never carries copy)
+    for bx, bw, bc in ((92, 64, "#0E9F8FFF"), (174, 128, "#1D4ED8FF"),
+                       (320, 88, "#D97706FF")):
+        d.box(bx, 742, bw, 22, bc, radius=11)
+
+    # ---- bottom cluster of the left column
+    if rnd == 3:
+        put(620, ENGLISH, ty["english"], t["english"], "BOLD", tag="english")
+        put(668, URL, ty["display"], t["accent"], "BOLD", tag="url")
+        chip_y = 462
+        chip_w = round(text_width(CTA, ty["meta"]) + 52)
+        d.box(mx + 372, chip_y, chip_w, 52, t["cta_fill"], radius=26,
+              border=f"1 SOLID {t['cta_edge']}")
+        d.text(mx + 372 + 26, chip_y + 11, CTA, ty["meta"], t["cta_text"], weight="BOLD",
+               maxw=chip_w - 52, tag="cta")
+        measured.append(dict(text=CTA, size=ty["meta"], color=t["cta_text"],
+                             y=chip_y + 11, over=t["cta_fill"]))
+    else:
+        put(622 if rnd == 1 else 656, URL, ty["display"], t["accent_soft"], "BOLD",
+            tag="url")
+        if rnd >= 2:
+            chip_y = 462
+            chip_w = round(text_width(CTA, ty["meta"]) + 52)
+            d.box(mx + 372, chip_y, chip_w, 52, "#0E9F8F2E", radius=26,
+                  border="1 SOLID #0E9F8F88")
+            d.text(mx + 372 + 26, chip_y + 11, CTA, ty["meta"], t["accent_soft"],
+                   weight="BOLD", maxw=chip_w - 52, tag="cta")
+            measured.append(dict(text=CTA, size=ty["meta"], color=t["accent_soft"],
+                                 y=chip_y + 11, over="#0E9F8F2E"))
+
+    bad = find_overlaps(measured, mx)
+    if bad:
+        raise AssertionError("wide text overlaps: " + " | ".join(bad))
+    for m in measured:
+        if m["y"] + round(m["size"] * LINE_HEIGHT) > H - 96:
+            raise AssertionError(f'wide text enters the bottom band: {m["text"][:20]}')
+    assert y <= 706, f"wide copy overruns the card: y={y}"
+    return d, measured, bg_stack, dict(card=[card_x, card_y, card_w, card_h])

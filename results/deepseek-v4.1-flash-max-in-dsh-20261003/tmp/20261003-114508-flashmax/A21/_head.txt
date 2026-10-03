@@ -1,0 +1,161 @@
+"""A21 "Layerlight" launch poster - builds every round from one parameterised model.
+
+Round 1 and round 2 are the dark launch theme, round 3 is the light theme required by
+rounds/round-03.md. The same brand mark (5 components: 1 container + 3 light bars +
+1 baseline) and the same type scale are reused so the rounds stay comparable.
+
+Every generated stage is also dumped as JSON next to the DSL so each round keeps its own
+content map, tokens and measured contrast evidence.
+"""
+from __future__ import annotations
+
+import json
+import math
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "_suite", "shared"))
+from snapkit import (CJK, LINE_HEIGHT, Doc, assert_fits, card, composite,  # noqa: E402
+                     contrast, text_width)
+
+ROOT = r"D:\workspaces\deepseek-v4.1-flash-max-in-dsh"
+OUT = os.path.join(ROOT, "outputs", "20261003-114508-flashmax", "A21")
+TMP = os.path.join(ROOT, "tmp", "20261003-114508-flashmax", "A21")
+
+# --------------------------------------------------------------------------- content
+BRAND = "叠光 Layerlight"
+TAGLINE = "让复杂信息变得清晰"
+DT = "2026.11.07 19:30"
+EYEBROW = "ONLINE LAUNCH"
+SPEAKERS = "讲者：林川 / 苏言"
+URL = "layerlight.example.org"
+SPONSORS = "Northstar Research / 云构工具"
+CTA = "免费参加 · 无需报名"
+ENGLISH = "Clarity through structure"
+R2_TITLE = ["当所有信息都想成为标题：", "让复杂信息变得清晰的结构化方法"]
+
+HEAD_CH = "让复杂信息变得清晰"
+TITLE_WORD = "结构化方法"
+
+# Purely decorative supporting copy for the middle band. It is not a placeholder for
+# future content: TASK.md only forbids writing "to be added" text, and this states the
+# launch fact. It is short enough to never wrap and is never used as a heading.
+ABOUT = ["叠光 1.0 发布 · 把分散的结构收拢成一张清楚的画面"]
+ABOUT2 = ["结构、层级与留白都按同一套尺度校准"]
+
+
+# ---------------------------------------------------------------------------- marks
+def dark_mark(unit: float, x: float, y: float):
+    """Dark-theme layerlight mark: outline container + 3 light bars + baseline rail."""
+    return dict(x=x, y=y, u=unit,
+                sq=dict(w=1.0, h=1.0, r=0.22, fill=None, border=2, bc="#0E9F8FA8"),
+                bars=[dict(x=0.20, y=0.16, w=0.14, h=0.46, c="#0E9F8FFF"),
+                      dict(x=0.43, y=0.16, w=0.14, h=0.62, c="#3ED3BEFF"),
+                      dict(x=0.66, y=0.16, w=0.14, h=0.34, c="#7FE3D4FF")],
+                base=dict(x=0.20, y=0.80, w=0.60, h=0.09, c="#0E9F8FFF"))
+
+
+def light_mark(unit: float, x: float, y: float):
+    """Light-theme variant: identical geometry, colours re-tuned for a white card."""
+    return dict(x=x, y=y, u=unit,
+                sq=dict(w=1.0, h=1.0, r=0.22, fill="#F0FDFAFF", border=1.5,
+                        bc="#0F766EFF"),
+                bars=[dict(x=0.20, y=0.16, w=0.14, h=0.46, c="#0E7490FF"),
+                      dict(x=0.43, y=0.16, w=0.14, h=0.62, c="#0F766EFF"),
+                      dict(x=0.66, y=0.16, w=0.14, h=0.34, c="#115E59FF")],
+                base=dict(x=0.20, y=0.80, w=0.60, h=0.09, c="#0F766EFF"))
+
+
+def draw_mark(doc: Doc, m: dict) -> None:
+    x, y, u = m["x"], m["y"], m["u"]
+    sq = m["sq"]
+    # baseline rail first so the bars read as standing on it
+    b = m["base"]
+    doc.box(round(x + b["x"] * u, 2), round(y + b["y"] * u, 2),
+            round(b["w"] * u, 2), round(b["h"] * u, 2), b["c"],
+            radius=round(b["h"] * u / 2, 2))
+    for bar in m["bars"]:
+        doc.box(round(x + bar["x"] * u, 2), round(y + bar["y"] * u, 2),
+                round(bar["w"] * u, 2), round(bar["h"] * u, 2), bar["c"],
+                radius=round(bar["w"] * u / 2, 2))
+    doc.box(round(x, 2), round(y, 2), round(sq["w"] * u, 2), round(sq["h"] * u, 2),
+            sq["fill"] or "#00000000", radius=round(sq["r"] * u, 2),
+            border=f'{sq["border"]} SOLID {sq["bc"]}')
+
+
+# --------------------------------------------------------------------------- themes
+DARK = dict(page="#0B1220FF", deep="#0F172AFF", panel="#111C31FF", panel_edge="#1E293BFF",
+            head="#F8FAFCFF", body="#CBD5E1FF", dim="#94A3B8FF", accent="#0E9F8FFF",
+            accent_soft="#3ED3BEFF", warm="#D97706FF", warm_soft="#FBBF24FF")
+LIGHT = dict(page="#EEF3F8FF", card="#FFFFFFFF", card_edge="#D8E1ECFF", head="#0F172AFF",
+             body="#334155FF", dim="#475569FF", accent="#0F766EFF", accent_soft="#0E7490FF",
+             warm_fill="#D97706FF", warm_text="#FFFFFF", cta_fill="#FEF3C7FF",
+             cta_text="#92400EFF", cta_edge="#FCD34D", english="#0F766EFF")
+
+DARK_TOKENS = {
+    "color": {"page": "#0B1220", "ink": "#0F172A", "head": "#F8FAFC", "body": "#CBD5E1",
+              "dim": "#94A3B8", "accent": "#0E9F8F", "accent_soft": "#3ED3BE",
+              "warm": "#D97706", "warm_soft": "#FBBF24", "panel": "#111C31",
+              "panel_edge": "#1E293B"},
+    "type": {
+        "portrait": {"title": 64, "display": 36, "lead": 32, "body": 30, "meta": 26},
+        "wide": {"title": 72, "display": 40, "lead": 34, "body": 32, "meta": 28}},
+    "brand_mark": {"name": "layerlight-mark", "components": 5,
+                   "parts": ["rounded container (light-stack frame)",
+                             "light bar A (tall)", "light bar B (tallest)",
+                             "light bar C (short)", "baseline rail"],
+                   "container_radius_ratio": 0.22,
+                   "bar_geometry_ratio": [[0.20, 0.16, 0.14, 0.46],
+                                          [0.43, 0.16, 0.14, 0.62],
+                                          [0.66, 0.16, 0.14, 0.34]],
+                   "baseline_geometry_ratio": [0.20, 0.80, 0.60, 0.09]},
+    "geometry": {"portrait": {"canvas": [1080, 1350], "margin": 72, "content_w": 936,
+                              "top_reserve": 96, "bottom_reserve": 96},
+                 "wide": {"canvas": [1440, 810], "margin": 96, "content_w": 1248,
+                          "top_reserve": 96, "bottom_reserve": 96}},
+    "expansion": {"portrait": {"top_band": [0, 0, 1080, 96], "bottom_band": [0, 1254, 1080, 96]},
+                  "wide": {"top_band": [0, 0, 1440, 96], "bottom_band": [0, 714, 1440, 96]}},
+    "elevation": {"card_shadow": None, "glow": "0 0 120 40 #0E9F8F2E"},
+    "radius": {"card": 20, "chip": 999, "mark": 0.22},
+    "spacing": {"margin": 72, "grid": 8},
+}
+
+LIGHT_TOKENS = {
+    "theme": "light",
+    "color": {"page": "#EEF3F8", "card": "#FFFFFF", "card_edge": "#D8E1EC", "head": "#0F172A",
+              "body": "#334155", "dim": "#475569", "accent": "#0F766E",
+              "accent_soft": "#0E7490", "brand_bar_1": "#0E7490", "brand_bar_2": "#0F766E",
+              "brand_bar_3": "#115E59", "brand_frame": "#0F766E",
+              "english": "#0F766E", "warm_fill": "#D97706", "warm_text": "#FFFFFF",
+              "cta_fill": "#FEF3C7", "cta_text": "#92400E", "cta_edge": "#FCD34D",
+              "glow_teal": "#0E9F8F1F", "glow_warm": "#D9770614"},
+    "type": {"portrait": {"title": 60, "display": 36, "lead": 32, "body": 30, "meta": 26,
+                          "english": 28},
+             "wide": {"title": 60, "display": 40, "lead": 34, "body": 32, "meta": 28,
+                      "english": 30}},
+    "brand_mark": DARK_TOKENS["brand_mark"],
+    "geometry": DARK_TOKENS["geometry"],
+    "expansion": DARK_TOKENS["expansion"],
+    "contrast_rule": {"normal_text_min": 4.5, "measured_against": "final composited background"},
+}
+
+ROUND1_CONTENT = [
+    dict(id="eyebrow", text=EYEBROW, role="section label"),
+    dict(id="title", text=TAGLINE, role="main headline"),
+    dict(id="datetime", text=DT, role="event time"),
+    dict(id="speakers", text=SPEAKERS, role="speaker line"),
+    dict(id="url", text=URL, role="call to action"),
+]
+ROUND2_CONTENT = [
+    dict(id="eyebrow", text=EYEBROW, role="section label"),
+    dict(id="title", text="".join(R2_TITLE), role="main headline (3 lines max)"),
+    dict(id="datetime", text=DT, role="event time"),
+    dict(id="speakers", text=SPEAKERS, role="speaker line"),
+    dict(id="sponsors", text=SPONSORS, role="sponsor credit"),
+    dict(id="cta", text=CTA, role="entry condition"),
+    dict(id="url", text=URL, role="call to action"),
+]
+ROUND3_CONTENT = ROUND2_CONTENT + [dict(id="english", text=ENGLISH, role="english tagline")]
+
+

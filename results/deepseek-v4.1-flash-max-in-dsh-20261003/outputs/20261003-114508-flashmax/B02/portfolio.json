@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "task_id": "B02",
+  "run_id": "20261003-114508-flashmax",
+  "status": "completed",
+  "project": "「一粒」社区种子图书馆 × 屋顶农场（虚构）",
+  "asset_policy": "dsl_primary_with_supporting_assets",
+  "assets_used": [],
+  "curatorial_statement": "「一粒」是一个虚构的社区种子图书馆 + 屋顶农场。它的视觉生态不是一张海报的十种尺寸，而是同一套设计语言在十种完全不同的使用任务上的十次落地：公告栏上的宣告、墙上的查询表、手里的小标签、屋顶的导视、工具房的排班、钱包里的卡、摊位的价目、给孩子看的海报、要动笔的表单、给理事会看的公示页。共用的只有品牌标记（种子 + 嫩芽）、墨绿 / 米白 / 土黄 / 陶土这套取自土壤与叶片的色板、圆角卡片语言，以及一条纪律：所有数字必须由脚本算出并互相自洽。",
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "2026 春季开放季主海报",
+      "media": "A2 竖版海报",
+      "audience": "社区住户与潜在会员",
+      "use_context": "社区公告栏、电梯间，1–2 m 观看",
+      "user_goal": "知道这个项目是什么、什么时候开、怎么加入",
+      "content_basis": "虚构项目「一粒」的 2026 春季档期、三场活动与四条加入步骤；名额与报名率为演示数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "深墨绿页头压住整版上半部，屋顶种植箱做成一排正视剪影，把「屋顶」这件事直接画出来而不是用照片",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        1240,
+        1754
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "自定义图标（种子/嫩芽/太阳）、圆角种植箱、真实名额进度条、确定性图形码、页脚重复图形母题",
+      "completion_criteria": "三场活动剩余名额之和须与页头数字一致；加入步骤与「借 5 包」规则须与会员卡、价目牌的口径相同；不得出现外部图片",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0001",
+        "B02-REQ-0012",
+        "B02-REQ-0020",
+        "B02-REQ-0026"
+      ],
+      "iteration_ids": [
+        "t01-v1-baseline",
+        "t01-v2-visual",
+        "t01-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "种植箱剪影为示意，未按真实箱位比例"
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "播种日历挂图",
+      "media": "工具房墙面横版挂图",
+      "audience": "会员与志愿者",
+      "use_context": "工具房墙、站立 1 m 内查看",
+      "user_goal": "查某种作物这个月能不能播、什么时候能收",
+      "content_basis": "16 种作物的播种 / 移栽 / 采收适期表；终霜期为示例数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "用 12 列 × 16 行的色带矩阵替代文字说明，同一格内三条色带自上而下对应播种、移栽、采收",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1680,
+        1050
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "数据驱动的表格式网格、按区间着色的色带、双栏侧栏、统计得出的区间计数",
+      "completion_criteria": "色带必须由作物表的区间渲染；播种/采收区间数须与脚注一致；行标签不得压住网格",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0002",
+        "B02-REQ-0013",
+        "B02-REQ-0021",
+        "B02-REQ-0027"
+      ],
+      "iteration_ids": [
+        "t02-v1-baseline"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "适期依据本地终霜期推算，为演示数据，不同气候区需重算"
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "种子包标签（借种包）",
+      "media": "贴在种子袋上的小标签",
+      "audience": "借种的会员",
+      "use_context": "手持 20–30 cm 阅读，可能沾土或受潮",
+      "user_goal": "拿到种子就知道怎么播、多久能收、什么时候还种",
+      "content_basis": "樱桃萝卜的批号、发芽率、净度、粒数、播期、深度、株行距与采收天数；全部为演示值（项目、人物、数据均为虚构演示）",
+      "visual_intent": "把包装做成「可读的三段」：顶部品牌条、中部比例示意图、下部数据表；用一颗真实比例的画法萝卜代替照片",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        560,
+        800
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "几何绘制的萝卜（球根 + 根尖 + 叶）、比例尺标注、条形码柱、小字号表格排版",
+      "completion_criteria": "表格与底部三格的口径须一致；条码与编号须可对应；画法示意须标注为示意而非实物照片",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0003",
+        "B02-REQ-0014",
+        "B02-REQ-0022",
+        "B02-REQ-0028"
+      ],
+      "iteration_ids": [
+        "t03-v1-baseline",
+        "t03-v2-visual"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "实物比例示意为等比简图，不是真实品种照片"
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "屋顶种植箱平面图与认领",
+      "media": "现场导视平面图",
+      "audience": "会员、来访者、维护志愿者",
+      "use_context": "屋顶入口立牌，1–3 m 观看",
+      "user_goal": "找到自己的箱位、知道哪几箱还空着、知道水在哪里",
+      "content_basis": "24 个箱位的编号、当季作物、科属配色与认领人代号；代号为演示数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "把每个箱位画成一张小卡片（编号 + 作物 + 科属 + 认领人 + 嫩芽），让平面图同时承担「找位置」和「看状态」两件事",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1500,
+        1000
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "网格化平面布局、科属配色系统、箱内多图层排版、水点标记、统计条（科属分布）、无障碍说明",
+      "completion_criteria": "箱位数、科属统计与空闲数须与作物表一致；箱位不得越出屋顶轮廓；每个箱内元素不得互相压字",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0004",
+        "B02-REQ-0015",
+        "B02-REQ-0023",
+        "B02-REQ-0029"
+      ],
+      "iteration_ids": [
+        "t04-v1-baseline",
+        "t04-v2-visual",
+        "t04-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "屋顶轮廓为示意矩形，未按真实建筑图纸"
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "志愿者排班与任务板",
+      "media": "工具房每周更新的排班板",
+      "audience": "志愿者与值班协调人",
+      "use_context": "工具房墙面，1 m 内边看边打卡",
+      "user_goal": "确认自己这周值哪一班、要做什么、和谁交接",
+      "content_basis": "7 天 × 3 班的 21 个班次、任务标签、确认状态、天气备选与联系人；均为演示数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "班次做成可撕贴的卡片矩阵，晚班用暖底色区分「最后离场」，把交接责任写进颜色里",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "dsl_version": "v1",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "7×3 表格化布局、头像式首字圆标、动态宽度任务标签、状态色、天气与备选双行排版",
+      "completion_criteria": "21 个班次须全部有值班人与任务；志愿者工时统计须由排班表算出；标签不得溢出班次卡片",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0005",
+        "B02-REQ-0030"
+      ],
+      "iteration_ids": [
+        "t05-v1-baseline"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "班次卡片下半部留白较多，用于现场手写备注"
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "会员卡 / 收获份额卡",
+      "media": "实体卡片（信用卡比例）",
+      "audience": "会员本人",
+      "use_context": "钱包里取出，柜台 30–50 cm 出示",
+      "user_goal": "证明会员身份、核对份额领取次数、拿到卡号",
+      "content_basis": "虚构会员「周砚」的卡号、等级、每周份额、有效期与 12 个月领取格；权益为演示条款（项目、人物、数据均为虚构演示）",
+      "visual_intent": "把「领取记录」做成 12 个可打孔的圆格，让卡片本身承担台账功能，而不是只做身份证明",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        1012,
+        638
+      ],
+      "dsl_version": "v1",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "圆角卡片与投影、圆形打卡格与对勾、条形码、权益双栏、卡片级留白控制",
+      "completion_criteria": "12 个领取格须与卡面月份一致；已打孔数须与「本月」口径一致；卡号须与条码下方编号一致",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0006",
+        "B02-REQ-0031"
+      ],
+      "iteration_ids": [
+        "t06-v1-baseline"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "卡片为单面设计，背面留给使用须知"
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "市集摊位价目与产地牌",
+      "media": "摊位立牌（竖版）",
+      "audience": "市集顾客",
+      "use_context": "摊位前 1–3 m，站着快速扫读",
+      "user_goal": "看清今天有什么、多少钱、来自哪个箱位、什么时候采的",
+      "content_basis": "14 项当季产品的规格、箱位、采收日期、售价与会员价；价格与产地均为演示数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "价格用最大字号、产地用第二色，让「多少钱」和「哪来的」在 1 秒内分别被抓住",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1200,
+        1500
+      ],
+      "dsl_version": "v2",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "双栏价目表、价格/单位分层排版、特惠卡片、确定性图形码、多行说明折行控制",
+      "completion_criteria": "14 项须与特惠区口径一致；箱位与采收日期须逐项标出；价格不得与会员价压行",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0007",
+        "B02-REQ-0016",
+        "B02-REQ-0032"
+      ],
+      "iteration_ids": [
+        "t07-v1-baseline"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "价格与产地为虚构演示，不代表任何真实摊位"
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "儿童工作坊海报 · 种子的旅行",
+      "media": "A2 竖版海报",
+      "audience": "5–10 岁孩子的家长",
+      "use_context": "学校与社区公告栏，1–2 m 观看",
+      "user_goal": "判断哪一场适合自家孩子、还剩几个名额、怎么报名",
+      "content_basis": "三场工作坊的日期、时段、适龄与剩余名额，以及种子到结籽的四阶段图示；均为演示数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "用四个圆把「种子 → 发芽 → 长大 → 开花结籽」画成一条可读的循环，让孩子先看懂图再看字；整版只用圆角与圆弧，不用直角",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1240,
+        1748
+      ],
+      "dsl_version": "v2",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "几何绘制的四阶段插图、虚线连接、圆角卡片、与项目同一套配色的儿童化变体、进度条",
+      "completion_criteria": "三场剩余名额之和须与页头一致；四阶段图示须与文字说明一一对应；适龄标签不得压住说明文字",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0008",
+        "B02-REQ-0017",
+        "B02-REQ-0033"
+      ],
+      "iteration_ids": [
+        "t08-v1-baseline",
+        "t08-v2-visual"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "插图用几何图形概括，不是写实植物插画"
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "收获记录卡（可填写表单）",
+      "media": "A4 横版田间表单",
+      "audience": "会员与地块负责人",
+      "use_context": "工具房桌面或田间垫板，用笔填写",
+      "user_goal": "按周记录每箱产量与品质，月底汇总上交",
+      "content_basis": "12 行记录表、四档品质勾选、本月累计栏与签字栏；表头信息为演示数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "这是一张要「被写」的图：所有装饰都退到最低，只保留一条书写线与四档勾选框，行线同时充当分隔线",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        1480,
+        1050
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "表格排版、交替行底色、勾选框、书写线、多栏签名区、表单编号体系",
+      "completion_criteria": "12 行须全部可写；品质四档须与说明一致；每行只允许一条书写线，不得出现双线",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0009",
+        "B02-REQ-0018",
+        "B02-REQ-0034"
+      ],
+      "iteration_ids": [
+        "t09-v1-baseline",
+        "t09-v2-visual"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "表单可直接打印使用，但表头项目信息为虚构"
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "年度影响一页（理事公示版）",
+      "media": "方形线上分享图 / 打印单页",
+      "audience": "理事会、资助方与社区公示",
+      "use_context": "屏幕阅读或 A4 打印，30–50 cm",
+      "user_goal": "在 30 秒内看懂这一年做成了什么、钱花在哪、种子怎么流动",
+      "content_basis": "四项年度指标、12 个月参与人次、资金去向饼环与三段种子流向；全部为演示数据（项目、人物、数据均为虚构演示）",
+      "visual_intent": "把「影响」拆成三块可核对的图形：柱状（时间）、饼环（结构）、流向（过程），三块共用同一套色板",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本生态实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "柱状图（含刻度）、环形扇区饼图、流向卡片与箭头、大字号 KPI 卡、引语块",
+      "completion_criteria": "饼环扇区角度须与百分比一致；柱高须与月度表一致；合计口径须与各分项自洽",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B02-REQ-0010",
+        "B02-REQ-0011",
+        "B02-REQ-0019",
+        "B02-REQ-0035"
+      ],
+      "iteration_ids": [
+        "t10-v1-baseline",
+        "t10-v2-visual",
+        "t10-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的项目、社区、人物、日期与数据均为虚构演示",
+      "unresolved_issues": [
+        "所有数字为脚本生成的演示数据，不代表任何真实机构"
+      ]
+    }
+  ],
+  "design_system_file": "design-system.json",
+  "touchpoint_map_file": "touchpoint-map.json",
+  "project_brief_file": "project-brief.md",
+  "final_collection_review": "逐件复查 10 张最终图（全部用 read_image 打开最终 PNG 本体，并与被审查版本做 SHA-256 比对）：十件的媒介、比例、观看距离与信息密度均不相同，没有同版式换色；同一套品牌元素在不同密度下都能成立（560×800 的种子标签与 1680×1050 的挂图共用同一个标记与色板）。本轮发现并修复了 6 类真实缺陷：平面图 24 个箱位越出屋顶轮廓并压住说明文字；箱位内认领人代号与嫩芽图形重叠；环形扇区旋转方向错误导致弧带被画成细线；影响页柱状图纵轴出现 119 / 178 这类非整数刻度且与首柱数字挤在一起；记录卡每行出现两条横线（书写线与行分隔线重复）；种子标签底部编号被画布裁掉 2 px。另有 1 类尺寸问题在生成阶段被断言拦下（天气文案超框）。",
+  "counts": {
+    "independent_works": 10,
+    "final_pngs": 10,
+    "render_requests": 35,
+    "render_success": 35,
+    "render_failed": 0,
+    "dsl_versions": 24,
+    "distinct_formats": 10
+  },
+  "unresolved_issues": [
+    "所有插画为几何概括而非写实插画；播种适期基于假定温带气候；价格、产量、名额为演示数字。均已写进各 case.md 与项目简报。"
+  ]
+}

@@ -1,0 +1,218 @@
+# ------------------------------------------------------------------------ renderers
+LABELS = {1: "版面 01", 2: "版面 02", 3: "版面 03"}
+# The wide format keeps the brand mark in the right-hand panel; the portrait keeps it in
+# the top band. Nothing else differs, so the two share the same builder.
+STRUCT = {
+    "portrait": dict(canvas=[1080, 1350], card=[44, 110, 992, 1154], mx=72, inner_w=936,
+                     brand=dict(size=96, x=72, y=176),
+                     panel=None,
+                     top_reserve=110, bottom_reserve=86, deco="bars-bottom",
+                     wrap={"speakers": 936, "sponsors": 936}),
+    "wide": dict(canvas=[1440, 810], card=[48, 88, 1344, 660], mx=96, inner_w=852,
+                 brand=dict(size=110, x=1044, y=150),
+                 panel=[948, 124, 444, 596],
+                 top_reserve=88, bottom_reserve=62, deco="bars-left",
+                 wrap={"speakers": 852, "sponsors": 500}),
+}
+
+
+def fit_size(s, maxw, hi, lo=24):
+    size = hi
+    while size > lo and text_width(s, size) > maxw:
+        size -= 1
+    return size
+
+
+def _boxes(measured, left):
+    return [dict(text=m["text"], x=left, y=m["y"], w=text_width(m["text"], m["size"]),
+                 h=round(m["size"] * LINE_HEIGHT),
+                 bottom=m["y"] + round(m["size"] * LINE_HEIGHT))
+            for m in measured if not m.get("over")]
+
+
+def _gaps(items, pad=0.0):
+    out = []
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            a, b = items[i], items[j]
+            if (a["x"] < b["x"] + b["w"] and b["x"] < a["x"] + a["w"] and
+                    a["y"] < b["bottom"] + pad and b["y"] < a["bottom"] + pad):
+                out.append(f'"{a["text"][:16]}"({a["y"]}..{a["bottom"]}) x '
+                           f'"({b["y"]}..{b["bottom"]})"')
+    return out
+
+
+def _raise_overlaps(measured, mx, tag):
+    bad = _gaps(_boxes(measured, mx))
+    if bad:
+        raise AssertionError(f"{tag} text overlaps: " + " | ".join(bad))
+
+
+def build(fmt: str, rnd: int) -> tuple:
+    """Render one deliverable. Returns (Doc, measured, background stack, layout meta)."""
+    S = STRUCT[fmt]
+    W, H = S["canvas"]
+    light = rnd == 3
+    t = LIGHT if light else DARK
+    ty = (LIGHT_TOKENS if light else DARK_TOKENS)["type"][fmt]
+    d = Doc(W, H, background=t["page"])
+    measured = []
+    card_x, card_y, card_w, card_h = S["card"]
+    card_bottom = card_y + card_h
+    mx, inner_w = S["mx"], S["inner_w"]
+
+    # ---------------------------------------------------------------- background
+    if light:
+        d.box(0, 0, W, 16 if fmt == "portrait" else 14, t["accent"])
+        d.box(-140, -120, 620, 460, t["glow_teal"], radius=230)
+        d.box(W - 420, H - 470, 620, 400, t["glow_warm"], radius=230)
+    else:
+        d.box(-200, -260, 900, 700, t["glow_teal"], radius=360)
+        d.box(W - 520, H - 560, 780, 560, t["glow_warm"], radius=380)
+        d.box(0, 0, W, 16 if fmt == "portrait" else 14, t["accent"])
+        d.box(0, H - (16 if fmt == "portrait" else 14), W,
+              16 if fmt == "portrait" else 14, "#1E293BFF")
+    if light:
+        card(d, card_x, card_y, card_w, card_h, radius=26 if fmt == "portrait" else 24,
+             color=t["card"], border=t["card_edge"], shadow="0 10 30 0 #0F172A1F")
+    bg_stack = [t["page"]] + ([t["card"]] if light else [])
+
+    # ------------------------------------------------------------- brand artwork
+    bi = S["brand"]
+    draw_mark(d, light_mark(bi["size"], bi["x"], bi["y"]) if light
+              else dark_mark(bi["size"], bi["x"], bi["y"]))
+
+    # -------------------------------------------------------- headline block (auto fit)
+    hx = mx
+    if fmt == "wide":
+        d.box(*S["panel"], t["card"] if light else t["panel"],
+              radius=22, border=f"1 SOLID {t['card_edge'] if light else t['panel_edge']}")
+        if not light:
+            d.box(S["panel"][0] + 50, S["panel"][1] + 34, 344, 344, "#0E9F8F26", radius=172)
+    y = card_y + 34
+    d.text(hx, y, EYEBROW, ty["meta"], t["accent"], weight="BOLD", spacing=1.6,
+           maxw=inner_w)
+    measured.append(dict(text=EYEBROW, size=ty["meta"], color=t["accent"], y=y,
+                         role="label"))
+    y += round(ty["meta"] * LINE_HEIGHT) + 18
+
+    lines = [TAGLINE] if rnd == 1 else R2_TITLE
+    tsize = fit_size(max(lines, key=len), inner_w, ty["title"])
+    if tsize < 48:  # the round-2 headline is allowed to use up to three lines
+        raise AssertionError(f"{fmt}: headline would drop below 48px ({tsize})")
+    th = round(tsize * LINE_HEIGHT)
+    d.box(hx, y - 14, 108, 8, t["accent"], radius=4)
+    for i, ln in enumerate(lines):
+        assert_fits(ln, tsize, inner_w, f"{fmt}-title")
+        d.text(hx, y + i * th, ln, tsize, t["head"], weight="BOLD", maxw=inner_w,
+               tag=f"{fmt}-title")
+        measured.append(dict(text=ln, size=tsize, color=t["head"], y=y + i * th,
+                             role="headline"))
+    y += len(lines) * th + 26
+    title_bottom = y - 26
+
+    # ------------------------------------------------------- supporting copy flow
+    def block(s, size, color, weight, wrap_w, gap, role, fudge=0.0):
+        nonlocal y
+        lines_n = 1
+        if text_width(s, size) > wrap_w:
+            lines_n = 2
+            cut = s[:max(1, len(s) // 2)]
+            d.text(hx, y, cut, size, color, weight=weight, maxw=wrap_w)
+            measured.append(dict(text=cut, size=size, color=color, y=y, role=role))
+            d.text(hx, y + round(size * LINE_HEIGHT), s[len(cut):], size, color,
+                   weight=weight, maxw=wrap_w)
+            measured.append(dict(text=s[len(cut):], size=size, color=color,
+                                 y=y + round(size * LINE_HEIGHT), role=role))
+        else:
+            d.text(hx, y, s, size, color, weight=weight, maxw=wrap_w)
+            measured.append(dict(text=s, size=size, color=color, y=y, role=role))
+        y += lines_n * round(size * LINE_HEIGHT) + gap
+
+    block(ABOUT[0], ty["meta"], t["dim"], "NORMAL", inner_w, 26, "caption")
+    block(SPEAKERS, ty["display"], t["head"], "BOLD",
+          S["wrap"]["speakers"], 24 if rnd >= 2 else 0, "speaker")
+    if rnd >= 2:
+        block(SPONSORS, ty["lead"], t["body"], "NORMAL", S["wrap"]["sponsors"], 0,
+              "sponsor")
+    d.box(hx, y + 26, min(inner_w, 852), 2,
+          t["card_edge"] if light else t["panel_edge"])
+    y += 62
+    block(CAPTION, ty["meta"], t["dim"], "NORMAL", inner_w, 0, "caption2")
+
+    # ------------------------------------------------------------- bottom cluster
+    chip_w = math.ceil(text_width(CTA, ty["meta"]) + 64)
+    bye = card_bottom - (86 if fmt == "wide" else 96)
+    if rnd == 3:
+        english_y = bye - 58 - 26 - 56
+        url_y = bye - 58 - 26
+        block_at = english_y
+        d.text(hx, block_at, ENGLISH, ty["english"], t["english"], weight="BOLD",
+               maxw=inner_w, tag="english")
+        measured.append(dict(text=ENGLISH, size=ty["english"], color=t["english"],
+                             y=block_at, role="cta"))
+        d.text(hx, url_y, URL, ty["display"], t["accent"], weight="BOLD", maxw=inner_w,
+               tag="url")
+        measured.append(dict(text=URL, size=ty["display"], color=t["accent"], y=url_y,
+                             role="cta"))
+        d.box(hx, bye, chip_w, 58, t["cta_fill"], radius=29,
+              border=f"1 SOLID {t['cta_edge']}")
+        d.text(hx + 28, bye + 15, CTA, ty["meta"], t["cta_text"], weight="BOLD",
+               maxw=chip_w - 64, tag="cta")
+        if fmt == "portrait":
+            d.box(card_x + card_w - 44 - 314, bye, 314, 58, t["warm_fill"], radius=29)
+            d.rtext(card_x + card_w - 44 - 26, bye + 15, DT, ty["meta"], t["warm_text"],
+                    weight="BOLD")
+        else:
+            d.text(S["panel"][0] + 42, S["panel"][1] + 452, DT, ty["display"],
+                   t["warm_fill"], weight="BOLD", maxw=S["panel"][2] - 84,
+                   align="CENTER_LEFT")
+    else:
+        url_y = bye - 52
+        d.text(hx, url_y, URL, ty["display"], t["accent_soft"], weight="BOLD",
+               maxw=inner_w, tag="url")
+        measured.append(dict(text=URL, size=ty["display"], color=t["accent_soft"],
+                             y=url_y, role="cta"))
+        if fmt == "portrait":
+            d.text(hx, url_y + round(ty["display"] * LINE_HEIGHT) + 18, DT,
+                   ty["display"], t["warm_soft"], weight="BOLD", maxw=inner_w,
+                   tag="datetime")
+        else:
+            d.text(S["panel"][0] + 42, S["panel"][1] + 452, DT, ty["display"],
+                   t["warm_soft"], weight="BOLD", maxw=S["panel"][2] - 84,
+                   align="CENTER_LEFT")
+        if rnd >= 2:
+            d.box(hx, bye, chip_w, 54, "#0E9F8F2E", radius=27,
+                  border="1 SOLID #0E9F8F88")
+            d.text(hx + 28, bye + 13, CTA, ty["meta"], t["accent_soft"], weight="BOLD",
+                   maxw=chip_w - 64, tag="cta")
+
+    # ------------------------------------------------------------- decorations
+    if S["deco"] == "bars-left":
+        for bx, bw, bc in ((92, 64, "#0E9F8FFF"), (174, 128, "#1D4ED8FF"),
+                           (320, 88, "#D97706FF")):
+            d.box(bx, H - 62, bw, 22, bc, radius=11)
+    elif light:
+        d.box(card_x + 56, bye + 96, 260, 10, t["accent"], radius=5)
+    else:
+        d.box(card_x + 56, bye + 96, 260, 10, "#0E9F8F66", radius=5)
+
+    if y > bye - 40:
+        raise AssertionError(f"{fmt} r{rnd}: copy column {y} collides with the bottom "
+                             f"cluster at {bye}")
+    _raise_overlaps(measured, hx, f"{fmt}-r{rnd}")
+    for m in measured:
+        b = m["y"] + round(m["size"] * LINE_HEIGHT)
+        if b > card_bottom:
+            raise AssertionError(f'{fmt} r{rnd}: text leaves the card ({m["text"][:16]})')
+    return d, measured, bg_stack, dict(card=[card_x, card_y, card_w, card_h],
+                                       column_bottom=y, bottom_cluster_y=bye,
+                                       title_size=tsize, title_lines=len(lines))
+
+
+def portrait(rnd: int) -> tuple:
+    return build("portrait", rnd)
+
+
+def wide(rnd: int) -> tuple:
+    return build("wide", rnd)

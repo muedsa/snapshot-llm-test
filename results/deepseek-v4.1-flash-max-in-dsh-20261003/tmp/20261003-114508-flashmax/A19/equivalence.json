@@ -1,0 +1,72 @@
+{
+  "schema": "a19-equivalence/1",
+  "claim": "两份隐藏内容不同的完整 DSL，在同一服务上渲染出字节完全相同、像素完全相同的 PNG；因此仅凭可见图无法判断 P1 下方的内容。",
+  "a": {
+    "file": "occlusion.png",
+    "dsl": "occlusion.snapshot",
+    "hidden": {
+      "kind": "square",
+      "color": "#DC2626FF",
+      "x": 280,
+      "y": 300,
+      "size": 80
+    },
+    "png_sha256": "8676dd3b9dc5054cf65c3b2f2a33cd8c0a2581a0b00d0d139de58ad9cf7dde10",
+    "png_bytes": 43310,
+    "render_request_id": "A19-REQ-0002"
+  },
+  "b": {
+    "file": "occlusion-alternative.png",
+    "dsl": "occlusion-alternative.snapshot",
+    "hidden": {
+      "kind": "circle",
+      "color": "#16A34AFF",
+      "x": 280,
+      "y": 300,
+      "size": 80
+    },
+    "png_sha256": "8676dd3b9dc5054cf65c3b2f2a33cd8c0a2581a0b00d0d139de58ad9cf7dde10",
+    "png_bytes": 43310,
+    "render_request_id": "A19-REQ-0003"
+  },
+  "identical_bytes": true,
+  "identical_size": true,
+  "pixel_comparison": {
+    "method": "Pillow ImageChops.difference(...).getbbox() 与逐像素 RGBA 比较",
+    "diff_bbox": null,
+    "differing_pixels": 0,
+    "total_pixels": 640000,
+    "identical_pixels": true
+  },
+  "hidden_content_differs": true,
+  "hidden_content_summary": {
+    "a": "square #DC2626FF size 80 at (280,300)",
+    "b": "circle #16A34AFF size 80 at (280,300)"
+  },
+  "occlusion_proof": {
+    "panel": "P1",
+    "panel_rect": {
+      "x0": 180,
+      "y0": 260,
+      "x1": 380,
+      "y1": 340
+    },
+    "hidden_a_rect": {
+      "x0": 240.0,
+      "y0": 260.0,
+      "x1": 320.0,
+      "y1": 340.0
+    },
+    "hidden_b_rect": {
+      "x0": 240.0,
+      "y0": 260.0,
+      "x1": 320.0,
+      "y1": 340.0
+    },
+    "both_fully_covered": true,
+    "sampled_colours_inside_P1": [
+      "#1E293B"
+    ],
+    "conclusion": "P1 内部采样只出现面板自身的深色，没有任何形状/颜色线索；两份不同的隐藏内容输出完全一致。"
+  }
+}

@@ -1,0 +1,400 @@
+{
+  "schema": "a19-answers/1",
+  "note": "全部答案由 make_questions.py 从 scene-data.json 计算，未手工填写；tolerance_px 是允许的读数误差。",
+  "answers": [
+    {
+      "id": "Q01",
+      "type": "复合属性检索",
+      "answer": "G49",
+      "method": "先按颜色=purple 与形状=rounded 取交集（实测 7 个候选），再按 (row, col) 字典序取最大。",
+      "criteria": "颜色=purple 且 形状=rounded；排序键为 (row, col) 字典序取最大",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": true,
+      "indeterminate": false,
+      "candidates": [
+        {
+          "id": "G04",
+          "row": 1,
+          "col": 4
+        },
+        {
+          "id": "G13",
+          "row": 2,
+          "col": 5
+        },
+        {
+          "id": "G15",
+          "row": 2,
+          "col": 7
+        },
+        {
+          "id": "G19",
+          "row": 3,
+          "col": 3
+        },
+        {
+          "id": "G23",
+          "row": 3,
+          "col": 7
+        },
+        {
+          "id": "G48",
+          "row": 6,
+          "col": 8
+        },
+        {
+          "id": "G49",
+          "row": 7,
+          "col": 1
+        }
+      ]
+    },
+    {
+      "id": "Q02",
+      "type": "严格中心左右关系",
+      "answer": "G22",
+      "method": "centre(G15)=(1202.0,384.0)，centre(G22)=(1030.0,556.0)，Δx=172.0px，取 x 较小者。",
+      "criteria": "比较对象中心点的 x 坐标，严格小于；容差 ±2px（实测差远大于容差）",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": false,
+      "indeterminate": false
+    },
+    {
+      "id": "Q03",
+      "type": "距离比较",
+      "answer": "G19",
+      "method": "d(G28,G30)=344.00px，d(G28,G19)=243.24px，Δ=100.76px，取较小者。",
+      "criteria": "欧氏距离按对象中心点计算",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": true,
+      "indeterminate": false,
+      "z": 1,
+      "distances": {
+        "G28-G30": 344.0,
+        "G28-G19": 243.24
+      }
+    },
+    {
+      "id": "Q04",
+      "type": "排序",
+      "answer": [
+        "G52",
+        "G51",
+        "G53",
+        "G50",
+        "G54",
+        "G49",
+        "G55",
+        "G56"
+      ],
+      "method": "对第 7 行 8 个对象计算到 G20 中心的欧氏距离后升序排列，同距时以列号升序打破平局；实测 8 个距离两两不同，无平局。",
+      "criteria": "排序键 = (到 G20 中心的欧氏距离, 列号)",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": false,
+      "indeterminate": false,
+      "distances": [
+        {
+          "id": "G52",
+          "distance_to_G20": 688.0
+        },
+        {
+          "id": "G51",
+          "distance_to_G20": 709.17
+        },
+        {
+          "id": "G53",
+          "distance_to_G20": 709.17
+        },
+        {
+          "id": "G50",
+          "distance_to_G20": 769.21
+        },
+        {
+          "id": "G54",
+          "distance_to_G20": 769.21
+        },
+        {
+          "id": "G49",
+          "distance_to_G20": 860.0
+        },
+        {
+          "id": "G55",
+          "distance_to_G20": 860.0
+        },
+        {
+          "id": "G56",
+          "distance_to_G20": 972.98
+        }
+      ]
+    },
+    {
+      "id": "Q05",
+      "type": "包围框",
+      "answer": {
+        "x": 138.0,
+        "y": 1032.0,
+        "w": 244.0,
+        "h": 252.0
+      },
+      "method": "四个对象各自的外接正方形取 min(x0)、min(y0)、max(x1)、max(y1) 得到最小包围框；对象尺寸按 size 字段（圆/圆环为外径，方为边长）。",
+      "criteria": "轴对齐最小包围框，对象按外接正方形参与计算",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": true,
+      "indeterminate": false,
+      "box": {
+        "x0": 138.0,
+        "y0": 1032.0,
+        "x1": 382.0,
+        "y1": 1284.0
+      },
+      "members": [
+        {
+          "id": "G41",
+          "size": 48,
+          "bbox": {
+            "x0": 146.0,
+            "y0": 1048.0,
+            "x1": 194.0,
+            "y1": 1096.0
+          }
+        },
+        {
+          "id": "G42",
+          "size": 80,
+          "bbox": {
+            "x0": 302.0,
+            "y0": 1032.0,
+            "x1": 382.0,
+            "y1": 1112.0
+          }
+        },
+        {
+          "id": "G49",
+          "size": 64,
+          "bbox": {
+            "x0": 138.0,
+            "y0": 1212.0,
+            "x1": 202.0,
+            "y1": 1276.0
+          }
+        },
+        {
+          "id": "G50",
+          "size": 80,
+          "bbox": {
+            "x0": 302.0,
+            "y0": 1204.0,
+            "x1": 382.0,
+            "y1": 1284.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q06",
+      "type": "颜色/形状计数",
+      "answer": 1,
+      "method": "先限定行范围 3..6，再同时满足 color=green 且 shape=ring；逐个核对得到计数。",
+      "criteria": "行 ∈ [3,6] 且 颜色=green 且 形状=ring",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": false,
+      "indeterminate": false,
+      "members": [
+        {
+          "id": "G35",
+          "row": 5,
+          "col": 3
+        }
+      ]
+    },
+    {
+      "id": "Q07",
+      "type": "距离比较",
+      "answer": "G03",
+      "method": "A = G03（size 48 中 (row, col) 最小）；在 16 个橙色对象中取到 A 中心欧氏距离最小者，距离 0.00px。",
+      "criteria": "先按 (row, col) 选锚点，再按欧氏距离选最近橙色对象",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": true,
+      "indeterminate": false,
+      "anchor": {
+        "id": "G03",
+        "center": {
+          "x": 514.0,
+          "y": 212.0
+        },
+        "size": 48
+      },
+      "nearest_distance": 0.0
+    },
+    {
+      "id": "Q08",
+      "type": "严格中心左右关系",
+      "answer": "G64",
+      "method": "先筛出第 8 行的圆形，再比较中心 x 坐标取最大者。",
+      "criteria": "行=8 且 形状=circle；比较中心 x 坐标取最大",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": false,
+      "indeterminate": false,
+      "candidates": [
+        {
+          "id": "G59",
+          "centre_x": 514.0
+        },
+        {
+          "id": "G61",
+          "centre_x": 858.0
+        },
+        {
+          "id": "G63",
+          "centre_x": 1202.0
+        },
+        {
+          "id": "G64",
+          "centre_x": 1374.0
+        }
+      ]
+    },
+    {
+      "id": "Q09",
+      "type": "严格中心左右关系",
+      "answer": "正方形",
+      "method": "圆形 16 个平均 x=761.25px，正方形 16 个平均 x=686.00px，Δ=75.25px。",
+      "criteria": "对每组 16 个对象的中心 x 求算术平均后比较大小",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": false,
+      "indeterminate": false
+    },
+    {
+      "id": "Q10",
+      "type": "复合属性检索",
+      "answer": "G25",
+      "method": "先限定 shape=circle 且 centre.y ≤ 800，再取 y 最大者。",
+      "criteria": "形状=circle 且 中心 y ≤ 800；比较中心 y 坐标取最大",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": false,
+      "indeterminate": false,
+      "candidates": [
+        {
+          "id": "G07",
+          "centre_y": 212.0
+        },
+        {
+          "id": "G09",
+          "centre_y": 384.0
+        },
+        {
+          "id": "G11",
+          "centre_y": 384.0
+        },
+        {
+          "id": "G14",
+          "centre_y": 384.0
+        },
+        {
+          "id": "G18",
+          "centre_y": 556.0
+        },
+        {
+          "id": "G24",
+          "centre_y": 556.0
+        },
+        {
+          "id": "G25",
+          "centre_y": 728.0
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "type": "包围框",
+      "answer": {
+        "x": 768.0,
+        "y": 818.0
+      },
+      "method": "16 个绿色对象的外接正方形取 min/max 得框 (130.0,180.0)-(1406.0,1456.0)，再取框中心。",
+      "criteria": "颜色=green 的全部对象；轴对齐最小包围框；再求框中心",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": true,
+      "indeterminate": false,
+      "box": {
+        "x0": 130.0,
+        "y0": 180.0,
+        "x1": 1406.0,
+        "y1": 1456.0
+      }
+    },
+    {
+      "id": "Q12",
+      "type": "排序",
+      "answer": 64,
+      "method": "三组的组内平均距离分别为 48px: 503.72px、64px: 567.51px、80px: 501.65px；取最大值对应的尺寸（最大与次大相差 63.8px，远大于 ±2px 容差）。",
+      "criteria": "组内平均欧氏距离（对象中心 → 画布中心 (800,800)），取最大",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "grid-scene.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "全部依据最终可见图：对象位置取 scene-data.json 的中心坐标，ID 标注在主体外、不参与几何计算",
+      "two_step_relation": false,
+      "indeterminate": false,
+      "averages": {
+        "48": 503.72,
+        "64": 567.51,
+        "80": 501.65
+      }
+    },
+    {
+      "id": "Q13",
+      "type": "遮挡场景·可见范围",
+      "answer": {
+        "left_x": 180,
+        "top_y": 260
+      },
+      "method": "遮挡场景里从左到右第一块深色矩形就是 P1；它的四条边都在亮背景上可见，直接读取左边界与上边界像素坐标即可。",
+      "criteria": "P1 = 最左的深色矩形；坐标取该矩形外边缘",
+      "tolerance_px": 2.0,
+      "coordinate_origin": "occlusion.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "P1 的四条边全部可见；题面给出的是可见边缘读数，不涉及被遮挡区域",
+      "two_step_relation": false,
+      "indeterminate": false,
+      "panel_rect": {
+        "x0": 180,
+        "y0": 260,
+        "x1": 380,
+        "y1": 340
+      }
+    },
+    {
+      "id": "Q14",
+      "type": "遮挡场景·信息不足",
+      "answer": "无法确定",
+      "method": "P1 覆盖区域在 occlusion.png 上与 P1 的其余部分同为 #1E293B，没有可见轮廓、颜色差异或阴影；因此可见图不能区分“下面有圆”与“下面没有圆”。",
+      "criteria": "答案为三选一；判定依据是覆盖区域是否存在可区分的可见像素",
+      "tolerance_px": null,
+      "coordinate_origin": "occlusion.png 左上角，x 向右、y 向下，单位像素",
+      "visibility_basis": "P1 完全盖住其下方对象；可见像素只有 #1E293B 一种颜色",
+      "two_step_relation": false,
+      "indeterminate": true,
+      "proof": "等价的两份隐藏内容：occlusion.png 下藏红色正方形，occlusion-alternative.png 下藏绿色圆形；两者输出字节完全相同（见 equivalence.json），因此仅凭可见图无法判断该区域下方是否为圆形。"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+import sys; sys.path.insert(0, r'D:\workspaces\deepseek-v4.1-flash-max-in-dsh\tmp\20261003-114508-flashmax\B01'); import cases.c01 as c; c.build('v2', r'D:\workspaces\deepseek-v4.1-flash-max-in-dsh\tmp\20261003-114508-flashmax\B01')

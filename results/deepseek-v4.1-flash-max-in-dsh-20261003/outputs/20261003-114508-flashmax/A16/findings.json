@@ -1,0 +1,282 @@
+{
+  "schema": "findings/1",
+  "task_id": "A16",
+  "run_id": "20261003-114508-flashmax",
+  "examined": {
+    "flawed_image": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+    "trusted_data": "tasks/A16-visual-data-forensics/inputs/source.csv",
+    "method": "先用 Pillow 量测原图的柱位、柱高、网格线、刻度与图例色块，再与 CSV 逐项核对；所有结论都能由量测值或 CSV 复算，没有按常见图表错误清单凭空列举。",
+    "measured_at": "2026-10-03T13:17:59+08:00"
+  },
+  "source_data": [
+    {
+      "quarter": "Q1",
+      "revenue_wan": 120,
+      "cost_wan": 90,
+      "profit_wan": 30
+    },
+    {
+      "quarter": "Q2",
+      "revenue_wan": 135,
+      "cost_wan": 108,
+      "profit_wan": 27
+    },
+    {
+      "quarter": "Q3",
+      "revenue_wan": 128,
+      "cost_wan": 96,
+      "profit_wan": 32
+    },
+    {
+      "quarter": "Q4",
+      "revenue_wan": 180,
+      "cost_wan": 126,
+      "profit_wan": 54
+    }
+  ],
+  "severity_order": [
+    "F-01",
+    "F-02",
+    "F-04",
+    "F-03",
+    "F-06",
+    "F-07",
+    "F-05"
+  ],
+  "findings": [
+    {
+      "id": "F-01",
+      "severity": "critical",
+      "kind": "视觉/数值",
+      "location": "图表绘图区：8 根柱，x 224–1071，柱底 y=564，柱顶 y=319–455",
+      "phenomenon": "8 根柱的像素高度依次为 150/110/172/135/198/128/246/165（蓝、橙交替），与柱上标签 120/90/135/108/128/96/180/126 不成比例；例如 Q3 蓝柱比 Q1 蓝柱高 48px，但标签 128 只比 120 多 8。",
+      "source_check": "CSV 值为收入 120/135/128/180、成本 90/108/96/126。即使最宽容地假设柱底为零基线，隐含比例（像素高÷数值）仍然在 1.222–1.547 px/万元 之间波动；若按图自身画出的坐标轴（100 在 y=562、2.7px/万元）反算，每根柱都比标签多出 10.0–50.3 万元。",
+      "impact": "柱子的高低关系与真实数据无关，读者从图形得到的量级判断完全不可信——这是本题最严重的问题，改数字标签也无法掩盖（图仍会说谎）。",
+      "correction": "重制图 8 根柱全部由同一线性比例从 0 基线绘制：1.45 px/万元（零线 y=539，200 万元在 y=250）。",
+      "measured_flawed_bars": [
+        {
+          "quarter": "Q1",
+          "series": "revenue",
+          "printed_label": 120,
+          "top": 415,
+          "bottom": 564,
+          "height_px": 150,
+          "implied_value_on_its_own_axis": 154.4,
+          "over_read_wan": 34.4,
+          "implied_px_per_unit_from_zero": 1.25
+        },
+        {
+          "quarter": "Q1",
+          "series": "cost",
+          "printed_label": 90,
+          "top": 455,
+          "bottom": 564,
+          "height_px": 110,
+          "implied_value_on_its_own_axis": 139.6,
+          "over_read_wan": 49.6,
+          "implied_px_per_unit_from_zero": 1.2222
+        },
+        {
+          "quarter": "Q2",
+          "series": "revenue",
+          "printed_label": 135,
+          "top": 393,
+          "bottom": 564,
+          "height_px": 172,
+          "implied_value_on_its_own_axis": 162.6,
+          "over_read_wan": 27.6,
+          "implied_px_per_unit_from_zero": 1.2741
+        },
+        {
+          "quarter": "Q2",
+          "series": "cost",
+          "printed_label": 108,
+          "top": 430,
+          "bottom": 564,
+          "height_px": 135,
+          "implied_value_on_its_own_axis": 148.9,
+          "over_read_wan": 40.9,
+          "implied_px_per_unit_from_zero": 1.25
+        },
+        {
+          "quarter": "Q3",
+          "series": "revenue",
+          "printed_label": 128,
+          "top": 367,
+          "bottom": 564,
+          "height_px": 198,
+          "implied_value_on_its_own_axis": 172.2,
+          "over_read_wan": 44.2,
+          "implied_px_per_unit_from_zero": 1.5469
+        },
+        {
+          "quarter": "Q3",
+          "series": "cost",
+          "printed_label": 96,
+          "top": 437,
+          "bottom": 564,
+          "height_px": 128,
+          "implied_value_on_its_own_axis": 146.3,
+          "over_read_wan": 50.3,
+          "implied_px_per_unit_from_zero": 1.3333
+        },
+        {
+          "quarter": "Q4",
+          "series": "revenue",
+          "printed_label": 180,
+          "top": 319,
+          "bottom": 564,
+          "height_px": 246,
+          "implied_value_on_its_own_axis": 190.0,
+          "over_read_wan": 10.0,
+          "implied_px_per_unit_from_zero": 1.3667
+        },
+        {
+          "quarter": "Q4",
+          "series": "cost",
+          "printed_label": 126,
+          "top": 400,
+          "bottom": 564,
+          "height_px": 165,
+          "implied_value_on_its_own_axis": 160.0,
+          "over_read_wan": 34.0,
+          "implied_px_per_unit_from_zero": 1.3095
+        }
+      ],
+      "verified_after_fix": {
+        "same_zero_line_for_all_8_bars": true,
+        "zero_line_y": 539,
+        "px_per_unit_min": 1.44444,
+        "px_per_unit_max": 1.4537,
+        "proportional": true,
+        "note": "实测 8 根柱的比例落在 1.4444–1.4537，最大相对偏差 0.6%（来自 1px 抗锯齿）。"
+      },
+      "final_view_result": "已打开 outputs/A16/corrected-report.png 核对：8 根柱底边同在零线，柱高比等于 120:135:128:180（收入）与 90:108:96:126（成本）。"
+    },
+    {
+      "id": "F-02",
+      "severity": "critical",
+      "kind": "视觉/语义",
+      "location": "图例：y 183–202；蓝色色块（「成本」）与橙色色块（「收入」）",
+      "phenomenon": "图例把蓝色标为「成本」、橙色标为「收入」。",
+      "source_check": "蓝柱上方的数字 120/135/128/180 与 CSV 的 revenue_wan 逐值相同；橙柱上方的 90/108/96/126 与 cost_wan 逐值相同。因此图里画的蓝柱是收入、橙柱是成本，图例与图形对调。",
+      "impact": "整张图的语义反转：读者会把收入读成成本，据此得出的成本结构判断是错的。",
+      "correction": "重制图图例明确为「收入 = 蓝 #245CE4」「成本 = 橙 #D97706」，并使用与原图一致的蓝/橙两色，不改变配色习惯。",
+      "final_view_result": "已打开最终图核对：图例色块与对应柱色一致，且柱上数值标签与 CSV 一致。"
+    },
+    {
+      "id": "F-03",
+      "severity": "high",
+      "kind": "视觉",
+      "location": "纵轴刻度 100/120/140/160/180/200，最低刻度线 y≈562，柱底 y=564",
+      "phenomenon": "纵轴从 100 开始而不是 0，柱底被截断在 100 处，视觉上把 120 与 135 的差距放大成近半幅高度。",
+      "source_check": "CSV 中最小值为 Q1 成本 90 万元，低于 100；在 100 起点的轴上这个数据无处表达。",
+      "impact": "违反「共同零起点」，且使同比/环比的视觉差距被系统性夸大。",
+      "correction": "重制图纵轴改为 0–200，刻度 0/50/100/150/200，零线 y=539；利润明细的另一张小图同样以 0 为基线。",
+      "final_view_result": "最终图纵轴最低刻度为 0，8 根柱的底边都落在零线上（实测 y=539 一致）。"
+    },
+    {
+      "id": "F-04",
+      "severity": "critical",
+      "kind": "叙事",
+      "location": "标题，y 45–80：「季度复盘：Q3利润最高」",
+      "phenomenon": "标题断言 Q3 利润最高。",
+      "source_check": "利润 = 收入 − 成本 → Q1 30、Q2 27、Q3 32、Q4 54（万元）；最高的是 Q4（54），Q3 只有 32，排第二。",
+      "impact": "结论方向错误，会把资源投向错误的季度。",
+      "correction": "标题改为「季度复盘：Q4 利润 54 万元居首，Q2 增收未增利」，两个分句都能由 CSV 复算。",
+      "final_view_result": "最终图标题与利润明细柱状图一致（Q4 柱最高且被高亮）。"
+    },
+    {
+      "id": "F-05",
+      "severity": "medium",
+      "kind": "叙事",
+      "location": "副标题，y 105–125：「收入持续上升，全年保持增长」",
+      "phenomenon": "副标题断言收入全年持续上升。",
+      "source_check": "收入 120→135→128→180；Q3 环比为 (128−135)/135 = −5.19%，出现回落，不是「持续上升」。",
+      "impact": "掩盖了 Q3 的收入回落，读者会误以为四个季度单调增长。",
+      "correction": "副标题改为可核算的全年汇总：「全年收入 563 万元 · 成本 420 万元 · 利润 143 万元 · 整体利润率 25.4%」，趋势判断放到有依据的重点观察框里说。",
+      "final_view_result": "最终图副标题四项数字与 CSV 汇总一致。"
+    },
+    {
+      "id": "F-06",
+      "severity": "high",
+      "kind": "数值",
+      "location": "利润明细卡，Q3 列，y 740–790：「42 万元」",
+      "phenomenon": "利润明细里 Q3 标为 42 万元。",
+      "source_check": "CSV：Q3 收入 128、成本 96 → 利润 32 万元，与显示的 42 差 10 万元。同卡的 Q1 30、Q2 27、Q4 54 与 CSV 一致，说明只有 Q3 错了。",
+      "impact": "单点数值错误，并且被用来支撑「Q3 最高」的结论（即便按 42 算，仍低于 Q4 的 54）。",
+      "correction": "重制图 Q3 利润显示 32 万元，并由柱高同步表达（不是只改标签）。",
+      "final_view_result": "最终图利润明细四值为 30/27/32/54，柱高与之一致（实测高度误差 ≤2px）。"
+    },
+    {
+      "id": "F-07",
+      "severity": "high",
+      "kind": "叙事",
+      "location": "右下「重点观察 · Q3」框，y 660–800",
+      "phenomenon": "「建议把资源集中到Q3，它的利润超过其他季度。」",
+      "source_check": "Q3 利润 32 万元，低于 Q4 的 54 万元；Q3 相对 Q1/Q2 略高，但「超过其他季度」在四个季度里不成立。",
+      "impact": "给出错误的资源分配建议。",
+      "correction": "重点观察框改为 Q4（利润 54 万元与利润率 30.0% 均为四季最高），并补上真正的风险点：Q2 收入 +12.5% 而成本 +20.0%，利润降到 27 万元，是唯一下滑的季度。",
+      "final_view_result": "最终图重点观察框的每个数字都能由 CSV 复算（+12.5%、+20.0%、27、54、30.0%）。"
+    }
+  ],
+  "uncertain": [
+    {
+      "id": "U-01",
+      "item": "F-02 的修法",
+      "why_uncertain": "「图例写错」与「柱子配色用反」在图上无法区分，两种改法都能自洽。",
+      "decision": "按柱上数值标签判定蓝=收入、橙=成本，改图例而不改配色，因为配色（蓝/橙）属于原图的设计语言，改图例的改动更小。"
+    },
+    {
+      "id": "U-02",
+      "item": "数据口径",
+      "why_uncertain": "CSV 未说明是自然季度还是财年季度、成本是否含税、单位是否为人民币。",
+      "decision": "不做任何口径假设，只按 CSV 的字面值计算与展示。"
+    },
+    {
+      "id": "U-03",
+      "item": "视觉风格（圆角、间距、字号层级、留白）",
+      "why_uncertain": "这些是审美偏好，没有客观对错。",
+      "decision": "不计入「错误」，只在重制时做了风格改进（统一卡片圆角、增加重点观察的强调色）。"
+    },
+    {
+      "id": "U-04",
+      "item": "「单位：万元」的适用范围",
+      "why_uncertain": "原图只在图表卡内标注了单位，利润明细卡没有单独标注。",
+      "decision": "按上下文理解为全图统一为万元，重制图中在利润明细卡内也写明单位。"
+    },
+    {
+      "id": "U-05",
+      "item": "Q2 成本增速超过收入增速是否属于「异常」",
+      "why_uncertain": "这需要业务口径（预算、季节性、一次性支出），CSV 无法判断。",
+      "decision": "只陈述事实（成本 +20.0% > 收入 +12.5%，利润 −3 万元），不判定为异常。"
+    },
+    {
+      "id": "U-06",
+      "item": "原图是否存在更多被图形掩盖的问题",
+      "why_uncertain": "原图只有一张图与一张明细卡，可交叉验证的信息有限。",
+      "decision": "只记录能从图像+CSV 双向确认的问题；其余不臆测。"
+    }
+  ],
+  "not_errors": [
+    "四个季度都用 Q1–Q4 标注、顺序正确，没有缺项。",
+    "「单位：万元」已给出，不构成缺失。",
+    "分组柱按「收入在前、成本在后」排列，本身不是错误（错的是图例对调）。"
+  ],
+  "final_view_result": {
+    "file": "outputs/20261003-114508-flashmax/A16/corrected-report.png",
+    "size": [
+      1280,
+      900
+    ],
+    "size_ok": true,
+    "viewed": true,
+    "viewed_at": "2026-10-03T13:17:59+08:00",
+    "checks": {
+      "all_8_bars_share_one_zero_line": true,
+      "bar_height_encodes_value": true,
+      "profit_bars_also_proportional": true,
+      "nothing_touches_canvas_edge": true
+    }
+  }
+}

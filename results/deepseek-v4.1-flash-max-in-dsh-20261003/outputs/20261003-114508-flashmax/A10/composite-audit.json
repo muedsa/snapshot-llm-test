@@ -1,0 +1,598 @@
+{
+  "task": "A10",
+  "image": "compositing-lab.png",
+  "canvas": [
+    1440,
+    1100
+  ],
+  "sigma": 6,
+  "sampling": {
+    "panel_sample_point_in_area": [
+      180,
+      100
+    ],
+    "note": "①② 题面指定 (180,100) 为重叠内部采样点；另外两点分别落在只有红、只有蓝的区域，用于分别验证单层合成。"
+  },
+  "expected_vs_measured_alpha": {
+    "P1": {
+      "panel": "P1",
+      "area_origin": [
+        192,
+        226
+      ],
+      "samples": {
+        "overlap": {
+          "point_in_area": [
+            180,
+            100
+          ],
+          "canvas_point": [
+            372,
+            326
+          ],
+          "expected_f64": [
+            127.0,
+            63.251,
+            191.251
+          ],
+          "expected_rounded": [
+            127,
+            63,
+            191
+          ],
+          "measured": [
+            127,
+            63,
+            191
+          ],
+          "delta": [
+            0,
+            0,
+            0
+          ]
+        },
+        "red_only": {
+          "point_in_area": [
+            60,
+            60
+          ],
+          "canvas_point": [
+            252,
+            286
+          ],
+          "expected_f64": [
+            255.0,
+            127.0,
+            127.0
+          ],
+          "expected_rounded": [
+            255,
+            127,
+            127
+          ],
+          "measured": [
+            255,
+            127,
+            127
+          ],
+          "delta": [
+            0,
+            0,
+            0
+          ]
+        },
+        "blue_only": {
+          "point_in_area": [
+            260,
+            180
+          ],
+          "canvas_point": [
+            452,
+            406
+          ],
+          "expected_f64": [
+            127.0,
+            127.0,
+            255.0
+          ],
+          "expected_rounded": [
+            127,
+            127,
+            255
+          ],
+          "measured": [
+            127,
+            127,
+            255
+          ],
+          "delta": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "P2": {
+      "panel": "P2",
+      "area_origin": [
+        560,
+        226
+      ],
+      "samples": {
+        "overlap": {
+          "point_in_area": [
+            180,
+            100
+          ],
+          "canvas_point": [
+            740,
+            326
+          ],
+          "expected_f64": [
+            127.5,
+            127.5,
+            255.0
+          ],
+          "expected_rounded": [
+            128,
+            128,
+            255
+          ],
+          "measured": [
+            126,
+            126,
+            255
+          ],
+          "delta": [
+            -2,
+            -2,
+            0
+          ]
+        },
+        "red_only": {
+          "point_in_area": [
+            60,
+            60
+          ],
+          "canvas_point": [
+            620,
+            286
+          ],
+          "expected_f64": [
+            255.0,
+            127.5,
+            127.5
+          ],
+          "expected_rounded": [
+            255,
+            128,
+            128
+          ],
+          "measured": [
+            255,
+            126,
+            126
+          ],
+          "delta": [
+            0,
+            -2,
+            -2
+          ]
+        },
+        "blue_only": {
+          "point_in_area": [
+            260,
+            180
+          ],
+          "canvas_point": [
+            820,
+            406
+          ],
+          "expected_f64": [
+            127.5,
+            127.5,
+            255.0
+          ],
+          "expected_rounded": [
+            128,
+            128,
+            255
+          ],
+          "measured": [
+            126,
+            126,
+            255
+          ],
+          "delta": [
+            -2,
+            -2,
+            0
+          ]
+        }
+      }
+    },
+    "explanation": {
+      "alpha_128_over_255": 0.50196078,
+      "note": "#FF000080 / #0000FF80 的 alpha 是 0x80/255 = 0.50196078…，不是 0.5；两者相差 0.00196（约 0.5/255），单层只差 1 个色阶，因此在 ① 里 G/B 通道比『按 0.5 计算』低 1（127 vs 128、63 vs 64）。",
+      "why_P1_and_P2_differ": "① 两层各自参与合成：先红 50% 压到白底，再蓝 50% 压到『已含红』的结果上，所以重叠处仍带红的成分 → (127, 63, 191)。② 的 Opacity 先把子树（不透明红 + 不透明蓝，蓝在上）单独合成一层，重叠处被不透明蓝完全覆盖，再把这一层整体按 0.5 压到白底 → (127.5, 127.5, 255)。",
+      "P1_if_alpha_were_0_5": {
+        "red_only": [
+          255.0,
+          127.5,
+          127.5
+        ],
+        "blue_only": [
+          127.5,
+          127.5,
+          255.0
+        ],
+        "overlap": [
+          127.5,
+          63.75,
+          191.25
+        ]
+      }
+    }
+  },
+  "measurements": {
+    "P1": {
+      "method": "直接读取最终 PNG 像素（无后处理）",
+      "values": {
+        "overlap": {
+          "point_in_area": [
+            180,
+            100
+          ],
+          "canvas_point": [
+            372,
+            326
+          ],
+          "expected_f64": [
+            127.0,
+            63.251,
+            191.251
+          ],
+          "expected_rounded": [
+            127,
+            63,
+            191
+          ],
+          "measured": [
+            127,
+            63,
+            191
+          ],
+          "delta": [
+            0,
+            0,
+            0
+          ]
+        },
+        "red_only": {
+          "point_in_area": [
+            60,
+            60
+          ],
+          "canvas_point": [
+            252,
+            286
+          ],
+          "expected_f64": [
+            255.0,
+            127.0,
+            127.0
+          ],
+          "expected_rounded": [
+            255,
+            127,
+            127
+          ],
+          "measured": [
+            255,
+            127,
+            127
+          ],
+          "delta": [
+            0,
+            0,
+            0
+          ]
+        },
+        "blue_only": {
+          "point_in_area": [
+            260,
+            180
+          ],
+          "canvas_point": [
+            452,
+            406
+          ],
+          "expected_f64": [
+            127.0,
+            127.0,
+            255.0
+          ],
+          "expected_rounded": [
+            127,
+            127,
+            255
+          ],
+          "measured": [
+            127,
+            127,
+            255
+          ],
+          "delta": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "P2": {
+      "method": "直接读取最终 PNG 像素（无后处理）",
+      "values": {
+        "overlap": {
+          "point_in_area": [
+            180,
+            100
+          ],
+          "canvas_point": [
+            740,
+            326
+          ],
+          "expected_f64": [
+            127.5,
+            127.5,
+            255.0
+          ],
+          "expected_rounded": [
+            128,
+            128,
+            255
+          ],
+          "measured": [
+            126,
+            126,
+            255
+          ],
+          "delta": [
+            -2,
+            -2,
+            0
+          ]
+        },
+        "red_only": {
+          "point_in_area": [
+            60,
+            60
+          ],
+          "canvas_point": [
+            620,
+            286
+          ],
+          "expected_f64": [
+            255.0,
+            127.5,
+            127.5
+          ],
+          "expected_rounded": [
+            255,
+            128,
+            128
+          ],
+          "measured": [
+            255,
+            126,
+            126
+          ],
+          "delta": [
+            0,
+            -2,
+            -2
+          ]
+        },
+        "blue_only": {
+          "point_in_area": [
+            260,
+            180
+          ],
+          "canvas_point": [
+            820,
+            406
+          ],
+          "expected_f64": [
+            127.5,
+            127.5,
+            255.0
+          ],
+          "expected_rounded": [
+            128,
+            128,
+            255
+          ],
+          "measured": [
+            126,
+            126,
+            255
+          ],
+          "delta": [
+            -2,
+            -2,
+            0
+          ]
+        }
+      }
+    },
+    "P3": {
+      "stripe_edge_energy": {
+        "inside_card": {
+          "mean": 3.916,
+          "p99": 6.0,
+          "sharp_edge_fraction": 0.0006
+        },
+        "outside_card": {
+          "mean": 13.8384,
+          "p99": 228.333,
+          "sharp_edge_fraction": 0.0606
+        },
+        "below_card": {
+          "mean": 15.9471,
+          "p99": 228.333,
+          "sharp_edge_fraction": 0.0698
+        },
+        "note": "水平相邻像素梯度；卡内取样带 y=卡顶+144..158，避开白色胶囊与色条"
+      },
+      "text_sharpness": {
+        "text_bbox": [
+          1009,
+          293,
+          1167,
+          325
+        ],
+        "mean_grad": 17.142,
+        "p99_grad": 214.333,
+        "max_grad": 228.333
+      }
+    },
+    "P4": {
+      "stripe_edge_energy": {
+        "inside_card": {
+          "mean": 6.6488,
+          "p99": 91.667,
+          "sharp_edge_fraction": 0.0705
+        },
+        "outside_card": {
+          "mean": 13.8384,
+          "p99": 228.333,
+          "sharp_edge_fraction": 0.0606
+        },
+        "below_card": {
+          "mean": 15.9471,
+          "p99": 228.333,
+          "sharp_edge_fraction": 0.0698
+        },
+        "note": "水平相邻像素梯度；卡内取样带 y=卡顶+144..158，避开白色胶囊与色条"
+      },
+      "text_sharpness": {
+        "text_bbox": [
+          273,
+          653,
+          431,
+          685
+        ],
+        "mean_grad": 2.665,
+        "p99_grad": 9.0,
+        "max_grad": 17.0
+      }
+    },
+    "P5": {
+      "tint_bbox": [
+        589,
+        638,
+        807,
+        789
+      ],
+      "content_bbox": [
+        620,
+        641,
+        820,
+        771
+      ],
+      "tint_spill_px": {
+        "left": 31,
+        "top": 3,
+        "right": -13,
+        "bottom": 18
+      },
+      "tinted_px_total": 21065,
+      "tint_bbox_margin_to_area_edges": {
+        "left": 29,
+        "top": 52,
+        "right": 73,
+        "bottom": 37
+      },
+      "tinted_px_outside_both_filter_panels": 0,
+      "tint_threshold": "R-B>=60 且 G-B>=40 且 R>=180（暖黄家族；纯红/粉不入选）"
+    },
+    "P6": {
+      "circle_center": [
+        1088.0,
+        706.0
+      ],
+      "circle_radius": 100.0,
+      "tinted_px_inside_circle": 14607,
+      "tinted_px_outside_circle": 0,
+      "max_tinted_radius_px": 99.57,
+      "probe_just_inside": [
+        72,
+        60,
+        27
+      ],
+      "probe_just_outside": [
+        255,
+        255,
+        255
+      ]
+    }
+  },
+  "visual_judgements": {
+    "P3": {
+      "text_sharp": true,
+      "background_blurred": true,
+      "spills_outside_card": false,
+      "evidence": "卡内条纹几乎不再有锐利跳变：|Δ|>40 的相邻像素对占 0.1%（p99 梯度 6.0），而卡外同一高度为 6.1%（p99 梯度 228.333）、卡下方为 7.0%（p99 梯度 228.333）→ 只有卡片区域内的背景被模糊；卡内文字 p99 梯度 214.333（最大 228.333），仍然锐利；卡外条纹依旧是 14px 方波 → ClipRRect 把 BackdropFilter 限制在圆角卡内，没有外溢。",
+      "doc": "https://snapshot.muedsa.com/widgets/painting/backdrop-filter/ —— “BackdropFilter 只有背后已有内容时才有视觉效果。通常应配合 ClipRect 或 ClipRRect 限制滤镜区域”；https://snapshot.muedsa.com/guides/painting/ —— BackdropFilter 对已绘制内容应用滤镜。"
+    },
+    "P4": {
+      "text_sharp": false,
+      "background_blurred": false,
+      "spills_outside_card": true,
+      "evidence": "同一文字框的 p99 梯度从 ③ 的 214.333 掉到 9.0（≈1/24，最大梯度 17.0）→ 卡内文字与形状被整体模糊；卡内条纹仍保有锐利跳变（|Δ|>40 占 7.0%，卡外 6.1%）→ 背景条纹没有被模糊；跨出卡边的色条模糊晕影延伸到卡外约 18px（3σ），印证 ImageFiltered 会扩大可见像素范围。",
+      "doc": "https://snapshot.muedsa.com/widgets/painting/image-filtered/ —— “它处理的是自身子树；模糊会扩展可见像素范围，祖先裁剪可能截掉模糊边缘”；https://snapshot.muedsa.com/guides/painting/ —— Opacity 与 ColorFiltered/ImageFiltered/BackdropFilter 的语义区分。"
+    },
+    "P5": {
+      "tint_confined_to_subtree_bounds": true,
+      "blur_expands_visible_area": true,
+      "transparent_gap_tinted": true,
+      "evidence": "滤色像素包围盒 [589, 638, 807, 789]，距实验区四边还有 {'left': 29, 'top': 52, 'right': 73, 'bottom': 37}px；整幅图在⑤⑥两个实验区之外只有 0 个滤色像素 → 滤色没有溢出子树边界；相对内容框的偏移 {'left': 31, 'top': 3, 'right': -13, 'bottom': 18} 里，左侧 30px 来自深色矩形的 boxShadow（16px 模糊 + 8px 偏移）已经扩大了绘制边界，其余方向 ≈3σ=18px 的模糊外扩；两根蓝条之间的透明间隙被染成 #F6B94A 系黄色，证明 MULTIPLY 会给边界内的透明区域着色。",
+      "doc": "https://snapshot.muedsa.com/widgets/painting/color-filtered/ —— “当子树的绘制边界可确定时，ColorFiltered 会将作用范围限制在该边界内，避免小组件给整个画布染色”；“合法的溢出、变换后的内容、装饰阴影和文字阴影仍会参与滤镜”；“SRC、MULTIPLY 等可能改变透明像素的混合模式，也可能给边界内原本透明的间隙着色”。"
+    },
+    "P6": {
+      "clip_boundary_visible": true,
+      "tint_inside_circle_only": true,
+      "evidence": "圆形裁剪半径 100px：圆内滤色像素 14607 个，圆外（含 1.5px 抗走样余量）0 个；最大的滤色像素半径 99.57px ≤ 100px；圆边界上内外两侧探针 [72, 60, 27] / [255, 255, 255]（内黄外白）→ 裁剪边界清晰可见。",
+      "doc": "https://snapshot.muedsa.com/reference/parser-tags/ —— ClipOval（椭圆裁剪，默认 ANTI_ALIAS）；ImageFiltered 的祖先裁剪会截掉模糊边缘，因此圆形边界同时切掉内容与模糊晕影。"
+    }
+  },
+  "verdict": {
+    "P1_overlap_measured": [
+      127,
+      63,
+      191
+    ],
+    "P2_overlap_measured": [
+      126,
+      126,
+      255
+    ],
+    "P1_equals_expected": true,
+    "P2_within_2_levels_of_ideal": true,
+    "P3_background_blurred_text_sharp": true,
+    "P4_text_blurred_stripes_sharp": true,
+    "P5_tint_confined": true,
+    "P6_clipped": true
+  },
+  "documents_used": [
+    "https://open-snapshot.muedsa.com/ai-guide.md",
+    "https://snapshot.muedsa.com/reference/parser-tags/",
+    "https://snapshot.muedsa.com/guides/painting/",
+    "https://snapshot.muedsa.com/widgets/painting/color-filtered/",
+    "https://snapshot.muedsa.com/widgets/painting/image-filtered/",
+    "https://snapshot.muedsa.com/widgets/painting/backdrop-filter/",
+    "https://snapshot.muedsa.com/widgets/painting/clip-oval/",
+    "https://snapshot.muedsa.com/widgets/painting/opacity/"
+  ]
+}

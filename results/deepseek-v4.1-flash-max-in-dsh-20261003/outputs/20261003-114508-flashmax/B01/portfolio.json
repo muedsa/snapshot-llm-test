@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "task_id": "B01",
+  "run_id": "20261003-114508-flashmax",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets",
+  "assets_used": [],
+  "curatorial_statement": "这十件作品刻意不共享一套配色：每一件先用「谁在什么环境里要看什么」定下媒介与观看距离，再决定视觉语言。共通的只有三件事：信息必须能被核对（所有数字由脚本算出并互相自洽）、结构必须由 DSL 直接构造（没有一张图是外部图片）、以及每件作品都要在图内说清哪些是虚构示例。因此这一组既有暗场的实验室数据卡，也有浅色的医疗表单、工程蓝图、航图与印刷品，跨度本身就是作品集的主张：Snapshot DSL 可以承载一整套真实使用场景，而不只是好看的信息图。",
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "咖啡烘焙曲线复盘卡",
+      "audience": "精品咖啡烘焙师 / 品控",
+      "use_context": "烘焙车间平板或打印后贴在烘豆机旁，暗光环境，30–60 cm 观看",
+      "user_goal": "一批烘完立刻判断曲线是否达标，并决定下一批的火力与时间调整",
+      "content_basis": "脚本按 ROR 计划积分出的烘焙曲线；批次、工坊、杯测分均为虚构演示数据（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "以琥珀色填充表现「豆温」的体量、以青色细线表现「ROR」的速率，让两条不同量纲的曲线在同一坐标系里互不干扰",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        1440,
+        1010
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "Transform 旋转线段折线、4 px 柱状填充、双 y 轴刻度、虚线与事件圆点、卡片式信息层级",
+      "completion_criteria": "回温点/脱水结束/一爆/下豆四个里程碑必须落在曲线上；DTR、失重率、ROR@FC 必须与曲线一致；无文字裁切或压字",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0002",
+        "B01-REQ-0004",
+        "B01-REQ-0005",
+        "B01-REQ-0010",
+        "B01-REQ-0033"
+      ],
+      "iteration_ids": [
+        "c01-v1-baseline",
+        "c01-v2-visual",
+        "c01-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "发展期 ROR 下降较陡（14.3→2.5 ℃/min），是解算器为命中 10:12 下豆时间的结果"
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "半程马拉松赛道剖面与配速带",
+      "audience": "参赛跑者 / 赛事志愿者",
+      "use_context": "赛前 1–2 天在手机上放大看，或打印成 A3 贴在跑团墙上",
+      "user_goal": "看懂坡度分布、记住补给站位置，并据此决定分段配速",
+      "content_basis": "三个高斯爬坡叠加细波动的解析高程模型；爬升/下降/坡度/配速全部由脚本积分计算（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "用颜色直接编码坡度方向与强度，让「哪里难」一眼可见；剖面、坡度带、补给站三条信息带各占一行互不遮挡",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1680,
+        980
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "解析函数采样、5 px 柱状面积填充、按坡度分色、方向箭头、分段表格、双 KPI 卡",
+      "completion_criteria": "剖面填充色必须与下方坡度带一致；分段配速之和必须精确等于目标完赛时间；补给站编号不得压住剖面线",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0006(fail)",
+        "B01-REQ-0011",
+        "B01-REQ-0015",
+        "B01-REQ-0018(fail-replay)",
+        "B01-REQ-0034"
+      ],
+      "iteration_ids": [
+        "c02-v1-elements-fail",
+        "c02-v2-visual",
+        "c02-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "累计爬升 250 m 对半马偏高，属于虚构山地道赛的设定，未做削弱"
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "黑胶唱片封底 · 夜航船",
+      "audience": "独立厂牌设计与实体唱片收藏者",
+      "use_context": "30 cm 见方的实体唱片封套，手持或平放观看",
+      "user_goal": "读完曲序、每面时长、制作人员、编号与条码，并辨认厂牌",
+      "content_basis": "虚构厂牌「北纬唱片」与虚构专辑；曲目时长、总时长、条码条宽均由脚本生成（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "深色纸面 + 烫金细线 + 衬线标题，做出实体印刷的克制感；右下角用同心圆做唱片纹路质感，左侧书脊竖排文字",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        1450,
+        1450
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "旋转文字（书脊与标题）、确定性条码柱、同心圆纹理层、双栏曲目表、微型波形装饰",
+      "completion_criteria": "A/B 面时长之和必须等于标注的总时长；条码柱宽与模块数必须由编号推导；书脊文字不得超出画布",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0007(fail)",
+        "B01-REQ-0012",
+        "B01-REQ-0016",
+        "B01-REQ-0019(fail-replay)",
+        "B01-REQ-0035"
+      ],
+      "iteration_ids": [
+        "c03-v1-elements-fail",
+        "c03-v2-visual",
+        "c03-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "曲目旁的微型波形只是节奏装饰，与真实音频无关，已在图注中说明"
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "家庭用药周计划（照护者用）",
+      "audience": "居家照护者 / 慢病患者的家属",
+      "use_context": "冰箱贴或桌面立牌，每天 4 个时间点近距离查看并打勾",
+      "user_goal": "不漏服、不错服，并在余量见底前补货",
+      "content_basis": "虚构患者「陈素云」与 5 种常见药物的演示处方；每日片数、余量天数由处方表算出（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "以颜色区分药物而不是靠文字记忆；四行时间带 × 七天构成可打勾的矩阵；库存不足用红色直接跳到眼前",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1120,
+        1620
+      ],
+      "dsl_version": "v2",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "7×4 网格、圆角药丸色块、勾选框、库存进度条、可填写记录表",
+      "completion_criteria": "网格中的药块必须与清单一一对应；每日总片数必须等于各行之和；余量 ≤14 天必须标红",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0008",
+        "B01-REQ-0014",
+        "B01-REQ-0036"
+      ],
+      "iteration_ids": [
+        "c04-v1-baseline"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "午/晚/睡前三行只有一种药，留白较多，属于「可打勾空间」的设计取舍"
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "月相与深空观测窗口月历",
+      "audience": "业余天文爱好者 / 天文社团排期者",
+      "use_context": "电脑屏幕或打印成 A3 贴在观测站墙上，暗光环境",
+      "user_goal": "挑出本月最适合出摊的夜晚，并知道当晚月亮有多亮、有多少小时全暗",
+      "content_basis": "简化朔望月模型计算月相（误差约 ±0.5 天）；天文暗夜时长由太阳 −18° 时角解算出；行星窗口为演示星历（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "月相用逐行扫描的晨昏线几何真正画出来，而不是用圆形遮挡假装；每个日期格子同时给出月相、照亮比例与暗夜长度条",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        1560,
+        1120
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "逐行构建的月相盘、圆弧与圆环、日历网格、水平条形评分、深色多层次面板",
+      "completion_criteria": "月相盘形状必须与照亮比例一致（凸月必须真的凸）；最佳观测夜排序必须由「暗夜时长 ×（1−照亮）^1.5」算出；日期不得溢出月历卡",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0009(fail)",
+        "B01-REQ-0013",
+        "B01-REQ-0017",
+        "B01-REQ-0020(fail-replay)",
+        "B01-REQ-0037"
+      ],
+      "iteration_ids": [
+        "c05-v1-elements-fail",
+        "c05-v2-visual",
+        "c05-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "月相为简化模型，未做摄动修正；行星可见窗口是演示数据，已在图内标注"
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "手工皮具版型技术图（蓝图样式）",
+      "audience": "独立皮具工作室 / 手工爱好者",
+      "use_context": "工作台上平铺打印，边裁边看，30–50 cm 距离",
+      "user_goal": "按 1:1 版型裁断、打孔、缝合一件 A6 笔记本封套",
+      "content_basis": "虚构图号 LP-A6-02 的封套版型；缝份、针距、孔数、用料面积均由 mm 尺寸换算（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "青色蓝图 + 网格 + 尺寸线，用工程制图语言表达手工艺；缝孔以真实针距沿内轮廓排布，可以直接数",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        1400,
+        1010
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "像素网格、毫米→像素换算、尺寸线与箭头、旋转尺寸数字、沿轮廓的参数化打孔、比例尺",
+      "completion_criteria": "裁断线必须含缝份；孔数必须由周长与针距算出；尺寸数字不得被尺寸线穿过，也不得压住相邻版型",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0021",
+        "B01-REQ-0026",
+        "B01-REQ-0032",
+        "B01-REQ-0038"
+      ],
+      "iteration_ids": [
+        "c06-v1-baseline",
+        "c06-v2-visual",
+        "c06-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "C / D 两件未画竖向尺寸线（会压到相邻版型），改由右栏裁断清单给出"
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "儿童疫苗接种时间轴",
+      "audience": "幼儿家长 / 社区接种门诊",
+      "use_context": "竖版打印后贴在家庭文件夹内页，或手机上查看",
+      "user_goal": "一眼看出哪些剂次已完成、哪一次漏了、下一次什么时候该去",
+      "content_basis": "虚构儿童（2024-08-12 出生）的演示接种记录；月龄、剂次统计、延迟天数由脚本计算（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "用一条纵向时间轴 + 状态色把所有节点串起来，延迟节点单独标出计划日期与实际日期的差值，避免「以为打过了」",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1240,
+        1560
+      ],
+      "dsl_version": "v2",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "纵向时间轴、状态徽章、动态宽度标签、日期差计算、表单式底栏",
+      "completion_criteria": "每个节点的状态色必须与其实际日期一致；剂次总数与已完成数必须自洽；状态徽章不得溢出卡片",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0022",
+        "B01-REQ-0027",
+        "B01-REQ-0039"
+      ],
+      "iteration_ids": [
+        "c07-v1-baseline",
+        "c07-v2-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "疫苗名称与剂次仅作排布示例，已在页脚明确「不构成医疗建议」"
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "播客单集波形与章节卡",
+      "audience": "播客听众 / 节目运营",
+      "use_context": "社交平台方形贴文或节目页头图，手机竖屏首屏",
+      "user_goal": "在听之前就知道这期讲了什么、哪一段最值得跳过去听",
+      "content_basis": "虚构播客「潮位线」第 42 集；波形由章节增益 × 音节包络 × 停顿门生成（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "把「章节」做成颜色的分段，让波形本身就是目录；镜像条带 + 停顿缺口制造可读的音频质感",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1400,
+        1400
+      ],
+      "dsl_version": "v1",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "216 根镜像波形柱、分段着色、章节分隔虚线、播放进度指示、两栏章节表",
+      "completion_criteria": "波形分段颜色必须与章节表一一对应；时长标注必须等于章节时间差；播放指示不得压住章节标签",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0023",
+        "B01-REQ-0040"
+      ],
+      "iteration_ids": [
+        "c08-v1-baseline"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "波形是脚本按包络生成的示意图，不是真实音频采样，已在图注说明"
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "仪表进近图（虚构机场，教学用）",
+      "audience": "飞行模拟玩家 / 航图制图学习者",
+      "use_context": "桌面显示器或 A3 打印，作为模拟飞行的对照图",
+      "user_goal": "读懂一个 VOR/DME 进近程序的平面航迹、剖面下降梯度与最低标准",
+      "content_basis": "完全虚构的机场 ZZYC 与程序；方位、距离、梯度、最低标准均由三角函数算出（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "复刻航图的三种视图语言：平面图给航迹、剖面图给高度、表格给最低标准，三者共用同一套 VOR/DME 距离定义",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        1500,
+        1050
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "极坐标→屏幕坐标换算、同心距离环（旋转线段近似）、径向刻度与方位标注、旋转跑道矩形、剖面折线",
+      "completion_criteria": "平面图上的 FAF/MAPt 位置必须与 DME 距离一致；剖面梯度必须等于 (FAF 高 − 跑道高) / 距离；图内必须标注「虚构、不可用于真实飞行」",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0024",
+        "B01-REQ-0028",
+        "B01-REQ-0030",
+        "B01-REQ-0041"
+      ],
+      "iteration_ids": [
+        "c09-v1-baseline",
+        "c09-v2-visual",
+        "c09-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "程序转弯标记用固定像素画法，在 1 NM ≈ 16 px 的比例下无法按真实尺度绘制"
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "茶叶风味轮（评茶用）",
+      "audience": "评茶师 / 茶艺教学者",
+      "use_context": "茶室墙上挂图或平板，1–2 m 观看",
+      "user_goal": "按「茶类 → 制法 → 风味描述」三级定位，快速圈出 3–5 个主调",
+      "content_basis": "6 个茶类 / 15 种制法 / 45 个风味描述词，为评茶常用词的示例整理（品牌/人物/数据均为虚构演示）",
+      "visual_intent": "用真正的环状扇区承载三级信息，扇区角度按子项数量分配；右半边文字向外读、左半边向内读，保证所有标签都是正的",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1500,
+        1500
+      ],
+      "dsl_version": "v3",
+      "supporting_assets": [],
+      "asset_policy": "run-config.json 的 creative 轨道允许局部辅助素材；本作品集实际未使用任何外部素材，全部为纯 DSL 构造",
+      "dsl_capabilities": "环形扇区填充（旋转矩形拼合）、径向旋转文字的双向排布、按数据结构分配角度、中心留白",
+      "completion_criteria": "扇区角度必须与所属描述词数量成正比；每个描述词必须落在自己的扇区内；标签不得跨扇区或被裁切",
+      "visual_review": "final.png 用 read_image 打开本体核对；与临时目录中被审查版本 SHA-256 一致（verify_final.py）",
+      "request_ids": [
+        "B01-REQ-0025",
+        "B01-REQ-0029",
+        "B01-REQ-0031",
+        "B01-REQ-0042"
+      ],
+      "iteration_ids": [
+        "c10-v1-baseline",
+        "c10-v2-visual",
+        "c10-v3-visual"
+      ],
+      "fictional_disclosure": "作品内的品牌、人物、日期与数据均为虚构演示，未使用真实客户或真实部署数据",
+      "unresolved_issues": [
+        "风味描述为常用词的示例整理，不是任何机构的标准风味轮，已在图内标注"
+      ]
+    }
+  ],
+  "final_collection_review": "逐件复查 10 张最终图（全部用 read_image 打开最终 PNG 本体）：十件作品的媒介、比例、信息结构与视觉语言互不重复，没有同版式换色或缩放的情况。共发现并修复 12 类真实缺陷：ROR 曲线跑出绘图区、两处卡片内文字互相压行、心率式伪进度条（改为真实目标区间）、马拉松坡度公式量纲错误（放大 1000 倍）、XML 实体被原样显示、补给站标签压住剖面线、疫苗状态徽章溢出卡片、环形扇区旋转方向错误（弧带被画成细线）、扇区起点未递增导致每个茶类只剩最后一种制法、版型尺寸数字被尺寸线穿过、航图跑道条过长且识别文字互相压字、剖面注释与 DME 轴标签重叠。另外发现并绕过了服务端 4096 元素上限（3 次 400，逐字保存错误体）。仍有 6 处小问题记录在各 case.md 的「未解决」中，均不影响信息正确性。",
+  "counts": {
+    "independent_works": 10,
+    "final_pngs": 10,
+    "render_requests": 42,
+    "render_success": 39,
+    "render_failed": 3,
+    "dsl_versions": 30
+  },
+  "unresolved_issues": [
+    "case-01 发展期 ROR 下降较陡；case-02 累计爬升偏高；case-04 部分行留白较多；case-06 C/D 无竖向尺寸线；case-08 波形为生成示意；case-10 风味词非机构标准。六项均在对应 case.md 中记录，不影响信息正确性。"
+  ]
+}

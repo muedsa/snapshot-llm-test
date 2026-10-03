@@ -1,0 +1,99 @@
+{
+  "schema": "task-metrics/1",
+  "run_id": "20261003-114508-flashmax",
+  "task_id": "A16",
+  "title": "从错误图表恢复可信叙事",
+  "status": "completed",
+  "timezone": "+08:00",
+  "started_at": "2026-10-03T13:15:37+08:00",
+  "ended_at": "2026-10-03T13:17:59+08:00",
+  "wall_clock_seconds": 142.0,
+  "requests": {
+    "requests_total": 3,
+    "render_success": 3,
+    "render_failed": 0,
+    "other_service_requests": 0,
+    "request_kinds": {
+      "render": 3
+    },
+    "source": "tmp/<run_id>/<TASK>/requests.jsonl 逐行统计（每个真实 HTTP 请求一行）",
+    "request_duration_ms_sum": 8465,
+    "first_request_at": "2026-10-03T13:16:56.4656808+08:00",
+    "last_request_at": "2026-10-03T13:17:59.4097536+08:00"
+  },
+  "iterations": {
+    "iterations_total": 4,
+    "iterations_by_type": {
+      "baseline": 2,
+      "visual": 1,
+      "requirement-check": 1
+    },
+    "visual_iterations": 1,
+    "image_reviews": 7,
+    "completed_visual_iterations": 1
+  },
+  "dsl_versions": 2,
+  "final_pngs": 1,
+  "rounds": [],
+  "cases": [],
+  "tool_invocations": 3,
+  "tool_usage_file": "tmp\\20261003-114508-flashmax\\A16\\tool-usage.jsonl",
+  "outputs": [
+    "corrected-report.png",
+    "corrected-report.snapshot",
+    "findings.json",
+    "corrected-data.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "output_dir": "outputs\\20261003-114508-flashmax\\A16",
+  "temp_dir": "tmp\\20261003-114508-flashmax\\A16",
+  "waiting": {
+    "user_feedback_ms": 0,
+    "rate_limit_wait_ms": null,
+    "queue_wait_ms": null,
+    "note": "429/Retry-After 未发生；服务端排队时间不可测，记 null；未等待用户反馈。"
+  },
+  "cost": {
+    "tokens": null,
+    "image_inputs": null,
+    "money": null,
+    "currency": null,
+    "source": "平台未提供 token/图像/费用指标，按 AGENTS.md 记 null，不用字数估算。"
+  },
+  "notes": [
+    "渲染请求 3 次，全部 200 image/png，0 失败，无 429。",
+    "看图 7 次 read_image：原图 1 次、原图局部放大 3 次、重制图 3 次（含最终图）。",
+    "找到并修正 7 条问题（2 条 critical、3 条 high、1 条 medium），另记录 6 条不确定项；每条都有量测值或 CSV 复算作为证据。",
+    "完成视觉迭代 1 次（利润明细标签换行越界）；诊断 1 次、需求核对 1 次。",
+    "核心修正：柱高由同一线性比例从 0 基线绘制，实测 8 根柱比例 1.4444–1.4537 px/万元。",
+    "本题 DSL 元素数 152（<[A-Za-z] 计数），远低于服务 4096 元素上限。"
+  ],
+  "findings": {
+    "total": 7,
+    "critical": 3,
+    "high": 3,
+    "medium": 1,
+    "uncertain": 6
+  },
+  "bar_check": {
+    "all_bars_share_zero_line": true,
+    "px_per_unit": {
+      "min": 1.44444,
+      "max": 1.4537,
+      "spread": 0.00926
+    },
+    "profit_height_error_px": [
+      1.82,
+      1.64,
+      1.61,
+      0.27
+    ]
+  },
+  "dsl_element_count": 152,
+  "dsl_versions_detail": [
+    "corrected-report.v1",
+    "corrected-report.v2"
+  ],
+  "image_views_file": "tmp/20261003-114508-flashmax/A16/image-views.jsonl"
+}

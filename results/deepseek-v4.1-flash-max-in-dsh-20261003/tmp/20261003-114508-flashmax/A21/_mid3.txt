@@ -1,0 +1,327 @@
+# ------------------------------------------------------------------------ renderers
+# Vertical rhythm, in document order. `card` is (x, y, w, h); every item is placed by a
+# cursor that walks down the free-flow area of the card, so two text boxes can never end
+# up on the same band. Long copy is allowed to wrap at the column width.
+FLOW = {
+    1: {"portrait": dict(card=[44, 110, 992, 1154], title_size=64, chips_row=False,
+                         gap=dict(brand=86, eyebrow=30, title=38, sub=24, speakers=96,
+                                  sponsors=0, rule=64, caption_top=28, caption=0,
+                                  url=200, date=32, chips=0)),
+        "wide": dict(card=[48, 96, 1344, 624], title_size=72, chips_row=False,
+                     gap=dict(brand=70, eyebrow=26, title=30, sub=22, speakers=72,
+                              sponsors=0, rule=52, caption_top=24, caption=0,
+                              url=120, date=0, chips=0))},
+    2: {"portrait": dict(card=[44, 110, 992, 1154], title_size=60, chips_row=False,
+                         gap=dict(brand=86, eyebrow=30, title=44, sub=26, speakers=72,
+                                  sponsors=52, rule=58, caption_top=26, caption=0,
+                                  url=150, date=32, chips=0)),
+        "wide": dict(card=[48, 96, 1344, 624], title_size=56, chips_row=False,
+                     gap=dict(brand=70, eyebrow=26, title=34, sub=22, speakers=52,
+                              sponsors=32, rule=44, caption_top=22, caption=0,
+                              url=96, date=0, chips=0))},
+    3: {"portrait": dict(card=[44, 110, 992, 1154], title_size=60, chips_row=True,
+                         gap=dict(brand=86, eyebrow=30, title=44, sub=26, speakers=72,
+                                  sponsors=52, rule=58, caption_top=26, caption=0,
+                                  url=140, date=0, chips=0)),
+        "wide": dict(card=[48, 96, 1344, 624], title_size=56, chips_row=True,
+                     gap=dict(brand=70, eyebrow=26, title=34, sub=22, speakers=52,
+                              sponsors=32, rule=44, caption_top=22, caption=0,
+                              url=44, date=0, chips=0))},
+}
+WIDE_RIGHT = {"panel": [948, 180, 444, 512]}
+TITLE_LINES = {1: [TAGLINE], 2: R2_TITLE, 3: R2_TITLE}
+
+
+def _boxes(measured, left):
+    return [dict(text=m["text"], x=left, y=m["y"], w=text_width(m["text"], m["size"]),
+                 h=round(m["size"] * LINE_HEIGHT),
+                 bottom=m["y"] + round(m["size"] * LINE_HEIGHT))
+            for m in measured if not m.get("over")]
+
+
+def _flow(d, x, y, items, wrap_w):
+    """Place blocks in order. Returns (measured, cursor_y)."""
+    measured = []
+    for it in items:
+        kind = it["kind"]
+        if kind == "gap":
+            y += it["h"]
+            continue
+        if kind == "rule":
+            d.box(x, y, wrap_w, 2, it["color"])
+            y += 2
+            continue
+        lines = it.get("lines") or [it["text"]]
+        for i, ln in enumerate(lines):
+            yy = y + i * it["lh"]
+            d.text(x, yy, ln, it["size"], it["color"], weight=it.get("weight", "NORMAL"),
+                   maxw=wrap_w, tag=it.get("tag"), spacing=it.get("spacing"))
+            measured.append(dict(text=ln, size=it["size"], color=it["color"], y=yy,
+                                 role=it.get("role", "body")))
+        y += it["h"]
+    return measured, y
+
+
+# ------------------------------------------------------------------------- portrait
+def portrait(rnd: int) -> tuple:
+    """1080x1350 poster. rnd 1/2 = dark launch theme, 3 = light theme."""
+    W, H = 1080, 1350
+    light = rnd == 3
+    t = LIGHT if light else DARK
+    cfg = FLOW[rnd]["portrait"]
+    g = cfg["gap"]
+    d = Doc(W, H, background=t["page"])
+    tok = LIGHT_TOKENS if light else DARK_TOKENS
+    ty = tok["type"]["portrait"]
+    measured = []
+    dsl_meta = {}
+
+    if light:
+        d.box(0, 0, W, 16, t["accent"])
+        d.box(-140, -120, 620, 460, t["glow_teal"], radius=230)
+        d.box(W - 420, H - 470, 620, 400, t["glow_warm"], radius=230)
+    else:
+        d.box(-200, -260, 900, 700, "#0E9F8F1F", radius=360)
+        d.box(W - 520, H - 560, 780, 560, "#1D4ED826", radius=380)
+        d.box(0, 0, W, 16, t["accent"])
+        d.box(0, H - 16, W, 16, "#1E293BFF")
+
+    card_x, card_y, card_w, card_h = cfg["card"]
+    if light:
+        card(d, card_x, card_y, card_w, card_h, radius=26, color=t["card"],
+             border=t["card_edge"], shadow="0 10 30 0 #0F172A1F")
+    mx, inner_w = 72, 936
+    bg_stack = [t["page"]] + ([t["card"]] if light else [])
+
+    draw_mark(d, light_mark(96, mx, 176) if light else dark_mark(96, mx, 176))
+    y = 176 + 96 + g["brand"]
+
+    tsize = cfg["title_size"]
+    th = round(tsize * LINE_HEIGHT)
+    tl = TITLE_LINES[rnd]
+    for ln in tl:
+        assert_fits(ln, tsize, inner_w, "portrait-title")
+    eyebrow_size = ty["meta"] + 2
+    d.text(mx, y, EYEBROW, eyebrow_size, t["accent"], weight="BOLD", spacing=1.6,
+           maxw=inner_w)
+    measured.append(dict(text=EYEBROW, size=eyebrow_size, color=t["accent"], y=y,
+                         role="label"))
+    y += round(eyebrow_size * LINE_HEIGHT) + g["eyebrow"]
+    d.box(mx, y - 12, 108, 8, t["accent"], radius=4)
+    for i, ln in enumerate(tl):
+        d.text(mx, y + i * th, ln, tsize, t["head"], weight="BOLD", maxw=inner_w,
+               tag="portrait-title")
+        measured.append(dict(text=ln, size=tsize, color=t["head"], y=y + i * th,
+                             role="headline"))
+    y += len(tl) * th + g["title"]
+
+    items = [
+        dict(kind="text", text=ABOUT[0], lines=ABOUT, size=ty["meta"], color=t["dim"],
+             weight="NORMAL", role="caption", lh=round(ty["meta"] * 1.5),
+             h=len(ABOUT) * round(ty["meta"] * 1.5) + g["sub"]),
+        dict(kind="text", text=SPEAKERS, size=ty["display"], color=t["head"],
+             weight="BOLD", role="speaker", lh=round(ty["display"] * LINE_HEIGHT),
+             h=round(ty["display"] * LINE_HEIGHT) + g["speakers"]),
+    ]
+    if g["sponsors"]:
+        items.append(dict(kind="text", text=SPONSORS, size=ty["lead"], color=t["body"],
+                          weight="NORMAL", role="sponsor",
+                          lh=round(ty["lead"] * LINE_HEIGHT),
+                          h=round(ty["lead"] * LINE_HEIGHT) + g["sponsors"]))
+    items += [
+        dict(kind="rule", color=t["panel_edge"] if not light else t["card_edge"]),
+        dict(kind="gap", h=g["rule"]),
+        dict(kind="text", text=ABOUT2[0], size=ty["meta"], color=t["dim"],
+             weight="NORMAL", role="caption2", lh=round(ty["meta"] * 1.5),
+             h=round(ty["meta"] * 1.5) + g["caption"]),
+    ]
+    body, y = _flow(d, mx, y, items, inner_w)
+    measured += body
+
+    # ---- bottom cluster
+    y += g["url"]
+    chip_w = math.ceil(text_width(CTA, ty["meta"]) + 64)
+    if rnd == 3:
+        for i, ln in enumerate([ENGLISH, URL]):
+            size = ty["english"] if i == 0 else ty["lead"]
+            col = t["english"] if i == 0 else t["accent"]
+            d.text(mx, y + i * round(size * LINE_HEIGHT), ln, size, col, weight="BOLD",
+                   maxw=inner_w, tag=("english" if i == 0 else "url"))
+            measured.append(dict(text=ln, size=size, color=col,
+                                 y=y + i * round(size * LINE_HEIGHT), role="cta"))
+        y += round(ty["english"] * LINE_HEIGHT) + round(ty["lead"] * LINE_HEIGHT)
+        y += g["chips"]
+        d.box(mx, y, chip_w, 58, t["cta_fill"], radius=29,
+              border=f"1 SOLID {t['cta_edge']}")
+        d.text(mx + 28, y + 15, CTA, ty["meta"], t["cta_text"], weight="BOLD",
+               maxw=chip_w - 64, tag="cta")
+        d.box(card_x + card_w - 44 - 314, y, 314, 58, t["warm_fill"], radius=29)
+        d.rtext(card_x + card_w - 44 - 26, y + 15, DT, ty["meta"], t["warm_text"],
+                weight="BOLD")
+        y += 58
+        chips_row = (mx, y - 58, chip_w, 58, card_x + card_w - 44 - 314)
+    else:
+        for i, ln in enumerate([URL, DT]):
+            col = t["accent_soft"] if i == 0 else t["warm_soft"]
+            d.text(mx, y + i * round(ty["display"] * LINE_HEIGHT), ln, ty["display"],
+                   col, weight="BOLD", maxw=inner_w, tag=("url" if i == 0 else "datetime"))
+            measured.append(dict(text=ln, size=ty["display"], color=col,
+                                 y=y + i * round(ty["display"] * LINE_HEIGHT),
+                                 role="cta"))
+        y += 2 * round(ty["display"] * LINE_HEIGHT) + g["date"]
+        chips_row = None
+        if rnd >= 2:
+            y += g["chips"]
+            d.box(mx, y, chip_w, 58, "#0E9F8F2E", radius=29,
+                  border="1 SOLID #0E9F8F88")
+            d.text(mx + 28, y + 15, CTA, ty["meta"], t["accent_soft"], weight="BOLD",
+                   maxw=chip_w - 64, tag="cta")
+            chips_row = (mx, y, chip_w, 58, None)
+            y += 58
+
+    if y > card_y + card_h:
+        raise AssertionError(f"portrait column overflows the card by {y - (card_y + card_h)}px")
+    bad = _gaps(_boxes(measured, mx))
+    if bad:
+        raise AssertionError("portrait text overlaps: " + " | ".join(bad))
+    dsl_meta = dict(card=[card_x, card_y, card_w, card_h], column_bottom=y,
+                    chips_row=chips_row, title_size=tsize, title_lines=len(tl))
+    return d, measured, bg_stack, dsl_meta
+
+
+# ----------------------------------------------------------------------------- wide
+def wide(rnd: int) -> tuple:
+    W, H = 1440, 810
+    light = rnd == 3
+    t = LIGHT if light else DARK
+    cfg = FLOW[rnd]["wide"]
+    g = cfg["gap"]
+    d = Doc(W, H, background=t["page"])
+    tok = LIGHT_TOKENS if light else DARK_TOKENS
+    ty = tok["type"]["wide"]
+    measured = []
+
+    if light:
+        d.box(0, 0, W, 14, t["accent"])
+        d.box(-180, -200, 900, 620, t["glow_teal"], radius=310)
+        d.box(W - 520, H - 420, 760, 520, t["glow_warm"], radius=260)
+    else:
+        d.box(-260, -300, 1100, 780, "#0E9F8F1F", radius=390)
+        d.box(W - 640, H - 520, 940, 620, "#1D4ED826", radius=320)
+        d.box(0, 0, W, 14, t["accent"])
+        d.box(0, H - 14, W, 14, "#1E293BFF")
+
+    card_x, card_y, card_w, card_h = cfg["card"]
+    if light:
+        card(d, card_x, card_y, card_w, card_h, radius=24, color=t["card"],
+             border=t["card_edge"], shadow="0 10 30 0 #0F172A1F")
+    mx, inner_w = 96, 852
+    bg_stack = [t["page"]] + ([t["card"]] if light else [])
+
+    draw_mark(d, light_mark(135, mx, 140) if light else dark_mark(135, mx, 140))
+    y = 140 + 135 + g["brand"]
+
+    tsize = cfg["title_size"]
+    th = round(tsize * LINE_HEIGHT)
+    tl = TITLE_LINES[rnd]
+    for ln in tl:
+        assert_fits(ln, tsize, inner_w, "wide-title")
+    d.text(mx, y, EYEBROW, ty["meta"], t["accent"], weight="BOLD", spacing=1.6,
+           maxw=inner_w)
+    measured.append(dict(text=EYEBROW, size=ty["meta"], color=t["accent"], y=y,
+                         role="label"))
+    y += round(ty["meta"] * LINE_HEIGHT) + g["eyebrow"]
+    for i, ln in enumerate(tl):
+        d.text(mx, y + i * th, ln, tsize, t["head"], weight="BOLD", maxw=inner_w,
+               tag="wide-title")
+        measured.append(dict(text=ln, size=tsize, color=t["head"], y=y + i * th,
+                             role="headline"))
+    y += len(tl) * th + g["title"]
+
+    items = [
+        dict(kind="text", text=ABOUT[0], lines=ABOUT, size=ty["meta"], color=t["dim"],
+             weight="NORMAL", role="caption", lh=round(ty["meta"] * 1.5),
+             h=len(ABOUT) * round(ty["meta"] * 1.5) + g["sub"]),
+        dict(kind="text", text=SPEAKERS, size=ty["display"], color=t["head"],
+             weight="BOLD", role="speaker", lh=round(ty["display"] * LINE_HEIGHT),
+             h=round(ty["display"] * LINE_HEIGHT) + g["speakers"]),
+    ]
+    if g["sponsors"]:
+        items.append(dict(kind="text", text=SPONSORS, size=ty["lead"], color=t["body"],
+                          weight="NORMAL", role="sponsor",
+                          lh=round(ty["lead"] * LINE_HEIGHT),
+                          h=round(ty["lead"] * LINE_HEIGHT) + g["sponsors"]))
+    items += [
+        dict(kind="rule", color=t["card_edge"] if light else t["panel_edge"]),
+        dict(kind="gap", h=g["rule"]),
+        dict(kind="text", text=ABOUT2[0], size=ty["meta"], color=t["dim"],
+             weight="NORMAL", role="caption2", lh=round(ty["meta"] * 1.5),
+             h=round(ty["meta"] * 1.5) + g["caption"]),
+    ]
+    body, y = _flow(d, mx, y, items, inner_w)
+    measured += body
+
+    # ---- right-hand brand panel
+    px, py, pw, ph = WIDE_RIGHT["panel"]
+    if light:
+        d.box(px, py, pw, ph, t["card"], radius=22, border=f"1 SOLID {t['card_edge']}")
+    else:
+        d.box(px, py, pw, ph, t["panel"], radius=22, border=f"1 SOLID {t['panel_edge']}")
+        d.box(px + 50, py + 34, 344, 344, "#0E9F8F26", radius=172)
+    draw_mark(d, light_mark(140, px + 152, py + 106) if light
+              else dark_mark(140, px + 152, py + 106))
+    d.text(px + 42, py + 386, EYEBROW, ty["meta"], t["accent"], weight="BOLD",
+           spacing=1.6, maxw=pw - 84, align="CENTER_LEFT")
+    d.text(px + 42, py + 426, DT, ty["display"],
+           t["warm_fill"] if light else t["warm_soft"], weight="BOLD", maxw=pw - 84,
+           align="CENTER_LEFT")
+    measured.append(dict(text=DT, size=ty["display"],
+                         color=t["warm_fill"] if light else t["warm_soft"], y=py + 426,
+                         role="panel_time"))
+
+    # ---- decorative bar stack in the empty bottom strip (never carries copy)
+    for bx, bw, bc in ((92, 64, "#0E9F8FFF"), (174, 128, "#1D4ED8FF"),
+                       (320, 88, "#D97706FF")):
+        d.box(bx, 752, bw, 22, bc, radius=11)
+
+    # ---- bottom cluster
+    y += g["url"]
+    chip_w = math.ceil(text_width(CTA, ty["meta"]) + 64)
+    if rnd == 3:
+        d.text(mx, y, ENGLISH, ty["english"], t["english"], weight="BOLD", maxw=inner_w,
+               tag="english")
+        measured.append(dict(text=ENGLISH, size=ty["english"], color=t["english"], y=y,
+                             role="cta"))
+        y += round(ty["english"] * LINE_HEIGHT) + g["chips"]
+        d.text(mx, y, URL, ty["display"], t["accent"], weight="BOLD", maxw=inner_w,
+               tag="url")
+        measured.append(dict(text=URL, size=ty["display"], color=t["accent"], y=y,
+                             role="cta"))
+        y += round(ty["display"] * LINE_HEIGHT)
+        d.box(mx, y, chip_w, 52, t["cta_fill"], radius=26,
+              border=f"1 SOLID {t['cta_edge']}")
+        d.text(mx + 28, y + 12, CTA, ty["meta"], t["cta_text"], weight="BOLD",
+               maxw=chip_w - 64, tag="cta")
+        y += 52
+    else:
+        d.text(mx, y, URL, ty["display"], t["accent_soft"], weight="BOLD", maxw=inner_w,
+               tag="url")
+        measured.append(dict(text=URL, size=ty["display"], color=t["accent_soft"], y=y,
+                             role="cta"))
+        y += round(ty["display"] * LINE_HEIGHT)
+        if rnd >= 2:
+            y += g["chips"]
+            d.box(mx, y, chip_w, 52, "#0E9F8F2E", radius=26,
+                  border="1 SOLID #0E9F8F88")
+            d.text(mx + 28, y + 12, CTA, ty["meta"], t["accent_soft"], weight="BOLD",
+                   maxw=chip_w - 64, tag="cta")
+            y += 52
+
+    if y > card_y + card_h:
+        raise AssertionError(f"wide column overflows the card by {y - (card_y + card_h)}px")
+    bad = _gaps(_boxes(measured, mx))
+    if bad:
+        raise AssertionError("wide text overlaps: " + " | ".join(bad))
+    dsl_meta = dict(card=[card_x, card_y, card_w, card_h], column_bottom=y,
+                    title_size=tsize, title_lines=len(tl))
+    return d, measured, bg_stack, dsl_meta

@@ -1,0 +1,230 @@
+{
+  "schema": "a19-questions/1",
+  "scene": "grid-scene.png",
+  "questions": [
+    {
+      "id": "Q01",
+      "type": "复合属性检索",
+      "question": "找出所有“紫色 且 圆角方”的对象，取其中行号最大者；若同一行有多个，再取列号最大者。回答该对象的编号。",
+      "scene": "grid-scene.png",
+      "criterion": "颜色=purple 且 形状=rounded；排序键为 (row, col) 字典序取最大",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": true,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q02",
+      "type": "严格中心左右关系",
+      "question": "比较 G15 与 G22 两个对象中心的 x 坐标（严格小于，不考虑重叠，二者格子不同）：哪一个的中心更靠左？",
+      "scene": "grid-scene.png",
+      "criterion": "比较对象中心点的 x 坐标，严格小于；容差 ±2px（实测差远大于容差）",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q03",
+      "type": "距离比较",
+      "question": "以 G28 的中心为基准，比较 G30 与 G19 的中心到它的直线距离（欧氏距离，按中心点）：哪一个更近？回答它的编号。",
+      "scene": "grid-scene.png",
+      "criterion": "欧氏距离按对象中心点计算",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": true,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q04",
+      "type": "排序",
+      "question": "把第 7 行（从上往下第 7 行）的 8 个对象按“中心到 G20 中心的距离”从小到大排序，距离相同时按列号从小到大。请按顺序写出 8 个编号。",
+      "scene": "grid-scene.png",
+      "criterion": "排序键 = (到 G20 中心的欧氏距离, 列号)",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q05",
+      "type": "包围框",
+      "question": "求同时包含 G41、G42、G49、G50 四个对象的轴对齐最小包围框（以对象外接正方形计算，圆与圆环按外径）。给出左上角坐标、宽和高（像素）。",
+      "scene": "grid-scene.png",
+      "criterion": "轴对齐最小包围框，对象按外接正方形参与计算",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": true,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q06",
+      "type": "颜色/形状计数",
+      "question": "统计第 3 行到第 6 行（含两端）之间，绿色圆环的数量。回答一个整数。",
+      "scene": "grid-scene.png",
+      "criterion": "行 ∈ [3,6] 且 颜色=green 且 形状=ring",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q07",
+      "type": "距离比较",
+      "question": "先找出全部 48px（最小尺寸）对象中行号最小者（同行取列号最小者），记作 A；再在全部橙色对象中找出中心离 A 最近的一个，回答它的编号。",
+      "scene": "grid-scene.png",
+      "criterion": "先按 (row, col) 选锚点，再按欧氏距离选最近橙色对象",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": true,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q08",
+      "type": "严格中心左右关系",
+      "question": "在第 8 行（最下面一行）中，取所有圆形（正圆，不含圆环）里中心 x 坐标最大者，回答它的编号。",
+      "scene": "grid-scene.png",
+      "criterion": "行=8 且 形状=circle；比较中心 x 坐标取最大",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q09",
+      "type": "严格中心左右关系",
+      "question": "全部圆形（正圆，不含圆环）中心 x 坐标的平均值，与全部正方形中心 x 坐标的平均值相比，哪一组更靠左？回答“圆形”或“正方形”。",
+      "scene": "grid-scene.png",
+      "criterion": "对每组 16 个对象的中心 x 求算术平均后比较大小",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q10",
+      "type": "复合属性检索",
+      "question": "在画布上半部分（中心 y ≤ 800）里，找出中心 y 坐标最大的圆形（正圆，不含圆环），回答它的编号。",
+      "scene": "grid-scene.png",
+      "criterion": "形状=circle 且 中心 y ≤ 800；比较中心 y 坐标取最大",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q11",
+      "type": "包围框",
+      "question": "求包含全部绿色对象的最小轴对齐包围框，并给出该框中心点的坐标（像素）。",
+      "scene": "grid-scene.png",
+      "criterion": "颜色=green 的全部对象；轴对齐最小包围框；再求框中心",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": true,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q12",
+      "type": "排序",
+      "question": "对 48px、64px、80px 三组对象，分别计算组内每个对象中心到画布中心 (800,800) 的欧氏距离并取组内平均；平均距离最大的是哪一组？回答尺寸数值。",
+      "scene": "grid-scene.png",
+      "criterion": "组内平均欧氏距离（对象中心 → 画布中心 (800,800)），取最大",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q13",
+      "type": "遮挡场景·可见范围",
+      "scene": "occlusion.png",
+      "question": "遮挡场景 occlusion.png 中，最左侧那块深色矩形（记作 P1）四条边在更亮的背景上都完整可见。给出 P1 左边界与上边界所在的像素坐标。",
+      "criterion": "以更亮背景为参照，P1 的四条边均可直接看到；从左到右第一块深色矩形即 P1",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": 2.0,
+      "two_step_relation": false,
+      "indeterminate_possible": false
+    },
+    {
+      "id": "Q14",
+      "type": "遮挡场景·信息不足",
+      "scene": "occlusion.png",
+      "question": "在 occlusion.png 中，P1（最左侧深色矩形）覆盖的区域下方是否画有圆形对象？请回答“有”“没有”或“无法确定”。",
+      "criterion": "只能依据最终可见图作答；P1 覆盖区域在图上是均匀深色，没有任何形状、颜色或边缘线索",
+      "coordinate_system": {
+        "origin": "top-left",
+        "x": "right",
+        "y": "down",
+        "unit": "px"
+      },
+      "tolerance_px": null,
+      "two_step_relation": false,
+      "indeterminate_possible": true
+    }
+  ]
+}
