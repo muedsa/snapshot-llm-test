@@ -1,0 +1,39 @@
+{
+  "id": "A08",
+  "title": "网格导览与两条可走路线",
+  "category": "空间推理",
+  "challenge": "从文本空间数据推导路线，再让同一地图表达重合路径。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "inputs/floor.txt 是26列×18行的虚构展馆，左上原点；#是不可走墙，.是可走格，\nS入口、E出口、A/A/B/D四个展区格同样可走。每格边长2米；只准上下左右跨格，\n不能穿墙或对角移动。inputs/legend.json 给展区名。\n制作1560×1080导览：完整墙体与可走格、坐标边缘标尺、入口/出口、四展区名称、\n图例、尺度及两条路线。路线一是S→E最短；路线二是S→B→D→E最短（必须先B\n后D，每一段用最短路即可）。画在格心，用线型和箭头区分，重合段两条都能\n追踪，不遮格号或把墙变成可走；绕行与门洞清楚。留出侧栏说明，不扩大门洞。\n给路线一、二格间步数与米数；坐标以(x,y)表示，均从0开始。\n附 paths.json 的全站格心序列、各段步数、距离和连通性检查。路线多解时任选\n满足条件的最短路线；不要求与作者选择同一条。正文≥22、网格标识≥16。\n",
+  "inputs": [
+    "inputs/floor.txt",
+    "inputs/legend.json"
+  ],
+  "required_outputs": [
+    {
+      "filename": "wayfinding.png",
+      "dsl": "wayfinding.snapshot",
+      "width": 1560,
+      "height": 1080,
+      "purpose": "网格路线导览"
+    }
+  ],
+  "additional_outputs": [
+    "paths.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A08/",
+  "temp_dir_template": "tmp/{run_id}/A08/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

@@ -1,0 +1,164 @@
+{
+  "id": "A21",
+  "title": "真实需求变更：双尺寸发布物",
+  "category": "多轮协作",
+  "challenge": "预置三轮需求连续执行，保留每轮并验证回归。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "本题按预置要求自动执行三轮。先完成第一轮：为“叠光 Layerlight”发布\n活动做1080×1350竖海报和1440×810横屏。必须包含“让复杂信息变得清晰”\n“2026.11.07 19:30”“ONLINE LAUNCH”“讲者：林川 / 苏言”\n“layerlight.example.org”。两图同一主色、字体层级与可识别的3–6构件品牌图形，\n分别构图；主标题≥56、其余≥24，不得使用整图嵌入或外部图片。\n顶部/底部留有真实可用扩展空间，但不写待添加文字。交付 round-01/ 下\nlaunch-portrait与launch-wide两PNG/DSL，以及 design-tokens.json、content-map.json。\n查看两图并归档第一轮后，立即读取rounds/round-02.md完成第二轮，\n再读取rounds/round-03.md完成第三轮，不等待用户消息。后续轮必须保留上一轮可比版本、内容映射\n与真实变化，按执行约定保存每轮报告/指标。\n",
+  "inputs": [],
+  "required_outputs": [
+    {
+      "filename": "round-01/launch-portrait.png",
+      "dsl": "round-01/launch-portrait.snapshot",
+      "width": 1080,
+      "height": 1350,
+      "purpose": "第1轮 launch-portrait"
+    },
+    {
+      "filename": "round-01/launch-wide.png",
+      "dsl": "round-01/launch-wide.snapshot",
+      "width": 1440,
+      "height": 810,
+      "purpose": "第1轮 launch-wide"
+    },
+    {
+      "filename": "round-02/launch-portrait.png",
+      "dsl": "round-02/launch-portrait.snapshot",
+      "width": 1080,
+      "height": 1350,
+      "purpose": "第2轮 launch-portrait"
+    },
+    {
+      "filename": "round-02/launch-wide.png",
+      "dsl": "round-02/launch-wide.snapshot",
+      "width": 1440,
+      "height": 810,
+      "purpose": "第2轮 launch-wide"
+    },
+    {
+      "filename": "round-03/launch-portrait.png",
+      "dsl": "round-03/launch-portrait.snapshot",
+      "width": 1080,
+      "height": 1350,
+      "purpose": "第3轮 launch-portrait"
+    },
+    {
+      "filename": "round-03/launch-wide.png",
+      "dsl": "round-03/launch-wide.snapshot",
+      "width": 1440,
+      "height": 810,
+      "purpose": "第3轮 launch-wide"
+    }
+  ],
+  "additional_outputs": [
+    "design-tokens.json",
+    "content-map.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": 1,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A21/",
+  "temp_dir_template": "tmp/{run_id}/A21/",
+  "suite_instructions_file": "../../AGENTS.md",
+  "round_execution": "preloaded_sequential",
+  "blind_feedback": false,
+  "rounds": [
+    {
+      "round": 1,
+      "requirements_file": "TASK.md",
+      "output_subdirectory": "round-01",
+      "required_outputs": [
+        {
+          "filename": "round-01/launch-portrait.png",
+          "dsl": "round-01/launch-portrait.snapshot",
+          "width": 1080,
+          "height": 1350,
+          "purpose": "第1轮 launch-portrait"
+        },
+        {
+          "filename": "round-01/launch-wide.png",
+          "dsl": "round-01/launch-wide.snapshot",
+          "width": 1440,
+          "height": 810,
+          "purpose": "第1轮 launch-wide"
+        }
+      ],
+      "additional_outputs": [
+        "design-tokens.json",
+        "content-map.json"
+      ],
+      "common_outputs": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ]
+    },
+    {
+      "round": 2,
+      "requirements_file": "rounds/round-02.md",
+      "output_subdirectory": "round-02",
+      "required_outputs": [
+        {
+          "filename": "round-02/launch-portrait.png",
+          "dsl": "round-02/launch-portrait.snapshot",
+          "width": 1080,
+          "height": 1350,
+          "purpose": "第2轮 launch-portrait"
+        },
+        {
+          "filename": "round-02/launch-wide.png",
+          "dsl": "round-02/launch-wide.snapshot",
+          "width": 1440,
+          "height": 810,
+          "purpose": "第2轮 launch-wide"
+        }
+      ],
+      "additional_outputs": [
+        "design-tokens.json",
+        "content-map.json"
+      ],
+      "common_outputs": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ]
+    },
+    {
+      "round": 3,
+      "requirements_file": "rounds/round-03.md",
+      "output_subdirectory": "round-03",
+      "required_outputs": [
+        {
+          "filename": "round-03/launch-portrait.png",
+          "dsl": "round-03/launch-portrait.snapshot",
+          "width": 1080,
+          "height": 1350,
+          "purpose": "第3轮 launch-portrait"
+        },
+        {
+          "filename": "round-03/launch-wide.png",
+          "dsl": "round-03/launch-wide.snapshot",
+          "width": 1440,
+          "height": 810,
+          "purpose": "第3轮 launch-wide"
+        }
+      ],
+      "additional_outputs": [
+        "design-tokens.json",
+        "content-map.json",
+        "contrast-audit.json"
+      ],
+      "common_outputs": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ]
+    }
+  ]
+}
