@@ -7,12 +7,14 @@
 
 ## 启动
 
-1. 解压完整套件，进入task-suite/作为工作根目录；模型需有文件、文档/网络、
+1. 直接使用task-suite/作为工作根目录；模型需有文件、文档/网络、
    HTTP和实际图像查看工具。输入资料全在这个目录中。
 2. 发送[START-PROMPT.txt](START-PROMPT.txt)，或“阅读AGENTS.md和TASKS.md，按
    默认配置实际完成全部30题，逐件看图完善，保留过程并交付全套汇总”。
 3. 模型在统一outputs/<run_id>/<任务ID>/交付、tmp/<run_id>/<任务ID>/保留过程，
-   outputs/<run_id>/_suite/为总索引、画廊、报告、消耗与进度。不限制请求/迭代。
+   outputs/<run_id>/_suite/为总索引、gallery.html和gallery.md两份画廊、报告、消耗与进度。
+   两份画廊覆盖全部最终图，包括多轮和开放作品；Markdown逐图预览并相对链接PNG/DSL。
+   不限制请求/迭代。
 
 默认all包含全部任务；仅在你明确需要其他范围时修改run-config中的default_profile
 为advanced或creative。服务地址和两赛道素材政策也可以统一配置。子题沿用

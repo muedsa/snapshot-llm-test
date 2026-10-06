@@ -1,8 +1,8 @@
-"""Validate and zip the single-root sequential task suite; no task execution.
+"""Validate the single-root sequential task suite; no task execution.
 
-Checks public requirements, input availability, automatic rounds, unified directories,
-manifests and exact archive bytes. task-suite is the canonical source directory.
-Use --refresh-manifest after intentionally editing published inputs.
+Checks public requirements, input availability, automatic rounds, unified directories
+and manifests. task-suite is the canonical source directory. No ZIP is created by default.
+Use --refresh-manifest after intentional input edits; --archive explicitly requests a ZIP.
 """
 from __future__ import annotations
 
@@ -52,6 +52,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--refresh-manifest',action='store_true',
                         help='Refresh input hashes after intentional task-suite edits.')
+    parser.add_argument('--archive',action='store_true',help='Also create and verify a distribution ZIP.')
     args=parser.parse_args()
     catalog=load(PACK/'catalog.json')
     config=load(PACK/'run-config.json')
@@ -69,6 +70,15 @@ def main():
     check('shared preparation and deduplication explicit','不再把同题round/case明细重复相加' in root_agents)
     check('persistent state and real resume supported','checkpoints/state-000001.json' in root_agents and '从未完成处继续' in root_agents)
     check('completion requires complete suite audit','30题全部满足才最终回复全套完成' in root_agents)
+    suite_artifacts=['index.md','gallery.html','gallery.md','snapshot-usage.md','task-metrics.json','suite-state.json']
+    check('suite deliverables include both galleries',config.get('suite_required_artifacts')==suite_artifacts)
+    check('suite artifacts state starts empty',state.get('suite_artifacts')==[])
+    check('suite deliverables documented',all('- '+name+'：' in root_agents for name in suite_artifacts))
+    check('Markdown gallery covers same images with relative PNG and DSL links',all(text in root_agents for text in ['与gallery.html覆盖相同的完整最终图片清单','Markdown图片预览','原PNG链接','对应.snapshot链接','相对本文件所在的_suite/目录']))
+    check('both galleries required for completion','任一画廊缺失、漏图或链接失效时继续修正' in root_agents)
+    for name in ['START-PROMPT.txt','README.md','TASKS.md']:
+        prose=(PACK/name).read_text(encoding='utf-8')
+        check('both galleries explicit in '+name,all(gallery in prose for gallery in ['gallery.html','gallery.md']))
     for task in catalog['tasks']:
         folder=PACK/task['directory']
         spec=load(PACK/task['task_spec'])
@@ -124,23 +134,27 @@ def main():
     if failed:
         dump(EVAL/'authoring-validation.json',{'status':'failed','checks':checks,'errors':failed,'full_suite_trial':False})
         raise SystemExit(json.dumps(failed,ensure_ascii=False))
-    archive=ROOT/'dist'/'snapshot-task-suite.zip'
-    archive.parent.mkdir(exist_ok=True)
-    files=[entry['path'] for entry in manifest['files']]+['manifest.json']
-    with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
-        for file in files:z.write(PACK/file,'task-suite/'+file)
-    with zipfile.ZipFile(archive) as z:
-        check('archive CRC and exact inventory',z.testzip() is None and set(z.namelist())=={'task-suite/'+f for f in files})
-        for file in files:check('archive exact payload '+file,z.read('task-suite/'+file)==(PACK/file).read_bytes())
+    archive=None
+    if args.archive:
+        archive=ROOT/'dist'/'snapshot-task-suite.zip'
+        archive.parent.mkdir(exist_ok=True)
+        files=[entry['path'] for entry in manifest['files']]+['manifest.json']
+        with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
+            for file in files:z.write(PACK/file,'task-suite/'+file)
+        with zipfile.ZipFile(archive) as z:
+            check('archive CRC and exact inventory',z.testzip() is None and set(z.namelist())=={'task-suite/'+f for f in files})
+            for file in files:check('archive exact payload '+file,z.read('task-suite/'+file)==(PACK/file).read_bytes())
     summary={'checked_at':datetime.now(timezone.utc).isoformat(),
         'status':'passed' if all(x['passed'] for x in checks) else 'failed',
         'tasks':30,'minimum_final_pngs':124,'canonical_task_root':'task-suite',
         'preloaded_round_tasks':['A21','A22'],'published_input_files':len(manifest['files']),
         'json_files_checked':json_count,'check_count':len(checks),'checks':checks,
-        'archive':str(archive),'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),
-        'full_suite_trial':False,'scope':'全套根目录、流程、输入与分发检查；没有执行30题。'}
+        'suite_required_artifacts':suite_artifacts,
+        'archive':str(archive) if archive else None,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest() if archive else None,
+        'full_suite_trial':False,'scope':'全套根目录、流程、输入、交付约定与可选分发检查；没有执行30题。'}
     dump(EVAL/'authoring-validation.json',summary)
-    dump(ROOT/'dist'/'snapshot-task-suite.json',{k:v for k,v in summary.items() if k!='checks'})
+    if archive:
+        dump(ROOT/'dist'/'snapshot-task-suite.json',{k:v for k,v in summary.items() if k!='checks'})
     print(json.dumps({k:v for k,v in summary.items() if k!='checks'},ensure_ascii=False))
     if summary['status']!='passed':raise SystemExit(1)
 

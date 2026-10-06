@@ -4,7 +4,7 @@
 
 - [进阶评分说明](task-pack-v2/README.md)：A01–A24检查点、计算/路线参照及A15/A16参考图生成留痕。
 - [开放创作评分说明](task-pack-creative/README.md)：B01–B06检查点与评分权重。
-- [全套发布检查](task-suite/authoring-validation.json)：当前任务源和完整ZIP的校验结果，不代表模型完成情况。
+- [全套发布检查](task-suite/authoring-validation.json)：当前任务目录、交付约定和文件完整性的校验结果，不代表模型完成情况。
 
 现有子目录名保留以保持原始参考图服务记录中的路径可追溯。旧分发目录和单题压缩包已移除；全部题目只在 `task-suite/` 维护。A21/A22后续轮要求只保留在任务根的对应 `rounds/` 中，按预置连续执行模式评测。
 
