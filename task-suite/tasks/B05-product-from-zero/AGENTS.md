@@ -68,10 +68,12 @@ temp_root为基目录加唯一run_id，默认outputs/<run_id>/、tmp/<run_id>/�
 
 - 每用例：final.png、final.snapshot、case.md（场景/内容/视觉选择/实际自检/素材
   情况），可有同名DSL配对的附加PNG与数据文件。新增文件不得冒充额外独立用例。
-- 输出根：portfolio.json、portfolio.md、gallery.html、snapshot-usage.md、
+- 输出根：portfolio.json、portfolio.md、gallery.md、snapshot-usage.md、
   task-metrics.json。portfolio.json逐一映射作品、尺寸、场景、来源、DSL能力、
-  自定的完成标准与实际检查证据；gallery.html可本地浏览、索引所有最终作品，
-  使用相对链接且不依赖远程脚本。portfolio.md简述策展逻辑与各作品用途。
+  自定的完成标准与实际检查证据；gallery.md按用例逐图展示所有最终作品，
+  提供Markdown图片预览、原PNG和对应.snapshot链接，链接相对本题输出根
+  （例如case-01/final.png与case-01/final.snapshot），可离线浏览。
+  portfolio.md简述策展逻辑与各作品用途。
 - 临时目录：文档/素材、计划、研究、脚本、中间数据、每版DSL/真实响应、预览、
   失败响应、对比、命令输出及requests.jsonl、iterations.jsonl、tool-usage.jsonl。
   不清理、不删除失败尝试、不覆盖旧版；版本号/唯一名称持续递增，日志追加。

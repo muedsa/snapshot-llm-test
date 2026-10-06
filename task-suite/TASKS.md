@@ -35,5 +35,5 @@
 | 29 | [B05](tasks/B05-product-from-zero/TASK.md) | 从零构想产品并设计十个关键使用画面 | 1 | ≥10 |
 | 30 | [B06](tasks/B06-everyday-information-reinvented/TASK.md) | 把十个日常信息难题变成惊艳而好用的作品 | 1 | ≥10 |
 
-30题合计至少124张最终图片；B类每题至少10件独立完整作品。A21/A22三轮预置，归档前轮后自动继续。每题实际看图，最终审查全部交付，包括输出_suite/gallery.html和gallery.md的完整图片清单与链接。
+30题合计至少124张最终图片；B类每题至少10件独立完整作品。A21/A22三轮预置，归档前轮后自动继续。每题实际看图，最终审查全部交付，包括输出_suite/gallery.md的完整图片清单与链接。
 执行状态写输出_suite/suite-state.json，不改本清单。

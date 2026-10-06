@@ -30,7 +30,7 @@ PNG/DSL、作品画廊、使用说明、过程与请求/迭代/耗时统计。
 
 至少10件独立完整主作品，尺寸、场景、内容和风格由你决定。每件在输出目录的 `case-01/` 等子目录交付 `final.png`、`final.snapshot` 与 `case.md`。所有最终PNG必须是实际服务响应。
 
-输出根同时交付 `portfolio.json`、`portfolio.md`、`gallery.html`、`snapshot-usage.md` 和 `task-metrics.json`。本题另要求 `sources.json`、`editorial-note.md`。
+输出根同时交付 `portfolio.json`、`portfolio.md`、`gallery.md`、`snapshot-usage.md` 和 `task-metrics.json`。本题另要求 `sources.json`、`editorial-note.md`。
 
 参考格式在 [templates/portfolio-template.json](templates/portfolio-template.json)、[templates/task-metrics-template.json](templates/task-metrics-template.json) 与 [templates/snapshot-usage-template.md](templates/snapshot-usage-template.md)。模板仅解释结构，完成时填真实数据并删去说明字段。
 

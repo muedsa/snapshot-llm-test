@@ -70,15 +70,15 @@ def main():
     check('shared preparation and deduplication explicit','不再把同题round/case明细重复相加' in root_agents)
     check('persistent state and real resume supported','checkpoints/state-000001.json' in root_agents and '从未完成处继续' in root_agents)
     check('completion requires complete suite audit','30题全部满足才最终回复全套完成' in root_agents)
-    suite_artifacts=['index.md','gallery.html','gallery.md','snapshot-usage.md','task-metrics.json','suite-state.json']
-    check('suite deliverables include both galleries',config.get('suite_required_artifacts')==suite_artifacts)
+    suite_artifacts=['index.md','gallery.md','snapshot-usage.md','task-metrics.json','suite-state.json']
+    check('suite deliverables include Markdown gallery',config.get('suite_required_artifacts')==suite_artifacts)
     check('suite artifacts state starts empty',state.get('suite_artifacts')==[])
     check('suite deliverables documented',all('- '+name+'：' in root_agents for name in suite_artifacts))
-    check('Markdown gallery covers same images with relative PNG and DSL links',all(text in root_agents for text in ['与gallery.html覆盖相同的完整最终图片清单','Markdown图片预览','原PNG链接','对应.snapshot链接','相对本文件所在的_suite/目录']))
-    check('both galleries required for completion','任一画廊缺失、漏图或链接失效时继续修正' in root_agents)
+    check('Markdown gallery covers all images with relative PNG and DSL links',all(text in root_agents for text in ['索引全套最终图、A21/A22所有轮次和B类全部作品','Markdown图片预览','原PNG链接','对应.snapshot链接','相对本文件所在的_suite/目录']))
+    check('Markdown gallery required for completion','画廊缺失、漏图或链接失效时继续修正' in root_agents)
     for name in ['START-PROMPT.txt','README.md','TASKS.md']:
         prose=(PACK/name).read_text(encoding='utf-8')
-        check('both galleries explicit in '+name,all(gallery in prose for gallery in ['gallery.html','gallery.md']))
+        check('Markdown gallery explicit in '+name,'gallery.md' in prose)
     for task in catalog['tasks']:
         folder=PACK/task['directory']
         spec=load(PACK/task['task_spec'])
@@ -106,6 +106,8 @@ def main():
                     check(task['id']+' nonempty feedback text '+str(rnd['round']),requirement.is_file() and bool(requirement.read_text(encoding='utf-8').strip()))
             check(task['id']+' all round output count',len(spec['required_outputs'])==task['minimum_final_pngs'])
         if task['track']=='creative':
+            agents=(folder/'AGENTS.md').read_text(encoding='utf-8')
+            check(task['id']+' Markdown gallery delivery','gallery.md' in spec['common_outputs'] and 'gallery.md' in prose and all(text in agents for text in ['gallery.md','Markdown图片预览','原PNG和对应.snapshot链接']))
             check(task['id']+' at least ten independent cases',spec['minimum_independent_cases']==local_config['minimum_independent_cases']==10)
             check(task['id']+' unrestricted subject/style/dimensions',all(spec[k] is None for k in ['preassigned_scenarios','preassigned_style','fixed_canvas_dimensions']))
     # Links may cross from a child to the suite root; they may not depend on the repo outside it.
