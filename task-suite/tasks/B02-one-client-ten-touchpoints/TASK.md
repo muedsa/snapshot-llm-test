@@ -4,7 +4,7 @@
 
 # B02 · 为一个自选项目设计完整视觉生态
 
-先完整阅读 [AGENTS.md](AGENTS.md) 与 [run-config.json](run-config.json)，其中的实际执行、输出、留痕和消耗要求也是本题要求。
+先完整阅读 [AGENTS.md](AGENTS.md) 与 [run-config.json](run-config.json)，其中的实际执行、输出、留痕和统计要求也是本题要求。
 
 ## 创作任务
 
@@ -22,7 +22,7 @@
 是否有效。允许大胆概念、局部辅助素材和工具，但主体工作必须是DSL。
 交付至少10件主作品与各自DSL；另附project-brief.md说明你解决了什么
 项目问题，design-system.json说明真正用到的系统规则，touchpoint-map.json
-映射十件作品与用户情境。整体画廊、留痕、报告与消耗按AGENTS执行。
+映射十件作品与用户情境。整体画廊、留痕、报告与统计按AGENTS执行。
 
 ## 交付
 

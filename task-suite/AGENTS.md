@@ -78,7 +78,7 @@ checkpoints/state-000001.json等快照。suite-state.json是允许更新的当�
 
 各题requests.jsonl、iterations.jsonl（B类另tool-usage.jsonl）和task-metrics.json
 按本题标准记录。基线、完整视觉迭代、语法修复、重试、方案探索和预置轮次
-分开统计，不制造无意义迭代。真实token/图像费用未知用null，不用字数猜造。
+分开统计，不制造无意义迭代。
 总指标只累计每题顶层汇总及shared，不再把同题round/case明细重复相加。每题
 起止/总墙钟、轮次/用例时间、等待与请求耗时分开；总墙钟不等于请求耗时之和。
 
@@ -94,8 +94,8 @@ outputs/<run_id>/_suite/必须有run-config.json中suite_required_artifacts列�
   图片与文件链接相对本文件所在的_suite/目录（例如../A01/），不写机器绝对路径
   或依赖远程图片地址，复制整个运行输出目录后仍可浏览。
 - snapshot-usage.md：全套实际文档/DSL/工具应用、跨题经验和踩坑、总审查与剩余事项。
-- task-metrics.json：全套起止/总耗时、shared+各题请求/迭代/看图/作品数、真实可得
-  资源消耗、未知原因及汇总范围；用templates/suite-metrics-template.json参考格式。
+- task-metrics.json：全套起止/总耗时、shared+各题请求/迭代/看图/作品数、
+  汇总范围与计时/日志来源；用templates/suite-metrics-template.json参考格式。
 - suite-state.json：最终或中断时的完整进度，每题状态有实际证据，不是预填completed。
 
 最终逐题核对尺寸/内容/数据/几何/效果、图片与.snapshot配对、报告、过程留痕和
@@ -104,4 +104,4 @@ outputs/<run_id>/_suite/必须有run-config.json中suite_required_artifacts列�
 index.md链接到两份画廊；在suite-state.json的suite_artifacts记录实际总交付路径。
 部分完成时，两份画廊只展示已实际交付的图片，并明确缺失题目/轮次/用例，不能占位充数。
 30题全部满足才最终回复全套完成。回复提供总索引/两份画廊/报告/指标/实际目录、
-各状态数量、最终图片/用例数、真实消耗；部分完成时指出具体缺项与恢复检查点。
+各状态数量、最终图片/用例数、请求/迭代统计与实际耗时；部分完成时指出具体缺项与恢复检查点。

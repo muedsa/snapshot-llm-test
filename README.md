@@ -7,7 +7,7 @@
 1. 将 `task-suite/` 设为模型工作根目录，发送 [START-PROMPT.txt](task-suite/START-PROMPT.txt)。模型需能读取文件、访问官方文档、请求服务并实际查看图片。
 2. 模型按 [TASKS.md](task-suite/TASKS.md) 连续完成所有任务，最终 DSL 使用 `.snapshot` 后缀。结果保存在 `outputs/<run_id>/`，过程文件保存在 `tmp/<run_id>/`，不清理过程留痕。
 
-不限制渲染请求或视觉迭代次数。模型应逐件实际看图完善，记录迭代过程、真实耗时和可获取的消耗，并在 `outputs/<run_id>/_suite/` 交付 `gallery.html` 与 `gallery.md` 两份完整画廊，以及 Snapshot 使用情况说明与踩坑记录。Markdown 画廊逐图预览并链接原 PNG 和对应 DSL。详细约定见 [AGENTS.md](task-suite/AGENTS.md)，服务与范围配置见 [run-config.json](task-suite/run-config.json)。
+不限制渲染请求或视觉迭代次数。模型应逐件实际看图完善，记录迭代过程、实际耗时和请求次数，并在 `outputs/<run_id>/_suite/` 交付 `gallery.html` 与 `gallery.md` 两份完整画廊，以及 Snapshot 使用情况说明与踩坑记录。Markdown 画廊逐图预览并链接原 PNG 和对应 DSL。详细约定见 [AGENTS.md](task-suite/AGENTS.md)，服务与范围配置见 [run-config.json](task-suite/run-config.json)。
 
 文档：[Snapshot 官方文档](https://snapshot.muedsa.com/) · [Open Snapshot AI 服务指南](https://open-snapshot.muedsa.com/ai-guide.md)。
 

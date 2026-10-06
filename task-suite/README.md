@@ -12,7 +12,7 @@
 2. 发送[START-PROMPT.txt](START-PROMPT.txt)，或“阅读AGENTS.md和TASKS.md，按
    默认配置实际完成全部30题，逐件看图完善，保留过程并交付全套汇总”。
 3. 模型在统一outputs/<run_id>/<任务ID>/交付、tmp/<run_id>/<任务ID>/保留过程，
-   outputs/<run_id>/_suite/为总索引、gallery.html和gallery.md两份画廊、报告、消耗与进度。
+   outputs/<run_id>/_suite/为总索引、gallery.html和gallery.md两份画廊、报告、过程统计与进度。
    两份画廊覆盖全部最终图，包括多轮和开放作品；Markdown逐图预览并相对链接PNG/DSL。
    不限制请求/迭代。
 

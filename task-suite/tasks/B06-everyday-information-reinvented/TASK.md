@@ -4,7 +4,7 @@
 
 # B06 · 把十个日常信息难题变成惊艳而好用的作品
 
-先完整阅读 [AGENTS.md](AGENTS.md) 与 [run-config.json](run-config.json)，其中的实际执行、输出、留痕和消耗要求也是本题要求。
+先完整阅读 [AGENTS.md](AGENTS.md) 与 [run-config.json](run-config.json)，其中的实际执行、输出、留痕和统计要求也是本题要求。
 
 ## 创作任务
 
@@ -24,7 +24,7 @@
 另交付problem-evidence.json与design-review.md：每个问题的实际来源/
 假设、场景要求、重构选择和根据最终图判断的改进；区分可观察的可读性
 改善与未经用户实验验证的效果。交付至少十件主作品及各DSL、作品画廊、
-使用说明、临时留痕与消耗记录。
+使用说明、临时留痕与统计记录。
 
 ## 交付
 
