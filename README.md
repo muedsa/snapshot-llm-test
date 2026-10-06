@@ -16,4 +16,10 @@
 - `task-suite/`：唯一维护的任务源，含30题、输入资料、配置及报告模板，可直接交给模型。
 - [evaluation/](evaluation/README.md)：评测端评分材料、参考图作者源码、真实服务记录及发布检查；不要交给被测模型。
 
+## 从 GitHub Actions 下载任务套件
+
+[Package task suite 工作流](.github/workflows/package-task-suite.yml) 在任务资料、校验脚本或工作流变更的 push/PR 时自动运行，也可在 GitHub 的 Actions 页面手动选择 Run workflow。
+
+运行成功后，在该次运行的 Artifacts 中下载 `snapshot-task-suite`。工作流校验并刷新输入哈希，直接上传 `task-suite/` 目录，由 GitHub 自动生成下载 ZIP；解压后的目录内容可直接作为模型任务根目录。执行结果 `outputs/` 和临时文件 `tmp/` 不上传，评测材料与历史结果也不包含在任务套件中。
+
 两张参考 PNG 已通过真实服务生成并查看；30题尚未整套试跑。发布校验通过只说明任务资料和分发完整，正式跨模型比较前仍需校准工作量与评审一致性。

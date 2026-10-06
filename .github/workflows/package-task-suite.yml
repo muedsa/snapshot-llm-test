@@ -1,0 +1,43 @@
+name: Package task suite
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'task-suite/**'
+      - 'tools/release-suite-task-pack.py'
+      - '.github/workflows/package-task-suite.yml'
+  pull_request:
+    paths:
+      - 'task-suite/**'
+      - 'tools/release-suite-task-pack.py'
+      - '.github/workflows/package-task-suite.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate task suite and refresh input hashes
+        run: python tools/release-suite-task-pack.py --refresh-manifest
+
+      - name: Upload task suite
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-task-suite
+          path: |
+            task-suite/
+            !task-suite/**/outputs/**
+            !task-suite/**/tmp/**
+          if-no-files-found: error
