@@ -1,6 +1,7 @@
 # 全套任务清单
 
-先读[AGENTS.md](AGENTS.md)与[run-config.json](run-config.json)。默认从A01开始按本表全部完成，单题结束立即继续。
+先读[AGENTS.md](AGENTS.md)、[PATHS.md](PATHS.md)与[run-config.json](run-config.json)。
+目录、文件及程序脚本中的本地路径一律使用明确基准的相对路径或目录环境变量；Markdown链接相对文档。默认从A01开始按本表全部完成，单题结束立即继续。
 
 | 顺序 | 入口 | 任务 | 轮次 | 指定最终PNG |
 |---:|---|---|---:|---:|

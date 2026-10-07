@@ -31,7 +31,9 @@ TASK.md 和 task.json 的任务要求一致，前者便于阅读，后者便于�
 - 评测者若提供 OUTPUT_DIR、TEMP_DIR，直接使用指定目录。否则使用run-config.json
   的output_root/temp_root作基目录，再加<run_id>子目录；默认本根目录的
   outputs/<run_id>/ 和 tmp/<run_id>/。run_id 使用时间加唯一标识。
-  启动时创建缺失目录，并记录解析后的绝对路径。
+  启动时创建缺失目录，记录相对路径及基准，或未展开的目录环境变量表达式。
+  遵循[PATHS.md](../../PATHS.md)：配置路径相对配置文件，指标/日志默认相对总任务根；
+  DSL、程序脚本与命令也使用相对路径或目录环境变量，不写死机器路径。Markdown链接相对文档。
 - 最终服务返回的原始图片与同名完整 .snapshot 放到输出目录。后缀符合实际
   编码；本套题指定 PNG 的图片须是真实 PNG。不要后处理最终图来掩盖 DSL 问题。
   TASK.md 要求的 JSON、CSV、分析及其他交付文件也放在输出目录。

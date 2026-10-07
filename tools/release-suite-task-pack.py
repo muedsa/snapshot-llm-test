@@ -10,7 +10,7 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import re
 import zipfile
 
@@ -18,6 +18,21 @@ ROOT=Path(__file__).resolve().parents[1]
 PACK=ROOT/'task-suite'
 EVAL=ROOT/'evaluation'/'task-suite'
 checks=[]
+
+
+def portable_path(value, allow_environment=True):
+    """Accept relative filesystem paths on both Windows and POSIX hosts."""
+    if not isinstance(value,str) or not value.strip():return False
+    if not allow_environment and re.search(r'%[^%]+%|\$(?:[A-Za-z_]|\{)',value):return False
+    if ':' in value:
+        environment_root=re.match(r'^\$env:[A-Za-z_][A-Za-z0-9_]*(?=$|[\\/])',value) if allow_environment else None
+        if environment_root is None or ':' in value[environment_root.end():]:return False
+    windows=PureWindowsPath(value)
+    return not windows.drive and not windows.root and not PurePosixPath(value).is_absolute() and not re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*:',value)
+
+
+def suite_input(base,value):
+    return portable_path(value,allow_environment=False) and (base/value).resolve().is_relative_to(PACK.resolve())
 
 
 def load(path):
@@ -63,10 +78,20 @@ def main():
     check('no per-task confirmation',config['requires_per_task_user_confirmation'] is False)
     check('sequential automatic three-round mode',config['execution_mode']=='sequential' and config['round_execution']=='preloaded_sequential')
     check('unlimited render and visual iteration',config['max_render_requests'] is None and config['max_visual_iterations'] is None)
-    check('required root entries',all((PACK/p).is_file() for p in ['AGENTS.md','TASKS.md','START-PROMPT.txt','README.md','catalog.json','run-config.json','templates/suite-state-template.json','templates/suite-metrics-template.json']))
+    check('required root entries',all((PACK/p).is_file() for p in ['AGENTS.md','PATHS.md','TASKS.md','START-PROMPT.txt','README.md','catalog.json','run-config.json','templates/suite-state-template.json','templates/suite-metrics-template.json']))
+    check('portable root directories',all(portable_path(config.get(key)) for key in ['output_root','temp_root']))
+    policy=config.get('path_policy',{})
+    check('portable path policy covers documents scripts and artifacts',policy=={
+        'artifact_paths':'relative_to_suite_root_or_environment_variable',
+        'config_paths':'relative_to_config_file_or_environment_variable',
+        'document_links':'relative_to_document',
+        'script_paths':'relative_to_declared_base_or_environment_variable',
+        'hardcoded_machine_paths':False})
     state=load(PACK/'templates'/'suite-state-template.json')
+    check('state and suite metrics paths relative to suite root',state.get('path_base')=='suite_root' and load(PACK/'templates'/'suite-metrics-template.json').get('path_base')=='suite_root')
     check('state template contains unexecuted complete roster',[t['id'] for t in state['tasks']]==expected and state['status']=='not_started' and all(t['status']=='pending' for t in state['tasks']))
     root_agents=(PACK/'AGENTS.md').read_text(encoding='utf-8')
+    check('portable paths and script policy explicit','[PATHS.md](PATHS.md)' in root_agents and '程序脚本' in root_agents and '相对路径' in root_agents)
     check('shared preparation and deduplication explicit','不再把同题round/case明细重复相加' in root_agents)
     check('persistent state and real resume supported','checkpoints/state-000001.json' in root_agents and '从未完成处继续' in root_agents)
     check('completion requires complete suite audit','30题全部满足才最终回复全套完成' in root_agents)
@@ -79,10 +104,32 @@ def main():
     for name in ['START-PROMPT.txt','README.md','TASKS.md']:
         prose=(PACK/name).read_text(encoding='utf-8')
         check('Markdown gallery explicit in '+name,'gallery.md' in prose)
+        check('portable paths explicit in '+name,'PATHS.md' in prose and '相对路径' in prose)
     for task in catalog['tasks']:
+        catalog_fields=['directory','entry','task_spec','output_dir_template','temp_dir_template']
+        valid_catalog=all(suite_input(PACK,task.get(key)) for key in catalog_fields)
+        check(task['id']+' portable catalog paths',valid_catalog)
+        if not valid_catalog:continue
         folder=PACK/task['directory']
         spec=load(PACK/task['task_spec'])
         local_config=load(folder/'run-config.json')
+        input_values=spec['inputs']+[spec['instructions_file'],spec['suite_instructions_file'],local_config['suite_config']]+[rnd['requirements_file'] for rnd in spec.get('rounds',[])]
+        valid_inputs=all(suite_input(folder,value) for value in input_values)
+        check(task['id']+' portable input and inherited paths',valid_inputs)
+        if not valid_inputs:continue
+        check(task['id']+' portable configured directories',all(portable_path(local_config.get(key)) for key in ['output_root','temp_root','output_dir_template','temp_dir_template']))
+        output_values=[spec['output_dir_template'],spec['temp_dir_template']]+spec.get('additional_outputs',[])+spec.get('common_outputs',[])
+        output_values += [value for image in spec.get('required_outputs',[]) for value in [image['filename'],image['dsl']]]
+        output_values += spec.get('case_artifacts',[])+spec.get('log_files',[])
+        output_values += [rnd['output_subdirectory'] for rnd in spec.get('rounds',[])]
+        output_values += [value for rnd in spec.get('rounds',[]) for image in rnd['required_outputs'] for value in [image['filename'],image['dsl']]]
+        check(task['id']+' portable output names',all(portable_path(value,allow_environment=False) for value in output_values))
+        agents=(folder/'AGENTS.md').read_text(encoding='utf-8')
+        report=(folder/'templates'/'snapshot-usage-template.md').read_text(encoding='utf-8')
+        check(task['id']+' portable script and report policy','../../PATHS.md' in agents and '程序脚本' in agents and '绝对路径' not in agents and '实际绝对路径' not in report and '../../../PATHS.md' in report)
+        check(task['id']+' configured path base explicit','相对本配置文件所在目录' in local_config.get('directory_resolution',''))
+        metrics=load(folder/'templates'/'task-metrics-template.json')
+        check(task['id']+' metrics paths relative to suite root',metrics.get('path_base')=='suite_root')
         for name in ['AGENTS.md','TASK.md','task.json','run-config.json','templates/task-metrics-template.json','templates/snapshot-usage-template.md']+spec['inputs']:
             check(task['id']+' local input '+name,(folder/name).is_file())
         check(task['id']+' metadata and order identity',spec['id']==task['id'] and spec['execution_mode']=='sequential_suite')
@@ -106,6 +153,7 @@ def main():
                     check(task['id']+' nonempty feedback text '+str(rnd['round']),requirement.is_file() and bool(requirement.read_text(encoding='utf-8').strip()))
             check(task['id']+' all round output count',len(spec['required_outputs'])==task['minimum_final_pngs'])
         if task['track']=='creative':
+            check(task['id']+' portfolio paths relative to task output',load(folder/'templates'/'portfolio-template.json').get('path_base')=='output_dir')
             agents=(folder/'AGENTS.md').read_text(encoding='utf-8')
             check(task['id']+' Markdown gallery delivery','gallery.md' in spec['common_outputs'] and 'gallery.md' in prose and all(text in agents for text in ['gallery.md','Markdown图片预览','原PNG和对应.snapshot链接']))
             check(task['id']+' at least ten independent cases',spec['minimum_independent_cases']==local_config['minimum_independent_cases']==10)
@@ -114,7 +162,10 @@ def main():
     for path in [p for p in published_files() if p.suffix=='.md']:
         for match in re.finditer(r'\]\(([^)]+)\)',path.read_text(encoding='utf-8')):
             target=match.group(1).split('#',1)[0]
-            if not target or re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*:',target):continue
+            if not target or re.match(r'^(?:https?://|mailto:)',target,re.IGNORECASE):continue
+            relative=portable_path(target,allow_environment=False)
+            check('portable local link '+str(path.relative_to(PACK))+' → '+target,relative)
+            if not relative:continue
             dest=(path.parent/target).resolve()
             check('local link '+str(path.relative_to(PACK))+' → '+target,dest.is_file() and dest.is_relative_to(PACK.resolve()))
     json_count=0
@@ -129,9 +180,16 @@ def main():
     actual={p.relative_to(PACK).as_posix() for p in published_files()}
     check('manifest exact published inventory',actual=={entry['path'] for entry in manifest['files']})
     for entry in manifest['files']:
-        path=PACK/entry['path'];data=path.read_bytes()
-        check('manifest integrity '+entry['path'],len(data)==entry['size_bytes'] and hashlib.sha256(data).hexdigest()==entry['sha256'])
-        check('safe manifest path '+entry['path'],not Path(entry['path']).is_absolute() and '..' not in Path(entry['path']).parts)
+        value=entry['path']
+        safe=portable_path(value,allow_environment=False) and '..' not in PureWindowsPath(value).parts and '..' not in PurePosixPath(value).parts
+        check('safe manifest path '+value,safe)
+        if not safe:continue
+        path=PACK/value
+        exists=path.is_file() and path.resolve().is_relative_to(PACK.resolve())
+        check('manifest file exists '+value,exists)
+        if not exists:continue
+        data=path.read_bytes()
+        check('manifest integrity '+value,len(data)==entry['size_bytes'] and hashlib.sha256(data).hexdigest()==entry['sha256'])
     failed=[x for x in checks if not x['passed']]
     if failed:
         dump(EVAL/'authoring-validation.json',{'status':'failed','checks':checks,'errors':failed,'full_suite_trial':False})
@@ -152,7 +210,7 @@ def main():
         'preloaded_round_tasks':['A21','A22'],'published_input_files':len(manifest['files']),
         'json_files_checked':json_count,'check_count':len(checks),'checks':checks,
         'suite_required_artifacts':suite_artifacts,
-        'archive':str(archive) if archive else None,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest() if archive else None,
+        'archive':archive.relative_to(ROOT).as_posix() if archive else None,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest() if archive else None,
         'full_suite_trial':False,'scope':'全套根目录、流程、输入、交付约定与可选分发检查；没有执行30题。'}
     dump(EVAL/'authoring-validation.json',summary)
     if archive:

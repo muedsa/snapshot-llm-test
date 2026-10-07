@@ -9,6 +9,8 @@
 
 不限制渲染请求或视觉迭代次数。模型应逐件实际看图完善，记录迭代过程、实际耗时和请求次数，并在 `outputs/<run_id>/_suite/` 交付 `gallery.md` 完整画廊，以及 Snapshot 使用情况说明与踩坑记录。Markdown 画廊逐图预览并链接原 PNG 和对应 DSL。详细约定见 [AGENTS.md](task-suite/AGENTS.md)，服务与范围配置见 [run-config.json](task-suite/run-config.json)。
 
+所有本地目录和文件路径，包括模型生成的 DSL、脚本、配置及记录，使用明确基准的相对路径或目录环境变量。Markdown 本地链接相对当前文档；详细规则见 [PATHS.md](task-suite/PATHS.md)。
+
 文档：[Snapshot 官方文档](https://snapshot.muedsa.com/) · [Open Snapshot AI 服务指南](https://open-snapshot.muedsa.com/ai-guide.md)。
 
 ## 目录

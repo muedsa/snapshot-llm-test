@@ -62,8 +62,10 @@
 ## 输出目录、临时目录和复现
 
 明确提供OUTPUT_DIR/TEMP_DIR时使用指定目录；否则以run-config.json的output_root/
-temp_root为基目录加唯一run_id，默认outputs/<run_id>/、tmp/<run_id>/。记录实际
-绝对路径。输出目录用case-01/、case-02/等保存各用例，同一用例多张可放同目录，
+temp_root为基目录加唯一run_id，默认outputs/<run_id>/、tmp/<run_id>/。记录相对路径及基准，
+或未展开的目录环境变量表达式。遵循[PATHS.md](../../PATHS.md)：配置相对配置文件，
+指标/日志默认相对总任务根；DSL、程序脚本与命令也使用相对路径或目录环境变量，
+不写死机器路径。Markdown链接相对文档。输出目录用case-01/、case-02/等保存各用例，同一用例多张可放同目录，
 但需明确哪个是独立计数的主作品。所有DSL（包括临时稿）后缀都为.snapshot。
 
 - 每用例：final.png、final.snapshot、case.md（场景/内容/视觉选择/实际自检/素材
