@@ -1,0 +1,231 @@
+{
+  "task": "A01",
+  "title": "六个月经营诊断驾驶舱",
+  "source": "tasks/A01-operations-dashboard/inputs/monthly.csv (sole business data source)",
+  "units": {
+    "money": "元 (CNY)",
+    "orders": "笔",
+    "sessions": "访问次数"
+  },
+  "formulas": {
+    "net_revenue": "gross_revenue - refund_amount",
+    "operating_profit": "net_revenue - operating_cost",
+    "refund_rate": "refund_amount / gross_revenue",
+    "conversion_rate_monthly": "orders / sessions",
+    "overall_conversion_rate": "total_orders / total_sessions (NOT the mean of monthly ratios)",
+    "overall_refund_rate": "total_refund / total_gross_revenue",
+    "margin": "operating_profit / net_revenue"
+  },
+  "months": [
+    {
+      "month": "2026-04",
+      "orders": 420,
+      "sessions": 3500,
+      "gross_revenue": 126000,
+      "refund_amount": 6300,
+      "operating_cost": 82000,
+      "net_revenue": 119700,
+      "operating_profit": 37700,
+      "refund_rate": 0.05,
+      "conversion_rate": 0.12,
+      "margin": 0.31495405179615704
+    },
+    {
+      "month": "2026-05",
+      "orders": 460,
+      "sessions": 4100,
+      "gross_revenue": 142600,
+      "refund_amount": 7130,
+      "operating_cost": 93500,
+      "net_revenue": 135470,
+      "operating_profit": 41970,
+      "refund_rate": 0.05,
+      "conversion_rate": 0.11219512195121951,
+      "margin": 0.3098102901011294
+    },
+    {
+      "month": "2026-06",
+      "orders": 445,
+      "sessions": 4200,
+      "gross_revenue": 137950,
+      "refund_amount": 11036,
+      "operating_cost": 99000,
+      "net_revenue": 126914,
+      "operating_profit": 27914,
+      "refund_rate": 0.08,
+      "conversion_rate": 0.10595238095238095,
+      "margin": 0.21994421419228768
+    },
+    {
+      "month": "2026-07",
+      "orders": 530,
+      "sessions": 4700,
+      "gross_revenue": 169600,
+      "refund_amount": 8480,
+      "operating_cost": 112000,
+      "net_revenue": 161120,
+      "operating_profit": 49120,
+      "refund_rate": 0.05,
+      "conversion_rate": 0.1127659574468085,
+      "margin": 0.30486593843098314
+    },
+    {
+      "month": "2026-08",
+      "orders": 570,
+      "sessions": 5200,
+      "gross_revenue": 188100,
+      "refund_amount": 15048,
+      "operating_cost": 132000,
+      "net_revenue": 173052,
+      "operating_profit": 41052,
+      "refund_rate": 0.08,
+      "conversion_rate": 0.10961538461538461,
+      "margin": 0.2372234935163997
+    },
+    {
+      "month": "2026-09",
+      "orders": 620,
+      "sessions": 5600,
+      "gross_revenue": 210800,
+      "refund_amount": 8432,
+      "operating_cost": 138000,
+      "net_revenue": 202368,
+      "operating_profit": 64368,
+      "refund_rate": 0.04,
+      "conversion_rate": 0.11071428571428571,
+      "margin": 0.3180740037950664
+    }
+  ],
+  "totals": {
+    "orders": 3045,
+    "sessions": 27300,
+    "gross_revenue": 975050,
+    "refund_amount": 56426,
+    "operating_cost": 656500,
+    "net_revenue": 918624,
+    "operating_profit": 262124,
+    "overall_conversion_rate": 0.11153846153846154,
+    "overall_refund_rate": 0.0578698528280601,
+    "margin": 0.28534416692792697
+  },
+  "axis_definitions": {
+    "bar_chart": {
+      "measure": "CNY 元",
+      "domain": [
+        0,
+        240000.0
+      ],
+      "zero_baseline": true,
+      "ticks": [
+        0,
+        60000,
+        120000,
+        180000,
+        240000
+      ],
+      "tick_labels": [
+        "0",
+        "6万",
+        "12万",
+        "18万",
+        "24万"
+      ],
+      "plot_rect_px": {
+        "left": 138,
+        "top": 336,
+        "right": 916,
+        "bottom": 596
+      },
+      "shared_linear_scale_for": [
+        "net_revenue",
+        "operating_profit"
+      ],
+      "negative_values_present": false,
+      "negative_handling": "zero baseline at the bottom; if a value were negative the bar would be drawn below the baseline, but no month is negative"
+    },
+    "sessions_chart": {
+      "measure": "sessions 访问次数",
+      "domain": [
+        0,
+        8000.0
+      ],
+      "zero_baseline": true,
+      "ticks": [
+        0,
+        4000,
+        8000
+      ],
+      "tick_labels": [
+        "0",
+        "4,000",
+        "8,000"
+      ],
+      "independent_from_currency_axis": true
+    },
+    "conversion_chart": {
+      "measure": "percent %",
+      "domain": [
+        0.0,
+        0.2
+      ],
+      "zero_baseline": true,
+      "ticks": [
+        0.0,
+        0.1,
+        0.2
+      ],
+      "tick_labels": [
+        "0%",
+        "10%",
+        "20%"
+      ],
+      "independent_from_currency_axis": true
+    },
+    "month_alignment": "all three charts and the detail table use the same six month labels 2026-04 .. 2026-09 in the same left-to-right order"
+  },
+  "conclusion": {
+    "headline": "收入靠流量撑起来，利润被退款和成本吃掉",
+    "evidence": [
+      "净收入 6 个月 +69.06%：119,700 → 202,368 元",
+      "访问量 +60.00%，月度转化率 12.00% → 11.07%",
+      "8 月利润比 7 月少 8,068 元，退款率 8.00% 最高"
+    ],
+    "evidence_numbers": {
+      "apr_net_revenue": 119700,
+      "sep_net_revenue": 202368,
+      "net_revenue_growth_pct": 69.06,
+      "apr_sessions": 3500,
+      "sep_sessions": 5600,
+      "session_growth_pct": 60.0,
+      "apr_conversion": 0.12,
+      "sep_conversion": 0.110714,
+      "period_overall_conversion": 0.111538,
+      "aug_net_revenue": 173052,
+      "aug_operating_profit": 41052,
+      "jul_operating_profit": 49120,
+      "profit_gap_jul_minus_aug": 8068,
+      "aug_refund_rate": 0.08,
+      "jun_refund_rate": 0.08,
+      "period_refund_rate": 0.05787,
+      "aug_excess_refund_vs_jul_rate": 5643,
+      "worst_margin_month": "2026-06",
+      "worst_margin": 0.219944,
+      "period_margin": 0.285344,
+      "period_operating_cost": 656500,
+      "sep_operating_cost": 138000,
+      "jul_operating_cost": 112000
+    },
+    "actions": [
+      "复盘 6 月与 8 月退款（退款率均 8.00%，期间 5.79%）：8 月按 7 月退款率可少退 5,643 元",
+      "把月度转化率从 11.07% 拉回 4 月的 12.00%：流量已涨 60.00%，效率在稀释增量",
+      "成本按 7 月 30.49% 利润率设红线：成本从 112,000 涨到 138,000 元，而利润率由 30.49% 降到 31.81%"
+    ]
+  },
+  "display_rules": {
+    "kpi_money": "raw yuan with thousands separators, no lossy rescaling",
+    "table_money": "integer yuan with thousands separators",
+    "table_ratios": "two decimals with percent sign",
+    "body_min_font_px": 20,
+    "footnote_min_font_px": 16
+  }
+}

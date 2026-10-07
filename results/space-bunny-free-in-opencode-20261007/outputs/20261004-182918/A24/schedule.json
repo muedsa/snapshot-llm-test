@@ -1,0 +1,565 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "run_id": "20261004-182918",
+  "generated_at": "2026-10-05T02:07:57+08:00",
+  "source_input": "tasks/A24-release-plan-capstone/inputs/release.json",
+  "timezone": "Asia/Shanghai (+08:00) (input timestamps were used unchanged)",
+  "window": {
+    "start": "2026-11-07T09:00:00+08:00",
+    "deadline": "2026-11-07T16:00:00+08:00",
+    "minutes": 420,
+    "start_clock": "09:00",
+    "deadline_clock": "16:00"
+  },
+  "model": {
+    "teams": "exactly one team exists per name; a team runs at most one task at a time",
+    "no_parallel_within_team": true,
+    "preemptive": false,
+    "teams_field": "tasks[].teams is a choice set; a task occupies exactly one listed team",
+    "precedence": "a task may start only after every dependency has finished; starting at the exact finish minute of the last dependency is legal",
+    "switch_overhead_minutes": 0,
+    "inputs_modified": false,
+    "notes": "durations, dependencies and the two check steps R10/R11 were used as given"
+  },
+  "summary": {
+    "total_work_minutes": 485,
+    "makespan_minutes": 260,
+    "makespan_clock": "13:20",
+    "completion_iso": "2026-11-07T13:20:00+08:00",
+    "buffer_to_deadline_minutes": 160,
+    "buffer_to_deadline_clock": "02:40",
+    "critical_path_minutes_ignoring_resources": 255,
+    "critical_path_ignoring_resources": [
+      "R01",
+      "R04",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "workload_lower_bound_minutes": 243,
+    "combined_lower_bound_minutes": 255,
+    "bound_is_tight": false,
+    "gap_to_lower_bound_minutes": 5,
+    "schedule_critical_chain": [
+      "R01",
+      "R05",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "schedule_critical_tasks_zero_float": [
+      "R05",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "resource_gate": {
+      "task": "R05",
+      "label": "文案审校",
+      "ready_at_clock": "09:25",
+      "start_clock": "10:00",
+      "waited_minutes": 35,
+      "why": "all of this task's own dependencies were already finished when it could have started, so the whole delay is team capacity: its lane was occupied by earlier work and the model forbids pre-emption",
+      "lane_blockers": [
+        {
+          "task": "R02",
+          "start_clock": "09:00",
+          "end_clock": "09:20",
+          "minutes": 20
+        },
+        {
+          "task": "R03",
+          "start_clock": "09:20",
+          "end_clock": "10:00",
+          "minutes": 40
+        }
+      ]
+    },
+    "gap_explanation": "The deciding chain of the chosen schedule is R01 -> R05 -> R07 -> R09 -> R10 -> R12. R05 was ready at 09:25 but could not start before 10:00 because its own lane was still occupied by R02(09:00-09:20) + R03(09:20-10:00), and R05 precedes R07 on that chain. That single team-capacity stall is exactly the 5 min between the 255-min lower bound and the 260-min optimum.",
+    "provably_optimal": true,
+    "optimality_statement": "OPTIMAL, and the claim is proved rather than guessed: an exhaustive search over every legal (task order x chosen team) schedule of this instance returned minimum makespan = 260 min, and an independent randomised schedule-generation search of 200000 samples never beat it. A 255-min finish would force the resource-free critical path R01-R04-R07-R09-R10-R12 to run gap-free from minute 0, so R04=[25,85], R07=[85,155], R09=[155,200], R10=[200,235] and R12=[235,255]. R10 may only start once R08 has finished, so R08 must end by 200 and therefore start by 135. Before minute 135 engineering has to carry R02(20)+R03(40)+R06(45)+R05(30) = 135 min of work, and R02->R03->R06 is an unbreakable chain, so engineering would be busy 0-105 with that chain and could only place R05 in [105,135]. But R07 starts at 85 and requires R05 to be complete, i.e. R05 <= 85. Contradiction, so no 255-min schedule exists and the combined bound is not attainable; the exhaustive search shows 260 min is the true optimum."
+  },
+  "teams": {
+    "design": {
+      "segments": [
+        {
+          "task": "R01",
+          "start_minute": 0,
+          "end_minute": 25,
+          "start_clock": "09:00",
+          "end_clock": "09:25",
+          "minutes": 25
+        },
+        {
+          "task": "R04",
+          "start_minute": 25,
+          "end_minute": 85,
+          "start_clock": "09:25",
+          "end_clock": "10:25",
+          "minutes": 60
+        },
+        {
+          "task": "R07",
+          "start_minute": 90,
+          "end_minute": 160,
+          "start_clock": "10:30",
+          "end_clock": "11:40",
+          "minutes": 70
+        },
+        {
+          "task": "R09",
+          "start_minute": 160,
+          "end_minute": 205,
+          "start_clock": "11:40",
+          "end_clock": "12:25",
+          "minutes": 45
+        },
+        {
+          "task": "R10",
+          "start_minute": 205,
+          "end_minute": 240,
+          "start_clock": "12:25",
+          "end_clock": "13:00",
+          "minutes": 35
+        },
+        {
+          "task": "R12",
+          "start_minute": 240,
+          "end_minute": 260,
+          "start_clock": "13:00",
+          "end_clock": "13:20",
+          "minutes": 20
+        }
+      ],
+      "load_minutes": 255,
+      "idle_minutes": 5,
+      "idle_gaps": [
+        {
+          "from_minute": 85,
+          "to_minute": 90,
+          "minutes": 5,
+          "from_clock": "10:25",
+          "to_clock": "10:30",
+          "waiting_for": [
+            "R04"
+          ]
+        }
+      ],
+      "idle_note": "internal idle only: a team that must wait for a dependency and may not be pre-empted; the post-finish reserve is reported separately",
+      "busy_until_minute": 260,
+      "busy_until_clock": "13:20",
+      "reserve_after_finish_minutes": 160
+    },
+    "engineering": {
+      "segments": [
+        {
+          "task": "R02",
+          "start_minute": 0,
+          "end_minute": 20,
+          "start_clock": "09:00",
+          "end_clock": "09:20",
+          "minutes": 20
+        },
+        {
+          "task": "R03",
+          "start_minute": 20,
+          "end_minute": 60,
+          "start_clock": "09:20",
+          "end_clock": "10:00",
+          "minutes": 40
+        },
+        {
+          "task": "R05",
+          "start_minute": 60,
+          "end_minute": 90,
+          "start_clock": "10:00",
+          "end_clock": "10:30",
+          "minutes": 30
+        },
+        {
+          "task": "R06",
+          "start_minute": 90,
+          "end_minute": 135,
+          "start_clock": "10:30",
+          "end_clock": "11:15",
+          "minutes": 45
+        },
+        {
+          "task": "R08",
+          "start_minute": 135,
+          "end_minute": 200,
+          "start_clock": "11:15",
+          "end_clock": "12:20",
+          "minutes": 65
+        },
+        {
+          "task": "R11",
+          "start_minute": 205,
+          "end_minute": 235,
+          "start_clock": "12:25",
+          "end_clock": "12:55",
+          "minutes": 30
+        }
+      ],
+      "load_minutes": 230,
+      "idle_minutes": 5,
+      "idle_gaps": [
+        {
+          "from_minute": 200,
+          "to_minute": 205,
+          "minutes": 5,
+          "from_clock": "12:20",
+          "to_clock": "12:25",
+          "waiting_for": [
+            "R08"
+          ]
+        }
+      ],
+      "idle_note": "internal idle only: a team that must wait for a dependency and may not be pre-empted; the post-finish reserve is reported separately",
+      "busy_until_minute": 235,
+      "busy_until_clock": "12:55",
+      "reserve_after_finish_minutes": 185
+    }
+  },
+  "tasks": [
+    {
+      "id": "R01",
+      "label": "需求核对",
+      "input_minutes": 25,
+      "scheduled_minutes": 25,
+      "allowed_teams": [
+        "design"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "design",
+      "depends": [],
+      "start_minute": 0,
+      "end_minute": 25,
+      "start_clock": "09:00",
+      "end_clock": "09:25",
+      "start_iso": "2026-11-07T09:00:00+08:00",
+      "end_iso": "2026-11-07T09:25:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 0,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "09:00",
+      "resource_delay_minutes": 0,
+      "schedule_float_minutes_ignoring_capacity": 5,
+      "risk_ids": []
+    },
+    {
+      "id": "R02",
+      "label": "服务与字体探测",
+      "input_minutes": 20,
+      "scheduled_minutes": 20,
+      "allowed_teams": [
+        "engineering"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "engineering",
+      "depends": [],
+      "start_minute": 0,
+      "end_minute": 20,
+      "start_clock": "09:00",
+      "end_clock": "09:20",
+      "start_iso": "2026-11-07T09:00:00+08:00",
+      "end_iso": "2026-11-07T09:20:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 0,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "09:30",
+      "resource_delay_minutes": -30,
+      "schedule_float_minutes_ignoring_capacity": 35,
+      "risk_ids": [
+        "K1"
+      ]
+    },
+    {
+      "id": "R03",
+      "label": "数据清洗",
+      "input_minutes": 40,
+      "scheduled_minutes": 40,
+      "allowed_teams": [
+        "engineering"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "engineering",
+      "depends": [
+        "R02"
+      ],
+      "start_minute": 20,
+      "end_minute": 60,
+      "start_clock": "09:20",
+      "end_clock": "10:00",
+      "start_iso": "2026-11-07T09:20:00+08:00",
+      "end_iso": "2026-11-07T10:00:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 1,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "09:50",
+      "resource_delay_minutes": -30,
+      "schedule_float_minutes_ignoring_capacity": 35,
+      "risk_ids": []
+    },
+    {
+      "id": "R04",
+      "label": "视觉系统",
+      "input_minutes": 60,
+      "scheduled_minutes": 60,
+      "allowed_teams": [
+        "design"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "design",
+      "depends": [
+        "R01"
+      ],
+      "start_minute": 25,
+      "end_minute": 85,
+      "start_clock": "09:25",
+      "end_clock": "10:25",
+      "start_iso": "2026-11-07T09:25:00+08:00",
+      "end_iso": "2026-11-07T10:25:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 1,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "09:25",
+      "resource_delay_minutes": 0,
+      "schedule_float_minutes_ignoring_capacity": 5,
+      "risk_ids": []
+    },
+    {
+      "id": "R05",
+      "label": "文案审校",
+      "input_minutes": 30,
+      "scheduled_minutes": 30,
+      "allowed_teams": [
+        "design",
+        "engineering"
+      ],
+      "flexible_choice": true,
+      "assigned_team": "engineering",
+      "depends": [
+        "R01"
+      ],
+      "start_minute": 60,
+      "end_minute": 90,
+      "start_clock": "10:00",
+      "end_clock": "10:30",
+      "start_iso": "2026-11-07T10:00:00+08:00",
+      "end_iso": "2026-11-07T10:30:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 1,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "09:55",
+      "resource_delay_minutes": 5,
+      "schedule_float_minutes_ignoring_capacity": 0,
+      "risk_ids": [
+        "K2"
+      ]
+    },
+    {
+      "id": "R06",
+      "label": "图表计算",
+      "input_minutes": 45,
+      "scheduled_minutes": 45,
+      "allowed_teams": [
+        "engineering"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "engineering",
+      "depends": [
+        "R03"
+      ],
+      "start_minute": 90,
+      "end_minute": 135,
+      "start_clock": "10:30",
+      "end_clock": "11:15",
+      "start_iso": "2026-11-07T10:30:00+08:00",
+      "end_iso": "2026-11-07T11:15:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 2,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "10:30",
+      "resource_delay_minutes": 0,
+      "schedule_float_minutes_ignoring_capacity": 5,
+      "risk_ids": []
+    },
+    {
+      "id": "R07",
+      "label": "主海报构建",
+      "input_minutes": 70,
+      "scheduled_minutes": 70,
+      "allowed_teams": [
+        "design"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "design",
+      "depends": [
+        "R04",
+        "R05"
+      ],
+      "start_minute": 90,
+      "end_minute": 160,
+      "start_clock": "10:30",
+      "end_clock": "11:40",
+      "start_iso": "2026-11-07T10:30:00+08:00",
+      "end_iso": "2026-11-07T11:40:00+08:00",
+      "idle_before_minutes": 5,
+      "precedence_layer": 2,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "10:25",
+      "resource_delay_minutes": 5,
+      "schedule_float_minutes_ignoring_capacity": 0,
+      "risk_ids": []
+    },
+    {
+      "id": "R08",
+      "label": "驾驶舱构建",
+      "input_minutes": 65,
+      "scheduled_minutes": 65,
+      "allowed_teams": [
+        "engineering"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "engineering",
+      "depends": [
+        "R04",
+        "R06"
+      ],
+      "start_minute": 135,
+      "end_minute": 200,
+      "start_clock": "11:15",
+      "end_clock": "12:20",
+      "start_iso": "2026-11-07T11:15:00+08:00",
+      "end_iso": "2026-11-07T12:20:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 3,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "11:15",
+      "resource_delay_minutes": 0,
+      "schedule_float_minutes_ignoring_capacity": 5,
+      "risk_ids": []
+    },
+    {
+      "id": "R09",
+      "label": "手机适配",
+      "input_minutes": 45,
+      "scheduled_minutes": 45,
+      "allowed_teams": [
+        "design",
+        "engineering"
+      ],
+      "flexible_choice": true,
+      "assigned_team": "design",
+      "depends": [
+        "R07"
+      ],
+      "start_minute": 160,
+      "end_minute": 205,
+      "start_clock": "11:40",
+      "end_clock": "12:25",
+      "start_iso": "2026-11-07T11:40:00+08:00",
+      "end_iso": "2026-11-07T12:25:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 3,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "11:35",
+      "resource_delay_minutes": 5,
+      "schedule_float_minutes_ignoring_capacity": 0,
+      "risk_ids": []
+    },
+    {
+      "id": "R10",
+      "label": "视觉回归检查",
+      "input_minutes": 35,
+      "scheduled_minutes": 35,
+      "allowed_teams": [
+        "design"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "design",
+      "depends": [
+        "R07",
+        "R08",
+        "R09"
+      ],
+      "start_minute": 205,
+      "end_minute": 240,
+      "start_clock": "12:25",
+      "end_clock": "13:00",
+      "start_iso": "2026-11-07T12:25:00+08:00",
+      "end_iso": "2026-11-07T13:00:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 4,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "12:20",
+      "resource_delay_minutes": 5,
+      "schedule_float_minutes_ignoring_capacity": 0,
+      "risk_ids": [
+        "K3"
+      ]
+    },
+    {
+      "id": "R11",
+      "label": "产物与数据核验",
+      "input_minutes": 30,
+      "scheduled_minutes": 30,
+      "allowed_teams": [
+        "engineering"
+      ],
+      "flexible_choice": false,
+      "assigned_team": "engineering",
+      "depends": [
+        "R08",
+        "R09"
+      ],
+      "start_minute": 205,
+      "end_minute": 235,
+      "start_clock": "12:25",
+      "end_clock": "12:55",
+      "start_iso": "2026-11-07T12:25:00+08:00",
+      "end_iso": "2026-11-07T12:55:00+08:00",
+      "idle_before_minutes": 5,
+      "precedence_layer": 4,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "12:25",
+      "resource_delay_minutes": 0,
+      "schedule_float_minutes_ignoring_capacity": 5,
+      "risk_ids": []
+    },
+    {
+      "id": "R12",
+      "label": "交付归档",
+      "input_minutes": 20,
+      "scheduled_minutes": 20,
+      "allowed_teams": [
+        "design",
+        "engineering"
+      ],
+      "flexible_choice": true,
+      "assigned_team": "design",
+      "depends": [
+        "R10",
+        "R11"
+      ],
+      "start_minute": 240,
+      "end_minute": 260,
+      "start_clock": "13:00",
+      "end_clock": "13:20",
+      "start_iso": "2026-11-07T13:00:00+08:00",
+      "end_iso": "2026-11-07T13:20:00+08:00",
+      "idle_before_minutes": 0,
+      "precedence_layer": 5,
+      "on_unconstrained_critical_path": false,
+      "resource_free_latest_start_clock": "12:55",
+      "resource_delay_minutes": 5,
+      "schedule_float_minutes_ignoring_capacity": 0,
+      "risk_ids": []
+    }
+  ]
+}

@@ -1,0 +1,566 @@
+openapi: 3.0.3
+info:
+  title: Open Snapshot API
+  description: |
+    基于 Ktor 与 snapshot parser 的开放构图服务：提交 snapshot DSL 文本，返回渲染后的图片。
+
+    约定：
+
+    - 所有响应都带 `X-Request-Id`；调用方传入格式合法的值会被沿用，否则服务生成 UUID。
+    - 错误统一返回 JSON，字段为 `code`、`message`、`requestId`。
+    - 限流分层：匿名调用方按来源 IP，已认证调用方按凭据，管理接口单独计桶；
+      超限返回 `429` 并带 `Retry-After`，同时返回 `X-RateLimit-Limit`、`X-RateLimit-Remaining`、`X-RateLimit-Reset`。
+      `/fonts` 与 `/fonts.png` 和 `/snapshot` 共用匿名/凭据配额。
+    - 配置 `snapshot.api-key`、`SNAPSHOT_API_KEY`、`SNAPSHOT_API_KEYS` 或 `snapshot.api-keys` 后，
+      `/snapshot` 默认需要携带 API Key；设置 `snapshot.anonymous-access-enabled=true` 后仍允许匿名访问，
+      匿名请求按来源 IP 限流，有效 API Key 使用独立的凭据配额。
+    - `/metrics` 可通过 `snapshot.metrics-access` 设置为 `open`（默认）、`credential` 或 `admin`；
+      `/health`、`/ready` 始终开放。
+    - `snapshot.public-docs-enabled=true` 时公开 `/openapi.yaml` 与 `/ai-guide.md`；否则返回 404。
+  version: 1.0.0
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: /
+    description: 与当前文档同源的服务根路径
+
+tags:
+  - name: docs
+    description: 可选公开文档；需开启 snapshot.public-docs-enabled
+  - name: render
+    description: 构图渲染
+  - name: fonts
+    description: 字体查询与预览；鉴权和限流同构图渲染
+  - name: probe
+    description: 存活、就绪与指标
+  - name: admin
+    description: 管理接口，默认不注册；启用后需要 Bearer 令牌
+
+paths:
+  /openapi.yaml:
+    get:
+      tags: [docs]
+      summary: 获取 OpenAPI 定义
+      description: 仅在 snapshot.public-docs-enabled=true 时注册；否则返回 404。
+      responses:
+        "200":
+          description: 当前版本的 OpenAPI YAML 定义。
+          content:
+            application/yaml:
+              schema:
+                type: string
+        "404":
+          description: 公开文档功能未启用。
+
+  /ai-guide.md:
+    get:
+      tags: [docs]
+      summary: 获取 AI 使用指南
+      description: 仅在 snapshot.public-docs-enabled=true 时注册；否则返回 404。
+      responses:
+        "200":
+          description: Snapshot DSL 与渲染接口的精简 Markdown 使用指南。
+          content:
+            text/markdown:
+              schema:
+                type: string
+        "404":
+          description: 公开文档功能未启用。
+
+  /snapshot:
+    post:
+      tags: [render]
+      summary: 渲染 snapshot DSL 为图片
+      operationId: renderSnapshot
+      security:
+        - ApiKeyHeader: []
+        - BearerApiKey: []
+        - {}
+      parameters:
+        - name: errorImage
+          in: query
+          required: false
+          description: |
+            传 `png` 时，若 DSL 解析失败则返回解析错误高亮图（`image/png`，状态码仍为 400），
+            并附带 `X-Snapshot-Error-*` 响应头；解析成功时该参数被忽略。
+            其他取值、或错误图渲染失败/超时时回退为 JSON 错误。
+          schema:
+            type: string
+            enum: [png]
+          example: png
+      requestBody:
+        required: true
+        description: |
+          snapshot DSL 文本，根标签为 `<Snapshot>`。`<Image>` 与 `<Emoji>` 可使用 HTTP(S) `url`
+          或 PNG/JPEG/WebP Base64 `dataUri`（二选一）；两种来源共用图片数量、单图尺寸和
+          单次渲染总解码像素限制。文档元素数量与嵌套深度也受服务端配置限制。
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: '<Snapshot type="png"><Container width="200" height="100" color="#FF0000FF"/></Snapshot>'
+      responses:
+        "200":
+          description: 渲染成功，响应体为图片字节。
+          headers:
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+            Server-Timing:
+              $ref: "#/components/headers/ServerTiming"
+            X-Snapshot-Cache:
+              $ref: "#/components/headers/SnapshotCache"
+            X-Snapshot-Image-Count:
+              $ref: "#/components/headers/SnapshotImageCount"
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/webp:
+              schema:
+                type: string
+                format: binary
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "413":
+          description: 请求体超过 `snapshot.max-request-size`。
+          headers:
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                code: REQUEST_TOO_LARGE
+                message: Snapshot request body exceeds 1048576 bytes
+                requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+        "429":
+          description: 触发限流，携带 `Retry-After`。
+          headers:
+            Retry-After:
+              $ref: "#/components/headers/RetryAfter"
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          description: |
+            服务暂时无法接收渲染请求，`code` 取值：
+            `SERVICE_UNAVAILABLE`（正在排水）、`QUEUE_FULL`（等待渲染槽位的请求数超过
+            `snapshot.max-render-queue`）、`QUEUE_TIMEOUT`（等待超过
+            `snapshot.render-queue-timeout-ms`）。后两者带 `Retry-After`。
+          headers:
+            Retry-After:
+              $ref: "#/components/headers/RetryAfter"
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              examples:
+                draining:
+                  value:
+                    code: SERVICE_UNAVAILABLE
+                    message: Service is shutting down
+                    requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+                queueFull:
+                  value:
+                    code: QUEUE_FULL
+                    message: Render queue is full (32 waiting), retry later
+                    requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+                queueTimeout:
+                  value:
+                    code: QUEUE_TIMEOUT
+                    message: Waited longer than 5000 ms for a render slot
+                    requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+        "504":
+          description: 渲染超过 `snapshot.max-render-timeout-ms`。
+          headers:
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                code: RENDER_TIMEOUT
+                message: Snapshot rendering exceeded 30000 ms
+                requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+
+  /health:
+    get:
+      tags: [probe]
+      summary: 存活检查
+      operationId: health
+      responses:
+        "200":
+          description: 进程可响应。
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+
+  /ready:
+    get:
+      tags: [probe]
+      summary: 就绪检查
+      description: 校验渲染链路（冒烟渲染、字体环境、图片缓存）并且服务未处于排水状态。
+      operationId: ready
+      responses:
+        "200":
+          description: 可以接收渲染请求。
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: READY
+        "503":
+          description: 未就绪或正在排水。
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                code: NOT_READY
+                message: Service is shutting down
+                requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+
+  /metrics:
+    get:
+      tags: [probe]
+      summary: Prometheus 指标
+      description: |
+        可通过 `snapshot.metrics-enabled=false` 关闭。
+        访问控制由 `snapshot.metrics-access` 决定：`open`（默认）、`credential`（需要 API Key）、
+        `admin`（需要管理凭据）。
+      operationId: metrics
+      security:
+        - ApiKeyHeader: []
+        - BearerApiKey: []
+        - AdminBearer: []
+        - {}
+      responses:
+        "200":
+          description: Prometheus 文本格式指标。
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: |
+                  snapshot_ready 1
+                  snapshot_renders_total{outcome="success"} 12
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /fonts:
+    get:
+      tags: [fonts]
+      summary: 字体列表
+      security:
+        - ApiKeyHeader: []
+        - BearerApiKey: []
+        - {}
+      responses:
+        "200":
+          description: 每行一个字体族名称。
+          content:
+            text/plain:
+              schema:
+                type: string
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          description: 与 `/snapshot` 共用调用方配额；超限时带 `Retry-After`。
+
+  /fonts.png:
+    get:
+      tags: [fonts]
+      summary: 字体预览图
+      description: |
+        渲染字体样例图。可用 `family` 只渲染指定字体，并用 `offset`/`limit` 分页，
+        避免字体数量多时图片过大。每页默认 10 个、最多 20 个；相同查询会命中渲染结果缓存。
+      security:
+        - ApiKeyHeader: []
+        - BearerApiKey: []
+        - {}
+      parameters:
+        - name: family
+          in: query
+          required: false
+          description: 字体族名称，可用英文逗号分隔多个；名称大小写不敏感。省略表示全部字体。
+          schema:
+            type: string
+          example: "DejaVu Serif,Inter"
+        - name: offset
+          in: query
+          required: false
+          description: 分页起始下标，默认 0；超出范围返回空白预览图。
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          description: 单页字体数量，省略或 0 表示默认 10；最大 20。
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 20
+            default: 10
+      responses:
+        "200":
+          description: 字体预览 PNG。
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: |
+            查询参数不合法：`FONT_NOT_FOUND`（`family` 中有不存在的字体族）、
+            `INVALID_QUERY`（`offset`/`limit` 不是非负整数或 `limit > 20`）。
+          headers:
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                code: FONT_NOT_FOUND
+                message: "Unknown font families: NoSuchFamilyXyz"
+                requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          description: 与 `/snapshot` 共用调用方配额；超限时带 `Retry-After`。
+        "503":
+          description: 渲染队列已满或排队超时；JSON 错误码为 `QUEUE_FULL` 或 `QUEUE_TIMEOUT`，带 `Retry-After`。
+        "504":
+          description: 字体预览超过渲染超时，JSON 错误码为 `RENDER_TIMEOUT`。
+
+  /cacheInfo:
+    get:
+      tags: [admin]
+      summary: 网络图片缓存统计
+      security:
+        - AdminBearer: []
+      responses:
+        "200":
+          description: 缓存图片数量与估算字节数。
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: |
+                  count=3
+                  bytes=184320
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /cacheClear:
+    post:
+      tags: [admin]
+      summary: 清空网络图片缓存
+      security:
+        - AdminBearer: []
+      responses:
+        "200":
+          description: 清理完成。
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+components:
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        仅当配置了客户端凭据时校验：`snapshot.api-key`、`SNAPSHOT_API_KEY`、
+        `SNAPSHOT_API_KEYS`（`名称:密钥` 逗号分隔）或 `snapshot.api-keys` 列表。
+        多个 Key 可同时在列，便于平滑轮换。`snapshot.anonymous-access-enabled=true` 时可以不携带凭据，
+        但显式携带错误凭据仍返回 `401`。
+    BearerApiKey:
+      type: http
+      scheme: bearer
+      description: 与 `X-API-Key` 等价的 API Key 携带方式。
+    AdminBearer:
+      type: http
+      scheme: bearer
+      description: |
+        管理接口凭据：`snapshot.admin-token` / `SNAPSHOT_ADMIN_TOKEN`，
+        或 `admin: true` 的 API Key。
+
+  headers:
+    RequestId:
+      description: 请求 ID，与错误响应体中的 `requestId` 一致。
+      schema:
+        type: string
+        example: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+    ServerTiming:
+      description: |
+        标准耗时头，单位为毫秒、保留 1 位小数。
+        段含义：`queue`（等待渲染槽位）、`render`（纯渲染）、`image`（远程图片获取，含等待同 URL 并发去重）、
+        `cache;desc=hit`（渲染结果缓存命中）、`total`（服务端处理总耗时）。
+        未发生的阶段不会出现；`429` 由限流插件在进入路由前产生，不带该头。
+      schema:
+        type: string
+        example: queue;dur=0.3, render;dur=12.4, total;dur=14.2
+    SnapshotCache:
+      description: 渲染结果缓存是否命中（`hit` / `miss`）。
+      schema:
+        type: string
+        enum: [hit, miss]
+    SnapshotImageCount:
+      description: 本请求真正发起的远程图片下载次数（304 复用不计入）。
+      schema:
+        type: integer
+        example: 2
+    RetryAfter:
+      description: 建议的重试等待时间（秒）。
+      schema:
+        type: string
+        example: "5"
+
+  responses:
+    BadRequest:
+      description: |
+        请求不合法，`code` 取值：
+        `EMPTY_REQUEST`（空请求体）、`PARSE_ERROR`（DSL 语法错误，message 含位置与附近源码）、
+        `RENDER_ERROR`（超出画布/文档结构限制或布局失败）、`IMAGE_LOAD_ERROR`
+        （图片地址非法、加载失败、Data URI 格式非法或超出图片预算）。
+
+        带 `?errorImage=png` 且 `code` 为 `PARSE_ERROR` 时，响应体为解析错误高亮图（`image/png`），
+        并返回 `X-Snapshot-Error-Code`、`X-Snapshot-Error-Position`、`X-Snapshot-Error-Location` 响应头；
+        错误图渲染失败时回退为这里的 JSON。
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+        X-Snapshot-Error-Code:
+          schema:
+            type: string
+            example: PARSE_ERROR
+        X-Snapshot-Error-Position:
+          schema:
+            type: string
+            example: "21"
+        X-Snapshot-Error-Location:
+          schema:
+            type: string
+            example: line 1, column 22
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          example:
+            code: PARSE_ERROR
+            message: "Unexpected token at position 12 near: <Container w"
+            requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+        image/png:
+          schema:
+            type: string
+            format: binary
+          description: 仅在请求带 `?errorImage=png` 且为解析错误时返回。
+    Unauthorized:
+      description: 缺少或提供了错误的凭据，`code` 为 `UNAUTHORIZED`。
+      headers:
+        WWW-Authenticate:
+          schema:
+            type: string
+            example: Bearer
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          example:
+            code: UNAUTHORIZED
+            message: A valid API key is required
+            requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+    Forbidden:
+      description: 凭据有效但不具备管理权限，`code` 为 `FORBIDDEN`。
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          example:
+            code: FORBIDDEN
+            message: An admin credential is required
+            requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+    InternalError:
+      description: 未预期的内部错误，`message` 不包含内部细节，`code` 为 `INTERNAL_ERROR`。
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          example:
+            code: INTERNAL_ERROR
+            message: Snapshot rendering failed
+            requestId: 3f1c1b6e-6a1f-4a5e-9d4c-2b7f0f9a1c33
+
+  schemas:
+    ApiError:
+      type: object
+      required: [code, message, requestId]
+      properties:
+        code:
+          type: string
+          description: 稳定的错误码。
+          enum:
+            - EMPTY_REQUEST
+            - PARSE_ERROR
+            - RENDER_ERROR
+            - IMAGE_LOAD_ERROR
+            - REQUEST_TOO_LARGE
+            - RENDER_TIMEOUT
+            - FONT_NOT_FOUND
+            - INVALID_QUERY
+            - RATE_LIMITED
+            - QUEUE_FULL
+            - QUEUE_TIMEOUT
+            - SERVICE_UNAVAILABLE
+            - NOT_READY
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: 面向调用方的错误说明。
+        requestId:
+          type: string
+          description: 请求 ID，与服务日志中的 requestId 对应。

@@ -1,0 +1,224 @@
+{
+  "task": "A03",
+  "title": "多层语义故障恢复",
+  "original_file": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+  "original_submitted_verbatim": true,
+  "original_response": {
+    "http_status": 400,
+    "error": "{\"code\":\"PARSE_ERROR\",\"message\":\"Attr [padding] value format error at position 91 near: =\\\"png\\\">\\n  <Container padding=\\\"24 32\\\" borderRadius=\\\"24\\\">\\n    \",\"requestId\":\"A03-req-055\"}",
+    "response_file": "tmp\\20261004-182918\\A03\\responses\\resp-A03-req-055-b6be7e-att1.txt",
+    "note": "the original was submitted byte-for-byte and the service rejected it, as expected; nothing was deleted to make the document parse"
+  },
+  "defect_layers": {
+    "explicit-error": "the service refused it with a 4xx JSON body naming the attribute/tag",
+    "silent-ignored": "unknown attribute; accepted with 200 and no effect - only the tag reference plus a dedicated probe image reveal it",
+    "visual-only": "parsed and drawn with the wrong visual semantics; neither an error nor a reference violation, only the image shows it",
+    "semantic": "valid DSL whose meaning did not match the requirement",
+    "incomplete-content": "valid DSL that lacked required elements"
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "defect_layer": "explicit-error",
+      "original_location": "line 2  <Container padding=\"24 32\" borderRadius=\"24\">",
+      "evidence": "verbatim submission rejected: {\"code\":\"PARSE_ERROR\",\"message\":\"Attr [padding] value format error at position 91 near: =\\\"png\\\">\\n  <Container padding=\\\"24 32\\\" borderRadius=\\\"24\\\">\\n    \",\"requestId\":\"A03-req-055\"}",
+      "original_snippet": "padding=\"24 32\"",
+      "fix": "padding=\"(24,32)\" - the documented EdgeInsets tuple form; \"24 32\" is not a legal EdgeInsets literal here",
+      "verification": "draft 01 accepted this attribute and the parser moved on to the next defect",
+      "artefact": "tmp/20261004-182918/A03/drafts/01-padding-syntax.snapshot"
+    },
+    {
+      "id": "F02",
+      "defect_layer": "explicit-error",
+      "original_location": "line 10  <Transform rotate=\"-8\">  (no matrix attribute at all)",
+      "evidence": "draft 01 rejected: {\"code\":\"PARSE_ERROR\",\"message\":\"Attr [matrix] must not be null at position 466 near:      <Spacer flex=\\\"1\\\"/>\\n      <Transform rotate=\\\"-8\\\"><Contai\",\"requestId\":\"A03-req-056\"}",
+      "original_snippet": "<Transform rotate=\"-8\">",
+      "fix": "Transform requires matrix; supplied the column-major 4x4 for a counter-clockwise 8 degree rotation about the label centre (0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1) with origin=\"(0,0)\" alignment=\"CENTER\"",
+      "verification": "draft 05 renders a visibly tilted REVIEW label: its right edge sits higher than its left edge, i.e. rotated counter-clockwise",
+      "artefact": "tmp/20261004-182918/A03/drafts/05-transform-matrix.snapshot"
+    },
+    {
+      "id": "F03",
+      "defect_layer": "explicit-error",
+      "original_location": "line 7  <Positioned right=\"20\"> was a direct child of <Row>",
+      "evidence": "isolated probe b1-pos-in-row reproduces it exactly: '<Row><Positioned right=\"20\">...</Positioned></Row>' returns 400 RENDER_ERROR \"renderBox.parentData must be StackParentData\"; Positioned is only legal as a direct child of Stack/IndexedStack",
+      "original_snippet": "<Row> ... <Positioned right=\"20\">...</Positioned> ... </Row>",
+      "fix": "the Column is now wrapped in a <Stack fit=\"EXPAND\"> and the badge is a Positioned child of that Stack; in the final card the LIVE badge is additionally given the required 96x36 size and top-right placement clear of the 44px title",
+      "verification": "final image: 96x36 LIVE badge at (1152,32); the title box occupies (32,30)-(320,84) so nothing overlaps it",
+      "artefact": "tmp/20261004-182918/A03/probes/b1-pos-in-row.snapshot"
+    },
+    {
+      "id": "F04",
+      "defect_layer": "silent-ignored",
+      "original_location": "line 1  <Snapshot width=\"1280\" height=\"800\" ...>",
+      "evidence": "reference/parser-tags.md lists only background/debug/type for <Snapshot>, and unknown attributes are ignored. Proof probe: probe-a-snapshot-size.snapshot -> rendered [400, 200], i.e. the Snapshot width/height had no effect at all",
+      "original_snippet": "<Snapshot width=\"1280\" height=\"800\" ...>",
+      "fix": "dropped the invalid attributes and put the size on the single root <Container width=\"1280\" height=\"800\">, because the canvas is driven by layout",
+      "verification": "draft 03 renders at [1280, 800] and the delivered system-pulse.png is 1280x800",
+      "artefact": "tmp/20261004-182918/A03/drafts/03-canvas-size.snapshot"
+    },
+    {
+      "id": "F05",
+      "defect_layer": "silent-ignored",
+      "original_location": "line 4  <Text font-size=\"44\" color=\"#FFFFFF\">",
+      "evidence": "the reference spells it fontSize; unknown attributes are ignored so the title silently fell back to the default size. Proof probe probe-b-fontsize.snapshot renders font-size=\"44\" and fontSize=\"44\" side by side at visibly different heights",
+      "original_snippet": "font-size=\"44\"",
+      "fix": "fontSize=\"44\"",
+      "verification": "final image: the System Pulse title renders at 44px",
+      "artefact": "tmp/20261004-182918/A03/drafts/04-attr-fontsize.snapshot"
+    },
+    {
+      "id": "F06",
+      "defect_layer": "visual-only",
+      "original_location": "line 10  color=\"#33FFFFFF\" on the REVIEW label",
+      "evidence": "the tag reference states the parser follows CSS and reads the last two hex digits as alpha, so #33FFFFFF is opaque cyan (the old #AARRGGBB reading would have been 20% white). Draft 05 renders a solid cyan plate: HTTP 200, no warning, wrong meaning.",
+      "original_snippet": "color=\"#33FFFFFF\"",
+      "fix": "color=\"#FFFFFF33\" - white at exactly 20% (0x33 = 51/255)",
+      "verification": "3.2x zoom crop tmp/20261004-182918/A03/crops/system-pulse-review.png: the plate is a translucent white - the dark background and the faint grid lines read straight through it - while REVIEW is solid opaque white; the plate also sits rotated so its right edge is higher than its left edge, i.e. 8 degrees counter-clockwise.",
+      "artefact": "tmp/20261004-182918/A03/drafts/05-alpha-order.snapshot"
+    },
+    {
+      "id": "F07",
+      "defect_layer": "semantic",
+      "original_location": "line 11  <ImageFiltered sigmaX=\"10\" sigmaY=\"10\"> around the card",
+      "evidence": "reference/parser-tags.md: ImageFiltered blurs the whole subtree, so the 28px caption was blurred together with the plate. The requirement is background-only blur with crisp text, which needs BackdropFilter reading already-painted content. HTTP 200 either way - only the rendered image reveals the difference.",
+      "original_snippet": "<ImageFiltered ...><Container ...><Text ...>Background-only blur</Text></Container></ImageFiltered>",
+      "fix": "replaced with <ClipRRect borderRadius=\"24\"> wrapping a Stack: the first Positioned child applies <BackdropFilter sigmaX=\"9\" sigmaY=\"9\"> over a #FFFFFF1F plate, the second Positioned child holds the untouched 28px caption",
+      "verification": "5x zoom crop tmp/20261004-182918/A03/crops/system-pulse-edge.png shows the boundary unambiguously: to the left of the card edge the pink/cyan/lime bars have hard 1px edges; immediately to the right of the same edge the same bars are smeared and the plate is frosted, while the 28px glyph edges of \"Ba\" stay razor sharp on top of the blurred background.",
+      "artefact": "tmp/20261004-182918/A03/drafts/06-blur-scope.snapshot"
+    },
+    {
+      "id": "F08",
+      "defect_layer": "incomplete-content",
+      "original_location": "whole document",
+      "evidence": "the broken original had only one of the three required metric cards, a REVIEW label placed in normal Column flow instead of bottom-right, no LIVE label size, no coloured bars behind the caption card and no 32px safe margin. Comparing draft 06 with the required layout exposes each of these.",
+      "original_snippet": "one <Expanded> card; <Transform> label inside the Column; plain #FFFFFF44 plate; padding=\"(24,32)\" i.e. 24px vertical margin",
+      "fix": "rebuilt as an absolutely positioned 1280x800 layout with a 32px safe margin: 44px title, three equal 389x176 metric cards at x=32/445/858 with 28px text, a 96x36 LIVE badge at the top right, a centred 500x150 radius-24 caption card whose four coloured bars run 120px past both side edges, and a 160x56 REVIEW label at the bottom right",
+      "verification": "final image reviewed whole and zoomed on the caption card, the REVIEW label and the LIVE badge; rendered size [1280, 800]",
+      "artefact": "tmp/20261004-182918/A03/drafts/07-system-pulse.snapshot"
+    },
+    {
+      "id": "F09",
+      "defect_layer": "explicit-error",
+      "original_location": "rebuild stage - the REVIEW plate was first emitted as <Positioned> inside <Transform>",
+      "evidence": "the shared dsllib box() helper always wraps rectangles in <Positioned>. Inside a Transform that produced 400 RENDER_ERROR \"renderBox.parentData must be StackParentData\", i.e. the same rule as F03 but on the other side of the tree",
+      "original_snippet": "dsllib box() -> <Positioned left=.. top=.. width=160 height=56>...</Positioned> nested directly in <Transform>",
+      "fix": "the plate and its label were emitted as plain <Container> nodes instead of Positioned ones; Positioned is now reserved for direct children of Stack/IndexedStack",
+      "verification": "final image renders the 160x56 REVIEW plate with the 8 degree counter-clockwise tilt",
+      "artefact": "tmp/20261004-182918/A03/probes/b3-transform-box.snapshot"
+    }
+  ],
+  "probe_evidence": {
+    "probe-a-snapshot-size": {
+      "dsl": "tmp/20261004-182918/A03/probes/probe-a-snapshot-size.snapshot",
+      "question": "does width/height on <Snapshot> do anything?",
+      "result_px": [
+        400,
+        200
+      ],
+      "conclusion": "the canvas came out [400, 200] even though the root tag asked for [1280, 800]; width/height on <Snapshot> are silently ignored"
+    },
+    "probe-b-fontsize": {
+      "dsl": "tmp/20261004-182918/A03/probes/probe-b-fontsize.snapshot",
+      "question": "is font-size silently ignored while fontSize works?",
+      "result_px": [
+        900,
+        300
+      ],
+      "conclusion": "the two labels are drawn at clearly different heights in the same image, so the hyphenated spelling is ignored without any error"
+    }
+  },
+  "draft_history": [
+    {
+      "draft": "00-original.snapshot",
+      "http_status": 400,
+      "error": "{\"code\":\"PARSE_ERROR\",\"message\":\"Attr [padding] value format error at position 91 near: =\\\"png\\\">\\n  <Container padding=\\\"24 32\\\" borderRadius=\\\"24\\\">\\n    \",\"requestId\":\"A03-req-055\"}"
+    },
+    {
+      "draft": "01-padding-syntax.snapshot",
+      "http_status": 400,
+      "error": "{\"code\":\"PARSE_ERROR\",\"message\":\"Attr [matrix] must not be null at position 466 near:      <Spacer flex=\\\"1\\\"/>\\n      <Transform rotate=\\\"-8\\\"><Contai\",\"requestId\":\"A03-req-056\"}"
+    },
+    {
+      "draft": "02-positioned-parent.snapshot",
+      "http_status": 400,
+      "error": "{\"code\":\"RENDER_ERROR\",\"message\":\"Layout size is infinite\",\"requestId\":\"A03-req-057\"}"
+    },
+    {
+      "draft": "03-canvas-size.snapshot",
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "draft": "04-attr-fontsize.snapshot",
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "draft": "05-alpha-order.snapshot",
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "draft": "06-blur-scope.snapshot",
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "draft": "07-system-pulse.snapshot",
+      "http_status": 200,
+      "error": null
+    }
+  ],
+  "drafts_kept": [
+    "00-original.snapshot",
+    "01-padding-syntax.snapshot",
+    "02-positioned-parent.snapshot",
+    "03-canvas-size.png",
+    "03-canvas-size.snapshot",
+    "04-attr-fontsize.png",
+    "04-attr-fontsize.snapshot",
+    "05-alpha-order.png",
+    "05-alpha-order.snapshot",
+    "05-transform-matrix.snapshot",
+    "06-alpha-order.snapshot",
+    "06-blur-scope.png",
+    "06-blur-scope.snapshot",
+    "07-blur-scope.snapshot",
+    "07-system-pulse.png",
+    "07-system-pulse.snapshot",
+    "08-system-pulse.snapshot",
+    "probe-a-snapshot-size.png",
+    "probe-a-snapshot-size.snapshot",
+    "probe-b-fontsize.png",
+    "probe-b-fontsize.snapshot"
+  ],
+  "render_target": {
+    "file": "system-pulse.png",
+    "requested": [
+      1280,
+      800
+    ],
+    "actual_px": [
+      1280,
+      800
+    ],
+    "background": "#0B1220",
+    "safe_margin_px": 32
+  },
+  "spec_compliance": {
+    "title": "System Pulse, fontSize 44, top-left inside the 32px safe margin",
+    "metric_cards": "three equal 389px cards at x=32/445/858, 28px text: USAGE 72%, LATENCY 148 ms, SUCCESS 99.2%",
+    "live_badge": "96x36 at (1152,32), clear of the title box (32,32)-(320,80)",
+    "review_label": "160x56 at (1088,712), Transform matrix = 8 degrees counter-clockwise about the centre, plate #FFFFFF33 (white 20%), text #FFFFFFFF at 24px",
+    "caption_card": "500x150, borderRadius 24, centred at (390,406); four coloured bars extend 120px beyond both side edges; BackdropFilter sigma 9 clipped by ClipRRect so only the card background is blurred while the 28px caption stays sharp"
+  },
+  "no_cheating_statement": "no broken block was deleted to claim success: every repaired draft is kept under tmp/20261004-182918/A03/drafts/ and each fix is mapped to the original location above",
+  "visual_review_evidence": [
+    "outputs/20261004-182918/A03/system-pulse.png reviewed whole at every rebuild",
+    "tmp/20261004-182918/A03/crops/system-pulse-edge.png - 5x zoom on the caption card left edge (blur scope)",
+    "tmp/20261004-182918/A03/crops/system-pulse-review.png - 3.2x zoom on the REVIEW label (alpha + rotation)",
+    "tmp/20261004-182918/A03/probes/probe-b-fontsize.png - font-size vs fontSize side by side",
+    "tmp/20261004-182918/A03/drafts/05-alpha-order.png and 06-blur-scope.png - the two visual-only / semantic defects side by side"
+  ]
+}

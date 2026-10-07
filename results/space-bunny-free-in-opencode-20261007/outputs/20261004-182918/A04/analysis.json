@@ -1,0 +1,183 @@
+{
+  "task": "A04",
+  "source": "tasks/A04-conversion-paradox/inputs/conversion.csv",
+  "units": {
+    "visits": "次",
+    "conversions": "笔",
+    "rate": "%"
+  },
+  "periods": [
+    "前期",
+    "后期"
+  ],
+  "channels": [
+    "直接访问",
+    "推广访问"
+  ],
+  "exact_fractions": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "conversions_numerator": 2400,
+      "visits_denominator": 8000,
+      "fraction": "2400/8000",
+      "rate_decimal_6dp": 0.3,
+      "display_percent": "30.00%"
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "conversions_numerator": 200,
+      "visits_denominator": 2000,
+      "fraction": "200/2000",
+      "rate_decimal_6dp": 0.1,
+      "display_percent": "10.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "conversions_numerator": 700,
+      "visits_denominator": 2000,
+      "fraction": "700/2000",
+      "rate_decimal_6dp": 0.35,
+      "display_percent": "35.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "conversions_numerator": 960,
+      "visits_denominator": 8000,
+      "fraction": "960/8000",
+      "rate_decimal_6dp": 0.12,
+      "display_percent": "12.00%"
+    }
+  ],
+  "overall": [
+    {
+      "period": "前期",
+      "conversions_numerator_total": 2600,
+      "visits_denominator_total": 10000,
+      "fraction": "2600/10000",
+      "overall_rate_decimal_6dp": 0.26,
+      "display_percent": "26.00%",
+      "visit_mix_percent": {
+        "直接访问": 80.0,
+        "推广访问": 20.0
+      }
+    },
+    {
+      "period": "后期",
+      "conversions_numerator_total": 1660,
+      "visits_denominator_total": 10000,
+      "fraction": "1660/10000",
+      "overall_rate_decimal_6dp": 0.166,
+      "display_percent": "16.60%",
+      "visit_mix_percent": {
+        "直接访问": 20.0,
+        "推广访问": 80.0
+      }
+    }
+  ],
+  "forbidden_aggregations_kept_out": {
+    "naive_mean_of_channel_rates": {
+      "early": "20.00%",
+      "late": "23.50%",
+      "implied_change": "+3.50pp",
+      "why_wrong": "an unweighted mean of two channel rates weights a 2,000-visit channel the same as an 8,000-visit channel; panel 3 shows it only as a ghosted counter-example with a dashed connector, never as the answer",
+      "note": "the overall rate is never computed this way anywhere in this deliverable"
+    },
+    "absolute_conversions_as_rate": "no chart encodes conversions-per-channel as a rate; absolute conversion counts appear only in the verification table as numerators"
+  },
+  "weighted_formula": {
+    "overall_rate": "overall_rate = sum(conversions) / sum(visits) = sum_c (w_c * r_c), where w_c = visits_c / total_visits",
+    "kitagawa_decomposition": "delta_R = sum_c [ (r1_c - r0_c) * (w0_c + w1_c)/2 ] + sum_c [ (w1_c - w0_c) * (r0_c + r1_c)/2 ]",
+    "terms": [
+      {
+        "channel": "直接访问",
+        "w_early": 0.8,
+        "w_late": 0.2,
+        "r_early": 0.3,
+        "r_late": 0.35,
+        "rate_effect_pp": 2.4999999999999996,
+        "mix_effect_pp": -19.5
+      },
+      {
+        "channel": "推广访问",
+        "w_early": 0.2,
+        "w_late": 0.8,
+        "r_early": 0.1,
+        "r_late": 0.12,
+        "rate_effect_pp": 0.9999999999999996,
+        "mix_effect_pp": 6.600000000000001
+      }
+    ],
+    "rate_effect_pp": 3.5,
+    "mix_effect_pp": -12.9,
+    "total_pp": -9.4,
+    "identity_check": "+3.50pp + -12.90pp = -9.40pp vs observed -9.40pp"
+  },
+  "counterfactuals": {
+    "late_rates_with_early_mix_80_20": {
+      "value_percent": 30.4,
+      "display": "30.40%",
+      "meaning": "0.8*0.35 + 0.2*0.12; if the visit mix had stayed at the early 80/20 split, the later channel rates would have produced an overall rate of 30.40% instead of 16.60%"
+    },
+    "early_rates_with_late_mix_20_80": {
+      "value_percent": 14.0,
+      "display": "14.00%",
+      "meaning": "0.2*0.30 + 0.8*0.10; with the later 20/80 mix but the early rates the overall rate would have been 14.00%"
+    }
+  },
+  "main_conclusion": {
+    "statement": "两个渠道的转化率都上升了（直接访问 30.00%→35.00%，推广访问 10.00%→12.00%），但真实总体转化率从 26.00% 降到 16.60%，方向相反。",
+    "support": [
+      "直接访问 30.00% → 35.00%",
+      "推广访问 10.00% → 12.00%",
+      "总体 = 总成交 1660 ÷ 总访问 10000：26.00% → 16.60%",
+      "构成翻转：直接访问占比 80.00% → 20.00%（−60.00pp）",
+      "Kitagawa：率效应 +3.50pp + 构成效应 -12.90pp = -9.40pp"
+    ]
+  },
+  "limitation": {
+    "statement": "这两期两渠道的访问数与成交数只能说明分组与总体不同向这一统计事实，不能证明因果。",
+    "missing_information": [
+      "随机化或准实验分组",
+      "流量来源与投放时间分布",
+      "客单价与成本",
+      "同期其他未观测的产品或市场改动",
+      "季节性基线"
+    ],
+    "therefore": "因果结论需要额外研究设计，本图不作任何因果主张"
+  },
+  "axis_definitions": {
+    "rate_charts_1_and_3": {
+      "domain": [
+        0,
+        1
+      ],
+      "display": "0–100%",
+      "shared_scale": true,
+      "zero_baseline": true,
+      "note": "both channel rates and both overall rates share one 0-100% linear scale"
+    },
+    "composition_chart_2": {
+      "basis": "both periods total 10,000 visits so the two bars have equal length",
+      "segments": "segment width = visits_c / total_visits",
+      "values_percent": {
+        "前期": {
+          "直接访问": 80.0,
+          "推广访问": 20.0
+        },
+        "后期": {
+          "直接访问": 20.0,
+          "推广访问": 80.0
+        }
+      }
+    }
+  },
+  "font_floor": {
+    "body_px": 22,
+    "chart_annotation_px": 18,
+    "note": "every narrative line and every table cell is >=22px; axis ticks, legend chips, data labels and the footnote are >=18px"
+  }
+}

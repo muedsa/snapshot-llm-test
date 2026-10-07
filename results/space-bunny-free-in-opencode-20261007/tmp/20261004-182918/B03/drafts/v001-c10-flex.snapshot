@@ -1,0 +1,488 @@
+<Snapshot type="png" background="#0B1020FF">
+<Container width="1600" height="1240">
+<Container width="1600" height="1240">
+<Stack fit="EXPAND">
+<Positioned left="40" top="20" width="1520" height="26">
+<Text color="#EAF2FBFF" fontSize="19" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[PROBE c10 · 自适应排版族 · Row/Column/Expanded/Flexible/Spacer/AspectRatio/FractionallySizedBox/Align/IndexedStack]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="50" width="1520" height="20">
+<Text color="#9DB4CCFF" fontSize="12" fontFamily="DejaVu Sans Mono">
+<![CDATA[色带都是纯色，返回后用 PIL 从 PNG 上读回边界，与 Python 里的 flex 算术逐像素对照（结果见 probe-c10-readback.txt）。]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="92" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[① Row + Expanded/Spacer/Flexible 份额算术]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="94" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[容器 1200 · flex = 1 + 1(Spacer) + 2 + 1(LOOSE) → unit 240 px]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="118" width="1200" height="56">
+<Container width="1200" height="56" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row>
+<Expanded flex="1">
+<SizedBox width="240" height="56">
+<Container width="240" height="56" color="#FF0000FF" />
+</SizedBox>
+</Expanded>
+<Spacer flex="1" />
+<Expanded flex="2">
+<SizedBox width="480" height="56">
+<Container width="480" height="56" color="#00C853FF" />
+</SizedBox>
+</Expanded>
+<Flexible flex="1" fit="LOOSE">
+<SizedBox width="200" height="56">
+<Container width="200" height="56" color="#2979FFFF" />
+</SizedBox>
+</Flexible>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="40" top="190" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[② mainAxisSize=MIN（左）vs MAX（右）]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="192" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[两个 100 / 150 宽的子节点；MIN 时 Row 只占 250 px，MAX 时占满 600]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="216" width="600" height="48">
+<Container width="600" height="48" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisSize="MIN">
+<SizedBox width="100" height="48">
+<Container width="100" height="48" color="#FFC400FF" />
+</SizedBox>
+<SizedBox width="150" height="48">
+<Container width="150" height="48" color="#00E5FFFF" />
+</SizedBox>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="700" top="216" width="600" height="48">
+<Container width="600" height="48" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisSize="MAX">
+<SizedBox width="100" height="48">
+<Container width="100" height="48" color="#FFC400FF" />
+</SizedBox>
+<Expanded flex="1">
+<SizedBox width="500" height="48">
+<Container width="500" height="48" color="#00E5FFFF" />
+</SizedBox>
+</Expanded>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="40" top="288" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[③ Column + Expanded(1/2) + Spacer]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="290" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[容器高 160 · flex = 1 + 2 + 1 → 40 / 80 / 40 px]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="314" width="120" height="160">
+<Container width="120" height="160" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Column>
+<Expanded flex="1">
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#D500F9FF" />
+</SizedBox>
+</Expanded>
+<Expanded flex="2">
+<SizedBox width="120" height="80">
+<Container width="120" height="80" color="#64DD17FF" />
+</SizedBox>
+</Expanded>
+<Spacer flex="1" />
+</Column>
+</Container>
+</Positioned>
+<Positioned left="40" top="486" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[④ crossAxisAlignment：START / CENTER / STRETCH]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="488" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[STRETCH 会把没有显式 height 的子节点拉满交叉轴]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="512" width="360" height="110">
+<Container width="360" height="110" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row crossAxisAlignment="START">
+<SizedBox width="110" height="110">
+<Container width="110" height="110" color="#2979FFFF" />
+</SizedBox>
+<Container color="#00C853FF" />
+</Row>
+</Container>
+</Positioned>
+<Positioned left="40" top="626" width="360" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[START]]>
+</Text>
+</Positioned>
+<Positioned left="440" top="512" width="360" height="110">
+<Container width="360" height="110" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row crossAxisAlignment="CENTER">
+<SizedBox width="110" height="110">
+<Container width="110" height="110" color="#2979FFFF" />
+</SizedBox>
+<Container color="#00C853FF" />
+</Row>
+</Container>
+</Positioned>
+<Positioned left="440" top="626" width="360" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[CENTER]]>
+</Text>
+</Positioned>
+<Positioned left="840" top="512" width="360" height="110">
+<Container width="360" height="110" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row crossAxisAlignment="STRETCH">
+<SizedBox width="110" height="110">
+<Container width="110" height="110" color="#2979FFFF" />
+</SizedBox>
+<Container color="#00C853FF" />
+</Row>
+</Container>
+</Positioned>
+<Positioned left="840" top="626" width="360" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[STRETCH]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="656" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[⑤ mainAxisAlignment 六值（容器 200，两个 20 宽子节点）]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="658" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[读回每个容器里第一个琥珀块的起点]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="682" width="200" height="44">
+<Container width="200" height="44" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisAlignment="START">
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#FFC400FF" />
+</SizedBox>
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#00E5FFFF" />
+</SizedBox>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="40" top="730" width="200" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[START]]>
+</Text>
+</Positioned>
+<Positioned left="290" top="682" width="200" height="44">
+<Container width="200" height="44" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisAlignment="END">
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#FFC400FF" />
+</SizedBox>
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#00E5FFFF" />
+</SizedBox>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="290" top="730" width="200" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[END]]>
+</Text>
+</Positioned>
+<Positioned left="540" top="682" width="200" height="44">
+<Container width="200" height="44" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisAlignment="CENTER">
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#FFC400FF" />
+</SizedBox>
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#00E5FFFF" />
+</SizedBox>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="540" top="730" width="200" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[CENTER]]>
+</Text>
+</Positioned>
+<Positioned left="790" top="682" width="200" height="44">
+<Container width="200" height="44" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisAlignment="SPACE_BETWEEN">
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#FFC400FF" />
+</SizedBox>
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#00E5FFFF" />
+</SizedBox>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="790" top="730" width="200" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[SPACE_BETWEEN]]>
+</Text>
+</Positioned>
+<Positioned left="1040" top="682" width="200" height="44">
+<Container width="200" height="44" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisAlignment="SPACE_AROUND">
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#FFC400FF" />
+</SizedBox>
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#00E5FFFF" />
+</SizedBox>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="1040" top="730" width="200" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[SPACE_AROUND]]>
+</Text>
+</Positioned>
+<Positioned left="1290" top="682" width="200" height="44">
+<Container width="200" height="44" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Row mainAxisAlignment="SPACE_EVENLY">
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#FFC400FF" />
+</SizedBox>
+<SizedBox width="20" height="44">
+<Container width="20" height="44" color="#00E5FFFF" />
+</SizedBox>
+</Row>
+</Container>
+</Positioned>
+<Positioned left="1290" top="730" width="200" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[SPACE_EVENLY]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="756" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[⑥ AspectRatio：16:9 / 1:1 / 4:3 / 0.5]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="758" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[父盒 300×180；16:9 → 300×168.75，1 → 180×180，4:3 → 240×180，0.5 → 90×180]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="782" width="300" height="180">
+<Container width="300" height="180" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Align alignment="TOP_LEFT">
+<AspectRatio aspectRatio="1.7777778">
+<Container width="1" height="1" color="#FFC400FF" />
+</AspectRatio>
+</Align>
+</Container>
+</Positioned>
+<Positioned left="40" top="964" width="300" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[aspectRatio=1.7777778]]>
+</Text>
+</Positioned>
+<Positioned left="360" top="782" width="300" height="180">
+<Container width="300" height="180" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Align alignment="TOP_LEFT">
+<AspectRatio aspectRatio="1">
+<Container width="1" height="1" color="#FFC400FF" />
+</AspectRatio>
+</Align>
+</Container>
+</Positioned>
+<Positioned left="360" top="964" width="300" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[aspectRatio=1]]>
+</Text>
+</Positioned>
+<Positioned left="680" top="782" width="300" height="180">
+<Container width="300" height="180" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Align alignment="TOP_LEFT">
+<AspectRatio aspectRatio="1.3333333">
+<Container width="1" height="1" color="#FFC400FF" />
+</AspectRatio>
+</Align>
+</Container>
+</Positioned>
+<Positioned left="680" top="964" width="300" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[aspectRatio=1.3333333]]>
+</Text>
+</Positioned>
+<Positioned left="1000" top="782" width="300" height="180">
+<Container width="300" height="180" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Align alignment="TOP_LEFT">
+<AspectRatio aspectRatio="0.5">
+<Container width="1" height="1" color="#FFC400FF" />
+</AspectRatio>
+</Align>
+</Container>
+</Positioned>
+<Positioned left="1000" top="964" width="300" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[aspectRatio=0.5]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="1000" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[⑦ FractionallySizedBox widthFactor/heightFactor + alignment]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="1002" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[父盒 240×120：0.5×0.5 → 120×60；alignment 决定它落在哪一角]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="1026" width="240" height="120">
+<Container width="240" height="120" color="#0F172AFF" border="1 SOLID #22344AFF">
+<FractionallySizedBox widthFactor="0.5" heightFactor="0.5" alignment="TOP_LEFT">
+<Container width="1" height="1" color="#00C853FF" />
+</FractionallySizedBox>
+</Container>
+</Positioned>
+<Positioned left="40" top="1148" width="240" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[0.5 x 0.5  TOP_LEFT]]>
+</Text>
+</Positioned>
+<Positioned left="300" top="1026" width="240" height="120">
+<Container width="240" height="120" color="#0F172AFF" border="1 SOLID #22344AFF">
+<FractionallySizedBox widthFactor="0.5" heightFactor="0.5" alignment="CENTER">
+<Container width="1" height="1" color="#00C853FF" />
+</FractionallySizedBox>
+</Container>
+</Positioned>
+<Positioned left="300" top="1148" width="240" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[0.5 x 0.5  CENTER]]>
+</Text>
+</Positioned>
+<Positioned left="560" top="1026" width="240" height="120">
+<Container width="240" height="120" color="#0F172AFF" border="1 SOLID #22344AFF">
+<FractionallySizedBox widthFactor="0.5" heightFactor="0.5" alignment="BOTTOM_RIGHT">
+<Container width="1" height="1" color="#00C853FF" />
+</FractionallySizedBox>
+</Container>
+</Positioned>
+<Positioned left="560" top="1148" width="240" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[0.5 x 0.5  BOTTOM_RIGHT]]>
+</Text>
+</Positioned>
+<Positioned left="820" top="1026" width="240" height="120">
+<Container width="240" height="120" color="#0F172AFF" border="1 SOLID #22344AFF">
+<FractionallySizedBox widthFactor="1" heightFactor="1" alignment="TOP_LEFT">
+<Container width="1" height="1" color="#00C853FF" />
+</FractionallySizedBox>
+</Container>
+</Positioned>
+<Positioned left="820" top="1148" width="240" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[1 x 1  TOP_LEFT]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="1178" width="700" height="20">
+<Text color="#EAF2FBFF" fontSize="13" fontFamily="DejaVu Sans Mono" style="BOLD">
+<![CDATA[⑧ IndexedStack index / Align widthFactor / Padding]]>
+</Text>
+</Positioned>
+<Positioned left="780" top="1180" width="780" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[index=0/1/2 各画一个 120×40 的 Stack，只有当前页出现]]>
+</Text>
+</Positioned>
+<Positioned left="40" top="1202" width="120" height="40">
+<Container width="120" height="40" color="#0F172AFF" border="1 SOLID #22344AFF">
+<IndexedStack index="0" fit="EXPAND">
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#FF0000FF" />
+</SizedBox>
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#00C853FF" />
+</SizedBox>
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#2979FFFF" />
+</SizedBox>
+</IndexedStack>
+</Container>
+</Positioned>
+<Positioned left="40" top="1244" width="120" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[index=0]]>
+</Text>
+</Positioned>
+<Positioned left="180" top="1202" width="120" height="40">
+<Container width="120" height="40" color="#0F172AFF" border="1 SOLID #22344AFF">
+<IndexedStack index="1" fit="EXPAND">
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#FF0000FF" />
+</SizedBox>
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#00C853FF" />
+</SizedBox>
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#2979FFFF" />
+</SizedBox>
+</IndexedStack>
+</Container>
+</Positioned>
+<Positioned left="180" top="1244" width="120" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[index=1]]>
+</Text>
+</Positioned>
+<Positioned left="320" top="1202" width="120" height="40">
+<Container width="120" height="40" color="#0F172AFF" border="1 SOLID #22344AFF">
+<IndexedStack index="2" fit="EXPAND">
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#FF0000FF" />
+</SizedBox>
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#00C853FF" />
+</SizedBox>
+<SizedBox width="120" height="40">
+<Container width="120" height="40" color="#2979FFFF" />
+</SizedBox>
+</IndexedStack>
+</Container>
+</Positioned>
+<Positioned left="320" top="1244" width="120" height="16">
+<Text color="#6B829AFF" fontSize="10" fontFamily="DejaVu Sans Mono">
+<![CDATA[index=2]]>
+</Text>
+</Positioned>
+<Positioned left="480" top="1202" width="260" height="40">
+<Container width="260" height="40" color="#0F172AFF" border="1 SOLID #22344AFF">
+<Align alignment="CENTER" widthFactor="2" heightFactor="1.5">
+<Padding padding="(6,10)">
+<Container width="120" height="26" color="#00E5FFFF" />
+</Padding>
+</Align>
+</Container>
+</Positioned>
+<Positioned left="760" top="1210" width="700" height="18">
+<Text color="#6B829AFF" fontSize="11" fontFamily="DejaVu Sans Mono">
+<![CDATA[Align widthFactor=2 heightFactor=1.5 + Padding(6,10) → 自身 240×39]]>
+</Text>
+</Positioned>
+</Stack>
+</Container>
+</Container>
+</Snapshot>

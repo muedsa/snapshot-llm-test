@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "suite_version": "1.0.0",
+  "run_id": "20261004-182918",
+  "task_id": "A11",
+  "task_started_at": "2026-10-04T18:52:00+08:00",
+  "task_ended_at": "2026-10-04T22:10:05.445+08:00",
+  "timezone": "Asia/Shanghai (+08:00)",
+  "wall_clock_seconds_total": 11885.4,
+  "wall_clock_seconds_to_first_usable_image": 780.0,
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_wait_note": "no interactive user feedback was requested or received; visual iteration was self-driven from rendered images",
+  "rate_limit_or_queue_wait_seconds": null,
+  "rate_limit_or_queue_wait_note": "service returns Server-Timing queue segment when it waits; none of this task's responses reported a queue segment, so the value is left unknown rather than 0",
+  "sum_of_request_durations_seconds": 97.49,
+  "note_on_wall_clock": "wall clock includes local design/DSL writing time; the sum of request durations is service+network time only and is much smaller",
+  "counts": {
+    "render_requests": 30,
+    "successful_render_requests": 30,
+    "failed_render_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 12,
+    "document_requests": 11,
+    "dsl_versions": 6,
+    "dsl_version_files": [
+      "invoice-page-01.snapshot",
+      "probe-01.snapshot",
+      "probe-02.snapshot",
+      "probe-03.snapshot",
+      "probe-v04.snapshot",
+      "v02-page-02.snapshot"
+    ],
+    "image_views": 9,
+    "completed_visual_iterations": 4,
+    "incomplete_visual_iterations": 5,
+    "final_pngs": 2,
+    "final_png_files": [
+      "invoice-page-01.png",
+      "invoice-page-02.png"
+    ]
+  },
+  "failures": [],
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "image_input_usage": null,
+    "cost": null,
+    "currency": null,
+    "source": "the open-snapshot HTTP service exposes no token/billing metrics endpoint for this run and the chat platform did not report per-request token or cost figures, so all fields are unknown",
+    "unknown_fields_reason": "no authoritative measurement source was available; values were not estimated from character counts"
+  },
+  "paths": {
+    "output_dir": "outputs\\20261004-182918\\A11",
+    "temp_dir": "tmp\\20261004-182918\\A11"
+  },
+  "verification": {
+    "fidelity_report": "tmp/20261004-182918/A11/verify/fidelity-report.json",
+    "checks_total": 27,
+    "checks_passed": 27,
+    "checks_failed": [],
+    "layout_fit_checks_total": 46,
+    "layout_fit_checks_all_fit": true
+  },
+  "dsl_semantics_discovered": [
+    "the parser does NOT decode HTML entities: text=\"A &lt; B\" prints '&lt;'; use <![CDATA[...]]> for any string containing < > &",
+    "Text text nodes are trimmed, and the text= attribute is trimmed too; inline spans that need leading/trailing spaces must use <Raw text=...>",
+    "<Raw><![CDATA[ / ]]></Raw> breaks the paragraph onto separate lines; <Raw text=\" / \"/> stays inline",
+    "Text wraps normally when no height is given; silent truncation only happens when height is smaller than the wrapped height",
+    "fontFeatures=\"zero\" on Inter renders a slashed zero, which removes the O/0 and I/1/l ambiguity in SKUs and ids",
+    "Decimal keeps operand scales: 3944.30 * 0.06 stringifies as 236.6580; normalize() is needed before display"
+  ],
+  "final_pngs_detail": [
+    {
+      "file": "invoice-page-01.png",
+      "width": 1200,
+      "height": 1600,
+      "sha256_prefix": "6f698f2472126669",
+      "dsl_sha256_prefix": "e27568c7d83142e8",
+      "archived_draft": "tmp\\20261004-182918\\A11\\drafts\\v02-page-01.snapshot",
+      "purpose": "结算与明细",
+      "raw_service_bytes": true,
+      "post_processed": false
+    },
+    {
+      "file": "invoice-page-02.png",
+      "width": 1200,
+      "height": 1600,
+      "sha256_prefix": "42477f401196f4ef",
+      "dsl_sha256_prefix": "e53aba6c734b5abc",
+      "archived_draft": "tmp\\20261004-182918\\A11\\drafts\\v02-page-02.snapshot",
+      "purpose": "说明与原样文字",
+      "raw_service_bytes": true,
+      "post_processed": false
+    }
+  ],
+  "request_counts_note": "42 requests total: 12 document/font GETs + 30 renders; all HTTP 200, no retry"
+}

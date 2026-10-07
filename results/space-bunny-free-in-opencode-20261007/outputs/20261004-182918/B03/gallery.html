@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B03 · 十件作品探索 DSL 的创意边界 · 20261004-182918</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#2b3440;--fg:#e6edf3;--fg2:#9aa7b4;--acc:#6ea8fe}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 28px 64px;background:var(--bg);color:var(--fg);
+font:15px/1.65 -apple-system,"Segoe UI","Noto Sans CJK SC",sans-serif}
+h1{font-size:26px;margin:0 0 6px}
+h2{font-size:18px;margin:40px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.sub{color:var(--fg2);max-width:960px}
+.meta{color:var(--fg2);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:20px}
+.case{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.case figure{margin:0;background:#0b0f14}
+.case img{width:100%;display:block;border-bottom:1px solid var(--line)}
+.case .body{padding:14px 16px 18px}
+.case h3{margin:0 0 4px;font-size:16px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.06em;color:#0b0f14;
+background:var(--acc);border-radius:999px;padding:2px 9px;margin:6px 6px 8px 0}
+.tag.b{background:#7ee787}.tag.c{background:#ffa657}
+dl{display:grid;grid-template-columns:76px 1fr;gap:2px 10px;margin:8px 0 0;font-size:13px}
+dt{color:var(--fg2)}dd{margin:0}
+ul{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--fg2)}
+a{color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#11161d}
+code{background:#0b0f14;padding:1px 5px;border-radius:4px;font-size:12px}
+footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);color:var(--fg2);font-size:13px}
+</style></head><body>
+<h1>B03 · 用十件作品探索 DSL 的创意边界</h1>
+<p class="sub">这十件不是十个题材，而是十次「把一个视觉主张压到只剩一种手段」的实验。case-01 让渐变去编码潮位而不是当底色；case-03 让影子深度等于嵌套层数；case-06 让模糊只作用在背景上、读数保持像素锐利；case-07 用逐通道乘法算出减色叠印的算术并把「C×M 必须等于 M×C」当成可证伪的判据；case-08 让两个半透明组相交处自己变深，从而模拟 GIS 的复合风险；case-09 让一行内标签、一段有缩进的代码、一个斜杠零各自落在它该在的位置上；case-10 让 12 根柱子真的是 12 个 Expanded、让方位角轴真的是一条 SWEEP 渐变。十件里有三件是彻底的反例记录：case-02 的倒角描边做不到、case-05 的 ClipPath 根本没注册、case-09 的行高属性会让整段文字空白 —— 这三条被写进了作品本身，而不是被藏进备注。技术笔记（technique-notes.md）逐件记录了探针图、真实响应与从 PNG 上读回的像素证据。</p>
+<p class="meta">run_id <code>20261004-182918</code> · 输出根 <code>outputs/20261004-182918/B03/</code> · 临时根 <code>tmp/20261004-182918/B03/</code> · 十件全部为 <code>POST https://open-snapshot.muedsa.com/snapshot</code> 的真实响应字节，无后处理、无 <code>&lt;Image&gt;</code> 嵌入位图。</p>
+<p class="meta">十件中的机构名、项目名、编号、日期、统计值与文案均为本次设计演示自拟，用于展示这套 DSL 能承载什么。它们不指向任何真实机构、真实订单或真实项目。</p>
+<h2>作品索引（10 件，点击图片或文件名看原尺寸）</h2>
+<div class="grid">
+<article class="case" id="case-01">
+<figure><a href="case-01/final.png"><img src="case-01/final.png" width="1600" height="1000" alt="潮汐与风 · 澄澳灯桩海岸观测站值班板"></a></figure>
+<div class="body">
+<h3>01 · 潮汐与风 · 澄澳灯桩海岸观测站值班板</h3>
+<span class="tag">主打能力：渐变全家族</span>
+<span class="tag b">1600×1000</span><span class="tag c">1394 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>常开 1600×1000 横屏的值班员（暗值班室，70 cm），以及每天早上交接班的海洋观测组长</dd>
+<dt>场合</dt><dd>暗色值班大屏，每 10 分钟刷新一次</dd>
+<dt>目标</dt><dd>30 秒内说出「212 度风 6.8 m/s、浪高 1.6 m；15:00 高潮 3.84 m、09:00 低潮 0.39 m；今天白昼 11h46m」</dd>
+<dt>内容依据</dt><dd>六个真实分潮调和数（M2/S2/N2/K1/O1/MS4）合成潮位，MSL 2.05 m；月相由本页时间戳 2026-10-05 09:45 +08:00 的月球距角 D=285.0° 真实算出（k=(1−cos D)/2=37.0%，残月）；其余站位/风/浪/日出日落为自拟演示值</dd>
+<dt>视觉主张</dt><dd>渐变承担编码：潮位柱「顶透明→底实」的高度、水深 8 级同一色相的 alpha、月面逐行 Lambert 明暗（晨昏线由 R(1−2k) 半椭圆解析填充，不是画一个偏移圆）</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c01-gradient-idioms.png</code>、<code>probes/probe-p01-gradient.png</code>、<code>probes/probe-p01b-tilemode.png</code></dd><dt>看图证据</dt><dd>crops/final-c01-tide.png、crops/final-c01-tidezoom.png；收尾审查 crops/final-review-c01-moon.png（3.4×，发现月相标签与图形矛盾）与 crops/final-review2-c01-moon.png（3.0×，复验修好的残月）</dd></dl>
+<ul><li>遗留：月面的明暗是 Lambert 近似（b=s·n 后取 0.55 次幂），不是光度学渲染；三块月海是半透明圆片，边界是硬边</li><li>遗留：潮位用六个分潮的固定调和常数合成，没有做气压/风致增水订正</li><li>遗留：海面剖面 η(x) 是三个正弦的示意叠加，不是真实海浪谱</li></ul>
+<p class="meta"><a href="case-01/final.png">final.png</a> · <a href="case-01/final.snapshot">final.snapshot</a> · <a href="case-01/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-02">
+<figure><a href="case-02/final.png"><img src="case-02/final.png" width="1600" height="1010" alt="边缘语言 · 云吞巷票券与会员卡印刷规格稿"></a></figure>
+<div class="body">
+<h3>02 · 边缘语言 · 云吞巷票券与会员卡印刷规格稿</h3>
+<span class="tag">主打能力：圆角 / 单边边框 / 裁剪</span>
+<span class="tag b">1600×1010</span><span class="tag c">316 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>虚构商户「云吞巷」的老板，以及接单的印厂（文盛印务）制版师傅</dd>
+<dt>场合</dt><dd>要真的送去印厂的对版稿，A3 纸按 90 mm 取餐牌等比放大后阅读</dd>
+<dt>目标</dt><dd>师傅照着「边缘配方」栏切版，不用来回问；老板一眼确认「对角切角」和「镜像切角」是两回事</dd>
+<dt>内容依据</dt><dd>票号/订单明细/会员资料/工单号/规格全部为自拟演示值；尺寸换算自洽（会员卡 340×214 px ↔ 85.6×54 mm，比例 1.59:1）</dd>
+<dt>视觉主张</dt><dd>把印刷知识做成可执行规格：每种边缘配方一个样例 + 尺寸标注</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c02-edges.png</code></dd><dt>看图证据</dt><dd>100% 下全表可读；收尾审查用 crops/final-review-c02-cardA.png / final-review-c02-cardB.png（2.6×）逐行核金额，发现 B 牌合计 86 元与三行 62 元不符；final-review2-c02-total.png（2.8×）复验 62 元</dd></dl>
+<ul><li>遗留：单边边框不跟随倒角（探针 E 实测），取餐牌 B 因此改用渐变底色 + 统一边框</li><li>遗留：集章「冲孔」是 ClipOval + 描边的视觉近似，DSL 没有布尔挖空</li></ul>
+<p class="meta"><a href="case-02/final.png">final.png</a> · <a href="case-02/final.snapshot">final.snapshot</a> · <a href="case-02/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-03">
+<figure><a href="case-03/final.png"><img src="case-03/final.png" width="1440" height="1024" alt="拣选层级 · 华东三仓 E3 手持终端"></a></figure>
+<div class="body">
+<h3>03 · 拣选层级 · 华东三仓 E3 手持终端</h3>
+<span class="tag">主打能力：投影 / 层级编码</span>
+<span class="tag b">1440×1024</span><span class="tag c">341 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>戴手套、单手操作、强光下的拣货员，1440×1024 加固终端</dd>
+<dt>场合</dt><dd>货架前站姿，50–70 cm，无鼠标，触控目标必须 ≥76 px</dd>
+<dt>目标</dt><dd>2 秒内知道「我在第几层、下一个该拿哪个 SKU、还剩多少单」</dd>
+<dt>内容依据</dt><dd>仓区/任务号/波次/SKU/批次/6 个候选货位/进度 23/41 全部为自拟演示值</dd>
+<dt>视觉主张</dt><dd>影子深度 = 嵌套层数，成为真正的信息编码而不是装饰</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c03-shadow.png</code></dd><dt>看图证据</dt><dd>crops/final-c03-skucard.png（视口裁剪边缘无投影残留）</dd></dl>
+<ul><li>遗留：探针第 3 行第 2 格的说明文字换行后压到标题行（只影响探针图）</li><li>遗留：「列表可滚动」只是静态表达，DSL 不能做交互</li></ul>
+<p class="meta"><a href="case-03/final.png">final.png</a> · <a href="case-03/final.snapshot">final.snapshot</a> · <a href="case-03/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-04">
+<figure><a href="case-04/final.png"><img src="case-04/final.png" width="1500" height="1100" alt="舞台透视 · 《夜航》选座预览"></a></figure>
+<div class="body">
+<h3>04 · 舞台透视 · 《夜航》选座预览</h3>
+<span class="tag">主打能力：Transform 4×4 列主序矩阵</span>
+<span class="tag b">1500×1100</span><span class="tag c">646 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>在选座流程第二步的购票观众，桌面浏览器 1500×1100</dd>
+<dt>场合</dt><dd>明亮办公室，鼠标可滚动可缩放（这里只交付静态帧）</dd>
+<dt>目标</dt><dd>看懂「舞台在哪、我在哪一层、离舞台多远」，再决定要不要换区</dd>
+<dt>内容依据</dt><dd>演出/场馆/场次/订单/持票人/座位/票价全部为自拟演示值；26 座一排（8+10+8）、10 排、A3+B4+C3</dd>
+<dt>视觉主张</dt><dd>同一份针孔投影几何在 5 个尺寸的盒子里复用 + 5 种不同矩阵，因此座位数/票价/选中座位不可能对不上</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c04-transform.png</code>、<code>probes/probe-p02-transform.png</code></dd><dt>看图证据</dt><dd>四张缩略图在 100% 下逐张核对（无出血、几何一致）</dd></dl>
+<ul><li>遗留：m[2][3] 表现偏切变，真正的梯形收缩由 Python 侧针孔投影提供</li><li>遗留：每排是独立矩形，左侧收分形成阶梯边；真实票务里通常用一条路径一次成形</li></ul>
+<p class="meta"><a href="case-04/final.png">final.png</a> · <a href="case-04/final.snapshot">final.snapshot</a> · <a href="case-04/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-05">
+<figure><a href="case-05/final.png"><img src="case-05/final.png" width="1600" height="1060" alt="三种取景 · 屿东 07 海洋浮标观测卡"></a></figure>
+<div class="body">
+<h3>05 · 三种取景 · 屿东 07 海洋浮标观测卡</h3>
+<span class="tag">主打能力：裁剪家族</span>
+<span class="tag b">1600×1060</span><span class="tag c">3402 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>运维工程师（看整幅谱）与值班研究员（看圆形镜头）</dd>
+<dt>场合</dt><dd>桌面 1600×1060，值班室双屏</dd>
+<dt>目标</dt><dd>确认 24 小时里有两次能量峰、峰值约 0.17–0.21 Hz，并把窗口放大到 15:24–18:36</dd>
+<dt>内容依据</dt><dd>谱型为真实计算 E(f,t)=[高斯主峰 + 0.22×二次谐波]×M2 包络；浮标编号/站位/Hs/Tp/水温/气压为自拟演示值</dd>
+<dt>视觉主张</dt><dd>三种取景调用同一个 energy()，所以全景/镜头/缩略图的数值必然一致</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c05-clip.png</code>、<code>probes/probe-p02b2-clip.png</code></dd><dt>看图证据</dt><dd>crops/final-c06-main.png 同工具；本件在 100% 下逐格核对（三视图同源）</dd></dl>
+<ul><li>遗留：圆形镜头里的网格没有铺满圆盘（ClipOval 的正确行为）</li><li>遗留：「满幅圆形热图」只能把网格画得比圆更大再裁；位图路线本套题禁用</li></ul>
+<p class="meta"><a href="case-05/final.png">final.png</a> · <a href="case-05/final.snapshot">final.snapshot</a> · <a href="case-05/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-06">
+<figure><a href="case-06/final.png"><img src="case-06/final.png" width="1400" height="1000" alt="起降简报 · 临川 LKC 起飞天气"></a></figure>
+<div class="body">
+<h3>06 · 起降简报 · 临川 LKC 起飞天气</h3>
+<span class="tag">主打能力：高斯模糊（只糊背景）</span>
+<span class="tag b">1400×1000</span><span class="tag c">494 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>虚构机场起飞口的签派员，值班台第二块 1400×1000 屏</dd>
+<dt>场合</dt><dd>值班室，60 cm，需要眯眼看清数字的每个字符</dd>
+<dt>目标</dt><dd>同屏看到「雷达回波在哪」（上下文）与「报文读了什么」（读数级精度）</dd>
+<dt>内容依据</dt><dd>机场/航班/跑道/报文各行为自拟演示值；回波是四个二维高斯团块 + 定种子扰动按 dBZ 分档</dd>
+<dt>视觉主张</dt><dd>背景先放进 ImageFiltered，再把 BackdropFilter 作为后面的兄弟盖上去，文字另画</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c06-blur.png</code>、<code>probes/probe-p03-filter.png</code>、<code>probes/probe-p03b-backdrop.png</code></dd><dt>看图证据</dt><dd>crops/final-c06-main.png（1.3× 放大核对 METAR/TAF 八行笔画边缘无光晕）</dd></dl>
+<ul><li>遗留：回波是合成的示意团块，没有做 dBZ→颜色的行业标准色标</li><li>遗留：毛玻璃常见的噪点/饱和度提升做不到：Parser 只有高斯模糊</li></ul>
+<p class="meta"><a href="case-06/final.png">final.png</a> · <a href="case-06/final.snapshot">final.snapshot</a> · <a href="case-06/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-07">
+<figure><a href="case-07/final.png"><img src="case-07/final.png" width="1600" height="1120" alt="叠印配方单 · 四色"></a></figure>
+<div class="body">
+<h3>07 · 叠印配方单 · 四色</h3>
+<span class="tag">主打能力：ColorFiltered blendMode（减色叠印算术）</span>
+<span class="tag b">1600×1120</span><span class="tag c">714 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>虚构印厂「文盛印务」的机长（看叠印梯与矩阵）与调墨工（看墨量与叠印顺序）</dd>
+<dt>场合</dt><dd>印厂控制室，屏幕上并排对比色块，色差 1 px 都要看得出来</dd>
+<dt>目标</dt><dd>开机前 5 分钟确认四色叠起来是什么颜色、青/品交界要不要做陷阱、每版占多少墨量</dd>
+<dt>内容依据</dt><dd>商户/工单/成品尺寸/出血/陷阱值为自拟演示值；墨量按版面几何实算；12 个交点颜色全部从 final.png 采样读回</dd>
+<dt>视觉主张</dt><dd>每块色都是「下版纯色 × 上版纯色」的一次真实乘法；C×M 与 M×C 渲染相同，这正是减色叠印该有的对称性</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c07-blend.png</code>、<code>probes/probe-p03-filter.png</code></dd><dt>看图证据</dt><dd>12 个交点标签在 100% 下与矩阵格逐一比对；渲染后再采一次像素复核一致</dd></dl>
+<ul><li>遗留：陷印只是画面上的示意图，真正的陷印是印前文件里的一条扩张轮廓</li><li>遗留：MULTIPLY 是逐通道 sRGB 乘法，不是分色叠印的专业模型</li></ul>
+<p class="meta"><a href="case-07/final.png">final.png</a> · <a href="case-07/final.snapshot">final.snapshot</a> · <a href="case-07/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-08">
+<figure><a href="case-08/final.png"><img src="case-08/final.png" width="1500" height="1050" alt="淹没深度分级 · 青屿河断面 K12+400"></a></figure>
+<div class="body">
+<h3>08 · 淹没深度分级 · 青屿河断面 K12+400</h3>
+<span class="tag">主打能力：子树透明 Opacity + 8 位 hex alpha</span>
+<span class="tag b">1500×1050</span><span class="tag c">507 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>防汛办值班调度（看断面）与每周例会拿这张纸的社区网格员（看分级→处置）</dd>
+<dt>场合</dt><dd>A3 打印 + 屏幕投影，最远看 2 m，所以关键数字 ≥11 px</dd>
+<dt>目标</dt><dd>把「水深 → 分级 → 处置动作」三段对起来，并看清历史积水区与管井渗漏区相交处的风险叠加</dd>
+<dt>内容依据</dt><dd>河段/桩号/警戒水位/预警等级/转移人数为自拟演示值；地形是解析曲线 8.8·exp(−((t−0.30)/0.09)²) − … 四段叠加，120 根柱子每根 16.7 m</dd>
+<dt>视觉主张</dt><dd>两个 Opacity 组相交处自然加深，和真实 GIS 的复合风险渲染一致</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c08-opacity.png</code></dd><dt>看图证据</dt><dd>100% 下逐列核对分级色带与图例的 alpha 是否同源</dd></dl>
+<ul><li>遗留：断面是横向断面，不是沿程水面线</li><li>遗留：8 级 alpha 是我选的，不是任何标准色阶；没做网点补偿</li></ul>
+<p class="meta"><a href="case-08/final.png">final.png</a> · <a href="case-08/final.snapshot">final.snapshot</a> · <a href="case-08/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-09">
+<figure><a href="case-09/final.png"><img src="case-09/final.png" width="1500" height="1090" alt="版本说明 · anvilplot 3.14.0 发行单页"></a></figure>
+<div class="body">
+<h3>09 · 版本说明 · anvilplot 3.14.0 发行单页</h3>
+<span class="tag">主打能力：排印 / 富文本</span>
+<span class="tag b">1500×1090</span><span class="tag c">372 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>准备把依赖从 3.13 升到 3.14 的下游数据工程师，以及维护者本人</dd>
+<dt>场合</dt><dd>项目主页 + 可打印 A3 单页，100% 尺寸阅读，最小字号 10 px</dd>
+<dt>目标</dt><dd>30 秒认出两条 BREAKING → 照迁移片段改 4 行 → 确认自己的 Python/平台在支持矩阵里</dd>
+<dt>内容依据</dt><dd>库名/版本/日期/issue/下载量/贡献者/矩阵/发行节奏全部为自拟演示值；摘要里引用的 ColorFiltered 语义是本套 case-07 的真实实测结论</dd>
+<dt>视觉主张</dt><dd>空心版本号 + 斜杠零是刚需信息编码（版本号里要区分 0 与 O）；行内色标用 WidgetSpan；代码块用 Raw 保缩进</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c09a-fontfeat.png</code>、<code>probes/probe-c09b-paint.png</code>、<code>probes/probe-c09c-inline.png</code>、<code>probes/probe-c09e-lineheight.png</code>、<code>probes/probe-c09f-stackfit.png</code>、<code>probes/probe-c09g-rawspace.png</code>、<code>probes/probe-c09d-cap-BEVEL.png</code></dd><dt>看图证据</dt><dd>crops/final-c09-mid.png（1.7× 核对代码块与装饰线）、crops/final-c09-deco.png（4× 核对四态装饰线）；收尾审查数了 12 枚 chip，发现摘要写「没有破坏性变更…七项修复」与列表矛盾，crops/final-review2-c09-summary.png（1.8×）复验改后的 2/2/3/5</dd></dl>
+<ul><li>遗留：Text height= 与 strutLeading/strutHeightOverridden 在本版本会让整段文字空白，行高只能手工排</li><li>遗留：tnum 无效，数字表格做不到等宽对齐</li><li>遗留：softWrap=false 未生效（长句仍折行）</li><li>遗留：textHeightMode / fontEdging 找不到任何可用取值</li></ul>
+<p class="meta"><a href="case-09/final.png">final.png</a> · <a href="case-09/final.snapshot">final.snapshot</a> · <a href="case-09/case.md">case.md</a></p>
+</div></article>
+<article class="case" id="case-10">
+<figure><a href="case-10/final.png"><img src="case-10/final.png" width="1600" height="1150" alt="日照剖面研究墙 · 青屿书院实验楼"></a></figure>
+<div class="body">
+<h3>10 · 日照剖面研究墙 · 青屿书院实验楼</h3>
+<span class="tag">主打能力：自适应排版族 + SWEEP 当坐标轴</span>
+<span class="tag b">1600×1150</span><span class="tag c">1183 elements / 4096</span>
+<dl>
+<dt>受众</dt><dd>建筑师与报建审图员；钉在工作室墙上的 A1 分析墙 + 评审会屏幕</dd>
+<dt>场合</dt><dd>墙面远观 2 m，评审时近看 60 cm</dd>
+<dt>目标</dt><dd>四个人在图前同时回答：太阳从哪边来、什么时候照到、进屋多深、一年里最差和最好各是多少</dd>
+<dt>内容依据</dt><dd>场地/纬度/窗洞/进深/层高为自拟演示值；日照几何是真实计算（Cooper 赤纬 + 标准时角公式 + cos ω₀ = −tanφ·tanδ）</dd>
+<dt>视觉主张</dt><dd>「内容真的需要等分」的地方才用 Flex；SWEEP + gradientStops 把冬至白昼窗口直接刷到方位角轴上</dd>
+</dl>
+<dl><dt>能力探针</dt><dd><code>probes/probe-c10-flex.png</code>、<code>probe-c10-readback.txt</code></dd><dt>看图证据</dt><dd>crops/final-c10-panelB.png（1.9× 剖面与进深条）、crops/final-c10-f4bars.png（3× 条长）、crops/final-c10-panelE.png（2.2× 三张缩略图）</dd></dl>
+<ul><li>遗留：日照模型只有几何，没有邻栋遮挡/反射/玻璃透光率，进深是上限</li><li>遗留：只画三个代表日；全年 8760 小时热力图会撞 4096 元素上限（case-06 实测过）</li><li>遗留：IndexedStack 在静态交付里等于单页，不表达切换行为</li><li>遗留：时区用真太阳时，未做经度时差与均时差修正</li></ul>
+<p class="meta"><a href="case-10/final.png">final.png</a> · <a href="case-10/final.snapshot">final.snapshot</a> · <a href="case-10/case.md">case.md</a></p>
+</div></article>
+</div>
+<h2>能力矩阵：十件各主打一类不同的 DSL 能力边界</h2>
+<table><tr><th>#</th><th>作品</th><th>主打能力</th><th>实际用到的标签与属性</th><th>elements</th></tr>
+<tr><td>01</td><td><a href="#case-01">潮汐与风 · 澄澳灯桩海岸观测站值班板</a></td><td>渐变全家族</td><td>LINEAR/RADIAL/SWEEP + gradientStops + gradientTileMode(REPEAT/MIRROR) + gradientFocal/FocalRadius + gradientRotation + backgroundBlendMode + shape=CIRCLE + 8 位 #RRGGBBAA + Transform 4×4 旋转</td><td>1394</td></tr>
+<tr><td>02</td><td><a href="#case-02">边缘语言 · 云吞巷票券与会员卡印刷规格稿</a></td><td>圆角 / 单边边框 / 裁剪</td><td>四角独立 borderRadius* + border + 单边 borderLeft/Top/Bottom + ClipOval + ClipRRect + ClipRect + Column STRETCH + Row SPACE_BETWEEN + padding 两段式 EdgeInsets</td><td>316</td></tr>
+<tr><td>03</td><td><a href="#case-03">拣选层级 · 华东三仓 E3 手持终端</a></td><td>投影 / 层级编码</td><td>ELEVATION_1/2/4/8 + 自定义 x y blur spread color 多阴影 + 负 spread + 彩色阴影 + blurStyle INNER/OUTER/SOLID + ClipRect 视口裁掉投影</td><td>341</td></tr>
+<tr><td>04</td><td><a href="#case-04">舞台透视 · 《夜航》选座预览</a></td><td>Transform 4×4 列主序矩阵</td><td>matrix 列主序 4×4 + rot/scale/skewX/skewY/透视项 m[2][3]/矩阵内平移 + origin+alignment + Stack clipBehavior NONE vs HARD_EDGE</td><td>646</td></tr>
+<tr><td>05</td><td><a href="#case-05">三种取景 · 屿东 07 海洋浮标观测卡</a></td><td>裁剪家族</td><td>ClipRect + ClipOval + ClipRRect + clipBehavior 四档（含 ANTI_ALIAS_WITH_SAVE_LAYER 全称）+ 嵌套裁剪相乘 + shape=CIRCLE 不裁子节点的对照</td><td>3402</td></tr>
+<tr><td>06</td><td><a href="#case-06">起降简报 · 临川 LKC 起飞天气</a></td><td>高斯模糊（只糊背景）</td><td>ImageFiltered sigmaX/sigmaY（糊整棵子树 + 按 sigma 扩大输出边界）+ BackdropFilter sigmaX/sigmaY blendMode=DIFFERENCE + ClipRRect 限定玻璃区域</td><td>494</td></tr>
+<tr><td>07</td><td><a href="#case-07">叠印配方单 · 四色</a></td><td>ColorFiltered blendMode（减色叠印算术）</td><td>ColorFiltered color+blendMode（MULTIPLY/SCREEN/OVERLAY/DARKEN/LIGHTEN/PLUS/DIFFERENCE/EXCLUSION/HUE/SATURATION/COLOR/LUMINOSITY 全部实测可用）+ 12 个交点像素采样</td><td>714</td></tr>
+<tr><td>08</td><td><a href="#case-08">淹没深度分级 · 青屿河断面 K12+400</a></td><td>子树透明 Opacity + 8 位 hex alpha</td><td>Opacity 子树 + 嵌套相乘 + Container opacity 属性不存在的对照 + 8 级 #RRGGBBAA（1A/33/4D/66/80/99/C7/FF）+ gradientTileMode=REPEAT 条纹底</td><td>507</td></tr>
+<tr><td>09</td><td><a href="#case-09">版本说明 · anvilplot 3.14.0 发行单页</a></td><td>排印 / 富文本</td><td>foregroundMode=STROKE/StrokeWidth/StrokeJoin/StrokeCap + textShadow 双条 + decoration*(SOLID/DOTTED/DOUBLE/WAVY + Gaps) + fontFeatures ss01/ss02 + letterSpacing + 嵌套 Text span + WidgetSpan alignment + Raw + CDATA + maxLines/ELLIPSIS + textAlign START/CENTER/END</td><td>372</td></tr>
+<tr><td>10</td><td><a href="#case-10">日照剖面研究墙 · 青屿书院实验楼</a></td><td>自适应排版族 + SWEEP 当坐标轴</td><td>Row + 12×Expanded + 7×Flexible(fit=LOOSE) + FractionallySizedBox widthFactor/heightFactor/alignment + AspectRatio + mainAxisSize + mainAxisAlignment + IndexedStack index + Align/Padding + SWEEP+gradientStops + ClipOval + Transform 竖排尺寸线</td><td>1183</td></tr>
+</table>
+<h2>十件都没有做到的（DSL 的真实边界，不是实现不足）</h2><ul>
+<li>任意形状裁剪：解析器只注册 <code>ClipRect</code> / <code>ClipOval</code> / <code>ClipRRect</code>，官方 Widget 列表里的 <code>ClipPath</code> 得到 <code>400 Unknown element tag</code>。</li>
+<li>矢量路径 / 折线 / 任意多边形：没有 line/path 图元，折线只能铺一串短矩形，面积填充只能逐扫描行铺。</li>
+<li>真透视 / 3D 相机：<code>Transform</code> 只有 paint-only 的 4×4 矩阵，透视项表现偏切变而非梯形收缩。</li>
+<li>布尔挖空：没有路径运算，case-02 的集章孔是纸色圆盘 + 内圈的行业近似。</li>
+<li>真正的行高控制：<code>Text</code> 的 <code>height</code> 属性与 <code>strutLeading</code> 都会让整段文字空白（HTTP 200 但不绘制）。</li>
+<li>行内语法高亮 / 逐 span 字体：<code>Text</code> 的颜色是 span 级，<code>fontFamily</code> 是缺字回退列表。</li>
+<li>交互与动画：服务只出静态 PNG。</li>
+</ul>
+<h2>配套文件</h2><ul>
+<li><a href="portfolio.json">portfolio.json</a> — 结构化索引（十件全部字段）</li>
+<li><a href="portfolio.md">portfolio.md</a> — 同一份内容的人读版</li>
+<li><a href="technique-notes.md">technique-notes.md</a> — 逐件手法笔记：技术、实测语义、反直觉结论、做不到的能力与证据</li>
+<li><a href="snapshot-usage.md">snapshot-usage.md</a> — 文档依据、请求与迭代计数、逐图自检表、踩坑表</li>
+<li><a href="task-metrics.json">task-metrics.json</a> — 结构化指标（token/费用等平台未提供的量一律 null）</li>
+</ul>
+<h2>真实渲染请求与逐件自检</h2><ul>
+<li>请求日志 <code>tmp/20261004-182918/B03/requests.jsonl</code>：359 次 <code>POST /snapshot</code>，其中 261 次返回 image/png，98 次返回 400/500 并保留响应文本于 <code>tmp/20261004-182918/B03/responses/</code>。</li>
+<li>迭代日志 <code>tmp/20261004-182918/B03/iterations.jsonl</code>；工具使用日志 <code>tmp/20261004-182918/B03/tool-usage.jsonl</code>（B 类额外要求）。</li>
+<li>能力探针全部留在 <code>tmp/20261004-182918/B03/probes/</code>，草稿 DSL 留在 <code>tmp/20261004-182918/B03/drafts/</code>，放大核对图留在 <code>tmp/20261004-182918/B03/crops/</code>。</li>
+</ul>
+<footer>十件中的机构名、项目名、编号、日期、统计值与文案均为本次设计演示自拟，用于展示这套 DSL 能承载什么。它们不指向任何真实机构、真实订单或真实项目。 · 本页只使用本地相对链接，不依赖任何远程脚本或外链资源；图片点开即为原尺寸 PNG（服务响应的原始字节）。</footer>
+</body></html>

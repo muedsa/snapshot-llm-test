@@ -1,0 +1,437 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "note": "每条答案都由 scene-data.json 的几何（网格题）或交付图的可见像素（遮挡题）推导，没有一条是手工填写的",
+  "grid_answer_source": "scene-data.json（seed 20261004）；verify_a19.py 会重新推导并逐条比对",
+  "occlusion_answer_source": "occlusion.png 的可见像素 + equivalence.json 的像素等价证明",
+  "question_ids": [
+    "Q18",
+    "Q19",
+    "Q20",
+    "Q21",
+    "Q22",
+    "Q23",
+    "Q24",
+    "Q25",
+    "Q26",
+    "Q27",
+    "Q28",
+    "Q29",
+    "Q30",
+    "Q31"
+  ],
+  "answers": [
+    {
+      "q_id": "Q18",
+      "answer": [
+        "G05",
+        "G45",
+        "G49"
+      ],
+      "answer_type": "list",
+      "computation_method": "filter objects where color=='purple' AND shape=='ring', sort ids ascending",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±0（本题答案不含坐标）",
+      "visibility_basis": "颜色与形状都直接印在最终可见图上：紫＝#7C3AED 实心主体，圆环＝有内圈的空心环（外径:内径＝2:1）。",
+      "well_posedness": {
+        "rule": "答案＝满足两个谓词的集合本身，唯一确定，不存在并列",
+        "match_count": 3
+      }
+    },
+    {
+      "q_id": "Q19",
+      "answer": [
+        "G08",
+        "G20",
+        "G32",
+        "G51",
+        "G60",
+        "G61"
+      ],
+      "answer_type": "list",
+      "computation_method": "step1 keep size==80 (circle diameter / square side == 80); step2 among those keep color=='orange'; sort ids ascending",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±0（本题答案不含坐标）",
+      "visibility_basis": "尺寸在可见图上可直接量出：80 明显大于 64 与 48；橙色＝#EA580C。",
+      "well_posedness": {
+        "rule": "两步都是确定性子集筛选，结果唯一",
+        "size_80_count": 21,
+        "size_80_orange_count": 6
+      }
+    },
+    {
+      "q_id": "Q20",
+      "answer": "G07",
+      "answer_type": "id",
+      "computation_method": "compare center.x of the four candidates, strict greater-than",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px（各列中心 x 依次为 155,345,535,725,915,1105,1295,1485，列间差 190 px；容差远小于列距，不会改变比较结果）",
+      "visibility_basis": "四个主体都在可见网格图上，所在列由顶部 C1–C8 列标直接读出。",
+      "well_posedness": {
+        "rule": "四个候选两两不同列，center.x 无重复，严格最大者唯一",
+        "candidates": [
+          "G07",
+          "G19",
+          "G12",
+          "G13"
+        ],
+        "centre_x": {
+          "G07": 1295,
+          "G19": 535,
+          "G12": 725,
+          "G13": 915
+        },
+        "column_centre_x": [
+          155,
+          345,
+          535,
+          725,
+          915,
+          1105,
+          1295,
+          1485
+        ],
+        "margin_px": 380
+      }
+    },
+    {
+      "q_id": "Q21",
+      "answer": "G17",
+      "answer_type": "id",
+      "computation_method": "step1 row==3 AND color=='green'; step2 argmin of center.x, strict",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px（同行不同列，中心 x 相隔 190 px）",
+      "visibility_basis": "第 3 行由 R3 行标确定；绿色＝#16A34A；每个主体中心由其外接矩形直接量出。",
+      "well_posedness": {
+        "rule": "候选主体分处不同列，center.x 互不相同，严格最小者唯一",
+        "candidates": [
+          "G17",
+          "G22"
+        ],
+        "centre_x": {
+          "G17": 155,
+          "G22": 1105
+        },
+        "margin_px": 950
+      }
+    },
+    {
+      "q_id": "Q22",
+      "answer": "G16",
+      "answer_type": "id",
+      "computation_method": "euclidean centre distance from G13 to each of the four candidates; unique argmin",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px",
+      "visibility_basis": "四个候选与 G13 的位置都能在可见网格图上量出；格点间距为水平 190 px、竖直 178 px，最近与次近相差 25.39 px，大于容差，排序不会因容差改变。",
+      "well_posedness": {
+        "rule": "最小值只被一个候选取得，且与次近值相差 25.39 px",
+        "distances_px": {
+          "G09": 760.0,
+          "G16": 570.0,
+          "G17": 779.2201,
+          "G24": 595.3856
+        },
+        "margin_px": 25.3856,
+        "note": "G16 与 G24 同在 C8 列，分别与 G13 同行、相邻下一行，距离仅差 172 px（行距），因此本题确实需要比较竖直偏移"
+      }
+    },
+    {
+      "q_id": "Q23",
+      "answer": "G45",
+      "answer_type": "id",
+      "computation_method": "step1 keep shape=='ring'; step2 argmin of euclidean centre distance to G37",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px",
+      "visibility_basis": "圆环＝有内圈的空心环（外径:内径＝2:1），与实心圆、方、圆角方在可见图上均可区分；16 个圆环的编号都能读出。",
+      "well_posedness": {
+        "rule": "在圆环子集内最小值唯一，与次近值相差 84.29 px",
+        "ring_ids": [
+          "G05",
+          "G07",
+          "G11",
+          "G16",
+          "G17",
+          "G30",
+          "G32",
+          "G33",
+          "G42",
+          "G45",
+          "G49",
+          "G50",
+          "G51",
+          "G54",
+          "G58",
+          "G61"
+        ],
+        "candidate_count": 16,
+        "distances_px": {
+          "G05": 688.0,
+          "G07": 785.9669,
+          "G11": 640.8245,
+          "G16": 768.8667,
+          "G17": 834.2278,
+          "G30": 256.2889,
+          "G32": 595.3856,
+          "G33": 760.0,
+          "G42": 595.3856,
+          "G45": 172.0,
+          "G49": 834.2278,
+          "G50": 665.7597,
+          "G51": 512.5778,
+          "G54": 392.9835,
+          "G58": 768.8667,
+          "G61": 516.0
+        },
+        "margin_px": 84.2889
+      }
+    },
+    {
+      "q_id": "Q24",
+      "answer": [
+        "G07",
+        "G15",
+        "G23"
+      ],
+      "answer_type": "list",
+      "computation_method": "take column 7, sort by center.y ascending, return first three ids",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px（相邻行中心 y 相差 178 px）",
+      "visibility_basis": "第 7 列由顶部 C7 列标确定，8 个主体及其编号都在可见图上。",
+      "well_posedness": {
+        "rule": "同列 8 个 center.y 两两不同，升序唯一",
+        "sorted_all": [
+          "G07",
+          "G15",
+          "G23",
+          "G31",
+          "G39",
+          "G47",
+          "G55",
+          "G63"
+        ],
+        "centre_y": {
+          "G07": 250,
+          "G15": 422,
+          "G23": 594,
+          "G31": 766,
+          "G39": 938,
+          "G47": 1110,
+          "G55": 1282,
+          "G63": 1454
+        }
+      }
+    },
+    {
+      "q_id": "Q25",
+      "answer": [
+        "G01",
+        "G09",
+        "G10"
+      ],
+      "answer_type": "list",
+      "computation_method": "step1 keep size==64; step2 sort by (center.x asc, center.y asc, id asc); return first three ids",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px（列间 190 px、行间 178 px）",
+      "visibility_basis": "尺寸 64 的主体可由可见外接尺寸直接量出；中心由外接矩形得到。",
+      "well_posedness": {
+        "rule": "(x,y,id) 为全序键，不存在未定义的并列",
+        "size_64_count": 21,
+        "distinct_centre_x": [
+          155,
+          345,
+          535,
+          725,
+          915,
+          1105,
+          1295,
+          1485
+        ],
+        "distinct_centre_y": [
+          250,
+          422,
+          594,
+          766,
+          938,
+          1110,
+          1282,
+          1454
+        ],
+        "first_three": [
+          "G01",
+          "G09",
+          "G10"
+        ]
+      }
+    },
+    {
+      "q_id": "Q26",
+      "answer": [
+        1271.0,
+        570.0,
+        1319.0,
+        618.0
+      ],
+      "answer_type": "bbox",
+      "computation_method": "bbox = center ± size/2 on both axes, using the same geometry that generated grid-scene.snapshot",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px（列距 190 px、行距 178 px，尺寸档差 16 px）",
+      "visibility_basis": "G23 的主体与编号都在可见图上；48/64/80 三档在 1600×1600 原图上可直接量出，档间差 16 px 大于容差。",
+      "well_posedness": {
+        "rule": "单一主体、单一外接框，不存在并列",
+        "body": {
+          "id": "G23",
+          "shape": "square",
+          "size": 48,
+          "color": "orange",
+          "row": 3,
+          "col": 7
+        },
+        "corner_convention": "x 向右为正，y 向下为正"
+      }
+    },
+    {
+      "q_id": "Q27",
+      "answer": [
+        115.0,
+        210.0,
+        1525.0,
+        1494.0
+      ],
+      "answer_type": "bbox",
+      "computation_method": "step1 keep size==80; step2 union bbox over that subset",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±2 px",
+      "visibility_basis": "80 是三档中最大的一档，可直接量出；行列位置由 C/R 标确定。",
+      "well_posedness": {
+        "rule": "固定集合的并集外接框唯一",
+        "subset_count": 21,
+        "subset_ids": [
+          "G05",
+          "G08",
+          "G14",
+          "G15",
+          "G17",
+          "G20",
+          "G22",
+          "G32",
+          "G35",
+          "G38",
+          "G40",
+          "G41",
+          "G43",
+          "G45",
+          "G48",
+          "G49",
+          "G51",
+          "G54",
+          "G57",
+          "G60",
+          "G61"
+        ]
+      }
+    },
+    {
+      "q_id": "Q28",
+      "answer": {
+        "blue_total": 16,
+        "blue_size_48": 5
+      },
+      "answer_type": "counts",
+      "computation_method": "count color=='blue'; then count those with size==48",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±0 个",
+      "visibility_basis": "蓝色＝#2563EB，是四色中唯一的冷色高饱和蓝，与橙/绿/紫互不混淆。",
+      "well_posedness": {
+        "rule": "计数范围固定，不依赖任何排序或距离比较",
+        "generator_constraint": "每种颜色恰好 16 个"
+      }
+    },
+    {
+      "q_id": "Q29",
+      "answer": {
+        "circle_total": 16,
+        "circle_centre_x_gt_900": 10
+      },
+      "answer_type": "counts",
+      "computation_method": "count shape=='circle'; then keep center.x > 900 and count again",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±0 个；x 阈值与最近列中心的距离为 85 px",
+      "visibility_basis": "圆盘＝没有内圈的实心圆；各列中心 x 依次为 245、435、625、815、1005、1195、1385、1575。",
+      "well_posedness": {
+        "rule": "阈值不与任何主体中心重合，筛选结果唯一",
+        "column_centre_x": [
+          155,
+          345,
+          535,
+          725,
+          915,
+          1105,
+          1295,
+          1485
+        ],
+        "threshold_px": 900,
+        "columns_kept": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "kept_ids": [
+          "G06",
+          "G08",
+          "G13",
+          "G14",
+          "G21",
+          "G24",
+          "G29",
+          "G31",
+          "G63",
+          "G64"
+        ]
+      }
+    },
+    {
+      "q_id": "Q30",
+      "answer": {
+        "fully_visible_bodies": 4,
+        "ids": [
+          "V1",
+          "V2",
+          "V3",
+          "V4"
+        ]
+      },
+      "answer_type": "count",
+      "computation_method": "count the bodies that no opaque cover touches; V1..V4 lie wholly inside the visible work area, P1 is clipped by cover 2",
+      "derived_from": "scene-data.json",
+      "coordinate_tolerance": "±0 个",
+      "visibility_basis": "V1–V4 四个主体的完整轮廓与其编号直接印在可见图上；P1 的右侧有明显的遮挡切口，因此它必须被排除。判断不需要任何隐藏内容。",
+      "well_posedness": {
+        "rule": "V1–V4 完整可见、两块遮挡物完全不透明，计数唯一为 4；P1 被遮挡物 2 压住 42 px，必须排除",
+        "excluded": [
+          {
+            "label": "P1",
+            "shape": "ring",
+            "size": 96,
+            "covered_px": 42
+          }
+        ],
+        "visible_geometry_source": "occlusion-scene-data.json -> fully_visible_bodies"
+      }
+    },
+    {
+      "q_id": "Q31",
+      "image": "occlusion.png",
+      "answer": "无法确定",
+      "answer_type": "undeterminable",
+      "computation_method": "无法计算：遮挡物 1 是完全不透明的纯色矩形，其覆盖区域的像素已被遮挡物本身占满，不含任何被遮挡主体的信息。equivalence.json 给出像素级证明——两份隐藏内容不同的DSL 渲染出逐字节相同的 PNG，因此“后面有 0 个、1 个、2 个……图形”会给出完全相同的可见图，任何数量都无法从图上区分。所以本题的正确答案是“无法确定”。",
+      "derived_from": "occlusion.png 的最终可见像素 + equivalence.json 的像素等价证明",
+      "coordinate_tolerance": "不适用",
+      "visibility_basis": "唯一可判定的命题是“是否存在可见证据”，其答案是不存在。",
+      "well_posedness": {
+        "rule": "题目被刻意设计为凭最终可见图不可判定，期望答案就是字面字符串“无法确定”",
+        "hidden_count_never_used_as_truth": "两份 DSL 各自的隐藏主体数量（5 与 6）只出现在 occlusion 的审计说明里，从未被用作任何题目的标准答案；questions.json 中不含任何数量或答案"
+      }
+    }
+  ]
+}

@@ -1,0 +1,936 @@
+=== https://snapshot.muedsa.com/widgets/text/text/ ===
+Text | Snapshot
+跳转到内容
+Snapshot
+搜索
+Ctrl
+K
+取消
+GitHub
+选择主题
+深色
+浅色
+自动
+菜单
+开始使用
+概览
+在线 Playground
+安装与构建
+快速开始
+核心原理
+渲染入口与输出
+核心概念
+约束、布局与调试
+Widget 指南
+Widget 与布局
+绘制、装饰与效果
+图片、文本与富文本
+布局 Widget API
+Container
+SizedBox
+ConstrainedBox
+LimitedBox
+OverflowBox
+SizedOverflowBox
+Padding
+Align
+Center
+Flex
+Row
+Column
+Expanded
+Flexible
+Stack
+Positioned
+Transform
+AspectRatio
+FractionallySizedBox
+IndexedStack
+Spacer
+UnconstrainedBox
+绘制与效果 Widget API
+ColoredBox
+DecoratedBox
+Opacity
+ColorFiltered
+ImageFiltered
+BackdropFilter
+ClipRect
+ClipRRect
+ClipOval
+ClipPath
+图片 Widget API
+RawImage
+ProviderImage
+CachedNetworkImage
+文本 Widget API
+Text
+RichText
+WidgetSpan
+ImageEmojiSpan
+类 DOM 解析器
+类 DOM 解析器
+标签与属性参考
+错误处理与扩展
+DSL 语言服务
+测试
+测试与 Golden
+参考
+枚举速查
+FAQ
+源码索引
+GitHub
+选择主题
+深色
+浅色
+自动
+本页内容
+概述
+函数签名
+参数
+TextStyle 主要字段
+本页内容
+概述
+函数签名
+参数
+TextStyle 主要字段
+Text
+Text
+是 RichText 的便捷封装。它把字符串和可选 TextStyle 包装成根 TextSpan，再交给段落布局器。
+函数签名
+Section titled “函数签名”
+fun
+ChildSlot.
+Text
+(
+text: String,
+style: TextStyle?
+=
+null
+,
+textAlign: Alignment
+=
+Alignment.START,
+textDirection: Direction
+=
+Direction.LTR,
+softWrap: Boolean
+=
+true
+,
+overflow: TextOverflow
+=
+TextOverflow.CLIP,
+maxLines: Int?
+=
+null
+,
+strutStyle: StrutStyle?
+=
+null
+,
+textWidthBasis: TextWidthBasis
+=
+TextWidthBasis.PARENT,
+textHeightMode: HeightMode?
+=
+null
+,
+)
+参数
+Section titled “参数”
+参数
+默认值
+说明
+text
+必填
+要绘制的字符串
+style
+null
+字号、颜色、字体、字距、阴影等
+textAlign
+START
+段落内行的水平对齐
+textDirection
+LTR
+文字方向
+softWrap
+true
+是否允许在软换行点换行
+overflow
+CLIP
+CLIP
+、
+FADE
+、
+ELLIPSIS
+或
+VISIBLE
+maxLines
+null
+最大行数
+strutStyle
+null
+统一行高与字体度量的 Strut 配置
+textWidthBasis
+PARENT
+段落宽度按父宽或最长行计算
+textHeightMode
+null
+Skia Paragraph 高度处理模式
+Text
+(
+text
+=
+"Hello Snapshot"
+,
+style
+=
+TextStyle
+(
+color
+=
+0xFFF8FAFC
+.
+toInt
+(),
+fontSize
+=
+32f
+,
+fontStyle
+=
+FontStyle.BOLD,
+fontFamilies
+=
+listOf
+(
+"Noto Sans SC"
+),
+),
+maxLines
+=
+1
+,
+overflow
+=
+TextOverflow.ELLIPSIS,
+)
+TextStyle 主要字段
+Section titled “TextStyle 主要字段”
+包括
+color
+、
+foreground
+、
+background
+、
+fontStyle
+、
+fontSize
+、
+fontFamilies
+、
+height
+、
+letterSpacing
+、
+wordSpacing
+、
+shadows
+、
+fontFeatures
+、
+typeface
+、
+locale
+、
+baselineMode
+、
+fontEdging
+、
+fontHinting
+和
+subpixel
+。
+服务器与 CI 中应显式固定字体，避免系统默认字体造成布局与像素差异。需要多段样式或行内 Widget 时使用 RichText。
+上一页
+CachedNetworkImage
+下一页
+RichText
+=== https://snapshot.muedsa.com/widgets/painting/decorated-box/ ===
+DecoratedBox | Snapshot
+跳转到内容
+Snapshot
+搜索
+Ctrl
+K
+取消
+GitHub
+选择主题
+深色
+浅色
+自动
+菜单
+开始使用
+概览
+在线 Playground
+安装与构建
+快速开始
+核心原理
+渲染入口与输出
+核心概念
+约束、布局与调试
+Widget 指南
+Widget 与布局
+绘制、装饰与效果
+图片、文本与富文本
+布局 Widget API
+Container
+SizedBox
+ConstrainedBox
+LimitedBox
+OverflowBox
+SizedOverflowBox
+Padding
+Align
+Center
+Flex
+Row
+Column
+Expanded
+Flexible
+Stack
+Positioned
+Transform
+AspectRatio
+FractionallySizedBox
+IndexedStack
+Spacer
+UnconstrainedBox
+绘制与效果 Widget API
+ColoredBox
+DecoratedBox
+Opacity
+ColorFiltered
+ImageFiltered
+BackdropFilter
+ClipRect
+ClipRRect
+ClipOval
+ClipPath
+图片 Widget API
+RawImage
+ProviderImage
+CachedNetworkImage
+文本 Widget API
+Text
+RichText
+WidgetSpan
+ImageEmojiSpan
+类 DOM 解析器
+类 DOM 解析器
+标签与属性参考
+错误处理与扩展
+DSL 语言服务
+测试
+测试与 Golden
+参考
+枚举速查
+FAQ
+源码索引
+GitHub
+选择主题
+深色
+浅色
+自动
+本页内容
+概述
+函数签名
+参数
+BoxDecoration 参数
+本页内容
+概述
+函数签名
+参数
+BoxDecoration 参数
+DecoratedBox
+DecoratedBox
+使用
+Decoration
+绘制颜色、边框、圆角、阴影、渐变或装饰图片。最常用实现是
+BoxDecoration
+。
+函数签名
+Section titled “函数签名”
+fun
+ChildSlot.
+DecoratedBox
+(
+decoration: Decoration,
+position: DecorationPosition
+=
+DecorationPosition.BACKGROUND,
+content: DecoratedBox.()
+->
+Unit
+=
+{},
+)
+Unit = {},)">
+参数
+Section titled “参数”
+参数
+默认值
+说明
+decoration
+必填
+要绘制的 Decoration
+position
+BACKGROUND
+在子节点之前或之后绘制
+content
+空
+最多一个子 Widget
+BoxDecoration 参数
+Section titled “BoxDecoration 参数”
+参数
+说明
+color
+背景色
+image
+DecorationImage
+border
+Border
+/
+BoxBorder
+borderRadius
+矩形圆角
+boxShadow
+Array<BoxShadow>
+gradient
+Linear、Radial 或 Sweep Gradient
+backgroundBlendMode
+背景层混合方式
+shape
+RECTANGLE
+或
+CIRCLE
+DecoratedBox
+(
+decoration
+=
+BoxDecoration
+(
+color
+=
+0xFF0F172A
+.
+toInt
+(),
+borderRadius
+=
+BorderRadius.
+circular
+(
+20f
+),
+border
+=
+Border.
+all
+(color
+=
+0xFF334155
+.
+toInt
+()),
+boxShadow
+=
+ELEVATION_MAP[
+8
+],
+),
+) {
+SizedBox
+(width
+=
+320f
+, height
+=
+180f
+)
+}
+FOREGROUND
+装饰会绘制在子节点上方，可用于蒙层或前景边框。DecoratedBox 本身不会按圆角裁剪子节点；需要裁剪时配合 ClipRRect，或使用 Container 的
+clipBehavior + decoration
+组合。
+上一页
+ColoredBox
+下一页
+Opacity
+=== https://snapshot.muedsa.com/widgets/painting/clip-oval/ ===
+ClipOval | Snapshot
+跳转到内容
+Snapshot
+搜索
+Ctrl
+K
+取消
+GitHub
+选择主题
+深色
+浅色
+自动
+菜单
+开始使用
+概览
+在线 Playground
+安装与构建
+快速开始
+核心原理
+渲染入口与输出
+核心概念
+约束、布局与调试
+Widget 指南
+Widget 与布局
+绘制、装饰与效果
+图片、文本与富文本
+布局 Widget API
+Container
+SizedBox
+ConstrainedBox
+LimitedBox
+OverflowBox
+SizedOverflowBox
+Padding
+Align
+Center
+Flex
+Row
+Column
+Expanded
+Flexible
+Stack
+Positioned
+Transform
+AspectRatio
+FractionallySizedBox
+IndexedStack
+Spacer
+UnconstrainedBox
+绘制与效果 Widget API
+ColoredBox
+DecoratedBox
+Opacity
+ColorFiltered
+ImageFiltered
+BackdropFilter
+ClipRect
+ClipRRect
+ClipOval
+ClipPath
+图片 Widget API
+RawImage
+ProviderImage
+CachedNetworkImage
+文本 Widget API
+Text
+RichText
+WidgetSpan
+ImageEmojiSpan
+类 DOM 解析器
+类 DOM 解析器
+标签与属性参考
+错误处理与扩展
+DSL 语言服务
+测试
+测试与 Golden
+参考
+枚举速查
+FAQ
+源码索引
+GitHub
+选择主题
+深色
+浅色
+自动
+本页内容
+概述
+函数签名
+参数
+本页内容
+概述
+函数签名
+参数
+ClipOval
+ClipOval
+在给定矩形内生成内切椭圆。正方形区域会得到圆形，常用于头像。
+函数签名
+Section titled “函数签名”
+fun
+ChildSlot.
+ClipOval
+(
+clipper: ((Size) -> Rect)?
+=
+null
+,
+clipBehavior: ClipBehavior
+=
+ClipBehavior.ANTI_ALIAS,
+content: ClipOval.()
+->
+Unit
+=
+{},
+)
+Rect)? = null,    clipBehavior: ClipBehavior = ClipBehavior.ANTI_ALIAS,    content: ClipOval.() -> Unit = {},)">
+参数
+Section titled “参数”
+参数
+默认值
+说明
+clipper
+null
+返回承载椭圆的外接矩形
+clipBehavior
+ANTI_ALIAS
+裁剪策略
+content
+空
+最多一个子 Widget
+ClipOval
+{
+RawImage
+(image
+=
+avatar, width
+=
+96f
+, height
+=
+96f
+, fit
+=
+BoxFit.COVER)
+}
+要获得正圆，应确保布局宽高相同。ClipOval 不绘制边框；圆形边框可在外层使用 BoxDecoration(shape = CIRCLE)。
+上一页
+ClipRRect
+下一页
+ClipPath
+=== https://snapshot.muedsa.com/widgets/painting/clip-rrect/ ===
+ClipRRect | Snapshot
+跳转到内容
+Snapshot
+搜索
+Ctrl
+K
+取消
+GitHub
+选择主题
+深色
+浅色
+自动
+菜单
+开始使用
+概览
+在线 Playground
+安装与构建
+快速开始
+核心原理
+渲染入口与输出
+核心概念
+约束、布局与调试
+Widget 指南
+Widget 与布局
+绘制、装饰与效果
+图片、文本与富文本
+布局 Widget API
+Container
+SizedBox
+ConstrainedBox
+LimitedBox
+OverflowBox
+SizedOverflowBox
+Padding
+Align
+Center
+Flex
+Row
+Column
+Expanded
+Flexible
+Stack
+Positioned
+Transform
+AspectRatio
+FractionallySizedBox
+IndexedStack
+Spacer
+UnconstrainedBox
+绘制与效果 Widget API
+ColoredBox
+DecoratedBox
+Opacity
+ColorFiltered
+ImageFiltered
+BackdropFilter
+ClipRect
+ClipRRect
+ClipOval
+ClipPath
+图片 Widget API
+RawImage
+ProviderImage
+CachedNetworkImage
+文本 Widget API
+Text
+RichText
+WidgetSpan
+ImageEmojiSpan
+类 DOM 解析器
+类 DOM 解析器
+标签与属性参考
+错误处理与扩展
+DSL 语言服务
+测试
+测试与 Golden
+参考
+枚举速查
+FAQ
+源码索引
+GitHub
+选择主题
+深色
+浅色
+自动
+本页内容
+概述
+函数签名
+参数
+本页内容
+概述
+函数签名
+参数
+ClipRRect
+ClipRRect
+适合头像卡片、圆角图片和圆角容器。可以直接提供 BorderRadius，也可以由 clipper 完全自定义 RRect。
+函数签名
+Section titled “函数签名”
+fun
+ChildSlot.
+ClipRRect
+(
+borderRadius: BorderRadius
+=
+BorderRadius.ZERO,
+clipper: ((Size) -> RRect)?
+=
+null
+,
+clipBehavior: ClipBehavior
+=
+ClipBehavior.ANTI_ALIAS,
+content: ClipRRect.()
+->
+Unit
+=
+{},
+)
+RRect)? = null,    clipBehavior: ClipBehavior = ClipBehavior.ANTI_ALIAS,    content: ClipRRect.() -> Unit = {},)">
+参数
+Section titled “参数”
+参数
+默认值
+说明
+borderRadius
+ZERO
+clipper 为空时使用的四角半径
+clipper
+null
+根据当前 Size 返回自定义 RRect
+clipBehavior
+ANTI_ALIAS
+裁剪策略
+content
+空
+最多一个子 Widget
+ClipRRect
+(borderRadius
+=
+BorderRadius.
+circular
+(
+24f
+)) {
+RawImage
+(image
+=
+sourceImage, width
+=
+320f
+, height
+=
+180f
+, fit
+=
+BoxFit.COVER)
+}
+ClipRRect 只负责裁剪，不负责绘制圆角背景或边框；需要视觉装饰时再配合 DecoratedBox。
+上一页
+ClipRect
+下一页
+ClipOval
+=== https://snapshot.muedsa.com/widgets/painting/colored-box/ ===
+ColoredBox | Snapshot
+跳转到内容
+Snapshot
+搜索
+Ctrl
+K
+取消
+GitHub
+选择主题
+深色
+浅色
+自动
+菜单
+开始使用
+概览
+在线 Playground
+安装与构建
+快速开始
+核心原理
+渲染入口与输出
+核心概念
+约束、布局与调试
+Widget 指南
+Widget 与布局
+绘制、装饰与效果
+图片、文本与富文本
+布局 Widget API
+Container
+SizedBox
+ConstrainedBox
+LimitedBox
+OverflowBox
+SizedOverflowBox
+Padding
+Align
+Center
+Flex
+Row
+Column
+Expanded
+Flexible
+Stack
+Positioned
+Transform
+AspectRatio
+FractionallySizedBox
+IndexedStack
+Spacer
+UnconstrainedBox
+绘制与效果 Widget API
+ColoredBox
+DecoratedBox
+Opacity
+ColorFiltered
+ImageFiltered
+BackdropFilter
+ClipRect
+ClipRRect
+ClipOval
+ClipPath
+图片 Widget API
+RawImage
+ProviderImage
+CachedNetworkImage
+文本 Widget API
+Text
+RichText
+WidgetSpan
+ImageEmojiSpan
+类 DOM 解析器
+类 DOM 解析器
+标签与属性参考
+错误处理与扩展
+DSL 语言服务
+测试
+测试与 Golden
+参考
+枚举速查
+FAQ
+源码索引
+GitHub
+选择主题
+深色
+浅色
+自动
+本页内容
+概述
+函数签名
+参数
+本页内容
+概述
+函数签名
+参数
+ColoredBox
+ColoredBox
+是最简单的绘制 Widget：先用 ARGB 颜色填充自身区域，再绘制子节点。
+函数签名
+Section titled “函数签名”
+fun
+ChildSlot.
+ColoredBox
+(
+color: Int,
+content: ColoredBox.()
+->
+Unit
+=
+{},
+)
+Unit = {},)">
+参数
+Section titled “参数”
+参数
+说明
+color
+ARGB Int，例如
+0xFF38BDF8.toInt()
+content
+最多一个子 Widget
+SizedBox
+(width
+=
+200f
+, height
+=
+120f
+) {
+ColoredBox
+(color
+=
+0xFF38BDF8
+.
+toInt
+()) {
+Center
+{
+Text
+(
+"content"
+) }
+}
+}
+ColoredBox 不主动决定尺寸，通常由父约束或子节点确定。如果需要同时设置尺寸，使用 SizedBox 或 Container 包裹。
+需要边框、圆角、渐变或阴影时使用
+DecoratedBox
+。
+上一页
+UnconstrainedBox
+下一页
+DecoratedBox

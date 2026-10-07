@@ -1,0 +1,39 @@
+{
+  "id": "A09",
+  "title": "十二个非对称图形变换标本",
+  "category": "精确几何",
+  "challenge": "矩阵顺序、中心变换、非等比缩放与视觉坐标验证。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "制作1600×1200变换图谱，4列×3行，每格300×250，格间32；整体居中，格外\n保留标题与图例。inputs/stamp.json 定义一个120×120透明印章：3个彩色矩形与\n一个黑圆点。所有局部坐标从印章左上角算，矩形之间部分相邻，用圆点消除对称。\ninputs/transforms.json 给12个从左到右、从上到下的变换列表；操作按列表顺序，\n每步围绕局部(60,60)进行。像素坐标x向右、y向下，因此“顺时针”按图像方向。\nmirror_horizontal 表示左右镜像，mirror_vertical 表示上下镜像。最终局部中心\n放到每格中心。图中编号、操作短名与刻度辅助线齐全；不裁切变换后的主体。\n各格主体必须用Transform.matrix表示最终组合变换，不能直接手改形状坐标\n冒充使用矩阵；圆点随同变换。T07与T08要显示操作顺序差异。\n附 geometry-audit.json：列主序4×4矩阵、每矩形四角、圆点中心、最终外接框，\n以及±1.5像素的视觉/像素核对方法（反走样边缘例外）。标签≥20。\n",
+  "inputs": [
+    "inputs/stamp.json",
+    "inputs/transforms.json"
+  ],
+  "required_outputs": [
+    {
+      "filename": "transform-atlas.png",
+      "dsl": "transform-atlas.snapshot",
+      "width": 1600,
+      "height": 1200,
+      "purpose": "十二变换标本"
+    }
+  ],
+  "additional_outputs": [
+    "geometry-audit.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A09/",
+  "temp_dir_template": "tmp/{run_id}/A09/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

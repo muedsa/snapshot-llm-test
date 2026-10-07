@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "artifact": "occlusion",
+  "claim": "两份完整 DSL 的隐藏内容不同、遮挡做法不同，但最终 PNG 的每一个像素都相同。",
+  "images": {
+    "A": {
+      "png": "occlusion.png",
+      "dsl": "occlusion.snapshot",
+      "mechanism": {
+        "name": "A1 · overdraw（paint-order 覆盖）",
+        "mechanism": "隐藏主体是 Stack 的普通兄弟节点，先绘制；随后绘制两块完全不透明的深色矩形把它们盖住。隐藏像素被真实画出来过，只是被覆盖。",
+        "draw_order": [
+          "card",
+          "captions",
+          "hidden_bodies",
+          "visible_bodies",
+          "covers"
+        ],
+        "hidden_bodies_emitted": 5,
+        "uses_clip": false,
+        "failure_would_change_pixels": "若任一遮挡矩形没有完全覆盖对应隐藏主体，残留像素会使本图与 clip 版本不同。"
+      },
+      "hidden_bodies": [
+        {
+          "label": "H1",
+          "shape": "circle",
+          "size": 84,
+          "color": "#16A34A",
+          "nominal_bbox": {
+            "x_min": 392,
+            "y_min": 200,
+            "x_max": 476,
+            "y_max": 284
+          }
+        },
+        {
+          "label": "H2",
+          "shape": "square",
+          "size": 64,
+          "color": "#7C3AED",
+          "nominal_bbox": {
+            "x_min": 500,
+            "y_min": 200,
+            "x_max": 564,
+            "y_max": 264
+          }
+        },
+        {
+          "label": "H3",
+          "shape": "ring",
+          "size": 72,
+          "color": "#2563EB",
+          "nominal_bbox": {
+            "x_min": 540,
+            "y_min": 290,
+            "x_max": 612,
+            "y_max": 362
+          }
+        },
+        {
+          "label": "H4",
+          "shape": "rounded_square",
+          "size": 64,
+          "color": "#EA580C",
+          "nominal_bbox": {
+            "x_min": 392,
+            "y_min": 440,
+            "x_max": 456,
+            "y_max": 504
+          }
+        },
+        {
+          "label": "H5",
+          "shape": "circle",
+          "size": 70,
+          "color": "#16A34A",
+          "nominal_bbox": {
+            "x_min": 480,
+            "y_min": 450,
+            "x_max": 550,
+            "y_max": 520
+          }
+        }
+      ],
+      "hidden_body_count": 5
+    },
+    "B": {
+      "png": "occlusion-alternative.png",
+      "dsl": "occlusion-alternative.snapshot",
+      "mechanism": {
+        "name": "B1 · clip（几何裁剪）",
+        "mechanism": "可见主体与两块遮挡矩形的绘制顺序和 A1 完全一致；随后把隐藏主体放在最后绘制，但它们位于一个宽 700px 的 ClipRect 内部、起点 x=706，被裁剪在光栅化之前整体移除——不是“画了再盖”，而是根本没画。",
+        "draw_order": [
+          "card",
+          "captions",
+          "visible_bodies",
+          "covers",
+          "clipped_hidden_bodies(never rasterised)"
+        ],
+        "clip_box": {
+          "x_min": 0,
+          "y_min": 0,
+          "x_max": 700,
+          "y_max": 800
+        },
+        "hidden_bodies_emitted": 6,
+        "hidden_bodies_emitted_x_min": 706,
+        "hidden_bodies_emitted_x_max": 794,
+        "uses_clip": true,
+        "failure_would_change_pixels": "隐藏主体在 Stack 中排在遮挡物之后；若 ClipRect 未生效，它们会直接盖在遮挡物上，本图必然与 A1 不同。"
+      },
+      "hidden_bodies": [
+        {
+          "label": "H1",
+          "shape": "rounded_square",
+          "size": 88,
+          "color": "#7C3AED",
+          "emitted_bbox": {
+            "x_min": 706,
+            "y_min": 196,
+            "x_max": 794,
+            "y_max": 284
+          },
+          "nominal_bbox": {
+            "x_min": 388,
+            "y_min": 196,
+            "x_max": 476,
+            "y_max": 284
+          }
+        },
+        {
+          "label": "H2",
+          "shape": "circle",
+          "size": 56,
+          "color": "#2563EB",
+          "emitted_bbox": {
+            "x_min": 706,
+            "y_min": 200,
+            "x_max": 762,
+            "y_max": 256
+          },
+          "nominal_bbox": {
+            "x_min": 492,
+            "y_min": 200,
+            "x_max": 548,
+            "y_max": 256
+          }
+        },
+        {
+          "label": "H6",
+          "shape": "circle",
+          "size": 76,
+          "color": "#EA580C",
+          "emitted_bbox": {
+            "x_min": 706,
+            "y_min": 290,
+            "x_max": 782,
+            "y_max": 366
+          },
+          "nominal_bbox": {
+            "x_min": 516,
+            "y_min": 290,
+            "x_max": 592,
+            "y_max": 366
+          }
+        },
+        {
+          "label": "H3",
+          "shape": "ring",
+          "size": 64,
+          "color": "#16A34A",
+          "emitted_bbox": {
+            "x_min": 706,
+            "y_min": 540,
+            "x_max": 770,
+            "y_max": 604
+          },
+          "nominal_bbox": {
+            "x_min": 388,
+            "y_min": 540,
+            "x_max": 452,
+            "y_max": 604
+          }
+        },
+        {
+          "label": "H4",
+          "shape": "square",
+          "size": 76,
+          "color": "#EA580C",
+          "emitted_bbox": {
+            "x_min": 706,
+            "y_min": 536,
+            "x_max": 782,
+            "y_max": 612
+          },
+          "nominal_bbox": {
+            "x_min": 466,
+            "y_min": 536,
+            "x_max": 542,
+            "y_max": 612
+          }
+        },
+        {
+          "label": "H5",
+          "shape": "rounded_square",
+          "size": 60,
+          "color": "#7C3AED",
+          "emitted_bbox": {
+            "x_min": 706,
+            "y_min": 540,
+            "x_max": 766,
+            "y_max": 600
+          },
+          "nominal_bbox": {
+            "x_min": 556,
+            "y_min": 540,
+            "x_max": 616,
+            "y_max": 600
+          }
+        }
+      ],
+      "hidden_body_count": 6
+    }
+  },
+  "hidden_content_differs": {
+    "counts": [
+      5,
+      6
+    ],
+    "per_position": [
+      {
+        "cover": "遮挡物 1",
+        "A": [
+          {
+            "shape": "circle",
+            "size": 84,
+            "color": "#16A34A"
+          },
+          {
+            "shape": "square",
+            "size": 64,
+            "color": "#7C3AED"
+          },
+          {
+            "shape": "ring",
+            "size": 72,
+            "color": "#2563EB"
+          }
+        ],
+        "B": [
+          {
+            "shape": "rounded_square",
+            "size": 88,
+            "color": "#7C3AED"
+          },
+          {
+            "shape": "circle",
+            "size": 56,
+            "color": "#2563EB"
+          },
+          {
+            "shape": "circle",
+            "size": 76,
+            "color": "#EA580C"
+          }
+        ]
+      },
+      {
+        "cover": "遮挡物 2",
+        "A": [
+          {
+            "shape": "rounded_square",
+            "size": 64,
+            "color": "#EA580C"
+          },
+          {
+            "shape": "circle",
+            "size": 70,
+            "color": "#16A34A"
+          }
+        ],
+        "B": [
+          {
+            "shape": "ring",
+            "size": 64,
+            "color": "#16A34A"
+          },
+          {
+            "shape": "square",
+            "size": 76,
+            "color": "#EA580C"
+          },
+          {
+            "shape": "rounded_square",
+            "size": 60,
+            "color": "#7C3AED"
+          }
+        ]
+      }
+    ],
+    "summary": "A 有 5 个隐藏主体、B 有 6 个；每个位置的形状、尺寸、颜色与场景中的名义位置都不同；遮挡做法一个是绘制顺序覆盖，一个是裁剪移除。"
+  },
+  "hashes": {
+    "occlusion.png": {
+      "sha256": "8599c180709c8d18793299a629c598f4681dfc186ddac53fa26f43346b8088ea",
+      "bytes": 91527,
+      "mode": "RGBA",
+      "size": [
+        800,
+        800
+      ]
+    },
+    "occlusion-alternative.png": {
+      "sha256": "8599c180709c8d18793299a629c598f4681dfc186ddac53fa26f43346b8088ea",
+      "bytes": 91527,
+      "mode": "RGBA",
+      "size": [
+        800,
+        800
+      ]
+    },
+    "png_sha256_equal": true,
+    "occlusion.snapshot": {
+      "sha256": "d8c6233efbcee28b6d96745ed86677595dd59c5153304c873f6c9beb5d2892cc",
+      "bytes": 6123
+    },
+    "occlusion-alternative.snapshot": {
+      "sha256": "8a9477ae705b02e8f91a527fd6157710258204942fd719d7a1738bc1906b2d5b",
+      "bytes": 6484
+    }
+  },
+  "pixel_comparison": {
+    "method": "PIL ImageChops.difference on the two raw service responses (no resizing, no colour management, no post-processing)",
+    "same_dimensions": true,
+    "dimensions": [
+      800,
+      800
+    ],
+    "total_pixels": 640000,
+    "differing_pixels": 0,
+    "differing_pixel_ratio": 0.0,
+    "max_channel_delta": 0,
+    "difference_bbox": null,
+    "difference_image": "tmp/20261004-182918/A19/crops/occlusion-pixel-diff.png",
+    "pixel_identical": true
+  },
+  "dsl_difference": {
+    "dsl_sha256_equal": false,
+    "dsl_bytes": [
+      6123,
+      6484
+    ],
+    "why_they_differ": "隐藏主体列表、绘制顺序与遮挡机制都不同（见 images.A/B.mechanism）"
+  },
+  "proof_obligation": [
+    "A1：若任一遮挡矩形没有完全覆盖其下的隐藏主体，残留像素会让 A 与 B 不同。",
+    "B1：隐藏主体在 Stack 中排在最后；若无 ClipRect 生效，它们会盖在遮挡物上，A 与 B 必然不同。",
+    "两图逐字节相同 ⇒ 覆盖完整且裁剪生效，两种遮挡做法都成立。"
+  ],
+  "hidden_counts_not_used_as_answers": true,
+  "generated_at": "2026-10-05T02:48:06+08:00"
+}

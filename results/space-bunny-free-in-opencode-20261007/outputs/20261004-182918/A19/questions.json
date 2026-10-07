@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "note": "questions only — no answer, no candidate answer, no count and no hint about the hidden content appears anywhere in this file",
+  "images": {
+    "grid-scene.png": "1600x1600，8×8 网格，64 个带编号主体 G01–G64",
+    "occlusion.png": "800×800 遮挡场景；occlusion-alternative.png 是它的像素级同构图，隐藏内容不同、遮挡做法不同"
+  },
+  "global_conventions": {
+    "coordinate_origin": "每张图的左上角为原点 (0,0)，x 向右为正，y 向下为正，单位为该图片的像素。",
+    "centering": "主体中心＝主体外接矩形的几何中心；圆环取外径外接矩形，内径不参与。",
+    "sizing": "圆按直径、方按边长、圆角方按边长；圆环外径＝尺寸、内径＝尺寸的一半。",
+    "counting_scope": "所有计数与检索只针对编号 G01–G64 的 64 个主体；标题、说明、图例、C1–C8 / R1–R8 行列标、页脚文字都不计入。",
+    "tie_policy": "所有“最大／最小／最近／最前”类问题使用严格比较；允许并列的题目必须在题干中给出完整的并列消解顺序。",
+    "distance_metric": "中心到中心的欧氏距离 sqrt(dx²+dy²)，单位像素。",
+    "coordinate_tolerance": "坐标类答案容差 ±2 px；计数类答案容差 ±0。"
+  },
+  "question_count": 14,
+  "questions": [
+    {
+      "q_id": "Q18",
+      "image": "grid-scene.png",
+      "type": "composite_attribute_retrieval",
+      "steps": 1,
+      "question": "在编号 G01–G64 的主体中，同时满足“颜色＝紫”与“形状＝圆环”的对象有哪些？请按编号升序回答。",
+      "scope": "只统计编号 G01–G64 的 64 个主体；图例色块、图例形状、C1–C8 / R1–R8 行列标与标题、说明、页脚文字都不计入。",
+      "comparison_criteria": "答案＝同时满足两个条件的全部编号按升序排列的列表；这是集合枚举，不涉及最大/最小/最近一类可能并列的比较。",
+      "coordinate_tolerance": "±0（本题答案不含坐标）",
+      "answer_visibility_basis": "颜色与形状都直接印在最终可见图上：紫＝#7C3AED 实心主体，圆环＝有内圈的空心环（外径:内径＝2:1）。"
+    },
+    {
+      "q_id": "Q19",
+      "image": "grid-scene.png",
+      "type": "composite_attribute_retrieval",
+      "steps": 2,
+      "question": "先从 G01–G64 中选出所有尺寸＝80 的主体（圆看直径、方看边长），再从这些主体中筛出颜色＝橙色的对象。请按编号升序回答。",
+      "scope": "只统计编号 G01–G64 的 64 个主体。",
+      "comparison_criteria": "第一步对全集取尺寸子集，第二步在该子集内取颜色子集；两步都是取交集，最终集合唯一，不需要任何并列消解。",
+      "coordinate_tolerance": "±0（本题答案不含坐标）",
+      "answer_visibility_basis": "尺寸在可见图上可直接量出：80 明显大于 64 与 48；橙色＝#EA580C。"
+    },
+    {
+      "q_id": "Q20",
+      "image": "grid-scene.png",
+      "type": "strict_center_horizontal_relation",
+      "steps": 1,
+      "question": "在 G07、G19、G12、G13 四个主体中，主体中心 x 坐标严格最大的编号是哪一个？若两个主体中心 x 相同，本题就没有唯一答案。",
+      "scope": "只统计编号 G01–G64 的 64 个主体。",
+      "comparison_criteria": "“中心”＝主体外接矩形的几何中心，center.x ＝ (x_min+x_max)/2；比较使用严格大于，中心 x 相同即判并列。",
+      "coordinate_tolerance": "±2 px（各列中心 x 依次为 155,345,535,725,915,1105,1295,1485，列间差 190 px；容差远小于列距，不会改变比较结果）",
+      "answer_visibility_basis": "四个主体都在可见网格图上，所在列由顶部 C1–C8 列标直接读出。"
+    },
+    {
+      "q_id": "Q21",
+      "image": "grid-scene.png",
+      "type": "strict_center_horizontal_relation",
+      "steps": 2,
+      "question": "先看第 3 行（R3）中颜色＝绿色的主体，再在这些主体中回答：中心 x 坐标严格最小的编号是哪一个？",
+      "scope": "只统计编号 G01–G64 的 64 个主体；行号由左侧 R1–R8 行标确定，列号由顶部 C1–C8 列标确定。",
+      "comparison_criteria": "第一步＝行号与颜色的交集筛选；第二步＝在候选集合中取中心 x 严格最小者，中心 x 相同判并列。",
+      "coordinate_tolerance": "±2 px（同行不同列，中心 x 相隔 190 px）",
+      "answer_visibility_basis": "第 3 行由 R3 行标确定；绿色＝#16A34A；每个主体中心由其外接矩形直接量出。"
+    },
+    {
+      "q_id": "Q22",
+      "image": "grid-scene.png",
+      "type": "distance",
+      "steps": 1,
+      "question": "以 G13 的主体中心为基准，G16、G24、G09、G17 这四个主体中，中心到 G13 中心距离最近的是哪一个？",
+      "scope": "只统计编号 G01–G64 的 64 个主体。",
+      "comparison_criteria": "距离＝两主体中心的欧氏距离 sqrt(Δx²+Δy²)，单位像素；取唯一最小值。",
+      "coordinate_tolerance": "±2 px",
+      "answer_visibility_basis": "四个候选与 G13 的位置都能在可见网格图上量出；格点间距为水平 190 px、竖直 178 px，最近与次近相差 25.39 px，大于容差，排序不会因容差改变。"
+    },
+    {
+      "q_id": "Q23",
+      "image": "grid-scene.png",
+      "type": "distance",
+      "steps": 2,
+      "question": "先从 G01–G64 中选出所有形状＝圆环的主体，再在这些圆环主体中回答：中心到 G37 中心距离最近（不含 G37 自身）的编号是哪一个？",
+      "scope": "只统计编号 G01–G64 的 64 个主体。",
+      "comparison_criteria": "第一步＝形状筛选（16 个圆环）；第二步＝在这些圆环主体中取到 G37 中心欧氏距离 sqrt(Δx²+Δy²) 的唯一最小值。",
+      "coordinate_tolerance": "±2 px",
+      "answer_visibility_basis": "圆环＝有内圈的空心环（外径:内径＝2:1），与实心圆、方、圆角方在可见图上均可区分；16 个圆环的编号都能读出。"
+    },
+    {
+      "q_id": "Q24",
+      "image": "grid-scene.png",
+      "type": "ordering",
+      "steps": 1,
+      "question": "把 C7 列的 8 个主体按中心 y 坐标从小到大排序，写出排在最前面的 3 个编号。",
+      "scope": "只统计编号 G01–G64 的 64 个主体；C7 列＝第 7 列，即 G07、G15、G23、G31、G39、G47、G55、G63。",
+      "comparison_criteria": "按中心 y 严格升序排序。同一列内 8 个主体的中心 y 互不相同，因此排序结果唯一，不需要并列消解。",
+      "coordinate_tolerance": "±2 px（相邻行中心 y 相差 178 px）",
+      "answer_visibility_basis": "第 7 列由顶部 C7 列标确定，8 个主体及其编号都在可见图上。"
+    },
+    {
+      "q_id": "Q25",
+      "image": "grid-scene.png",
+      "type": "ordering",
+      "steps": 2,
+      "question": "先从 G01–G64 中选出所有尺寸＝64 的主体，再按“中心 x 升序；中心 x 相同则中心 y 升序；仍相同则编号升序”的规则排序，回答最前面的 3 个编号。",
+      "scope": "只统计编号 G01–G64 的 64 个主体。",
+      "comparison_criteria": "排序键＝(中心 x, 中心 y, 编号) 的字典序。三级并列全部被消除，同一列内用 y 区分、同一格内不可能重复，因此顺序是全序、唯一。",
+      "coordinate_tolerance": "±2 px（列间 190 px、行间 178 px）",
+      "answer_visibility_basis": "尺寸 64 的主体可由可见外接尺寸直接量出；中心由外接矩形得到。"
+    },
+    {
+      "q_id": "Q26",
+      "image": "grid-scene.png",
+      "type": "bounding_box",
+      "steps": 1,
+      "question": "写出 G23 主体外接矩形的四个边界坐标 x_min、y_min、x_max、y_max（单位像素）。圆环取外径的外接矩形；不含其下方的编号文字。",
+      "scope": "只统计编号 G01–G64 的 64 个主体；边界指主体本身，不含编号标签 G23。",
+      "comparison_criteria": "外接矩形＝主体在图上的最小轴对齐外框，x_min 为左边界、y_min 为上边界、x_max 为右边界、y_max 为下边界；等价于 center ± 尺寸/2。",
+      "coordinate_tolerance": "±2 px（列距 190 px、行距 178 px，尺寸档差 16 px）",
+      "answer_visibility_basis": "G23 的主体与编号都在可见图上；48/64/80 三档在 1600×1600 原图上可直接量出，档间差 16 px 大于容差。"
+    },
+    {
+      "q_id": "Q27",
+      "image": "grid-scene.png",
+      "type": "bounding_box",
+      "steps": 2,
+      "question": "先从 G01–G64 中选出所有尺寸＝80 的主体，再求这些主体外接矩形的并集外接框，写出它的 x_min、y_min、x_max、y_max。",
+      "scope": "只统计编号 G01–G64 的 64 个主体。",
+      "comparison_criteria": "并集外接框＝该子集所有外接矩形的 min(x_min)、min(y_min)、max(x_max)、max(y_max)。",
+      "coordinate_tolerance": "±2 px",
+      "answer_visibility_basis": "80 是三档中最大的一档，可直接量出；行列位置由 C/R 标确定。"
+    },
+    {
+      "q_id": "Q28",
+      "image": "grid-scene.png",
+      "type": "color_counting",
+      "steps": 2,
+      "question": "在 G01–G64 中，颜色＝蓝的主体共有多少个？其中尺寸＝48 的有多少个？",
+      "scope": "只统计编号 G01–G64 的 64 个主体；标题、图例、行列标、页脚文字都不计入。",
+      "comparison_criteria": "第一步＝对固定的 64 个主体按颜色计数；第二步＝在蓝色子集内按尺寸计数。",
+      "coordinate_tolerance": "±0 个",
+      "answer_visibility_basis": "蓝色＝#2563EB，是四色中唯一的冷色高饱和蓝，与橙/绿/紫互不混淆。"
+    },
+    {
+      "q_id": "Q29",
+      "image": "grid-scene.png",
+      "type": "shape_counting",
+      "steps": 2,
+      "question": "在 G01–G64 中，形状＝圆（实心圆盘）的主体共有多少个？其中主体中心 x 大于 900 像素的有多少个？",
+      "scope": "只统计编号 G01–G64 的 64 个主体；x 以图片左上角为原点、向右为正。",
+      "comparison_criteria": "第一步＝对固定 64 个主体按形状计数；第二步＝在圆中筛 center.x > 900 再计数。阈值 900 落在第 5 列中心 815 与第 6 列中心 1005 之间，不与任何主体中心重合。",
+      "coordinate_tolerance": "±0 个；x 阈值与最近列中心的距离为 85 px",
+      "answer_visibility_basis": "圆盘＝没有内圈的实心圆；各列中心 x 依次为 245、435、625、815、1005、1195、1385、1575。"
+    },
+    {
+      "q_id": "Q30",
+      "image": "occlusion.png",
+      "type": "occlusion_visible_count",
+      "steps": 1,
+      "question": "在这张遮挡图里，完全可见（没有任何一部分被深色遮挡物压住）的主体共有几个？它们的编号是什么？",
+      "scope": "只统计图中可见的主体；遮挡物后方的内容不可见，不参与统计，也不作为任何答案的依据。",
+      "comparison_criteria": "“完全可见”＝主体的全部像素都落在浅色工作区内；只要有任何一部分被遮挡物压住，就不算完全可见。",
+      "coordinate_tolerance": "±0 个",
+      "answer_visibility_basis": "V1–V4 四个主体的完整轮廓与其编号直接印在可见图上；P1 的右侧有明显的遮挡切口，因此它必须被排除。判断不需要任何隐藏内容。"
+    },
+    {
+      "q_id": "Q31",
+      "image": "occlusion.png",
+      "type": "occlusion_information_insufficient",
+      "steps": 1,
+      "question": "遮挡物 1（画面中部偏右的深色矩形）后面有几个图形？如果无法从这张图确定，请直接回答“无法确定”。",
+      "scope": "只允许依据 occlusion.png 的最终可见像素作答。",
+      "comparison_criteria": "遮挡物是纯不透明矩形，覆盖区域内没有任何残影、半透明、虚线或轮廓泄露。",
+      "coordinate_tolerance": "不适用",
+      "answer_visibility_basis": "遮挡物覆盖区域内的像素不含任何被遮挡主体的信息。"
+    }
+  ]
+}

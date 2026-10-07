@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "run_id": "20261004-182918",
+  "generated_at": "2026-10-05T02:48:09+08:00",
+  "source_input": "tasks/A24-release-plan-capstone/inputs/release.json",
+  "single_source_of_truth": {
+    "scheduler": "tmp/20261004-182918/A24/plan.py",
+    "figure_builders": [
+      "tmp/20261004-182918/A24/theme.py",
+      "tmp/20261004-182918/A24/build_a24.py"
+    ],
+    "rule": "all three figures read the same PLAN dict that produced schedule.json, so no value can differ between figures; no figure re-derives or re-types a number"
+  },
+  "figures": [
+    {
+      "file": "execution-board.png",
+      "dsl": "execution-board.snapshot",
+      "width": 1920,
+      "height": 1080,
+      "purpose": "团队泳道执行图",
+      "input_fields_used": [
+        "start / deadline -> 时间轴 09:00–16:00（单一 3.71 px/分 线性刻度）",
+        "teams -> 两条泳道 design / engineering 及各自的负载、空档、收工时刻",
+        "tasks[].id -> 任务块内的等宽编号与底部依赖索引的键",
+        "tasks[].label -> 块上方任务名与（宽块时）块内任务名",
+        "tasks[].minutes -> 块宽（真实时长）与块内时长、左侧通道负载",
+        "tasks[].teams -> 块填充色（design 靛 / engineering 青）与通道归属",
+        "tasks[].depends -> 块内「前置 …」+ 底部 12 行依赖索引（16 条边）",
+        "risks[].id -> 底部图例中的空档/缓冲说明与 K 编号不重复呈现（风险在简报与行动卡）"
+      ],
+      "derived_fields_used": [
+        "schedule.summary.makespan_clock -> 头部「计划完成 13:20」与绿色完成线",
+        "schedule.summary.buffer_to_deadline_minutes -> 头部「距 16:00 截止 160 分」与绿色剩余缓冲区",
+        "schedule.teams[].idle_gaps -> 两处 5 分空档色块及其「等 R05 / 等 R09」说明",
+        "schedule.summary.critical_path_minutes_ignoring_resources -> 头部「关键路径·无资源 255 分」",
+        "schedule.summary.schedule_critical_chain -> 洋红描边「决定链 6 步」与右上角链条",
+        "schedule-audit.search_evidence -> 排程依据中的「穷举 1570 节点 + 20 万次随机对照」"
+      ],
+      "not_shown": [
+        "risks 的影响与对策全文（放在决策简报与行动卡，避免三图重复同一段文字）",
+        "任务的中文描述性解释（输入里也没有）"
+      ]
+    },
+    {
+      "file": "decision-brief.png",
+      "dsl": "decision-brief.snapshot",
+      "width": 1200,
+      "height": 1600,
+      "purpose": "决策简报",
+      "input_fields_used": [
+        "start / deadline -> 副标题「2026-11-07 · 09:00 开工 · 16:00 截止」",
+        "teams -> 每个依赖节点右侧的「设计 / 工程」归属与 6 个 KPI 说明中的通道拆分",
+        "tasks[].id / label / minutes -> 依赖概览 12 个节点（编号 + 任务名 + 时长 + 团队）",
+        "tasks[].depends -> 依赖概览的 16 条连线与「按依赖深度分 6 层」的分层",
+        "risks[].id / task / impact / mitigation -> 三张风险卡，含 K1·R02 09:00–09:20 等排程时刻"
+      ],
+      "derived_fields_used": [
+        "schedule.summary.total_work_minutes -> KPI「总工时 485 分」",
+        "schedule.summary.critical_path_minutes_ignoring_resources -> KPI「关键路径 255 分」",
+        "schedule.summary.workload_lower_bound_minutes -> KPI「工作量下界 243 分」",
+        "schedule.summary.makespan_clock -> KPI「完成时间 13:20」与标题区「260 分 / 计划完成」",
+        "schedule.summary.buffer_to_deadline_minutes -> KPI「剩余缓冲 160 分」",
+        "schedule.teams[].load_minutes -> 说明行「总工时 = 设计 255 + 工程 230」",
+        "schedule.teams[].idle_gaps -> 排程依据 ③ 的两处 5 分空档及其等待对象",
+        "schedule.summary.provably_optimal / search_evidence -> KPI「最优性 已证明」与依据 ④",
+        "schedule.summary.schedule_critical_chain -> 依赖节点上的洋红描边"
+      ],
+      "not_shown": [
+        "逐分钟的甘特几何（横轴时间几何属于 execution-board，本页只给时刻）"
+      ]
+    },
+    {
+      "file": "action-card.png",
+      "dsl": "action-card.snapshot",
+      "width": 720,
+      "height": 1280,
+      "purpose": "手机行动卡",
+      "input_fields_used": [
+        "start / deadline -> 顶部「09:00 → 16:00」",
+        "tasks[].id -> 每行等宽编号 chip",
+        "tasks[].label -> 每行任务名",
+        "tasks[].minutes -> 每行时长列",
+        "tasks[].teams -> 每行团队列与圆点颜色（决定该任务实际占用哪条通道）",
+        "tasks[].depends -> 只以「同一时刻按编号先后」的排序与决定链标记间接体现",
+        "risks[].id / impact / mitigation -> 底部三条风险提醒与行内 K1/K2/K3 徽标"
+      ],
+      "derived_fields_used": [
+        "schedule.tasks[].start_clock / end_clock -> 每行「起–止」列（按时间序排列）",
+        "schedule.tasks[].assigned_team -> 团队列与圆点颜色",
+        "schedule.summary.makespan_clock / buffer_to_deadline_minutes -> 顶部三块摘要与页脚",
+        "schedule.summary.schedule_critical_chain -> 行左侧洋红标记"
+      ],
+      "not_shown": [
+        "依赖连线、关键路径时长、下界推导（这些在决策简报与执行看板）"
+      ]
+    }
+  ],
+  "shared_visual_system": [
+    {
+      "element": "品牌 叠光 · 发布演练",
+      "rule": "三张图页眉同一字标、同一色带"
+    },
+    {
+      "element": "design = #4338CA 靛 / engineering = #0E7490 青",
+      "rule": "执行图块色、简报节点色、行动卡 chip 与圆点"
+    },
+    {
+      "element": "决定链 = #BE185D 洋红",
+      "rule": "执行图块描边与依赖索引、简报节点描边、行动卡行左标记"
+    },
+    {
+      "element": "空档 = #B45309 琥珀 / 缓冲 = #047857 绿",
+      "rule": "执行图空档带与缓冲区、简报 KPI、行动卡摘要"
+    },
+    {
+      "element": "时刻格式 HH:MM 与「N 分」",
+      "rule": "三张图完全一致，均由 BY_ID[].start_clock/end_clock 生成"
+    },
+    {
+      "element": "字号下限 20 / 24 / 20",
+      "rule": "横屏正文 20px、竖页正文 24px、手机正文 20px"
+    }
+  ],
+  "values_shared_by_all_three_figures": {
+    "total_work_minutes": 485,
+    "makespan_minutes": 260,
+    "makespan_clock": "13:20",
+    "buffer_to_deadline_minutes": 160,
+    "critical_path_minutes": 255,
+    "workload_lower_bound_minutes": 243,
+    "design_load_minutes": 255,
+    "engineering_load_minutes": 230,
+    "design_idle_minutes": 5,
+    "engineering_idle_minutes": 5,
+    "schedule_critical_chain": [
+      "R01",
+      "R05",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "risk_task_windows": {
+      "K1": "R02 09:00–09:20",
+      "K2": "R05 10:00–10:30",
+      "K3": "R10 12:25–13:00"
+    }
+  },
+  "per_task_clock_ranges_used_by_all_three": {
+    "R01": "09:00–09:25",
+    "R02": "09:00–09:20",
+    "R03": "09:20–10:00",
+    "R04": "09:25–10:25",
+    "R05": "10:00–10:30",
+    "R06": "10:30–11:15",
+    "R07": "10:30–11:40",
+    "R08": "11:15–12:20",
+    "R09": "11:40–12:25",
+    "R10": "12:25–13:00",
+    "R11": "12:25–12:55",
+    "R12": "13:00–13:20"
+  },
+  "consistency_assertions": [
+    {
+      "assertion": "三张图的 12 个任务起止完全相同",
+      "check": "board/brief/card 的时刻都由 schedule.json 的 start_clock/end_clock 生成",
+      "result": "pass"
+    },
+    {
+      "assertion": "三张图的总工时 / 完成时间 / 剩余缓冲一致",
+      "check": "485 分 / 13:20 / 160 分，均取自 schedule.summary",
+      "result": "pass"
+    },
+    {
+      "assertion": "两处 5 分空档在执行图与简报中描述一致",
+      "check": "design 10:25–10:30 等 R05；engineering 12:20–12:25 等 R09",
+      "result": "pass"
+    },
+    {
+      "assertion": "风险 K1/K2/K3 绑定的任务与时刻在三张图中不矛盾",
+      "check": "K1→R02 09:00–09:20、K2→R05 10:00–10:30、K3→R10 12:25–13:00，简报风险卡与行动卡逐字一致",
+      "result": "pass"
+    },
+    {
+      "assertion": "没有把 255 分下界当成排程结果",
+      "check": "执行图与简报都把 255 标注为「关键路径·无资源」并单列 243 分工作量下界，实际排程统一写 260 分 / 13:20",
+      "result": "pass"
+    }
+  ],
+  "field_coverage_checklist": {
+    "tasks[].id": [
+      "execution-board.png",
+      "decision-brief.png",
+      "action-card.png"
+    ],
+    "tasks[].label": [
+      "execution-board.png",
+      "decision-brief.png",
+      "action-card.png"
+    ],
+    "tasks[].minutes": [
+      "execution-board.png",
+      "decision-brief.png",
+      "action-card.png"
+    ],
+    "tasks[].teams": [
+      "execution-board.png",
+      "decision-brief.png",
+      "action-card.png"
+    ],
+    "tasks[].depends": [
+      "execution-board.png",
+      "decision-brief.png"
+    ],
+    "risks": [
+      "decision-brief.png",
+      "action-card.png"
+    ],
+    "start": [
+      "execution-board.png",
+      "decision-brief.png",
+      "action-card.png"
+    ],
+    "deadline": [
+      "execution-board.png",
+      "decision-brief.png",
+      "action-card.png"
+    ],
+    "teams(top level)": [
+      "execution-board.png",
+      "decision-brief.png",
+      "action-card.png"
+    ]
+  }
+}

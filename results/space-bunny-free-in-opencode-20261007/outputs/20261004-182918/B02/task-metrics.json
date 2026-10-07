@@ -1,0 +1,589 @@
+{
+  "schema_version": 2,
+  "task_id": "B02",
+  "run_id": "20261004-182918",
+  "task_round": "B02 单轮执行（分两次会话完成，中途被中断后接续）",
+  "status": "completed",
+  "stop_reason": "需求满足并完成实际视觉自检：10 件独立主作品全部由服务真实渲染，逐张打开实际 PNG 查看，3 处基于看图发现的真实碰撞已修复并复看，全部交付文档与报告已写出。",
+  "output_dir": "outputs/20261004-182918/B02/",
+  "temp_dir": "tmp/20261004-182918/B02/",
+  "output_dir_absolute": "D:\\mine\\workspace\\snapshot-llm-test\\results\\space-bunny-free-in-opencode-20261004\\outputs\\20261004-182918\\B02",
+  "temp_dir_absolute": "D:\\mine\\workspace\\snapshot-llm-test\\results\\space-bunny-free-in-opencode-20261004\\tmp\\20261004-182918\\B02",
+  "asset_policy": "dsl_primary_with_supporting_assets（实际未使用任何辅助素材，10 件全部纯 DSL，未使用任何 <Image>）",
+  "timings": {
+    "started_at": "2026-10-05T05:15:44.910+08:00",
+    "ended_at": "2026-10-05T10:22:00.551762+08:00",
+    "elapsed_seconds": 18375.6,
+    "elapsed_note": "含两次会话之间的中断间隔，因此不等于任何一次的实际工作时间。",
+    "first_usable_image_at": "2026-10-05T05:17:38.625+08:00",
+    "first_usable_image_seconds": 113.7,
+    "session_1": {
+      "window": "2026-10-05T05:15:44+08:00 → 2026-10-05T05:59:38+08:00",
+      "seconds": 2633.1,
+      "did": "文档与字体抓取、105 张 DSL 语义探针、case-01..10 的渲染与首轮看图、8 条迭代记录"
+    },
+    "session_2": {
+      "window": "2026-10-05T08:38:00+08:00 → 2026-10-05T10:22:00.551762+08:00",
+      "seconds": 6240.6,
+      "did": "重新打开 10 张 PNG 做最终审查、修复 case-05/06/09 三处碰撞并复看、写出全部交付文档与报告"
+    },
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_wait_note": "未请求也未收到任何交互式用户反馈；视觉迭代全部由模型自看渲染结果驱动。",
+    "rate_limit_wait_seconds": 0,
+    "rate_limit_wait_note": "全程未遇到 429，未按 Retry-After 等待。",
+    "queue_wait_seconds": null,
+    "queue_wait_note": "服务在 Server-Timing 中给出 render / total 段，但全部 96 次渲染响应都没有报告 queue 段，因此排队时间不可测，记为 null 而非 0。",
+    "request_duration_sum_seconds": 157.99,
+    "request_duration_note": "102 次请求的服务端+网络耗时之和；与墙钟时间不可相加，因为大部分时间花在写 DSL 与看图上。",
+    "server_timing_source": "HTTP 响应头 Server-Timing，例如 render;dur=595.1, total;dur=607.3"
+  },
+  "counts": {
+    "total_http_requests": 102,
+    "snapshot_requests": 96,
+    "successful_snapshot_requests": 79,
+    "failed_snapshot_requests": 17,
+    "retry_requests": 0,
+    "other_service_requests": 6,
+    "document_requests": 5,
+    "font_list_requests": 1,
+    "dsl_versions": 19,
+    "dsl_version_files": [
+      "case-01.v01.snapshot",
+      "case-01.v02.snapshot",
+      "case-02.v01.snapshot",
+      "case-02.v02.snapshot",
+      "case-03.v01.snapshot",
+      "case-03.v02.snapshot",
+      "case-04.v01.snapshot",
+      "case-04.v03.snapshot",
+      "case-05.v01.snapshot",
+      "case-05.v02.snapshot",
+      "case-05.v03.snapshot",
+      "case-06.v01.snapshot",
+      "case-06.v02.snapshot",
+      "case-06.v03.snapshot",
+      "case-07.v01.snapshot",
+      "case-07.v03.snapshot",
+      "case-08.v01.snapshot",
+      "case-08.v03.snapshot",
+      "case-09.v02.snapshot"
+    ],
+    "image_views": 20,
+    "completed_visual_iterations": 12,
+    "incomplete_visual_iterations": 8,
+    "baseline_views": 8,
+    "other_tool_calls": 18,
+    "failed_tool_calls": 4,
+    "final_case_count": 10,
+    "zoom_checks": 3,
+    "probe_renders": 50,
+    "render_request_attribution": {
+      "note": "每个渲染请求只归一类，无重复计数；已用脚本按 outputs/.../case-NN/final.png 与 probes/ 两个互斥判据逐条核对。注意 probes/ 下有 6 个名为 case-02-bs-* 的二分定位图，它们属于共享探针范围而非 case-02 的交付渲染。",
+      "case_iteration_renders": 29,
+      "shared_probe_renders": 50,
+      "failed_renders_archived": 17,
+      "total": 96
+    }
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "image_input_usage": null,
+    "image_input_unit": null,
+    "cost": null,
+    "currency": null,
+    "billing_scope": null,
+    "source": "open-snapshot 服务未暴露任何 token / 图像用量 / 计费指标端点；本次运行的聊天平台也未回报逐请求 token 或费用。",
+    "unknown_fields_reason": "没有任何权威计量来源可得。所有字段留 null，未按 DSL 字符数、请求次数或余额估算。"
+  },
+  "logs": {
+    "requests": "tmp/20261004-182918/B02/requests.jsonl（102 行）",
+    "iterations": "tmp/20261004-182918/B02/iterations.jsonl（20 行）",
+    "tool_usage": "tmp/20261004-182918/B02/tool-usage.jsonl（18 行）",
+    "failure_responses_kept": "tmp/20261004-182918/B02/responses/（17 个错误响应原文）",
+    "dsl_drafts_kept": "tmp/20261004-182918/B02/drafts/（19 个版本快照）",
+    "probe_renders_kept": "tmp/20261004-182918/B02/probes/（105 个探针图与 DSL）",
+    "zoom_crops_kept": "tmp/20261004-182918/B02/crops/（3 张 3 倍核对图）",
+    "docs_kept": "tmp/20261004-182918/B02/docs/（ai-guide.md / openapi.yaml / index.html 等）"
+  },
+  "shared_preparation": {
+    "scope": "服务文档与字体查询 + 105 张 DSL 语义探针，均不归属任何单个用例",
+    "document_requests": [
+      "B02-req-001 (ai-guide.md)",
+      "B02-req-002 (openapi.yaml)",
+      "B02-req-003 (snapshot.muedsa.com/)",
+      "B02-req-004 (404，未采用)",
+      "B02-req-005 (widgets/layout/container/)"
+    ],
+    "font_list_request": "B02-req-006 (GET /fonts)",
+    "probe_renders": 51,
+    "probe_purpose": "实测确认 8 位 hex 读法、boxShadow alpha、borderWidth>borderRadius 导致的 500、旋转矩阵写法、零尺寸、阴影取整等边界，结论沉淀在 tmp/20261004-182918/B02/b02lib.py 的 docstring 里。",
+    "note": "这些探针请求不计入任何 case 的用例指标，在总计数中单列。"
+  },
+  "case_metrics": [
+    {
+      "case_id": "case-01",
+      "title": "门头招牌",
+      "dimensions": [
+        2400,
+        900
+      ],
+      "png_bytes": 147813,
+      "snapshot_bytes": 18653,
+      "render_requests": 3,
+      "successful_render_requests": 3,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 9.12,
+      "first_render_at": "2026-10-05T05:20:50.255+08:00",
+      "last_render_at": "2026-10-05T05:24:12.252+08:00",
+      "dsl_versions": [
+        "case-01.v01.snapshot",
+        "case-01.v02.snapshot"
+      ],
+      "image_views": 2,
+      "completed_visual_iterations": 1,
+      "iteration_ids": [
+        "B02-c01-v02",
+        "B02-c01-v01"
+      ],
+      "render_request_ids": [
+        "B02-req-052",
+        "B02-req-053",
+        "B02-req-054"
+      ],
+      "leaf_elements": 245,
+      "artifacts": [
+        "case-01/final.png",
+        "case-01/final.snapshot",
+        "case-01/case.md"
+      ]
+    },
+    {
+      "case_id": "case-02",
+      "title": "会员借阅卡（正反面）",
+      "dimensions": [
+        2160,
+        600
+      ],
+      "png_bytes": 178672,
+      "snapshot_bytes": 32812,
+      "render_requests": 4,
+      "successful_render_requests": 4,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 8.37,
+      "first_render_at": "2026-10-05T05:30:04.113+08:00",
+      "last_render_at": "2026-10-05T05:34:01.806+08:00",
+      "dsl_versions": [
+        "case-02.v01.snapshot",
+        "case-02.v02.snapshot"
+      ],
+      "image_views": 3,
+      "completed_visual_iterations": 2,
+      "iteration_ids": [
+        "B02-c02-v02",
+        "B02-c02-v01",
+        "B02-c02-v03"
+      ],
+      "render_request_ids": [
+        "B02-req-076",
+        "B02-req-078",
+        "B02-req-079",
+        "B02-req-080"
+      ],
+      "leaf_elements": 429,
+      "artifacts": [
+        "case-02/final.png",
+        "case-02/final.snapshot",
+        "case-02/case.md"
+      ]
+    },
+    {
+      "case_id": "case-03",
+      "title": "工具墙抽屉标签条",
+      "dimensions": [
+        1800,
+        360
+      ],
+      "png_bytes": 92817,
+      "snapshot_bytes": 21917,
+      "render_requests": 2,
+      "successful_render_requests": 2,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 4.77,
+      "first_render_at": "2026-10-05T05:38:13.472+08:00",
+      "last_render_at": "2026-10-05T05:39:03.796+08:00",
+      "dsl_versions": [
+        "case-03.v01.snapshot",
+        "case-03.v02.snapshot"
+      ],
+      "image_views": 2,
+      "completed_visual_iterations": 1,
+      "iteration_ids": [
+        "B02-c03-v01",
+        "B02-c03-v02"
+      ],
+      "render_request_ids": [
+        "B02-req-081",
+        "B02-req-082"
+      ],
+      "leaf_elements": 274,
+      "artifacts": [
+        "case-03/final.png",
+        "case-03/final.snapshot",
+        "case-03/case.md"
+      ]
+    },
+    {
+      "case_id": "case-04",
+      "title": "手机端「借一件」界面",
+      "dimensions": [
+        720,
+        1520
+      ],
+      "png_bytes": 132993,
+      "snapshot_bytes": 29752,
+      "render_requests": 3,
+      "successful_render_requests": 3,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 7.05,
+      "first_render_at": "2026-10-05T05:40:44.047+08:00",
+      "last_render_at": "2026-10-05T05:43:02.800+08:00",
+      "dsl_versions": [
+        "case-04.v01.snapshot",
+        "case-04.v03.snapshot"
+      ],
+      "image_views": 2,
+      "completed_visual_iterations": 1,
+      "iteration_ids": [
+        "B02-c04-v01",
+        "B02-c04-v02"
+      ],
+      "render_request_ids": [
+        "B02-req-083",
+        "B02-req-084",
+        "B02-req-085"
+      ],
+      "leaf_elements": 359,
+      "artifacts": [
+        "case-04/final.png",
+        "case-04/final.snapshot",
+        "case-04/case.md"
+      ]
+    },
+    {
+      "case_id": "case-05",
+      "title": "逾期提醒卡（纸质，夹在工具袋里）",
+      "dimensions": [
+        1200,
+        420
+      ],
+      "png_bytes": 85512,
+      "snapshot_bytes": 15604,
+      "render_requests": 3,
+      "successful_render_requests": 3,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 9.77,
+      "first_render_at": "2026-10-05T05:44:31.418+08:00",
+      "last_render_at": "2026-10-05T09:57:49.850+08:00",
+      "dsl_versions": [
+        "case-05.v01.snapshot",
+        "case-05.v02.snapshot"
+      ],
+      "image_views": 2,
+      "completed_visual_iterations": 1,
+      "iteration_ids": [
+        "B02-c05-v01",
+        "B02-c05-v02"
+      ],
+      "render_request_ids": [
+        "B02-req-086",
+        "B02-req-087",
+        "B02-req-101"
+      ],
+      "leaf_elements": 189,
+      "artifacts": [
+        "case-05/final.png",
+        "case-05/final.snapshot",
+        "case-05/case.md"
+      ]
+    },
+    {
+      "case_id": "case-06",
+      "title": "修理夜工作台工作单",
+      "dimensions": [
+        1754,
+        1240
+      ],
+      "png_bytes": 211341,
+      "snapshot_bytes": 44322,
+      "render_requests": 4,
+      "successful_render_requests": 4,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 13.18,
+      "first_render_at": "2026-10-05T05:47:54.988+08:00",
+      "last_render_at": "2026-10-05T09:57:52.735+08:00",
+      "dsl_versions": [
+        "case-06.v01.snapshot",
+        "case-06.v02.snapshot"
+      ],
+      "image_views": 2,
+      "completed_visual_iterations": 1,
+      "iteration_ids": [
+        "B02-c06-v01",
+        "B02-c06-v02"
+      ],
+      "render_request_ids": [
+        "B02-req-088",
+        "B02-req-089",
+        "B02-req-090",
+        "B02-req-102"
+      ],
+      "leaf_elements": 555,
+      "artifacts": [
+        "case-06/final.png",
+        "case-06/final.snapshot",
+        "case-06/case.md"
+      ]
+    },
+    {
+      "case_id": "case-07",
+      "title": "工具捐赠箱面贴",
+      "dimensions": [
+        800,
+        1200
+      ],
+      "png_bytes": 130145,
+      "snapshot_bytes": 18601,
+      "render_requests": 3,
+      "successful_render_requests": 3,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 6.74,
+      "first_render_at": "2026-10-05T05:52:33.818+08:00",
+      "last_render_at": "2026-10-05T05:56:46.453+08:00",
+      "dsl_versions": [
+        "case-07.v01.snapshot",
+        "case-07.v03.snapshot"
+      ],
+      "image_views": 2,
+      "completed_visual_iterations": 1,
+      "iteration_ids": [
+        "B02-c07-v01",
+        "B02-c07-v03"
+      ],
+      "render_request_ids": [
+        "B02-req-091",
+        "B02-req-093",
+        "B02-req-095"
+      ],
+      "leaf_elements": 228,
+      "artifacts": [
+        "case-07/final.png",
+        "case-07/final.snapshot",
+        "case-07/case.md"
+      ]
+    },
+    {
+      "case_id": "case-08",
+      "title": "社区公告栏活动海报",
+      "dimensions": [
+        1400,
+        1980
+      ],
+      "png_bytes": 239262,
+      "snapshot_bytes": 36825,
+      "render_requests": 3,
+      "successful_render_requests": 3,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 8.06,
+      "first_render_at": "2026-10-05T05:52:49.861+08:00",
+      "last_render_at": "2026-10-05T05:56:49.359+08:00",
+      "dsl_versions": [
+        "case-08.v01.snapshot",
+        "case-08.v03.snapshot"
+      ],
+      "image_views": 2,
+      "completed_visual_iterations": 1,
+      "iteration_ids": [
+        "B02-c08-v01",
+        "B02-c08-v03"
+      ],
+      "render_request_ids": [
+        "B02-req-092",
+        "B02-req-094",
+        "B02-req-096"
+      ],
+      "leaf_elements": 429,
+      "artifacts": [
+        "case-08/final.png",
+        "case-08/final.snapshot",
+        "case-08/case.md"
+      ]
+    },
+    {
+      "case_id": "case-09",
+      "title": "借还点导视牌",
+      "dimensions": [
+        1600,
+        600
+      ],
+      "png_bytes": 124516,
+      "snapshot_bytes": 25971,
+      "render_requests": 3,
+      "successful_render_requests": 3,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 5.46,
+      "first_render_at": "2026-10-05T05:59:11.141+08:00",
+      "last_render_at": "2026-10-05T09:57:26.250+08:00",
+      "dsl_versions": [],
+      "image_views": 0,
+      "completed_visual_iterations": 0,
+      "iteration_ids": [],
+      "render_request_ids": [
+        "B02-req-097",
+        "B02-req-099",
+        "B02-req-100"
+      ],
+      "leaf_elements": 310,
+      "artifacts": [
+        "case-09/final.png",
+        "case-09/final.snapshot",
+        "case-09/case.md"
+      ]
+    },
+    {
+      "case_id": "case-10",
+      "title": "三折页《借还须知》",
+      "dimensions": [
+        1654,
+        1169
+      ],
+      "png_bytes": 279680,
+      "snapshot_bytes": 43708,
+      "render_requests": 1,
+      "successful_render_requests": 1,
+      "failed_render_requests": 0,
+      "request_duration_sum_seconds": 3.28,
+      "first_render_at": "2026-10-05T05:59:14.200+08:00",
+      "last_render_at": "2026-10-05T05:59:14.200+08:00",
+      "dsl_versions": [],
+      "image_views": 0,
+      "completed_visual_iterations": 0,
+      "iteration_ids": [],
+      "render_request_ids": [
+        "B02-req-098"
+      ],
+      "leaf_elements": 566,
+      "artifacts": [
+        "case-10/final.png",
+        "case-10/final.snapshot",
+        "case-10/case.md"
+      ]
+    }
+  ],
+  "tool_usage_summary": [
+    {
+      "tool": "shell + python",
+      "calls": 13,
+      "purpose": "生成脚本运行、断言求解、逐字节比对、DSL 能力统计、链接校验、交付文档生成、wrapup 调用、交付前验收审计"
+    },
+    {
+      "tool": "read(image)",
+      "calls": 18,
+      "purpose": "逐张打开 10 张最终 PNG 完整查看 + 3 张修复前 / 2 张修复后的3 倍局部放大核对图"
+    },
+    {
+      "tool": "crop.py (PIL)",
+      "calls": 9,
+      "purpose": "局部放大核对；其中 4 次因坐标格式错误失败，5 次成功"
+    },
+    {
+      "tool": "http.client (via snapkit)",
+      "calls": 102,
+      "purpose": "文档/字体抓取与 96 次渲染（同一 HTTP 事件已在 requests.jsonl 记录，不重复计入请求消耗）"
+    }
+  ],
+  "outputs": [
+    "B02/case-01/case.md",
+    "B02/case-01/final.png",
+    "B02/case-01/final.snapshot",
+    "B02/case-02/case.md",
+    "B02/case-02/final.png",
+    "B02/case-02/final.snapshot",
+    "B02/case-03/case.md",
+    "B02/case-03/final.png",
+    "B02/case-03/final.snapshot",
+    "B02/case-04/case.md",
+    "B02/case-04/final.png",
+    "B02/case-04/final.snapshot",
+    "B02/case-05/case.md",
+    "B02/case-05/final.png",
+    "B02/case-05/final.snapshot",
+    "B02/case-06/case.md",
+    "B02/case-06/final.png",
+    "B02/case-06/final.snapshot",
+    "B02/case-07/case.md",
+    "B02/case-07/final.png",
+    "B02/case-07/final.snapshot",
+    "B02/case-08/case.md",
+    "B02/case-08/final.png",
+    "B02/case-08/final.snapshot",
+    "B02/case-09/case.md",
+    "B02/case-09/final.png",
+    "B02/case-09/final.snapshot",
+    "B02/case-10/case.md",
+    "B02/case-10/final.png",
+    "B02/case-10/final.snapshot",
+    "B02/design-system.json",
+    "B02/gallery.html",
+    "B02/portfolio.json",
+    "B02/portfolio.md",
+    "B02/project-brief.md",
+    "B02/snapshot-usage.md",
+    "B02/task-metrics.json",
+    "B02/touchpoint-map.json"
+  ],
+  "rounds": [
+    {
+      "round": "round-01",
+      "window": "2026-10-05T05:15:44+08:00 → 05:59:38+08:00",
+      "work": "文档与字体、DSL 探针、10 件渲染、8 条迭代记录",
+      "interrupted": true,
+      "interruption_note": "在写出交付文档（case.md / portfolio / 报告）之前被中断；临时目录与输出目录产物均完整保留。"
+    },
+    {
+      "round": "round-02（接续）",
+      "window": "2026-10-05T08:38:00+08:00 → 2026-10-05T10:22:00.551762+08:00",
+      "work": "重新打开 10 张 PNG 做最终审查 → 用 crop.py 3 倍放大定位 3 处真实碰撞 → 改脚本重渲染 case-05/06/09 → 复看通过 → 写出全部交付文档与报告",
+      "interrupted": false,
+      "interruption_note": "未重复劳动：直接复用 round-01 已渲染的 PNG、已归档的 19 个 DSL 草稿与两条追加式日志。"
+    }
+  ],
+  "unresolved_issues": [
+    "token / 图像用量 / 费用：服务与平台均未提供权威计量，全部 null，未估算。",
+    "排队等待时间：Server-Timing 未报告 queue 段，不可测，记 null。",
+    "case-09 平面为示意而非实测地图，换算系数只对脚本绘制的路线成立，已印在作品页脚。",
+    "本次未使用任何辅助素材，因此没有素材许可与来源需要核实；全部自拟内容已在 portfolio.json 与 project-brief.md 中标明为虚构演示内容。",
+    "过程记录瑕疵（如实说明）：本次会话接续时，把第一次会话的临时脚本 tmp/20261004-182918/B02/log_iter.py 覆盖成了新版本脚本（后改名为 log_iter_wrapup.py）。该脚本只是写日志的辅助程序，不是交付物也不是日志本身；追加式的 requests.jsonl 与 iterations.jsonl 未受影响、完整保留，原文件内容已无法复原。"
+  ],
+  "resource_limits": {
+    "service_element_limit": 4096,
+    "observed_max_leaf_elements": 566,
+    "observed_on": "case-10（三折页，1654×1169）",
+    "limit_reached": false,
+    "note": "最密的一件仍有约 7 倍余量，本任务从未触发元素上限。"
+  },
+  "final_case_count": 10,
+  "cases": [
+    "case-01",
+    "case-02",
+    "case-03",
+    "case-04",
+    "case-05",
+    "case-06",
+    "case-07",
+    "case-08",
+    "case-09",
+    "case-10"
+  ]
+}

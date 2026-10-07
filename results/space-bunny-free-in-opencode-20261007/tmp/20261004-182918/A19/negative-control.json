@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "purpose": "反证实验：证明 equivalence.json 的 proof_obligation 不是空话",
+  "generated_at": "2026-10-05T03:04:27+08:00",
+  "probes": [
+    {
+      "probe": "N1 · A1 的遮挡物 1 宽度减少 40px（覆盖失效）",
+      "purpose": "验证“若遮挡不完整，残留像素会让 A 与 B 不同”这条论据",
+      "rendered": true,
+      "geometry_check_rejected_this_layout": true,
+      "differs_from_delivered_occlusion": true,
+      "difference_bbox": [
+        402,
+        168,
+        628,
+        390
+      ],
+      "conclusion": "覆盖不完整时 A1 与交付的 occlusion.png 出现差异，说明 occlusion.png 的覆盖确实是完整的、像素等价证明是有约束力的"
+    },
+    {
+      "probe": "N2 · B1 的 ClipRect 由 700px 放宽到 800px（裁剪失效）",
+      "purpose": "验证“若 ClipRect 未生效，隐藏主体会盖在遮挡物上，A 与 B 必然不同”",
+      "rendered": true,
+      "differs_from_delivered_occlusion": true,
+      "difference_bbox": [
+        705,
+        196,
+        795,
+        612
+      ],
+      "conclusion": "裁剪失效时 B1 与 occlusion.png 出现差异，说明 occlusion-alternative.png 的隐藏主体确实被裁掉了"
+    },
+    {
+      "probe": "N3 · 对照：与交付 A1 完全相同的 DSL 再渲染一次",
+      "purpose": "确认服务对同一 DSL 的输出稳定（否则像素相等可能只是偶然）",
+      "rendered": true,
+      "differs_from_delivered_occlusion": false,
+      "conclusion": "同一 DSL 两次渲染结果相同，服务的渲染是确定性的"
+    }
+  ],
+  "all_probes_behaved_as_claimed": true,
+  "note": "这些探针全部渲染到 tmp/.../preview/negative-control/，不是交付物；交付的两张 PNG 仍是未经任何后处理的原始服务响应。"
+}

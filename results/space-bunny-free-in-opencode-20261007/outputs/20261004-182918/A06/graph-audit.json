@@ -1,0 +1,991 @@
+{
+  "task": "A06",
+  "title": "十四节点依赖图与反馈回路",
+  "source_input": "tasks/A06-dependency-graph/inputs/graph.json",
+  "canvas": {
+    "png": "dependency-map.png",
+    "width": 1600,
+    "height": 1000,
+    "dsl": "dependency-map.snapshot"
+  },
+  "counts": {
+    "nodes": 14,
+    "solid_prerequisite_edges": 16,
+    "feedback_edges": 2,
+    "topological_layers": 11,
+    "total_drawn_edges": 18,
+    "drawn_arrowheads": 18,
+    "edge_source_dots": 18
+  },
+  "node_positions": {
+    "N01": {
+      "label": "需求冻结",
+      "topological_layer": 1,
+      "row_index_0based": 0,
+      "phase": "准备与输入",
+      "box_left_px": 610,
+      "box_width_px": 260,
+      "box_top_px": 88,
+      "box_bottom_px": 124,
+      "box_center_x_px": 740.0,
+      "box_center_y_px": 106.0
+    },
+    "N02": {
+      "label": "输入检查",
+      "topological_layer": 2,
+      "row_index_0based": 1,
+      "phase": "准备与输入",
+      "box_left_px": 350,
+      "box_width_px": 240,
+      "box_top_px": 148,
+      "box_bottom_px": 184,
+      "box_center_x_px": 470.0,
+      "box_center_y_px": 166.0
+    },
+    "N03": {
+      "label": "字体查询",
+      "topological_layer": 2,
+      "row_index_0based": 1,
+      "phase": "准备与输入",
+      "box_left_px": 940,
+      "box_width_px": 180,
+      "box_top_px": 148,
+      "box_bottom_px": 184,
+      "box_center_x_px": 1030.0,
+      "box_center_y_px": 166.0
+    },
+    "N04": {
+      "label": "数据计算",
+      "topological_layer": 3,
+      "row_index_0based": 2,
+      "phase": "准备与输入",
+      "box_left_px": 330,
+      "box_width_px": 200,
+      "box_top_px": 208,
+      "box_bottom_px": 244,
+      "box_center_x_px": 430.0,
+      "box_center_y_px": 226.0
+    },
+    "N05": {
+      "label": "内容规划",
+      "topological_layer": 3,
+      "row_index_0based": 2,
+      "phase": "准备与输入",
+      "box_left_px": 720,
+      "box_width_px": 180,
+      "box_top_px": 208,
+      "box_bottom_px": 244,
+      "box_center_x_px": 810.0,
+      "box_center_y_px": 226.0
+    },
+    "N06": {
+      "label": "版式系统",
+      "topological_layer": 4,
+      "row_index_0based": 3,
+      "phase": "准备与输入",
+      "box_left_px": 1130,
+      "box_width_px": 200,
+      "box_top_px": 268,
+      "box_bottom_px": 304,
+      "box_center_x_px": 1230.0,
+      "box_center_y_px": 286.0
+    },
+    "N07": {
+      "label": "图表生成",
+      "topological_layer": 4,
+      "row_index_0based": 3,
+      "phase": "准备与输入",
+      "box_left_px": 330,
+      "box_width_px": 200,
+      "box_top_px": 268,
+      "box_bottom_px": 304,
+      "box_center_x_px": 430.0,
+      "box_center_y_px": 286.0
+    },
+    "N08": {
+      "label": "DSL构建",
+      "topological_layer": 5,
+      "row_index_0based": 4,
+      "phase": "构建与验证",
+      "box_left_px": 690,
+      "box_width_px": 220,
+      "box_top_px": 328,
+      "box_bottom_px": 364,
+      "box_center_x_px": 800.0,
+      "box_center_y_px": 346.0
+    },
+    "N09": {
+      "label": "首轮渲染",
+      "topological_layer": 6,
+      "row_index_0based": 5,
+      "phase": "构建与验证",
+      "box_left_px": 700,
+      "box_width_px": 200,
+      "box_top_px": 388,
+      "box_bottom_px": 424,
+      "box_center_x_px": 800.0,
+      "box_center_y_px": 406.0
+    },
+    "N10": {
+      "label": "视觉检查",
+      "topological_layer": 7,
+      "row_index_0based": 6,
+      "phase": "构建与验证",
+      "box_left_px": 700,
+      "box_width_px": 200,
+      "box_top_px": 448,
+      "box_bottom_px": 484,
+      "box_center_x_px": 800.0,
+      "box_center_y_px": 466.0
+    },
+    "N11": {
+      "label": "问题修复",
+      "topological_layer": 8,
+      "row_index_0based": 7,
+      "phase": "构建与验证",
+      "box_left_px": 700,
+      "box_width_px": 200,
+      "box_top_px": 508,
+      "box_bottom_px": 544,
+      "box_center_x_px": 800.0,
+      "box_center_y_px": 526.0
+    },
+    "N12": {
+      "label": "回归渲染",
+      "topological_layer": 9,
+      "row_index_0based": 8,
+      "phase": "构建与验证",
+      "box_left_px": 700,
+      "box_width_px": 200,
+      "box_top_px": 568,
+      "box_bottom_px": 604,
+      "box_center_x_px": 800.0,
+      "box_center_y_px": 586.0
+    },
+    "N13": {
+      "label": "产物校验",
+      "topological_layer": 10,
+      "row_index_0based": 9,
+      "phase": "校验与交付",
+      "box_left_px": 1130,
+      "box_width_px": 200,
+      "box_top_px": 628,
+      "box_bottom_px": 664,
+      "box_center_x_px": 1230.0,
+      "box_center_y_px": 646.0
+    },
+    "N14": {
+      "label": "交付归档",
+      "topological_layer": 11,
+      "row_index_0based": 10,
+      "phase": "校验与交付",
+      "box_left_px": 1130,
+      "box_width_px": 200,
+      "box_top_px": 688,
+      "box_bottom_px": 724,
+      "box_center_x_px": 1230.0,
+      "box_center_y_px": 706.0
+    }
+  },
+  "topological_layers": {
+    "method": "longest-path layering computed over solid_edges only; feedback_edges are excluded from the ordering by definition",
+    "layer_index_base": 1,
+    "layer_count": 11,
+    "layers": [
+      {
+        "layer": 1,
+        "nodes": [
+          "N01"
+        ],
+        "labels": [
+          "需求冻结"
+        ],
+        "parallel_size": 1
+      },
+      {
+        "layer": 2,
+        "nodes": [
+          "N02",
+          "N03"
+        ],
+        "labels": [
+          "输入检查",
+          "字体查询"
+        ],
+        "parallel_size": 2
+      },
+      {
+        "layer": 3,
+        "nodes": [
+          "N04",
+          "N05"
+        ],
+        "labels": [
+          "数据计算",
+          "内容规划"
+        ],
+        "parallel_size": 2
+      },
+      {
+        "layer": 4,
+        "nodes": [
+          "N06",
+          "N07"
+        ],
+        "labels": [
+          "版式系统",
+          "图表生成"
+        ],
+        "parallel_size": 2
+      },
+      {
+        "layer": 5,
+        "nodes": [
+          "N08"
+        ],
+        "labels": [
+          "DSL构建"
+        ],
+        "parallel_size": 1
+      },
+      {
+        "layer": 6,
+        "nodes": [
+          "N09"
+        ],
+        "labels": [
+          "首轮渲染"
+        ],
+        "parallel_size": 1
+      },
+      {
+        "layer": 7,
+        "nodes": [
+          "N10"
+        ],
+        "labels": [
+          "视觉检查"
+        ],
+        "parallel_size": 1
+      },
+      {
+        "layer": 8,
+        "nodes": [
+          "N11"
+        ],
+        "labels": [
+          "问题修复"
+        ],
+        "parallel_size": 1
+      },
+      {
+        "layer": 9,
+        "nodes": [
+          "N12"
+        ],
+        "labels": [
+          "回归渲染"
+        ],
+        "parallel_size": 1
+      },
+      {
+        "layer": 10,
+        "nodes": [
+          "N13"
+        ],
+        "labels": [
+          "产物校验"
+        ],
+        "parallel_size": 1
+      },
+      {
+        "layer": 11,
+        "nodes": [
+          "N14"
+        ],
+        "labels": [
+          "交付归档"
+        ],
+        "parallel_size": 1
+      }
+    ],
+    "layer_of_node": {
+      "N01": 1,
+      "N02": 2,
+      "N03": 2,
+      "N04": 3,
+      "N05": 3,
+      "N06": 4,
+      "N07": 4,
+      "N08": 5,
+      "N09": 6,
+      "N10": 7,
+      "N11": 8,
+      "N12": 9,
+      "N13": 10,
+      "N14": 11
+    },
+    "parallel_layers": [
+      {
+        "layer": 2,
+        "nodes": [
+          "N02",
+          "N03"
+        ],
+        "note": "nodes in the same layer have no prerequisite relation between them"
+      },
+      {
+        "layer": 3,
+        "nodes": [
+          "N04",
+          "N05"
+        ],
+        "note": "nodes in the same layer have no prerequisite relation between them"
+      },
+      {
+        "layer": 4,
+        "nodes": [
+          "N06",
+          "N07"
+        ],
+        "note": "nodes in the same layer have no prerequisite relation between them"
+      }
+    ]
+  },
+  "node_neighbors": {
+    "N01": {
+      "prerequisite_in": [],
+      "prerequisite_out": [
+        "N02",
+        "N03"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 0,
+      "prerequisite_out_degree": 2,
+      "layer": 1
+    },
+    "N02": {
+      "prerequisite_in": [
+        "N01"
+      ],
+      "prerequisite_out": [
+        "N04",
+        "N05"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 2,
+      "layer": 2
+    },
+    "N03": {
+      "prerequisite_in": [
+        "N01"
+      ],
+      "prerequisite_out": [
+        "N06"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 1,
+      "layer": 2
+    },
+    "N04": {
+      "prerequisite_in": [
+        "N02"
+      ],
+      "prerequisite_out": [
+        "N07",
+        "N13"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 2,
+      "layer": 3
+    },
+    "N05": {
+      "prerequisite_in": [
+        "N02"
+      ],
+      "prerequisite_out": [
+        "N06"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 1,
+      "layer": 3
+    },
+    "N06": {
+      "prerequisite_in": [
+        "N03",
+        "N05"
+      ],
+      "prerequisite_out": [
+        "N08"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 2,
+      "prerequisite_out_degree": 1,
+      "layer": 4
+    },
+    "N07": {
+      "prerequisite_in": [
+        "N04"
+      ],
+      "prerequisite_out": [
+        "N08"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 1,
+      "layer": 4
+    },
+    "N08": {
+      "prerequisite_in": [
+        "N06",
+        "N07"
+      ],
+      "prerequisite_out": [
+        "N09"
+      ],
+      "feedback_in": [
+        "N09",
+        "N10"
+      ],
+      "feedback_out": [],
+      "prerequisite_in_degree": 2,
+      "prerequisite_out_degree": 1,
+      "layer": 5
+    },
+    "N09": {
+      "prerequisite_in": [
+        "N08"
+      ],
+      "prerequisite_out": [
+        "N10"
+      ],
+      "feedback_in": [],
+      "feedback_out": [
+        "N08"
+      ],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 1,
+      "layer": 6
+    },
+    "N10": {
+      "prerequisite_in": [
+        "N09"
+      ],
+      "prerequisite_out": [
+        "N11"
+      ],
+      "feedback_in": [],
+      "feedback_out": [
+        "N08"
+      ],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 1,
+      "layer": 7
+    },
+    "N11": {
+      "prerequisite_in": [
+        "N10"
+      ],
+      "prerequisite_out": [
+        "N12"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 1,
+      "layer": 8
+    },
+    "N12": {
+      "prerequisite_in": [
+        "N11"
+      ],
+      "prerequisite_out": [
+        "N13"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 1,
+      "layer": 9
+    },
+    "N13": {
+      "prerequisite_in": [
+        "N12",
+        "N04"
+      ],
+      "prerequisite_out": [
+        "N14"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 2,
+      "prerequisite_out_degree": 1,
+      "layer": 10
+    },
+    "N14": {
+      "prerequisite_in": [
+        "N13"
+      ],
+      "prerequisite_out": [],
+      "feedback_in": [],
+      "feedback_out": [],
+      "prerequisite_in_degree": 1,
+      "prerequisite_out_degree": 0,
+      "layer": 11
+    }
+  },
+  "longest_prerequisite_path": {
+    "measured_in": "nodes",
+    "node_count": 11,
+    "edge_count": 10,
+    "multiple_solutions_exist": true,
+    "solution_count_enumerated": 2,
+    "paths_node_ids": [
+      [
+        "N01",
+        "N02",
+        "N04",
+        "N07",
+        "N08",
+        "N09",
+        "N10",
+        "N11",
+        "N12",
+        "N13",
+        "N14"
+      ],
+      [
+        "N01",
+        "N02",
+        "N05",
+        "N06",
+        "N08",
+        "N09",
+        "N10",
+        "N11",
+        "N12",
+        "N13",
+        "N14"
+      ]
+    ],
+    "paths_labels": [
+      "N01 需求冻结 → N02 输入检查 → N04 数据计算 → N07 图表生成 → N08 DSL构建 → N09 首轮渲染 → N10 视觉检查 → N11 问题修复 → N12 回归渲染 → N13 产物校验 → N14 交付归档",
+      "N01 需求冻结 → N02 输入检查 → N05 内容规划 → N06 版式系统 → N08 DSL构建 → N09 首轮渲染 → N10 视觉检查 → N11 问题修复 → N12 回归渲染 → N13 产物校验 → N14 交付归档"
+    ],
+    "note": "至少给出一条即可；此处把全部 2 条等长最长路径都列出以便核对。"
+  },
+  "feedback_edges": [
+    {
+      "id": "F1",
+      "from": "N09",
+      "from_label": "首轮渲染",
+      "from_layer": 6,
+      "to": "N08",
+      "to_label": "DSL构建",
+      "to_layer": 5,
+      "style": "dashed",
+      "stroke_color": "#DC2626FF",
+      "counted_in_dag_sort": false,
+      "excluded_from_topological_layers": true,
+      "meaning": "失败后回到构建",
+      "explanation": "首轮渲染失败，路径沿虚线回到 DSL 构建重做",
+      "image_representation": {
+        "canvas": [
+          1600,
+          1000
+        ],
+        "polyline_points_px": [
+          [
+            900,
+            400
+          ],
+          [
+            950,
+            400
+          ],
+          [
+            950,
+            340
+          ],
+          [
+            910,
+            340
+          ]
+        ],
+        "start_point_on_source_border": [
+          900,
+          400
+        ],
+        "arrow_tip_px": [
+          910,
+          340
+        ],
+        "arrow_direction": "right-then-up-then-left; tip points left into the right border of N08",
+        "side_channel_x_px": 950,
+        "routed_beside_the_main_flow": true,
+        "source_dot_px": [
+          1000,
+          366
+        ],
+        "inline_label_bbox_px": [
+          1000,
+          366,
+          200,
+          26
+        ],
+        "leader_line_px": [
+          [
+            996,
+            379
+          ],
+          [
+            946,
+            379
+          ]
+        ],
+        "explanation_card_in_footer": "left card"
+      }
+    },
+    {
+      "id": "F2",
+      "from": "N10",
+      "from_label": "视觉检查",
+      "from_layer": 7,
+      "to": "N08",
+      "to_label": "DSL构建",
+      "to_layer": 5,
+      "style": "dashed",
+      "stroke_color": "#DC2626FF",
+      "counted_in_dag_sort": false,
+      "excluded_from_topological_layers": true,
+      "meaning": "检查发现问题后修复",
+      "explanation": "视觉检查判定不合格，回到 DSL 构建重做",
+      "image_representation": {
+        "canvas": [
+          1600,
+          1000
+        ],
+        "polyline_points_px": [
+          [
+            700,
+            472
+          ],
+          [
+            560,
+            472
+          ],
+          [
+            560,
+            350
+          ],
+          [
+            690,
+            350
+          ]
+        ],
+        "start_point_on_source_border": [
+          700,
+          472
+        ],
+        "arrow_tip_px": [
+          690,
+          350
+        ],
+        "arrow_direction": "left-then-up-then-right; tip points right into the left border of N08",
+        "side_channel_x_px": 560,
+        "routed_beside_the_main_flow": true,
+        "source_dot_px": [
+          214,
+          428
+        ],
+        "inline_label_bbox_px": [
+          214,
+          428,
+          232,
+          26
+        ],
+        "leader_line_px": [
+          [
+            452,
+            441
+          ],
+          [
+            556,
+            441
+          ]
+        ],
+        "explanation_card_in_footer": "right card"
+      }
+    }
+  ],
+  "solid_edge_representation": {
+    "note": "16 条先决边全部自上而下，箭头落在目标节点上边框；源端画实心圆点标出真实端点。",
+    "routes_px": {
+      "N01->N02": [
+        [
+          660,
+          124
+        ],
+        [
+          470,
+          137
+        ],
+        [
+          470,
+          148
+        ]
+      ],
+      "N01->N03": [
+        [
+          820,
+          124
+        ],
+        [
+          1030,
+          137
+        ],
+        [
+          1030,
+          148
+        ]
+      ],
+      "N02->N04": [
+        [
+          430,
+          184
+        ],
+        [
+          430,
+          208
+        ]
+      ],
+      "N02->N05": [
+        [
+          540,
+          184
+        ],
+        [
+          810,
+          197
+        ],
+        [
+          810,
+          208
+        ]
+      ],
+      "N03->N06": [
+        [
+          1030,
+          184
+        ],
+        [
+          1260,
+          257
+        ],
+        [
+          1260,
+          268
+        ]
+      ],
+      "N05->N06": [
+        [
+          810,
+          244
+        ],
+        [
+          1150,
+          257
+        ],
+        [
+          1150,
+          268
+        ]
+      ],
+      "N04->N07": [
+        [
+          430,
+          244
+        ],
+        [
+          430,
+          268
+        ]
+      ],
+      "N06->N08": [
+        [
+          1230,
+          304
+        ],
+        [
+          850,
+          317
+        ],
+        [
+          850,
+          328
+        ]
+      ],
+      "N07->N08": [
+        [
+          430,
+          304
+        ],
+        [
+          750,
+          317
+        ],
+        [
+          750,
+          328
+        ]
+      ],
+      "N08->N09": [
+        [
+          800,
+          364
+        ],
+        [
+          800,
+          388
+        ]
+      ],
+      "N09->N10": [
+        [
+          800,
+          424
+        ],
+        [
+          800,
+          448
+        ]
+      ],
+      "N10->N11": [
+        [
+          800,
+          484
+        ],
+        [
+          800,
+          508
+        ]
+      ],
+      "N11->N12": [
+        [
+          800,
+          544
+        ],
+        [
+          800,
+          568
+        ]
+      ],
+      "N12->N13": [
+        [
+          800,
+          604
+        ],
+        [
+          1230,
+          617
+        ],
+        [
+          1230,
+          628
+        ]
+      ],
+      "N13->N14": [
+        [
+          1230,
+          664
+        ],
+        [
+          1230,
+          688
+        ]
+      ],
+      "N04->N13": [
+        [
+          330,
+          226
+        ],
+        [
+          160,
+          226
+        ],
+        [
+          160,
+          646
+        ],
+        [
+          1130,
+          646
+        ]
+      ]
+    },
+    "long_span_edge": {
+      "id": "N04->N13",
+      "why": "数据计算完成后可以直接做产物校验，不必等渲染回路跑完",
+      "detour": "自 N04 左侧出图，绕行左侧边距通道 x=160（整图最左的节点边框在 x=330），下行到 L10 行高后右折，从 N13 左侧进入，避免压住任何节点文字"
+    },
+    "no_backward_layer_edge": true,
+    "geometric_crossings": [],
+    "crossing_convention": "本图已把同源/同汇的边分端口出线，几何上无交叉；即使出现交叉，交叉处没有连接点即不构成新的依赖。"
+  },
+  "topology_checks": {
+    "solid_graph_is_dag": true,
+    "layering_converged_without_conflict": true,
+    "all_nodes_reachable_from_source": true,
+    "source_nodes": [
+      "N01"
+    ],
+    "sink_nodes": [
+      "N14"
+    ],
+    "nodes_with_no_prerequisite": [
+      "N01"
+    ],
+    "nodes_with_no_dependent": [
+      "N14"
+    ],
+    "feedback_targets": [
+      "N08"
+    ],
+    "feedback_originates_from": [
+      "N09",
+      "N10"
+    ],
+    "every_feedback_edge_goes_back_to_an_earlier_layer": true,
+    "feedback_layers_skipped": [
+      {
+        "edge": "N09->N08",
+        "from_layer": 6,
+        "to_layer": 5,
+        "layers_back": 1
+      },
+      {
+        "edge": "N10->N08",
+        "from_layer": 7,
+        "to_layer": 5,
+        "layers_back": 2
+      }
+    ],
+    "layers_are_consistent_with_every_solid_edge": true,
+    "no_prerequisite_edge_points_into_an_earlier_layer": true
+  },
+  "text_rendering_constraints": {
+    "min_node_font_size_px": 22,
+    "min_annotation_font_size_px": 18,
+    "latin_cjk_font_stack": "Inter,Noto Sans CJK SC"
+  }
+}
