@@ -1,0 +1,7 @@
+const fs=require('fs'),path=require('path'),dir=__dirname;
+const old=fs.readFileSync(path.join(dir,'assemble-final-audit-v001.cjs'),'utf8');
+const next=old.replace('1200_nominal_text_box_pairs_zero_intersections_pass:true',"'1200_nominal_text_box_pairs_zero_intersections_pass':true").replace('visual-content-audit-final-v001.json','visual-content-audit-final-v002.json');
+if(next===old)throw Error('No repair applied');
+const failures={recorded_at:new Date().toISOString(),actual_failures:[{script:'assemble-final-audit-v001.cjs',exit_code:1,error:'SyntaxError: Numeric separators are not allowed at the end of numeric literals',cause:'Unquoted object key started1200_'},{script:'inline node-e repair attempt',exit_code:1,error:'Expected unicode escape; SyntaxError: Invalid or unexpected token',cause:'PowerShell does not use backslash as quote escape, inline double quotation broke script'},{script:'attempt to execute assemble-final-audit-v002.cjs',exit_code:1,error:'MODULE_NOT_FOUND',cause:'Prior repair failed so no new file existed'}],fix:'Use saved immutable JavaScript repair script; quote numeric-leading object key in new assemblerv002.',render_requests_caused:0,final_images_altered:false};
+fs.writeFileSync(path.join(dir,'assembly-failures-v001.json'),JSON.stringify(failures,null,2)+'\n',{flag:'wx'});
+fs.writeFileSync(path.join(dir,'assemble-final-audit-v002.cjs'),next,{flag:'wx'});console.log('Saved failure evidence and repaired immutable assembler');

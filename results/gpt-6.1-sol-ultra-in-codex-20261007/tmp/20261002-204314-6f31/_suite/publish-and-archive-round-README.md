@@ -1,0 +1,5 @@
+# Sequential reviewed-round orchestration
+
+Root-only `node publish-and-archive-round.cjs TASK round-XX manifest.json` executes the established publisher, records a real completed boundary after its successful result, calls the strict round metrics archive, verifies it, and updates completed rounds plus top-level detail metrics and gallery. Inputs must already contain actual root view records, reviewed final PNG/DSL and factual reports/sidecars. No image generation, viewing or quality judgment is performed. This does not close a task or authorize reading future requirements before its success.
+
+Every dependent stage checks the previous result. The numbered orchestration record preserves raw structured publication/archive output or the actual error. Existing outputs are never overwritten. Partial publication is not rolled back, deleted or automatically retried. On failure root must inspect actual files/logs and continue with only missing work. Do not repeat a complete manifest against already-published destinations. Before first real execution, only source construction occurred; this README does not claim a successful task run.

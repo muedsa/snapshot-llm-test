@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path'),s=require('../_suite/suite.cjs');
+const d=s.taskDirs('A10'),m=JSON.parse(fs.readFileSync(path.join(d.temp,'requests/A10-request-000005/render-result.json'),'utf8'));
+const view=s.view('A10',m.image_path,{tool:'view_image',reviewer:'root',version_id:m.version_id,observation:'Actual complete 1440×1100 baseline: panels01/02 have different overlap;03 foreground SHARP / BLUR and shapes sharp over softened stripes,04 words/shapes/all internal stripes blurred and external crisp;05 warm multiply+soft shadow spreads,06 same effect clipped by circle. All20px descriptions intact. Actual flaw: stripes in03/04 extend8px beyond320px experimental right edges, due uncropped last stripe. Fix actual DSL stripe positions, preserve raw baseline.'});
+s.iteration('A10',{type:'baseline',version_id:m.version_id,completed:true,image_path:m.image_path,view_id:view.id,observations:view.observation});
+let code=fs.readFileSync(path.join(d.temp,'build-v001.cjs'),'utf8');
+code=code.replace("const stripes=(w,h,offset=0)=>Array.from({length:Math.ceil(w/16)+1},(_,i)=>rect(i*16-offset,0,8,h,i%2?'#00A7A0':'#183E68'));","const stripes=(w,h,offset=0)=>Array.from({length:Math.ceil((w+offset)/16)},(_,i)=>{const x=i*16-offset,left=Math.max(0,x),right=Math.min(w,x+8);return right>left?rect(left,0,right-left,h,i%2?'#00A7A0':'#183E68'):'';});");
+code=code.replaceAll('compositing-lab-v001.snapshot','compositing-lab-v002.snapshot').replaceAll('layout-v001.json','layout-v002.json');
+code=code.replace("type:'baseline',purpose:'six-panel compositing actual baseline'","type:'visual',parent_version:'A10-v001',before_view_id:'"+view.id+"',changes:'Limit stripes to exact320×240 experiment bounds; preserve identical filter and shape inputs.',purpose:'correct actual stripe overflow seen in baseline'");
+fs.writeFileSync(path.join(d.temp,'build-v002.cjs'),code,{flag:'wx'});
+require('./build-v002.cjs');

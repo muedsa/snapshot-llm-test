@@ -1,0 +1,18 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../../../..');
+const read=f=>JSON.parse(fs.readFileSync(path.join(__dirname,f),'utf8'));
+const map=read('text-map-draft-v003.json');
+map.status='producer_actual_visual_review_passed';
+map.final_page_versions=[{page:1,version_id:'A11-v002-p01',request_id:'A11-request-000005',render_meta:path.join(root,'tmp/20261002-204314-6f31/A11/requests/A11-request-000005/render-result.json'),producer_actual_view_id:'A11-view-000008'},{page:2,version_id:'A11-v001-p02',request_id:'A11-request-000004',render_meta:path.join(root,'tmp/20261002-204314-6f31/A11/requests/A11-request-000004/render-result.json'),producer_actual_view_id:'A11-view-000002'}];
+map.actual_whole_page_view_ids=['A11-view-000008','A11-view-000002'];
+map.baseline_views_preserved=['A11-view-000001','A11-view-000002'];
+map.visual_correction={version_id:'A11-v002-p01',reason:'Same right edge did not align decimal points when amount font sizes differed between rows/summary/payable.',change:'All monetary amount Text fontSize=28, with mono font and right alignment. Payable retains teal and BOLD style.',visual_iteration_complete:true,before_view_id:'A11-view-000001',after_view_id:'A11-view-000008'};
+map.footer_glyph_measurement_scope='Measured original p01/p02 actual PNGs. New p01 changes only monetary font sizes; footer DSL unchanged. Root/auditor may append final p01 pixel evidence without modifying any historical measurement.';
+map.money_compute_source=path.join(__dirname,'calculated-amounts-v001.json');
+map.original_source_path=path.join(root,'tasks/A11-bilingual-invoice/inputs/invoice.json');
+map.instruction_data_policy='The English instruction style literal is only input data rendered to PNG; it was not executed.';
+fs.writeFileSync(path.join(__dirname,'text-map-final-draft-v004.json'),JSON.stringify(map,null,2)+'\n',{flag:'wx'});
+const handoff={task_id:'A11',run_id:'20261002-204314-6f31',final_candidates:map.final_page_versions,text_map_draft:path.join(__dirname,'text-map-final-draft-v004.json'),computed_amounts:path.join(__dirname,'calculated-amounts-v001.json'),reports_owned_by_root:true,production_finished_writing:true,production_note:'Two baselines + one actual visual monetary alignment correction; all three original PNGs and DSL versions preserved; no final artifact published by producer.',unresolved_production_issues:[]};
+fs.writeFileSync(path.join(__dirname,'production-handoff-v001.json'),JSON.stringify(handoff,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify(handoff));

@@ -1,0 +1,13 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs'),rd=__dirname,d=s.taskDirs('A22');
+const meta=JSON.parse(fs.readFileSync(path.join(d.temp,'requests/A22-request-000004/render-result.json'),'utf8'));
+const v=s.view('A22',meta.image_path,{reviewer:'root',tool:'view_image',version_id:meta.version_id,round_id:'round-02',observation:'实际最终1600×1000看过，结论已无不准确的仍字，负5632柱在零线下方且标签/表负值一致；总净908624/利润182124正确，总订单3045/总体11.15%保持。标题/KPI卡/图表/表格/结论主区域完全保持，正文清楚无裁切/碰撞。'});
+s.iteration('A22',{type:'visual',version_id:meta.version_id,parent_version:'A22-round-02-dashboard-v001',round_id:'round-02',completed:true,image_path:meta.image_path,before_view_id:'A22-view-000004',after_view_id:v.id,changes:'删除结论仍字，其他DSL保持。',comparison:'旧实际原图结论副词不准确，修改后重新实际看图，结论7月利润为期内最高成立；负柱/表/全部数据和其他视觉保持。'});
+const pixel=JSON.parse(fs.readFileSync(path.join(rd,'pixel-regression-v001.json'),'utf8'));if(!pixel.pass)throw Error('Pixel regression failed');
+const audit=JSON.parse(fs.readFileSync(path.join(rd,'change-audit-draft-v001.json'),'utf8')),map=JSON.parse(fs.readFileSync(path.join(rd,'layout-map-v002.json'),'utf8'));
+audit.version_id=meta.version_id;audit.reviewed_at=new Date().toISOString();audit.changed_elements.find(e=>e.id==='conclusion-main').new=map.texts.find(t=>t.id==='conclusion-main');
+audit.regression.visual_review_pending=false;audit.regression.root_original_final_view_id=v.id;audit.regression.root_prior_round_view_id='A22-view-000003';audit.regression.source_after_SHA=s.sha256(fs.readFileSync(meta.dsl_path));audit.regression.actual_pixel_regression=pixel;
+audit.actual_semantic_refinement={before_view:'A22-view-000004',after_view:v.id,change:'删除仍字以避免虚称旧轮最高月份仍然是7月，原轮最高实际9月。',other_DSL_changes:0};audit.unresolved=[];
+fs.writeFileSync(path.join(rd,'change-audit-final-v001.json'),JSON.stringify(audit,null,2)+'\n',{flag:'wx'});
+const review={task_id:'A22',round_id:'round-02',reviewer:'root',actual_tool:'view_image',images:[{image_path:meta.image_path,version_id:meta.version_id,round_id:'round-02',existing_view_id:v.id,observation:v.observation}],validation:{corrections_applied:true,regional_delta_px:0,negative_profit:-5632,negative_bar_below_zero:true,unchanged_region_actual_pixels:528172,unchanged_regions_zero_RGBA_difference:true,unresolved_visual_defects:[]}};
+fs.writeFileSync(path.join(rd,'root-review-v001.json'),JSON.stringify(review,null,2)+'\n',{flag:'wx'});
+s.taskCheckpoint('A22',{round_id:'round-02',visual_review_evidence:[v.id],resume_notes:'第二轮两200图实际查看，1语义视觉修正，无变化6区域528172像素0差，负柱正确；准备数据审查/归档。'});s.writeTaskMetrics('A22');s.aggregate();console.log(JSON.stringify({view_id:v.id,change_audit:path.join(rd,'change-audit-final-v001.json')}));

@@ -1,0 +1,14 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs');
+const d=s.taskDirs('A22'),rd=__dirname,src=path.join(d.temp,'requests/A22-request-000001');
+const original=JSON.parse(fs.readFileSync(path.join(src,'render-result.json'),'utf8'));
+const v1=s.view('A22',original.image_path,{reviewer:'root',tool:'view_image',version_id:original.version_id,round_id:'round-01',observation:'完整1600×1000首图实际看过：四KPI、六原月份明细、同0轴12柱及真实结论均正确；图表说明与最高250000刻度很近，需局部检查。'});
+const qa=s.view('A22',path.join(rd,'root-qa/chart-title-axis-v001.png'),{reviewer:'root',tool:'view_image',version_id:original.version_id,round_id:'round-01',derived_from:original.image_path,observation:'实际打开480×135原图裁片，金额单位说明与250000刻度在左侧贴靠；将说明x64右移至绘图区x156以增加水平分离。'});
+s.iteration('A22',{type:'baseline',version_id:original.version_id,round_id:'round-01',completed:true,image_path:original.image_path,after_view_id:v1.id,observation:v1.observation});
+const from='<Positioned left="64" top="414" width="744" height="30"><Text',to='<Positioned left="156" top="414" width="670" height="30"><Text';
+const oldDsl=fs.readFileSync(path.join(src,'input.snapshot'),'utf8');if(oldDsl.split(from).length!==2)throw Error('Expected unique chart-unit widget');
+const layout=JSON.parse(fs.readFileSync(path.join(rd,'production/layout-map-v001.json'),'utf8'));
+layout.version_id='A22-round-01-dashboard-v002';layout.created_at=new Date().toISOString();
+const unit=layout.texts.find(t=>t.id==='chart-unit');if(!unit||JSON.stringify(unit.box)!=='[64,414,744,30]')throw Error('Layout unit differs');unit.box=[156,414,670,30];
+fs.writeFileSync(path.join(rd,'production/layout-map-v002.json'),JSON.stringify(layout,null,2)+'\n',{flag:'wx'});
+fs.writeFileSync(path.join(rd,'root-refinement-evidence-v001.json'),JSON.stringify({before_view_id:v1.id,qa_view_id:qa.id,change:'chart-unit x64→156,width744→670; all other DSL bytes unchanged',local_crop_tool:'Python/Pillow QA-only inspect-image.py',source:original.image_path},null,2)+'\n',{flag:'wx'});
+(async()=>{const r=await s.render('A22',oldDsl.replace(from,to),{version_id:layout.version_id,parent_version:original.version_id,type:'visual',before_view_id:v1.id,round_id:'round-01',width:1600,height:1000,changes:'Move chart caption to plot start x156 to separate from highest left tick; data/other geometry unchanged.'});console.log(JSON.stringify({ok:r.ok,meta_path:r.meta_path,image_path:r.image_path,version_id:r.version_id,before_view_id:v1.id,qa_view_id:qa.id}));})().catch(e=>{console.error(e.stack);process.exitCode=1;});

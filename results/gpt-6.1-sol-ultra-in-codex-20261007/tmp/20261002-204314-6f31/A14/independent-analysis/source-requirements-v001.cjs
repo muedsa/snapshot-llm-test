@@ -1,0 +1,7 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const input=path.resolve('tasks/A14-content-stress-batch/inputs/cards.json');
+const bytes=fs.readFileSync(input),cards=JSON.parse(bytes);
+const result={task_id:'A14',run_id:'20261002-204314-6f31',reviewer:'a10_audit_resume',recorded_at:new Date().toISOString(),source_path:input,source_sha256:crypto.createHash('sha256').update(bytes).digest('hex'),required_dimensions:[1200,630],safe_margin:40,minimum_title_font:36,maximum_title_lines:3,minimum_speaker_font:22,maximum_long_speaker_lines:2,common_date:'2026.11.07',common_brand:'Structure / Vision',status_requirements:'Original status text plus distinct color and/or symbol, common four-state encoding',parameterization:'One data-driven generator with general length-triggered layout; no per-card rewritten inputs',cancelled_requirement:'K06 original full title/time13:40 plus explicit本场取消; do not suppress card or only gray canvas',cards:cards.map(c=>({...c,title_unicode_characters:[...c.title].length,speaker_unicode_characters:[...c.speaker].length,filename:`card-${c.id}.png`,dsl_filename:`card-${c.id}.snapshot`,must_preserve_exact_fields:['title','speaker','time','status']})),review_status:'source requirements only, no PNG pass asserted'};
+fs.mkdirSync(__dirname,{recursive:true});
+fs.writeFileSync(path.join(__dirname,'source-requirements-v001.json'),JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+process.stdout.write(JSON.stringify(result));

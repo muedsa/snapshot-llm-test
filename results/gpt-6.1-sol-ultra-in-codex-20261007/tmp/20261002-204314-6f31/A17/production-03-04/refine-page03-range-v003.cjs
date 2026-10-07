@@ -1,0 +1,7 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs'),{cdata}=require('../../_suite/dsl.cjs');
+const oldText='印 example-03 第 5–17、20–21、23–24 行；其余行省略，完整源附后。';
+const newText='印 example-03 第 5–8、10–17、20–21、23–24 行；其余省略，完整源附后。';
+const old=fs.readFileSync(path.join(__dirname,'handbook-03-v002.snapshot'),'utf8');if(!old.includes(cdata(oldText)))throw Error('old scope absent');
+const next=old.replace(cdata(oldText),cdata(newText));fs.writeFileSync(path.join(__dirname,'handbook-03-v003.snapshot'),next,{flag:'wx'});
+const before=JSON.parse(fs.readFileSync(path.join(__dirname,'font24-view-records-v002.json'),'utf8')).find(r=>r.case_id==='handbook-03');
+(async()=>{const r=await s.render('A17',next,{version_id:'A17-v003-handbook-03',parent_version:'A17-v002-handbook-03',type:'visual',stem:'handbook-03',case_id:'handbook-03',width:1200,height:1600,before_view_id:before.id,changes:'将print范围5–17更正为5–8、10–17，明确第9行间隔器省略；源码/16已印源行/示例不改。',purpose:'A17 handbook03 accurate visible printed-source range'});const out={stem:'handbook-03',ok:r.ok,http_status:r.http_status,content_type:r.content_type,png_dimensions:r.png_dimensions,meta_path:r.meta_path,image_path:r.image_path,version_id:r.version_id,parent_version:'A17-v002-handbook-03',before_view_id:before.id,error_summary:r.error_summary};fs.writeFileSync(path.join(__dirname,'handbook-03-render-v003.json'),JSON.stringify(out,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify(out));})().catch(e=>{console.error(e.stack);process.exitCode=1;});

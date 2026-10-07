@@ -1,0 +1,13 @@
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),s=require('../../_suite/suite.cjs');
+const base=path.resolve(__dirname,'..'),J=x=>JSON.stringify(x,null,2)+'\n';
+const cases=[
+ [7,'03-v001','已在恢复后真实重新打开完整PNG。三个工位与顺序箭头连续，签到10:20、评估、10:30入座与11:15结束一致；地图明确不按比例，文字无裁剪，保留。'],
+ [8,'10-v003','恢复后真实重新打开。交接高亮先画、时间块与标签后画，13:00不再被竖线穿过，18:15轴上层完整。09:30–13:15与13:00–18:15保持比例，三个岗位和15分钟交接清楚，保留。',{before_view_id:'B02-view-000005',changes:'交接带与竖线移到时间块及标签之前绘制；18:15标签保留上层。',comparison:'旧图13:00的文字被线穿过，新图解除；岗位、时刻和时长保持。'}],
+ [9,'04-v002','恢复后真实重新打开。工具数量1把/1支/6针/1卷、三项归还步骤完整；剪刀图张开与合拢刀刃指令矛盾，且四件会被误读为总数量，需并拢轮廓及四类工具措辞。'],
+ [10,'07-v001','已真实打开完整回执。编号RT-1024-006、米白帆布袋右下小破洞与可见陶土补丁对应；45分钟¥30、10:30–11:15、11:30取件一致。三项核对和依原洗标养护/疑问评估完整可读，保留。']
+];
+for(const [n,name,observation,iteration] of cases){const p=path.join(__dirname,'review-'+name+'.json');fs.writeFileSync(p,J({task_id:'B02',reviewer:'root',actual_tool:'view_image',meta_path:path.join(base,'requests','B02-request-'+String(n).padStart(6,'0'),'render-result.json'),observation,...(iteration?{iteration}:{})}),{flag:'wx'});console.log(cp.execFileSync(process.execPath,[path.resolve(__dirname,'../../_suite/review-case.cjs'),'B02',p],{encoding:'utf8'}).trim());}
+// Earlier genuine calls were reported in the preserved context summary but their
+// events had not reached disk. Count them separately from the recovery reopens.
+for(const n of [7,8,9]){const m=JSON.parse(fs.readFileSync(path.join(base,'requests','B02-request-'+String(n).padStart(6,'0'),'render-result.json')));const v=s.view('B02',m.image_path,{tool:'view_image',reviewer:'root',case_id:m.case_id,version_id:m.version_id,recovered_from:'prior-context-summary',original_viewed_at:null,time_note:'Recorded now; original view occurred before context compression and its exact timestamp is unavailable.',observation:'先前实际查看的观察已由上下文摘要保留；本次又重新打开，判断见对应恢复review记录。'});s.toolUsage('B02',{tool:'functions.view_image',case_id:m.case_id,purpose:'Recovery of earlier genuinely reported unpersisted view event',view_id:v.id,input:m.image_path});}
+s.taskCheckpoint('B02',{event_type:'recovery-views-persisted',resume_notes:'Case03/10v003/04v002 views and recovery reopens persisted separately; case07 passed. Render04v003 and05/06 static refined baselines next.'});s.writeTaskMetrics('B02');

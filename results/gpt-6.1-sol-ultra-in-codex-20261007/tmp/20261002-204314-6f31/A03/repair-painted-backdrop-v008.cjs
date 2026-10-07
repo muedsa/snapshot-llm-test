@@ -1,0 +1,15 @@
+'use strict';const fs=require('node:fs'),path=require('node:path');const s=require('../_suite/suite.cjs');
+const meta=JSON.parse(fs.readFileSync(path.join(__dirname,'requests','A03-request-000007','render-result.json'),'utf8'));
+const before=JSON.parse(fs.readFileSync(path.join(__dirname,'semantic-views-v006.json'),'utf8'));
+const full=s.view('A03',meta.image_path,{tool:'view_image',version_id:'A03-system-pulse-v007',scope:'whole actual image',observation:'实际查看：SRC 已消除卡内锐利细线，外侧仍锐利、文字仍清晰。标题位置已精确32；但卡内背景变得明亮浅色，使白色说明文字对比不足，不接受为最终。根Container没有显式绘制深底，当前推测滤镜未读取到导出层Snapshot.background，需以真正已绘制根背景验证。'});
+const crop=s.view('A03',path.join(__dirname,'qa-blur-v007.png'),{tool:'view_image',version_id:'A03-system-pulse-v007',scope:'actual service-derived crop [330,310,950,490]',source_image_path:meta.image_path,observation:'实际局部与v006比较：原来的锐利细线在卡内消失，四条颜色变成宽且软的渐变区域；卡外细线仍锐利。白字与浅色背景对比偏低，需在滤镜之前明确画不透明深底。'});
+s.toolUsage('A03',{tool:'PIL via inspect-image.py',purpose:'Actual same-region crop comparison of SRC blend trial, no final postprocessing',input_paths:[meta.image_path],output_paths:[path.join(__dirname,'qa-blur-v007.png')],crop:[330,310,950,490],is_final:false});
+s.iteration('A03',{type:'visual',version_id:'A03-system-pulse-v007',parent_version:'A03-system-pulse-v006',completed:true,before_view_id:before.crop.id,after_view_id:crop.id,additional_view_ids:[full.id],changes:'BackdropFilter blendMode SRC; title margin exactly32.',comparison:'Real same-region crop confirms sharp residual removed, but readback/background now pale and white text contrast too low. Further real backdrop painting required; not accepted.'});
+const input=fs.readFileSync(path.join(__dirname,'system-pulse-v007.snapshot'),'utf8');
+const fixed=input.replace('<Container width="1280" height="800">','<Container width="1280" height="800" color="#0B1220">');
+if(fixed===input)throw Error('Root background replacement was not applied');
+fs.writeFileSync(path.join(__dirname,'system-pulse-v008.snapshot'),fixed,{flag:'wx'});
+const geometry=JSON.parse(fs.readFileSync(path.join(__dirname,'geometry-v007.json'),'utf8'));geometry.canvas.background_drawn_before_filter=true;geometry.canvas.root_container_color='#0B1220';
+fs.writeFileSync(path.join(__dirname,'geometry-v008.json'),JSON.stringify(geometry,null,2)+'\n',{flag:'wx'});
+fs.writeFileSync(path.join(__dirname,'semantic-views-v007.json'),JSON.stringify({full,crop},null,2)+'\n',{flag:'wx'});
+(async()=>{const r=await s.render('A03',fixed,{version_id:'A03-system-pulse-v008',parent_version:'A03-system-pulse-v007',type:'visual',before_view_id:crop.id,changes:'Explicitly paint opaque #0B1220 root Container BEFORE stripes/filter; keep same clipped SRC BackdropFilter and all foreground content.',stem:'system-pulse',width:1280,height:800});s.taskCheckpoint('A03',{resume_notes:'v008 explicitly painted opaque deep backdrop; inspect actual result before acceptance.',checkpoint:'A03-painted-backdrop-v008-rendered'});s.writeTaskMetrics('A03');console.log(JSON.stringify({ok:r.ok,status:r.http_status,image:r.image_path,metadata:r.meta_path,error:r.error_summary}));})().catch(e=>{console.error(e);process.exitCode=1;});

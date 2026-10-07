@@ -1,0 +1,46 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const {Canvas,tag,cdata,matrix2d}=require('../_suite/dsl.cjs');
+const s=require('../_suite/suite.cjs');
+const ink='#FFFFFF',muted='#A8B9CF';
+const c=new Canvas(1280,800,{background:'#0B1220'});
+c.text(32,31,1000,68,'System Pulse',44,ink,{bold:true});
+c.text(34,95,1000,38,'Monitor health at a glance',22,muted);
+c.rect(1152,42,96,36,'#133D39',{radius:9,border:'1 SOLID #46D5AE'});
+c.text(1152,46,96,31,'LIVE',20,'#7AEFC8',{bold:true,align:'center'});
+const w=(1216-48)/3,cardY=140,cardH=164;
+const cards=[['USAGE 72%','RESOURCE','#57D8C0'],['LATENCY 148 ms','SPEED','#E8B85C'],['SUCCESS 99.2%','RELIABILITY','#AE90E8']];
+cards.forEach(([metric,label,color],i)=>{
+  const x=32+i*(w+24);
+  c.card(x,cardY,w,cardH,'#16243A',{radius:18,border:'1 SOLID #30425C',gradientType:'LINEAR',gradientColors:'#1A2B44,#142033',gradientBegin:'TOP_LEFT',gradientEnd:'BOTTOM_RIGHT'});
+  c.rect(x+24,cardY+20,32,4,color,{radius:2});
+  c.text(x+24,cardY+38,w-48,35,label,20,muted,{bold:true});
+  c.text(x+24,cardY+83,w-48,46,metric,28,ink,{bold:true,softWrap:false,maxLines:1});
+});
+// Paint genuine already-drawn background BEFORE the confined backdrop filter.
+const stripes=[{y:351,h:5,color:'#4AE4BE'},{y:380,h:4,color:'#FAB95E'},{y:412,h:5,color:'#AA8BEF'},{y:443,h:4,color:'#54AFF0'}];
+stripes.forEach(r=>c.rect(32,r.y,1216,r.h,r.color));
+const label=tag('Text',{fontFamily:'Inter,Noto Sans CJK SC',fontSize:28,color:'#FFFFFF',fontStyle:'BOLD',textAlign:'CENTER',softWrap:false,maxLines:1},tag('Raw',{},cdata('Background-only blur')));
+const glass=tag('ClipRRect',{borderRadius:24,clipBehavior:'ANTI_ALIAS'},tag('BackdropFilter',{sigmaX:10,sigmaY:10,tileMode:'CLAMP'},tag('Container',{width:500,height:150,color:'#FFFFFF16',border:'1 SOLID #FFFFFF33',borderRadius:24,alignment:'CENTER'},label)));
+c.at(390,325,500,150,glass);
+c.text(390,501,500,36,'Sharp foreground. Soft backdrop.',22,muted,{align:'center'});
+c.line(32,640,1248,640,'#23344C',1);
+c.text(32,673,990,35,'MONITOR / SYSTEM HEALTH',20,'#A8B9CF',{bold:true});
+c.text(32,710,990,35,'Usage · latency · successful requests',22,'#7D93AF');
+const theta=-8*Math.PI/180,cs=Math.cos(theta),sn=Math.sin(theta);
+const reviewText=tag('Text',{fontFamily:'Inter,Noto Sans CJK SC',fontSize:24,color:'#FFFFFF',fontStyle:'BOLD',textAlign:'CENTER'},tag('Raw',{},cdata('REVIEW')));
+const review=tag('Transform',{matrix:matrix2d(cs,sn,-sn,cs),alignment:'CENTER'},tag('Container',{width:160,height:56,color:'#FFFFFF33',borderRadius:8,alignment:'CENTER'},reviewText));
+c.at(1080,696,160,56,review);
+const dsl=c.toString();
+fs.writeFileSync(path.join(__dirname,'system-pulse-v006.snapshot'),dsl,{flag:'wx'});
+const corners=[[-80,-28],[80,-28],[80,28],[-80,28]].map(([x,y])=>({x:1160+cs*x-sn*y,y:724+sn*x+cs*y}));
+const geometry={canvas:{width:1280,height:800,background:'#0B1220',safe_margin:32},title:{x:32,y:31,font_size:44,paint_note:'Text glyph top is visually inside32 margin; layout box y31 chosen with font ascender top offset; final actual view will verify'},live:{x:1152,y:42,width:96,height:36},cards:cards.map(([text],i)=>({text,x:32+i*(w+24),y:cardY,width:w,height:cardH,font_size:28})),blur_card:{x:390,y:325,width:500,height:150,center:{x:640,y:400},radius:24,sigmaX:10,sigmaY:10,foreground_text_size:28,filter_type:'BackdropFilter',clip:'ClipRRect outside filter',text_opacity:1,stripes:stripes.map(r=>({...r,x:32,width:1216,crosses_left_boundary:32<390,crosses_right_boundary:32+1216>890}))},review:{x:1080,y:696,width:160,height:56,center:{x:1160,y:724},rotation_degrees_visual_counterclockwise:8,matrix_column_major:[cs,sn,0,0,-sn,cs,0,0,0,0,1,0,0,0,0,1],background:'#FFFFFF33',background_alpha_byte:51,background_opacity:51/255,text_color:'#FFFFFF',text_opacity:1,text_size:24,paint_corners:corners,paint_bbox:{left:Math.min(...corners.map(p=>p.x)),right:Math.max(...corners.map(p=>p.x)),top:Math.min(...corners.map(p=>p.y)),bottom:Math.max(...corners.map(p=>p.y))}}};
+geometry.review.bbox_within_safe_margin=geometry.review.paint_bbox.left>=32&&geometry.review.paint_bbox.right<=1248&&geometry.review.paint_bbox.top>=32&&geometry.review.paint_bbox.bottom<=768;
+fs.writeFileSync(path.join(__dirname,'geometry-v006.json'),JSON.stringify(geometry,null,2)+'\n',{flag:'wx'});
+(async()=>{
+const before=JSON.parse(fs.readFileSync(path.join(__dirname,'diagnostic-view-v005.json'),'utf8'));
+const r=await s.render('A03',dsl,{version_id:'A03-system-pulse-v006',parent_version:'A03-bounds-fixed-v005',type:'visual',before_view_id:before.id,changes:'Replace ignored font-size and root dims; safely position all preserved content blocks in exact finite1280x800 Canvas; restore required three equal cards/LIVE sizes; correct white alpha and opaque REVIEW24 rotation/position; add already drawn crossing stripes and clipped BackdropFilter with sharp28 foreground text.',stem:'system-pulse',width:1280,height:800});
+s.taskCheckpoint('A03',{resume_notes:'All explicit failures preserved, first successful diagnostic actually viewed; semantic visual repair v006 rendered and awaits actual inspection.',checkpoint:'A03-semantic-repair-v006-rendered'});
+s.writeTaskMetrics('A03');
+console.log(JSON.stringify({ok:r.ok,status:r.http_status,image_path:r.image_path,meta_path:r.meta_path,version:r.version_id,dimensions:r.png_dimensions,error:r.error_summary}));
+})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,0 +1,40 @@
+{
+  "id": "A16",
+  "title": "从错误图表恢复可信叙事",
+  "category": "视觉诊断",
+  "challenge": "只给错误图片，通过视觉与数据交叉诊断并重建。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "inputs/flawed-report.png 是同事制作的1280×900经营图，inputs/source.csv 为唯一\n可信原始数据；图片与源码不是标准答案。只通过图片和数据找出视觉/数值/叙事\n问题，不提供旧DSL。先实际查看图，逐项给出可观察证据，别按常见错误凭空列坑。\n将它重制为1280×900可信报告：四季收入/成本分组柱图（共同零起点）、利润明细、\n一条有数据依据的标题、图例、单位“万元”、全部季度。保持“季度复盘”的主题，\n风格允许改进。柱高对应数值，不能只修数字标签；重点季度由数据论证。\n附 findings.json，每项问题包含图片位置、现象、源数据核对、影响、修正及最终\n查看结果；未确认是否错误的部分独立记录为不确定，避免把审美偏好混作数值错。\n附 corrected-data.json 的计算与轴定义。正文≥22、标注≥18，无外部图像。\n",
+  "inputs": [
+    "inputs/source.csv",
+    "inputs/flawed-report.png"
+  ],
+  "required_outputs": [
+    {
+      "filename": "corrected-report.png",
+      "dsl": "corrected-report.snapshot",
+      "width": 1280,
+      "height": 900,
+      "purpose": "修正后的可信报告"
+    }
+  ],
+  "additional_outputs": [
+    "findings.json",
+    "corrected-data.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A16/",
+  "temp_dir_template": "tmp/{run_id}/A16/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

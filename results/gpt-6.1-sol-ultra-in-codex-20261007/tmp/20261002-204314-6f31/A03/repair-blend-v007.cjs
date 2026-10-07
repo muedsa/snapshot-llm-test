@@ -1,0 +1,21 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');const s=require('../_suite/suite.cjs');
+const v005=JSON.parse(fs.readFileSync(path.join(__dirname,'diagnostic-view-v005.json'),'utf8'));
+const meta=JSON.parse(fs.readFileSync(path.join(__dirname,'requests','A03-request-000006','render-result.json'),'utf8'));
+const full=s.view('A03',meta.image_path,{tool:'view_image',version_id:'A03-system-pulse-v006',detail:'original',scope:'whole semantic repair image',observation:'实际全图：44标题、三个等宽28指标、96×36 LIVE、白20%背景且白24文字的右下逆时针8度REVIEW均已恢复，说明卡500×150圆角24居中。文字清晰、彩条左右均穿边；卡内已出现柔和背景，但原始锐利细线仍能看见，需要局部进一步核验。'});
+const crop=s.view('A03',path.join(__dirname,'qa-blur-v006.png'),{tool:'view_image',version_id:'A03-system-pulse-v006',scope:'service-derived crop [330,310,950,490]',source_image_path:meta.image_path,observation:'实际放大查看：说明卡文字清晰，四条细条在卡内仍有锐利中心线，上下另出现模糊光晕。可观察到默认SRC_OVER没有完全替换原有锐利背景，严格背景模糊语义仍需修复。'});
+s.toolUsage('A03',{tool:'PIL via inspect-image.py',purpose:'Actual visual crop QA of background-only blur; immutable derivative, no final edits',input_paths:[meta.image_path],output_paths:[path.join(__dirname,'qa-blur-v006.png')],crop:[330,310,950,490],is_final:false});
+s.iteration('A03',{type:'visual',version_id:'A03-system-pulse-v006',parent_version:'A03-bounds-fixed-v005',completed:true,before_view_id:v005.id,after_view_id:full.id,additional_view_ids:[crop.id],changes:'Restore documented fonts, finite exact canvas, required cards, LIVE, REVIEW alpha/rotation/bbox; replace ImageFiltered with cropped BackdropFilter and crossing stripes.',comparison:'Compared with actual v005, title/font/metrics/labels/placement/alpha and foreground clarity now correct; actual v006 crop reveals persistent original sharp stripe centreline under default SRC_OVER. Not yet final.'});
+const input=fs.readFileSync(path.join(__dirname,'system-pulse-v006.snapshot'),'utf8');
+const fixed=input.replace('<BackdropFilter sigmaX="10" sigmaY="10" tileMode="CLAMP">','<BackdropFilter sigmaX="10" sigmaY="10" tileMode="CLAMP" blendMode="SRC">').replace('left="32" top="31" width="1000" height="68"','left="32" top="32" width="1000" height="68"');
+if(fixed===input)throw Error('Expected repair was not applied');
+fs.writeFileSync(path.join(__dirname,'system-pulse-v007.snapshot'),fixed,{flag:'wx'});
+const geometry=JSON.parse(fs.readFileSync(path.join(__dirname,'geometry-v006.json'),'utf8'));
+geometry.title.y=32;geometry.title.paint_note='Exact32 layout margin; actual final ink to be viewed.';geometry.blur_card.blendMode='SRC';
+fs.writeFileSync(path.join(__dirname,'geometry-v007.json'),JSON.stringify(geometry,null,2)+'\n',{flag:'wx'});
+fs.writeFileSync(path.join(__dirname,'semantic-views-v006.json'),JSON.stringify({full,crop},null,2)+'\n',{flag:'wx'});
+(async()=>{
+const r=await s.render('A03',fixed,{version_id:'A03-system-pulse-v007',parent_version:'A03-system-pulse-v006',type:'visual',before_view_id:crop.id,changes:'Use documented BackdropFilter blendMode SRC to replace sharp original backdrop inside ClipRRect, and make title layout margin exactly32. Preserve all foreground text and other restored blocks.',stem:'system-pulse',width:1280,height:800});
+s.taskCheckpoint('A03',{resume_notes:'v007 rendered after actual blur crop exposed SRC_OVER sharp residual; compare real v007 before accepting.',checkpoint:'A03-blur-blend-v007-rendered'});s.writeTaskMetrics('A03');
+console.log(JSON.stringify({ok:r.ok,status:r.http_status,image:r.image_path,metadata:r.meta_path,error:r.error_summary}));
+})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,0 +1,16 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),s=require('../_suite/suite.cjs');
+const d=s.taskDirs('A07'),infoBefore=s.countsFor('A07');
+const finalPhone=infoBefore.finals.find(a=>path.basename(a.image_path)==='travel-card.png');
+if(finalPhone?.version_id!=='A07-travel-v003')throw new Error('Wait for root to publish actual revised phone v003 before running this report.');
+const view=s.view('A07',path.join(d.temp,'requests/A07-request-000005/response.png'),{tool:'view_image',version_id:'A07-travel-v003',actor:'graph_producer',observation:'Actually opened final original service-response 720×1280 phone v003. Orange Q2 warning now explicitly reads 无障碍不适用, so inability to interchange at S05 is scoped to accessible travel; ordinary G4+R2 route remains displayed as 6 intervals/1 transfer. All other ordinary routes and complete G2+B1+R3 accessible replacement, first boarding and same-line pass-through rules remain clear, with no clipping. Map and phone still use matching R/B/G colors and letters.'});
+const info=s.countsFor('A07');
+let report=fs.readFileSync(path.join(d.temp,'reports/snapshot-usage-000001.md'),'utf8');
+report=report.replace('最终A07-travel-v002。','最终A07-travel-v003。');
+report=report.replace('本题共完成2次有真实前后图依据的视觉迭代，每图各1次。','本题共完成3次有真实前后图依据的视觉迭代，地图1次、手机2次。');
+report=report.replace(/当前整题真实记录为\d+次render，\d+成功，\d+失败；\d+个DSL版本、\d+次完整视觉迭代、\d+张最终图，\d+次已登记实际看图（root将追加自身最终看图记录）。/,`当前整题真实记录为${info.counts.snapshot_requests}次render，${info.counts.successful_snapshot_requests}成功，${info.counts.failed_snapshot_requests}失败；${info.counts.dsl_versions}个DSL版本、${info.counts.completed_visual_iterations}次完整视觉迭代、${info.counts.final_pngs}张当前最终图，${info.counts.image_views}次已登记实际看图（root可追加其最终审查记录）。`);
+const scope=`### 手机事实范围澄清与保留旧发布\n\n实际交叉看图发现v002橙条“普通路线不适用：东桥S05设施不足，不能换乘”容易被理解为普通乘客也无法换乘。root审查同意修正。手机v003通过真实服务重新渲染，把该提示明确改为“无障碍不适用”，不改变路线/数字；手机制作代理实际打开新图并与v002比较后登记完整visual迭代。我又实际打开v003原始服务响应图并登记${view.id}，确认限制只指无障碍旅程，普通G4→R2仍合法，所有站序/替代/规则完整。root把旧已发布v002 PNG与DSL完整移存本题superseded-finals，并保留原响应、所有DSL版本、旧artifact登记及supersession记录；当前travel-card同名文件是原始v003响应字节。旧作品不会作为第三张当前最终图重复计数。\n\n`;
+report=report.replace('## 文档、工具与真实消耗',scope+'## 文档、工具与真实消耗');
+s.report('A07',report);
+const m=s.writeTaskMetrics('A07',{validation:{producer_visual_review_passed:true,independent_route_review_passed:true,independent_geometry_review_passed:true,station_count:16,line_count:3,adjacent_bidirectional_pairs:16,query_optima:[[6,1],[6,1],[4,1]],accessible_optima:[[6,1],[6,2],[4,1]],false_facility_stations:['S03','S05','S09','S14'],map_final_version:'A07-map-v002',phone_final_version:'A07-travel-v003',accessibility_scope_wording_clarified:true}});
+console.log(JSON.stringify({report:path.join(d.output,'snapshot-usage.md'),view_id:view.id,counts:m.counts,resources:m.resources},null,2));

@@ -1,0 +1,4 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs');
+const details=[['000010','独立实际打开example01-v002：蓝色副行已从20增为24，内容完整一行且宽度适合400×240；与旧图比较更清晰，薄荷底/主标题无变化。'],['000011','独立实际打开handbook01-v002：印刷代码fontSize24与直接图示副行同步，17行完整无省略；副行更清晰且无换行/溢出，契约/错误/重试正文和安全边距维持通过。']];
+const views=details.map(([id,observation])=>{const m=JSON.parse(fs.readFileSync(`tmp/20261002-204314-6f31/A17/requests/A17-request-${id}/render-result.json`,'utf8'));return s.view('A17',m.image_path,{tool:'view_image',reviewer:'/root/a17_auditor',version_id:m.version_id,case_id:m.case_id,observation,scope:'actual refined image displayed; baseline previously physically reviewed'});});
+fs.writeFileSync(path.join(__dirname,'refined01-view-records-v001.json'),JSON.stringify(views,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify(views,null,2));

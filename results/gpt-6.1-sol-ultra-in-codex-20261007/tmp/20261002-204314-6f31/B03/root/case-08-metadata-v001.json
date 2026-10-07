@@ -1,0 +1,59 @@
+{
+  "id": "case-08",
+  "title": "风的转身 · 双涡流观察",
+  "dimensions": [
+    1500,
+    1100
+  ],
+  "audience": "数学/科学展览中的中学生与成人观众",
+  "use_context": "1500×1100横向观察展板，原尺寸近读，以箭头追踪模型曲线",
+  "user_goal": "识别两处反向涡流、观察局部方向与连接区域，区分模型和真实测量",
+  "content_basis": "显式自拟数学速度场，非真实天气/风速/流体实验数据。短程曲线为固定步长归一化Euler示踪。",
+  "visual_intent": "薄荷/暖沙短流线构成互绕场景，两个中心与右侧三个观察指令保证实际教学用途",
+  "completion_criteria": [
+    "双中心明确",
+    "各箭头随速度场",
+    "观察任务与模型限制清楚",
+    "线场不穿入右侧正文"
+  ],
+  "checks": {
+    "centers": [
+      [
+        -0.75,
+        0
+      ],
+      [
+        0.75,
+        0
+      ]
+    ],
+    "vortex_signs": [
+      1,
+      -1
+    ],
+    "background_velocity": [
+      0.26,
+      0
+    ],
+    "regularizer": 0.08,
+    "step": 0.066,
+    "seeds": 24,
+    "max_steps": 28,
+    "segments": 554,
+    "arrows": 18,
+    "formula": "F=(0.26,0)+sum sign*(-y,x-a)/((x-a)^2+y^2+0.08)",
+    "pixel_map": "X=530+217x,Y=626-208y"
+  },
+  "creative_started_at": "2026-10-06T06:06:41.844Z",
+  "creative_start_scope": "shared curatorial plan and following parallel construction",
+  "created_at": "2026-10-06T06:10:04.517Z",
+  "supporting_assets": [],
+  "technique": {
+    "method": "Computed short streamlines and tangent arrows using Transform rectangles; finite regularizer and viewport exit prevent divergent/external geometry",
+    "documents": [
+      "shared-doc-000004 Transform / Opacity / Positioned"
+    ],
+    "boundary": "Numerical model, 24 seeds and at most28 steps each; no physical weather prediction or true fluid solution. Primary information is horizontal stable text."
+  },
+  "element_count": 2474
+}

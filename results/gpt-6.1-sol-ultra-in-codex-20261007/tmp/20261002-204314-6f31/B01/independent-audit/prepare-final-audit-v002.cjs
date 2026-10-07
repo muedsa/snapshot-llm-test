@@ -1,0 +1,13 @@
+const fs=require('fs'),path=require('path');
+const source=fs.readFileSync(path.join(__dirname,'audit-ten-candidates-v001.cjs'),'utf8');
+let next=source.replace("raw02.includes('height=\"12\"')&&raw02.includes('top=\"913\"')","raw02.includes('<Positioned left=\"596\" top=\"901\" width=\"12\" height=\"2\">')&&raw02.includes('<Positioned left=\"593\" top=\"910\" width=\"6\" height=\"6\">')");
+if(next===source)throw new Error('Expected pre-execution line predicate missing');
+next=next.replace('const report={schema_version:1',`const selection=JSON.parse(fs.readFileSync(path.join(base,'root','reviewed-selection-v001.json'),'utf8'));
+ck('matches-root-reviewed-selection',selection.cases.length===10&&selection.cases.every(s=>{const c=candidates.find(c=>c.case_id===s.id);return c&&s.image_path===requests.find(r=>r.id===c.request_id).response_file&&c.root_view_ids.includes(s.view_id)&&fs.existsSync(s.metadata);}),{selection_file:'root/reviewed-selection-v001.json',cases:selection.cases.map(s=>({id:s.id,view_id:s.view_id}))});
+const report={schema_version:1,audit_script:'audit-ten-candidates-v002.cjs'`);
+fs.writeFileSync(path.join(__dirname,'audit-ten-candidates-v002.cjs'),next,{flag:'wx'});
+const prior=JSON.parse(fs.readFileSync(path.join(__dirname,'producer-six-audit-v001.json'),'utf8')).actual_independent_image_views[0];
+const evidence={id:prior.id,case_id:prior.case_id,request_id:prior.request_id,image_path:prior.image_file,sha256:prior.image_sha256,viewed_at:prior.recorded_at,tool:prior.tool,reviewer:prior.reviewer,observation:prior.observations,time_source:'实际view_image查看之后完成观察记录的UTC确认时间；工具本身未返回原生查看时间戳',source_record:'independent-audit/producer-six-audit-v001.json'};
+fs.writeFileSync(path.join(__dirname,'independent-view-import-v001.json'),JSON.stringify(evidence,null,2)+'\n',{flag:'wx'});
+fs.writeFileSync(path.join(__dirname,'pre-execution-static-refinement-v001.json'),JSON.stringify({created_at:new Date().toISOString(),parent_script:'audit-ten-candidates-v001.cjs',new_script:'audit-ten-candidates-v002.cjs',reason:'生成的vertical line长度在DSL为Positioned.width=12而非height；circle以中心913绘制后top=910。根据实际DSL在首次执行前修正谓词；旧脚本未执行、保留。另加入root选择清单一致性检查。',render:false,visual_iteration:false},null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({prepared:'audit-ten-candidates-v002.cjs',view_import:'independent-view-import-v001.json'}));

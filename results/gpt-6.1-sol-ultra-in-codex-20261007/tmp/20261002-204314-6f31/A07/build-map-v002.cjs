@@ -1,0 +1,11 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),s=require('../_suite/suite.cjs');
+const d=s.taskDirs('A07'),r=JSON.parse(fs.readFileSync(path.join(d.temp,'requests/A07-request-000002/render-result.json'),'utf8'));
+const view=s.view('A07',r.image_path,{tool:'view_image',version_id:'A07-map-v001',actor:'graph_producer',observation:'Actual 1600×1000 image: R/B/G lines and letters match input station orders; all sixteen station names/IDs and four false facility statuses are present; shared S04/S08/S05 use double rings. Only non-station crossing shows a white bridge gap at R/G crossing, no station ring. Most text is clear, but S07 facility label begins x95 next to B endpoint badge ending x105, visibly crowding/overlapping at the badge top corner. Needs horizontal separation.'});
+s.iteration('A07',{type:'baseline',version_id:'A07-map-v001',completed:true,image_path:r.image_path,after_view_id:view.id,observation:view.observation});
+let dsl=fs.readFileSync(path.join(d.temp,'network-map-v001.snapshot'),'utf8');
+dsl=dsl.replace('<Positioned left="95" top="614"','<Positioned left="180" top="614"').replace('<Positioned left="95" top="650"','<Positioned left="180" top="650"');
+fs.writeFileSync(path.join(d.temp,'network-map-v002.snapshot'),dsl,{flag:'wx'});
+const geo=JSON.parse(fs.readFileSync(path.join(d.temp,'map-geometry-v001.json'),'utf8'));geo.nodes.find(a=>a.id==='S07').label.x=180;geo.version_id='A07-map-v002';geo.visual_change={before_view_id:view.id,change:'Shift S07 name and facility label x95→180 to separate text from B endpoint letter badge.'};
+fs.writeFileSync(path.join(d.temp,'map-geometry-v002.json'),JSON.stringify(geo,null,2)+'\n',{flag:'wx'});
+(async()=>{const a=await s.render('A07',dsl,{version_id:'A07-map-v002',type:'visual',parent_version:'A07-map-v001',before_view_id:view.id,changes:geo.visual_change.change,stem:'network-map',width:1600,height:1000});console.log(JSON.stringify({ok:a.ok,id:a.id,status:a.http_status,image_path:a.image_path,meta_path:a.meta_path,error:a.error_summary,dimensions:a.png_dimensions}));})();

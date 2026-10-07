@@ -1,0 +1,8 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs'),d=s.taskDirs('A22');
+const meta=JSON.parse(fs.readFileSync(path.join(d.temp,'requests/A22-request-000002/render-result.json'),'utf8'));
+const v=s.view('A22',meta.image_path,{reviewer:'root',tool:'view_image',version_id:meta.version_id,round_id:'round-01',observation:'真实第二幅完整1600×1000：口径说明右移后与250000刻度明确分开，四KPI和六行明细保持原值，12柱同0起点/比例与准确标签，9月双最高与6月回落事实结论清楚；图表/表格/页脚无裁切或重叠。'});
+s.iteration('A22',{type:'visual',version_id:meta.version_id,parent_version:'A22-round-01-dashboard-v001',round_id:'round-01',completed:true,image_path:meta.image_path,before_view_id:'A22-view-000001',after_view_id:v.id,changes:'仅图表口径说明x64→156,width744→670；数据/其他DSL保持。',comparison:'旧原图及真实局部贴靠已看过；第二幅原图实际看过，说明与最高刻度水平方向分离，其余数字、表格、柱图、标题保持，视觉问题解决。'});
+const review={task_id:'A22',round_id:'round-01',reviewer:'root',actual_tool:'view_image',images:[{image_path:meta.image_path,version_id:meta.version_id,round_id:'round-01',existing_view_id:v.id,observation:v.observation}],validation:{original_month_strings:true,canvas:[1600,1000],body_min22:true,shared_zero_axis:true,kpis:[918624,262124,3045,'11.15%'],all_six_table_rows_and_twelve_bars_present:true,supported_conclusions:true,unresolved_visual_defects:[]}};
+fs.writeFileSync(path.join(__dirname,'root-review-v001.json'),JSON.stringify(review,null,2)+'\n',{flag:'wx'});
+s.taskCheckpoint('A22',{round_id:'round-01',visual_review_evidence:[v.id],resume_notes:'首轮两真实PNG/局部实际查看，1完整视觉迭代解决最高刻度贴靠；final root view3通过，等待独立数据/真实DSL核后归档。'});
+s.writeTaskMetrics('A22');s.aggregate();console.log(JSON.stringify({root_view_id:v.id,final_meta:meta.meta_path}));

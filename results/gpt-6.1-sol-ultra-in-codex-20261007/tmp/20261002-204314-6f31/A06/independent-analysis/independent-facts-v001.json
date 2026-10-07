@@ -1,0 +1,285 @@
+{
+  "generated_at": "2026-10-03T17:03:05.632Z",
+  "task_id": "A06",
+  "run_id": "20261002-204314-6f31",
+  "scope": "Independent input and graph analysis; no actual image inspection claimed",
+  "source": "D:\\workspaces\\gpt-6.1-sol-ultra\\tasks\\A06-dependency-graph\\inputs\\graph.json",
+  "source_sha256": "51299513d1a70bf034146946dba96d15a72601e1d35d63b1aa8f46f6c8a20820",
+  "node_count": 14,
+  "solid_edge_count": 16,
+  "feedback_edge_count": 2,
+  "dag_sort_excludes_feedback": true,
+  "topological_order": [
+    "N01",
+    "N02",
+    "N03",
+    "N04",
+    "N05",
+    "N07",
+    "N06",
+    "N08",
+    "N09",
+    "N10",
+    "N11",
+    "N12",
+    "N13",
+    "N14"
+  ],
+  "topological_layers": {
+    "0": [
+      "N01"
+    ],
+    "1": [
+      "N02",
+      "N03"
+    ],
+    "2": [
+      "N04",
+      "N05"
+    ],
+    "3": [
+      "N07",
+      "N06"
+    ],
+    "4": [
+      "N08"
+    ],
+    "5": [
+      "N09"
+    ],
+    "6": [
+      "N10"
+    ],
+    "7": [
+      "N11"
+    ],
+    "8": [
+      "N12"
+    ],
+    "9": [
+      "N13"
+    ],
+    "10": [
+      "N14"
+    ]
+  },
+  "node_audit": [
+    {
+      "id": "N01",
+      "label": "需求冻结",
+      "layer": 0,
+      "in_neighbors": [],
+      "out_neighbors": [
+        "N02",
+        "N03"
+      ]
+    },
+    {
+      "id": "N02",
+      "label": "输入检查",
+      "layer": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N04",
+        "N05"
+      ]
+    },
+    {
+      "id": "N03",
+      "label": "字体查询",
+      "layer": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N06"
+      ]
+    },
+    {
+      "id": "N04",
+      "label": "数据计算",
+      "layer": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N07",
+        "N13"
+      ]
+    },
+    {
+      "id": "N05",
+      "label": "内容规划",
+      "layer": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N06"
+      ]
+    },
+    {
+      "id": "N06",
+      "label": "版式系统",
+      "layer": 3,
+      "in_neighbors": [
+        "N03",
+        "N05"
+      ],
+      "out_neighbors": [
+        "N08"
+      ]
+    },
+    {
+      "id": "N07",
+      "label": "图表生成",
+      "layer": 3,
+      "in_neighbors": [
+        "N04"
+      ],
+      "out_neighbors": [
+        "N08"
+      ]
+    },
+    {
+      "id": "N08",
+      "label": "DSL构建",
+      "layer": 4,
+      "in_neighbors": [
+        "N06",
+        "N07"
+      ],
+      "out_neighbors": [
+        "N09"
+      ]
+    },
+    {
+      "id": "N09",
+      "label": "首轮渲染",
+      "layer": 5,
+      "in_neighbors": [
+        "N08"
+      ],
+      "out_neighbors": [
+        "N10"
+      ]
+    },
+    {
+      "id": "N10",
+      "label": "视觉检查",
+      "layer": 6,
+      "in_neighbors": [
+        "N09"
+      ],
+      "out_neighbors": [
+        "N11"
+      ]
+    },
+    {
+      "id": "N11",
+      "label": "问题修复",
+      "layer": 7,
+      "in_neighbors": [
+        "N10"
+      ],
+      "out_neighbors": [
+        "N12"
+      ]
+    },
+    {
+      "id": "N12",
+      "label": "回归渲染",
+      "layer": 8,
+      "in_neighbors": [
+        "N11"
+      ],
+      "out_neighbors": [
+        "N13"
+      ]
+    },
+    {
+      "id": "N13",
+      "label": "产物校验",
+      "layer": 9,
+      "in_neighbors": [
+        "N12",
+        "N04"
+      ],
+      "out_neighbors": [
+        "N14"
+      ]
+    },
+    {
+      "id": "N14",
+      "label": "交付归档",
+      "layer": 10,
+      "in_neighbors": [
+        "N13"
+      ],
+      "out_neighbors": []
+    }
+  ],
+  "longest_path_node_count": 11,
+  "longest_solid_paths": [
+    [
+      "N01",
+      "N02",
+      "N05",
+      "N06",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ],
+    [
+      "N01",
+      "N02",
+      "N04",
+      "N07",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ]
+  ],
+  "non_adjacent_layer_solid_edges": [
+    [
+      "N03",
+      "N06"
+    ],
+    [
+      "N04",
+      "N13"
+    ]
+  ],
+  "feedback_semantics": [
+    {
+      "from": "N09",
+      "to": "N08",
+      "meaning": "首轮渲染失败后回到DSL构建",
+      "diagram_label": "失败后回到构建"
+    },
+    {
+      "from": "N10",
+      "to": "N08",
+      "meaning": "视觉检查发现问题后回到DSL构建修改/修复",
+      "diagram_label": "检查发现问题后修复 · 回到构建"
+    }
+  ],
+  "visual_risks": [
+    "N03→N06越过一个拓扑层，路线不能看似接入N04或N05。",
+    "N04→N13是远距离先决边，必须实线、向前箭头，不能误作反馈或漏掉。",
+    "N09→N08与N10→N08为两条独立虚线反馈；各有箭头与说明，均不进入拓扑层。",
+    "线交叉处无连接点不是新的依赖；不能在非端点画连接圆点。",
+    "N06与N07并行后在N08汇合，N02分叉到N04/N05，N01分叉到N02/N03。",
+    "N10→N11仍是输入指定的普通先决边，与N10→N08反馈共存。"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "A23",
+  "title": "格式边界下的动画分镜交付",
+  "category": "能力边界",
+  "challenge": "将多项不支持要求转成完整可执行的分镜与后续接口。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "客户希望获得“文字可编辑SVG、CMYK印刷稿、6帧透明GIF动画和PNG封面”，主题\n为“结构汇聚成图像”，只准Snapshot类DOM DSL和open-snapshot服务作图。\n先依据实际文档/接口判定哪些原生支持，别编造动画、路径、SVG、CMYK参数。\n本题已授权以下替代，无需再次询问：交付1200×800 RGB PNG封面，以及6张\n600×600透明PNG关键帧，分别保存完整DSL；用 timing.json 表达250ms/帧、\n循环播放和帧序。无需合成GIF、矢量化、转换CMYK或创建假的目标格式文件。\n文字“从结构到画面”在封面可读；动画帧不含文字，包含始终存在的12个几何\n单元，由分散逐步汇聚，末帧构成可识别图形。各帧主体颜色/数量/尺度一致，\n单元轨迹连续、无突然消失，透明背景真实。可复用参数生成DSL，不嵌预渲染帧。\n6帧首尾若不连续，可在timing说明循环会跳变，不要宣称无缝；可设计闭合轨迹\n实现无缝，但要给对应证据。逐帧和接触表看图检查。附 limitations.md（逐项\n请求/支持情况/依据/替代/仍需外部后续工作）、frame-data.json 与 timing.json。\n这里考察完整替代交付，不能仅写“不支持”而结束，也不要求额外工具导出格式。\n",
+  "inputs": [],
+  "required_outputs": [
+    {
+      "filename": "cover.png",
+      "dsl": "cover.snapshot",
+      "width": 1200,
+      "height": 800,
+      "purpose": "RGB封面"
+    },
+    {
+      "filename": "frame-01.png",
+      "dsl": "frame-01.snapshot",
+      "width": 600,
+      "height": 600,
+      "purpose": "透明关键帧1"
+    },
+    {
+      "filename": "frame-02.png",
+      "dsl": "frame-02.snapshot",
+      "width": 600,
+      "height": 600,
+      "purpose": "透明关键帧2"
+    },
+    {
+      "filename": "frame-03.png",
+      "dsl": "frame-03.snapshot",
+      "width": 600,
+      "height": 600,
+      "purpose": "透明关键帧3"
+    },
+    {
+      "filename": "frame-04.png",
+      "dsl": "frame-04.snapshot",
+      "width": 600,
+      "height": 600,
+      "purpose": "透明关键帧4"
+    },
+    {
+      "filename": "frame-05.png",
+      "dsl": "frame-05.snapshot",
+      "width": 600,
+      "height": 600,
+      "purpose": "透明关键帧5"
+    },
+    {
+      "filename": "frame-06.png",
+      "dsl": "frame-06.snapshot",
+      "width": 600,
+      "height": 600,
+      "purpose": "透明关键帧6"
+    }
+  ],
+  "additional_outputs": [
+    "limitations.md",
+    "frame-data.json",
+    "timing.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A23/",
+  "temp_dir_template": "tmp/{run_id}/A23/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

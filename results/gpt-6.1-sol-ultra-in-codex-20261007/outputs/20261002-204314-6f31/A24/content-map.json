@@ -1,0 +1,5573 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "run_id": "20261002-204314-6f31",
+  "canonical_schedule_source": "schedule-analysis/schedule-v002.json",
+  "canonical_schedule_sha256": "8554450e28c6cc725d761436e3db20a5307dd95c5a28a5c8877d485aa42d98f4",
+  "shared_facts": {
+    "brand": "叠光 · 发布演练",
+    "date": "2026-11-07",
+    "finish": "13:20",
+    "buffer": 160,
+    "makespan": 260,
+    "workload": 485,
+    "CP": 255,
+    "workload_bound": 242.5,
+    "risks": [
+      {
+        "id": "K1",
+        "task": "R02",
+        "impact": "服务限流导致等待",
+        "mitigation": "保留响应并依据Retry-After重试"
+      },
+      {
+        "id": "K2",
+        "task": "R05",
+        "impact": "长文案导致版式回归",
+        "mitigation": "冻结文案后再完成适配"
+      },
+      {
+        "id": "K3",
+        "task": "R10",
+        "impact": "实际图像暴露裁剪或比例错误",
+        "mitigation": "预留返工缓冲，不跳过看图"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "R01",
+        "label": "需求核对",
+        "minutes": 25,
+        "teams": [
+          "design"
+        ],
+        "depends": [],
+        "team": "design",
+        "start_offset_minutes": 0,
+        "end_offset_minutes": 25,
+        "start_time": "09:00",
+        "end_time": "09:25",
+        "start_at": "2026-11-07T09:00:00+08:00",
+        "end_at": "2026-11-07T09:25:00+08:00"
+      },
+      {
+        "id": "R02",
+        "label": "服务与字体探测",
+        "minutes": 20,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [],
+        "team": "engineering",
+        "start_offset_minutes": 0,
+        "end_offset_minutes": 20,
+        "start_time": "09:00",
+        "end_time": "09:20",
+        "start_at": "2026-11-07T09:00:00+08:00",
+        "end_at": "2026-11-07T09:20:00+08:00"
+      },
+      {
+        "id": "R03",
+        "label": "数据清洗",
+        "minutes": 40,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R02"
+        ],
+        "team": "engineering",
+        "start_offset_minutes": 20,
+        "end_offset_minutes": 60,
+        "start_time": "09:20",
+        "end_time": "10:00",
+        "start_at": "2026-11-07T09:20:00+08:00",
+        "end_at": "2026-11-07T10:00:00+08:00"
+      },
+      {
+        "id": "R04",
+        "label": "视觉系统",
+        "minutes": 60,
+        "teams": [
+          "design"
+        ],
+        "depends": [
+          "R01"
+        ],
+        "team": "design",
+        "start_offset_minutes": 25,
+        "end_offset_minutes": 85,
+        "start_time": "09:25",
+        "end_time": "10:25",
+        "start_at": "2026-11-07T09:25:00+08:00",
+        "end_at": "2026-11-07T10:25:00+08:00"
+      },
+      {
+        "id": "R05",
+        "label": "文案审校",
+        "minutes": 30,
+        "teams": [
+          "design",
+          "engineering"
+        ],
+        "depends": [
+          "R01"
+        ],
+        "team": "engineering",
+        "start_offset_minutes": 60,
+        "end_offset_minutes": 90,
+        "start_time": "10:00",
+        "end_time": "10:30",
+        "start_at": "2026-11-07T10:00:00+08:00",
+        "end_at": "2026-11-07T10:30:00+08:00"
+      },
+      {
+        "id": "R06",
+        "label": "图表计算",
+        "minutes": 45,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R03"
+        ],
+        "team": "engineering",
+        "start_offset_minutes": 90,
+        "end_offset_minutes": 135,
+        "start_time": "10:30",
+        "end_time": "11:15",
+        "start_at": "2026-11-07T10:30:00+08:00",
+        "end_at": "2026-11-07T11:15:00+08:00"
+      },
+      {
+        "id": "R07",
+        "label": "主海报构建",
+        "minutes": 70,
+        "teams": [
+          "design"
+        ],
+        "depends": [
+          "R04",
+          "R05"
+        ],
+        "team": "design",
+        "start_offset_minutes": 90,
+        "end_offset_minutes": 160,
+        "start_time": "10:30",
+        "end_time": "11:40",
+        "start_at": "2026-11-07T10:30:00+08:00",
+        "end_at": "2026-11-07T11:40:00+08:00"
+      },
+      {
+        "id": "R08",
+        "label": "驾驶舱构建",
+        "minutes": 65,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R04",
+          "R06"
+        ],
+        "team": "engineering",
+        "start_offset_minutes": 135,
+        "end_offset_minutes": 200,
+        "start_time": "11:15",
+        "end_time": "12:20",
+        "start_at": "2026-11-07T11:15:00+08:00",
+        "end_at": "2026-11-07T12:20:00+08:00"
+      },
+      {
+        "id": "R09",
+        "label": "手机适配",
+        "minutes": 45,
+        "teams": [
+          "design",
+          "engineering"
+        ],
+        "depends": [
+          "R07"
+        ],
+        "team": "design",
+        "start_offset_minutes": 160,
+        "end_offset_minutes": 205,
+        "start_time": "11:40",
+        "end_time": "12:25",
+        "start_at": "2026-11-07T11:40:00+08:00",
+        "end_at": "2026-11-07T12:25:00+08:00"
+      },
+      {
+        "id": "R10",
+        "label": "视觉回归检查",
+        "minutes": 35,
+        "teams": [
+          "design"
+        ],
+        "depends": [
+          "R07",
+          "R08",
+          "R09"
+        ],
+        "team": "design",
+        "start_offset_minutes": 205,
+        "end_offset_minutes": 240,
+        "start_time": "12:25",
+        "end_time": "13:00",
+        "start_at": "2026-11-07T12:25:00+08:00",
+        "end_at": "2026-11-07T13:00:00+08:00"
+      },
+      {
+        "id": "R11",
+        "label": "产物与数据核验",
+        "minutes": 30,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R08",
+          "R09"
+        ],
+        "team": "engineering",
+        "start_offset_minutes": 205,
+        "end_offset_minutes": 235,
+        "start_time": "12:25",
+        "end_time": "12:55",
+        "start_at": "2026-11-07T12:25:00+08:00",
+        "end_at": "2026-11-07T12:55:00+08:00"
+      },
+      {
+        "id": "R12",
+        "label": "交付归档",
+        "minutes": 20,
+        "teams": [
+          "design",
+          "engineering"
+        ],
+        "depends": [
+          "R10",
+          "R11"
+        ],
+        "team": "design",
+        "start_offset_minutes": 240,
+        "end_offset_minutes": 260,
+        "start_time": "13:00",
+        "end_time": "13:20",
+        "start_at": "2026-11-07T13:00:00+08:00",
+        "end_at": "2026-11-07T13:20:00+08:00"
+      }
+    ]
+  },
+  "images": [
+    {
+      "stem": "execution-board",
+      "width": 1920,
+      "height": 1080,
+      "schedule_source": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\A24\\schedule-analysis\\schedule.json",
+      "schedule_sha256": "798b8f7e0b2132bc8f61301110bfabe3737db97bf2c95c8fe443207d0b685e85",
+      "texts": [
+        {
+          "id": "brand",
+          "box": [
+            64,
+            38,
+            980,
+            83
+          ],
+          "text": "叠光 · 发布演练",
+          "font_size": 60,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "subtitle",
+          "box": [
+            67,
+            133,
+            940,
+            44
+          ],
+          "text": "双团队执行泳道  /  2026-11-07",
+          "font_size": 30,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "finish",
+          "box": [
+            1140,
+            48,
+            300,
+            64
+          ],
+          "text": "13:20 完成",
+          "font_size": 44,
+          "color": "#248C91",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "buffer",
+          "box": [
+            1480,
+            48,
+            375,
+            64
+          ],
+          "text": "160 min 缓冲",
+          "font_size": 42,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "basis",
+          "box": [
+            1140,
+            132,
+            715,
+            40
+          ],
+          "text": "已核可行排程 · 09:00 开工 / 16:00 截止",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "design-label",
+          "box": [
+            65,
+            302,
+            190,
+            44
+          ],
+          "text": "设计团队",
+          "font_size": 30,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "design-latin",
+          "box": [
+            65,
+            348,
+            190,
+            35
+          ],
+          "text": "design",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "design-tick-9",
+          "box": [
+            237,
+            246,
+            86,
+            35
+          ],
+          "text": "09:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "design-tick-10",
+          "box": [
+            457,
+            246,
+            86,
+            35
+          ],
+          "text": "10:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "design-tick-11",
+          "box": [
+            677,
+            246,
+            86,
+            35
+          ],
+          "text": "11:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "design-tick-12",
+          "box": [
+            897,
+            246,
+            86,
+            35
+          ],
+          "text": "12:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "design-tick-13",
+          "box": [
+            1117,
+            246,
+            86,
+            35
+          ],
+          "text": "13:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "design-tick-14",
+          "box": [
+            1337,
+            246,
+            86,
+            35
+          ],
+          "text": "14:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "design-tick-15",
+          "box": [
+            1557,
+            246,
+            86,
+            35
+          ],
+          "text": "15:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "design-tick-16",
+          "box": [
+            1777,
+            246,
+            86,
+            35
+          ],
+          "text": "16:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-id-R01",
+          "box": [
+            284,
+            307,
+            83.66666666666666,
+            30
+          ],
+          "text": "R01",
+          "font_size": 24,
+          "color": "#FFFFFF",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R01",
+          "box": [
+            284,
+            338,
+            83.66666666666666,
+            25
+          ],
+          "text": "25m",
+          "font_size": 20,
+          "color": "#FFFFFF",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R01",
+          "box": [
+            292,
+            391,
+            176,
+            28
+          ],
+          "text": "需求核对",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R01",
+          "box": [
+            292,
+            420,
+            176,
+            25
+          ],
+          "text": "09:00–09:25",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R01",
+          "box": [
+            292,
+            447,
+            176,
+            26
+          ],
+          "text": "依赖 —",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R04",
+          "box": [
+            375.66666666666663,
+            307,
+            212,
+            30
+          ],
+          "text": "R04",
+          "font_size": 24,
+          "color": "#FFFFFF",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R04",
+          "box": [
+            375.66666666666663,
+            338,
+            212,
+            25
+          ],
+          "text": "60m",
+          "font_size": 20,
+          "color": "#FFFFFF",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R04",
+          "box": [
+            362,
+            501,
+            220,
+            28
+          ],
+          "text": "视觉系统",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R04",
+          "box": [
+            362,
+            530,
+            220,
+            25
+          ],
+          "text": "09:25–10:25",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R04",
+          "box": [
+            362,
+            557,
+            220,
+            26
+          ],
+          "text": "依赖 R01",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R07",
+          "box": [
+            614,
+            307,
+            248.66666666666663,
+            30
+          ],
+          "text": "R07",
+          "font_size": 24,
+          "color": "#FFFFFF",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R07",
+          "box": [
+            614,
+            338,
+            248.66666666666663,
+            25
+          ],
+          "text": "70m",
+          "font_size": 20,
+          "color": "#FFFFFF",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R07",
+          "box": [
+            634,
+            391,
+            220,
+            28
+          ],
+          "text": "主海报构建",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R07",
+          "box": [
+            634,
+            420,
+            220,
+            25
+          ],
+          "text": "10:30–11:40",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R07",
+          "box": [
+            634,
+            447,
+            220,
+            26
+          ],
+          "text": "依赖 R04 · R05",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R09",
+          "box": [
+            870.6666666666666,
+            307,
+            157,
+            30
+          ],
+          "text": "R09",
+          "font_size": 24,
+          "color": "#FFFFFF",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R09",
+          "box": [
+            870.6666666666666,
+            338,
+            157,
+            25
+          ],
+          "text": "45m",
+          "font_size": 20,
+          "color": "#FFFFFF",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R09",
+          "box": [
+            831,
+            501,
+            226,
+            28
+          ],
+          "text": "手机适配",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R09",
+          "box": [
+            831,
+            530,
+            226,
+            25
+          ],
+          "text": "11:40–12:25",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R09",
+          "box": [
+            831,
+            557,
+            226,
+            26
+          ],
+          "text": "依赖 R07",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R10",
+          "box": [
+            1035.6666666666665,
+            307,
+            120.33333333333331,
+            30
+          ],
+          "text": "R10",
+          "font_size": 24,
+          "color": "#FFFFFF",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R10",
+          "box": [
+            1035.6666666666665,
+            338,
+            120.33333333333331,
+            25
+          ],
+          "text": "35m",
+          "font_size": 20,
+          "color": "#FFFFFF",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R10",
+          "box": [
+            999,
+            391,
+            238,
+            28
+          ],
+          "text": "视觉回归检查",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R10",
+          "box": [
+            999,
+            420,
+            238,
+            25
+          ],
+          "text": "12:25–13:00",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R10",
+          "box": [
+            999,
+            447,
+            238,
+            26
+          ],
+          "text": "依赖 R07 · R08 · R09",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R12",
+          "box": [
+            1164,
+            307,
+            65.33333333333333,
+            30
+          ],
+          "text": "R12",
+          "font_size": 24,
+          "color": "#FFFFFF",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R12",
+          "box": [
+            1164,
+            338,
+            65.33333333333333,
+            25
+          ],
+          "text": "20m",
+          "font_size": 20,
+          "color": "#FFFFFF",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R12",
+          "box": [
+            1132,
+            501,
+            222,
+            28
+          ],
+          "text": "交付归档",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R12",
+          "box": [
+            1132,
+            530,
+            222,
+            25
+          ],
+          "text": "13:00–13:20",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R12",
+          "box": [
+            1132,
+            557,
+            222,
+            26
+          ],
+          "text": "依赖 R10 · R11",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "engineering-label",
+          "box": [
+            65,
+            684,
+            190,
+            44
+          ],
+          "text": "工程团队",
+          "font_size": 30,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "engineering-latin",
+          "box": [
+            65,
+            730,
+            190,
+            35
+          ],
+          "text": "engineering",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "engineering-tick-9",
+          "box": [
+            237,
+            628,
+            86,
+            35
+          ],
+          "text": "09:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "engineering-tick-10",
+          "box": [
+            457,
+            628,
+            86,
+            35
+          ],
+          "text": "10:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "engineering-tick-11",
+          "box": [
+            677,
+            628,
+            86,
+            35
+          ],
+          "text": "11:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "engineering-tick-12",
+          "box": [
+            897,
+            628,
+            86,
+            35
+          ],
+          "text": "12:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "engineering-tick-13",
+          "box": [
+            1117,
+            628,
+            86,
+            35
+          ],
+          "text": "13:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "engineering-tick-14",
+          "box": [
+            1337,
+            628,
+            86,
+            35
+          ],
+          "text": "14:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "engineering-tick-15",
+          "box": [
+            1557,
+            628,
+            86,
+            35
+          ],
+          "text": "15:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "engineering-tick-16",
+          "box": [
+            1777,
+            628,
+            86,
+            35
+          ],
+          "text": "16:00",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-id-R02",
+          "box": [
+            284,
+            689,
+            65.33333333333333,
+            30
+          ],
+          "text": "R02",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R02",
+          "box": [
+            284,
+            720,
+            65.33333333333333,
+            25
+          ],
+          "text": "20m",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R02",
+          "box": [
+            292,
+            781,
+            176,
+            28
+          ],
+          "text": "服务与字体探测",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R02",
+          "box": [
+            292,
+            810,
+            176,
+            25
+          ],
+          "text": "09:00–09:20",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R02",
+          "box": [
+            292,
+            837,
+            176,
+            26
+          ],
+          "text": "依赖 —",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R03",
+          "box": [
+            357.3333333333333,
+            689,
+            138.66666666666666,
+            30
+          ],
+          "text": "R03",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R03",
+          "box": [
+            357.3333333333333,
+            720,
+            138.66666666666666,
+            25
+          ],
+          "text": "40m",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R03",
+          "box": [
+            359,
+            891,
+            206,
+            28
+          ],
+          "text": "数据清洗",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R03",
+          "box": [
+            359,
+            920,
+            206,
+            25
+          ],
+          "text": "09:20–10:00",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R03",
+          "box": [
+            359,
+            947,
+            206,
+            26
+          ],
+          "text": "依赖 R02",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R05",
+          "box": [
+            504,
+            689,
+            102,
+            30
+          ],
+          "text": "R05",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R05",
+          "box": [
+            504,
+            720,
+            102,
+            25
+          ],
+          "text": "30m",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R05",
+          "box": [
+            502,
+            781,
+            221,
+            28
+          ],
+          "text": "文案审校",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R05",
+          "box": [
+            502,
+            810,
+            221,
+            25
+          ],
+          "text": "10:00–10:30",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R05",
+          "box": [
+            502,
+            837,
+            221,
+            26
+          ],
+          "text": "依赖 R01",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R06",
+          "box": [
+            614,
+            689,
+            157,
+            30
+          ],
+          "text": "R06",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R06",
+          "box": [
+            614,
+            720,
+            157,
+            25
+          ],
+          "text": "45m",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R06",
+          "box": [
+            604,
+            891,
+            221,
+            28
+          ],
+          "text": "图表计算",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R06",
+          "box": [
+            604,
+            920,
+            221,
+            25
+          ],
+          "text": "10:30–11:15",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R06",
+          "box": [
+            604,
+            947,
+            221,
+            26
+          ],
+          "text": "依赖 R03",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R08",
+          "box": [
+            779,
+            689,
+            230.33333333333331,
+            30
+          ],
+          "text": "R08",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R08",
+          "box": [
+            779,
+            720,
+            230.33333333333331,
+            25
+          ],
+          "text": "65m",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R08",
+          "box": [
+            792,
+            781,
+            236,
+            28
+          ],
+          "text": "驾驶舱构建",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R08",
+          "box": [
+            792,
+            810,
+            236,
+            25
+          ],
+          "text": "11:15–12:20",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R08",
+          "box": [
+            792,
+            837,
+            236,
+            26
+          ],
+          "text": "依赖 R04 · R06",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "block-id-R11",
+          "box": [
+            1035.6666666666665,
+            689,
+            102,
+            30
+          ],
+          "text": "R11",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true,
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "block-minutes-R11",
+          "box": [
+            1035.6666666666665,
+            720,
+            102,
+            25
+          ],
+          "text": "30m",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {
+            "align": "CENTER"
+          }
+        },
+        {
+          "id": "label-R11",
+          "box": [
+            974,
+            891,
+            256,
+            28
+          ],
+          "text": "产物与数据核验",
+          "font_size": 22,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "times-R11",
+          "box": [
+            974,
+            920,
+            256,
+            25
+          ],
+          "text": "12:25–12:55",
+          "font_size": 20,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "dependencies-R11",
+          "box": [
+            974,
+            947,
+            256,
+            26
+          ],
+          "text": "依赖 R08 · R09",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "design-idle",
+          "box": [
+            280,
+            596,
+            1130,
+            33
+          ],
+          "text": "空档 10:25–10:30   ·   工作 255 min   ·   同团队任务不重叠",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "buffer-band-caption",
+          "box": [
+            1316,
+            321,
+            425,
+            36
+          ],
+          "text": "13:20–16:00  计划缓冲",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "engineering-idle",
+          "box": [
+            280,
+            991,
+            1460,
+            34
+          ],
+          "text": "空档 12:20–12:25、12:55–13:20   ·   工作 230 min   ·   13:20后进入全局缓冲",
+          "font_size": 22,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "engineering-free-caption",
+          "box": [
+            1324,
+            701,
+            425,
+            36
+          ],
+          "text": "12:55后工程团队空闲",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "footer",
+          "box": [
+            64,
+            1042,
+            1784,
+            30
+          ],
+          "text": "真实时间同尺度：09:00 → 16:00  /  任务编号连接标签与依赖索引  /  12项完整执行，保留全部检查",
+          "font_size": 20,
+          "color": "#536F71",
+          "options": {}
+        }
+      ],
+      "shapes": [
+        {
+          "id": "header-rule",
+          "box": [
+            64,
+            201,
+            1792,
+            2
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-band",
+          "box": [
+            280,
+            300,
+            1540,
+            66
+          ],
+          "color": "#E6ECE6",
+          "options": {
+            "radius": 7
+          }
+        },
+        {
+          "id": "design-grid-9",
+          "box": [
+            280,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-grid-10",
+          "box": [
+            500,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-grid-11",
+          "box": [
+            720,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-grid-12",
+          "box": [
+            940,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-grid-13",
+          "box": [
+            1160,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-grid-14",
+          "box": [
+            1380,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-grid-15",
+          "box": [
+            1600,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "design-grid-16",
+          "box": [
+            1820,
+            292,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "task-R01",
+          "box": [
+            280,
+            300,
+            91.66666666666666,
+            66
+          ],
+          "color": "#248C91",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R01",
+          "box": [
+            280,
+            383,
+            200,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R04",
+          "box": [
+            371.66666666666663,
+            300,
+            220,
+            66
+          ],
+          "color": "#248C91",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R04",
+          "box": [
+            350,
+            493,
+            244,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R07",
+          "box": [
+            610,
+            300,
+            256.66666666666663,
+            66
+          ],
+          "color": "#248C91",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R07",
+          "box": [
+            622,
+            383,
+            244,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R09",
+          "box": [
+            866.6666666666666,
+            300,
+            165,
+            66
+          ],
+          "color": "#248C91",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R09",
+          "box": [
+            819,
+            493,
+            250,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R10",
+          "box": [
+            1031.6666666666665,
+            300,
+            128.33333333333331,
+            66
+          ],
+          "color": "#248C91",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R10",
+          "box": [
+            987,
+            383,
+            262,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R12",
+          "box": [
+            1160,
+            300,
+            73.33333333333333,
+            66
+          ],
+          "color": "#248C91",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R12",
+          "box": [
+            1120,
+            493,
+            246,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "design-finish-mark",
+          "box": [
+            1233.3333333333333,
+            292,
+            2,
+            82
+          ],
+          "color": "#248C91",
+          "options": {}
+        },
+        {
+          "id": "design-deadline",
+          "box": [
+            1820,
+            288,
+            3,
+            90
+          ],
+          "color": "#A84939",
+          "options": {}
+        },
+        {
+          "id": "engineering-band",
+          "box": [
+            280,
+            682,
+            1540,
+            66
+          ],
+          "color": "#E6ECE6",
+          "options": {
+            "radius": 7
+          }
+        },
+        {
+          "id": "engineering-grid-9",
+          "box": [
+            280,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "engineering-grid-10",
+          "box": [
+            500,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "engineering-grid-11",
+          "box": [
+            720,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "engineering-grid-12",
+          "box": [
+            940,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "engineering-grid-13",
+          "box": [
+            1160,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "engineering-grid-14",
+          "box": [
+            1380,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "engineering-grid-15",
+          "box": [
+            1600,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "engineering-grid-16",
+          "box": [
+            1820,
+            674,
+            1,
+            82
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "task-R02",
+          "box": [
+            280,
+            682,
+            73.33333333333333,
+            66
+          ],
+          "color": "#DFAC50",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R02",
+          "box": [
+            280,
+            773,
+            200,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R03",
+          "box": [
+            353.3333333333333,
+            682,
+            146.66666666666666,
+            66
+          ],
+          "color": "#DFAC50",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R03",
+          "box": [
+            347,
+            883,
+            230,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R05",
+          "box": [
+            500,
+            682,
+            110,
+            66
+          ],
+          "color": "#DFAC50",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R05",
+          "box": [
+            490,
+            773,
+            245,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R06",
+          "box": [
+            610,
+            682,
+            165,
+            66
+          ],
+          "color": "#DFAC50",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R06",
+          "box": [
+            592,
+            883,
+            245,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R08",
+          "box": [
+            775,
+            682,
+            238.33333333333331,
+            66
+          ],
+          "color": "#DFAC50",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R08",
+          "box": [
+            780,
+            773,
+            260,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "task-R11",
+          "box": [
+            1031.6666666666665,
+            682,
+            110,
+            66
+          ],
+          "color": "#DFAC50",
+          "options": {
+            "radius": 5
+          }
+        },
+        {
+          "id": "annotation-R11",
+          "box": [
+            962,
+            883,
+            280,
+            96
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8,
+            "border": "1 SOLID #D6E2DA"
+          }
+        },
+        {
+          "id": "engineering-finish-mark",
+          "box": [
+            1233.3333333333333,
+            674,
+            2,
+            82
+          ],
+          "color": "#248C91",
+          "options": {}
+        },
+        {
+          "id": "engineering-deadline",
+          "box": [
+            1820,
+            670,
+            3,
+            90
+          ],
+          "color": "#A84939",
+          "options": {}
+        }
+      ],
+      "time_blocks": [
+        {
+          "id": "R01",
+          "label": "需求核对",
+          "team": "design",
+          "start_minute": 0,
+          "end_minute": 25,
+          "minutes": 25,
+          "box": [
+            280,
+            300,
+            91.66666666666666,
+            66
+          ],
+          "annotation_box": [
+            280,
+            383,
+            200,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R04",
+          "label": "视觉系统",
+          "team": "design",
+          "start_minute": 25,
+          "end_minute": 85,
+          "minutes": 60,
+          "box": [
+            371.66666666666663,
+            300,
+            220,
+            66
+          ],
+          "annotation_box": [
+            350,
+            493,
+            244,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R07",
+          "label": "主海报构建",
+          "team": "design",
+          "start_minute": 90,
+          "end_minute": 160,
+          "minutes": 70,
+          "box": [
+            610,
+            300,
+            256.66666666666663,
+            66
+          ],
+          "annotation_box": [
+            622,
+            383,
+            244,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R09",
+          "label": "手机适配",
+          "team": "design",
+          "start_minute": 160,
+          "end_minute": 205,
+          "minutes": 45,
+          "box": [
+            866.6666666666666,
+            300,
+            165,
+            66
+          ],
+          "annotation_box": [
+            819,
+            493,
+            250,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R10",
+          "label": "视觉回归检查",
+          "team": "design",
+          "start_minute": 205,
+          "end_minute": 240,
+          "minutes": 35,
+          "box": [
+            1031.6666666666665,
+            300,
+            128.33333333333331,
+            66
+          ],
+          "annotation_box": [
+            987,
+            383,
+            262,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R12",
+          "label": "交付归档",
+          "team": "design",
+          "start_minute": 240,
+          "end_minute": 260,
+          "minutes": 20,
+          "box": [
+            1160,
+            300,
+            73.33333333333333,
+            66
+          ],
+          "annotation_box": [
+            1120,
+            493,
+            246,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R02",
+          "label": "服务与字体探测",
+          "team": "engineering",
+          "start_minute": 0,
+          "end_minute": 20,
+          "minutes": 20,
+          "box": [
+            280,
+            682,
+            73.33333333333333,
+            66
+          ],
+          "annotation_box": [
+            280,
+            773,
+            200,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R03",
+          "label": "数据清洗",
+          "team": "engineering",
+          "start_minute": 20,
+          "end_minute": 60,
+          "minutes": 40,
+          "box": [
+            353.3333333333333,
+            682,
+            146.66666666666666,
+            66
+          ],
+          "annotation_box": [
+            347,
+            883,
+            230,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R05",
+          "label": "文案审校",
+          "team": "engineering",
+          "start_minute": 60,
+          "end_minute": 90,
+          "minutes": 30,
+          "box": [
+            500,
+            682,
+            110,
+            66
+          ],
+          "annotation_box": [
+            490,
+            773,
+            245,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R06",
+          "label": "图表计算",
+          "team": "engineering",
+          "start_minute": 90,
+          "end_minute": 135,
+          "minutes": 45,
+          "box": [
+            610,
+            682,
+            165,
+            66
+          ],
+          "annotation_box": [
+            592,
+            883,
+            245,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R08",
+          "label": "驾驶舱构建",
+          "team": "engineering",
+          "start_minute": 135,
+          "end_minute": 200,
+          "minutes": 65,
+          "box": [
+            775,
+            682,
+            238.33333333333331,
+            66
+          ],
+          "annotation_box": [
+            780,
+            773,
+            260,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        },
+        {
+          "id": "R11",
+          "label": "产物与数据核验",
+          "team": "engineering",
+          "start_minute": 205,
+          "end_minute": 235,
+          "minutes": 30,
+          "box": [
+            1031.6666666666665,
+            682,
+            110,
+            66
+          ],
+          "annotation_box": [
+            962,
+            883,
+            280,
+            96
+          ],
+          "x_scale_px_per_minute": 3.6666666666666665
+        }
+      ],
+      "body_min_font": 20,
+      "timeline": {
+        "origin_x": 280,
+        "width": 1540,
+        "start_time": "09:00",
+        "end_time": "16:00",
+        "span_minutes": 420,
+        "scale_px_per_minute": 3.6666666666666665,
+        "deadline_x": 1820,
+        "finish_x": 1233.3333333333333,
+        "finish_minutes": 260
+      },
+      "dsl_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\A24\\execution-board-draft-v002.snapshot",
+      "dsl_sha256": "72913e36669c7a9e6b200ee2222d9ec32e813c8fa3275baa8ed145fc3fb4ef67"
+    },
+    {
+      "stem": "decision-brief",
+      "width": 1200,
+      "height": 1600,
+      "schedule_source": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\A24\\schedule-analysis\\schedule.json",
+      "schedule_sha256": "798b8f7e0b2132bc8f61301110bfabe3737db97bf2c95c8fe443207d0b685e85",
+      "texts": [
+        {
+          "id": "brand",
+          "box": [
+            60,
+            40,
+            1080,
+            61
+          ],
+          "text": "叠光 · 发布演练",
+          "font_size": 42,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "title",
+          "box": [
+            60,
+            116,
+            1080,
+            82
+          ],
+          "text": "先排资源，再作交付。",
+          "font_size": 56,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "date",
+          "box": [
+            63,
+            204,
+            1070,
+            40
+          ],
+          "text": "2026-11-07  /  09:00 开工  /  16:00 截止",
+          "font_size": 26,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "kpi-finish",
+          "box": [
+            84,
+            284,
+            476,
+            73
+          ],
+          "text": "13:20",
+          "font_size": 54,
+          "color": "#248C91",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "kpi-label-finish",
+          "box": [
+            84,
+            370,
+            476,
+            34
+          ],
+          "text": "计划完成",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "kpi-buffer",
+          "box": [
+            640,
+            284,
+            476,
+            73
+          ],
+          "text": "160 min",
+          "font_size": 54,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "kpi-label-buffer",
+          "box": [
+            640,
+            370,
+            476,
+            34
+          ],
+          "text": "截止前缓冲",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "kpi-work",
+          "box": [
+            84,
+            452,
+            476,
+            73
+          ],
+          "text": "485 min",
+          "font_size": 54,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "kpi-label-work",
+          "box": [
+            84,
+            538,
+            476,
+            34
+          ],
+          "text": "总工作量；÷2下界242.5min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "kpi-cp",
+          "box": [
+            640,
+            452,
+            476,
+            73
+          ],
+          "text": "255 min",
+          "font_size": 54,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "kpi-label-cp",
+          "box": [
+            640,
+            538,
+            476,
+            34
+          ],
+          "text": "忽略资源关键路径；综合下界255min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dependencies-title",
+          "box": [
+            60,
+            617,
+            1080,
+            48
+          ],
+          "text": "依赖概览  /  原时长与先决保持",
+          "font_size": 32,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-label-R01",
+          "box": [
+            60,
+            679,
+            524,
+            32
+          ],
+          "text": "R01  需求核对",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R01",
+          "box": [
+            60,
+            711,
+            524,
+            30
+          ],
+          "text": "先决 无  ·  25min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R02",
+          "box": [
+            60,
+            745,
+            524,
+            32
+          ],
+          "text": "R02  服务与字体探测",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R02",
+          "box": [
+            60,
+            777,
+            524,
+            30
+          ],
+          "text": "先决 无  ·  20min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R03",
+          "box": [
+            60,
+            811,
+            524,
+            32
+          ],
+          "text": "R03  数据清洗",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R03",
+          "box": [
+            60,
+            843,
+            524,
+            30
+          ],
+          "text": "先决 R02  ·  40min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R04",
+          "box": [
+            60,
+            877,
+            524,
+            32
+          ],
+          "text": "R04  视觉系统",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R04",
+          "box": [
+            60,
+            909,
+            524,
+            30
+          ],
+          "text": "先决 R01  ·  60min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R05",
+          "box": [
+            60,
+            943,
+            524,
+            32
+          ],
+          "text": "R05  文案审校",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R05",
+          "box": [
+            60,
+            975,
+            524,
+            30
+          ],
+          "text": "先决 R01  ·  30min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R06",
+          "box": [
+            60,
+            1009,
+            524,
+            32
+          ],
+          "text": "R06  图表计算",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R06",
+          "box": [
+            60,
+            1041,
+            524,
+            30
+          ],
+          "text": "先决 R03  ·  45min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R07",
+          "box": [
+            616,
+            679,
+            524,
+            32
+          ],
+          "text": "R07  主海报构建",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R07",
+          "box": [
+            616,
+            711,
+            524,
+            30
+          ],
+          "text": "先决 R04 / R05  ·  70min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R08",
+          "box": [
+            616,
+            745,
+            524,
+            32
+          ],
+          "text": "R08  驾驶舱构建",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R08",
+          "box": [
+            616,
+            777,
+            524,
+            30
+          ],
+          "text": "先决 R04 / R06  ·  65min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R09",
+          "box": [
+            616,
+            811,
+            524,
+            32
+          ],
+          "text": "R09  手机适配",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R09",
+          "box": [
+            616,
+            843,
+            524,
+            30
+          ],
+          "text": "先决 R07  ·  45min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R10",
+          "box": [
+            616,
+            877,
+            524,
+            32
+          ],
+          "text": "R10  视觉回归检查",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R10",
+          "box": [
+            616,
+            909,
+            524,
+            30
+          ],
+          "text": "先决 R07 / R08 / R09  ·  35min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R11",
+          "box": [
+            616,
+            943,
+            524,
+            32
+          ],
+          "text": "R11  产物与数据核验",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R11",
+          "box": [
+            616,
+            975,
+            524,
+            30
+          ],
+          "text": "先决 R08 / R09  ·  30min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "dep-label-R12",
+          "box": [
+            616,
+            1009,
+            524,
+            32
+          ],
+          "text": "R12  交付归档",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "dep-list-R12",
+          "box": [
+            616,
+            1041,
+            524,
+            30
+          ],
+          "text": "先决 R10 / R11  ·  20min",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "risks-title",
+          "box": [
+            60,
+            1100,
+            1080,
+            50
+          ],
+          "text": "三项风险，三项现场对策",
+          "font_size": 32,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "risk-impact-K1",
+          "box": [
+            80,
+            1170,
+            1035,
+            34
+          ],
+          "text": "K1 / R02  服务限流导致等待",
+          "font_size": 26,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "risk-mitigation-K1",
+          "box": [
+            80,
+            1208,
+            1035,
+            33
+          ],
+          "text": "保留响应并依据Retry-After重试",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "risk-impact-K2",
+          "box": [
+            80,
+            1269,
+            1035,
+            34
+          ],
+          "text": "K2 / R05  长文案导致版式回归",
+          "font_size": 26,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "risk-mitigation-K2",
+          "box": [
+            80,
+            1307,
+            1035,
+            33
+          ],
+          "text": "冻结文案后再完成适配",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "risk-impact-K3",
+          "box": [
+            80,
+            1368,
+            1035,
+            34
+          ],
+          "text": "K3 / R10  实际图像暴露裁剪或比例错误",
+          "font_size": 26,
+          "color": "#18373C",
+          "options": {
+            "bold": true
+          }
+        },
+        {
+          "id": "risk-mitigation-K3",
+          "box": [
+            80,
+            1406,
+            1035,
+            33
+          ],
+          "text": "预留返工缓冲，不跳过看图",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "method1",
+          "box": [
+            60,
+            1470,
+            1080,
+            39
+          ],
+          "text": "依据：单团队无并行、不可抢占；可选团队仅择一执行。",
+          "font_size": 24,
+          "color": "#18373C",
+          "options": {}
+        },
+        {
+          "id": "method2",
+          "box": [
+            60,
+            1513,
+            1080,
+            39
+          ],
+          "text": "已核可行260min，距基础下界5min；不在此宣称全局最优。",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        },
+        {
+          "id": "method3",
+          "box": [
+            60,
+            1554,
+            1080,
+            34
+          ],
+          "text": "关键路径 R01 → R04 → R07 → R09 → R10 → R12",
+          "font_size": 24,
+          "color": "#536F71",
+          "options": {}
+        }
+      ],
+      "shapes": [
+        {
+          "id": "card-finish",
+          "box": [
+            60,
+            266,
+            524,
+            148
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 14
+          }
+        },
+        {
+          "id": "card-buffer",
+          "box": [
+            616,
+            266,
+            524,
+            148
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 14
+          }
+        },
+        {
+          "id": "card-work",
+          "box": [
+            60,
+            434,
+            524,
+            148
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 14
+          }
+        },
+        {
+          "id": "card-cp",
+          "box": [
+            616,
+            434,
+            524,
+            148
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 14
+          }
+        },
+        {
+          "id": "dep-rule-R01",
+          "box": [
+            60,
+            740,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R02",
+          "box": [
+            60,
+            806,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R03",
+          "box": [
+            60,
+            872,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R04",
+          "box": [
+            60,
+            938,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R05",
+          "box": [
+            60,
+            1004,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R06",
+          "box": [
+            60,
+            1070,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R07",
+          "box": [
+            616,
+            740,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R08",
+          "box": [
+            616,
+            806,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R09",
+          "box": [
+            616,
+            872,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R10",
+          "box": [
+            616,
+            938,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R11",
+          "box": [
+            616,
+            1004,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "dep-rule-R12",
+          "box": [
+            616,
+            1070,
+            524,
+            1
+          ],
+          "color": "#D6E2DA",
+          "options": {}
+        },
+        {
+          "id": "risk-K1",
+          "box": [
+            60,
+            1160,
+            1080,
+            88
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 10
+          }
+        },
+        {
+          "id": "risk-K2",
+          "box": [
+            60,
+            1259,
+            1080,
+            88
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 10
+          }
+        },
+        {
+          "id": "risk-K3",
+          "box": [
+            60,
+            1358,
+            1080,
+            88
+          ],
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 10
+          }
+        }
+      ],
+      "time_blocks": [],
+      "body_min_font": 24,
+      "summary": {
+        "finish": "13:20",
+        "buffer_minutes": 160,
+        "total_work_minutes": 485,
+        "critical_path_minutes": 255,
+        "workload_lower_bound_minutes": 242.5,
+        "combined_lower_bound_minutes": 255,
+        "feasible_makespan_minutes": 260
+      },
+      "dsl_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\A24\\decision-brief-draft-v001.snapshot",
+      "dsl_sha256": "b5feb767fa32950b9eea356b21b8aba9967d250450ff438ed378f87604e95926"
+    },
+    {
+      "schema_version": 1,
+      "task_id": "A24",
+      "run_id": "20261002-204314-6f31",
+      "version_id": "phone-v001",
+      "producer": "/root/a20_geometry_audit",
+      "created_at": "2026-10-06T04:56:52.895Z",
+      "status": "Pure DSL draft with computational content/bounds checks. Actual service rendering and visual inspection pending and owned by root.",
+      "canvas": {
+        "width": 720,
+        "height": 1280
+      },
+      "brand": "叠光 · 发布演练",
+      "planning_date": "2026-11-07",
+      "timezone": "Asia/Shanghai / UTC+08:00",
+      "window": {
+        "start": "2026-11-07T09:00:00+08:00",
+        "deadline": "2026-11-07T16:00:00+08:00",
+        "displayed": "09:00 至 16:00"
+      },
+      "summary": {
+        "makespan_minutes": 260,
+        "completion_time": "13:20",
+        "remaining_buffer_minutes": 160,
+        "optimality_claim": false
+      },
+      "canonical_schedule": {
+        "path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\A24\\schedule-analysis\\schedule.json",
+        "sha256": "798b8f7e0b2132bc8f61301110bfabe3737db97bf2c95c8fe443207d0b685e85",
+        "source_input_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tasks\\A24-release-plan-capstone\\inputs\\release.json",
+        "source_input_sha256": "4967073b27e0940cfe74a2e4de616648b08fc8d544975e84b04da5fdc2c98a25",
+        "field_map": {
+          "row_start": "tasks[].start_minute",
+          "row_end": "tasks[].end_minute",
+          "display_start": "tasks[].start_clock",
+          "display_end": "tasks[].end_clock",
+          "actual_team": "tasks[].team"
+        },
+        "ordering": "Ascending start_minute; ties ascending id, matching canonical display_tie_break."
+      },
+      "palette": {
+        "ink": "#18373C",
+        "background": "#F2F5F1",
+        "design": "#248C91",
+        "engineering": "#DFAC50",
+        "white": "#FFFFFF",
+        "alternate": "#F7F9F5",
+        "muted": "#5B726E",
+        "risk": "#E5EEEA",
+        "rule": "#D4E1DB",
+        "design_text": "#176D70",
+        "engineering_text": "#685127"
+      },
+      "font_family": "Inter,Noto Sans CJK SC",
+      "rows": [
+        {
+          "order": 1,
+          "id": "R01",
+          "label": "需求核对",
+          "team": "design",
+          "minutes": 25,
+          "start_minute": 0,
+          "end_minute": 25,
+          "start_clock": "09:00",
+          "end_clock": "09:25",
+          "depends": [],
+          "bounds": {
+            "x": 36,
+            "y": 320,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R01-id",
+            "R01-time",
+            "R01-duration",
+            "R01-label",
+            "R01-team"
+          ]
+        },
+        {
+          "order": 2,
+          "id": "R02",
+          "label": "服务与字体探测",
+          "team": "engineering",
+          "minutes": 20,
+          "start_minute": 0,
+          "end_minute": 20,
+          "start_clock": "09:00",
+          "end_clock": "09:20",
+          "depends": [],
+          "bounds": {
+            "x": 36,
+            "y": 378,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R02-id",
+            "R02-time",
+            "R02-duration",
+            "R02-label",
+            "R02-team"
+          ]
+        },
+        {
+          "order": 3,
+          "id": "R03",
+          "label": "数据清洗",
+          "team": "engineering",
+          "minutes": 40,
+          "start_minute": 20,
+          "end_minute": 60,
+          "start_clock": "09:20",
+          "end_clock": "10:00",
+          "depends": [
+            "R02"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 436,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R03-id",
+            "R03-time",
+            "R03-duration",
+            "R03-label",
+            "R03-team"
+          ]
+        },
+        {
+          "order": 4,
+          "id": "R04",
+          "label": "视觉系统",
+          "team": "design",
+          "minutes": 60,
+          "start_minute": 25,
+          "end_minute": 85,
+          "start_clock": "09:25",
+          "end_clock": "10:25",
+          "depends": [
+            "R01"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 494,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R04-id",
+            "R04-time",
+            "R04-duration",
+            "R04-label",
+            "R04-team"
+          ]
+        },
+        {
+          "order": 5,
+          "id": "R05",
+          "label": "文案审校",
+          "team": "engineering",
+          "minutes": 30,
+          "start_minute": 60,
+          "end_minute": 90,
+          "start_clock": "10:00",
+          "end_clock": "10:30",
+          "depends": [
+            "R01"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 552,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R05-id",
+            "R05-time",
+            "R05-duration",
+            "R05-label",
+            "R05-team"
+          ]
+        },
+        {
+          "order": 6,
+          "id": "R06",
+          "label": "图表计算",
+          "team": "engineering",
+          "minutes": 45,
+          "start_minute": 90,
+          "end_minute": 135,
+          "start_clock": "10:30",
+          "end_clock": "11:15",
+          "depends": [
+            "R03"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 610,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R06-id",
+            "R06-time",
+            "R06-duration",
+            "R06-label",
+            "R06-team"
+          ]
+        },
+        {
+          "order": 7,
+          "id": "R07",
+          "label": "主海报构建",
+          "team": "design",
+          "minutes": 70,
+          "start_minute": 90,
+          "end_minute": 160,
+          "start_clock": "10:30",
+          "end_clock": "11:40",
+          "depends": [
+            "R04",
+            "R05"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 668,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R07-id",
+            "R07-time",
+            "R07-duration",
+            "R07-label",
+            "R07-team"
+          ]
+        },
+        {
+          "order": 8,
+          "id": "R08",
+          "label": "驾驶舱构建",
+          "team": "engineering",
+          "minutes": 65,
+          "start_minute": 135,
+          "end_minute": 200,
+          "start_clock": "11:15",
+          "end_clock": "12:20",
+          "depends": [
+            "R04",
+            "R06"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 726,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R08-id",
+            "R08-time",
+            "R08-duration",
+            "R08-label",
+            "R08-team"
+          ]
+        },
+        {
+          "order": 9,
+          "id": "R09",
+          "label": "手机适配",
+          "team": "design",
+          "minutes": 45,
+          "start_minute": 160,
+          "end_minute": 205,
+          "start_clock": "11:40",
+          "end_clock": "12:25",
+          "depends": [
+            "R07"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 784,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R09-id",
+            "R09-time",
+            "R09-duration",
+            "R09-label",
+            "R09-team"
+          ]
+        },
+        {
+          "order": 10,
+          "id": "R10",
+          "label": "视觉回归检查",
+          "team": "design",
+          "minutes": 35,
+          "start_minute": 205,
+          "end_minute": 240,
+          "start_clock": "12:25",
+          "end_clock": "13:00",
+          "depends": [
+            "R07",
+            "R08",
+            "R09"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 842,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R10-id",
+            "R10-time",
+            "R10-duration",
+            "R10-label",
+            "R10-team"
+          ]
+        },
+        {
+          "order": 11,
+          "id": "R11",
+          "label": "产物与数据核验",
+          "team": "engineering",
+          "minutes": 30,
+          "start_minute": 205,
+          "end_minute": 235,
+          "start_clock": "12:25",
+          "end_clock": "12:55",
+          "depends": [
+            "R08",
+            "R09"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 900,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R11-id",
+            "R11-time",
+            "R11-duration",
+            "R11-label",
+            "R11-team"
+          ]
+        },
+        {
+          "order": 12,
+          "id": "R12",
+          "label": "交付归档",
+          "team": "design",
+          "minutes": 20,
+          "start_minute": 240,
+          "end_minute": 260,
+          "start_clock": "13:00",
+          "end_clock": "13:20",
+          "depends": [
+            "R10",
+            "R11"
+          ],
+          "bounds": {
+            "x": 36,
+            "y": 958,
+            "width": 648,
+            "height": 56
+          },
+          "text_element_ids": [
+            "R12-id",
+            "R12-time",
+            "R12-duration",
+            "R12-label",
+            "R12-team"
+          ]
+        }
+      ],
+      "risks": [
+        {
+          "id": "K1",
+          "task": "R02",
+          "original_impact": "服务限流导致等待",
+          "original_mitigation": "保留响应并依据Retry-After重试",
+          "displayed_title": "R02 · 服务限流导致等待",
+          "displayed_mitigation": "保留响应并依据Retry-After重试",
+          "text_element_ids": [
+            "K1-impact",
+            "K1-mitigation"
+          ]
+        },
+        {
+          "id": "K2",
+          "task": "R05",
+          "original_impact": "长文案导致版式回归",
+          "original_mitigation": "冻结文案后再完成适配",
+          "displayed_title": "R05 · 长文案导致版式回归",
+          "displayed_mitigation": "冻结文案后再完成适配",
+          "text_element_ids": [
+            "K2-impact",
+            "K2-mitigation"
+          ]
+        },
+        {
+          "id": "K3",
+          "task": "R10",
+          "original_impact": "实际图像暴露裁剪或比例错误",
+          "original_mitigation": "预留返工缓冲，不跳过看图",
+          "displayed_title": "R10 · 实际图像暴露裁剪或比例错误",
+          "displayed_mitigation": "预留返工缓冲，不跳过看图",
+          "text_element_ids": [
+            "K3-impact",
+            "K3-mitigation"
+          ]
+        }
+      ],
+      "elements": [
+        {
+          "id": "brand",
+          "type": "text",
+          "x": 36,
+          "y": 28,
+          "width": 648,
+          "height": 37,
+          "text": "叠光 · 发布演练",
+          "font_size_px": 28,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "release-date",
+          "type": "text",
+          "x": 36,
+          "y": 73,
+          "width": 330,
+          "height": 28,
+          "text": "2026.11.07",
+          "font_size_px": 21,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "release-window",
+          "type": "text",
+          "x": 390,
+          "y": 73,
+          "width": 294,
+          "height": 28,
+          "text": "09:00 至 16:00",
+          "font_size_px": 21,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "x": 36,
+          "y": 108,
+          "width": 648,
+          "height": 47,
+          "text": "发布日行动卡",
+          "font_size_px": 38,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "summary-panel",
+          "type": "shape",
+          "x": 36,
+          "y": 164,
+          "width": 648,
+          "height": 102,
+          "color": "#18373C",
+          "options": {
+            "radius": 18
+          }
+        },
+        {
+          "id": "summary-divider",
+          "type": "shape",
+          "x": 322,
+          "y": 181,
+          "width": 1,
+          "height": 61,
+          "color": "#466264",
+          "options": {}
+        },
+        {
+          "id": "finish-label",
+          "type": "text",
+          "x": 56,
+          "y": 176,
+          "width": 242,
+          "height": 26,
+          "text": "预计完成",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#F2F5F1",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "finish-value",
+          "type": "text",
+          "x": 56,
+          "y": 205,
+          "width": 242,
+          "height": 52,
+          "text": "13:20",
+          "font_size_px": 44,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#FFFFFF",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "buffer-label",
+          "type": "text",
+          "x": 348,
+          "y": 176,
+          "width": 312,
+          "height": 26,
+          "text": "至 16:00 截止剩余",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#F2F5F1",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "buffer-value",
+          "type": "text",
+          "x": 348,
+          "y": 207,
+          "width": 312,
+          "height": 48,
+          "text": "160 分钟",
+          "font_size_px": 36,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#FFFFFF",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "list-heading",
+          "type": "text",
+          "x": 36,
+          "y": 282,
+          "width": 348,
+          "height": 30,
+          "text": "12 项行动 · 按开工顺序",
+          "font_size_px": 24,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "list-order",
+          "type": "text",
+          "x": 486,
+          "y": 286,
+          "width": 198,
+          "height": 27,
+          "text": "同刻可并行",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R01-row",
+          "type": "shape",
+          "x": 36,
+          "y": 320,
+          "width": 648,
+          "height": 56,
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R01-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 328,
+          "width": 4,
+          "height": 40,
+          "color": "#248C91",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R01-id",
+          "type": "text",
+          "x": 52,
+          "y": 322,
+          "width": 60,
+          "height": 26,
+          "text": "R01",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R01-time",
+          "type": "text",
+          "x": 128,
+          "y": 322,
+          "width": 280,
+          "height": 27,
+          "text": "09:00 — 09:25",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R01-duration",
+          "type": "text",
+          "x": 518,
+          "y": 323,
+          "width": 142,
+          "height": 26,
+          "text": "25 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R01-label",
+          "type": "text",
+          "x": 128,
+          "y": 349,
+          "width": 366,
+          "height": 26,
+          "text": "需求核对",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R01-team",
+          "type": "text",
+          "x": 518,
+          "y": 350,
+          "width": 142,
+          "height": 26,
+          "text": "design",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#176D70",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R02-row",
+          "type": "shape",
+          "x": 36,
+          "y": 378,
+          "width": 648,
+          "height": 56,
+          "color": "#F7F9F5",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R02-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 386,
+          "width": 4,
+          "height": 40,
+          "color": "#DFAC50",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R02-id",
+          "type": "text",
+          "x": 52,
+          "y": 380,
+          "width": 60,
+          "height": 26,
+          "text": "R02",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R02-time",
+          "type": "text",
+          "x": 128,
+          "y": 380,
+          "width": 280,
+          "height": 27,
+          "text": "09:00 — 09:20",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R02-duration",
+          "type": "text",
+          "x": 518,
+          "y": 381,
+          "width": 142,
+          "height": 26,
+          "text": "20 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R02-label",
+          "type": "text",
+          "x": 128,
+          "y": 407,
+          "width": 366,
+          "height": 26,
+          "text": "服务与字体探测",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R02-team",
+          "type": "text",
+          "x": 518,
+          "y": 408,
+          "width": 142,
+          "height": 26,
+          "text": "engineering",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#685127",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R03-row",
+          "type": "shape",
+          "x": 36,
+          "y": 436,
+          "width": 648,
+          "height": 56,
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R03-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 444,
+          "width": 4,
+          "height": 40,
+          "color": "#DFAC50",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R03-id",
+          "type": "text",
+          "x": 52,
+          "y": 438,
+          "width": 60,
+          "height": 26,
+          "text": "R03",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R03-time",
+          "type": "text",
+          "x": 128,
+          "y": 438,
+          "width": 280,
+          "height": 27,
+          "text": "09:20 — 10:00",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R03-duration",
+          "type": "text",
+          "x": 518,
+          "y": 439,
+          "width": 142,
+          "height": 26,
+          "text": "40 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R03-label",
+          "type": "text",
+          "x": 128,
+          "y": 465,
+          "width": 366,
+          "height": 26,
+          "text": "数据清洗",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R03-team",
+          "type": "text",
+          "x": 518,
+          "y": 466,
+          "width": 142,
+          "height": 26,
+          "text": "engineering",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#685127",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R04-row",
+          "type": "shape",
+          "x": 36,
+          "y": 494,
+          "width": 648,
+          "height": 56,
+          "color": "#F7F9F5",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R04-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 502,
+          "width": 4,
+          "height": 40,
+          "color": "#248C91",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R04-id",
+          "type": "text",
+          "x": 52,
+          "y": 496,
+          "width": 60,
+          "height": 26,
+          "text": "R04",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R04-time",
+          "type": "text",
+          "x": 128,
+          "y": 496,
+          "width": 280,
+          "height": 27,
+          "text": "09:25 — 10:25",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R04-duration",
+          "type": "text",
+          "x": 518,
+          "y": 497,
+          "width": 142,
+          "height": 26,
+          "text": "60 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R04-label",
+          "type": "text",
+          "x": 128,
+          "y": 523,
+          "width": 366,
+          "height": 26,
+          "text": "视觉系统",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R04-team",
+          "type": "text",
+          "x": 518,
+          "y": 524,
+          "width": 142,
+          "height": 26,
+          "text": "design",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#176D70",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R05-row",
+          "type": "shape",
+          "x": 36,
+          "y": 552,
+          "width": 648,
+          "height": 56,
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R05-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 560,
+          "width": 4,
+          "height": 40,
+          "color": "#DFAC50",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R05-id",
+          "type": "text",
+          "x": 52,
+          "y": 554,
+          "width": 60,
+          "height": 26,
+          "text": "R05",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R05-time",
+          "type": "text",
+          "x": 128,
+          "y": 554,
+          "width": 280,
+          "height": 27,
+          "text": "10:00 — 10:30",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R05-duration",
+          "type": "text",
+          "x": 518,
+          "y": 555,
+          "width": 142,
+          "height": 26,
+          "text": "30 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R05-label",
+          "type": "text",
+          "x": 128,
+          "y": 581,
+          "width": 366,
+          "height": 26,
+          "text": "文案审校",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R05-team",
+          "type": "text",
+          "x": 518,
+          "y": 582,
+          "width": 142,
+          "height": 26,
+          "text": "engineering",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#685127",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R06-row",
+          "type": "shape",
+          "x": 36,
+          "y": 610,
+          "width": 648,
+          "height": 56,
+          "color": "#F7F9F5",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R06-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 618,
+          "width": 4,
+          "height": 40,
+          "color": "#DFAC50",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R06-id",
+          "type": "text",
+          "x": 52,
+          "y": 612,
+          "width": 60,
+          "height": 26,
+          "text": "R06",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R06-time",
+          "type": "text",
+          "x": 128,
+          "y": 612,
+          "width": 280,
+          "height": 27,
+          "text": "10:30 — 11:15",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R06-duration",
+          "type": "text",
+          "x": 518,
+          "y": 613,
+          "width": 142,
+          "height": 26,
+          "text": "45 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R06-label",
+          "type": "text",
+          "x": 128,
+          "y": 639,
+          "width": 366,
+          "height": 26,
+          "text": "图表计算",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R06-team",
+          "type": "text",
+          "x": 518,
+          "y": 640,
+          "width": 142,
+          "height": 26,
+          "text": "engineering",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#685127",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R07-row",
+          "type": "shape",
+          "x": 36,
+          "y": 668,
+          "width": 648,
+          "height": 56,
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R07-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 676,
+          "width": 4,
+          "height": 40,
+          "color": "#248C91",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R07-id",
+          "type": "text",
+          "x": 52,
+          "y": 670,
+          "width": 60,
+          "height": 26,
+          "text": "R07",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R07-time",
+          "type": "text",
+          "x": 128,
+          "y": 670,
+          "width": 280,
+          "height": 27,
+          "text": "10:30 — 11:40",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R07-duration",
+          "type": "text",
+          "x": 518,
+          "y": 671,
+          "width": 142,
+          "height": 26,
+          "text": "70 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R07-label",
+          "type": "text",
+          "x": 128,
+          "y": 697,
+          "width": 366,
+          "height": 26,
+          "text": "主海报构建",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R07-team",
+          "type": "text",
+          "x": 518,
+          "y": 698,
+          "width": 142,
+          "height": 26,
+          "text": "design",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#176D70",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R08-row",
+          "type": "shape",
+          "x": 36,
+          "y": 726,
+          "width": 648,
+          "height": 56,
+          "color": "#F7F9F5",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R08-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 734,
+          "width": 4,
+          "height": 40,
+          "color": "#DFAC50",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R08-id",
+          "type": "text",
+          "x": 52,
+          "y": 728,
+          "width": 60,
+          "height": 26,
+          "text": "R08",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R08-time",
+          "type": "text",
+          "x": 128,
+          "y": 728,
+          "width": 280,
+          "height": 27,
+          "text": "11:15 — 12:20",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R08-duration",
+          "type": "text",
+          "x": 518,
+          "y": 729,
+          "width": 142,
+          "height": 26,
+          "text": "65 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R08-label",
+          "type": "text",
+          "x": 128,
+          "y": 755,
+          "width": 366,
+          "height": 26,
+          "text": "驾驶舱构建",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R08-team",
+          "type": "text",
+          "x": 518,
+          "y": 756,
+          "width": 142,
+          "height": 26,
+          "text": "engineering",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#685127",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R09-row",
+          "type": "shape",
+          "x": 36,
+          "y": 784,
+          "width": 648,
+          "height": 56,
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R09-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 792,
+          "width": 4,
+          "height": 40,
+          "color": "#248C91",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R09-id",
+          "type": "text",
+          "x": 52,
+          "y": 786,
+          "width": 60,
+          "height": 26,
+          "text": "R09",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R09-time",
+          "type": "text",
+          "x": 128,
+          "y": 786,
+          "width": 280,
+          "height": 27,
+          "text": "11:40 — 12:25",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R09-duration",
+          "type": "text",
+          "x": 518,
+          "y": 787,
+          "width": 142,
+          "height": 26,
+          "text": "45 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R09-label",
+          "type": "text",
+          "x": 128,
+          "y": 813,
+          "width": 366,
+          "height": 26,
+          "text": "手机适配",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R09-team",
+          "type": "text",
+          "x": 518,
+          "y": 814,
+          "width": 142,
+          "height": 26,
+          "text": "design",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#176D70",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R10-row",
+          "type": "shape",
+          "x": 36,
+          "y": 842,
+          "width": 648,
+          "height": 56,
+          "color": "#F7F9F5",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R10-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 850,
+          "width": 4,
+          "height": 40,
+          "color": "#248C91",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R10-id",
+          "type": "text",
+          "x": 52,
+          "y": 844,
+          "width": 60,
+          "height": 26,
+          "text": "R10",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R10-time",
+          "type": "text",
+          "x": 128,
+          "y": 844,
+          "width": 280,
+          "height": 27,
+          "text": "12:25 — 13:00",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R10-duration",
+          "type": "text",
+          "x": 518,
+          "y": 845,
+          "width": 142,
+          "height": 26,
+          "text": "35 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R10-label",
+          "type": "text",
+          "x": 128,
+          "y": 871,
+          "width": 366,
+          "height": 26,
+          "text": "视觉回归检查",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R10-team",
+          "type": "text",
+          "x": 518,
+          "y": 872,
+          "width": 142,
+          "height": 26,
+          "text": "design",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#176D70",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R11-row",
+          "type": "shape",
+          "x": 36,
+          "y": 900,
+          "width": 648,
+          "height": 56,
+          "color": "#FFFFFF",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R11-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 908,
+          "width": 4,
+          "height": 40,
+          "color": "#DFAC50",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R11-id",
+          "type": "text",
+          "x": 52,
+          "y": 902,
+          "width": 60,
+          "height": 26,
+          "text": "R11",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R11-time",
+          "type": "text",
+          "x": 128,
+          "y": 902,
+          "width": 280,
+          "height": 27,
+          "text": "12:25 — 12:55",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R11-duration",
+          "type": "text",
+          "x": 518,
+          "y": 903,
+          "width": 142,
+          "height": 26,
+          "text": "30 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R11-label",
+          "type": "text",
+          "x": 128,
+          "y": 929,
+          "width": 366,
+          "height": 26,
+          "text": "产物与数据核验",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R11-team",
+          "type": "text",
+          "x": 518,
+          "y": 930,
+          "width": 142,
+          "height": 26,
+          "text": "engineering",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#685127",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "R12-row",
+          "type": "shape",
+          "x": 36,
+          "y": 958,
+          "width": 648,
+          "height": 56,
+          "color": "#F7F9F5",
+          "options": {
+            "radius": 8
+          }
+        },
+        {
+          "id": "R12-team-stripe",
+          "type": "shape",
+          "x": 36,
+          "y": 966,
+          "width": 4,
+          "height": 40,
+          "color": "#248C91",
+          "options": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "R12-id",
+          "type": "text",
+          "x": 52,
+          "y": 960,
+          "width": 60,
+          "height": 26,
+          "text": "R12",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R12-time",
+          "type": "text",
+          "x": 128,
+          "y": 960,
+          "width": 280,
+          "height": 27,
+          "text": "13:00 — 13:20",
+          "font_size_px": 23,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "R12-duration",
+          "type": "text",
+          "x": 518,
+          "y": 961,
+          "width": 142,
+          "height": 26,
+          "text": "20 min",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#5B726E",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END"
+          }
+        },
+        {
+          "id": "R12-label",
+          "type": "text",
+          "x": 128,
+          "y": 987,
+          "width": 366,
+          "height": 26,
+          "text": "交付归档",
+          "font_size_px": 22,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "R12-team",
+          "type": "text",
+          "x": 518,
+          "y": 988,
+          "width": 142,
+          "height": 26,
+          "text": "design",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#176D70",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "align": "END",
+            "bold": true
+          }
+        },
+        {
+          "id": "risk-panel",
+          "type": "shape",
+          "x": 36,
+          "y": 1030,
+          "width": 648,
+          "height": 224,
+          "color": "#E5EEEA",
+          "options": {
+            "radius": 16
+          }
+        },
+        {
+          "id": "risk-heading",
+          "type": "text",
+          "x": 52,
+          "y": 1048,
+          "width": 608,
+          "height": 30,
+          "text": "风险 / 执行提醒",
+          "font_size_px": 24,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "K1-impact",
+          "type": "text",
+          "x": 52,
+          "y": 1084,
+          "width": 608,
+          "height": 25,
+          "text": "R02 · 服务限流导致等待",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "K1-mitigation",
+          "type": "text",
+          "x": 52,
+          "y": 1109,
+          "width": 608,
+          "height": 25,
+          "text": "保留响应并依据Retry-After重试",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "K2-impact",
+          "type": "text",
+          "x": 52,
+          "y": 1138,
+          "width": 608,
+          "height": 25,
+          "text": "R05 · 长文案导致版式回归",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "K2-mitigation",
+          "type": "text",
+          "x": 52,
+          "y": 1163,
+          "width": 608,
+          "height": 25,
+          "text": "冻结文案后再完成适配",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        },
+        {
+          "id": "K3-impact",
+          "type": "text",
+          "x": 52,
+          "y": 1192,
+          "width": 608,
+          "height": 25,
+          "text": "R10 · 实际图像暴露裁剪或比例错误",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false,
+            "bold": true
+          }
+        },
+        {
+          "id": "K3-mitigation",
+          "type": "text",
+          "x": 52,
+          "y": 1217,
+          "width": 608,
+          "height": 25,
+          "text": "预留返工缓冲，不跳过看图",
+          "font_size_px": 20,
+          "font_family": "Inter,Noto Sans CJK SC",
+          "color": "#18373C",
+          "options": {
+            "lineHeight": 1.03,
+            "maxLines": 1,
+            "softWrap": false
+          }
+        }
+      ],
+      "computational_checks": {
+        "task_count": 12,
+        "unique_ids": true,
+        "original_task_content_preserved": true,
+        "duration_checks_pass": true,
+        "dependencies_pass": true,
+        "dependency_checks": [
+          {
+            "task": "R03",
+            "depends_on": "R02",
+            "pass": true
+          },
+          {
+            "task": "R04",
+            "depends_on": "R01",
+            "pass": true
+          },
+          {
+            "task": "R05",
+            "depends_on": "R01",
+            "pass": true
+          },
+          {
+            "task": "R06",
+            "depends_on": "R03",
+            "pass": true
+          },
+          {
+            "task": "R07",
+            "depends_on": "R04",
+            "pass": true
+          },
+          {
+            "task": "R07",
+            "depends_on": "R05",
+            "pass": true
+          },
+          {
+            "task": "R08",
+            "depends_on": "R04",
+            "pass": true
+          },
+          {
+            "task": "R08",
+            "depends_on": "R06",
+            "pass": true
+          },
+          {
+            "task": "R09",
+            "depends_on": "R07",
+            "pass": true
+          },
+          {
+            "task": "R10",
+            "depends_on": "R07",
+            "pass": true
+          },
+          {
+            "task": "R10",
+            "depends_on": "R08",
+            "pass": true
+          },
+          {
+            "task": "R10",
+            "depends_on": "R09",
+            "pass": true
+          },
+          {
+            "task": "R11",
+            "depends_on": "R08",
+            "pass": true
+          },
+          {
+            "task": "R11",
+            "depends_on": "R09",
+            "pass": true
+          },
+          {
+            "task": "R12",
+            "depends_on": "R10",
+            "pass": true
+          },
+          {
+            "task": "R12",
+            "depends_on": "R11",
+            "pass": true
+          }
+        ],
+        "resource_conflicts": [],
+        "all_declared_element_bounds_inside_canvas": true,
+        "minimum_font_px": 20,
+        "text_element_count": 77,
+        "text_box_overlaps": [],
+        "pure_dsl_no_external_assets": true
+      },
+      "visual_qa": {
+        "rendered": false,
+        "viewed": false,
+        "claim": "Bounds/text-box checks do not prove glyph fit or visual quality. Root must inspect actual 720×1280 service PNG, especially engineering, long Chinese labels, summary and Retry-After line."
+      },
+      "documentation": {
+        "reused_guide_cache": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\shared-doc-000001-response.txt",
+        "reused_parser_cache": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\shared-doc-000004-readable.txt",
+        "reused_font_cache": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\shared-fonts-000001-readable.txt",
+        "helper_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\dsl.cjs",
+        "new_document_http_requests": 0,
+        "applied_dsl_tags": [
+          "Snapshot",
+          "Container",
+          "Stack",
+          "Positioned",
+          "Text",
+          "Raw/CDATA"
+        ],
+        "applied_attributes": [
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "maxLines",
+          "softWrap",
+          "textAlign",
+          "borderRadius"
+        ]
+      },
+      "dsl_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\A24\\phone-production\\action-card-v001.snapshot",
+      "dsl_sha256": "ebf59592b7ca936bf87126017cb845cc4fec6758ce6ffc9e349bcc9d3068a4aa",
+      "all_writes_finished": true
+    }
+  ],
+  "final_request_ids": {
+    "execution-board": "A24-request-000004",
+    "decision-brief": "A24-request-000002",
+    "action-card": "A24-request-000003"
+  },
+  "view_ids": {
+    "execution-board": "A24-view-000004",
+    "decision-brief": "A24-view-000002",
+    "action-card": "A24-view-000003"
+  },
+  "scope": "Maps of actual pure DSL geometry/content and final real source selection; physical visual review separately recorded."
+}

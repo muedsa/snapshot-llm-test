@@ -1,0 +1,103 @@
+{
+  "case_id": "case-05",
+  "title": "潮汐港 · 作业次序",
+  "dimensions": [
+    1600,
+    1000
+  ],
+  "audience": "港口当班调度员",
+  "task": "确认下一次起重机派工，并对照泊位、船舶、作业容量及资源排程",
+  "viewing_environment": "桌面调度大屏",
+  "fictional": true,
+  "source": "全部品牌、船名、任务数据为原创演示；未使用外部素材",
+  "jobs": [
+    {
+      "id": "A",
+      "y": 375,
+      "shipY": 304,
+      "name": "北辰 08",
+      "amount": 72,
+      "cap": 120,
+      "start": "10:00",
+      "end": "11:30",
+      "status": "正在卸箱",
+      "color": "#72E2DA",
+      "crane": "C01"
+    },
+    {
+      "id": "B",
+      "y": 535,
+      "shipY": 464,
+      "name": "海屿 16",
+      "amount": 126,
+      "cap": 180,
+      "start": "11:00",
+      "end": "13:00",
+      "status": "靠泊待装",
+      "color": "#FFC66E",
+      "crane": "C02"
+    },
+    {
+      "id": "C",
+      "y": 695,
+      "shipY": 624,
+      "name": "白鹭 03",
+      "amount": 54,
+      "cap": 90,
+      "start": "13:30",
+      "end": "15:00",
+      "status": "待泊预约",
+      "color": "#F28269",
+      "crane": "C01"
+    }
+  ],
+  "time_scale_pixels_per_hour": 230,
+  "now": "10:20",
+  "completion_checks": [
+    "泊位A/B/C、三船、两起重机均可对照",
+    "TEU比例为60%、70%、60%",
+    "C01 A10:00–11:30与C13:30–15:00不重叠；C02 B11:00–13:00",
+    "下一次派工11:00 C02→B与清单一致",
+    "逐图视觉审查由root执行，尚未渲染"
+  ],
+  "actual_started_at": null,
+  "actual_started_at_reason": "未在独立case开始瞬间测量，不推测",
+  "actual_generated_at": "2026-10-06T05:31:57.051Z",
+  "actual_generated_at_source": "本地初稿snapshot文件birthtime，非case总开始时间",
+  "metadata_recorded_at": "2026-10-06T05:33:24.442Z",
+  "use_context": "桌面调度大屏",
+  "user_goal": "确认下一次起重机派工，并对照泊位、船舶、作业容量及资源排程",
+  "content_basis": {
+    "type": "fictional_demo",
+    "description": "全部品牌、船名、任务数据为原创演示；未使用外部素材"
+  },
+  "visual_intent": "深海色港口技术图，以船/箱/吊机的几何关系连接泊位卡片和按小时比例的资源排程。任务而非装饰决定信息层级。",
+  "dsl_capabilities": [
+    "Stack/Positioned层叠坐标",
+    "Container圆角/透明色/边框",
+    "Transform矩阵旋转实线",
+    "Text与Raw/CDATA",
+    "数据比例进度条及横向时间图"
+  ],
+  "completion_criteria": [
+    "泊位A/B/C、三船、两起重机均可对照",
+    "TEU比例为60%、70%、60%",
+    "C01 A10:00–11:30与C13:30–15:00不重叠；C02 B11:00–13:00",
+    "下一次派工11:00 C02→B与清单一致"
+  ],
+  "checks": {
+    "static_geometry": "本脚本下列数据断言通过；尚无真实渲染或视觉通过",
+    "visual_verified": false,
+    "visual_review_owner": "root",
+    "results": [
+      "三容量60%、70%、60%",
+      "C01两任务不相交",
+      "图例/船/泊位/起重机文本来自单一jobs对象",
+      "10:20截面与下一次11:00派工相符"
+    ]
+  },
+  "asset_sources": [],
+  "rendering": {
+    "performed_by_this_agent": false
+  }
+}

@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),s=require('../../_suite/suite.cjs');
+const root=path.resolve(__dirname,'../../../..'),source=path.join(root,'tasks/A08-accessible-wayfinding/inputs/floor.txt'),legendSource=path.join(root,'tasks/A08-accessible-wayfinding/inputs/legend.json');
+const rows=fs.readFileSync(source,'utf8').trimEnd().split(/\r?\n/),legend=JSON.parse(fs.readFileSync(legendSource,'utf8'));
+const distribution={},specials=[];
+rows.forEach((row,y)=>[...row].forEach((ch,x)=>{distribution[ch]=(distribution[ch]??0)+1;if(!['#','.'].includes(ch))specials.push({symbol:ch,name:legend[ch],point:[x,y]});}));
+assert.equal(rows.length,18);assert.ok(rows.every(r=>r.length===26));assert.equal(distribution['#'],131);assert.equal(distribution['.'],331);assert.deepEqual(Object.keys(distribution).sort(),['#','.','A','B','C','D','E','S'].sort());
+for(const k of ['A','B','C','D','S','E'])assert.equal(distribution[k],1);
+const facts=JSON.parse(fs.readFileSync(path.join(__dirname,'../independent-analysis/grid-path-facts-v001.json'),'utf8'));
+assert.equal(s.sha256(fs.readFileSync(source)),facts.source_sha256);assert.equal(facts.route_1.steps,34);assert.equal(facts.route_2.steps,36);
+const result={task_id:'A08',run_id:'20261002-204314-6f31',verified_at:new Date().toISOString(),scope:'Independent original text shape/character counts and existing BFS fact reuse; no BFS rerun or visual claims',source,source_sha256:s.sha256(fs.readFileSync(source)),legend_source:legendSource,dimensions:{columns:26,rows:18,cells:468,row_lengths:rows.map(r=>r.length)},character_distribution:distribution,walkable_cells:468-distribution['#'],specials,zone_typo_resolution:'Actual floor and legend define A/B/C/D. TASK/task.json A/A/B/D is a prompt typo; sources unchanged.',row_9_doors:[...rows[9]].flatMap((ch,x)=>ch==='#'?[]:[[x,9]]),column_8_door_rows:rows.flatMap((row,y)=>row[8]==='#'?[]:[y]),column_17_door_rows:rows.flatMap((row,y)=>row[17]==='#'?[]:[y]),required_coordinate_scales:{x:[0,25],y:[0,17]},minimum_fonts:{body:22,grid_labels:16},reused_independent_route_facts:{path:path.join(__dirname,'../independent-analysis/grid-path-facts-v001.json'),route_1_steps:facts.route_1.steps,route_1_meters:2*facts.route_1.steps,route_2_steps:facts.route_2.steps,route_2_meters:2*facts.route_2.steps,route_2_segment_steps:facts.route_2.segments.map(seg=>seg.steps),B_visit_index:facts.route_2.B_sequence_index,D_visit_index:facts.route_2.D_sequence_index},passed:true};
+fs.writeFileSync(path.join(__dirname,'source-shape-facts-v001.json'),JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+process.stdout.write(JSON.stringify(result)+'\n');

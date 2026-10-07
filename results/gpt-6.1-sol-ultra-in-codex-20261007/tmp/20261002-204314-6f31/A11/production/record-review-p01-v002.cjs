@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../../../..');
+const s=require(path.join(root,'tmp/20261002-204314-6f31/_suite/suite.cjs'));
+const image_path=path.join(root,'tmp/20261002-204314-6f31/A11/requests/A11-request-000005/response.png');
+const observation='Actual whole page v002 viewed and compared with v001: all monetary values 28px monospaced; line amount decimal points now visibly line up with five summary amounts and teal bold payable. Unit prices align in their separate column. All source text, quantities, multilingual names and metadata remain visible with no overlap, footer glyph remains complete.';
+const view=s.view('A11',image_path,{tool:'view_image',reviewer:'invoice_producer',version_id:'A11-v002-p01',case_id:'page-01',observation});
+s.iteration('A11',{type:'visual',version_id:'A11-v002-p01',parent_version:'A11-v001-p01',case_id:'page-01',completed:true,phase:'actual-image-reviewed',request_id:'A11-request-000005',image_path,before_view_id:'A11-view-000001',after_view_id:view.id,changes:'Every monetary amount now uses DejaVu Sans Mono28px, common right edge preserved. Payable remains bold teal.',comparison:'Different-size decimal shifts in v001 removed by same-size amounts in v002. Values and all source text unchanged. Independent pixel review requested.',unresolved_issues:[]});
+fs.writeFileSync(path.join(__dirname,'production-visual-review-p01-v002.json'),JSON.stringify({reviewer:'invoice_producer',actual_tool:'view_image',view,prior_version:'A11-v001-p01',visual_changes_required:false},null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({view_id:view.id,image_path}));

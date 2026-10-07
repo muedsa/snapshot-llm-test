@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),s=require('../_suite/suite.cjs');
+const d=s.taskDirs('A07'),meta=path.join(d.temp,'requests/A07-request-000004/render-result.json'),r=JSON.parse(fs.readFileSync(meta,'utf8'));
+const records=fs.readFileSync(path.join(d.temp,'views.jsonl'),'utf8').trim().split('\n').map(JSON.parse);
+const before=records.find(v=>v.version_id==='A07-map-v001'&&v.actor==='graph_producer');
+const view=s.view('A07',r.image_path,{tool:'view_image',version_id:'A07-map-v002',actor:'graph_producer',observation:'Actual final map: sixteen complete ID/name labels and all station facility markers clear; false stations S03/S05/S09/S14 accurately labelled. S07 label now separated from B endpoint badge and aligned near its station. All three lines show color plus R/B/G identifiers, three shared double-ring stations S04/S08/S05, and only 0/45/90-degree segments. G S05→S16 passes over R S06→S12 with clear white separation and no station ring, labelled as non-transfer. All other crossings are true shared stations. Full image and legend have no clipping or text/track overlap.'});
+s.iteration('A07',{type:'visual',version_id:'A07-map-v002',parent_version:'A07-map-v001',completed:true,image_path:r.image_path,before_view_id:before.id,after_view_id:view.id,changes:'Move S07 station name and facility label from x95 to x180, away from the B endpoint badge.',comparison:'Compared actual v001 with v002: the facility label no longer touches B badge; station name remains nearby with clear association. Routes, transfer rings, all other text and bridge are unchanged and legible.'});
+const final=s.acceptFinal('A07','network-map',meta,{title:'澄川 · 三线出行',visual_review_evidence:[view.id],source:'provided network.json',content_counts:{stations:16,lines:3,shared_stations:3,non_station_crossings:1}});
+fs.copyFileSync(path.join(d.temp,'routes-v001.json'),path.join(d.output,'routes.json'),fs.constants.COPYFILE_EXCL);
+console.log(JSON.stringify({artifact:final.id,view_id:view.id,image_path:final.image_path,dsl_path:final.dsl_path}));

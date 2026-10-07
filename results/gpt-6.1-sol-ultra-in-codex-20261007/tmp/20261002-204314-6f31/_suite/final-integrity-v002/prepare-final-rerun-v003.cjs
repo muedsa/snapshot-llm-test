@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('fs'),path=require('path'),dir=__dirname;
+const src=fs.readFileSync(path.join(dir,'audit-30-v002.cjs'),'utf8').replaceAll('integrity-30-v002.json','integrity-30-v003.json');
+fs.writeFileSync(path.join(dir,'audit-30-v003.cjs'),src,{flag:'wx'});
+const raster=fs.readFileSync(path.join(dir,'raster-124-v001.py'),'utf8').replace('raster-audit-v001.json','raster-audit-v002.json').replace('for124 preserved final files','for124 preserved final files');
+fs.writeFileSync(path.join(dir,'raster-124-v002.py'),raster,{flag:'wx'});
+const metric=fs.readFileSync(path.join(dir,'final-state-metrics-v001.cjs'),'utf8');
+const needle="check('summaries30',metrics.task_summaries.length,30);";
+if(metric.split(needle).length!==2)throw new Error('Expected one metrics enrichment insertion location');
+const inserted="for(const status of ['completed','partial','blocked','pending','in_progress'])check('metric-state-count-'+status,metrics.task_status_counts[status],state.tasks.filter(t=>t.status===status).length);for(const summary of metrics.task_summaries)check(summary.task_id+'-summary-status',summary.status,state.tasks.find(t=>t.id===summary.task_id)?.status);\n"+needle;
+fs.writeFileSync(path.join(dir,'final-state-metrics-v002.cjs'),metric.replace(needle,inserted),{flag:'wx'});
+console.log('Prepared new immutable30/124 audit versions and strengthened metrics script v002.');

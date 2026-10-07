@@ -1,0 +1,75 @@
+{
+  "canvas": [
+    1440,
+    1100
+  ],
+  "cells": [
+    {
+      "id": "01",
+      "x": 120,
+      "y": 230,
+      "title": "逐个颜色的 Alpha",
+      "caption": "红、蓝各128/255透明度\n蓝在上；重叠仍含红色。\n采样点：局部(180,100)"
+    },
+    {
+      "id": "02",
+      "x": 560,
+      "y": 230,
+      "title": "整个子树的 Opacity",
+      "caption": "不透明红蓝先合成，再×0.5\n重叠由蓝遮住红，整体淡化。\n采样点：局部(180,100)"
+    },
+    {
+      "id": "03",
+      "x": 1000,
+      "y": 230,
+      "title": "仅背景模糊",
+      "caption": "背景条纹变柔；文字仍锐利\n圆角卡240×160，半径20\nBackdropFilter · sigma 6"
+    },
+    {
+      "id": "04",
+      "x": 120,
+      "y": 710,
+      "title": "整个卡的子树模糊",
+      "caption": "文字、形状、卡内条纹都变柔\n外侧条纹清晰；圆角限制边界\nImageFiltered · sigma 6"
+    },
+    {
+      "id": "05",
+      "x": 560,
+      "y": 710,
+      "title": "先滤色，再模糊",
+      "caption": "MULTIPLY #F6B94A → blur 6\n透明间隙着色，深块与阴影可见\n不裁主体；观察软边外扩"
+    },
+    {
+      "id": "06",
+      "x": 1000,
+      "y": 710,
+      "title": "同一效果，圆形裁剪",
+      "caption": "同⑤滤镜链；外层ClipOval\n200×200承载形成正圆\n圆外白底，边缘限制效果"
+    }
+  ],
+  "card": {
+    "xywh": [
+      40,
+      40,
+      240,
+      160
+    ],
+    "radius": 20,
+    "text": "SHARP / BLUR",
+    "font_size": 24
+  },
+  "sigma": [
+    6,
+    6
+  ],
+  "circle_clip": {
+    "local_xywh": [
+      60,
+      20,
+      200,
+      200
+    ]
+  },
+  "source_tree": "<Container width=\"200\" height=\"200\"><Stack fit=\"EXPAND\" clipBehavior=\"NONE\"><Positioned left=\"10\" top=\"28\" width=\"72\" height=\"100\"><Container width=\"72\" height=\"100\" color=\"#162A44\" boxShadow=\"8 10 10 0 #00000070 NORMAL\"/></Positioned><Positioned left=\"118\" top=\"70\" width=\"72\" height=\"72\"><Container width=\"72\" height=\"72\" color=\"#D4ECFA\" boxShadow=\"4 7 7 0 #00000055 NORMAL\"/></Positioned><Positioned left=\"115\" top=\"13\" width=\"34\" height=\"34\"><Container width=\"34\" height=\"34\" color=\"#FFFFFF\" shape=\"CIRCLE\"/></Positioned></Stack></Container>",
+  "final_chain": "ClipOval (for06) > ImageFiltered sigma6 > ColorFiltered MULTIPLY #F6B94A > source_tree"
+}

@@ -1,0 +1,70 @@
+# B04 Snapshot 实际使用与踩坑
+
+Final status: completed. Root actual image review and required-file audit both passed. Earlier production-stage notes are superseded by this closing result.
+
+run 20261002-204314-6f31。十件已正式发布，最终task关闭与套件总审查随后执行。
+输出：D:\workspaces\gpt-6.1-sol-ultra\outputs\20261002-204314-6f31\B04。临时：D:\workspaces\gpt-6.1-sol-ultra\tmp\20261002-204314-6f31\B04。
+
+[完整作品集](portfolio.json) · [画廊](gallery.html) · [指标](task-metrics.json)
+
+环绕地球的日常：从一圈90分钟到晨光、水回收、运动、合作与地面观察，以十种独立使用任务帮助公众理解ISS。
+
+## 文档与真实服务
+
+复用本run已真实取得、阅读的shared-doc-000001指南、shared-doc-000004 Parser和shared-doc-000006 OpenAPI及shared-fonts-000001。UTF-8纯文本POST https://open-snapshot.muedsa.com/snapshot；每个最终PNG保留原服务响应字节。字体Inter,Noto Sans CJK SC。缓存复用不增加HTTP请求。
+各作品的实际标签见portfolio.json；全部主体DSL，未嵌入外部整图或素材。
+
+## 实际生成、查看与修改
+
+实际渲染14次，成功14，失败0；DSL14版；看图30次；完整visual4。基线/视觉修改/失败分别保留在requests.jsonl、iterations.jsonl、views.jsonl、tool-usage.jsonl。
+- case-08 B04-view-000002→B04-view-000005：关系限制说明增加纸色背景，遮住穿字绿色连接线 比较：与v001比，说明两行字现在干净可读；图谱关系未变。
+- case-03 B04-view-000007→B04-view-000012：29米框增高并上移 比较：与原图比，数字/米字下半现在完整；标尺比例没有改。
+- case-04 B04-view-000008→B04-view-000013：实际图后延伸绿色箭头并纠正为径向指向地心 比较：与v001短且右偏的箭头比，向地心方向可清楚追踪。
+- case-06 B04-view-000010→B04-view-000014：蒸馏水标签移左并拆两行避开管线 比较：与v001穿字标签比，现在两行干净，流程拓扑与质量示意未改。
+
+实际Node参数化几何、数值计算与DSL构造、独立文件/hash/内容审计、view_image逐图观察及接触表对比已保留。无模型费用或token计量来源，不以字数或账户比例推测。
+
+root实际打开十件接触表审查阅读顺序、内容独立性与构图。已逐张看14次成功响应；10件分别解决轨道换算、历史事件、长度比较、原理理解、事件节奏、水回收流程、设备辨识、合作关系、研究证据读法与观测行动。不同版式不是同模板换字，无前题成品重复。四处裁剪/方向/穿字已真实改图再看。整集有NASA来源短名、时点/近似与示意限制，适合原尺寸近读。
+[真实来源与访问/逐件引用](sources.json) · [编辑路线与限制](editorial-note.md)。七个真实NASA GET与三个native检索工具调用分开记录；检索内部HTTP与费用未知。
+所有最终图经真实服务；14渲染全部200、10baseline与4完整visual，失败本地补丁因目标坐标错而在提交前中止，未算HTTP/DSL服务故障。失败脚本与修复v003保留。
+03 109/80/67米严格8px/m；06 100等质量格98回收2损失，流程箭头不含分支流量。来源历史口径和示意限制见sources。
+独立终审由 /root/suite_integrity_audit 实际逐图、研究源与文件核验；producer额外四次实图查看也已导入公共日志。
+开放作品均为近读科普板，未进行印刷品或实时观测服务部署。
+
+## 复现与剩余事项
+
+发送每个final.snapshot为text/plain; charset=utf-8请求体，按Content-Type/HTTP/PNG尺寸验证响应。不要依赖脚本库重建，最终DSL已完整自包含。
+每用例时段见task-metrics.json case_metrics。未测量创作起点为null，真实服务到交付间隔另列；并行创作和请求耗时之和不等于整体墙钟。未发生反馈/限流等待记录为0，服务器不可测排队为null。
+最终核验：D:\workspaces\gpt-6.1-sol-ultra\tmp\20261002-204314-6f31\B04\audit-independent-v001\audit-final-v001.json。目前单题无未解决事项；后续状态为B05:pending、B06:pending；全套最终总审查尚待完成。
+
+
+## Root final review
+
+B04-view-000001: 实际完整图：90分钟、28000km/h和16圈计算清晰，地球环轨与八片示意阵列成型，正文来源及不比例说明无裁剪，保留。
+
+B04-view-000006: 实际完整历史图：四事件日期与发射/连接/常驻区分清楚、间距不比例声明和来源齐全；三乘员与模块叙事可读，保留。
+
+B04-view-000012: 实际v002完整标尺，左下29米全文恢复，三条长度和共零点刻度保持；29差和约1.36倍、67主轴口径清晰。保留。
+
+B04-view-000013: 实际v003完整微重力图：绿色引力箭头现明显朝地心，与橙色切向运动箭头区分；标签与正文不交叉，250英里/88.8%限定和舱内共同下落说明完整。保留。
+
+B04-view-000009: 实际完整图16日出小图标顺序与中央约16清楚，每24小时与每圈约90分钟关联，脚注明确等角仅版式/不固定昼夜各45分钟，完整近读成立。保留。
+
+B04-view-000014: 实际v002完整水回收图：蒸馏/出的水两行标签在管线左侧，纵向线不穿字；100格98/2与三支路处理及WPA再处理清楚，数据分母/历史时点/非流量箭头说明保持。保留。
+
+B04-view-000011: 实际完整图ARED/T2/CEVIS三设备图鉴、中文名称和负荷说明完整；约2小时/日2024综述平均与非处方/非保证、器材非比例界限清楚，文字无裁剪，保留。
+
+B04-view-000005: 实际v002完整图，JAXA绿色连接线在纸色关系说明标签后遮挡，正文不穿线；五节点和关系保持，图形可读。保留。
+
+B04-view-000003: 实际完整图双栏问题、概念图、测量/个体差异/原论文未逐篇读界限明确，阅读行动与来源完整，正文无裁剪。保留。
+
+B04-view-000004: 实际完整图：观测字段与当地时区、晨昏反射、肉眼和头顶不一定可见的行动说明齐全；半穹顶0/90角度与路径示意清楚，无实时预测声明。保留。
+
+
+全套终审增补：按当前 task.json 的 common_outputs，补齐 [gallery.md](gallery.md) 全十件作品索引，与已有 HTML 画廊、正式原PNG和DSL一致。没有新增作品、服务请求或图像查看；最终套件状态以 [suite-state.json](../_suite/suite-state.json) 为准。
+
+
+终审留痕恢复：第二次原生搜索原结果已从本会话原始工具输出恢复为临时目录 research-search-v002-recovered.json；原调用/输出事件及恢复来源、时间、SHA均保留。原“未单独保存”的历史记录保留，当前sources.json已注明恢复。没有新搜索或HTTP，三次原生搜索的内部HTTP数仍不可得，保持null；七页实际NASA GET与所有Snapshot原服务响应均已存档。
+
+
+搜索原结果存档格式：research-search-v002-recovered.json正文逐字恢复，存档末尾添加一个LF；另保存research-search-v002-native-result-exact.txt，UTF-8字节与历史工具JSON文本块完全一致，不加LF。两个文件SHA与来源差别明确记录；不把工具JSON视为内部网络响应字节。

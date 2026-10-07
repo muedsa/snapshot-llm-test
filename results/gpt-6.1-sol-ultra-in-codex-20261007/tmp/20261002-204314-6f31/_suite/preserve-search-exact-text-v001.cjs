@@ -1,0 +1,13 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('./suite.cjs'),b=s.taskDirs('B04'),J=x=>JSON.stringify(x,null,2)+'\n';
+const events=s.lines(path.join(b.temp,'research-search-v002-original-events.jsonl'));
+const response=events.find(e=>e.payload.type==='custom_tool_call_output');
+const resultText=response.payload.output.find(x=>x.type==='input_text'&&x.text.startsWith('{"content":')&&x.text.includes('NASA Achieves Water Recovery Milestone')).text;
+const target=path.join(b.temp,'research-search-v002-native-result-exact.txt');
+fs.writeFileSync(target,resultText,{flag:'wx'});
+const nativeFile=path.join(b.temp,'research-search-v002-recovered.json');
+if(fs.readFileSync(nativeFile,'utf8')!==resultText+'\n')throw Error('Unexpected archival JSON change');
+const record={task_id:'B04',run_id:s.readState().run_id,recorded_at:new Date().toISOString(),native_tool_json_text_exact:target,exact_utf8_bytes:Buffer.byteLength(resultText),sha256:s.sha256(Buffer.from(resultText)),archival_json:nativeFile,archival_json_difference:'One trailing LF added solely for readable JSON file storage; body exactly matches historical native result text.',native_result_source:'Original same-chat functions exec input_text block, not native search internal network bytes.',new_native_tool_calls:0,new_http_requests:0,original_event_file:path.join(b.temp,'research-search-v002-original-events.jsonl')};
+fs.writeFileSync(path.join(b.temp,'research-search-v002-exact-text-v001.json'),J(record),{flag:'wx'});
+const p=path.join(b.output,'sources.json'),old=fs.readFileSync(p),sources=JSON.parse(old);fs.writeFileSync(path.join(b.temp,'sources-before-exact-text-v001.json'),old,{flag:'wx'});sources.search.exact_result_text=record;fs.writeFileSync(p,J(sources));
+s.report('B04',fs.readFileSync(path.join(b.output,'snapshot-usage.md'),'utf8')+'\n\n搜索原结果存档格式：research-search-v002-recovered.json正文逐字恢复，存档末尾添加一个LF；另保存research-search-v002-native-result-exact.txt，UTF-8字节与历史工具JSON文本块完全一致，不加LF。两个文件SHA与来源差别明确记录；不把工具JSON视为内部网络响应字节。\n');
+console.log(J({exact_file:target,bytes:record.exact_utf8_bytes,new_http:0}));

@@ -1,0 +1,6 @@
+const fs=require('node:fs'),path=require('node:path');
+const p=path.join(__dirname,'root-source-check-v001.cjs'),old=fs.readFileSync(p,'utf8'),from="expect(raw.includes(c.children[0]),'actual text DSL '+t.id)",to="expect(raw.includes(c.children[0])||(t.align==='START'&&raw.includes(c.children[0].replace(' textAlign=\"START\"',''))),'actual text DSL '+t.id)";
+if(old.split(from).length!==2)throw Error('Expected one checker clause');
+const corrected=old.replace(from,to).replace("root-source-check-v001.json","root-source-check-v002.json");
+fs.writeFileSync(path.join(__dirname,'root-source-check-v002.cjs'),corrected,{flag:'wx'});
+fs.writeFileSync(path.join(__dirname,'root-checker-correction-v001.json'),JSON.stringify({cause:'Exact-string check added textAlign START although source omitted it for default start-aligned Text; 23 false flags. Explicit START and omitted default are equivalent. No artwork was changed.',preserves:['root-source-check-v001.cjs','root-source-check-v001.json'],correction:'Accept both explicit START and omitted attribute for mapped START only; keep all other text fields exact. v002 supersedes v001 check conclusion.',service_calls:0,image_views:0},null,2)+'\n',{flag:'wx'});

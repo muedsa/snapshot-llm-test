@@ -1,0 +1,13 @@
+const fs=require('node:fs'),path=require('node:path');
+const dir=__dirname,old=fs.readFileSync(path.join(dir,'build-preview-v002.cjs'),'utf8');
+const views=JSON.parse(fs.readFileSync(path.join(dir,'producer-view-records-v001.json'),'utf8')),before=views.find(v=>v.view_kind!=='400px_thumbnail');
+let next=old.replace("line:'#71869F'","line:'#526D8C'").replaceAll("'#A7B5C8'","'#8094AD'").replaceAll('??2.5','??3').replaceAll(',p.muted,2.5,',',p.muted,3,').replaceAll('width:2.5','width:3');
+next=next.replaceAll('A18-concept-A-v001','A18-concept-A-v002').replaceAll("'concept-A-v001.snapshot'","'three-act-story-v002.snapshot'").replaceAll("'story-audit-draft-v001.json'","'story-audit-final-v002.json'").replaceAll("'render-v001.json'","'render-final-v002.json'");
+next=next.replace('audit.final=false;audit.preview_only=true;','audit.final=true;audit.preview_only=false;');
+const oldDetails="parent_version:null,type:'alternative',stem:'concept-A',case_id:'concept-A'";
+const newDetails=`parent_version:'A18-concept-A-v001',type:'visual',stem:'three-act-story',case_id:'concept-A',before_view_id:'${before.id}',changes:'沿已看实际预览把中性箭头2.5→3px且#71869F→#526D8C；闲置节点轮廓/三横槽#A7B5C8→#8094AD；单位/节点几何与ID颜色保持。'`;
+if(!next.includes(oldDetails))throw Error('render detail absent');next=next.replace(oldDetails,newDetails).replace('A18 composition A real 1600×1000 preview; geometric conservation','A18 selected composition A visual refinement; stronger neutral routes and idle outlines');
+const marker='const dsl=c.toString();';
+const freezeCheck="const preview=JSON.parse(fs.readFileSync(path.join(out,'story-audit-draft-v001.json'),'utf8'));for(let i=0;i<audit.acts.length;i++){for(let j=0;j<audit.acts[i].units.length;j++)if(JSON.stringify(audit.acts[i].units[j])!==JSON.stringify(preview.acts[i].units[j]))throw Error('Conserved circle changed');for(let j=0;j<audit.acts[i].nodes.length;j++)if(JSON.stringify(audit.acts[i].nodes[j])!==JSON.stringify(preview.acts[i].nodes[j]))throw Error('Node geometry changed');}audit.matches_preview_all_45_units_and_9_node_geometries=true;";
+if(!next.includes(marker))throw Error('source marker absent');next=next.replace(marker,freezeCheck+marker);
+fs.writeFileSync(path.join(dir,'build-final-v002.cjs'),next,{flag:'wx'});console.log(JSON.stringify({saved:'build-final-v002.cjs',before_actual_view:before.id}));

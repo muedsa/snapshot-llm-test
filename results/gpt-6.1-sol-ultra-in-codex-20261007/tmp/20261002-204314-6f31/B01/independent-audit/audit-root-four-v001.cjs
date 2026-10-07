@@ -1,0 +1,37 @@
+const fs=require('fs'),path=require('path');const lib=require('./lib-independent-audit-v001.cjs');
+const base=path.resolve(__dirname,'..'),checks=[];const ck=(id,ok,evidence)=>checks.push({id,ok,evidence});
+function lines(file){const raw=fs.readFileSync(file,'utf8'),out=[];for(const p of raw.matchAll(/<Positioned\b([^>]*)>([\s\S]*?)<\/Positioned>/g)){const pa=lib.attrs(p[1]),t=p[2].match(/^<Transform\b([^>]*)><Container\b([^>]*)\/>/);if(!t)continue;const a=lib.attrs(t[1]),ca=lib.attrs(t[2]),m=a.matrix.slice(1,-1).split(',').map(Number),x=Number(pa.left),y=Number(pa.top),len=Number(ca.width),stroke=Number(ca.height);out.push({p1:[x,y],p2:[x+m[0]*len,y+m[1]*len],length:len,stroke,color:ca.color,matrix:m});}return out;}
+const selection=[['01','001',1],['08','001',2],['09','003',7],['10','003',8]];
+const results=selection.map(([n,v,req])=>lib.integrityCheck({caseId:'case-'+n,dslFile:path.join(base,'root','case-'+n+'-v'+v+'.snapshot'),pngFile:path.join(base,'requests','B01-request-'+String(req).padStart(6,'0'),'response.png'),tempDir:base}));
+for(const r of results)for(const c of r.checks)ck(r.case_id+'-'+c.name,c.ok,c.details);
+const text=n=>results.find(r=>r.case_id==='case-'+n).dsl.texts.map(t=>t.text).join('\n');
+ck('case-01-overnight-duration',1440-(23*60+40)+(7*60+20)===460&&text('01').includes('7小时40分'),{departure:'10月18日23:40',arrival:'10月19日07:20',computed_minutes:460});
+ck('case-01-boarding-sequence',text('01').includes('23:15–23:30')&&text('01').includes('在 4 号检票口检票')&&text('01').includes('列车出发 · 4 站台')&&text('01').includes('06车 / 08下铺'),{boarding_window_minutes:15,close_to_departure_minutes:10,arrival_before:'23:00'});
+ck('case-01-demonstration-marked',text('01').includes('虚构线路与时刻')&&text('01').includes('不作为实际乘车凭证'),{});
+ck('case-08-two-servings-complete-ingredients',['2人份','160 g','200 g','500 ml','2 瓣','1 汤匙','盐 / 罗勒','适量'].every(s=>text('08').includes(s)),{ingredient_count:6,qualitative_seasoning:'盐/罗勒适量'});
+ck('case-08-timing-and-doneness',[4,9,2].reduce((a,b)=>a+b,0)===15&&['04','09','02','15分钟参考','按包装建议检查面条熟度','面条熟透','自拟食谱'].every(s=>text('08').includes(s)),{phase_minutes:[4,9,2],total_minutes:15,completion_condition:'面条熟透、汁液挂面，计时为参考'});
+ck('case-09-timed-actions',results.find(r=>r.case_id==='case-09').dsl.texts.filter(t=>t.text==='15秒').length===4&&['轮胎','刹车','传动','可见性'].every(s=>text('09').includes(s)),{step_seconds:[15,15,15,15],total_seconds:60});
+ck('case-09-no-universal-pressure-and-exception-handling',text('09').includes('按胎侧范围确认胎压')&&text('09').includes('不提供统一胎压值')&&text('09').includes('发现异常，先处理再出发')&&text('09').includes('处理异常需要额外时间'),{});
+const bikeLines=lines(path.join(base,'root','case-09-v003.snapshot')),leaders=bikeLines.filter(l=>l.color==='#68D9DF'&&l.stroke===2);
+const leadPairs=[[[360,590],[170,680]],[[170,680],[170,707]],[[1142,398],[640,656]],[[640,656],[640,707]],[[700,530],[934,684]],[[934,684],[934,707]],[[1112,257],[1450,357]],[[1450,357],[1450,707]]];
+const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+ck('case-09-four-leaders-from-bike-to-corresponding-cards',leaders.length===8&&leadPairs.every(([a,b])=>leaders.some(l=>dist(l.p1,a)<1e-4&&dist(l.p2,b)<1e-3)),{actual_leaders:leaders.map(l=>({p1:l.p1,p2:l.p2})),mapping:['轮胎:后轮内部→第1卡','刹车:前轮上部→第2卡','传动:曲柄下缘→第3卡','可见性:车把区/前灯安装示意→第4卡'],note:'自行车为检查示意图；可见性卡同时要求头盔/后灯，未声称图中绘出各组件'});
+const explain=results.find(r=>r.case_id==='case-09').dsl.texts.find(t=>t.text==='检查图 · 非维修手册');
+ck('case-09-explanation-clearance-from-leaders',explain.x===677&&explain.y===677&&explain.width===235&&explain.x>640+1&&explain.x+explain.width<934-1,{text_box:[explain.x,explain.y,explain.width,explain.height],left_vertical_leader_x:640,right_card_endpoint_x:934});
+const timerFile=path.join(base,'root','case-10-v003.snapshot'),timerLines=lines(timerFile),cx=414,cy=564;
+const rad=p=>Math.hypot(p[0]-cx,p[1]-cy),tickLines=timerLines.filter(l=>Math.abs(rad(l.p1)-274)<.001&&(Math.abs(rad(l.p2)-294)<.001||Math.abs(rad(l.p2)-306)<.001));
+const minute=p=>((Math.atan2(p[1]-cy,p[0]-cx)+Math.PI/2+2*Math.PI)%(2*Math.PI))*90/(2*Math.PI);
+const tickMatches=Array.from({length:90},(_,m)=>tickLines.filter(l=>Math.abs(minute(l.p1)-m)<.001));
+ck('case-10-exact-90-minute-ticks',tickLines.length===90&&tickMatches.every(x=>x.length===1),{tick_count:tickLines.length,unique_minute_tick_count:tickMatches.filter(x=>x.length===1).length});
+ck('case-10-38-elapsed-52-remaining-tick-strokes',tickMatches.every((x,m)=>x[0].stroke===(m<38?5:2.5)),{thick_elapsed_ticks:tickLines.filter(l=>l.stroke===5).length,thin_remaining_ticks:tickLines.filter(l=>l.stroke===2.5).length});
+ck('case-10-phase-colors-match-minute-ranges',tickMatches.every((x,m)=>x[0].color===(m<15?'#CF693E':m<75?'#242A3A':'#689E90')),{preparation_ticks:15,deep_work_ticks:60,wrap_up_ticks:15});
+const arc=timerLines.filter(l=>l.stroke===8&&Math.abs(rad(l.p1)-248)<.001&&Math.abs(rad(l.p2)-248)<.001),arcCounts=Object.fromEntries(['#CF693E','#242A3A','#689E90'].map(col=>[col,arc.filter(l=>l.color===col).length]));
+ck('case-10-phase-arc-proportions',arc.length===360&&arcCounts['#CF693E']===60&&arcCounts['#242A3A']===240&&arcCounts['#689E90']===60,{arc_segment_counts:arcCounts,segments_per_minute:4,angles_degrees:[60,240,60]});
+const pointer=timerLines.find(l=>l.color==='#CF693E'&&l.stroke===3&&dist(l.p1,[414,564])<.001&&Math.abs(l.length-170)<.001);
+const expected38=[cx+248*Math.cos(-Math.PI/2+38/90*2*Math.PI),cy+248*Math.sin(-Math.PI/2+38/90*2*Math.PI)];
+const rawTimer=fs.readFileSync(timerFile,'utf8');let marker;
+for(const p of rawTimer.matchAll(/<Positioned\b([^>]*)><Container\b([^>]*)\/><\/Positioned>/g)){const a=lib.attrs(p[1]),b=lib.attrs(p[2]);if(b.color==='#CF693E'&&b.shape==='CIRCLE'&&Number(a.width)===22)marker=[Number(a.left)+11,Number(a.top)+11];}
+ck('case-10-minute38-pointer-and-marker',!!pointer&&Math.abs(minute(pointer.p2)-38)<.001&&!!marker&&dist(marker,expected38)<.001,{minute_angle_clockwise_degrees:152,marker_center:marker,expected_marker_center:expected38,pointer_end:pointer?.p2});
+ck('case-10-time-text-and-completion-standard',['14:00 开始 / 15:30 完成','14:00–14:15','14:15–15:15','15:15–15:30','14:38已过38分钟 / 90分钟','52','一页摘要包含：结论、3条依据、1个下一步','静态计时演示'].every(s=>text('10').includes(s)),{total_minutes:90,elapsed:38,remaining:52,phase_minutes:[15,60,15]});
+const report={schema_version:1,task_id:'B01',run_id:'20261002-204314-6f31',created_at:new Date().toISOString(),reviewer:'b01_independent_audit',scope:'root四件最新候选01/08-v001与09/10-v003；数据/语义/几何/服务原字节/root查看链检查，非正式发布/全作品集终审',passed:checks.every(c=>c.ok),check_count:checks.length,checks,candidates:results.map(({dsl,...r})=>({...r,dsl:{file:dsl.file,sha256:dsl.sha256,width:dsl.width,height:dsl.height,tags:dsl.tags,text_count:dsl.text_count}})),metadata_followup:'最终portfolio的dsl_capabilities按实际标签派生；01/09/10没有ClipOval，原四件meta统一声明已提示root纠正。',limitations:['root已实际查看图像，独立审计仅据实际DSL/请求/查看日志核查，不制造代理看图事件','B01另外六件尚待审计，不能由这四件通过推定全题完成']};
+fs.writeFileSync(path.join(__dirname,'root-four-audit-v001.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify({passed:report.passed,checks:checks.length,failed:checks.filter(c=>!c.ok),file:'root-four-audit-v001.json'}));

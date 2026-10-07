@@ -1,0 +1,38 @@
+{
+  "id": "A01",
+  "title": "六个月经营诊断驾驶舱",
+  "category": "数据叙事",
+  "challenge": "同屏多图、多单位与加权比例，叙述必须与真实几何一致。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "为虚构产品 Northstar 制作 1600×1000 经营诊断驾驶舱，给管理者展示 2026-04 至\n2026-09 的经营状况。inputs/monthly.csv 是唯一业务数据；金额单位为元，订单为笔，\nsessions 为访问次数。gross_revenue 是退款前收入，refund_amount 是当月退款；\noperating_cost 不含退款。净收入=收入−退款，经营利润=净收入−成本。\n\n同一屏必须包含：四张 KPI（总净收入、总经营利润、总订单、期间总体转化率），\n六个月净收入与经营利润分组柱图、访问量与转化率两个共享月份对齐的小图、\n六行明细表（月份/净收入/退款率/利润/转化率）及一条有证据的管理结论。\n总体转化率使用总订单/总访问次数，不平均月比例；退款率=退款/退款前收入。\n柱图共用零起点和比例，负值若有须正确处理，百分比与金额不能共用混淆的数轴。\nKPI 保留金额原值或正确转换成万元；明细金额整数、比例两位小数。\n图表刻度、单位、图例、所有月份与表格内容完整可读，正文≥20、脚注≥16。\n\n附 computed-data.json，包含每月计算值、汇总、图轴定义与结论所引用的数值。\n做到视觉重点明确而非把数字平均堆满；检查表格对齐、最后一个月标签和图表比例。\n",
+  "inputs": [
+    "inputs/monthly.csv"
+  ],
+  "required_outputs": [
+    {
+      "filename": "operations.png",
+      "dsl": "operations.snapshot",
+      "width": 1600,
+      "height": 1000,
+      "purpose": "经营驾驶舱"
+    }
+  ],
+  "additional_outputs": [
+    "computed-data.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A01/",
+  "temp_dir_template": "tmp/{run_id}/A01/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

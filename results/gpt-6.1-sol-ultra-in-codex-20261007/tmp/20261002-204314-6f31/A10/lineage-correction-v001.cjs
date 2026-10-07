@@ -1,0 +1,8 @@
+const fs=require('fs'),path=require('path'),s=require('../_suite/suite.cjs'),d=s.taskDirs('A10'),c=s.countsFor('A10');
+const first=c.versions[0],second=c.versions[1],v=c.views.find(v=>v.id==='A10-view-000002');
+const correction={recorded_at:new Date().toISOString(),task_id:'A10',original_recorded_parent:second.parent_version,actual_parent:first.id,actual_child:second.id,reason:'Producer named source files v001/v002 but suite default created A10-version-000001/000002. Explicit parent used file shorthand A10-v001. Correct mapping is recorded without overwriting original logs or adding a DSL version/render/view.',before_view_id:'A10-view-000001',after_view_id:v.id};
+fs.writeFileSync(path.join(d.temp,'lineage-correction-v001.json'),JSON.stringify(correction,null,2)+'\n',{flag:'wx'});
+s.iteration('A10',{type:'visual',version_id:second.id,parent_version:first.id,completed:true,before_view_id:'A10-view-000001',after_view_id:v.id,changes:'Limit stripe primitives to actual320px experiment width.',comparison:'v002 removed actual8px baseline stripe overflow in03/04; original filters, colors and foreground retained.',lineage_correction:path.join(d.temp,'lineage-correction-v001.json')});
+s.report('A10',fs.readFileSync(path.join(d.output,'snapshot-usage.md'),'utf8')+'\n\nProcess lineage correction: files labelled v001/v002 correspond to actual suite version IDs '+first.id+' / '+second.id+'. The initially recorded parent shorthand A10-v001 was corrected by an appended iteration record and lineage-correction-v001.json; original records preserved, no new version/request/view.\n');
+s.writeTaskMetrics('A10',{lineage_correction:path.join(d.temp,'lineage-correction-v001.json')});s.aggregate();
+console.log(JSON.stringify(correction));

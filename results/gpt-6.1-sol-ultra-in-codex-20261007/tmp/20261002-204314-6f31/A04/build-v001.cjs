@@ -1,0 +1,77 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const {Canvas}=require('../_suite/dsl.cjs');const s=require('../_suite/suite.cjs');
+const input=path.resolve('tasks/A04-conversion-paradox/inputs/conversion.csv');
+const lines=fs.readFileSync(input,'utf8').trim().split(/\r?\n/),headers=lines.shift().split(',');
+const rows=lines.filter(Boolean).map(l=>Object.fromEntries(l.split(',').map((v,i)=>[headers[i],i>=2?Number(v):v])));
+const periods=['前期','后期'],channels=['直接访问','推广访问'];
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a),fraction=(n,d)=>{const g=gcd(n,d);return {numerator:n,denominator:d,reduced_numerator:n/g,reduced_denominator:d/g,raw:`${n}/${d}`,reduced:`${n/g}/${d/g}`};};
+const colors={'直接访问':'#087A76','推广访问':'#B96C24'},ink='#17243B',muted='#556780';
+const totals=periods.map(period=>{const rr=rows.filter(r=>r.period===period),visits=rr.reduce((a,r)=>a+r.visits,0),conversions=rr.reduce((a,r)=>a+r.conversions,0);return {period,visits,conversions,rate_fraction:fraction(conversions,visits),rate_percent:conversions/visits*100,display_rate:period==='前期'?'26%':'16.6%',weighted_terms:rr.map(r=>({channel:r.channel,visit_weight_fraction:fraction(r.visits,visits),rate_fraction:fraction(r.conversions,r.visits),product_fraction:fraction(r.conversions,visits)}))};});
+const c=new Canvas(1600,1000,{background:'#F3F6FA'});
+c.text(48,27,1504,64,'转化变化，为什么不能只看平均？',42,ink,{bold:true});
+c.text(50,100,1500,37,'两期各 10,000 次访问  ·  转化率 = 成交数 / 访问数  ·  用 0–100% 同尺度核验',22,muted);
+c.card(48,155,748,385,'#FFFFFF',{radius:18,border:'1 SOLID #DFE7F0'});
+c.card(824,155,728,385,'#FFFFFF',{radius:18,border:'1 SOLID #DFE7F0'});
+c.text(72,173,684,43,'01  两渠道的转化率',28,ink,{bold:true});
+c.text(72,220,684,35,'同渠道对照  ·  成交数 / 访问数',22,muted);
+c.text(848,173,680,43,'02  访问从何而来',28,ink,{bold:true});
+c.text(848,220,680,35,'同一期内，等长代表 100% 访问',22,muted);
+const rateX=236,rateW=508,rateTicks=[0,25,50,75,100],groupRows=[];
+rateTicks.forEach(t=>{const x=rateX+rateW*t/100;c.line(x,272,x,485,'#E5EBF3',1);c.text(x-34,496,68,30,`${t}%`,18,muted,{align:'center'});});
+const gy=[284,330,406,452];
+channels.forEach((channel,ci)=>{
+  const labelY=ci===0?281:403;
+  c.text(72,labelY,98,35,channel==='直接访问'?'直接':'推广',22,colors[channel],{bold:true});
+  c.text(72,labelY+33,98,31,'访问',22,colors[channel],{bold:true});
+  periods.forEach((period,pi)=>{
+    const row=rows.find(r=>r.period===period&&r.channel===channel),rate=row.conversions/row.visits*100,y=gy[ci*2+pi],w=rateW*rate/100;
+    c.text(171,y-1,57,29,period,18,muted);
+    c.rect(rateX,y,rateW,27,'#F0F4F9',{radius:4});
+    c.rect(rateX,y,w,27,colors[channel],{radius:4});
+    c.text(rateX+w+9,y-4,110,37,`${rate}%`,24,colors[channel],{bold:true});
+    groupRows.push({period,channel,rate_fraction:fraction(row.conversions,row.visits),rate_percent:rate,x:rateX,y,width:w,height:27,axis:{min_percent:0,max_percent:100,x_start:rateX,x_end:rateX+rateW,width:rateW},label_color:colors[channel]});
+  });
+});
+// Consistent channel colours in the true visit-share stacks.
+c.circle(856,270,7,colors['直接访问']);c.text(874,253,160,33,'直接访问',22,colors['直接访问'],{bold:true});
+c.circle(1092,270,7,colors['推广访问']);c.text(1110,253,170,33,'推广访问',22,colors['推广访问'],{bold:true});
+const stackX=982,stackW=530,stackRows=[];
+periods.forEach((period,pi)=>{
+  const total=totals[pi],y=pi===0?315:411;
+  c.text(848,y+5,108,34,period,24,ink,{bold:true});c.text(848,y+40,125,31,'10,000 次',18,muted);
+  let x=stackX;
+  const segments=channels.map(channel=>{
+    const row=rows.find(r=>r.period===period&&r.channel===channel),share=row.visits/total.visits,width=stackW*share;
+    c.rect(x,y,width,58,colors[channel]);
+    c.text(x,y+13,width,37,`${share*100}%`,24,'#FFFFFF',{bold:true,align:'center'});
+    const segment={channel,visits:row.visits,share_fraction:fraction(row.visits,total.visits),share_percent:share*100,x,y,width,height:58,color:colors[channel]};x+=width;return segment;
+  });
+  stackRows.push({period,x:stackX,y,width:stackW,height:58,total_visits:total.visits,segments});
+});
+c.text(982,492,530,31,'每期整条长度相同；分段只按访问占比',20,muted);
+c.card(48,566,748,310,'#FFFFFF',{radius:18,border:'1 SOLID #DFE7F0'});
+c.card(824,566,728,310,'#FFFFFF',{radius:18,border:'1 SOLID #DFE7F0'});
+c.text(72,584,684,43,'03  总体转化率对照',28,ink,{bold:true});
+c.text(72,628,684,36,'总成交 / 总访问  ·  按访问数加权',22,muted);
+rateTicks.forEach(t=>{const x=rateX+rateW*t/100;c.line(x,667,x,750,'#E5EBF3',1);c.text(x-34,756,68,30,`${t}%`,18,muted,{align:'center'});});
+const overallRows=[];
+totals.forEach((t,pi)=>{
+  const y=pi===0?678:722,width=rateW*t.rate_percent/100;
+  c.text(72,y-4,142,36,t.period,22,ink,{bold:true});
+  c.rect(rateX,y,rateW,25,'#F0F4F9',{radius:4});c.rect(rateX,y,width,25,'#243C68',{radius:4});
+  c.text(rateX+width+10,y-5,130,36,t.display_rate,24,'#243C68',{bold:true});
+  overallRows.push({period:t.period,rate_fraction:t.rate_fraction,rate_percent:t.rate_percent,x:rateX,y,width,height:25,axis:{min_percent:0,max_percent:100,x_start:rateX,x_end:rateX+rateW,width:rateW}});
+});
+c.text(72,796,684,34,'前期：80%×30% + 20%×10% = 26%',22,ink);
+c.text(72,835,684,34,'后期：20%×35% + 80%×12% = 16.6%',22,ink);
+c.text(848,584,680,43,'04  原始计数核对',28,ink,{bold:true});
+const tableRows=[['时期','渠道','访问(次)','成交(次)','转化率'],...rows.map(r=>[r.period,r.channel,r.visits.toLocaleString('en-US'),r.conversions.toLocaleString('en-US'),`${r.conversions/r.visits*100}%`])];
+c.table(848,629,[82,152,118,122,178],47,tableRows,{size:22,padding:6,borderColor:'#E0E7EF',headerFill:'#E9EFF7',alternateFill:'#F8FAFC',aligns:['START','START','RIGHT','RIGHT','RIGHT'],textOptions:{softWrap:false,maxLines:1}});
+c.text(48,899,1504,43,'两渠道的转化率都上升，但访问构成改变，总体从 26% 降至 16.6%。',28,ink,{bold:true});
+c.text(50,953,1500,34,'不能由该数据证明因果；这里只描述分组率、访问权重与总体加权结果。',22,muted);
+const dsl=c.toString();
+fs.writeFileSync(path.join(__dirname,'conversion-story-v001.snapshot'),dsl,{flag:'wx'});
+const analysis={task_id:'A04',run_id:'20261002-204314-6f31',source:input,units:{visits:'次',conversions:'次',rates:'%',rate_change:'百分点'},original_rows:rows,group_rates:rows.map(r=>({...r,rate_fraction:fraction(r.conversions,r.visits),rate_percent:r.conversions/r.visits*100,display_percent:`${r.conversions/r.visits*100}%`})),totals,visit_shares:stackRows.map(r=>({period:r.period,total_visits:r.total_visits,channels:r.segments.map(s=>({channel:s.channel,visits:s.visits,share_fraction:s.share_fraction,share_percent:s.share_percent}))})),weighted_formulas:[{period:'前期',raw:'(8000/10000)×(2400/8000)+(2000/10000)×(200/2000)=2600/10000',reduced:'(4/5)×(3/10)+(1/5)×(1/10)=13/50',display:'80%×30%+20%×10%=26%',result_fraction:fraction(2600,10000)},{period:'后期',raw:'(2000/10000)×(700/2000)+(8000/10000)×(960/8000)=1660/10000',reduced:'(1/5)×(7/20)+(4/5)×(3/25)=83/500',display:'20%×35%+80%×12%=16.6%',result_fraction:fraction(1660,10000)}],changes:{direct_rate_pp:5,promotion_rate_pp:2,overall_rate_pp:-9.4,overall_rate_difference_fraction:fraction(-940,10000),direct_visit_share_pp:-60,promotion_visit_share_pp:60},conclusion:{text:'两渠道的转化率都上升，但访问构成改变，总体从26%降至16.6%。',evidence:['直接访问30%→35%','推广访问10%→12%','直接访问权重80%→20%','推广访问权重20%→80%','总成交/总访问2600/10000→1660/10000'],same_direction:false,interpretation:'Lower-rate channel carries more weight in the later period; this is a descriptive weighted-total explanation.',causality_limit:'不能由该数据证明因果',not_proven:['访问构成变化的原因','渠道变化导致转化变化的因果关系'],calculation_rule:'Overall is summed conversions divided by summed visits, equivalently visits-weighted rates; never an unweighted average or absolute-conversion comparison.'},geometry:{canvas:{width:1600,height:1000},group_rate_rows:groupRows,share_stacks:stackRows,overall_rate_rows:overallRows,rate_axes_shared_range:[0,100],group_and_overall_axis_widths_equal:true,share_stack_total_widths_equal:stackRows.every(r=>r.width===stackW),exact_linear_scale:true,body_font_minimum:22,chart_annotation_font_minimum:18,table:{x:848,y:629,column_widths:[82,152,118,122,178],row_height:47,font_size:22,all_raw_numerators_denominators_present:true},decimal_serialization:'DSL geometric floats rounded to6 decimal places; data fractions preserve original integers.'},visual_review:{status:'pending real baseline inspection',view_ids:[]}};
+fs.writeFileSync(path.join(__dirname,'analysis-v001.json'),JSON.stringify(analysis,null,2)+'\n',{flag:'wx'});
+(async()=>{const r=await s.render('A04',dsl,{version_id:'A04-conversion-story-v001',type:'baseline',stem:'conversion-story',width:1600,height:1000});s.taskCheckpoint('A04',{resume_notes:'Exactdata and threechart types built; baseline realservice returned and needs actual view.',checkpoint:'A04-baseline-rendered'});s.writeTaskMetrics('A04');console.log(JSON.stringify({ok:r.ok,status:r.http_status,image:r.image_path,metadata:r.meta_path,dimensions:r.png_dimensions,error:r.error_summary}));})().catch(e=>{console.error(e);process.exitCode=1;});

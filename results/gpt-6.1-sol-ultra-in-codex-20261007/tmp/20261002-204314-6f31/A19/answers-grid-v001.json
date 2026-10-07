@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "source_grid_data_sha256": "d484b4d4ee8663b272798054f582ce037ef0cd2b3579e83e0e76ce73cd6f6864",
+  "coordinate_system": {
+    "origin": "最终grid-scene.png左上(0,0)",
+    "x": "向右",
+    "y": "向下",
+    "units": "px",
+    "relations": "主体中心，严格左右排除同x",
+    "distance": "主体中心欧氏距离，比较精确值后才按题面舍入",
+    "bounding_box": "主体几何外缘，不包含ID，right/bottom不减1",
+    "ties": "以每题明确排序规则破并列"
+  },
+  "scope": "grid-only draft; merge actual occlusion questions separately after original scene review",
+  "answers": [
+    {
+      "id": "Q01",
+      "answer": [
+        "G24",
+        "G45",
+        "G51"
+      ],
+      "calculation_method": "color=blue AND shape=ring AND size>=64；ID升序。",
+      "intermediate": {},
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q02",
+      "answer": "G43",
+      "calculation_method": "第一阶段筛green/ring并排序；第二阶段筛orange且x>anchor.x，用sqrt(dx²+dy²)比较，最后ID破同距。",
+      "intermediate": {
+        "anchor": "G42",
+        "anchor_center": [
+          400,
+          1112
+        ],
+        "candidate_ids": [
+          "G11",
+          "G12",
+          "G15",
+          "G16",
+          "G21",
+          "G27",
+          "G28",
+          "G31",
+          "G40",
+          "G43",
+          "G47",
+          "G54",
+          "G60"
+        ],
+        "target_distance_px": 160
+      },
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q03",
+      "answer": "G55",
+      "calculation_method": "选最右紫色锚点，排除同x和非circle；按精确欧氏距离与ID排序。",
+      "intermediate": {
+        "anchor": "G48",
+        "anchor_center": [
+          1360,
+          1112
+        ],
+        "candidate_ids": [
+          "G01",
+          "G03",
+          "G15",
+          "G22",
+          "G25",
+          "G35",
+          "G37",
+          "G41",
+          "G50",
+          "G53",
+          "G54",
+          "G55",
+          "G60"
+        ],
+        "target_distance_px": 226.27416997969522
+      },
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q04",
+      "answer": "G19",
+      "calculation_method": "选blue锚点后，同row且x<anchor.x；size降序，ID升序。",
+      "intermediate": {
+        "anchor": "G24",
+        "row": 3,
+        "candidate_ids": [
+          "G17",
+          "G18",
+          "G19",
+          "G20",
+          "G21",
+          "G22",
+          "G23"
+        ],
+        "target_size": 80
+      },
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q05",
+      "answer": {
+        "id": "G10",
+        "shape": "圆环"
+      },
+      "calculation_method": "选orange最上锚点；同column且y>anchor.y，按y-anchor.y升序与ID排序。",
+      "intermediate": {
+        "anchor": "G02",
+        "column": 2,
+        "vertical_distance_px": 160
+      },
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q06",
+      "answer": {
+        "distance_px": 506
+      },
+      "calculation_method": "sqrt((560-400)^2+(1112-632)^2)=sqrt(160²+480²)。",
+      "intermediate": {
+        "centers": [
+          [
+            400,
+            632
+          ],
+          [
+            560,
+            1112
+          ]
+        ],
+        "exact_distance_px": 505.96442562694074
+      },
+      "coordinate_tolerance": {
+        "distance_px": 2,
+        "rounding": "0.1px"
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q07",
+      "answer": [
+        "G01",
+        "G10",
+        "G18",
+        "G20"
+      ],
+      "calculation_method": "sqrt(x²+y²)升序，再ID升序。",
+      "intermediate": {
+        "ordered_ids": [
+          "G01",
+          "G10",
+          "G18",
+          "G20",
+          "G34",
+          "G35",
+          "G29",
+          "G44",
+          "G50",
+          "G23",
+          "G52",
+          "G39",
+          "G61",
+          "G48",
+          "G56",
+          "G64"
+        ],
+        "first_four_distances": [
+          {
+            "id": "G01",
+            "distance_px": 393.62926720456136
+          },
+          {
+            "id": "G10",
+            "distance_px": 618.6954016315299
+          },
+          {
+            "id": "G18",
+            "distance_px": 747.9465221524865
+          },
+          {
+            "id": "G20",
+            "distance_px": 958.0313147282817
+          }
+        ]
+      },
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q08",
+      "answer": [
+        536,
+        752,
+        1392,
+        992
+      ],
+      "calculation_method": "对选中圆环的中心±外径/2，分别取left/top最小、right/bottom最大。",
+      "intermediate": {
+        "selected_ids": [
+          "G27",
+          "G30",
+          "G31",
+          "G36",
+          "G40"
+        ],
+        "individual_bboxes": [
+          {
+            "id": "G27",
+            "bbox": [
+              536,
+              768,
+              584,
+              816
+            ]
+          },
+          {
+            "id": "G30",
+            "bbox": [
+              1008,
+              760,
+              1072,
+              824
+            ]
+          },
+          {
+            "id": "G31",
+            "bbox": [
+              1160,
+              752,
+              1240,
+              832
+            ]
+          },
+          {
+            "id": "G36",
+            "bbox": [
+              680,
+              912,
+              760,
+              992
+            ]
+          },
+          {
+            "id": "G40",
+            "bbox": [
+              1328,
+              920,
+              1392,
+              984
+            ]
+          }
+        ]
+      },
+      "coordinate_tolerance": {
+        "boundary_px": 2,
+        "definition": "ideal geometric outer bounds; labels excluded"
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q09",
+      "answer": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "calculation_method": "逐一可见ID按color_name计数，顺序blue/orange/green/purple。",
+      "intermediate": {},
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q10",
+      "answer": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "calculation_method": "逐一可见ID按shape计数，顺序circle/square/ring/rounded-square。",
+      "intermediate": {},
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q11",
+      "answer": [
+        "G42",
+        "G48",
+        "G50",
+        "G57",
+        "G61"
+      ],
+      "calculation_method": "row>=6 AND color in(green,purple) AND size=48，ID升序。",
+      "intermediate": {},
+      "coordinate_tolerance": {
+        "id_and_count": "exact",
+        "geometry_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    },
+    {
+      "id": "Q12",
+      "answer": {
+        "id": "G59",
+        "right_x": 600
+      },
+      "calculation_method": "筛size80，按x/y/ID排序取index2；right=center.x+80/2。",
+      "intermediate": {
+        "ordered_ids": [
+          "G03",
+          "G19",
+          "G59",
+          "G20",
+          "G28",
+          "G36",
+          "G52",
+          "G13",
+          "G21",
+          "G37",
+          "G45",
+          "G07",
+          "G23",
+          "G31",
+          "G47",
+          "G55",
+          "G16",
+          "G24",
+          "G32",
+          "G56",
+          "G64"
+        ],
+        "target_center": [
+          560,
+          1432
+        ]
+      },
+      "coordinate_tolerance": {
+        "id": "exact",
+        "right_x_px": 2
+      },
+      "visibility_basis": "只使用grid-scene.png内完整可见的编号G01–G64主体、中心坐标轴、形状与尺寸说明；不依赖遮挡内容或外部答案材料。",
+      "uniqueness": "集合题返回全部ID升序；单选题使用题面完整排序规则，同值不产生多解。"
+    }
+  ]
+}

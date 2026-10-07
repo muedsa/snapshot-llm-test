@@ -1,0 +1,9 @@
+const fs=require('fs'),path=require('path'),s=require('../../_suite/suite.cjs');
+const root=path.resolve(__dirname,'..');
+const entries=[];
+for(const [n,observation] of [[1,'Actualv0011440×900: all major structures/source info match reference, but main/section/KPI type is slightly oversized. Original and quantified text bounds compared; suggested shared font reduction.'],[2,'Actualv0021440×900: main/section titles match reference width/placement much closer after32/22 font refinement; all panels/nav/chart/table/source texts intact; reference comparison passes with residual1px KPI y and glyph/AA differences.']]){
+ const meta=JSON.parse(fs.readFileSync(path.join(root,`requests/A15-request-${String(n).padStart(6,'0')}/render-result.json`),'utf8'));
+ entries.push(s.view('A15',meta.image_path,{tool:'view_image',reviewer:'a10_audit_resume',version_id:meta.version_id,is_preview:false,observation}));
+}
+for(const [name,observation] of [['reconstructed-thumb-v002.png','Actual720×450 v002 thumbnail: hierarchy/spacing across all four quadrants matches source.'],['reconstructed-chart-crop-v002.png','Actualv002chart crop: six bars full比例/order, ticks0/30/60/90/120, ¥ thousand/Apr–Sep/month markers; chart corner/grid/bar coordinates match actual reference.'],['reconstructed-table-crop-v002.png','Actualv002table crop: Atlas/Pulse/Orbit order, owner/date/status texts intact, blueIn progress/amberReview/greenDone accurately coded; no clip or overlap.']])entries.push(s.view('A15',path.join(root,'production',name),{tool:'view_image',reviewer:'a10_audit_resume',version_id:'A15-v002',is_preview:true,observation}));
+const dest=path.join(__dirname,'candidate-actual-views-v001.json');fs.writeFileSync(dest,JSON.stringify({task_id:'A15',reviewer:'a10_audit_resume',entries,actual_comparison_completed:true,unresolved:[]},null,2)+'\n',{flag:'wx'});process.stdout.write(JSON.stringify(entries.map(e=>({id:e.id,version_id:e.version_id,is_preview:e.is_preview}))));

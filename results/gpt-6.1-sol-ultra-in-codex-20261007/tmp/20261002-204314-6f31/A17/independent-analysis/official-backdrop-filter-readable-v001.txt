@@ -1,0 +1,12 @@
+BackdropFilter 读取当前区域背后的已绘制内容，应用 ImageFilter 后再按 BlendMode 合成，典型用途是毛玻璃。
+函数签名
+Section titled “函数签名” fun ChildSlot. BackdropFilter ( imageFilter: ImageFilter, blendMode: BlendMode = BlendMode.SRC_OVER, content: BackdropFilter.() -> Unit = {}, )
+Unit = {},)"> 参数
+Section titled “参数” 参数 默认值 说明
+imageFilter 必填 应用于背景的 Skia ImageFilter
+blendMode SRC_OVER 过滤结果的合成模式
+content 空 前景子 Widget
+示例
+Section titled “示例” Stack { RawImage (image = background) ClipRRect (borderRadius = BorderRadius. circular ( 20f )) { BackdropFilter ( imageFilter = ImageFilter. makeBlur ( 25f , 25f , FilterTileMode.CLAMP), ) { Container (width = 240f , height = 120f , color = 0x33FFFFFF ) } } }
+BackdropFilter 只有背后已有内容时才有视觉效果。通常应配合 ClipRect 或 ClipRRect 限制滤镜区域，否则过滤范围和离屏成本可能过大。
+BackdropFilter 会读取子树之外的背景，无法仅凭子节点的绘制边界推断完整作用范围。即使嵌套在 ColorFiltered 内，仍应通过外层裁剪明确限定区域。

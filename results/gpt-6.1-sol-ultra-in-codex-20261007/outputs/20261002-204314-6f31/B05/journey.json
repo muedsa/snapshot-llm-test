@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "task_id": "B05",
+  "product": "洗序 / WASH LOOP",
+  "date": "2026-10-08",
+  "timezone": "Asia/Shanghai",
+  "content_basis": "全部楼栋、机器、费用、状态、订单和用户均自拟演示；没有真实用户调研或传感器/支付服务。",
+  "payment_rule": "预约不扣费；现场确认开始时扣对应设备费用；故障取消原预约未扣费。",
+  "shared_state": {
+    "date": "2026-10-08",
+    "timezone": "Asia/Shanghai",
+    "room": "北院1层洗衣房",
+    "machine_names": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "D1",
+      "D2"
+    ],
+    "wash_duration_minutes": 40,
+    "wash_fee_cny": 4,
+    "dry_duration_minutes": 30,
+    "dry_fee_cny": 3,
+    "reservation_free_cancel_until": "18:25",
+    "original_order": "WL-1008-026",
+    "original_code": "4261",
+    "recovery_order": "WL-1008-027",
+    "recovery_code": "5372",
+    "original_slot": "18:30–19:10",
+    "recovery_slot": "18:40–19:20",
+    "original_machine": "C2",
+    "recovery_machine": "C1",
+    "dry_machine": "D1",
+    "dry_slot": "19:25–19:55",
+    "total_paid_cny": 7,
+    "payment_rule": "预约不扣费；现场确认开始时扣对应设备费用；故障取消原预约未扣费。"
+  },
+  "screens": [
+    {
+      "id": "case-01",
+      "title": "第一次来，先找到这间洗衣房",
+      "state": "setup",
+      "at": "18:19",
+      "goal": "选择北院1层房间并理解预约/扣费机制",
+      "owner": "root",
+      "previous": null,
+      "next": "case-02",
+      "rendered_file": "case-01/final.png"
+    },
+    {
+      "id": "case-02",
+      "title": "把空闲放进自己的时间里",
+      "state": "availability",
+      "at": "18:20",
+      "goal": "读机器与可约时段，选C2 18:30",
+      "owner": "producer-02-04",
+      "previous": "case-01",
+      "next": "case-03",
+      "rendered_file": "case-02/final.png"
+    },
+    {
+      "id": "case-03",
+      "title": "选40分钟这一次",
+      "state": "cycle-choice",
+      "at": "18:21",
+      "goal": "比较标准40分¥4与加长60分¥6，选标准",
+      "owner": "producer-02-04",
+      "previous": "case-02",
+      "next": "case-04",
+      "rendered_file": "case-03/final.png"
+    },
+    {
+      "id": "case-04",
+      "title": "预约留住一个时段",
+      "state": "original-confirmed",
+      "at": "18:22",
+      "goal": "核对C2时段/免费取消截止/取用码/未扣费",
+      "owner": "producer-02-04",
+      "previous": "case-03",
+      "next": "case-05",
+      "rendered_file": "case-04/final.png"
+    },
+    {
+      "id": "case-05",
+      "title": "机器故障之后，先讲清发生什么",
+      "state": "fault-recovery-choice",
+      "at": "18:29",
+      "goal": "确认C2预约取消且未扣费，选择C1 18:40替代或退出",
+      "owner": "producer-05-07",
+      "previous": "case-04",
+      "next": "case-06",
+      "rendered_file": "case-05/final.png"
+    },
+    {
+      "id": "case-06",
+      "title": "新的预约，新的开始码",
+      "state": "recovery-confirmed",
+      "at": "18:30",
+      "goal": "知道新C1时段/新码5372，旧码4261已失效",
+      "owner": "producer-05-07",
+      "previous": "case-05",
+      "next": "case-07",
+      "rendered_file": "case-06/final.png"
+    },
+    {
+      "id": "case-07",
+      "title": "在现场确认，才真正开始",
+      "state": "kiosk-start-confirm",
+      "at": "18:40",
+      "goal": "现场取用码5372已核验，确认C1标准40分并付款¥4开始",
+      "owner": "producer-05-07",
+      "previous": "case-06",
+      "next": "case-08",
+      "rendered_file": "case-07/final.png"
+    },
+    {
+      "id": "case-08",
+      "title": "洗着的时候，时间可预期",
+      "state": "washing-active",
+      "at": "18:58",
+      "goal": "读剩22分/预计19:20结束/已付款4，规划回来",
+      "owner": "root",
+      "previous": "case-07",
+      "next": "case-09",
+      "rendered_file": "case-08/final.png"
+    },
+    {
+      "id": "case-09",
+      "title": "洗完了，决定晾晒还是干衣",
+      "state": "wash-finished-next-choice",
+      "at": "19:20",
+      "goal": "选择自行晾晒免费或D1 19:25–19:55干衣¥3",
+      "owner": "root",
+      "previous": "case-08",
+      "next": "case-10",
+      "rendered_file": "case-09/final.png"
+    },
+    {
+      "id": "case-10",
+      "title": "这一趟洗衣，可以收尾了",
+      "state": "completed-receipt",
+      "at": "19:55",
+      "goal": "核对两设备时段和总7元，拿走衣物并报告问题",
+      "owner": "root",
+      "previous": "case-09",
+      "next": null,
+      "rendered_file": "case-10/final.png"
+    }
+  ],
+  "unpictured_events": [
+    {
+      "at": "18:40",
+      "between": [
+        "case-07",
+        "case-08"
+      ],
+      "event": "用户选择确认付款¥4并开始；支付成功后C1运行，此静态按钮本身未执行。",
+      "result": "洗衣已付¥4，运行开始18:40，预计结束19:20。"
+    },
+    {
+      "at": "19:25",
+      "between": [
+        "case-09",
+        "case-10"
+      ],
+      "event": "用户选择D1后，到D1现场核验预约并确认支付¥3开始干衣；沿用case-07现场确认机制。未单独绘制干衣确认页。",
+      "result": "D1运行19:25–19:55，干衣支付¥3。case-09只提供未扣费选择，不能据其认为已支付。"
+    }
+  ],
+  "alternatives": [
+    {
+      "at_screen": "case-03",
+      "choice": "60分钟加长洗",
+      "requires": "另选60分钟空档；本旅程未采用。"
+    },
+    {
+      "at_screen": "case-05",
+      "choice": "退出故障改约",
+      "result": "原预约取消未扣费，结束本旅程。"
+    },
+    {
+      "at_screen": "case-07",
+      "choice": "返回",
+      "result": "不扣费，不启动。"
+    },
+    {
+      "at_screen": "case-09",
+      "choice": "免费自行晾晒",
+      "result": "仅洗衣¥4；本收据展示选择干衣的分支。"
+    }
+  ],
+  "arithmetic_checks": {
+    "wash_minutes": 40,
+    "elapsed_at_1858_minutes": 18,
+    "remaining_minutes": 22,
+    "progress_fraction": 0.45,
+    "dry_minutes": 30,
+    "handoff_gap_minutes": 5,
+    "paid_cny": 7
+  },
+  "validation_limits": [
+    "静态概念原型没有实现按钮、计时、支付、通知或机器锁控制",
+    "取用码只作演示标识，不作真实凭证",
+    "availability演示当时C1运行至18:40，C2可约18:30；故障18:29后选择18:40C1",
+    "住户离场提醒是设计假设，需实际服务与用户测试验证",
+    "两份W3C准则作为静态设计参考，不声明PNG达到WCAG合规。",
+    "未做用户访谈、可用性实测或真实机器、计时、付款、推送联调。"
+  ]
+}

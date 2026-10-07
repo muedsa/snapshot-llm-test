@@ -1,0 +1,32 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('./suite.cjs'),J=x=>JSON.stringify(x,null,2)+'\n',wx=(f,x)=>fs.writeFileSync(f,x,{flag:'wx'});
+const session='C:/Users/mueds/.codex/sessions/2026/10/02/rollout-2026-10-02T20-41-49-01a0fca2-9a0b-7a53-b717-67ce19406743.jsonl',call='call_oO2bqCjCfATzGnlAfAGvbgof';
+let callRow,outputRow,rawCall,rawOutput;
+for(const raw of fs.readFileSync(session,'utf8').split('\n')){let r;try{r=JSON.parse(raw);}catch{continue;}if(r.type!=='response_item'||r.payload?.call_id!==call)continue;if(r.payload.type==='custom_tool_call'){callRow=r;rawCall=raw;}if(r.payload.type==='custom_tool_call_output'){outputRow=r;rawOutput=raw;}}
+if(!callRow||!outputRow||!callRow.payload.input.includes('98 percent water recovery June 2023'))throw Error('Original second research call not located');
+const blocks=outputRow.payload.output.filter(b=>b.type==='input_text').map(b=>b.text);
+const resultText=blocks.find(t=>t.startsWith('{"content":')&&t.includes('NASA Achieves Water Recovery Milestone'));
+if(!resultText)throw Error('Original native tool result not located');
+const result=JSON.parse(resultText);if(result.isError)throw Error('Original result was unsuccessful');
+const b04=s.taskDirs('B04'),target=path.join(b04.temp,'research-search-v002-recovered.json');
+wx(target,resultText+'\n');
+wx(path.join(b04.temp,'research-search-v002-original-events.jsonl'),rawCall+'\n'+rawOutput+'\n');
+const recovery={run_id:s.readState().run_id,task_id:'B04',recovered_at:new Date().toISOString(),original_call_id:call,original_call_at:callRow.timestamp,original_result_at:outputRow.timestamp,source_session:session,extraction:'Exact native search result JSON text from original functions exec tool output block, without a new search or reconstruction.',result_path:target,result_sha256:s.sha256(Buffer.from(resultText+'\n')),original_event_file:path.join(b04.temp,'research-search-v002-original-events.jsonl'),new_http_requests:0,new_native_search_calls:0,network_internal_requests:null};
+wx(path.join(b04.temp,'research-search-v002-recovery-v001.json'),J(recovery));
+const sourcePath=path.join(b04.output,'sources.json'),source=JSON.parse(fs.readFileSync(sourcePath,'utf8'));
+wx(path.join(b04.temp,'sources-pre-recovery-v001.json'),fs.readFileSync(sourcePath));
+source.search.raw_results_available=['research-search-v001.json','research-search-v002-recovered.json','research-search-v003.json'];source.search.second_result='Original second native search result recovered on2026-10-07 from the same chat original tool output. No new search. Recovery provenance and exact original selected call/output events preserved.';source.search.recovery=recovery;
+fs.writeFileSync(sourcePath,J(source));
+s.report('B04',fs.readFileSync(path.join(b04.output,'snapshot-usage.md'),'utf8')+'\n\n终审留痕恢复：第二次原生搜索原结果已从本会话原始工具输出恢复为临时目录 research-search-v002-recovered.json；原调用/输出事件及恢复来源、时间、SHA均保留。原“未单独保存”的历史记录保留，当前sources.json已注明恢复。没有新搜索或HTTP，三次原生搜索的内部HTTP数仍不可得，保持null；七页实际NASA GET与所有Snapshot原服务响应均已存档。\n');
+const b06=s.taskDirs('B06'),p=path.join(b06.output,'snapshot-usage.md'),text=fs.readFileSync(p,'utf8'),marker='\n\n## Root final review\n\n',parts=text.split(marker);
+if(parts.length!==3||parts[1].trim()!==parts[2].trim())throw Error('Expected two identical genuine root-review report sections');
+s.report('B06',parts[0]+marker+parts[1]+'\n\n单题最终独立审查：临时目录 audit-root-independent-v001/audit-final-v002.json 为正式发表/关闭后的273项通过结论，保留候选阶段v001；121项发表后文件核验没有新增看图或服务请求。\n');
+const b05=s.taskDirs('B05'),correction={run_id:s.readState().run_id,task_id:'B05',recorded_at:new Date().toISOString(),scope:'Text corrections only; genuine existing views retained, zero new view/render/visual cycle.',corrections:[{tool_id:'B05-tool-000017',case_id:'case-09',purpose:'Import genuine case09 producer final image review from reviews-v003',request_id:'B05-request-000014',view_id:'B05-view-000012'},{tool_id:'B05-tool-000018',case_id:'case-10',purpose:'Import genuine case10 producer final image review from reviews-v003',request_id:'B05-request-000015',view_id:'B05-view-000013'}]};
+for(const c of correction.corrections){const inf=s.countsFor('B05');if(!inf.tools.some(t=>t.id===c.tool_id&&t.case_id===c.case_id)||!inf.views.some(v=>v.id===c.view_id&&v.case_id===c.case_id))throw Error('Correction does not refer to true existing evidence '+c.tool_id);}
+wx(path.join(b05.temp,'tool-purpose-correction-v001.json'),J(correction));
+s.report('B05',fs.readFileSync(path.join(b05.output,'snapshot-usage.md'),'utf8')+'\n\n终审文字更正：B05-tool-000017的实际用途是case09原生产者最终图查看，引用request000014/view000012；B05-tool-000018对应case10 request000015/view000013。旧purpose误复制case08字样，日志未覆盖，追加更正文件tool-purpose-correction-v001.json。没有新增看图、HTTP或视觉迭代。\n');
+const shared=s.taskDirs('shared'),readme=path.join(shared.output,'README.md'),old=fs.readFileSync(readme,'utf8');
+wx(path.join(shared.temp,'README-before-research-recovery-v001.md'),old);
+fs.writeFileSync(readme,old.replace('全部原请求、响应、版本、草稿、失败、研究、查看与不可覆盖检查点','已记录的服务原请求/响应、DSL版本、草稿、失败、研究、查看与不可覆盖检查点')+'\nB04原生搜索共三次，原结果均已归档；第二次在终审时从本会话原始工具输出恢复，恢复事件与SHA见B04临时目录research-search-v002-recovery-v001.json。原生搜索内部HTTP次数/网络字节与计费未提供，因此不混入已知225次HTTP日志或响应实体字节统计。\n');
+s.toolUsage('shared',{tool:'node / final-document-repairs-v001.cjs',purpose:'Recover exact original B04 search output from own chat event log, correct two B05 copied purpose descriptions, deduplicate B06 current report; no new HTTP/view',input:session,output:path.join(b04.temp,'research-search-v002-recovery-v001.json'),affected_tasks:['B04','B05','B06']});
+s.checkpoint('final-document-repairs',{search_recovered:target,correction_file:path.join(b05.temp,'tool-purpose-correction-v001.json'),resume_notes:'All30 task outputs complete; original search2 recovered, report copy errors corrected with old versions retained. Final independent completion checks pending.'});
+const metrics=s.aggregate();console.log(J({recovered_original_search:recovery.original_result_at,new_http:0,new_views:0,tool_count:metrics.counts.other_tool_calls}));

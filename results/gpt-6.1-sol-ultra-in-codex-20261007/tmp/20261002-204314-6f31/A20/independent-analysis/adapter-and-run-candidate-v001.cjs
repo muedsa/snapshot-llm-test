@@ -1,0 +1,14 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const dir=__dirname,root='D:/workspaces/gpt-6.1-sol-ultra';
+const source=root+'/tmp/20261002-204314-6f31/A20/layout-production/label-layout-candidate-v001.json';
+const input=root+'/tasks/A20-dense-annotation/inputs/markers.json';
+const raw=JSON.parse(fs.readFileSync(source,'utf8'));
+const canonical={plot:raw.map,canvas:raw.canvas,highest_three:raw.top3_ids,source_path:source,source_sha256:crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex'),line_width_source:'Root message: actual renderer 1.8px leader strokes.',labels:raw.markers.map(e=>({...e,box:e.label,line_width:1.8,font_size:e.font_size??raw.label_style.font_size}))};
+const canonicalPath=path.join(dir,'candidate-v001-canonical-for-audit.json');
+fs.writeFileSync(canonicalPath,JSON.stringify(canonical,null,2)+'\n',{flag:'wx'});
+const result=require('./audit-geometry-v001.cjs').audit(canonical,JSON.parse(fs.readFileSync(input,'utf8')));
+result.source={candidate_path:source,candidate_sha256:canonical.source_sha256,canonical_path:canonicalPath,input_path:input,input_sha256:crypto.createHash('sha256').update(fs.readFileSync(input)).digest('hex')};
+const out=path.join(dir,'candidate-v001-strict-own-overlap-audit-v001.json');
+fs.writeFileSync(out,JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({audit_path:out,pass_geometry:result.pass_geometry,issue_count:result.issues.length,warning_count:result.warnings.length,issues:result.issues,crossings:result.checks.line_crossings.pair_event_count,minimum_box_gap:result.checks.minimum_label_box_distance}));

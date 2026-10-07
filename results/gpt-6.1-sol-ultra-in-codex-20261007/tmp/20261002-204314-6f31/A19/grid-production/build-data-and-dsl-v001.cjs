@@ -1,0 +1,32 @@
+const fs=require('node:fs'),path=require('node:path'),{Canvas}=require('../../_suite/dsl.cjs');
+const write=(n,d)=>fs.writeFileSync(path.join(__dirname,n),d,{flag:'wx'});
+const seed=0xA19E2026,colors=['blue','orange','green','purple'],shapes=['circle','square','ring','rounded-square'],sizes=[48,64,80];
+const palette={blue:'#3479DE',orange:'#E59532',green:'#239673',purple:'#8557CF',ink:'#243951',muted:'#63768F',grid:'#E0E7F0',border:'#D3DEEB',background:'#F2F5FA',cell:'#FFFFFF'};
+function mulberry32(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rng=mulberry32(seed),base=[];
+for(let ci=0;ci<4;ci++)for(let si=0;si<4;si++)for(let replicate=0;replicate<4;replicate++)base.push({color_name:colors[ci],shape:shapes[si],size:sizes[(replicate+ci+si)%3],combo_replica:replicate+1});
+const attempts=[];let selected,attempt=0;
+while(!selected){const candidate=base.map(x=>({...x}));for(let i=candidate.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[candidate[i],candidate[j]]=[candidate[j],candidate[i]];}
+const rowChecks=Array.from({length:8},(_,ri)=>{const row=candidate.slice(ri*8,ri*8+8);return{row:ri+1,distinct_colors:[...new Set(row.map(u=>u.color_name))],distinct_shapes:[...new Set(row.map(u=>u.shape))]};});
+const passed=rowChecks.every(r=>r.distinct_colors.length>=3&&r.distinct_shapes.length>=3);attempt++;attempts.push({attempt,passed,row_checks:rowChecks,attribute_order:candidate});if(passed)selected=candidate;}
+const grid={left:160,top:248,cell_width:160,cell_height:160,rows:8,columns:8,body_center_offset:[80,64],label_top_offset:116};
+const objects=selected.map((u,i)=>{const row=Math.floor(i/8)+1,column=i%8+1,cx=grid.left+(column-1)*160+80,cy=grid.top+(row-1)*160+64,size=u.size,cellTop=grid.top+(row-1)*160;
+return{id:'G'+String(i+1).padStart(2,'0'),row,column,color_name:u.color_name,color_hex:palette[u.color_name],shape:u.shape,size,center:[cx,cy],bbox:[cx-size/2,cy-size/2,cx+size/2,cy+size/2],inner_diameter:u.shape==='ring'?size/2:null,inner_bbox:u.shape==='ring'?[cx-size/4,cy-size/4,cx+size/4,cy+size/4]:null,corner_radius:u.shape==='rounded-square'?size*.22:0,label_bbox:[cx-42,cellTop+116,cx+42,cellTop+150],label_font_size:24,cell_bbox:[grid.left+(column-1)*160,cellTop,grid.left+column*160,cellTop+160],painted_as_single_subject:true,combo_replica:u.combo_replica};});
+const counts={colors:Object.fromEntries(colors.map(k=>[k,objects.filter(o=>o.color_name===k).length])),shapes:Object.fromEntries(shapes.map(k=>[k,objects.filter(o=>o.shape===k).length])),sizes:Object.fromEntries(sizes.map(k=>[k,objects.filter(o=>o.size===k).length]))};
+if(Object.values(counts.colors).some(n=>n!==16)||Object.values(counts.shapes).some(n=>n!==16))throw Error('Marginal count error');
+for(const o of objects){if(!(o.label_bbox[1]>o.bbox[3]))throw Error('ID intersects subject');for(const b of [o.bbox,o.label_bbox])if(b[0]<o.cell_bbox[0]||b[1]<o.cell_bbox[1]||b[2]>o.cell_bbox[2]||b[3]>o.cell_bbox[3])throw Error('Cell geometry out');}
+const data={schema_version:1,task_id:'A19',scene:'grid',seed,seed_hex:'0xA19E2026',PRNG:'mulberry32 with Fisher-Yates full shuffle; continuous PRNG state across rejected candidates',accepted_shuffle_attempt:attempt,canvas:{width:1600,height:1600},coordinate_origin:'image top-left (0,0)',x_direction:'right',y_direction:'down',coordinate_units:'px',grid,visible_coordinate_centers:{x:Array.from({length:8},(_,i)=>240+160*i),y:Array.from({length:8},(_,i)=>312+160*i)},subject_sizes:sizes,shape_size_definition:'circle/ring: outer diameter; square/rounded-square: side; ring inner diameter = outer/2',label_definition:'G01–G64 row major; ID outside body; labels are not subjects',ring_definition:'One ring subject is painted as outer colored circle and centered cell-background circle; the inner cutout is not an additional object.',palette,counts,row_diversity:attempts.at(-1).row_checks,objects,generated_at:new Date().toISOString(),source_data_frozen_before_question_generation:true};
+write('scene-data-grid-v001.json',JSON.stringify(data,null,2)+'\n');write('shuffle-attempts-v001.json',JSON.stringify({seed,attempts},null,2)+'\n');
+const c=new Canvas(1600,1600,{background:palette.background});
+c.text(96,51,1420,69,'形状与关系的题场',48,palette.ink,{bold:true});
+c.text(96,128,1416,40,'左上角原点 (0,0) · x 向右、y 向下 · 横纵轴给出主体中心坐标 / px',24,palette.muted);
+c.text(96,171,1416,40,'尺寸 48 / 64 / 80：圆按直径、方按边长；圆环内径 = 外径 / 2',24,palette.muted);
+c.rect(160,248,1280,1280,palette.cell,{radius:20,border:'1 SOLID '+palette.border});
+for(let i=1;i<8;i++){c.line(160+i*160,248,160+i*160,1528,palette.grid,1);c.line(160,248+i*160,1440,248+i*160,palette.grid,1);}
+c.text(116,214,34,30,'x',24,palette.muted,{bold:true,align:'RIGHT'});c.text(92,251,56,30,'y',24,palette.muted,{bold:true,align:'RIGHT'});
+for(const x of data.visible_coordinate_centers.x)c.text(x-48,212,96,32,String(x),24,palette.muted,{align:'CENTER'});
+for(const y of data.visible_coordinate_centers.y)c.text(64,y-16,84,34,String(y),24,palette.muted,{align:'RIGHT'});
+for(const o of objects){const [x,y]=o.center,s=o.size;if(o.shape==='circle'||o.shape==='ring')c.circle(x,y,s/2,o.color_hex);else c.rect(x-s/2,y-s/2,s,s,o.color_hex,o.shape==='rounded-square'?{radius:o.corner_radius}:{});if(o.shape==='ring')c.circle(x,y,s/4,palette.cell);const b=o.label_bbox;c.text(b[0],b[1],b[2]-b[0],b[3]-b[1],o.id,24,palette.ink,{bold:true,align:'CENTER'});}
+const dsl=c.toString();write('grid-scene-v001.snapshot',dsl);
+write('construction-check-v001.json',JSON.stringify({task_id:'A19',seed,accepted_shuffle_attempt:attempt,object_count:objects.length,counts,each_color_shape_combo_exactly4:colors.every(color=>shapes.every(shape=>objects.filter(o=>o.color_name===color&&o.shape===shape).length===4)),every_combo_has_all3sizes:colors.every(color=>shapes.every(shape=>new Set(objects.filter(o=>o.color_name===color&&o.shape===shape).map(o=>o.size)).size===3)),every_row_at_least3colors_3shapes:data.row_diversity.every(r=>r.distinct_colors.length>=3&&r.distinct_shapes.length>=3),each_cell_one_subject:true,ID_font_min:24,minimum_ID_subject_vertical_clearance:Math.min(...objects.map(o=>o.label_bbox[1]-o.bbox[3])),all_geometry_inside_assigned_cells:true,no_Image:!/<Image\b/.test(dsl),geometry_frozen:true},null,2)+'\n');
+console.log(JSON.stringify({data:path.join(__dirname,'scene-data-grid-v001.json'),dsl:path.join(__dirname,'grid-scene-v001.snapshot'),seed,accepted_shuffle_attempt:attempt,counts,first_object:objects[0],last_object:objects.at(-1)}));

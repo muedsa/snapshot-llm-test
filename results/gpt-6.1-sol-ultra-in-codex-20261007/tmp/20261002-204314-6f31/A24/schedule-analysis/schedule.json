@@ -1,0 +1,559 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "run_id": "20261002-204314-6f31",
+  "producer": "/root/a19_audit_resume",
+  "source_input_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tasks\\A24-release-plan-capstone\\inputs\\release.json",
+  "source_input_sha256": "4967073b27e0940cfe74a2e4de616648b08fc8d544975e84b04da5fdc2c98a25",
+  "planning_date": "2026-11-07",
+  "timezone": "Asia/Shanghai / UTC+08:00",
+  "start": "2026-11-07T09:00:00+08:00",
+  "deadline": "2026-11-07T16:00:00+08:00",
+  "window_minutes": 420,
+  "resource_model": {
+    "teams": [
+      "design",
+      "engineering"
+    ],
+    "capacity_per_team": 1,
+    "preemptive": false,
+    "flexible_team_rule": "Exactly one eligible team executes each task; eligible teams are alternatives, not simultaneous reservations.",
+    "team_switch_overhead_minutes": 0
+  },
+  "status": "verified feasible best-known260min schedule; global optimum not claimed in artwork",
+  "makespan_minutes": 260,
+  "finish": "2026-11-07T13:20:00+08:00",
+  "finish_clock": "13:20",
+  "deadline_buffer_minutes": 160,
+  "total_workload_minutes": 485,
+  "lower_bounds": {
+    "unconstrained_critical_path_minutes": 255,
+    "unconstrained_critical_path_ids": [
+      "R01",
+      "R04",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "total_workload_over_two_teams_minutes": 242.5,
+    "combined_lower_bound_minutes": 255
+  },
+  "tasks": [
+    {
+      "id": "R01",
+      "label": "需求核对",
+      "minutes": 25,
+      "teams": [
+        "design"
+      ],
+      "depends": [],
+      "eligible_teams": [
+        "design"
+      ],
+      "team": "design",
+      "start_minute": 0,
+      "end_minute": 25,
+      "start_at": "2026-11-07T09:00:00+08:00",
+      "end_at": "2026-11-07T09:25:00+08:00",
+      "start_clock": "09:00",
+      "end_clock": "09:25"
+    },
+    {
+      "id": "R02",
+      "label": "服务与字体探测",
+      "minutes": 20,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [],
+      "eligible_teams": [
+        "engineering"
+      ],
+      "team": "engineering",
+      "start_minute": 0,
+      "end_minute": 20,
+      "start_at": "2026-11-07T09:00:00+08:00",
+      "end_at": "2026-11-07T09:20:00+08:00",
+      "start_clock": "09:00",
+      "end_clock": "09:20"
+    },
+    {
+      "id": "R03",
+      "label": "数据清洗",
+      "minutes": 40,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R02"
+      ],
+      "eligible_teams": [
+        "engineering"
+      ],
+      "team": "engineering",
+      "start_minute": 20,
+      "end_minute": 60,
+      "start_at": "2026-11-07T09:20:00+08:00",
+      "end_at": "2026-11-07T10:00:00+08:00",
+      "start_clock": "09:20",
+      "end_clock": "10:00"
+    },
+    {
+      "id": "R04",
+      "label": "视觉系统",
+      "minutes": 60,
+      "teams": [
+        "design"
+      ],
+      "depends": [
+        "R01"
+      ],
+      "eligible_teams": [
+        "design"
+      ],
+      "team": "design",
+      "start_minute": 25,
+      "end_minute": 85,
+      "start_at": "2026-11-07T09:25:00+08:00",
+      "end_at": "2026-11-07T10:25:00+08:00",
+      "start_clock": "09:25",
+      "end_clock": "10:25"
+    },
+    {
+      "id": "R05",
+      "label": "文案审校",
+      "minutes": 30,
+      "teams": [
+        "design",
+        "engineering"
+      ],
+      "depends": [
+        "R01"
+      ],
+      "eligible_teams": [
+        "design",
+        "engineering"
+      ],
+      "team": "engineering",
+      "start_minute": 60,
+      "end_minute": 90,
+      "start_at": "2026-11-07T10:00:00+08:00",
+      "end_at": "2026-11-07T10:30:00+08:00",
+      "start_clock": "10:00",
+      "end_clock": "10:30"
+    },
+    {
+      "id": "R06",
+      "label": "图表计算",
+      "minutes": 45,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R03"
+      ],
+      "eligible_teams": [
+        "engineering"
+      ],
+      "team": "engineering",
+      "start_minute": 90,
+      "end_minute": 135,
+      "start_at": "2026-11-07T10:30:00+08:00",
+      "end_at": "2026-11-07T11:15:00+08:00",
+      "start_clock": "10:30",
+      "end_clock": "11:15"
+    },
+    {
+      "id": "R07",
+      "label": "主海报构建",
+      "minutes": 70,
+      "teams": [
+        "design"
+      ],
+      "depends": [
+        "R04",
+        "R05"
+      ],
+      "eligible_teams": [
+        "design"
+      ],
+      "team": "design",
+      "start_minute": 90,
+      "end_minute": 160,
+      "start_at": "2026-11-07T10:30:00+08:00",
+      "end_at": "2026-11-07T11:40:00+08:00",
+      "start_clock": "10:30",
+      "end_clock": "11:40"
+    },
+    {
+      "id": "R08",
+      "label": "驾驶舱构建",
+      "minutes": 65,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R04",
+        "R06"
+      ],
+      "eligible_teams": [
+        "engineering"
+      ],
+      "team": "engineering",
+      "start_minute": 135,
+      "end_minute": 200,
+      "start_at": "2026-11-07T11:15:00+08:00",
+      "end_at": "2026-11-07T12:20:00+08:00",
+      "start_clock": "11:15",
+      "end_clock": "12:20"
+    },
+    {
+      "id": "R09",
+      "label": "手机适配",
+      "minutes": 45,
+      "teams": [
+        "design",
+        "engineering"
+      ],
+      "depends": [
+        "R07"
+      ],
+      "eligible_teams": [
+        "design",
+        "engineering"
+      ],
+      "team": "design",
+      "start_minute": 160,
+      "end_minute": 205,
+      "start_at": "2026-11-07T11:40:00+08:00",
+      "end_at": "2026-11-07T12:25:00+08:00",
+      "start_clock": "11:40",
+      "end_clock": "12:25"
+    },
+    {
+      "id": "R10",
+      "label": "视觉回归检查",
+      "minutes": 35,
+      "teams": [
+        "design"
+      ],
+      "depends": [
+        "R07",
+        "R08",
+        "R09"
+      ],
+      "eligible_teams": [
+        "design"
+      ],
+      "team": "design",
+      "start_minute": 205,
+      "end_minute": 240,
+      "start_at": "2026-11-07T12:25:00+08:00",
+      "end_at": "2026-11-07T13:00:00+08:00",
+      "start_clock": "12:25",
+      "end_clock": "13:00"
+    },
+    {
+      "id": "R11",
+      "label": "产物与数据核验",
+      "minutes": 30,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R08",
+        "R09"
+      ],
+      "eligible_teams": [
+        "engineering"
+      ],
+      "team": "engineering",
+      "start_minute": 205,
+      "end_minute": 235,
+      "start_at": "2026-11-07T12:25:00+08:00",
+      "end_at": "2026-11-07T12:55:00+08:00",
+      "start_clock": "12:25",
+      "end_clock": "12:55"
+    },
+    {
+      "id": "R12",
+      "label": "交付归档",
+      "minutes": 20,
+      "teams": [
+        "design",
+        "engineering"
+      ],
+      "depends": [
+        "R10",
+        "R11"
+      ],
+      "eligible_teams": [
+        "design",
+        "engineering"
+      ],
+      "team": "design",
+      "start_minute": 240,
+      "end_minute": 260,
+      "start_at": "2026-11-07T13:00:00+08:00",
+      "end_at": "2026-11-07T13:20:00+08:00",
+      "start_clock": "13:00",
+      "end_clock": "13:20"
+    }
+  ],
+  "lanes": [
+    {
+      "team": "design",
+      "task_ids": [
+        "R01",
+        "R04",
+        "R07",
+        "R09",
+        "R10",
+        "R12"
+      ],
+      "working_minutes": 255,
+      "idle_until_plan_finish": [
+        {
+          "start_minute": 85,
+          "end_minute": 90,
+          "start_clock": "10:25",
+          "end_clock": "10:30",
+          "minutes": 5
+        }
+      ],
+      "idle_total_minutes": 5,
+      "buffer_after_plan": {
+        "start_minute": 260,
+        "end_minute": 420,
+        "start_clock": "13:20",
+        "end_clock": "16:00",
+        "minutes": 160
+      }
+    },
+    {
+      "team": "engineering",
+      "task_ids": [
+        "R02",
+        "R03",
+        "R05",
+        "R06",
+        "R08",
+        "R11"
+      ],
+      "working_minutes": 230,
+      "idle_until_plan_finish": [
+        {
+          "start_minute": 200,
+          "end_minute": 205,
+          "start_clock": "12:20",
+          "end_clock": "12:25",
+          "minutes": 5
+        },
+        {
+          "start_minute": 235,
+          "end_minute": 260,
+          "start_clock": "12:55",
+          "end_clock": "13:20",
+          "minutes": 25
+        }
+      ],
+      "idle_total_minutes": 30,
+      "buffer_after_plan": {
+        "start_minute": 260,
+        "end_minute": 420,
+        "start_clock": "13:20",
+        "end_clock": "16:00",
+        "minutes": 160
+      }
+    }
+  ],
+  "risks": [
+    {
+      "id": "K1",
+      "task": "R02",
+      "impact": "服务限流导致等待",
+      "mitigation": "保留响应并依据Retry-After重试"
+    },
+    {
+      "id": "K2",
+      "task": "R05",
+      "impact": "长文案导致版式回归",
+      "mitigation": "冻结文案后再完成适配"
+    },
+    {
+      "id": "K3",
+      "task": "R10",
+      "impact": "实际图像暴露裁剪或比例错误",
+      "mitigation": "预留返工缓冲，不跳过看图"
+    }
+  ],
+  "display_tie_break": "Ascending start time; simultaneous starts use ascending task ID.",
+  "input_snapshot": {
+    "start": "2026-11-07T09:00:00+08:00",
+    "deadline": "2026-11-07T16:00:00+08:00",
+    "teams": [
+      "design",
+      "engineering"
+    ],
+    "tasks": [
+      {
+        "id": "R01",
+        "label": "需求核对",
+        "minutes": 25,
+        "teams": [
+          "design"
+        ],
+        "depends": []
+      },
+      {
+        "id": "R02",
+        "label": "服务与字体探测",
+        "minutes": 20,
+        "teams": [
+          "engineering"
+        ],
+        "depends": []
+      },
+      {
+        "id": "R03",
+        "label": "数据清洗",
+        "minutes": 40,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R02"
+        ]
+      },
+      {
+        "id": "R04",
+        "label": "视觉系统",
+        "minutes": 60,
+        "teams": [
+          "design"
+        ],
+        "depends": [
+          "R01"
+        ]
+      },
+      {
+        "id": "R05",
+        "label": "文案审校",
+        "minutes": 30,
+        "teams": [
+          "design",
+          "engineering"
+        ],
+        "depends": [
+          "R01"
+        ]
+      },
+      {
+        "id": "R06",
+        "label": "图表计算",
+        "minutes": 45,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R03"
+        ]
+      },
+      {
+        "id": "R07",
+        "label": "主海报构建",
+        "minutes": 70,
+        "teams": [
+          "design"
+        ],
+        "depends": [
+          "R04",
+          "R05"
+        ]
+      },
+      {
+        "id": "R08",
+        "label": "驾驶舱构建",
+        "minutes": 65,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R04",
+          "R06"
+        ]
+      },
+      {
+        "id": "R09",
+        "label": "手机适配",
+        "minutes": 45,
+        "teams": [
+          "design",
+          "engineering"
+        ],
+        "depends": [
+          "R07"
+        ]
+      },
+      {
+        "id": "R10",
+        "label": "视觉回归检查",
+        "minutes": 35,
+        "teams": [
+          "design"
+        ],
+        "depends": [
+          "R07",
+          "R08",
+          "R09"
+        ]
+      },
+      {
+        "id": "R11",
+        "label": "产物与数据核验",
+        "minutes": 30,
+        "teams": [
+          "engineering"
+        ],
+        "depends": [
+          "R08",
+          "R09"
+        ]
+      },
+      {
+        "id": "R12",
+        "label": "交付归档",
+        "minutes": 20,
+        "teams": [
+          "design",
+          "engineering"
+        ],
+        "depends": [
+          "R10",
+          "R11"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "id": "K1",
+        "task": "R02",
+        "impact": "服务限流导致等待",
+        "mitigation": "保留响应并依据Retry-After重试"
+      },
+      {
+        "id": "K2",
+        "task": "R05",
+        "impact": "长文案导致版式回归",
+        "mitigation": "冻结文案后再完成适配"
+      },
+      {
+        "id": "K3",
+        "task": "R10",
+        "impact": "实际图像暴露裁剪或比例错误",
+        "mitigation": "预留返工缓冲，不跳过看图"
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+const fs=require('fs'),path=require('path'),s=require('../_suite/suite.cjs'),{Canvas,tag,position}=require('../_suite/dsl.cjs');
+const d=s.taskDirs('A10');
+const stack=(w,h,children,fill=null)=>tag('Container',{width:w,height:h,...(fill?{color:fill}:{})},tag('Stack',{fit:'EXPAND',clipBehavior:'NONE'},children.join('')));
+const rect=(x,y,w,h,color,extra={})=>position(x,y,w,h,tag('Container',{width:w,height:h,color,...extra}));
+const text=(x,y,w,h,value,size=24,color='#15202F')=>{const c=new Canvas(w,h);c.text(0,0,w,h,value,size,color,{bold:true});return position(x,y,w,h,tag('Stack',{fit:'EXPAND',clipBehavior:'NONE'},c.children.join('')));};
+const blur=child=>tag('ImageFiltered',{sigmaX:6,sigmaY:6,tileMode:'DECAL'},child);
+const stripes=(w,h,offset=0)=>Array.from({length:Math.ceil(w/16)+1},(_,i)=>rect(i*16-offset,0,8,h,i%2?'#00A7A0':'#183E68'));
+const foreground=()=>[rect(0,0,240,160,'#FFFFFF88'),text(20,27,208,40,'SHARP / BLUR'),rect(22,91,118,28,'#102A45',{borderRadius:6}),rect(170,83,42,42,'#F3A747',{shape:'CIRCLE'})];
+const originalCard=()=>stack(240,160,[...stripes(240,160,8),...foreground()],'#FFFFFF');
+const pair=alpha=>stack(320,240,[rect(40,40,160,120,alpha?'#FF000080':'#FF0000'),rect(120,80,160,120,alpha?'#0000FF80':'#0000FF')]);
+const source=()=>stack(200,200,[rect(10,28,72,100,'#162A44',{boxShadow:'8 10 10 0 #00000070 NORMAL'}),rect(118,70,72,72,'#D4ECFA',{boxShadow:'4 7 7 0 #00000055 NORMAL'}),rect(115,13,34,34,'#FFFFFF',{shape:'CIRCLE'})]);
+const chain=()=>blur(tag('ColorFiltered',{color:'#F6B94A',blendMode:'MULTIPLY'},source()));
+const cells=[{id:'01',x:120,y:230,title:'逐个颜色的 Alpha',caption:'红、蓝各128/255透明度\n蓝在上；重叠仍含红色。\n采样点：局部(180,100)'},{id:'02',x:560,y:230,title:'整个子树的 Opacity',caption:'不透明红蓝先合成，再×0.5\n重叠由蓝遮住红，整体淡化。\n采样点：局部(180,100)'},{id:'03',x:1000,y:230,title:'仅背景模糊',caption:'背景条纹变柔；文字仍锐利\n圆角卡240×160，半径20\nBackdropFilter · sigma 6'},{id:'04',x:120,y:710,title:'整个卡的子树模糊',caption:'文字、形状、卡内条纹都变柔\n外侧条纹清晰；圆角限制边界\nImageFiltered · sigma 6'},{id:'05',x:560,y:710,title:'先滤色，再模糊',caption:'MULTIPLY #F6B94A → blur 6\n透明间隙着色，深块与阴影可见\n不裁主体；观察软边外扩'},{id:'06',x:1000,y:710,title:'同一效果，圆形裁剪',caption:'同⑤滤镜链；外层ClipOval\n200×200承载形成正圆\n圆外白底，边缘限制效果'}];
+const c=new Canvas(1440,1100,{background:'#EDF1F5'});c.rect(0,0,1440,1100,'#EDF1F5');
+c.text(120,51,1200,75,'看到差异，才能说用对了',48,'#15202F',{bold:true});
+c.text(120,129,1200,41,'COMPOSITING LAB  /  相同输入，比较绘制语义与真实像素',23,'#506176');
+for(const p of cells){c.text(p.x,p.y-48,46,35,p.id,22,'#137C8B',{bold:true});c.text(p.x+50,p.y-50,304,38,p.title,26,'#15202F',{bold:true});c.rect(p.x,p.y,320,240,'#FFFFFF');}
+c.at(120,230,320,240,pair(true));
+c.at(560,230,320,240,tag('Opacity',{opacity:0.5},pair(false)));
+c.at(1000,230,320,240,stack(320,240,[...stripes(320,240),position(40,40,240,160,tag('ClipRRect',{borderRadius:20,clipBehavior:'ANTI_ALIAS'},tag('BackdropFilter',{sigmaX:6,sigmaY:6,tileMode:'CLAMP',blendMode:'SRC'},stack(240,160,foreground()))))],'#FFFFFF'));
+c.at(120,710,320,240,stack(320,240,[...stripes(320,240),position(40,40,240,160,tag('ClipRRect',{borderRadius:20,clipBehavior:'ANTI_ALIAS'},blur(originalCard())))],'#FFFFFF'));
+c.at(560,710,320,240,stack(320,240,[position(60,20,200,200,chain())],'#FFFFFF'));
+c.at(1000,710,320,240,stack(320,240,[position(60,20,200,200,tag('ClipOval',{clipBehavior:'ANTI_ALIAS'},chain()))],'#FFFFFF'));
+for(const p of cells)c.text(p.x,p.y+258,360,116,p.caption,20,'#45556A',{height:1.35});
+const dsl=c.toString();fs.writeFileSync(path.join(d.temp,'compositing-lab-v001.snapshot'),dsl,{flag:'wx'});fs.writeFileSync(path.join(d.temp,'layout-v001.json'),JSON.stringify({canvas:[1440,1100],cells,card:{xywh:[40,40,240,160],radius:20,text:'SHARP / BLUR',font_size:24},sigma:[6,6],circle_clip:{local_xywh:[60,20,200,200]},source_tree:source(),final_chain:'ClipOval (for06) > ImageFiltered sigma6 > ColorFiltered MULTIPLY #F6B94A > source_tree'},null,2)+'\n',{flag:'wx'});
+(async()=>{const r=await s.render('A10',dsl,{stem:'compositing-lab',width:1440,height:1100,type:'baseline',purpose:'six-panel compositing actual baseline'});console.log(JSON.stringify({id:r.id,ok:r.ok,meta:r.meta_path,image:r.image_path,error:r.error_summary}));})();

@@ -1,0 +1,5 @@
+const fs=require('fs'),path=require('path'),s=require('./suite.cjs');
+const strip=t=>t.replace(/<script\b[\s\S]*?<\/script>/gi,'').replace(/<style\b[\s\S]*?<\/style>/gi,'').replace(/<\/(p|h[1-6]|tr|li|pre)>/gi,'\n').replace(/<[^>]+>/g,' ').replace(/&#(?:x([0-9a-f]+)|(\d+));/gi,(_,h,d)=>String.fromCodePoint(parseInt(h||d,h?16:10))).replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/[ \t]+/g,' ');
+(async()=>{const [url,purpose,task='shared']=process.argv.slice(2);const r=await s.request({task,type:'document',url,purpose});if(!r.ok){console.log(JSON.stringify({id:r.id,status:r.http_status,error:r.error_summary}));return;}
+let raw=r.text();let readable=r.content_type?.includes('html')?strip(raw.match(/<article\b[^>]*>([\s\S]*?)<\/article>/)?.[1]||raw):raw;
+const p=path.join(path.dirname(r.response_file),'readable.txt');fs.writeFileSync(p,readable,{flag:'wx'});console.log(JSON.stringify({id:r.id,status:r.http_status,url,readable_path:p,body:readable}));})();

@@ -1,0 +1,11 @@
+# B03 独立审查框架
+
+先核每件使用任务，再核技术主张。每个主张需要实际官方文档、当前完整DSL、真实服务原图与查看记录相互支持。HTTP成功只是服务链证据；未知属性会被忽略，不能凭HTTP200证明手法出现。
+
+本题不强制凑齐滤镜或裁剪标签。计划十件分别是聆听会、种子交换、书展、水族馆导览、合奏排练、茶香路线、灯笼课、向量场观察、微型城市展和聆听谱；其技术必须帮助相关任务。几何算法与数据核验只覆盖明确技术主张，不为增加检查数而扩测。
+
+官方parser缓存实际支持渐变、Opacity、列主序矩阵Transform、独立裁剪、ColorFiltered、ImageFiltered、BackdropFilter与foreground文字轮廓。ImageFiltered/BackdropFilter在Parser里是高斯模糊；Container自身clip需有装饰路径，BackdropFilter需按顺序读取先画背景并限定范围，foreground文字画笔需要foregroundColor。所有这些均有本run实际取得的缓存来源，详见requirements-v001.json。
+
+4096元素上限来自B01实际HTTP400原响应，作为已确认共享边界复用，不计B03新失败。每题技术笔记须区分文档注意事项与本题实际试验，保留失败、语法修复、静态探索与完整visual迭代的真实差别。
+
+最终审查将检查十件独立完整内容、当前DSL/PNG原字节与尺寸/view链、技术notes文档依据和可见观察，以及整体策展审查。接触表补充十件比较，不能替代每件完整PNG实际查看。当前尚无B03最终候选或额外看图，本框架不声明完成。

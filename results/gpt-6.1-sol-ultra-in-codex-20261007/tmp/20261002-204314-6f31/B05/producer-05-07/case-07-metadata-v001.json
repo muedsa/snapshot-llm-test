@@ -1,0 +1,60 @@
+{
+  "case_id": "case-07",
+  "dimensions": [
+    1600,
+    1100
+  ],
+  "creative_started_at": "2026-10-06T11:13:45Z",
+  "creative_started_at_source": "clock tool at actual B05 production start",
+  "created_at": "2026-10-06T11:16:03.769Z",
+  "content_basis": {
+    "type": "fictional_static_demo",
+    "description": "洗序产品、北院宿舍/机器/费用/订单/取用码/状态全部自拟，静态概念界面，未部署、未连接传感器或支付、未做真实用户验证"
+  },
+  "checks": {
+    "visual_verified": false,
+    "service_request_by_this_agent": false,
+    "visual_review_owner": "root",
+    "static_data_consistency": "matches B05 product-plan-v001 scenario"
+  },
+  "supporting_assets": [],
+  "title": "在现场确认，才真正开始",
+  "audience": "已到达洗衣房并在现场输入新码的住户",
+  "use_context": "2026-10-08 18:40现场触屏1600×1100，近距阅读；新码5372已核验，无登录步骤",
+  "user_goal": "核对C1标准40分钟和预计结束时间，确认付4元并开始，或返回而不扣费",
+  "visual_intent": "左边清晰的机器门与状态形成现场对应，右边价格/周期/订单作最后核对，独立的大按钮将扣费与启动绑定",
+  "completion_criteria": [
+    "5372已核验明示",
+    "C1标准40分，18:40–19:20预计结束准确",
+    "WL-1008-027及当前未扣费明示",
+    "确认支付4元并开始与返回不扣费两种操作准确",
+    "没有多余登录或未解释装饰按钮，机器状态待开始"
+  ],
+  "journey_state": "kiosk-start-confirm",
+  "current_time": "2026-10-08T18:40:00+08:00",
+  "actions": {
+    "primary": {
+      "label": "确认付款 ¥4 并开始",
+      "effect": "支付本轮4元并启动C1标准40分钟，下一状态case-08为运行中",
+      "next_case": "case-08"
+    },
+    "secondary": {
+      "label": "返回，不扣费",
+      "effect": "退出本次付款确认页面，尚未扣费或启动机器"
+    }
+  },
+  "machine_state": {
+    "machine": "C1",
+    "code_verified": "5372",
+    "order": "WL-1008-027",
+    "cycle": "标准洗",
+    "duration_minutes": 40,
+    "expected_end": "19:20",
+    "door_note": "示意提示检查舱门；没有接入真实门传感器"
+  },
+  "money_state": {
+    "charged_cny_before_confirm": 0,
+    "charge_on_confirm_cny": 4,
+    "charge_on_return_cny": 0
+  }
+}

@@ -1,0 +1,35 @@
+# B03 Snapshot 实际使用与踩坑
+
+run 20261002-204314-6f31。十件已正式发布，最终task关闭与套件总审查随后执行。
+输出：D:\workspaces\gpt-6.1-sol-ultra\outputs\20261002-204314-6f31\B03。临时：D:\workspaces\gpt-6.1-sol-ultra\tmp\20261002-204314-6f31\B03。
+
+[完整作品集](portfolio.json) · [画廊](gallery.html) · [指标](task-metrics.json)
+
+十种材料感，十种使用任务：用透明光晕、分支叶脉、轮廓文字、舷窗遮挡、节奏几何、香气曲线、纸层光、向量场、等距街区和时间包络探索DSL如何帮助人理解、参与与观察。
+
+## 文档与真实服务
+
+复用本run已真实取得、阅读的shared-doc-000001指南、shared-doc-000004 Parser和shared-doc-000006 OpenAPI及shared-fonts-000001。UTF-8纯文本POST https://open-snapshot.muedsa.com/snapshot；每个最终PNG保留原服务响应字节。字体Inter,Noto Sans CJK SC。缓存复用不增加HTTP请求。
+各作品的实际标签见portfolio.json；全部主体DSL，未嵌入外部整图或素材。
+
+## 实际生成、查看与修改
+
+实际渲染16次，成功16，失败0；DSL16版；看图17次；完整visual5。基线/视觉修改/失败分别保留在requests.jsonl、iterations.jsonl、views.jsonl、tool-usage.jsonl。
+- case-01 B03-view-000001→B03-view-000005：标题70px/盒225、副标题390；加跨玻璃边界条纹用于效果观察。 比较：标题裁剪解除；诊断条纹显示背景模糊主张尚未成立，继续诊断。
+- case-09 B03-view-000003→B03-view-000006：前侧立面和窗由顶面的前边角锚定，修正原背边锚点。 比较：原屋顶中的漂浮窗与不闭合立面解除，空间完整，文案保持。
+- case-01 B03-view-000005→B03-view-000011：仅将BackdropFilter合成设SRC，sigma18。 比较：默认模式看不出柔化，SRC直装饰子树反而覆盖背景并降低阅读性；实际不通过，继续修改。
+- case-01 B03-view-000011→B03-view-000015：更换为bareContainer/Stack/内部tint的SRC子树结构。 比较：实图未解除浅色覆盖与白字低对比，保留失败尝试，改用另一真实成立的表现。
+- case-01 B03-view-000015→B03-view-000016：删除BackdropFilter与诊断条纹，改为透明圆角面板结合高斯光晕和轨道。 比较：SRC浅色覆盖和低对比解除，恢复夜间海报阅读性与悬浮叙事；未成立手法在notes诚实保留。
+
+实际Node参数化几何、数值计算与DSL构造、独立文件/hash/内容审计、view_image逐图观察及接触表对比已保留。无模型费用或token计量来源，不以字数或账户比例推测。
+
+已实际打开十件接触表做整集终审。光晕/叶脉/轮廓文字/舷窗层级/节奏钟/香气线/纸灯/双涡流/纸城/聆听谱各有完整使用任务、独立内容与不同构图，没有同版换色或B01/B02成品重复计数。单图所有原响应均已真正打开；标题、投影锚点和失败的背景滤镜表达已按真实图修订。正文近读与静态/自拟界限明确。
+[逐件技术/公式/文档/边界](technique-notes.md) 包括真实失败的BackdropFilter试验，最终01不使用该标签。原响应/草稿/诊断不删除。
+独立审查代理因实际平台用量限制中断。本题最终核验由root实际完成，审核身份在final-audit-v001.json，不宣称独立最终审查。
+16真实render全部200，10baseline、5完整visual（含失败的视觉方案探索链）和1alternative零模糊对照；17真实view包括16响应及1接触表，无HTTP失败或429。模型token/图片计费与费用未知null。
+
+## 复现与剩余事项
+
+发送每个final.snapshot为text/plain; charset=utf-8请求体，按Content-Type/HTTP/PNG尺寸验证响应。不要依赖脚本库重建，最终DSL已完整自包含。
+每用例时段见task-metrics.json case_metrics。未测量创作起点为null，真实服务到交付间隔另列；并行创作和请求耗时之和不等于整体墙钟。未发生反馈/限流等待记录为0，服务器不可测排队为null。
+最终核验：D:\workspaces\gpt-6.1-sol-ultra\tmp\20261002-204314-6f31\B03\root\final-audit-v001.json。目前单题无未解决事项；后续状态为B04:pending、B05:pending、B06:pending；全套最终总审查尚待完成。

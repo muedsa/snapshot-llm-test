@@ -1,0 +1,17 @@
+const fs=require('node:fs'),path=require('node:path');
+const {Canvas}=require('../../_suite/dsl.cjs');
+const p=__dirname,old=fs.readFileSync(path.join(p,'case-06-v001.snapshot'),'utf8');
+const probe=new Canvas(1700,1500);
+probe.text(684,961,124,32,'蒸馏出的水',19,'#436563');
+const oldWidget=probe.children[0];
+const newer=new Canvas(1700,1500);
+newer.text(673,961,70,65,'蒸馏\n出的水',19,'#436563',{lineHeight:1.3});
+if(old.split(oldWidget).length!==2)throw new Error('Expected one original label');
+const revised=old.replace(oldWidget,newer.children[0]);
+fs.writeFileSync(path.join(p,'case-06-v002.snapshot'),revised,{flag:'wx'});
+const m=JSON.parse(fs.readFileSync(path.join(p,'case-06-metadata-v001.json'),'utf8'));
+m.created_at=new Date().toISOString();m.parent_version='case-06-v001.snapshot';m.revision_reason='Actual request-17 view showed the x751 vertical route passing through the horizontal distillate label; narrow two-line label now ends at743, leaving8px to the route.';m.checks.visual_verified=false;m.checks.service_request_by_this_agent=false;m.checks.visual_review_owner='root';
+m.source_fact_recheck={UPA:'vacuum distillation creates water and urine brine still containing reclaimable water; diagram wording matches',BPA:'special membrane plus warm dry air evaporates remaining water into humid air that is captured by collection systems; diagram wording and label make both stages explicit',WPA:'all collected water is treated by specialized filters and catalytic reactor, purity tested, unacceptable reprocessed, acceptable water iodinated/stored; diagram matches source',branch_quantities:'none invented; arrows unquantified'};
+fs.writeFileSync(path.join(p,'case-06-metadata-v002.json'),JSON.stringify(m,null,2),{flag:'wx'});
+fs.writeFileSync(path.join(p,'producer-visual-observation-case06-v001.json'),JSON.stringify({created_at:new Date().toISOString(),viewer:'b04_cases_05_07',image_path:'tmp/20261002-204314-6f31/B04/requests/B04-request-000017/response.png',view_started_at:'2026-10-06T11:03Z',view_time_precision:'minute; exact tool timestamp not returned',image_dimensions:[1700,1500],observations:['The 100-unit mass grid and 98/2 labels are complete and proportional','The x751 vertical distillate pipe visibly crosses the label 蒸馏出的水','UPA/BPA/WPA language and branch routes conform to NASA water article; no direct urine-drinking implication'],action:'Narrowed to two lines within x673..743; root must re-render and view v002 before quality determination',new_visual_pass_claim:false},null,2),{flag:'wx'});
+console.log(JSON.stringify({snapshot:path.join(p,'case-06-v002.snapshot'),metadata:path.join(p,'case-06-metadata-v002.json'),pending:'root actual render/view'}));

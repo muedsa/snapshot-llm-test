@@ -1,0 +1,102 @@
+{
+  "task_id": "A16",
+  "run_id": "20261002-204314-6f31",
+  "source_view_id": "A16-view-000003",
+  "findings": [
+    {
+      "id": "F01",
+      "location": {
+        "x": 55,
+        "y": 45,
+        "width": 470,
+        "height": 41
+      },
+      "phenomenon": "Title saysQ3profitis highest.",
+      "source_check": "profits30,27,32,54;Q4maximum54",
+      "impact": "Misidentifiesbestperformingquarter.",
+      "correction": "HeadlineQ4profit54yearhigh."
+    },
+    {
+      "id": "F02",
+      "location": {
+        "x": 55,
+        "y": 105,
+        "width": 430,
+        "height": 26
+      },
+      "phenomenon": "Subtitle saysincomecontinuouslyrises.",
+      "source_check": "Q2revenue135toQ3revenue128,-7wan,-5.185185%",
+      "impact": "Hidesquarter-on-quarterdecline.",
+      "correction": "ExplicitQ3vsQ2revenue-5.2%."
+    },
+    {
+      "id": "F03",
+      "location": {
+        "x": 876,
+        "y": 182,
+        "width": 255,
+        "height": 28
+      },
+      "phenomenon": "Bluelegendcost,butbluebarlabels120/135/128/180arerevenue;orangelegendincome,butorange90/108/96/126arecost.",
+      "source_check": "Bluevaluesmatchrevenuefield;orangevaluesmatchcostfield.",
+      "impact": "Reversesmeaningofexpensesandincome.",
+      "correction": "Blue收入;orange成本."
+    },
+    {
+      "id": "F04",
+      "location": {
+        "x": 105,
+        "y": 284,
+        "width": 1080,
+        "height": 288
+      },
+      "phenomenon": "Axisbottom100whilebarsstartthere;cost90/96stillpositive;Q3bluebarishigherthanQ2although128<135.",
+      "source_check": "Eightbarvaluesmustshare0and1.35px/wan;Q3incomeheight172.8mustbelowerthanQ2height182.25.",
+      "impact": "Barlengthsandaxispositionsdonotencodeactualvalues.",
+      "correction": "Commonzeroy560,domain0..200andactualcomputedheights."
+    },
+    {
+      "id": "F05",
+      "location": {
+        "x": 438,
+        "y": 754,
+        "width": 145,
+        "height": 40
+      },
+      "phenomenon": "Q3profitdetailshows42万元.",
+      "source_check": "128-96=32万元",
+      "impact": "Overstatesprofitby10万元,+31.25%.",
+      "correction": "Q3profit32andformula128−96=32."
+    },
+    {
+      "id": "F06",
+      "location": {
+        "x": 842,
+        "y": 651,
+        "width": 385,
+        "height": 175
+      },
+      "phenomenon": "Q3observationclaimsitsprofitsurpassesallotherquartersandthereforeresourceshouldbeconcentratedthere.",
+      "source_check": "Q3profit32isbelowQ4profit54;quarterdataalonecannotidentifyfutureinvestmentreturn.",
+      "impact": "Prioritizationrestsonthewrongcomparisonandunsupportedforwardinference.",
+      "correction": "Q4historicalperformanceobservationwithprofit54/margin30%,noinvestmentcausality."
+    }
+  ],
+  "uncertain": [
+    {
+      "id": "U01",
+      "location": "entireimage",
+      "phenomenon": "Exactcauseofthewrongbargeometryisunknown.",
+      "reason": "OnlyPNGandsourceCSVprovided;nodrawingcodeorformula.",
+      "treatment": "Describevisiblemismatchonly;donotinventtruncated-axisimplementationcause."
+    },
+    {
+      "id": "U02",
+      "location": "colorpaletteandroundedcards",
+      "phenomenon": "Originalpalette/cardstyleisadesignchoice.",
+      "reason": "Notanumericalerrorwithoutaformatconstraint.",
+      "treatment": "Improveclaritywithoutclassifyingaestheticsasdatafault."
+    }
+  ],
+  "final_verification": "pending-real-render-and-actual-image-review"
+}

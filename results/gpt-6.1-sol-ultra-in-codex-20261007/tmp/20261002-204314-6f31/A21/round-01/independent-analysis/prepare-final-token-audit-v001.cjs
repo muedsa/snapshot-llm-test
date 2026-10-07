@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+let s=fs.readFileSync(path.join(__dirname,'audit-round-01-v001.cjs'),'utf8');
+s=s.replace("tokensPath=round+'/design-tokens-v001.json'","tokensPath=round+'/design-tokens-final-v001.json'");
+s=s.replace("if(actual.texts.length!==7)localAdd('actual-text-count',{actual:actual.texts.length,expected:7});",`if(actual.backgrounds.length!==1)localAdd('actual-background-count',{actual:actual.backgrounds.length});
+ const bg=actual.backgrounds[0]?.attrs,g=tokens.background_gradient;
+ if(!bg||!g||bg.gradientType!==g.type||bg.gradientColors!==g.colors.join(',')||bg.gradientBegin!==g.begin||bg.gradientEnd!==g.end||bg.color!==tokens.background)localAdd('final-background-gradient-token-mismatch',{actual:bg,declared:g});
+ if(actual.texts.length!==7)localAdd('actual-text-count',{actual:actual.texts.length,expected:7});`);
+s=s.replace("const a=actual.components[i],e=entry?.graphic_components[i],colors=[tokens.graphic.colors[i],tokens.graphic.colors[Math.min(3,i+1)]];","const a=actual.components[i],e=entry?.graphic_components[i],colors=tokens.graphic.gradients[i];");
+s=s.replace("audit_version:'A21-round-01-independent-v001'","audit_version:'A21-round-01-independent-final-token-v001'");
+s=s.replaceAll("'final-independent-audit-v001.json'","'round-audit-v001.json'").replaceAll("'final-independent-audit-v001.md'","'round-audit-v001.md'");
+fs.writeFileSync(path.join(__dirname,'audit-round-01-final-token-v001.cjs'),s,{flag:'wx'});
+console.log('Created final token audit script; original audit and files retained.');

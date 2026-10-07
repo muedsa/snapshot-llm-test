@@ -1,0 +1,22 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const base=path.resolve(__dirname,'..','producer-02-04');
+const read=n=>JSON.parse(fs.readFileSync(path.join(base,n),'utf8'));
+const bill=read('case-02-calculation-v001.json'),route=read('case-03-calculation-v001.json'),net=read('case-04-calculation-v001.json');
+const minute=s=>Number(s.slice(0,2))*60+Number(s.slice(3));
+const checks=[];
+function check(id,actual,expected){checks.push({id,actual,expected,passed:JSON.stringify(actual)===JSON.stringify(expected)});}
+check('02-shared',bill.shared_net,112);check('02-per-person',bill.shared_per_person,28);check('02-personal',bill.personal,[18,0,12,6]);check('02-final',bill.final,[46,28,40,34]);check('02-total',bill.total_final,148);
+check('02-strip-scale',bill.strips.every((s,i)=>Math.abs(s.total_px-bill.final[i]*6.4)<1e-8&&Math.abs(s.common_px-28*6.4)<1e-8&&Math.abs(s.personal_px-bill.personal[i]*6.4)<1e-8),true);
+check('03-total',route.total_minutes,90);check('03-walk',route.walk_minutes,45);check('03-stay',route.stay_minutes,45);check('03-segments',route.segments.map(s=>s.minutes),[10,10,15,15,10,20,10]);
+check('03-widths',route.segments.every(s=>s.width_px===s.minutes*14),true);
+check('03-close-window',route.stops.every(s=>minute(s.arr)<minute(s.close)&&minute(s.leave)<minute(s.close)),true);
+check('03-stop-times',route.stops.map(s=>[s.arr,s.leave]),[['09:10','09:20'],['09:35','09:50'],['10:00','10:20']]);
+check('03-total-band-width',route.segments.reduce((a,s)=>a+s.width_px,0),1260);
+check('04-month-zero',net.month_end_cumulative_cny[0],{month:0,A:100,B:0,A_minus_B:100});
+check('04-all-months',net.month_end_cumulative_cny.every(s=>s.A===100+Math.min(s.month,6)*39+Math.max(0,s.month-6)*79&&s.B===s.month*69),true);
+check('04-final',net.month_end_cumulative_cny[24],{month:24,A:1756,B:1656,A_minus_B:100});
+check('04-chart-scale',net.plot,{origin_x:150,zero_y:810,px_per_month:36,px_per_cny:.26,type:'month-end stairs, setup at month0'});
+const result={task_id:'B06',reviewer:'/root/b06_cases_02_04_resume',measured_at:new Date().toISOString(),sources:['case-02-calculation-v001.json','case-03-calculation-v001.json','case-04-calculation-v001.json'].map(n=>path.join(base,n)),visual_review_performed:false,creative_started_at:null,creative_time_note:'Old producer did not save a measured creative start; build execution timestamps do not establish creative start.',checks,passed:checks.every(c=>c.passed)};
+fs.writeFileSync(path.join(__dirname,'data-check-v001.json'),JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({checks:checks.length,passed:result.passed}));

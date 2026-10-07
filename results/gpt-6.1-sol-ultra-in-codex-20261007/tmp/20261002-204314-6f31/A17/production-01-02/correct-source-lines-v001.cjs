@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('fs'),path=require('path');const dir=__dirname;
+const write=(f,v)=>fs.writeFileSync(path.join(dir,f),typeof v==='string'?v:JSON.stringify(v,null,2)+'\n',{flag:'wx'});
+const original=fs.readFileSync(path.join(dir,'sources-draft-v002.md'),'utf8');
+if(!original.includes('第 338–346 行'))throw Error('Expected old source reference');
+write('sources-draft-v003.md',original.replace('第 338–346 行 BadRequest','第 454–492 行 BadRequest'));
+write('source-line-correction-v001.json',{recorded_at:new Date().toISOString(),kind:'documentation citation correction, no rendered image change',incorrect_saved_reference:'sources-draft-v002.md cited BadRequest 338–346 before numbered-source check',actual_numbered_source_read:'OpenAPI cached-readable lines 80–92 and 454–492, actual shell read',correct_reference:'sources-draft-v003.md: BadRequest 454–492; errorImage parameter 80–92',historical_file_preserved:'sources-draft-v002.md',no_new_http_request:true});
+const handoff=JSON.parse(fs.readFileSync(path.join(dir,'producer-handoff-v002.json'),'utf8'));
+write('producer-handoff-v003.json',{...handoff,finished_at:new Date().toISOString(),sources:path.join(dir,'sources-draft-v003.md'),source_citation_correction:path.join(dir,'source-line-correction-v001.json'),note:handoff.note+' Sources citation checked against actual numbered cache; v002 source-history retained.'});
+console.log(JSON.stringify({all_writes_finished:true,handoff:'producer-handoff-v003.json',sources:'sources-draft-v003.md',image_versions:'01 v002; 02 v001'}));

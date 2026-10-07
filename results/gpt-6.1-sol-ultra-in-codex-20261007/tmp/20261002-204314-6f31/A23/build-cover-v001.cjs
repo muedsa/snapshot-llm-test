@@ -1,0 +1,17 @@
+const fs=require('fs'),path=require('path'),s=require('../_suite/suite.cjs'),{Canvas}=require('../_suite/dsl.cjs');
+const c=new Canvas(1200,800,{background:'#0E262A'});
+c.rect(720,64,1,602,'#2D484B');
+c.text(64,60,620,35,'FORM STUDIES  /  023',22,'#A2C1BF',{bold:true,letterSpacing:2});
+c.rect(64,125,48,5,'#2DD4BF');
+c.text(64,181,630,105,'从结构到画面',72,'#EAF7F2',{bold:true});
+c.text(67,304,575,58,'十二个单元，一次汇聚。',30,'#A2C1BF');
+c.text(67,378,530,103,'分散的几何沿连续轨迹靠近，\n最终成为一个清晰的方向。',26,'#A2C1BF',{lineHeight:1.45});
+c.text(67,558,570,36,'01  →  06     结构汇聚成图像',24,'#2DD4BF',{bold:true});
+c.text(67,610,550,32,'6 个透明关键帧  ·  250 ms / 帧',22,'#A2C1BF');
+const cells=[[2,0],[1,1],[2,1],[3,1],[0,2],[1,2],[2,2],[3,2],[4,2],[2,3],[2,4],[2,5]];
+for(const [x,y]of cells)c.rect(771+x*70,178+y*70,62,62,'#2DD4BF');
+c.line(64,698,1136,698,'#2D484B',1);
+c.text(64,732,700,34,'SNAPSHOT  /  RGB PNG + 透明 PNG 分镜',20,'#A2C1BF');
+c.text(950,732,186,34,'1200 × 800',20,'#A2C1BF',{align:'END'});
+const file=path.join(__dirname,'cover-draft-v001.snapshot');fs.writeFileSync(file,c.toString(),{flag:'wx'});
+(async()=>{const r=await s.render('A23',c.toString(),{version_id:'A23-cover-v001',stem:'cover',width:1200,height:800,type:'baseline'});console.log(JSON.stringify({ok:r.ok,meta_path:r.meta_path,image_path:r.image_path,error:r.error_summary}));})();

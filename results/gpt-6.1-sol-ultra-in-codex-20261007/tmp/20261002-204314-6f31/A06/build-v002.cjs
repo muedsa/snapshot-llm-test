@@ -1,0 +1,15 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const s=require('../_suite/suite.cjs');
+const d=s.taskDirs('A06');
+const r1=JSON.parse(fs.readFileSync(path.join(d.temp,'requests/A06-request-000001/render-result.json'),'utf8'));
+const viewed=s.view('A06',r1.image_path,{tool:'view_image',version_id:'A06-v001',actor:'graph_producer',observation:'Actual full image: all fourteen nodes and eighteen edges legible; solid arrows go downward; N03-N06 and N04-N13 routed off text; feedback arrows both enter N08 via distinct right tracks. The long N04-N13 source/target horizontal legs overlap rank labels 02 and 09, obscuring them. Node labels and explanations show no clipping.'});
+s.iteration('A06',{type:'baseline',version_id:'A06-v001',completed:true,image_path:r1.image_path,after_view_id:viewed.id,observation:viewed.observation});
+const dsl=fs.readFileSync(path.join(d.temp,'dependency-map-v001.snapshot'),'utf8').replaceAll('<Positioned left="468"','<Positioned left="412"');
+fs.writeFileSync(path.join(d.temp,'dependency-map-v002.snapshot'),dsl,{flag:'wx'});
+const audit=JSON.parse(fs.readFileSync(path.join(d.temp,'graph-audit-v001.json'),'utf8'));
+audit.geometry.layer_label_bounds={x:412,width:30,explanation:'Left of N04-N13 bypass lane x454 to prevent layer labels being struck through.'};
+audit.version_id='A06-v002';
+audit.visual_change={baseline_version:'A06-v001',before_view_id:viewed.id,change:'Shift all rank label Text widgets from x468 to x412, clear of bypass horizontal legs.'};
+fs.writeFileSync(path.join(d.temp,'graph-audit-v002.json'),JSON.stringify(audit,null,2)+'\n',{flag:'wx'});
+(async()=>{const result=await s.render('A06',dsl,{version_id:'A06-v002',parent_version:'A06-v001',type:'visual',before_view_id:viewed.id,changes:audit.visual_change.change,stem:'dependency-map',width:1600,height:1000});console.log(JSON.stringify({ok:result.ok,id:result.id,status:result.http_status,image_path:result.image_path,meta_path:result.meta_path,error:result.error_summary,dimensions:result.png_dimensions}));})();

@@ -1,0 +1,284 @@
+{
+  "task_id": "A03",
+  "run_id": "20261002-204314-6f31",
+  "review_scope": "independent documented-semantic and geometry audit only; producer must insert real service/PNG evidence",
+  "created_at": "2026-10-02T21:10:43.4794229+08:00",
+  "source": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+  "read_documents": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "cached_file": "tmp/20261002-204314-6f31/_suite/shared-doc-000001-response.txt",
+      "original_shared_request_id": "shared-doc-000001"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/guides/parser/",
+      "cached_file": "tmp/20261002-204314-6f31/_suite/shared-doc-000003-readable.txt",
+      "original_shared_request_id": "shared-doc-000003"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "cached_file": "tmp/20261002-204314-6f31/_suite/shared-doc-000004-readable.txt",
+      "original_shared_request_id": "shared-doc-000004"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/guides/layout/",
+      "cached_file": "tmp/20261002-204314-6f31/_suite/shared-doc-000005-readable.txt",
+      "original_shared_request_id": "shared-doc-000005"
+    }
+  ],
+  "new_http_requests": 0,
+  "actual_service_responses_reviewed": false,
+  "actual_pngs_viewed": false,
+  "issues": [
+    {
+      "id": "A03-AUDIT-01",
+      "original_lines": [
+        1
+      ],
+      "original": "Snapshot width=\"1280\" height=\"800\"",
+      "classification": "documented_unknown_attributes_ignored",
+      "basis": "Snapshot supported attributes are background/debug/type; unknown attributes ignored; actual dimensions come from layout",
+      "repair": "Place bounded Container width1280 height800 directly under Snapshot; no unknown root size attributes",
+      "expected_verification": "PNG IHDR1280×800; source root Container sizes exact",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-02",
+      "original_lines": [
+        2
+      ],
+      "original": "padding=\"24 32\"",
+      "classification": "documented_invalid_attribute_syntax_not_yet_service_verified",
+      "basis": "EdgeInsets requires \"12\", \"(8,16)\", or \"(8,12,16,20)\"; parentheses/commas mandatory",
+      "repair": "Use padding=\"32\" or \"(32,32)\" on suitable bounded layout, or explicit safe geometry",
+      "expected_verification": "Every foreground element visible withinx32..1248,y32..768",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-03",
+      "original_lines": [
+        4
+      ],
+      "original": "font-size=\"44\"",
+      "classification": "documented_unknown_attribute_ignored",
+      "basis": "Text supported attribute fontSize is case-sensitive; unknown font-size ignored",
+      "repair": "fontSize=\"44\"",
+      "expected_verification": "Source44px title and actual clear size",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-04",
+      "original_lines": [
+        7
+      ],
+      "original": "Positioned direct child of Row",
+      "classification": "documented_invalid_parent_not_yet_service_verified",
+      "basis": "Positioned must be Stack/IndexedStack direct child",
+      "repair": "Move LIVE into root bounded Stack asPositioned x1152y40 width96height36",
+      "expected_verification": "LIVE96×36, top-right, no intersection withtitle",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-05",
+      "original_lines": [
+        6,
+        9
+      ],
+      "original": "Expanded in unbounded Row; Spacer in unbounded Column because root sizes ignored",
+      "classification": "documented_unbounded_flex_layout_risk_not_yet_service_verified",
+      "basis": "Flex requires finite mainaxis forExpanded/tightFlexible/Spacer; parentpassesconstraints",
+      "repair": "Explicit bounded root and metricRow1216wide, or exact3equalwidth384cards; retainmetric content",
+      "expected_verification": "3equalcards USAGE72% LATENCY148ms SUCCESS99.2% allfont28",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-06",
+      "original_lines": [
+        10
+      ],
+      "original": "color=\"#33FFFFFF\"",
+      "classification": "documented_color_order_visual_semantic_mismatch",
+      "basis": "CSS#RRGGBBAA withalpha last; #33FFFFFF=opaqueRGB(51,255,255)",
+      "repair": "Containercolor=\"#FFFFFF33\"; ensureTextcolor#FFFFFF withoutOpacity ancestor",
+      "expected_verification": "Whitebackgroundalpha51/255=0.20; Textopaque24px",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-07",
+      "original_lines": [
+        10
+      ],
+      "original": "Transform rotate=\"-8\" withoutmatrix",
+      "classification": "documented_unknown_rotate_ignored_and_missing_required_matrix_not_yet_service_verified",
+      "basis": "Transform requires16finiteFloat columnmajor matrix; rotate isunknown; alignment optional",
+      "repair": "Supply −8degree columnmajor matrix below, alignmentCENTER; preserveReviewblock160×56",
+      "expected_verification": "Sourceorthonormalmatrix; visualrightedgehigher thanleft; bboxfits32margin",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-08",
+      "original_lines": [
+        11
+      ],
+      "original": "ImageFiltered wrapsContainerincludingText",
+      "classification": "documented_filter_target_visual_semantic_mismatch",
+      "basis": "ImageFiltered blursentiresubtree; BackdropFilter readsalready-paintedbackground; cliprecommended",
+      "repair": "ClipRRectborderRadius24 -> BackdropFiltersigma10 -> Container500×150withText28; backgroundstripespaintedearliercrossbothcardedges",
+      "expected_verification": "Outsidecardstripescrisp; insidecardbackgroundblurred; textcrisp; noImageFiltered/unknownattributesremaining",
+      "actual_service_error": null
+    },
+    {
+      "id": "A03-AUDIT-09",
+      "original_lines": [
+        6,
+        7,
+        10,
+        11
+      ],
+      "original": "Missingsecond/thirdmetrics,LIVEdimensions,Reviewfont24,centralradius,stripes",
+      "classification": "task_content_and_geometry_incomplete",
+      "basis": "ExplicitA03taskrequirements",
+      "repair": "AddmetricLATENCY/SUCCESS; LIVE96×36; ReviewText24; cardradius24; stripsacrossx390and890",
+      "expected_verification": "AlltaskcontentanddimensionsinthefinalsourceandPNG",
+      "actual_service_error": null
+    }
+  ],
+  "expected_constraints": {
+    "canvas": {
+      "width": 1280,
+      "height": 800,
+      "background": "#0B1220",
+      "safe_margin": 32,
+      "safe_rect": [
+        32,
+        32,
+        1248,
+        768
+      ]
+    },
+    "title": {
+      "text": "System Pulse",
+      "fontSize": 44,
+      "x": 32,
+      "y": 32,
+      "width": 950,
+      "height": 64
+    },
+    "metric_cards": {
+      "x": [
+        32,
+        448,
+        864
+      ],
+      "y": 144,
+      "width": 384,
+      "height": 180,
+      "texts": [
+        "USAGE 72%",
+        "LATENCY 148 ms",
+        "SUCCESS 99.2%"
+      ],
+      "fontSize": 28,
+      "equal_width": true
+    },
+    "live": {
+      "x": 1152,
+      "y": 40,
+      "width": 96,
+      "height": 36,
+      "text": "LIVE"
+    },
+    "central_card": {
+      "x": 390,
+      "y": 416,
+      "width": 500,
+      "height": 150,
+      "borderRadius": 24,
+      "text": "Background-only blur",
+      "fontSize": 28,
+      "filter": "BackdropFilter",
+      "clip": "ClipRRect",
+      "stripes_cross_both_boundaries": true
+    },
+    "review": {
+      "x": 1080,
+      "y": 696,
+      "width": 160,
+      "height": 56,
+      "text": "REVIEW",
+      "fontSize": 24,
+      "background": "#FFFFFF33",
+      "background_alpha": 0.2,
+      "text_alpha": 1,
+      "alignment": "CENTER",
+      "visual_rotation_degrees": -8,
+      "y_axis_down": true
+    }
+  },
+  "review_transform_math": {
+    "theta_radians": -0.13962634015954636,
+    "cos": 0.9902680687415704,
+    "sin": -0.13917310096006544,
+    "matrix_column_major": [
+      0.9902680687415704,
+      -0.13917310096006544,
+      0,
+      0,
+      0.13917310096006544,
+      0.9902680687415704,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "matrix_dsl": "(0.9902680687,-0.139173101,0,0,0.139173101,0.9902680687,0,0,0,0,1,0,0,0,0,1)",
+    "vector_right_after_transform": {
+      "x": 0.9902680687415704,
+      "y": -0.13917310096006544
+    },
+    "orientation_explanation": "Canvas y increases downward. Transformed right-pointing vector has negativey, so visualrotation iscounterclockwise.",
+    "center": {
+      "x": 1160,
+      "y": 724
+    },
+    "corners": [
+      {
+        "x": 1076.8817076737926,
+        "y": 707.4063421520412
+      },
+      {
+        "x": 1235.324598672444,
+        "y": 685.1386459984309
+      },
+      {
+        "x": 1243.1182923262074,
+        "y": 740.5936578479588
+      },
+      {
+        "x": 1084.675401327556,
+        "y": 762.8613540015691
+      }
+    ],
+    "bounding_box": {
+      "min_x": 1076.8817076737926,
+      "max_x": 1243.1182923262074,
+      "min_y": 685.1386459984309,
+      "max_y": 762.8613540015691,
+      "width": 166.23658465241488,
+      "height": 77.72270800313822
+    },
+    "within_32_margin": true,
+    "hypothetical_white20_on_base_rgb": [
+      60,
+      65.4,
+      76.6
+    ],
+    "compositing_note": "Over uniformbase#0B1220,Cout=0.2white+0.8base; pixeloutputmayround andrequiresactualPNGcheck"
+  }
+}

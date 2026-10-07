@@ -1,0 +1,7 @@
+// Bookkeeping only; every declaration must follow genuine view_image calls.
+const fs=require('node:fs'),path=require('node:path'),s=require('./suite.cjs');
+const [task,file]=process.argv.slice(2),r=JSON.parse(fs.readFileSync(file));
+if(r.task_id!==task||r.reviewer!=='root'||r.actual_tool!=='view_image')throw Error('Actual review required');
+const views=[];
+for(const x of r.images){if(!x.observation)throw Error('Observation required');const m=JSON.parse(fs.readFileSync(x.meta_path)),v=s.view(task,m.image_path,{tool:'view_image',reviewer:'root',version_id:m.version_id,case_id:m.case_id,observation:x.observation});s.iteration(task,{type:m.iteration_type,version_id:m.version_id,parent_version:m.parent_version,case_id:m.case_id,completed:true,phase:'actual-image-reviewed',request_id:m.id,after_view_id:v.id,observation:x.observation,...x.iteration});s.toolUsage(task,{tool:'functions.view_image',case_id:m.case_id,purpose:'Actual full service PNG review',input:m.image_path,output:file,view_id:v.id});s.taskCheckpoint(task,{case_id:m.case_id,event_type:'case-reviewed',visual_review_evidence:[v.id],resume_notes:x.observation});views.push(v);}
+fs.writeFileSync(path.join(path.dirname(file),path.basename(file,'.json')+'-recorded.json'),JSON.stringify({review_file:path.resolve(file),views},null,2)+'\n',{flag:'wx'});s.writeTaskMetrics(task);console.log(JSON.stringify(views.map(v=>({id:v.id,case_id:v.case_id,version_id:v.version_id}))));

@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "source_grid_data_sha256": "d484b4d4ee8663b272798054f582ce037ef0cd2b3579e83e0e76ce73cd6f6864",
+  "coordinate_system": {
+    "origin": "最终grid-scene.png左上(0,0)",
+    "x": "向右",
+    "y": "向下",
+    "units": "px",
+    "relations": "主体中心，严格左右排除同x",
+    "distance": "主体中心欧氏距离，比较精确值后才按题面舍入",
+    "bounding_box": "主体几何外缘，不包含ID，right/bottom不减1",
+    "ties": "以每题明确排序规则破并列"
+  },
+  "scope": "14 new questions for final visible PNGs; questions contain no answers",
+  "questions": [
+    {
+      "id": "Q01",
+      "scene": "grid-scene.png",
+      "text": "只在G01–G64中，列出所有蓝色圆环且外径≥64px的ID，按编号升序。",
+      "coverage": [
+        "compound-attributes"
+      ],
+      "relation_steps": 1
+    },
+    {
+      "id": "Q02",
+      "scene": "grid-scene.png",
+      "text": "先在绿色圆环中按中心x升序、中心y升序、ID升序取第一位。再从中心严格位于该锚点右侧的橙色对象中，找中心欧氏距离最近的一位；同距按ID升序选。返回目标ID。严格右侧仅指x更大，不比较包围框。",
+      "coverage": [
+        "compound-attributes",
+        "strict-center-right",
+        "euclidean-distance"
+      ],
+      "relation_steps": 2
+    },
+    {
+      "id": "Q03",
+      "scene": "grid-scene.png",
+      "text": "先在紫色对象中按中心x降序、中心y升序、ID升序取第一位。再从中心严格位于该锚点左侧的圆形（不含圆环）中，找中心欧氏距离最近的一位；同距按ID升序选。返回目标ID。严格左侧仅指x更小。",
+      "coverage": [
+        "strict-center-left",
+        "shape-filter",
+        "euclidean-distance"
+      ],
+      "relation_steps": 2
+    },
+    {
+      "id": "Q04",
+      "scene": "grid-scene.png",
+      "text": "先在蓝色对象中按中心x降序、中心y降序、ID升序取第一位。再从与其同一网格行且中心严格在它左侧的对象中，选主体尺寸最大者；尺寸并列按ID升序选。返回目标ID。圆/环尺寸为外径，方/圆角方为边长。",
+      "coverage": [
+        "anchor-relation",
+        "strict-center-left",
+        "size-ranking"
+      ],
+      "relation_steps": 2
+    },
+    {
+      "id": "Q05",
+      "scene": "grid-scene.png",
+      "text": "先在橙色对象中按中心y升序、中心x升序、ID升序取第一位。再找与它同一网格列、中心严格在它下方且中心竖直距离最近的对象；同距按ID升序选。返回目标ID及主体形状。",
+      "coverage": [
+        "anchor-relation",
+        "strict-center-below",
+        "vertical-distance"
+      ],
+      "relation_steps": 2
+    },
+    {
+      "id": "Q06",
+      "scene": "grid-scene.png",
+      "text": "G18与G43的主体中心欧氏距离是多少px？按图中中心坐标计算，四舍五入到0.1px。",
+      "coverage": [
+        "euclidean-distance"
+      ],
+      "relation_steps": 1
+    },
+    {
+      "id": "Q07",
+      "scene": "grid-scene.png",
+      "text": "将紫色对象按主体中心到画布原点(0,0)的欧氏距离从近到远排序，同距按ID升序。给出前四位ID，保持该距离顺序。",
+      "coverage": [
+        "color-filter",
+        "distance-ranking"
+      ],
+      "relation_steps": 1
+    },
+    {
+      "id": "Q08",
+      "scene": "grid-scene.png",
+      "text": "求第4与第5网格行中全部圆环主体的联合轴对齐包围框，返回[left,top,right,bottom]（px）。包含圆环外圆范围，不包含ID文字；右/下边界使用几何坐标，不减1。",
+      "coverage": [
+        "shape-filter",
+        "union-bounding-box"
+      ],
+      "relation_steps": 1
+    },
+    {
+      "id": "Q09",
+      "scene": "grid-scene.png",
+      "text": "仅计G01–G64，依次给出蓝、橙、绿、紫四种颜色的主体数量。",
+      "coverage": [
+        "color-counts"
+      ],
+      "relation_steps": 1
+    },
+    {
+      "id": "Q10",
+      "scene": "grid-scene.png",
+      "text": "仅计G01–G64，依次给出圆、方、圆环、圆角方四种形状的主体数量。圆环内孔不算第二个主体。",
+      "coverage": [
+        "shape-counts"
+      ],
+      "relation_steps": 1
+    },
+    {
+      "id": "Q11",
+      "scene": "grid-scene.png",
+      "text": "在第6–8网格行内，列出绿色或紫色、主体尺寸恰为48px的所有ID，按编号升序。尺寸含义同Q04。",
+      "coverage": [
+        "region-filter",
+        "compound-attributes"
+      ],
+      "relation_steps": 1
+    },
+    {
+      "id": "Q12",
+      "scene": "grid-scene.png",
+      "text": "将全部主体尺寸80px的对象按中心x升序、中心y升序、ID升序排序。取第三位，返回其ID与主体包围框右边缘x坐标（px，不含ID文字）。",
+      "coverage": [
+        "size-filter",
+        "spatial-ranking",
+        "bounding-box"
+      ],
+      "relation_steps": 2
+    },
+    {
+      "id": "Q13",
+      "scene": "occlusion.png",
+      "alternative_scene": "occlusion-alternative.png",
+      "text": "只根据800×800遮挡图的可见像素，CASE 01遮挡板后的全部主体是否都是蓝色圆？能否作出唯一结论？",
+      "coverage": [
+        "visibility/insufficient-information"
+      ],
+      "relation_steps": 1,
+      "comparison_standard": "只根据最终可见像素；遮挡板后的内容不可见，不读取DSL或scene-data。",
+      "coordinate_origin": "左上角(0,0)，x向右、y向下"
+    },
+    {
+      "id": "Q14",
+      "scene": "occlusion.png",
+      "alternative_scene": "occlusion-alternative.png",
+      "text": "occlusion.png内CASE 01与CASE 02两个白色场景框中，遮挡板之外完整可见的方形或圆角方形主体共几个？只计V开头编号对应主体，不计场景框、遮挡板、文字或圆环。",
+      "coverage": [
+        "visible-shape-count"
+      ],
+      "relation_steps": 1,
+      "comparison_standard": "方形与圆角方形均四边等长；以V编号主体计数。",
+      "coordinate_origin": "左上角(0,0)，x向右、y向下"
+    }
+  ]
+}

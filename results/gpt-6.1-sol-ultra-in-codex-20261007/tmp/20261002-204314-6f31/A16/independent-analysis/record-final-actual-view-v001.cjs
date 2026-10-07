@@ -1,0 +1,4 @@
+const fs=require('fs'),path=require('path'),s=require('../../_suite/suite.cjs');
+const meta=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../requests/A16-request-000001/render-result.json'),'utf8'));
+const entry=s.view('A16',meta.image_path,{tool:'view_image',reviewer:'a10_audit_resume',version_id:meta.version_id,is_preview:false,observation:'Actual original1280×900: four revenue/cost pairs sharezero; blueincome/orangecost legend correct; source labels full; Q3revenue lowerQ2 visibly; profits30/27/32/54 andformulas accurate; title/historyQ4supported; future-return limit explicit; large legiblebody/annotations with no clip/overlap.'});
+fs.writeFileSync(path.join(__dirname,'final-actual-view-v001.json'),JSON.stringify(entry,null,2)+'\n',{flag:'wx'});process.stdout.write(JSON.stringify({id:entry.id,version_id:entry.version_id}));

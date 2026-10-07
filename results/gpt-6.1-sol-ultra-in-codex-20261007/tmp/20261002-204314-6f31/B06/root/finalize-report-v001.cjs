@@ -1,0 +1,15 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs');
+const d=s.taskDirs('B06'),wx=(f,x)=>fs.writeFileSync(f,x,{flag:'wx'});
+const failure={task_id:'B06',run_id:s.readState().run_id,recorded_at:new Date().toISOString(),command:'node _suite/root-review-close.cjs B06 B06/root-review-final-v001.json',exit_code:1,error:'B06: missing gallery.md',stage:'Actual local preclose required-file audit',service_failure:false,resolution:'Create a Markdown index of all ten formal works; rerun genuine existing-root-view close without adding image views.'};
+wx(path.join(__dirname,'preclose-local-failure-v001.json'),JSON.stringify(failure,null,2)+'\n');
+const p=JSON.parse(fs.readFileSync(path.join(d.output,'portfolio.json'),'utf8'));
+wx(path.join(d.output,'gallery.md'),['# B06 全作品索引','', '[本地完整画廊](gallery.html) · [作品集](portfolio.md) · [实际使用说明](snapshot-usage.md)','',...p.cases.map(c=>`## ${c.id} · ${c.title}\n\n![${c.title}](${c.png})\n\n[原始完整PNG](${c.png}) · [完整Snapshot DSL](${c.snapshot}) · [场景与实际审查](${c.id}/case.md)\n\n${c.user_goal}。`)].join('\n')+'\n');
+const review=path.join(d.output,'design-review.md'),old=fs.readFileSync(review,'utf8');
+wx(path.join(__dirname,'design-review-prepublication-v001.md'),old);
+const audit=JSON.parse(fs.readFileSync(path.join(d.temp,'audit-root-independent-v001/audit-final-v001.json'),'utf8'));
+if(!audit.passed)throw Error('No passed independent audit');
+const text=old.replaceAll('。。','。').replace('当前已逐件查看候选，整集接触表与独立最终审查随后保存，其结论在最终单题报告中给出。','十件正式作品已逐件完整查看，root整集接触表通过；独立审查152项通过，实际查看21次（四次前置基线、十张最终原图、一次整集接触表、六张半尺寸近读预览）。四次修订按真实前后图比较通过，正式PNG/DSL与选择映射一致。独立审查证据位于统一临时目录 audit-root-independent-v001/audit-final-v001.json；正式副本文件、链接与套件汇总继续核验，以最后的套件状态和终审报告为准。');
+fs.writeFileSync(review,text);
+s.toolUsage('B06',{tool:'node / finalize-report-v001.cjs',purpose:'Resolve actual preclose missing Markdown gallery and finalize already-observed design conclusions',input:path.join(d.output,'portfolio.json'),output:review,failure_record:path.join(__dirname,'preclose-local-failure-v001.json')});
+s.writeTaskMetrics('B06');
+console.log(JSON.stringify({gallery:p.cases.length,design_review_updated:true,failure_preserved:true}));

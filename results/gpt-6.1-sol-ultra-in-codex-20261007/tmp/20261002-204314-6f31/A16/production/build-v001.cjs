@@ -1,0 +1,55 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../../../..');
+const s=require(path.join(root,'tmp/20261002-204314-6f31/_suite/suite.cjs'));
+const {Canvas}=require(path.join(root,'tmp/20261002-204314-6f31/_suite/dsl.cjs'));
+const data=JSON.parse(fs.readFileSync(path.join(__dirname,'corrected-data-draft-v001.json'),'utf8'));
+const c=new Canvas(1280,900,{background:'#F1F4F8',font:'Inter,Noto Sans CJK SC'});
+const colors={ink:'#172D48',muted:'#536780',border:'#DAE3EC',grid:'#E3E9F0',blue:'#2964D8',orange:'#E6A060',navy:'#172D48',mint:'#7EE1C3'};
+const textMap=[];
+function tx(id,x,y,w,h,value,size=22,color=colors.ink,o={}){c.text(x,y,w,h,value,size,color,o);textMap.push({id,text:value,x,y,width:w,height:h,font_size:size,color,role:o.role??'body',font_family:'Inter,Noto Sans CJK SC'});}
+function panel(x,y,w,h){c.rect(x,y,w,h,'#FFFFFF',{radius:16,border:'1 SOLID '+colors.border});}
+tx('eyebrow',42,16,1160,27,'经营数据 / 季度复盘',18,colors.blue,{bold:true,role:'annotation'});
+tx('headline',42,48,1190,52,data.narrative.headline,35,colors.ink,{bold:true,role:'headline'});
+tx('subtitle',42,106,1190,37,'Q3收入较Q2下降5.2%；Q4利润较Q3增长68.8%。',22,colors.muted);
+panel(40,170,800,450);
+tx('chart-title',64,191,746,44,'收入与成本｜共同零起点',28,colors.ink,{bold:true,role:'section'});
+tx('chart-unit',64,242,280,32,'单位：万元',20,colors.muted,{role:'annotation'});
+c.rect(598,247,18,18,colors.blue);tx('legend-revenue',627,241,86,33,'收入',22,colors.ink);
+c.rect(714,247,18,18,colors.orange);tx('legend-cost',743,241,82,33,'成本',22,colors.ink);
+data.axis.ticks.forEach(({value_wan:v,y})=>{c.rect(132,y,684,v===0?2:1,v===0?'#7F92A8':colors.grid);tx('tick-'+v,68,y-15,50,32,String(v),20,colors.muted,{align:'RIGHT',role:'annotation'});});
+data.axis.bars.forEach(b=>{
+ c.rect(b.x,b.y,b.width,b.height,b.color);
+ tx('bar-value-'+b.id,b.x-4,b.y+7,b.width+8,32,String(b.value_wan),22,b.series==='revenue'?'#FFFFFF':'#4B2E18',{bold:true,align:'CENTER',role:'annotation'});
+});
+data.rows.forEach((r,i)=>tx('quarter-'+r.quarter,data.axis.group_centers[i]-47,576,100,36,r.quarter,22,colors.ink,{bold:true,align:'CENTER'}));
+panel(40,646,800,202);
+tx('profit-title',64,665,310,41,'利润明细',28,colors.ink,{bold:true,role:'section'});
+tx('profit-total',389,670,423,34,'全年利润143万元',22,colors.muted,{align:'RIGHT'});
+data.rows.forEach((r,i)=>{
+ const x=69+i*185;
+ if(i===3)c.rect(x-8,709,170,114,'#EAF7F1',{radius:10});
+ if(i<3)c.rect(x+172,714,1,105,colors.grid);
+ tx('profit-quarter-'+r.quarter,x,712,155,32,r.quarter,22,i===3?'#18745D':colors.muted,{bold:true});
+ tx('profit-value-'+r.quarter,x,746,161,43,r.profit_wan+'万元',32,i===3?'#18745D':colors.ink,{bold:true});
+ tx('profit-formula-'+r.quarter,x,792,162,29,r.revenue_wan+' − '+r.cost_wan+' = '+r.profit_wan,18,colors.muted,{role:'annotation'});
+});
+c.rect(864,170,376,678,colors.navy,{radius:16});
+tx('highlight-title',888,195,328,43,'重点观察 · Q4',28,'#FFFFFF',{bold:true,role:'section'});
+tx('highlight-profit-label',889,248,326,34,'季度利润',22,'#C2D2E3');
+tx('highlight-profit',886,280,136,106,'54',80,'#FFFFFF',{bold:true});
+tx('highlight-profit-unit',1007,327,170,42,'万元',28,'#C2D2E3');
+tx('highlight-maximum',889,375,326,35,'全年最高',24,colors.mint,{bold:true});
+c.rect(888,422,328,1,'#3B506A');
+[['收入','180万元'],['成本','126万元'],['利润率','30.0%']].forEach(([label,value],i)=>{const y=438+i*42;tx('highlight-metric-'+i,889,y,154,34,label,22,'#C2D2E3');tx('highlight-metric-value-'+i,1036,y,178,34,value,22,'#FFFFFF',{bold:true,align:'RIGHT'});});
+c.rect(888,572,328,1,'#3B506A');
+tx('q4-vs-q3',889,589,326,36,'Q4 对比 Q3',22,'#C2D2E3');
+tx('q4-profit-delta',889,628,326,36,'利润 +22万元',24,'#FFFFFF',{bold:true});
+tx('q4-profit-pct',886,667,326,47,'+68.8%',36,colors.mint,{bold:true});
+tx('q4-evidence-1',889,723,326,32,'收入、利润与利润率',22,'#FFFFFF');
+tx('q4-evidence-2',889,755,326,32,'均为全年最高。',22,'#FFFFFF');
+tx('q4-limitation',889,798,326,36,'历史表现不代表未来回报。',22,'#C2D2E3');
+tx('footer',42,864,1194,27,'数据：source.csv（任务演示）｜利润＝收入−成本｜单位：万元',18,colors.muted,{role:'annotation'});
+const dsl=c.toString();fs.writeFileSync(path.join(__dirname,'corrected-report-v001.snapshot'),dsl,{flag:'wx'});
+fs.writeFileSync(path.join(__dirname,'construction-audit-draft-v001.json'),JSON.stringify({task_id:'A16',run_id:'20261002-204314-6f31',width:1280,height:900,text_map:textMap,body_font_minimum:Math.min(...textMap.filter(t=>t.role==='body').map(t=>t.font_size)),annotation_font_minimum:Math.min(...textMap.filter(t=>t.role==='annotation').map(t=>t.font_size)),bar_axis:data.axis,no_image_tag:!/<Image\b/.test(dsl),no_external_assets:true,source_csv:data.source,awaiting_actual_image_review:true},null,2)+'\n',{flag:'wx'});
+(async()=>{const r=await s.render('A16',dsl,{version_id:'A16-v001',type:'baseline',stem:'corrected-report',width:1280,height:900,purpose:'Rebuild correctedquarterreviewwithsource-accurate8barcommonzeroandQ4profitnarrative'});console.log(JSON.stringify({ok:r.ok,meta_path:r.meta_path,image_path:r.image_path,error:r.error_summary}));})().catch(e=>{console.error(e);process.exitCode=1;});

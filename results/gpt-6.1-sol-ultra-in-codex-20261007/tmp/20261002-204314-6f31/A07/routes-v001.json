@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "task_id": "A07",
+  "source": "D:\\workspaces\\gpt-6.1-sol-ultra\\tasks\\A07-transit-topology\\inputs\\network.json",
+  "city": "澄川",
+  "fictional_city": true,
+  "routing_rules": {
+    "objective": [
+      "minimum_station_edges",
+      "minimum_line_changes"
+    ],
+    "station_edges_bidirectional": true,
+    "all_station_edge_times_equal": true,
+    "first_boarding_is_transfer": false,
+    "accessibility": "Origin, destination and changed-line stations must have accessible=true; inaccessible stations may be passed while staying on the same line."
+  },
+  "stations": [
+    {
+      "id": "S01",
+      "name": "松林",
+      "accessible": true
+    },
+    {
+      "id": "S02",
+      "name": "北门",
+      "accessible": true
+    },
+    {
+      "id": "S03",
+      "name": "书院",
+      "accessible": false
+    },
+    {
+      "id": "S04",
+      "name": "中心",
+      "accessible": true
+    },
+    {
+      "id": "S05",
+      "name": "东桥",
+      "accessible": false
+    },
+    {
+      "id": "S06",
+      "name": "江湾",
+      "accessible": true
+    },
+    {
+      "id": "S07",
+      "name": "西港",
+      "accessible": true
+    },
+    {
+      "id": "S08",
+      "name": "工坊",
+      "accessible": true
+    },
+    {
+      "id": "S09",
+      "name": "花园",
+      "accessible": false
+    },
+    {
+      "id": "S10",
+      "name": "南门",
+      "accessible": true
+    },
+    {
+      "id": "S11",
+      "name": "会展",
+      "accessible": true
+    },
+    {
+      "id": "S12",
+      "name": "机场",
+      "accessible": true
+    },
+    {
+      "id": "S13",
+      "name": "石溪",
+      "accessible": true
+    },
+    {
+      "id": "S14",
+      "name": "公园",
+      "accessible": false
+    },
+    {
+      "id": "S15",
+      "name": "剧院",
+      "accessible": true
+    },
+    {
+      "id": "S16",
+      "name": "研究所",
+      "accessible": true
+    }
+  ],
+  "lines": [
+    {
+      "id": "R",
+      "name": "红线",
+      "stations": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S12"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "蓝线",
+      "stations": [
+        "S07",
+        "S08",
+        "S04",
+        "S09",
+        "S10",
+        "S11"
+      ]
+    },
+    {
+      "id": "G",
+      "name": "绿线",
+      "stations": [
+        "S13",
+        "S14",
+        "S08",
+        "S15",
+        "S05",
+        "S16"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "Q1",
+      "from": "S01",
+      "to": "S11",
+      "ordinary": {
+        "station_sequence": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "station_names": [
+          "松林",
+          "北门",
+          "书院",
+          "中心",
+          "花园",
+          "南门",
+          "会展"
+        ],
+        "line_for_each_edge": [
+          "R",
+          "R",
+          "R",
+          "B",
+          "B",
+          "B"
+        ],
+        "line_segments": [
+          {
+            "line": "R",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "edge_count": 3
+          },
+          {
+            "line": "B",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "edge_count": 3
+          }
+        ],
+        "edge_count": 6,
+        "transfer_count": 1,
+        "transfer_stations": [
+          "S04"
+        ],
+        "accessible_as_drawn": true,
+        "accessibility_failures": []
+      },
+      "ordinary_is_accessible": true,
+      "accessible": {
+        "station_sequence": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "station_names": [
+          "松林",
+          "北门",
+          "书院",
+          "中心",
+          "花园",
+          "南门",
+          "会展"
+        ],
+        "line_for_each_edge": [
+          "R",
+          "R",
+          "R",
+          "B",
+          "B",
+          "B"
+        ],
+        "line_segments": [
+          {
+            "line": "R",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "edge_count": 3
+          },
+          {
+            "line": "B",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "edge_count": 3
+          }
+        ],
+        "edge_count": 6,
+        "transfer_count": 1,
+        "transfer_stations": [
+          "S04"
+        ],
+        "accessible_as_drawn": true,
+        "accessibility_failures": []
+      },
+      "alternative_required": false
+    },
+    {
+      "id": "Q2",
+      "from": "S13",
+      "to": "S12",
+      "ordinary": {
+        "station_sequence": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "station_names": [
+          "石溪",
+          "公园",
+          "工坊",
+          "剧院",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "line_for_each_edge": [
+          "G",
+          "G",
+          "G",
+          "G",
+          "R",
+          "R"
+        ],
+        "line_segments": [
+          {
+            "line": "G",
+            "stations": [
+              "S13",
+              "S14",
+              "S08",
+              "S15",
+              "S05"
+            ],
+            "edge_count": 4
+          },
+          {
+            "line": "R",
+            "stations": [
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "edge_count": 2
+          }
+        ],
+        "edge_count": 6,
+        "transfer_count": 1,
+        "transfer_stations": [
+          "S05"
+        ],
+        "accessible_as_drawn": false,
+        "accessibility_failures": [
+          "S05"
+        ]
+      },
+      "ordinary_is_accessible": false,
+      "accessible": {
+        "station_sequence": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "station_names": [
+          "石溪",
+          "公园",
+          "工坊",
+          "中心",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "line_for_each_edge": [
+          "G",
+          "G",
+          "B",
+          "R",
+          "R",
+          "R"
+        ],
+        "line_segments": [
+          {
+            "line": "G",
+            "stations": [
+              "S13",
+              "S14",
+              "S08"
+            ],
+            "edge_count": 2
+          },
+          {
+            "line": "B",
+            "stations": [
+              "S08",
+              "S04"
+            ],
+            "edge_count": 1
+          },
+          {
+            "line": "R",
+            "stations": [
+              "S04",
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "edge_count": 3
+          }
+        ],
+        "edge_count": 6,
+        "transfer_count": 2,
+        "transfer_stations": [
+          "S08",
+          "S04"
+        ],
+        "accessible_as_drawn": true,
+        "accessibility_failures": []
+      },
+      "alternative_required": true
+    },
+    {
+      "id": "Q3",
+      "from": "S07",
+      "to": "S16",
+      "ordinary": {
+        "station_sequence": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "station_names": [
+          "西港",
+          "工坊",
+          "剧院",
+          "东桥",
+          "研究所"
+        ],
+        "line_for_each_edge": [
+          "B",
+          "G",
+          "G",
+          "G"
+        ],
+        "line_segments": [
+          {
+            "line": "B",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "edge_count": 1
+          },
+          {
+            "line": "G",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "edge_count": 3
+          }
+        ],
+        "edge_count": 4,
+        "transfer_count": 1,
+        "transfer_stations": [
+          "S08"
+        ],
+        "accessible_as_drawn": true,
+        "accessibility_failures": []
+      },
+      "ordinary_is_accessible": true,
+      "accessible": {
+        "station_sequence": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "station_names": [
+          "西港",
+          "工坊",
+          "剧院",
+          "东桥",
+          "研究所"
+        ],
+        "line_for_each_edge": [
+          "B",
+          "G",
+          "G",
+          "G"
+        ],
+        "line_segments": [
+          {
+            "line": "B",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "edge_count": 1
+          },
+          {
+            "line": "G",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "edge_count": 3
+          }
+        ],
+        "edge_count": 4,
+        "transfer_count": 1,
+        "transfer_stations": [
+          "S08"
+        ],
+        "accessible_as_drawn": true,
+        "accessibility_failures": []
+      },
+      "alternative_required": false
+    }
+  ]
+}

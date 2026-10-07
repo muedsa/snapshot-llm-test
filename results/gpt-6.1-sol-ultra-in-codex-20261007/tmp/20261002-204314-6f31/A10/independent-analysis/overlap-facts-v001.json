@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-10-03T18:03:43.700Z",
+  "task_id": "A10",
+  "run_id": "20261002-204314-6f31",
+  "scope": "Independent expected RGB computation before sampling actual PNG",
+  "sample_point_local": [
+    180,
+    100
+  ],
+  "background_rgb": [
+    255,
+    255,
+    255
+  ],
+  "rectangle_geometry": {
+    "red": [
+      40,
+      40,
+      160,
+      120
+    ],
+    "blue": [
+      120,
+      80,
+      160,
+      120
+    ],
+    "blue_on_top": true
+  },
+  "experiment_1": {
+    "individual_color_alpha_hex": "80",
+    "alpha_fraction": "128/255",
+    "alpha_value": 0.5019607843137255,
+    "formula": "out=blue·a+(red·a+white·(1−a))·(1−a); channel arithmetic in encoded RGB",
+    "red_then_white_rgb": [
+      255,
+      127,
+      127
+    ],
+    "overlap_exact_rgb": [
+      127,
+      63.25098039215686,
+      191.25098039215686
+    ],
+    "overlap_nearest_integer_rgb": [
+      127,
+      63,
+      191
+    ]
+  },
+  "experiment_2": {
+    "group_opacity": 0.5,
+    "formula": "Opaque blue already replaces opaque red in overlap inside group; out=blue·0.5+white·0.5",
+    "flattened_overlap_rgb": [
+      0,
+      0,
+      255
+    ],
+    "overlap_exact_rgb": [
+      127.5,
+      127.5,
+      255
+    ],
+    "overlap_nearest_integer_rgb": [
+      128,
+      128,
+      255
+    ]
+  },
+  "expected_visible_difference": "Individual alpha retains the first red layer contribution in the overlap; group opacity fades only the final opaque blue at that location.",
+  "rounding_note": "128/255≈0.501960784 rather than exactly0.5. The ideal group channels127.5 are an 8-bit rounding boundary; actual Skia alpha quantization can yield127 or128. Preserve measured PNG RGB instead of silently adjusting theory.",
+  "actual_sampling_status": "pending real service PNG",
+  "actual_overlap_rgb": null,
+  "actual_cost_tokens": null
+}

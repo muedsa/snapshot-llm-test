@@ -1,0 +1,74 @@
+{
+  "case_id": "case-05",
+  "title": "三道门 · 织物损伤评估",
+  "dimensions": [
+    1500,
+    1100
+  ],
+  "project": "再线 / RETHREAD",
+  "audience": "带损伤织物到社区修补点的新参与者",
+  "use_context": "店内评估台前横向桌牌/平板",
+  "user_goal": "判断基础体验或先评估，理解费用边界",
+  "creative_started_at": "2026-10-06T05:43:51.653Z",
+  "creative_started_at_source": {
+    "event_id": "B02-event-000006",
+    "path": "tmp/20261002-204314-6f31/_suite/events.jsonl",
+    "scope": "shared project/plan and subsequent case-specific construction"
+  },
+  "construction_finished_at": "2026-10-06T05:47:58.153Z",
+  "content_basis": {
+    "type": "fictional_project_demo",
+    "description": "自拟社区项目/地址/时间/价格/示例用户记录，非实际部署；针法为设计演示中的基础操作说明，不作织物性能保证"
+  },
+  "visual_intent": "三幅织物损伤几何对应三道判断门；同项目缝线与补丁用于传达损伤状态，而非无任务组件。",
+  "dsl_capabilities": [
+    "Stack/Positioned布局",
+    "Container圆角/边框/透明色",
+    "Text/Raw/中文",
+    "Transform矩阵线段",
+    "参数化缝线与织物几何"
+  ],
+  "completion_criteria": [
+    "三道判断依次涵盖周边状态/关键结构/可见补丁目标",
+    "不确定、结构或大片损伤均导向先评估",
+    "基础45分钟¥30含布料线，复杂先评估报价",
+    "没有绝对修复承诺或未经验证的织物养护断言",
+    "所有多行正文高度≥68，原始tag少于4096"
+  ],
+  "checks": {
+    "static_checks": [
+      "三道判断依次涵盖周边状态/关键结构/可见补丁目标",
+      "不确定、结构或大片损伤均导向先评估",
+      "基础45分钟¥30含布料线，复杂先评估报价",
+      "没有绝对修复承诺或未经验证的织物养护断言",
+      "所有多行正文高度≥68，原始tag少于4096"
+    ],
+    "visual_verified": false,
+    "visual_review_owner": "root",
+    "rendered_by_this_agent": false,
+    "conservative_start_elements": 426
+  },
+  "asset_sources": [],
+  "decision_rules": [
+    {
+      "gate": "01",
+      "question": "周边还牢固吗？",
+      "condition": "观察周边是否脆化、发黏\n或一碰就继续裂开。",
+      "result": "出现这些情况 → 暂停缝补"
+    },
+    {
+      "gate": "02",
+      "question": "伤在关键位置吗？",
+      "condition": "损伤涉及拉链、承重缝线，\n或已扩展到大片布面？",
+      "result": "是 / 不确定 → 先评估"
+    },
+    {
+      "gate": "03",
+      "question": "接受可见补丁吗？",
+      "condition": "小破洞，周边布料牢固，\n并愿意保留可见的补丁？",
+      "result": "符合 → 选择基础体验"
+    }
+  ],
+  "basic_minutes": 45,
+  "basic_price": 30
+}

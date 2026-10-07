@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const started_at=new Date().toISOString();
+let source=fs.readFileSync(path.join(__dirname,'generate-v001.cjs'),'utf8');
+source=source.replaceAll('B02-one-project-visual-ecosystem','B02-one-client-ten-touchpoints');
+source=source.replace('case_id:id,dimensions:','case_id:id,title:meta.title,dimensions:');
+const old="const x1=100,y1=347;c.circle(x1+62,y1+67,28,'transparent',{border:`9 SOLID ${P.clay}`});c.circle(x1+133,y1+69,28,'transparent',{border:`9 SOLID ${P.clay}`});c.line(x1+78,y1+88,x1+149,y1+174,P.ink,9,{roundCaps:true});c.line(x1+117,y1+89,x1+47,y1+174,P.ink,9,{roundCaps:true});c.circle(x1+98,y1+115,9,P.sage);c.line(x1+39,y1+209,x1+155,y1+209,P.line,3);";
+const closed="const x1=100,y1=347;c.circle(x1+62,y1+159,28,'transparent',{border:`9 SOLID ${P.clay}`});c.circle(x1+133,y1+157,28,'transparent',{border:`9 SOLID ${P.clay}`});c.line(178,485,194,462,P.ink,8,{roundCaps:true});c.line(217,484,201,462,P.ink,8,{roundCaps:true});c.line(194,462,191,394,P.ink,7,{roundCaps:true});c.line(201,462,198,394,P.ink,7,{roundCaps:true});c.circle(x1+98,y1+111,9,P.sage);c.line(x1+39,y1+209,x1+155,y1+209,P.line,3);label(c,115,567,161,24,'关闭示意 · 刀刃并拢',16,P.ink,false,'CENTER');";
+if(!source.includes(old))throw new Error('Expected parent scissors source not found');
+source=source.replace(old,closed).replace('四件归入工位 T03','四类工具归入工位 T03');
+source=source.replaceAll('-v001.snapshot','-v003.snapshot').replaceAll('-metadata-v001.json','-metadata-v003.json').replaceAll('-notes-v001.md','-notes-v003.md');
+new Function('require','__dirname','process','console',source)(require,__dirname,{argv:['node','generate-v001.cjs','04']},console);
+fs.writeFileSync(path.join(__dirname,'revision-evidence-v003.json'),JSON.stringify({started_at,ended_at:new Date().toISOString(),parent:'case-04-v002.snapshot',after:'case-04-v003.snapshot',root_feedback_reference:{before_view:'B02-view-000009',before_version:'B02-version-000009'},changes:[{reason:'v002手柄朝下但刀刃仍张开；归位关闭要求不匹配',handles:[{center:[162,506],radius:28},{center:[233,504],radius:28}],closed_blades:[[[194,462],[191,394]],[[201,462],[198,394]]],blade_width:7,caption:'关闭示意 · 刀刃并拢'},{reason:'6枚针与四件措辞有歧义',old:'四件归入工位 T03',new:'四类工具归入工位 T03'}],render_called:false,public_logs_mutated:false},null,2)+'\n',{flag:'wx'});

@@ -1,0 +1,15 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../_suite/suite.cjs');s.taskStart('B03',{resume_notes:'B02 completed with217 candidate and3 extra-output independent checks. Full B03 sources read; create10 genuinely new application works, actual documented DSL experiments and reviews.'});
+const cases=[
+['01','漂浮声场 · 夜间聆听会',1200,1600,'root','radial/linear gradients + ImageFiltered glow + clipped BackdropFilter glass; information outside decorative transparency'],
+['02','种子交换 · 叶脉索引',1400,1000,'producer-02-04','algorithmic branching veins and ClipOval specimen windows, true labels'],
+['03','字在场 · 独立书展',1200,1600,'producer-02-04','outline foreground text + shadow/offset layers and typographic sculpture'],
+['04','潜入蓝色 · 水族馆导览',1500,1000,'producer-02-04','nested porthole clips and depth parallax diorama, clear3-zone path'],
+['05','三对四 · 合奏排练卡',1500,1100,'producer-05-07','12-subdivision concentric polyrhythm circles, interval/value geometry exact'],
+['06','一杯山形 · 茶香体验路线',1200,1600,'producer-05-07','procedural contour composition and translucency,3-stop tasting route'],
+['07','纸上发光 · 灯笼制作课',1600,1100,'producer-05-07','crease/fold geometry and layered paper light; full workshop steps'],
+['08','风的转身 · 双涡流观察',1500,1100,'root','calculated vector-field short streamlines, explicit mathematical model and observation questions'],
+['09','折叠街区 · 微型城市展',1200,1600,'root','isometric matrices and occlusion order, paper-diorama exhibition info'],
+['10','看见声音 · 三段聆听谱',1500,1100,'root','computed synthetic waveform envelope with timed narrative and distinct silent rest']
+].map(([num,title,width,height,owner,technique])=>({id:'case-'+num,title,width,height,owner,technique}));
+const starts={};for(const c of cases){starts[c.id]=s.event('case-creative-start',{task_id:'B03',case_id:c.id,owner:c.owner,scope:'shared curatorial plan and following individual parallel construction'}).time;}
+const p={task_id:'B03',run_id:s.readState().run_id,created_at:new Date().toISOString(),asset_policy:'dsl_primary_with_supporting_assets; all10 chosen as pure DSL',content_basis:'自拟活动/项目/运营与演示内容，未部署；数学模型与合奏数值按显式公式计算，不冒称现实测量。',case_creative_starts:starts,cases,documentation:[{id:'shared-doc-000001',application:'actual UTF8 POST and response byte persistence'},{id:'shared-doc-000004',application:'Container gradients, clipping, transformations, opacity, foreground outline, blur, text raw content'}],review_policy:'serial root render and genuine full PNG review; revise only actual defects; independent audit and actual collection review;10new full works and technique-notes'};fs.writeFileSync(path.join(s.taskDirs('B03').temp,'plan-v001.json'),JSON.stringify(p,null,2)+'\n',{flag:'wx'});s.toolUsage('B03',{tool:'Actual cached parser/guide read and parameterized design planning',purpose:'Documented creative capability combinations for10 complete use contexts',input:'shared-doc-000001/shared-doc-000004',output:path.join(s.taskDirs('B03').temp,'plan-v001.json'),new_http_requests:0});s.writeTaskMetrics('B03');console.log(p);

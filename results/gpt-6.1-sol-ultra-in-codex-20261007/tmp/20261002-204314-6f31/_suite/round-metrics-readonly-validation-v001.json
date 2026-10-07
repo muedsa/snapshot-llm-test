@@ -1,0 +1,1735 @@
+{
+  "schema_version": 1,
+  "id": "shared-round-metrics-readonly-validation-v001",
+  "run_id": "20261002-204314-6f31",
+  "recorded_at": "2026-10-04T10:39:45.126Z",
+  "status": "passed_existing_case_interfaces_only",
+  "scope": {
+    "author": "/root/reviewed_set_util",
+    "future_task_or_round_files_read": false,
+    "new_http_requests": 0,
+    "new_render_requests": 0,
+    "new_image_views": 0,
+    "real_round_archive_executed": false,
+    "fixture_round_facts_generated": false,
+    "state_or_report_or_task_metrics_writes": false,
+    "existing_cases_inspected": [
+      {
+        "task": "A11",
+        "cases": [
+          "page-01",
+          "page-02"
+        ]
+      },
+      {
+        "task": "A12",
+        "cases": [
+          "mobile",
+          "tablet",
+          "desktop",
+          "stage"
+        ]
+      }
+    ],
+    "not_a_suite_completion_statement": true
+  },
+  "code_findings": [
+    {
+      "component": "suite.cjs",
+      "observed_in_code": "round_id can be propagated in requests/versions/views/iterations/waits/artifacts; countsFor(task,{round_id}) filters before selecting latest version iterations/current image paths.",
+      "limit": "Caller must tag each actual event. File names do not infer tags. True per-round start/end metrics and round reports are not automatically written."
+    },
+    {
+      "component": "suite.cjs writeTaskMetrics/report/aggregate",
+      "observed_in_code": "Metrics/report targets are task output roots. Top-level metrics include all task logs; rounds/case_metrics are detail. Suite aggregates task top-level plus shared only.",
+      "limit": "Do not add newly archived round/case counts again to task/suite totals."
+    },
+    {
+      "component": "publish-reviewed-set.cjs",
+      "observed_in_code": "Relative nested stems and additional-file destinations support round subdirectories while keeping original metadata round_id.",
+      "limit": "report_from writes task-level report, metrics_extra updates task-level metrics. It does not automatically archive round reports/metrics."
+    },
+    {
+      "component": "root-review-close.cjs",
+      "observed_in_code": "It requires declarations covering every current final, whole-task required-file/round checks, then taskEnd. Existing true root view IDs can be reused.",
+      "limit": "Whole-task close only; cannot be used as first/second round close. This preparation did not run a multi-round task."
+    },
+    {
+      "component": "archive-round-metrics.cjs",
+      "observed_in_code": "Round filter and actual boundary event IDs define scope/timing; logs/hashes are rechecked before wx archive. Source correction must be explicit. Historical delivered-pointer view bytes can resolve to preserved matching raw responses without adding a view.",
+      "limit": "Actual round-boundary and archive branches remain unexecuted here. Content, quantity and visual quality remain root review responsibilities."
+    }
+  ],
+  "actual_commands": [
+    {
+      "name": "help",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --help",
+      "chunk_id": "4d6d9d",
+      "wall_time_seconds": 0.000017,
+      "exit_code": 0,
+      "original_token_count": 252,
+      "output": "Usage:\n  node archive-round-metrics.cjs TASK ROUND_ID [--check-only]\n    [--start-event EVENT_ID --end-event EVENT_ID]\n  node archive-round-metrics.cjs --inspect-case TASK CASE_ID\n  node archive-round-metrics.cjs --help\n\nRound mode filters actual task logs by round_id. True start/end must come from\nmatching recorded round-start/round-started and round-complete/round-completed\nevents in _suite/events.jsonl; no timestamps or facts are invented.\nWithout explicit event IDs, each boundary must have exactly one matching event.\n--check-only reports metadata and writes nothing. --inspect-case is read-only;\nexisting cases/pages are never relabelled rounds and boundary times stay null.\nArchive writes an immutable temp copy and OUTPUT/TASK/ROUND_ID/task-metrics.json\nwith wx. Existing destinations are refused; state, reports and task-level metrics\nare untouched. Source bytes/hashes and recorded IDs are verified, not perceived.\nRound/case detail must never be added again to task/suite top-level totals.\n",
+      "batch": "before_static_refinement",
+      "parsed_stdout": null
+    },
+    {
+      "name": "A11-page-01",
+      "task": "A11",
+      "case_id": "page-01",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A11 page-01",
+      "chunk_id": "ed0441",
+      "wall_time_seconds": 0.0000101,
+      "exit_code": 0,
+      "original_token_count": 825,
+      "output": "{\n  \"task_id\": \"A11\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"page-01\",\n  \"filter\": {\n    \"case_id\": \"page-01\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 2,\n    \"successful_snapshot_requests\": 2,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 2,\n    \"image_views\": 7,\n    \"completed_visual_iterations\": 1,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:49:17.785Z\",\n    \"request_duration_sum_seconds\": 7.9514963,\n    \"known_request_duration_sum_seconds\": 7.9514963,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A11-v001-p01\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:45:21.416Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A11-artifact-000001\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T05:54:25.969Z\"\n    },\n    \"seconds\": 544.553,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 2,\n    \"version_hashes\": 2,\n    \"view_file_hashes\": 7,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 1\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A11-request-000003\",\n      \"A11-request-000005\"\n    ],\n    \"versions\": [\n      \"A11-v001-p01\",\n      \"A11-v002-p01\"\n    ],\n    \"views\": [\n      \"A11-view-000001\",\n      \"A11-view-000003\",\n      \"A11-view-000005\",\n      \"A11-view-000006\",\n      \"A11-view-000008\",\n      \"A11-view-000009\",\n      \"A11-view-000010\"\n    ],\n    \"iterations_history\": [\n      \"A11-iteration-000001\",\n      \"A11-iteration-000002\",\n      \"A11-iteration-000005\",\n      \"A11-iteration-000007\",\n      \"A11-iteration-000008\",\n      \"A11-iteration-000009\"\n    ],\n    \"iterations_current\": [\n      \"A11-iteration-000005\",\n      \"A11-iteration-000009\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A11-artifact-000001\"\n    ],\n    \"artifacts_current\": [\n      \"A11-artifact-000001\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "before_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A11",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "page-01",
+        "filter": {
+          "case_id": "page-01"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 2,
+          "successful_snapshot_requests": 2,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 2,
+          "image_views": 7,
+          "completed_visual_iterations": 1,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:49:17.785Z",
+          "request_duration_sum_seconds": 7.9514963,
+          "known_request_duration_sum_seconds": 7.9514963,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A11-v001-p01",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:45:21.416Z"
+          },
+          "last": {
+            "record_id": "A11-artifact-000001",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T05:54:25.969Z"
+          },
+          "seconds": 544.553,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 2,
+          "version_hashes": 2,
+          "view_file_hashes": 7,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 1
+        },
+        "record_ids": {
+          "requests": [
+            "A11-request-000003",
+            "A11-request-000005"
+          ],
+          "versions": [
+            "A11-v001-p01",
+            "A11-v002-p01"
+          ],
+          "views": [
+            "A11-view-000001",
+            "A11-view-000003",
+            "A11-view-000005",
+            "A11-view-000006",
+            "A11-view-000008",
+            "A11-view-000009",
+            "A11-view-000010"
+          ],
+          "iterations_history": [
+            "A11-iteration-000001",
+            "A11-iteration-000002",
+            "A11-iteration-000005",
+            "A11-iteration-000007",
+            "A11-iteration-000008",
+            "A11-iteration-000009"
+          ],
+          "iterations_current": [
+            "A11-iteration-000005",
+            "A11-iteration-000009"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A11-artifact-000001"
+          ],
+          "artifacts_current": [
+            "A11-artifact-000001"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A11-page-02",
+      "task": "A11",
+      "case_id": "page-02",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A11 page-02",
+      "chunk_id": "fa95d5",
+      "wall_time_seconds": 0.0000131,
+      "exit_code": 0,
+      "original_token_count": 774,
+      "output": "{\n  \"task_id\": \"A11\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"page-02\",\n  \"filter\": {\n    \"case_id\": \"page-02\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 1,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 1,\n    \"image_views\": 5,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:45:29.439Z\",\n    \"request_duration_sum_seconds\": 3.7677169999999998,\n    \"known_request_duration_sum_seconds\": 3.7677169999999998,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A11-v001-p02\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:45:25.667Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A11-artifact-000002\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T05:54:25.975Z\"\n    },\n    \"seconds\": 540.308,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 1,\n    \"version_hashes\": 1,\n    \"view_file_hashes\": 5,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A11-request-000004\"\n    ],\n    \"versions\": [\n      \"A11-v001-p02\"\n    ],\n    \"views\": [\n      \"A11-view-000002\",\n      \"A11-view-000004\",\n      \"A11-view-000007\",\n      \"A11-view-000011\",\n      \"A11-view-000012\"\n    ],\n    \"iterations_history\": [\n      \"A11-iteration-000003\",\n      \"A11-iteration-000004\",\n      \"A11-iteration-000006\"\n    ],\n    \"iterations_current\": [\n      \"A11-iteration-000006\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A11-artifact-000002\"\n    ],\n    \"artifacts_current\": [\n      \"A11-artifact-000002\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "before_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A11",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "page-02",
+        "filter": {
+          "case_id": "page-02"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 1,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 1,
+          "image_views": 5,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:45:29.439Z",
+          "request_duration_sum_seconds": 3.7677169999999998,
+          "known_request_duration_sum_seconds": 3.7677169999999998,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A11-v001-p02",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:45:25.667Z"
+          },
+          "last": {
+            "record_id": "A11-artifact-000002",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T05:54:25.975Z"
+          },
+          "seconds": 540.308,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 1,
+          "version_hashes": 1,
+          "view_file_hashes": 5,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A11-request-000004"
+          ],
+          "versions": [
+            "A11-v001-p02"
+          ],
+          "views": [
+            "A11-view-000002",
+            "A11-view-000004",
+            "A11-view-000007",
+            "A11-view-000011",
+            "A11-view-000012"
+          ],
+          "iterations_history": [
+            "A11-iteration-000003",
+            "A11-iteration-000004",
+            "A11-iteration-000006"
+          ],
+          "iterations_current": [
+            "A11-iteration-000006"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A11-artifact-000002"
+          ],
+          "artifacts_current": [
+            "A11-artifact-000002"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-mobile",
+      "task": "A12",
+      "case_id": "mobile",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 mobile",
+      "chunk_id": "021582",
+      "wall_time_seconds": 0.0000049,
+      "exit_code": 0,
+      "original_token_count": 758,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"mobile\",\n  \"filter\": {\n    \"case_id\": \"mobile\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 1,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 1,\n    \"image_views\": 3,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:58:48.813Z\",\n    \"request_duration_sum_seconds\": 3.6208356,\n    \"known_request_duration_sum_seconds\": 3.6208356,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-mobile\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:45.189Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000001\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.324Z\"\n    },\n    \"seconds\": 837.135,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 1,\n    \"version_hashes\": 1,\n    \"view_file_hashes\": 3,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000001\"\n    ],\n    \"versions\": [\n      \"A12-v001-mobile\"\n    ],\n    \"views\": [\n      \"A12-view-000001\",\n      \"A12-view-000003\",\n      \"A12-view-000005\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000001\",\n      \"A12-iteration-000002\",\n      \"A12-iteration-000009\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000009\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000001\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000001\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "before_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "mobile",
+        "filter": {
+          "case_id": "mobile"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 1,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 1,
+          "image_views": 3,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:58:48.813Z",
+          "request_duration_sum_seconds": 3.6208356,
+          "known_request_duration_sum_seconds": 3.6208356,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-mobile",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:45.189Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000001",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.324Z"
+          },
+          "seconds": 837.135,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 1,
+          "version_hashes": 1,
+          "view_file_hashes": 3,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000001"
+          ],
+          "versions": [
+            "A12-v001-mobile"
+          ],
+          "views": [
+            "A12-view-000001",
+            "A12-view-000003",
+            "A12-view-000005"
+          ],
+          "iterations_history": [
+            "A12-iteration-000001",
+            "A12-iteration-000002",
+            "A12-iteration-000009"
+          ],
+          "iterations_current": [
+            "A12-iteration-000009"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000001"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000001"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-tablet",
+      "task": "A12",
+      "case_id": "tablet",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 tablet",
+      "chunk_id": "20a98a",
+      "wall_time_seconds": 0.0000096,
+      "exit_code": 0,
+      "original_token_count": 763,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"tablet\",\n  \"filter\": {\n    \"case_id\": \"tablet\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 1,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 1,\n    \"image_views\": 3,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:58:51.656Z\",\n    \"request_duration_sum_seconds\": 2.8363331999999994,\n    \"known_request_duration_sum_seconds\": 2.8363331999999994,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-tablet\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:48.815Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000002\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.329Z\"\n    },\n    \"seconds\": 833.514,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 1,\n    \"version_hashes\": 1,\n    \"view_file_hashes\": 3,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000002\"\n    ],\n    \"versions\": [\n      \"A12-v001-tablet\"\n    ],\n    \"views\": [\n      \"A12-view-000002\",\n      \"A12-view-000004\",\n      \"A12-view-000006\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000003\",\n      \"A12-iteration-000004\",\n      \"A12-iteration-000010\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000010\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000002\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000002\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "before_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "tablet",
+        "filter": {
+          "case_id": "tablet"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 1,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 1,
+          "image_views": 3,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:58:51.656Z",
+          "request_duration_sum_seconds": 2.8363331999999994,
+          "known_request_duration_sum_seconds": 2.8363331999999994,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-tablet",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:48.815Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000002",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.329Z"
+          },
+          "seconds": 833.514,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 1,
+          "version_hashes": 1,
+          "view_file_hashes": 3,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000002"
+          ],
+          "versions": [
+            "A12-v001-tablet"
+          ],
+          "views": [
+            "A12-view-000002",
+            "A12-view-000004",
+            "A12-view-000006"
+          ],
+          "iterations_history": [
+            "A12-iteration-000003",
+            "A12-iteration-000004",
+            "A12-iteration-000010"
+          ],
+          "iterations_current": [
+            "A12-iteration-000010"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000002"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000002"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-desktop",
+      "task": "A12",
+      "case_id": "desktop",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 desktop",
+      "chunk_id": "9fc84c",
+      "wall_time_seconds": 0.135265,
+      "exit_code": 0,
+      "original_token_count": 871,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"desktop\",\n  \"filter\": {\n    \"case_id\": \"desktop\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 4,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 3,\n    \"retry_requests\": 1,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 4,\n    \"image_views\": 3,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 2,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T06:02:46.887Z\",\n    \"request_duration_sum_seconds\": 5.800800199999999,\n    \"known_request_duration_sum_seconds\": 5.800800199999999,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-desktop\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:51.658Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000003\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.332Z\"\n    },\n    \"seconds\": 830.674,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 4,\n    \"version_hashes\": 4,\n    \"view_file_hashes\": 3,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000003\",\n      \"A12-request-000005\",\n      \"A12-request-000007\",\n      \"A12-request-000011\"\n    ],\n    \"versions\": [\n      \"A12-v001-desktop\",\n      \"A12-v002-desktop\",\n      \"A12-v003-desktop\",\n      \"A12-v004-desktop\"\n    ],\n    \"views\": [\n      \"A12-view-000007\",\n      \"A12-view-000009\",\n      \"A12-view-000011\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000005\",\n      \"A12-iteration-000006\",\n      \"A12-iteration-000011\",\n      \"A12-iteration-000012\",\n      \"A12-iteration-000015\",\n      \"A12-iteration-000016\",\n      \"A12-iteration-000023\",\n      \"A12-iteration-000024\",\n      \"A12-iteration-000027\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000006\",\n      \"A12-iteration-000012\",\n      \"A12-iteration-000016\",\n      \"A12-iteration-000027\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000003\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000003\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "before_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "desktop",
+        "filter": {
+          "case_id": "desktop"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 4,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 3,
+          "retry_requests": 1,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 4,
+          "image_views": 3,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 2,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T06:02:46.887Z",
+          "request_duration_sum_seconds": 5.800800199999999,
+          "known_request_duration_sum_seconds": 5.800800199999999,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-desktop",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:51.658Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000003",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.332Z"
+          },
+          "seconds": 830.674,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 4,
+          "version_hashes": 4,
+          "view_file_hashes": 3,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000003",
+            "A12-request-000005",
+            "A12-request-000007",
+            "A12-request-000011"
+          ],
+          "versions": [
+            "A12-v001-desktop",
+            "A12-v002-desktop",
+            "A12-v003-desktop",
+            "A12-v004-desktop"
+          ],
+          "views": [
+            "A12-view-000007",
+            "A12-view-000009",
+            "A12-view-000011"
+          ],
+          "iterations_history": [
+            "A12-iteration-000005",
+            "A12-iteration-000006",
+            "A12-iteration-000011",
+            "A12-iteration-000012",
+            "A12-iteration-000015",
+            "A12-iteration-000016",
+            "A12-iteration-000023",
+            "A12-iteration-000024",
+            "A12-iteration-000027"
+          ],
+          "iterations_current": [
+            "A12-iteration-000006",
+            "A12-iteration-000012",
+            "A12-iteration-000016",
+            "A12-iteration-000027"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000003"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000003"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-stage",
+      "task": "A12",
+      "case_id": "stage",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 stage",
+      "chunk_id": "e31dd2",
+      "wall_time_seconds": 0.1916933,
+      "exit_code": 0,
+      "original_token_count": 932,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"stage\",\n  \"filter\": {\n    \"case_id\": \"stage\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 5,\n    \"successful_snapshot_requests\": 2,\n    \"failed_snapshot_requests\": 3,\n    \"retry_requests\": 1,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 5,\n    \"image_views\": 7,\n    \"completed_visual_iterations\": 1,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 2,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T06:05:08.812Z\",\n    \"request_duration_sum_seconds\": 9.1105441,\n    \"known_request_duration_sum_seconds\": 9.1105441,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-stage\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:52.413Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000004\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.339Z\"\n    },\n    \"seconds\": 829.926,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 5,\n    \"version_hashes\": 5,\n    \"view_file_hashes\": 7,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 1\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000004\",\n      \"A12-request-000006\",\n      \"A12-request-000008\",\n      \"A12-request-000012\",\n      \"A12-request-000013\"\n    ],\n    \"versions\": [\n      \"A12-v001-stage\",\n      \"A12-v002-stage\",\n      \"A12-v003-stage\",\n      \"A12-v004-stage\",\n      \"A12-v005-stage\"\n    ],\n    \"views\": [\n      \"A12-view-000008\",\n      \"A12-view-000010\",\n      \"A12-view-000012\",\n      \"A12-view-000013\",\n      \"A12-view-000014\",\n      \"A12-view-000015\",\n      \"A12-view-000016\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000007\",\n      \"A12-iteration-000008\",\n      \"A12-iteration-000013\",\n      \"A12-iteration-000014\",\n      \"A12-iteration-000017\",\n      \"A12-iteration-000018\",\n      \"A12-iteration-000025\",\n      \"A12-iteration-000026\",\n      \"A12-iteration-000028\",\n      \"A12-iteration-000029\",\n      \"A12-iteration-000030\",\n      \"A12-iteration-000031\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000008\",\n      \"A12-iteration-000014\",\n      \"A12-iteration-000018\",\n      \"A12-iteration-000028\",\n      \"A12-iteration-000031\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000004\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000004\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "before_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "stage",
+        "filter": {
+          "case_id": "stage"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 5,
+          "successful_snapshot_requests": 2,
+          "failed_snapshot_requests": 3,
+          "retry_requests": 1,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 5,
+          "image_views": 7,
+          "completed_visual_iterations": 1,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 2,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T06:05:08.812Z",
+          "request_duration_sum_seconds": 9.1105441,
+          "known_request_duration_sum_seconds": 9.1105441,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-stage",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:52.413Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000004",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.339Z"
+          },
+          "seconds": 829.926,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 5,
+          "version_hashes": 5,
+          "view_file_hashes": 7,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 1
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000004",
+            "A12-request-000006",
+            "A12-request-000008",
+            "A12-request-000012",
+            "A12-request-000013"
+          ],
+          "versions": [
+            "A12-v001-stage",
+            "A12-v002-stage",
+            "A12-v003-stage",
+            "A12-v004-stage",
+            "A12-v005-stage"
+          ],
+          "views": [
+            "A12-view-000008",
+            "A12-view-000010",
+            "A12-view-000012",
+            "A12-view-000013",
+            "A12-view-000014",
+            "A12-view-000015",
+            "A12-view-000016"
+          ],
+          "iterations_history": [
+            "A12-iteration-000007",
+            "A12-iteration-000008",
+            "A12-iteration-000013",
+            "A12-iteration-000014",
+            "A12-iteration-000017",
+            "A12-iteration-000018",
+            "A12-iteration-000025",
+            "A12-iteration-000026",
+            "A12-iteration-000028",
+            "A12-iteration-000029",
+            "A12-iteration-000030",
+            "A12-iteration-000031"
+          ],
+          "iterations_current": [
+            "A12-iteration-000008",
+            "A12-iteration-000014",
+            "A12-iteration-000018",
+            "A12-iteration-000028",
+            "A12-iteration-000031"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000004"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000004"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "help",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --help",
+      "chunk_id": "bfe8a4",
+      "wall_time_seconds": 0.2186253,
+      "exit_code": 0,
+      "original_token_count": 252,
+      "output": "Usage:\n  node archive-round-metrics.cjs TASK ROUND_ID [--check-only]\n    [--start-event EVENT_ID --end-event EVENT_ID]\n  node archive-round-metrics.cjs --inspect-case TASK CASE_ID\n  node archive-round-metrics.cjs --help\n\nRound mode filters actual task logs by round_id. True start/end must come from\nmatching recorded round-start/round-started and round-complete/round-completed\nevents in _suite/events.jsonl; no timestamps or facts are invented.\nWithout explicit event IDs, each boundary must have exactly one matching event.\n--check-only reports metadata and writes nothing. --inspect-case is read-only;\nexisting cases/pages are never relabelled rounds and boundary times stay null.\nArchive writes an immutable temp copy and OUTPUT/TASK/ROUND_ID/task-metrics.json\nwith wx. Existing destinations are refused; state, reports and task-level metrics\nare untouched. Source bytes/hashes and recorded IDs are verified, not perceived.\nRound/case detail must never be added again to task/suite top-level totals.\n",
+      "batch": "final_helper_after_static_refinement",
+      "parsed_stdout": null
+    },
+    {
+      "name": "A11-page-01",
+      "task": "A11",
+      "case_id": "page-01",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A11 page-01",
+      "chunk_id": "694ba8",
+      "wall_time_seconds": 0.2145431,
+      "exit_code": 0,
+      "original_token_count": 825,
+      "output": "{\n  \"task_id\": \"A11\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"page-01\",\n  \"filter\": {\n    \"case_id\": \"page-01\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 2,\n    \"successful_snapshot_requests\": 2,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 2,\n    \"image_views\": 7,\n    \"completed_visual_iterations\": 1,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:49:17.785Z\",\n    \"request_duration_sum_seconds\": 7.9514963,\n    \"known_request_duration_sum_seconds\": 7.9514963,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A11-v001-p01\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:45:21.416Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A11-artifact-000001\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T05:54:25.969Z\"\n    },\n    \"seconds\": 544.553,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 2,\n    \"version_hashes\": 2,\n    \"view_file_hashes\": 7,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 1\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A11-request-000003\",\n      \"A11-request-000005\"\n    ],\n    \"versions\": [\n      \"A11-v001-p01\",\n      \"A11-v002-p01\"\n    ],\n    \"views\": [\n      \"A11-view-000001\",\n      \"A11-view-000003\",\n      \"A11-view-000005\",\n      \"A11-view-000006\",\n      \"A11-view-000008\",\n      \"A11-view-000009\",\n      \"A11-view-000010\"\n    ],\n    \"iterations_history\": [\n      \"A11-iteration-000001\",\n      \"A11-iteration-000002\",\n      \"A11-iteration-000005\",\n      \"A11-iteration-000007\",\n      \"A11-iteration-000008\",\n      \"A11-iteration-000009\"\n    ],\n    \"iterations_current\": [\n      \"A11-iteration-000005\",\n      \"A11-iteration-000009\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A11-artifact-000001\"\n    ],\n    \"artifacts_current\": [\n      \"A11-artifact-000001\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "final_helper_after_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A11",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "page-01",
+        "filter": {
+          "case_id": "page-01"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 2,
+          "successful_snapshot_requests": 2,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 2,
+          "image_views": 7,
+          "completed_visual_iterations": 1,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:49:17.785Z",
+          "request_duration_sum_seconds": 7.9514963,
+          "known_request_duration_sum_seconds": 7.9514963,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A11-v001-p01",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:45:21.416Z"
+          },
+          "last": {
+            "record_id": "A11-artifact-000001",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T05:54:25.969Z"
+          },
+          "seconds": 544.553,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 2,
+          "version_hashes": 2,
+          "view_file_hashes": 7,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 1
+        },
+        "record_ids": {
+          "requests": [
+            "A11-request-000003",
+            "A11-request-000005"
+          ],
+          "versions": [
+            "A11-v001-p01",
+            "A11-v002-p01"
+          ],
+          "views": [
+            "A11-view-000001",
+            "A11-view-000003",
+            "A11-view-000005",
+            "A11-view-000006",
+            "A11-view-000008",
+            "A11-view-000009",
+            "A11-view-000010"
+          ],
+          "iterations_history": [
+            "A11-iteration-000001",
+            "A11-iteration-000002",
+            "A11-iteration-000005",
+            "A11-iteration-000007",
+            "A11-iteration-000008",
+            "A11-iteration-000009"
+          ],
+          "iterations_current": [
+            "A11-iteration-000005",
+            "A11-iteration-000009"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A11-artifact-000001"
+          ],
+          "artifacts_current": [
+            "A11-artifact-000001"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A11-page-02",
+      "task": "A11",
+      "case_id": "page-02",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A11 page-02",
+      "chunk_id": "752707",
+      "wall_time_seconds": 0.2110049,
+      "exit_code": 0,
+      "original_token_count": 774,
+      "output": "{\n  \"task_id\": \"A11\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"page-02\",\n  \"filter\": {\n    \"case_id\": \"page-02\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 1,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 1,\n    \"image_views\": 5,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:45:29.439Z\",\n    \"request_duration_sum_seconds\": 3.7677169999999998,\n    \"known_request_duration_sum_seconds\": 3.7677169999999998,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A11-v001-p02\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:45:25.667Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A11-artifact-000002\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T05:54:25.975Z\"\n    },\n    \"seconds\": 540.308,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 1,\n    \"version_hashes\": 1,\n    \"view_file_hashes\": 5,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A11-request-000004\"\n    ],\n    \"versions\": [\n      \"A11-v001-p02\"\n    ],\n    \"views\": [\n      \"A11-view-000002\",\n      \"A11-view-000004\",\n      \"A11-view-000007\",\n      \"A11-view-000011\",\n      \"A11-view-000012\"\n    ],\n    \"iterations_history\": [\n      \"A11-iteration-000003\",\n      \"A11-iteration-000004\",\n      \"A11-iteration-000006\"\n    ],\n    \"iterations_current\": [\n      \"A11-iteration-000006\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A11-artifact-000002\"\n    ],\n    \"artifacts_current\": [\n      \"A11-artifact-000002\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "final_helper_after_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A11",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "page-02",
+        "filter": {
+          "case_id": "page-02"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 1,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 1,
+          "image_views": 5,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:45:29.439Z",
+          "request_duration_sum_seconds": 3.7677169999999998,
+          "known_request_duration_sum_seconds": 3.7677169999999998,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A11-v001-p02",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:45:25.667Z"
+          },
+          "last": {
+            "record_id": "A11-artifact-000002",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T05:54:25.975Z"
+          },
+          "seconds": 540.308,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 1,
+          "version_hashes": 1,
+          "view_file_hashes": 5,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A11-request-000004"
+          ],
+          "versions": [
+            "A11-v001-p02"
+          ],
+          "views": [
+            "A11-view-000002",
+            "A11-view-000004",
+            "A11-view-000007",
+            "A11-view-000011",
+            "A11-view-000012"
+          ],
+          "iterations_history": [
+            "A11-iteration-000003",
+            "A11-iteration-000004",
+            "A11-iteration-000006"
+          ],
+          "iterations_current": [
+            "A11-iteration-000006"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A11-artifact-000002"
+          ],
+          "artifacts_current": [
+            "A11-artifact-000002"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-mobile",
+      "task": "A12",
+      "case_id": "mobile",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 mobile",
+      "chunk_id": "8dbf8e",
+      "wall_time_seconds": 0.2139765,
+      "exit_code": 0,
+      "original_token_count": 758,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"mobile\",\n  \"filter\": {\n    \"case_id\": \"mobile\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 1,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 1,\n    \"image_views\": 3,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:58:48.813Z\",\n    \"request_duration_sum_seconds\": 3.6208356,\n    \"known_request_duration_sum_seconds\": 3.6208356,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-mobile\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:45.189Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000001\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.324Z\"\n    },\n    \"seconds\": 837.135,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 1,\n    \"version_hashes\": 1,\n    \"view_file_hashes\": 3,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000001\"\n    ],\n    \"versions\": [\n      \"A12-v001-mobile\"\n    ],\n    \"views\": [\n      \"A12-view-000001\",\n      \"A12-view-000003\",\n      \"A12-view-000005\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000001\",\n      \"A12-iteration-000002\",\n      \"A12-iteration-000009\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000009\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000001\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000001\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "final_helper_after_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "mobile",
+        "filter": {
+          "case_id": "mobile"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 1,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 1,
+          "image_views": 3,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:58:48.813Z",
+          "request_duration_sum_seconds": 3.6208356,
+          "known_request_duration_sum_seconds": 3.6208356,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-mobile",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:45.189Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000001",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.324Z"
+          },
+          "seconds": 837.135,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 1,
+          "version_hashes": 1,
+          "view_file_hashes": 3,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000001"
+          ],
+          "versions": [
+            "A12-v001-mobile"
+          ],
+          "views": [
+            "A12-view-000001",
+            "A12-view-000003",
+            "A12-view-000005"
+          ],
+          "iterations_history": [
+            "A12-iteration-000001",
+            "A12-iteration-000002",
+            "A12-iteration-000009"
+          ],
+          "iterations_current": [
+            "A12-iteration-000009"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000001"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000001"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-tablet",
+      "task": "A12",
+      "case_id": "tablet",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 tablet",
+      "chunk_id": "306450",
+      "wall_time_seconds": 0.2038557,
+      "exit_code": 0,
+      "original_token_count": 763,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"tablet\",\n  \"filter\": {\n    \"case_id\": \"tablet\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 1,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 0,\n    \"retry_requests\": 0,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 1,\n    \"image_views\": 3,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 0,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T05:58:51.656Z\",\n    \"request_duration_sum_seconds\": 2.8363331999999994,\n    \"known_request_duration_sum_seconds\": 2.8363331999999994,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-tablet\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:48.815Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000002\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.329Z\"\n    },\n    \"seconds\": 833.514,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 1,\n    \"version_hashes\": 1,\n    \"view_file_hashes\": 3,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000002\"\n    ],\n    \"versions\": [\n      \"A12-v001-tablet\"\n    ],\n    \"views\": [\n      \"A12-view-000002\",\n      \"A12-view-000004\",\n      \"A12-view-000006\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000003\",\n      \"A12-iteration-000004\",\n      \"A12-iteration-000010\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000010\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000002\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000002\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "final_helper_after_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "tablet",
+        "filter": {
+          "case_id": "tablet"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 1,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 0,
+          "retry_requests": 0,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 1,
+          "image_views": 3,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 0,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T05:58:51.656Z",
+          "request_duration_sum_seconds": 2.8363331999999994,
+          "known_request_duration_sum_seconds": 2.8363331999999994,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-tablet",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:48.815Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000002",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.329Z"
+          },
+          "seconds": 833.514,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 1,
+          "version_hashes": 1,
+          "view_file_hashes": 3,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000002"
+          ],
+          "versions": [
+            "A12-v001-tablet"
+          ],
+          "views": [
+            "A12-view-000002",
+            "A12-view-000004",
+            "A12-view-000006"
+          ],
+          "iterations_history": [
+            "A12-iteration-000003",
+            "A12-iteration-000004",
+            "A12-iteration-000010"
+          ],
+          "iterations_current": [
+            "A12-iteration-000010"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000002"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000002"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-desktop",
+      "task": "A12",
+      "case_id": "desktop",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 desktop",
+      "chunk_id": "c0e40e",
+      "wall_time_seconds": 0.2002486,
+      "exit_code": 0,
+      "original_token_count": 871,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"desktop\",\n  \"filter\": {\n    \"case_id\": \"desktop\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 4,\n    \"successful_snapshot_requests\": 1,\n    \"failed_snapshot_requests\": 3,\n    \"retry_requests\": 1,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 4,\n    \"image_views\": 3,\n    \"completed_visual_iterations\": 0,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 2,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T06:02:46.887Z\",\n    \"request_duration_sum_seconds\": 5.800800199999999,\n    \"known_request_duration_sum_seconds\": 5.800800199999999,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-desktop\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:51.658Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000003\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.332Z\"\n    },\n    \"seconds\": 830.674,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 4,\n    \"version_hashes\": 4,\n    \"view_file_hashes\": 3,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 0\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000003\",\n      \"A12-request-000005\",\n      \"A12-request-000007\",\n      \"A12-request-000011\"\n    ],\n    \"versions\": [\n      \"A12-v001-desktop\",\n      \"A12-v002-desktop\",\n      \"A12-v003-desktop\",\n      \"A12-v004-desktop\"\n    ],\n    \"views\": [\n      \"A12-view-000007\",\n      \"A12-view-000009\",\n      \"A12-view-000011\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000005\",\n      \"A12-iteration-000006\",\n      \"A12-iteration-000011\",\n      \"A12-iteration-000012\",\n      \"A12-iteration-000015\",\n      \"A12-iteration-000016\",\n      \"A12-iteration-000023\",\n      \"A12-iteration-000024\",\n      \"A12-iteration-000027\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000006\",\n      \"A12-iteration-000012\",\n      \"A12-iteration-000016\",\n      \"A12-iteration-000027\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000003\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000003\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "final_helper_after_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "desktop",
+        "filter": {
+          "case_id": "desktop"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 4,
+          "successful_snapshot_requests": 1,
+          "failed_snapshot_requests": 3,
+          "retry_requests": 1,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 4,
+          "image_views": 3,
+          "completed_visual_iterations": 0,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 2,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T06:02:46.887Z",
+          "request_duration_sum_seconds": 5.800800199999999,
+          "known_request_duration_sum_seconds": 5.800800199999999,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-desktop",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:51.658Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000003",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.332Z"
+          },
+          "seconds": 830.674,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 4,
+          "version_hashes": 4,
+          "view_file_hashes": 3,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 0
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000003",
+            "A12-request-000005",
+            "A12-request-000007",
+            "A12-request-000011"
+          ],
+          "versions": [
+            "A12-v001-desktop",
+            "A12-v002-desktop",
+            "A12-v003-desktop",
+            "A12-v004-desktop"
+          ],
+          "views": [
+            "A12-view-000007",
+            "A12-view-000009",
+            "A12-view-000011"
+          ],
+          "iterations_history": [
+            "A12-iteration-000005",
+            "A12-iteration-000006",
+            "A12-iteration-000011",
+            "A12-iteration-000012",
+            "A12-iteration-000015",
+            "A12-iteration-000016",
+            "A12-iteration-000023",
+            "A12-iteration-000024",
+            "A12-iteration-000027"
+          ],
+          "iterations_current": [
+            "A12-iteration-000006",
+            "A12-iteration-000012",
+            "A12-iteration-000016",
+            "A12-iteration-000027"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000003"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000003"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    },
+    {
+      "name": "A12-stage",
+      "task": "A12",
+      "case_id": "stage",
+      "cmd": "node tmp/20261002-204314-6f31/_suite/archive-round-metrics.cjs --inspect-case A12 stage",
+      "chunk_id": "fb769e",
+      "wall_time_seconds": 0.2047502,
+      "exit_code": 0,
+      "original_token_count": 932,
+      "output": "{\n  \"task_id\": \"A12\",\n  \"run_id\": \"20261002-204314-6f31\",\n  \"kind\": \"case_readonly_inspection\",\n  \"round_id\": null,\n  \"case_id\": \"stage\",\n  \"filter\": {\n    \"case_id\": \"stage\"\n  },\n  \"status\": \"existing_case_inspected_not_a_round\",\n  \"counts\": {\n    \"snapshot_requests\": 5,\n    \"successful_snapshot_requests\": 2,\n    \"failed_snapshot_requests\": 3,\n    \"retry_requests\": 1,\n    \"other_service_requests\": 0,\n    \"document_requests\": 0,\n    \"dsl_versions\": 5,\n    \"image_views\": 7,\n    \"completed_visual_iterations\": 1,\n    \"incomplete_visual_iterations\": 0,\n    \"baseline_versions\": 1,\n    \"syntax_fixes\": 0,\n    \"alternative_versions\": 2,\n    \"requirement_changes\": 0,\n    \"other_tool_calls\": 0,\n    \"final_pngs\": 1,\n    \"independent_creative_cases\": 0\n  },\n  \"timings\": {\n    \"started_at\": null,\n    \"ended_at\": null,\n    \"elapsed_seconds\": null,\n    \"timing_source\": \"No case boundary claim; first/last log observation is not case start/end.\",\n    \"first_usable_image_seconds\": null,\n    \"first_current_final_response_at\": \"2026-10-04T06:05:08.812Z\",\n    \"request_duration_sum_seconds\": 9.1105441,\n    \"known_request_duration_sum_seconds\": 9.1105441,\n    \"request_duration_unknown_count\": 0,\n    \"user_feedback_wait_seconds\": 0,\n    \"rate_limit_wait_seconds\": 0,\n    \"queue_wait_seconds\": null,\n    \"wait_scope\": \"Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.\",\n    \"server_timing_source\": \"Preserved response Server-Timing headers\"\n  },\n  \"observed_log_span\": {\n    \"first\": {\n      \"record_id\": \"A12-v001-stage\",\n      \"log\": \"versions\",\n      \"field\": \"time\",\n      \"time\": \"2026-10-04T05:58:52.413Z\"\n    },\n    \"last\": {\n      \"record_id\": \"A12-artifact-000004\",\n      \"log\": \"artifacts\",\n      \"field\": \"registered_at\",\n      \"time\": \"2026-10-04T06:12:42.339Z\"\n    },\n    \"seconds\": 829.926,\n    \"scope\": \"Observed log timestamps only; never substituted for true boundary wall clock.\"\n  },\n  \"evidence_checks\": {\n    \"request_hashes\": 5,\n    \"version_hashes\": 5,\n    \"view_file_hashes\": 7,\n    \"final_pair_hashes\": 1,\n    \"root_reviewed_finals\": 1,\n    \"completed_visual_evidence\": 1\n  },\n  \"record_ids\": {\n    \"requests\": [\n      \"A12-request-000004\",\n      \"A12-request-000006\",\n      \"A12-request-000008\",\n      \"A12-request-000012\",\n      \"A12-request-000013\"\n    ],\n    \"versions\": [\n      \"A12-v001-stage\",\n      \"A12-v002-stage\",\n      \"A12-v003-stage\",\n      \"A12-v004-stage\",\n      \"A12-v005-stage\"\n    ],\n    \"views\": [\n      \"A12-view-000008\",\n      \"A12-view-000010\",\n      \"A12-view-000012\",\n      \"A12-view-000013\",\n      \"A12-view-000014\",\n      \"A12-view-000015\",\n      \"A12-view-000016\"\n    ],\n    \"iterations_history\": [\n      \"A12-iteration-000007\",\n      \"A12-iteration-000008\",\n      \"A12-iteration-000013\",\n      \"A12-iteration-000014\",\n      \"A12-iteration-000017\",\n      \"A12-iteration-000018\",\n      \"A12-iteration-000025\",\n      \"A12-iteration-000026\",\n      \"A12-iteration-000028\",\n      \"A12-iteration-000029\",\n      \"A12-iteration-000030\",\n      \"A12-iteration-000031\"\n    ],\n    \"iterations_current\": [\n      \"A12-iteration-000008\",\n      \"A12-iteration-000014\",\n      \"A12-iteration-000018\",\n      \"A12-iteration-000028\",\n      \"A12-iteration-000031\"\n    ],\n    \"waits\": [],\n    \"artifacts_history\": [\n      \"A12-artifact-000004\"\n    ],\n    \"artifacts_current\": [\n      \"A12-artifact-000004\"\n    ],\n    \"tools\": []\n  },\n  \"scope_tag_issues\": [],\n  \"aggregation_rule\": \"Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.\",\n  \"changes_state\": false,\n  \"changes_report\": false,\n  \"changes_task_level_metrics\": false\n}\n",
+      "batch": "final_helper_after_static_refinement",
+      "parsed_stdout": {
+        "task_id": "A12",
+        "run_id": "20261002-204314-6f31",
+        "kind": "case_readonly_inspection",
+        "round_id": null,
+        "case_id": "stage",
+        "filter": {
+          "case_id": "stage"
+        },
+        "status": "existing_case_inspected_not_a_round",
+        "counts": {
+          "snapshot_requests": 5,
+          "successful_snapshot_requests": 2,
+          "failed_snapshot_requests": 3,
+          "retry_requests": 1,
+          "other_service_requests": 0,
+          "document_requests": 0,
+          "dsl_versions": 5,
+          "image_views": 7,
+          "completed_visual_iterations": 1,
+          "incomplete_visual_iterations": 0,
+          "baseline_versions": 1,
+          "syntax_fixes": 0,
+          "alternative_versions": 2,
+          "requirement_changes": 0,
+          "other_tool_calls": 0,
+          "final_pngs": 1,
+          "independent_creative_cases": 0
+        },
+        "timings": {
+          "started_at": null,
+          "ended_at": null,
+          "elapsed_seconds": null,
+          "timing_source": "No case boundary claim; first/last log observation is not case start/end.",
+          "first_usable_image_seconds": null,
+          "first_current_final_response_at": "2026-10-04T06:05:08.812Z",
+          "request_duration_sum_seconds": 9.1105441,
+          "known_request_duration_sum_seconds": 9.1105441,
+          "request_duration_unknown_count": 0,
+          "user_feedback_wait_seconds": 0,
+          "rate_limit_wait_seconds": 0,
+          "queue_wait_seconds": null,
+          "wait_scope": "Only explicitly matching recorded waits. Absent records do not establish an unmeasured platform/queue gap duration.",
+          "server_timing_source": "Preserved response Server-Timing headers"
+        },
+        "observed_log_span": {
+          "first": {
+            "record_id": "A12-v001-stage",
+            "log": "versions",
+            "field": "time",
+            "time": "2026-10-04T05:58:52.413Z"
+          },
+          "last": {
+            "record_id": "A12-artifact-000004",
+            "log": "artifacts",
+            "field": "registered_at",
+            "time": "2026-10-04T06:12:42.339Z"
+          },
+          "seconds": 829.926,
+          "scope": "Observed log timestamps only; never substituted for true boundary wall clock."
+        },
+        "evidence_checks": {
+          "request_hashes": 5,
+          "version_hashes": 5,
+          "view_file_hashes": 7,
+          "final_pair_hashes": 1,
+          "root_reviewed_finals": 1,
+          "completed_visual_evidence": 1
+        },
+        "record_ids": {
+          "requests": [
+            "A12-request-000004",
+            "A12-request-000006",
+            "A12-request-000008",
+            "A12-request-000012",
+            "A12-request-000013"
+          ],
+          "versions": [
+            "A12-v001-stage",
+            "A12-v002-stage",
+            "A12-v003-stage",
+            "A12-v004-stage",
+            "A12-v005-stage"
+          ],
+          "views": [
+            "A12-view-000008",
+            "A12-view-000010",
+            "A12-view-000012",
+            "A12-view-000013",
+            "A12-view-000014",
+            "A12-view-000015",
+            "A12-view-000016"
+          ],
+          "iterations_history": [
+            "A12-iteration-000007",
+            "A12-iteration-000008",
+            "A12-iteration-000013",
+            "A12-iteration-000014",
+            "A12-iteration-000017",
+            "A12-iteration-000018",
+            "A12-iteration-000025",
+            "A12-iteration-000026",
+            "A12-iteration-000028",
+            "A12-iteration-000029",
+            "A12-iteration-000030",
+            "A12-iteration-000031"
+          ],
+          "iterations_current": [
+            "A12-iteration-000008",
+            "A12-iteration-000014",
+            "A12-iteration-000018",
+            "A12-iteration-000028",
+            "A12-iteration-000031"
+          ],
+          "waits": [],
+          "artifacts_history": [
+            "A12-artifact-000004"
+          ],
+          "artifacts_current": [
+            "A12-artifact-000004"
+          ],
+          "tools": []
+        },
+        "scope_tag_issues": [],
+        "aggregation_rule": "Detail only. Task top-level metrics already count the same underlying logs; suite sums task top-level plus shared only. Never add these scope counts again.",
+        "changes_state": false,
+        "changes_report": false,
+        "changes_task_level_metrics": false
+      }
+    }
+  ],
+  "source_fingerprint_read_command": {
+    "chunk_id": "ceff5a",
+    "wall_time_seconds": 0.2849956,
+    "exit_code": 0,
+    "original_token_count": 408,
+    "output": "{\n  \"captured_at\": \"2026-10-04T10:39:45.126Z\",\n  \"code_files\": [\n    {\n      \"path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\tmp\\\\20261002-204314-6f31\\\\_suite\\\\suite.cjs\",\n      \"sha256\": \"35cfcecc2c9196bee1c4ea38754a423b240f5e7b3ffc536ad35519c6cae7dee7\"\n    },\n    {\n      \"path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\tmp\\\\20261002-204314-6f31\\\\_suite\\\\publish-reviewed-set.cjs\",\n      \"sha256\": \"d0fa9d0dd9aad382a41201cd4977c2d4677bbd32375e89e389887eeaaa9dbc7d\"\n    },\n    {\n      \"path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\tmp\\\\20261002-204314-6f31\\\\_suite\\\\root-review-close.cjs\",\n      \"sha256\": \"adc58ab10376316c82cff75e3ae43ba90a6f631d35b789120583c057fb3bfc48\"\n    },\n    {\n      \"path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\tmp\\\\20261002-204314-6f31\\\\_suite\\\\archive-round-metrics.cjs\",\n      \"sha256\": \"1f041bc6da372344985e2c7514f22ec5f9bb7c642eb5831133480a330fd56372\"\n    }\n  ],\n  \"existing_source_checks\": [\n    {\n      \"task_id\": \"A11\",\n      \"report_path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\outputs\\\\20261002-204314-6f31\\\\A11\\\\snapshot-usage.md\",\n      \"report_hash_unchanged\": true,\n      \"metrics_path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\outputs\\\\20261002-204314-6f31\\\\A11\\\\task-metrics.json\",\n      \"metrics_hash_unchanged\": true\n    },\n    {\n      \"task_id\": \"A12\",\n      \"report_path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\outputs\\\\20261002-204314-6f31\\\\A12\\\\snapshot-usage.md\",\n      \"report_hash_unchanged\": true,\n      \"metrics_path\": \"D:\\\\workspaces\\\\gpt-6.1-sol-ultra\\\\outputs\\\\20261002-204314-6f31\\\\A12\\\\task-metrics.json\",\n      \"metrics_hash_unchanged\": true\n    }\n  ],\n  \"validation_file_exists\": false\n}\n"
+  },
+  "source_fingerprints": [
+    {
+      "path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\suite.cjs",
+      "sha256": "35cfcecc2c9196bee1c4ea38754a423b240f5e7b3ffc536ad35519c6cae7dee7"
+    },
+    {
+      "path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\publish-reviewed-set.cjs",
+      "sha256": "d0fa9d0dd9aad382a41201cd4977c2d4677bbd32375e89e389887eeaaa9dbc7d"
+    },
+    {
+      "path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\root-review-close.cjs",
+      "sha256": "adc58ab10376316c82cff75e3ae43ba90a6f631d35b789120583c057fb3bfc48"
+    },
+    {
+      "path": "D:\\workspaces\\gpt-6.1-sol-ultra\\tmp\\20261002-204314-6f31\\_suite\\archive-round-metrics.cjs",
+      "sha256": "1f041bc6da372344985e2c7514f22ec5f9bb7c642eb5831133480a330fd56372"
+    }
+  ],
+  "unchanged_existing_reports_and_metrics": [
+    {
+      "task_id": "A11",
+      "report_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\outputs\\20261002-204314-6f31\\A11\\snapshot-usage.md",
+      "report_hash_unchanged": true,
+      "metrics_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\outputs\\20261002-204314-6f31\\A11\\task-metrics.json",
+      "metrics_hash_unchanged": true
+    },
+    {
+      "task_id": "A12",
+      "report_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\outputs\\20261002-204314-6f31\\A12\\snapshot-usage.md",
+      "report_hash_unchanged": true,
+      "metrics_path": "D:\\workspaces\\gpt-6.1-sol-ultra\\outputs\\20261002-204314-6f31\\A12\\task-metrics.json",
+      "metrics_hash_unchanged": true
+    }
+  ],
+  "assertions": {
+    "all_fourteen_help_or_case_commands_exit_zero": true,
+    "six_final_case_inspections": true,
+    "case_not_round_labels": true,
+    "case_boundary_times_unknown_null": true,
+    "no_scope_tag_issues_in_existing_cases": true,
+    "existing_final_hash_and_root_view_checks_pass": true,
+    "real_round_archive_not_executed": true,
+    "existing_A11_A12_reports_and_metrics_unchanged_vs_prior_actual_fingerprints": true
+  },
+  "case_count_summary": [
+    {
+      "task_id": "A11",
+      "case_id": "page-01",
+      "round_id": null,
+      "requests": 2,
+      "success": 2,
+      "failed": 0,
+      "versions": 2,
+      "views": 7,
+      "completed_visuals": 1,
+      "final_pngs": 1
+    },
+    {
+      "task_id": "A11",
+      "case_id": "page-02",
+      "round_id": null,
+      "requests": 1,
+      "success": 1,
+      "failed": 0,
+      "versions": 1,
+      "views": 5,
+      "completed_visuals": 0,
+      "final_pngs": 1
+    },
+    {
+      "task_id": "A12",
+      "case_id": "mobile",
+      "round_id": null,
+      "requests": 1,
+      "success": 1,
+      "failed": 0,
+      "versions": 1,
+      "views": 3,
+      "completed_visuals": 0,
+      "final_pngs": 1
+    },
+    {
+      "task_id": "A12",
+      "case_id": "tablet",
+      "round_id": null,
+      "requests": 1,
+      "success": 1,
+      "failed": 0,
+      "versions": 1,
+      "views": 3,
+      "completed_visuals": 0,
+      "final_pngs": 1
+    },
+    {
+      "task_id": "A12",
+      "case_id": "desktop",
+      "round_id": null,
+      "requests": 4,
+      "success": 1,
+      "failed": 3,
+      "versions": 4,
+      "views": 3,
+      "completed_visuals": 0,
+      "final_pngs": 1
+    },
+    {
+      "task_id": "A12",
+      "case_id": "stage",
+      "round_id": null,
+      "requests": 5,
+      "success": 2,
+      "failed": 3,
+      "versions": 5,
+      "views": 7,
+      "completed_visuals": 1,
+      "final_pngs": 1
+    }
+  ],
+  "partition_limit": "A11 page cases exclude its two unscoped documentation requests. A12 four final-layout cases exclude the two actual diagnostic requests/versions; their counts must not be mistaken for full task totals.",
+  "static_refinements_between_test_batches": [
+    "Fix returned archive/preflight status field order so the operation status is not overwritten by metric status.",
+    "Preserve/count an honest historical view of a superseded output pointer when matching original raw response bytes remain; no new viewing is created."
+  ],
+  "preparation_failures": [
+    {
+      "id": "shared-round-metrics-local-failure-000001",
+      "kind": "read_only_source_fingerprint_command",
+      "actual_exit_code": null,
+      "unknown_exit_code_reason": "The functions orchestration raised JSON.parse after the Node syntax error output, so the nested command metadata was not emitted/retained by that failed exec cell.",
+      "command": "node -e \"const fs=require('fs'),crypto=require('crypto'),p=require('path');const root=process.cwd(),d='tmp/20261002-204314-6f31/_suite',hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');const files=['suite.cjs','publish-reviewed-set.cjs','root-review-close.cjs','archive-round-metrics.cjs'].map(f=>p.resolve(d,f));const old=JSON.parse(fs.readFileSync(d+'/cross-task-lessons-through-A12-v001.json','utf8'));console.log(JSON.stringify({captured_at:new Date().toISOString(),code_files:files.map(file=>({path:file,sha256:hash(file)})),existing_source_checks:old.task_snapshots.filter(t=>['A11','A12'].includes(t.task_id)).map(t=>({task_id:t.task_id,report_path:t.report_path,report_hash_unchanged:hash(t.report_path)===t.report_sha256,metrics_path:t.metrics_path,metrics_hash_unchanged:hash(t.metrics_path)===t.metrics_sha256})),validation_file_exists:fs.existsSync(d+'/round-metrics-readonly-validation-v001.json')},null,2));}\"",
+      "raw_error_excerpt": "Expected ',', got '}'\nSyntaxError: Unexpected token '}'\nNode.js v24.21.0\nScript error: SyntaxError: Unexpected token 'e', \"[eval]:1 ...\" is not valid JSON",
+      "cause": "One extra closing brace in auxiliary inline read command; orchestration then tried to parse Node error stdout as JSON.",
+      "recovery": "Corrected code sent through a PowerShell single-quoted here-string to node stdin; actual successful command metadata/output retained above.",
+      "service_requests_caused": 0,
+      "images_or_state_or_reports_changed": false
+    }
+  ],
+  "unknown_usage": {
+    "token_usage": null,
+    "image_input_usage": null,
+    "cost": null,
+    "reason": "No actual consumption data supplied. Local command duration or file sizes are not used as billing estimates."
+  },
+  "writing_scope": "Only the new helper, its README and this immutable shared validation record were created/edited. Previously completed cross-task-lessons files were only read, not rewritten."
+}
+

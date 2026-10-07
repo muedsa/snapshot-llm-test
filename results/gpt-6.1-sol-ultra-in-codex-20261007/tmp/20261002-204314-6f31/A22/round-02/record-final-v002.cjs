@@ -1,0 +1,13 @@
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs'),rd=__dirname,d=s.taskDirs('A22');
+const meta=JSON.parse(fs.readFileSync(path.join(d.temp,'requests/A22-request-000005/render-result.json'),'utf8'));
+const v=s.view('A22',meta.image_path,{reviewer:'root',tool:'view_image',version_id:meta.version_id,round_id:'round-02',observation:'第三版真实1600×1000最终图实际看过：结论明确净收入较更正前少10000，不暗示8月环比下降；无仍字，7月利润期内最高成立。数据/KPI/负5632柱/8月13.32%退款表保持正确；新长detail完整单行，未裁切或碰撞，主区域0px移动。'});
+s.iteration('A22',{type:'visual',version_id:meta.version_id,parent_version:'A22-round-02-dashboard-v002',round_id:'round-02',completed:true,image_path:meta.image_path,before_view_id:'A22-view-000005',after_view_id:v.id,changes:'将净收入减少10000明确为较更正前少10000；其他DSL保持。',comparison:'旧实际detail比较基准未明，真实改图后再看全幅，新比较基准完整清楚，8月实际比7月净收入增加1932不被误述为减少；其他视觉/数据保持。'});
+const pixel=JSON.parse(fs.readFileSync(path.join(rd,'pixel-regression-v002.json'),'utf8')),map=JSON.parse(fs.readFileSync(path.join(rd,'layout-map-v003.json'),'utf8'));if(!pixel.pass)throw Error('Pixel regression');
+const audit=JSON.parse(fs.readFileSync(path.join(rd,'change-audit-final-v001.json'),'utf8'));audit.version_id=meta.version_id;audit.reviewed_at=new Date().toISOString();
+for(const id of ['conclusion-main','conclusion-detail'])audit.changed_elements.find(e=>e.id===id).new=map.texts.find(t=>t.id===id);
+audit.regression.root_original_final_view_id=v.id;audit.regression.source_after_SHA=s.sha256(fs.readFileSync(meta.dsl_path));audit.regression.actual_pixel_regression=pixel;
+audit.actual_semantic_refinements=[audit.actual_semantic_refinement,{before_view:'A22-view-000005',after_view:v.id,change:'明确净收入变化比较基准为较更正前，实际月环比Aug比Jul+1932。',other_DSL_changes:0}];audit.unresolved=[];
+fs.writeFileSync(path.join(rd,'change-audit-final-v002.json'),JSON.stringify(audit,null,2)+'\n',{flag:'wx'});
+const review={task_id:'A22',round_id:'round-02',reviewer:'root',actual_tool:'view_image',images:[{image_path:meta.image_path,version_id:meta.version_id,round_id:'round-02',existing_view_id:v.id,observation:v.observation}],validation:{corrections_applied:true,regional_delta_px:0,negative_profit:-5632,negative_bar_below_zero:true,unchanged_region_actual_pixels:528172,unchanged_regions_zero_RGBA_difference:true,comparison_basis_explicit:true,unresolved_visual_defects:[]}};
+fs.writeFileSync(path.join(rd,'root-review-v002.json'),JSON.stringify(review,null,2)+'\n',{flag:'wx'});
+s.taskCheckpoint('A22',{round_id:'round-02',visual_review_evidence:[v.id],resume_notes:'第二轮三真实200原PNG实际看图，2语义视觉修正；6区域528172原RGBA像素0差，主边界0px移动；等待最终独立补审后归档。'});s.writeTaskMetrics('A22');s.aggregate();console.log(JSON.stringify({view_id:v.id,final_source:meta.dsl_path}));

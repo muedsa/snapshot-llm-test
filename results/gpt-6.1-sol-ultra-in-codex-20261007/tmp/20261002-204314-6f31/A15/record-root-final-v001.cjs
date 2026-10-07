@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path'),s=require('../_suite/suite.cjs'),d=s.taskDirs('A15');
+const obs='恢复后重新实际打开1440×900 v002并与再次实际打开reference比较：主标题/三section字体宽度贴近，侧栏/选中导航、三KPI、6柱图、活动、3表行及状态/页脚完整；未見裁切重叠。保持真实比例与关键边界，细微字形/AA及KPI y约1px残差如实保留。';
+const p=path.join(d.temp,'requests/A15-request-000002/response.png');
+const v=s.view('A15',p,{tool:'view_image',reviewer:'root',version_id:'A15-v002',observation:obs});
+const ref=s.view('A15',path.resolve('tasks/A15-reference-reconstruction/inputs/reference.png'),{tool:'view_image',reviewer:'root',version_id:'provided-reference',is_reference:true,observation:'恢复后再次实际打开参考1440×900，与刚打开v002比较布局、字体、六柱图、表格状态；仅观察参考，未作为DSL资产。'});
+const qa=[['root-final-thumbnail-v001.png','实际720×450最终缩略：四象限布局与参考一致，侧栏/KPI/中卡/表格层次完整。'],['root-final-chart-v001.png','实际最终图表crop：0/30/60/90/120共5网格，六柱54/72/63/90/81/108比例、Apr–Sep和单位完整，無裁切。'],['root-final-table-v001.png','实际最终表crop：Atlas/Pulse/Orbit顺序、owner/due全文与蓝In progress/琥珀Review/绿Done准确，無裁切碰撞。']].map(([f,o])=>s.view('A15',path.join(d.temp,f),{tool:'view_image',reviewer:'root',version_id:'A15-v002',is_preview:true,observation:o}));
+const review={task_id:'A15',reviewer:'root',actual_tool:'view_image',images:[{image_path:p,version_id:'A15-v002',existing_view_id:v.id,observation:obs}],qa_view_ids:qa.map(v=>v.id),reference_recheck_id:ref.id,validation:{original_png:true,size:[1440,900],source_text_and_data:true,reference_geometry_and_actual_visual:true,residuals:'细微字体/AA差异；独立实测3KPI y+1px。未要求或宣称逐像素完全相同。'},resume_notes:'A15原/缩略/chart/table实际root检查与参考再比较通过，保留真实1px字体残差；发布审计后立即A16。'};
+fs.writeFileSync(path.join(d.temp,'root-final-review-v001.json'),JSON.stringify(review,null,2)+'\n',{flag:'wx'});
+s.taskCheckpoint('A15',{visual_review_evidence:[v.id,ref.id,...qa.map(v=>v.id)],resume_notes:'v002真实root原图/缩略/chart/table与参考比较通过，待producer最终证据写完后发布，不宣称已完成。'});
+console.log(JSON.stringify({final:v.id,reference:ref.id,qa:qa.map(v=>v.id)}));

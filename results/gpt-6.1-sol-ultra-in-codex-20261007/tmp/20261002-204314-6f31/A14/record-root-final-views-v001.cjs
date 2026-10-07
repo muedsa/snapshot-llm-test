@@ -1,0 +1,6 @@
+const fs=require('fs'),path=require('path'),s=require('../_suite/suite.cjs'),d=s.taskDirs('A14');
+const b=JSON.parse(fs.readFileSync(path.join(d.temp,'root-baseline-review-v001.json'),'utf8'));
+const obs={K03:'真实再看v002：完整原标题44px成为单行，无孤级尾字，顾行/10:20/候补与统一品牌日期完整；通用字号阈值改动有效。',K07:'真实再看v002：长标题44px在920px宽自然两行，第二行数据与视觉检查，不再拆视觉；长讲者·、14:20与候补保留。',K08:'真实再看v002：同通用920px活动标题宽，44px两行，末行能力的最后一公里，中文引号与整串清楚，周禾/15:00及开放保留。'};
+const updated=[['000009','K03'],['000010','K07'],['000011','K08']].map(([n,case_id])=>{const meta=JSON.parse(fs.readFileSync(path.join(d.temp,'requests/A14-request-'+n+'/render-result.json'),'utf8')),image_path=meta.image_path??meta.response_file,version_id=meta.version_id;const v=s.view('A14',image_path,{tool:'view_image',reviewer:'root',version_id,case_id,observation:obs[case_id]});return {image_path,version_id,case_id,observation:obs[case_id],existing_view_id:v.id};});
+const images=b.images.map(im=>updated.find(v=>v.case_id===im.case_id)??im);
+fs.writeFileSync(path.join(d.temp,'root-final-review-v001.json'),JSON.stringify({task_id:'A14',reviewer:'root',actual_tool:'view_image',images,resume_notes:'A14八张原图真实查看并三图前后比较，无孤字/词拆分，源文/状态/布局审查通过；交付归档后立即A15。'},null,2)+'\n',{flag:'wx'});console.log(updated.map(v=>({case_id:v.case_id,version:v.version_id,view:v.existing_view_id})));

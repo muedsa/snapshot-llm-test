@@ -1,0 +1,6 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),s=require('../../_suite/suite.cjs');
+const task=path.resolve(__dirname,'..'),meta=JSON.parse(fs.readFileSync(path.join(task,'requests/A08-request-000001/render-result.json'),'utf8'));
+const view=s.view('A08',meta.image_path,{tool:'view_image',reviewer:'infrastructure_resume',version_id:meta.version_id,observation:'Independently opened full actual 1560x1080 baseline. Complete 26x18 grid with x0-25 top/bottom and y0-17 left scales; correct A/B/C/D, S/E symbols and sidebar names/coordinates; visible solid-blue margins beneath orange dashed centerline allow both overlapping routes to be followed. Single-cell doors and all wall shapes remain clear. Route2 bypass to B comes from (11,3) left and exits south; ordinary line continues below B. Body/sidebar/scalebar text readable and unclipped, route counts34/68 vs36/72. B tiny north/east/south detour has few directional arrowheads, supporting producer planned v002 arrows.'});
+fs.writeFileSync(path.join(__dirname,'independent-baseline-view-v001.json'),JSON.stringify({task_id:'A08',run_id:'20261002-204314-6f31',view,baseline_content_review_passed:true,planned_final_revision_pending:'Producer v002 B detour arrows; final actual review still required'},null,2)+'\n',{flag:'wx'});
+process.stdout.write(JSON.stringify({view_id:view.id})+'\n');
