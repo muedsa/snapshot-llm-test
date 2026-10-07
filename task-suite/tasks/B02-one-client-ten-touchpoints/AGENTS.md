@@ -80,6 +80,8 @@ temp_root为基目录加唯一run_id，默认outputs/<run_id>/、tmp/<run_id>/�
   失败响应、对比、命令输出及requests.jsonl、iterations.jsonl、tool-usage.jsonl。
   不清理、不删除失败尝试、不覆盖旧版；版本号/唯一名称持续递增，日志追加。
   保留用例间共享组件与分支版本的父关系。密钥不写入交付或日志。
+  __pycache__/等运行时缓存不要求留痕。启动时在总任务根创建或合并.gitignore，
+  参考[缓存忽略模板](../../templates/gitignore-template.txt)，不忽略tmp/、outputs/或实际过程证据。
 - snapshot-usage.md记录真实文档应用、标签能力、服务调用、逐件看图、修改与
   踩坑、复现条件、最终审查、未解决事项。没有错误则如实说明，不编造踩坑。
   原因未确认时标为推测。下载/生成辅助资产的原始来源与限制可单列asset-sources.json。

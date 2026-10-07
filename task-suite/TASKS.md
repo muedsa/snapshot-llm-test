@@ -3,6 +3,8 @@
 先读[AGENTS.md](AGENTS.md)、[PATHS.md](PATHS.md)与[run-config.json](run-config.json)。
 目录、文件及程序脚本中的本地路径一律使用明确基准的相对路径或目录环境变量；Markdown链接相对文档。默认从A01开始按本表全部完成，单题结束立即继续。
 
+启动时在总任务根创建或合并 `.gitignore`，排除运行时缓存；过程证据仍完整保留，详见总执行约定。
+
 | 顺序 | 入口 | 任务 | 轮次 | 指定最终PNG |
 |---:|---|---|---:|---:|
 | 01 | [A01](tasks/A01-operations-dashboard/TASK.md) | 六个月经营诊断驾驶舱 | 1 | ≥1 |

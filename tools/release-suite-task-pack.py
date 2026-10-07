@@ -18,6 +18,7 @@ ROOT=Path(__file__).resolve().parents[1]
 PACK=ROOT/'task-suite'
 EVAL=ROOT/'evaluation'/'task-suite'
 checks=[]
+RUNTIME_CACHE_DIRS={'__pycache__','.pytest_cache','.mypy_cache','.ruff_cache'}
 
 
 def portable_path(value, allow_environment=True):
@@ -50,8 +51,9 @@ def dump(path,value):
 
 def published_files():
     return [p for p in sorted(PACK.rglob('*')) if p.is_file()
-            and p.name!='manifest.json'
-            and not {'outputs','tmp'} & set(p.relative_to(PACK).parts)]
+            and p.name!='manifest.json' and p!=PACK/'.gitignore'
+            and p.suffix not in {'.pyc','.pyo'}
+            and not ({'outputs','tmp'} | RUNTIME_CACHE_DIRS) & set(p.relative_to(PACK).parts)]
 
 
 def refresh_manifest():
@@ -78,7 +80,7 @@ def main():
     check('no per-task confirmation',config['requires_per_task_user_confirmation'] is False)
     check('sequential automatic three-round mode',config['execution_mode']=='sequential' and config['round_execution']=='preloaded_sequential')
     check('unlimited render and visual iteration',config['max_render_requests'] is None and config['max_visual_iterations'] is None)
-    check('required root entries',all((PACK/p).is_file() for p in ['AGENTS.md','PATHS.md','TASKS.md','START-PROMPT.txt','README.md','catalog.json','run-config.json','templates/suite-state-template.json','templates/suite-metrics-template.json']))
+    check('required root entries',all((PACK/p).is_file() for p in ['AGENTS.md','PATHS.md','TASKS.md','START-PROMPT.txt','README.md','catalog.json','run-config.json','templates/suite-state-template.json','templates/suite-metrics-template.json','templates/gitignore-template.txt']))
     check('portable root directories',all(portable_path(config.get(key)) for key in ['output_root','temp_root']))
     policy=config.get('path_policy',{})
     check('portable path policy covers documents scripts and artifacts',policy=={
@@ -90,7 +92,18 @@ def main():
     state=load(PACK/'templates'/'suite-state-template.json')
     check('state and suite metrics paths relative to suite root',state.get('path_base')=='suite_root' and load(PACK/'templates'/'suite-metrics-template.json').get('path_base')=='suite_root')
     check('state template contains unexecuted complete roster',[t['id'] for t in state['tasks']]==expected and state['status']=='not_started' and all(t['status']=='pending' for t in state['tasks']))
+    cache_policy=config.get('runtime_cache_policy',{})
+    check('runtime cache policy requires root gitignore and preserves evidence',cache_policy=={
+        'create_root_gitignore':True,
+        'gitignore_template':'templates/gitignore-template.txt',
+        'runtime_caches_are_evidence':False,
+        'archive_runtime_caches':False,
+        'preserve_process_evidence':True})
+    ignore_template=PACK/'templates'/'gitignore-template.txt'
+    ignore_rules=[line.strip() for line in ignore_template.read_text(encoding='utf-8').splitlines() if line.strip() and not line.lstrip().startswith('#')] if ignore_template.is_file() else []
+    check('runtime cache template has only narrow default rules',ignore_rules==['__pycache__/','*.pyc','*.pyo','.pytest_cache/','.mypy_cache/','.ruff_cache/'])
     root_agents=(PACK/'AGENTS.md').read_text(encoding='utf-8')
+    check('root gitignore creation and evidence boundaries explicit',all(term in root_agents for term in ['在总任务根创建','.gitignore','templates/gitignore-template.txt','不属于过程留痕','已下载文档缓存','最终审查确认文件存在']))
     check('portable paths and script policy explicit','[PATHS.md](PATHS.md)' in root_agents and '程序脚本' in root_agents and '相对路径' in root_agents)
     check('shared preparation and deduplication explicit','不再把同题round/case明细重复相加' in root_agents)
     check('persistent state and real resume supported','checkpoints/state-000001.json' in root_agents and '从未完成处继续' in root_agents)
@@ -105,6 +118,7 @@ def main():
         prose=(PACK/name).read_text(encoding='utf-8')
         check('Markdown gallery explicit in '+name,'gallery.md' in prose)
         check('portable paths explicit in '+name,'PATHS.md' in prose and '相对路径' in prose)
+        check('root runtime cache ignore explicit in '+name,'.gitignore' in prose and '运行时缓存' in prose)
     for task in catalog['tasks']:
         catalog_fields=['directory','entry','task_spec','output_dir_template','temp_dir_template']
         valid_catalog=all(suite_input(PACK,task.get(key)) for key in catalog_fields)
@@ -127,6 +141,7 @@ def main():
         agents=(folder/'AGENTS.md').read_text(encoding='utf-8')
         report=(folder/'templates'/'snapshot-usage-template.md').read_text(encoding='utf-8')
         check(task['id']+' portable script and report policy','../../PATHS.md' in agents and '程序脚本' in agents and '绝对路径' not in agents and '实际绝对路径' not in report and '../../../PATHS.md' in report)
+        check(task['id']+' runtime cache exception and root gitignore inherited',all(term in agents for term in ['总任务根','.gitignore','__pycache__/','../../templates/gitignore-template.txt']) and all(term in report for term in ['.gitignore','运行时缓存不要求留痕','不列为产物或自检证据']))
         check(task['id']+' configured path base explicit','相对本配置文件所在目录' in local_config.get('directory_resolution',''))
         metrics=load(folder/'templates'/'task-metrics-template.json')
         check(task['id']+' metrics paths relative to suite root',metrics.get('path_base')=='suite_root')

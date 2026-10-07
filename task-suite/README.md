@@ -20,6 +20,13 @@
 为advanced或creative。服务地址和两赛道素材政策也可以统一配置。子题沿用
 原内容与标准，总AGENTS明确覆盖它们原先的独立运行目录/逐题结束方式。
 
+## 运行时缓存
+
+模型启动时在总任务根创建或合并 `.gitignore`，使用[缓存忽略模板](templates/gitignore-template.txt)
+排除 `__pycache__/`、Python字节码及明确的工具缓存；无需初始化 Git 仓库。
+缓存不要求留痕，归档时也排除。已下载文档、草稿、失败响应、图片、脚本和日志仍须保留，
+不忽略整个 `tmp/`、`outputs/`或泛用 `cache/`目录，不因忽略规则清理过程证据。
+
 ## 可迁移路径
 
 所有本地路径使用明确基准的相对路径，或直接指向目录的环境变量；DSL、程序脚本、
@@ -47,6 +54,7 @@ A21/A22第二、三轮要求已放入各自rounds/；前轮真实完成并归档
 - [全套运行配置](run-config.json)
 - [进度模板](templates/suite-state-template.json)
 - [汇总指标模板](templates/suite-metrics-template.json)
+- [运行时缓存忽略模板](templates/gitignore-template.txt)
 
 包中只有任务、数据、模板和四份预置轮次要求；不含评分检查点、标准答案、
 作者参考图DSL或此前模型结果。两张参考PNG是A15/A16必要输入。
