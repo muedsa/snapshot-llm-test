@@ -14,7 +14,7 @@
 | 05 | [A05](tasks/A05-irregular-sensors/TASK.md) | 不规则采样与缺测的仪表报告 | 1 | ≥1 |
 | 06 | [A06](tasks/A06-dependency-graph/TASK.md) | 十四节点依赖图与反馈回路 | 1 | ≥1 |
 | 07 | [A07](tasks/A07-transit-topology/TASK.md) | 三线换乘图与路线核验 | 1 | ≥2 |
-| 08 | [A08](tasks/A08-accessible-wayfinding/TASK.md) | 网格导览与两条可走路线 | 1 | ≥1 |
+| 08 | [A08](tasks/A08-accessible-wayfinding/TASK.md) | 展馆双路线导览与共享通道 | 1 | ≥1 |
 | 09 | [A09](tasks/A09-transform-atlas/TASK.md) | 十二个非对称图形变换标本 | 1 | ≥1 |
 | 10 | [A10](tasks/A10-compositing-lab/TASK.md) | 透明合成与滤镜语义实验板 | 1 | ≥1 |
 | 11 | [A11](tasks/A11-bilingual-invoice/TASK.md) | 文字保真与跨页结算单 | 1 | ≥2 |

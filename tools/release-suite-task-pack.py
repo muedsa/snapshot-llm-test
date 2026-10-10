@@ -14,6 +14,8 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 import re
 import zipfile
 
+from validate_a08_wayfinding import validate_repository as validate_a08
+
 ROOT=Path(__file__).resolve().parents[1]
 PACK=ROOT/'task-suite'
 EVAL=ROOT/'evaluation'/'task-suite'
@@ -173,6 +175,11 @@ def main():
             check(task['id']+' Markdown gallery delivery','gallery.md' in spec['common_outputs'] and 'gallery.md' in prose and all(text in agents for text in ['gallery.md','Markdown图片预览','原PNG和对应.snapshot链接']))
             check(task['id']+' at least ten independent cases',spec['minimum_independent_cases']==local_config['minimum_independent_cases']==10)
             check(task['id']+' unrestricted subject/style/dimensions',all(spec[k] is None for k in ['preassigned_scenarios','preassigned_style','fixed_canvas_dimensions']))
+    try:
+        a08_reference = validate_a08(ROOT)
+        check('A08 unique routes shared passages and author reference', True, a08_reference['invariants'])
+    except (ValueError, KeyError, OSError, TypeError, IndexError) as exc:
+        check('A08 unique routes shared passages and author reference', False, str(exc))
     # Links may cross from a child to the suite root; they may not depend on the repo outside it.
     for path in [p for p in published_files() if p.suffix=='.md']:
         for match in re.finditer(r'\]\(([^)]+)\)',path.read_text(encoding='utf-8')):

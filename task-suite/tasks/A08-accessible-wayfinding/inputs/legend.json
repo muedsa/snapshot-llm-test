@@ -1,11 +1,43 @@
 {
-  "S": "入口",
-  "E": "出口",
-  "A": "材料实验",
-  "B": "结构剧场",
-  "C": "光影工坊",
-  "D": "作品巡览",
-  "cell_meters": 2,
+  "grid": {
+    "width": 26,
+    "height": 16,
+    "cell_meters": 2,
+    "origin": "top_left",
+    "x_direction": "right",
+    "y_direction": "down"
+  },
   "movement": "4-neighbor",
-  "coordinates": "zero-based (x,y)"
+  "cost_per_edge": 1,
+  "symbols": {
+    "#": "墙体或非通行区",
+    ".": "通道",
+    "S": "入口门格",
+    "E": "出口门格",
+    "A": "材料实验入口",
+    "B": "结构剧场入口",
+    "C": "光影工坊入口",
+    "D": "作品巡览入口"
+  },
+  "routes": [
+    {
+      "id": "R1",
+      "name": "直达出口",
+      "waypoints": [
+        "S",
+        "E"
+      ]
+    },
+    {
+      "id": "R2",
+      "name": "主题参观",
+      "waypoints": [
+        "S",
+        "B",
+        "D",
+        "E"
+      ]
+    }
+  ],
+  "landmark_semantics": "A–D仅表示展区入口点，不定义展区内部范围；S/E为边界门格。"
 }

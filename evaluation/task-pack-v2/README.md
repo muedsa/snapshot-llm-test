@@ -39,3 +39,20 @@ fixtures/ 保存A15/A16参考的作者DSL、服务响应头及生成记录，绝
 references/ 保存少量客观算术/路径检查，供作者核对输入可行性，不是完整标准作品。
 最新发布检查在 ../task-suite/authoring-validation.json。整套24题尚未完整试跑，应先校准实际工时、
 手机排版容量、复杂标注可行性和评审一致性，再冻结正式评测版本。
+
+## A08 双路线导览（修订2）
+
+A08已重设计为26×16通道网格，包含边界出入口、直达出口与主题参观路线。
+正式题面在task-suite中；作者侧参照采用routes与shared_runs结构。
+从仓库根运行：
+
+```sh
+python -B tools/validate_a08_wayfinding.py
+python -B -m unittest discover -s tools -p "test_*.py"
+```
+
+程序核验唯一最短路、无折返、两段同向共享通道、真实边界门格及参照一致性，
+并已接入全套发布检查。作者有意修改输入时，可使用
+`--refresh-reference`显式刷新参照，随后重新核验和实际渲染试作。
+不能仅刷新参照来跳过路线难度或视觉验收。作者试作及改进过程资料放仓库根
+`reviews-temp/`，属于本地临时资料，不提交、不放入任务分发包。

@@ -5,12 +5,16 @@ on:
   push:
     paths:
       - 'task-suite/**'
-      - 'tools/release-suite-task-pack.py'
+      - 'evaluation/task-pack-v2/references/A08.json'
+      - 'evaluation/task-pack-v2/checklists/A08.json'
+      - 'tools/**'
       - '.github/workflows/package-task-suite.yml'
   pull_request:
     paths:
       - 'task-suite/**'
-      - 'tools/release-suite-task-pack.py'
+      - 'evaluation/task-pack-v2/references/A08.json'
+      - 'evaluation/task-pack-v2/checklists/A08.json'
+      - 'tools/**'
       - '.github/workflows/package-task-suite.yml'
 
 permissions:
@@ -29,8 +33,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Test author-side task validation
+        run: python -B -m unittest discover -s tools -p "test_*.py"
+
       - name: Validate task suite and refresh input hashes
-        run: python tools/release-suite-task-pack.py --refresh-manifest
+        run: python -B tools/release-suite-task-pack.py --refresh-manifest
 
       - name: Upload task suite
         uses: actions/upload-artifact@v4
