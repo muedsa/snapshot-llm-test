@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B01 · 十张真实场景的炫酷用例 — 画廊</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --line:#262b36; --fg:#e8eaf0; --dim:#98a1b3;
+    --accent:#5b9dff; --ok:#3ecf8e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Noto Sans CJK SC","Noto Sans CJK JP","Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.65; padding:32px 24px 80px;
+  }
+  header{max-width:1500px;margin:0 auto 8px}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:.5px}
+  .sub{color:var(--dim);font-size:14px}
+  .sub code{background:#1e222b;padding:2px 6px;border-radius:4px;font-size:13px}
+  .stats{
+    display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px;
+  }
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--dim)}
+  .stat b{color:var(--fg);font-weight:600}
+  .grid{
+    max-width:1500px;margin:26px auto 0;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;
+  }
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .thumb{
+    display:block;width:100%;background:#0b0d11;cursor:zoom-in;
+    border-bottom:1px solid var(--line);
+  }
+  .thumb img{
+    display:block;width:100%;height:300px;object-fit:contain;background:
+      repeating-conic-gradient(#14171d 0% 25%, #191d25 0% 50%) 50%/24px 24px;
+  }
+  .meta{padding:14px 16px 16px}
+  .id{display:inline-block;font-size:12px;color:var(--accent);letter-spacing:1px;font-weight:600}
+  .title{font-size:17px;font-weight:600;margin:4px 0 8px}
+  .dims{font-size:12px;color:var(--dim);font-family:ui-monospace,Menlo,Consolas,monospace}
+  .tagline{font-size:13.5px;color:#b9c1d1;margin:8px 0 10px}
+  .links{display:flex;gap:8px;flex-wrap:wrap}
+  .links a{
+    font-size:12.5px;color:var(--fg);text-decoration:none;
+    background:#1e232c;border:1px solid var(--line);border-radius:6px;padding:5px 10px;
+  }
+  .links a:hover{border-color:var(--accent);color:var(--accent)}
+  .badge{font-size:11px;color:var(--ok);border:1px solid #245c44;background:#12241d;border-radius:5px;padding:2px 7px}
+  footer{max-width:1500px;margin:44px auto 0;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:18px}
+  footer a{color:var(--accent)}
+  /* lightbox — 纯本地，无远程脚本 */
+  #lb{position:fixed;inset:0;background:rgba(4,6,10,.94);display:none;overflow:auto;z-index:99}
+  #lb.on{display:block}
+  #lb .wrap{padding:56px 24px 40px;max-width:1600px;margin:0 auto}
+  #lb img{display:block;max-width:100%;height:auto;margin:0 auto;background:#111;border:1px solid #2a3040}
+  #lb .cap{max-width:1600px;margin:14px auto 0;color:#c9d0dd;font-size:14px;text-align:center}
+  #lb .cap a{color:var(--accent)}
+  #lb .close{
+    position:fixed;top:14px;right:18px;background:#1e232c;color:#fff;border:1px solid #333b4b;
+    border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B01 · 十张真实场景的炫酷用例</h1>
+  <div class="sub">
+    运行 ID <code>run-20261002-220723-mimo</code> ｜ 任务 B01 ｜
+    全部图片为 open-snapshot 服务原始响应字节，DSL 同名配对 ｜ 本地相对链接，无远程脚本
+  </div>
+  <div class="stats">
+    <div class="stat">主作品 <b>10</b></div>
+    <div class="stat">不同画幅比例 <b>10</b></div>
+    <div class="stat">渲染请求 <b>24</b>（成功 22 / 失败 2）</div>
+    <div class="stat">视觉迭代 <b>9</b> 完成 + 1 未完成</div>
+    <div class="stat">素材 <b>纯 DSL</b></div>
+    <div class="stat"><span class="badge">全部为虚构演示数据 DEMO</span></div>
+    <div class="stat"><span class="badge">case-08 进度环已于 2026-10-06 关闭后修正（75.28%）</span></div>
+  </div>
+</header>
+
+<div class="grid" id="grid">
+
+  <div class="card">
+    <a class="thumb" href="case-01/final.png" data-t="case-01 · 末班地铁到站屏（900×1600）" onclick="return openLB(this)">
+      <img src="case-01/final.png" alt="case-01 末班地铁到站屏" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-01</span>
+      <div class="title">末班地铁到站屏</div>
+      <div class="dims">900 × 1600 ｜ 竖屏站台 LCD</div>
+      <div class="tagline">深夜站台 2–5 m 扫视：末班几点到、往哪个方向、还赶不赶得上。深色荧光色带建立四级信息层级。</div>
+      <div class="links">
+        <a href="case-01/final.png">主图</a>
+        <a href="case-01/final.snapshot">DSL</a>
+        <a href="case-01/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-02/final.png" data-t="case-02 · 台风应急指挥板（1920×1080）" onclick="return openLB(this)">
+      <img src="case-02/final.png" alt="case-02 台风应急指挥板" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-02</span>
+      <div class="title">台风应急指挥板</div>
+      <div class="dims">1920 × 1080 ｜ 指挥中心 16:9 大屏</div>
+      <div class="tagline">同心风圈压在地理网格上，WNW 路径与底部时间轴拉通过去—现在—未来；力量卡大数字与单位分行。</div>
+      <div class="links">
+        <a href="case-02/final.png">主图</a>
+        <a href="case-02/final.snapshot">DSL</a>
+        <a href="case-02/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-03/final.png" data-t="case-03 · 半程马拉松破风配速卡（1080×1440）" onclick="return openLB(this)">
+      <img src="case-03/final.png" alt="case-03 半程马拉松破风配速卡" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-03</span>
+      <div class="title">半程马拉松破风配速卡</div>
+      <div class="dims">1080 × 1440 ｜ 赛前打印 / 补给桌</div>
+      <div class="tagline">分段进度条按真实累计里程比例换算，条尾与轨道终点精确重合；配速—里程—累计时间三列互洽。</div>
+      <div class="links">
+        <a href="case-03/final.png">主图</a>
+        <a href="case-03/final.snapshot">DSL</a>
+        <a href="case-03/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-04/final.png" data-t="case-04 · 精品咖啡烘焙曲线卡（1200×900）" onclick="return openLB(this)">
+      <img src="case-04/final.png" alt="case-04 精品咖啡烘焙曲线卡" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-04</span>
+      <div class="title">精品咖啡烘焙曲线卡</div>
+      <div class="dims">1200 × 900 ｜ 烘焙室批次卡 / A4 横版</div>
+      <div class="tagline">三个关键节点用引线 + 标签牌悬在曲线上方空白区；右侧指标区以固定 92px 节拍排布。</div>
+      <div class="links">
+        <a href="case-04/final.png">主图</a>
+        <a href="case-04/final.snapshot">DSL</a>
+        <a href="case-04/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-05/final.png" data-t="case-05 · 独立乐队霓虹巡演海报（800×1200）" onclick="return openLB(this)">
+      <img src="case-05/final.png" alt="case-05 独立乐队霓虹巡演海报" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-05</span>
+      <div class="title">独立乐队霓虹巡演海报</div>
+      <div class="dims">800 × 1200 ｜ 地铁灯箱 / 竖版屏</div>
+      <div class="tagline">同坐标多层文字叠印 + textShadow 做霓虹发光；扫码购票与二维码合成独立行动区，互不侵占。</div>
+      <div class="links">
+        <a href="case-05/final.png">主图</a>
+        <a href="case-05/final.snapshot">DSL</a>
+        <a href="case-05/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-06/final.png" data-t="case-06 · 锂电 PACK 装配工艺指导（1600×1000）" onclick="return openLB(this)">
+      <img src="case-06/final.png" alt="case-06 锂电 PACK 装配工艺指导" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-06</span>
+      <div class="title">锂电 PACK 装配工艺指导</div>
+      <div class="dims">1600 × 1000 ｜ 产线 16:10 触控一体机</div>
+      <div class="tagline">扭矩公差 6.2–6.8 N·m 被画成带刻度的可视区间（绿=合格带 / 白游标=当前）；点线连线给出星形拧紧次序。</div>
+      <div class="links">
+        <a href="case-06/final.png">主图</a>
+        <a href="case-06/final.snapshot">DSL</a>
+        <a href="case-06/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-07/final.png" data-t="case-07 · 围棋棋谱解说图（1200×1200）" onclick="return openLB(this)">
+      <img src="case-07/final.png" alt="case-07 围棋棋谱解说图" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-07</span>
+      <div class="title">围棋棋谱解说图</div>
+      <div class="dims">1200 × 1200 ｜ 教室投影 / 方形讲义</div>
+      <div class="tagline">19 路坐标按标准记谱法换算，星位与天元落在正确位置；解说用 TLines 手动断行，中文不出现行首标点。</div>
+      <div class="links">
+        <a href="case-07/final.png">主图</a>
+        <a href="case-07/final.snapshot">DSL</a>
+        <a href="case-07/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-08/final.png" data-t="case-08 · 宠物疫苗接种提醒（1080×1080）" onclick="return openLB(this)">
+      <img src="case-08/final.png" alt="case-08 宠物疫苗接种提醒" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-08</span>
+      <div class="title">宠物疫苗接种提醒</div>
+      <div class="dims">1080 × 1080 ｜ 手机端电子回执卡</div>
+      <div class="tagline">确定性 DialArc 分段环：12 点起顺时针的精确 75% 进度环（实测 75.28%，自 358° 起）。</div>
+      <div class="links">
+        <a href="case-08/final.png">主图</a>
+        <a href="case-08/final.snapshot">DSL</a>
+        <a href="case-08/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-09/final.png" data-t="case-09 · 潮汐与海泳安全牌（1080×1350）" onclick="return openLB(this)">
+      <img src="case-09/final.png" alt="case-09 潮汐与海泳安全牌" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-09</span>
+      <div class="title">潮汐与海泳安全牌</div>
+      <div class="dims">1080 × 1350 ｜ 浴场入口立牌 / 竖屏</div>
+      <div class="tagline">24 小时潮位曲线由 4 段余弦插值采样成 96 段面积图，与网格共用同一像素换算；填充块重叠 1.4px 消除接缝。</div>
+      <div class="links">
+        <a href="case-09/final.png">主图</a>
+        <a href="case-09/final.snapshot">DSL</a>
+        <a href="case-09/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-10/final.png" data-t="case-10 · 社区旧物集市导览横幅（1920×640）" onclick="return openLB(this)">
+      <img src="case-10/final.png" alt="case-10 社区旧物集市导览横幅" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-10</span>
+      <div class="title">社区旧物集市导览横幅</div>
+      <div class="dims">1920 × 640 ｜ 广场入口横屏 LED</div>
+      <div class="tagline">三栏信息架构 + 平面图，摊区用「色块 + 字母徽标 + 色号」在图与图例间双重编码：远看按颜色、近看按字母。</div>
+      <div class="links">
+        <a href="case-10/final.png">主图</a>
+        <a href="case-10/final.snapshot">DSL</a>
+        <a href="case-10/case.md">场景说明</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    本画廊只使用本地相对链接与内联样式/CSS，无远程脚本、无网络依赖；点击任意缩略图可按原始尺寸打开，
+    再次点击或按 <b>Esc</b> 关闭。
+  </p>
+  <p>
+    作品集入口：<a href="portfolio.md">portfolio.md</a> ·
+    <a href="portfolio.json">portfolio.json</a> ·
+    <a href="snapshot-usage.md">snapshot-usage.md</a> ·
+    <a href="task-metrics.json">task-metrics.json</a> ·
+    上级索引：<a href="../_suite/index.md">_suite/index.md</a> ·
+    总画廊：<a href="../_suite/gallery.html">_suite/gallery.html</a>
+  </p>
+  <p>画面中的品牌、赛事、日期与业务数据均为虚构演示数据（演示数据 DEMO），不指向任何真实客户或实际部署。</p>
+</footer>
+
+<div id="lb" onclick="closeLB(event)">
+  <button class="close" onclick="closeLB(event,true)">关闭 ✕</button>
+  <div class="wrap">
+    <img id="lbimg" src="" alt="">
+    <div class="cap" id="lbcap"></div>
+  </div>
+</div>
+
+<script>
+/* 纯本地轻量灯箱：无任何远程脚本、无外部依赖 */
+function openLB(a){
+  var img = document.getElementById('lbimg');
+  img.src = a.getAttribute('href');
+  document.getElementById('lbcap').innerHTML =
+    a.getAttribute('data-t') + ' — <a href="' + a.getAttribute('href') + '">在新标签打开原图</a>';
+  document.getElementById('lb').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  return false;
+}
+function closeLB(e, force){
+  if(!force && e.target.tagName === 'IMG') return;
+  document.getElementById('lb').classList.remove('on');
+  document.body.style.overflow = '';
+  document.getElementById('lbimg').src = '';
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') document.getElementById('lb').classList.remove('on');
+});
+</script>
+</body>
+</html>

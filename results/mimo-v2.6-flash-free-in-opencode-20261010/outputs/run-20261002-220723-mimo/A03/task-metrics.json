@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "title": "多层语义故障恢复 · System Pulse 监控卡",
+  "track": "advanced",
+  "round_count": 1,
+  "status": "completed",
+  "started_at": "2026-10-02T23:25:20+08:00",
+  "ended_at": "2026-10-02T23:54:06+08:00",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "wall_clock_seconds": 1726,
+  "first_usable_image_at": "2026-10-02T23:32:10+08:00",
+  "first_usable_image_seconds": 410,
+  "user_feedback_wait_seconds": 0,
+  "rate_limit_or_queue_wait_seconds": 0,
+  "request_duration_sum_ms": 15849.7,
+  "request_duration_note": "6 次 /snapshot 渲染往返耗时之和（2 次成功 4 次失败）；不含本地书写、像素测量与看图时间。墙钟 1726s 远大于该和，二者不可混用。",
+  "requests": {
+    "render_total": 6,
+    "render_success": 2,
+    "render_failed": 4,
+    "render_retry": 0,
+    "render_failed_note": "4 次失败均为逐条修复用的真实报错响应（1 次 padding PARSE_ERROR、1 次 matrix PARSE_ERROR、1 次 StackParentData RENDER_ERROR、1 次 Layout size is infinite RENDER_ERROR），响应体全部保留在 tmp/.../A03/failures/，非限流非重试。",
+    "other_service_total": 0,
+    "document_total": 0,
+    "document_note": "ai-guide.md 与 parser-tags 参考在本题内真实重新抓取 1 次用于定位报错依据；/fonts 与探测渲染属全套 shared，计在 shared 下，不在本题重复计。"
+  },
+  "dsl_versions": 6,
+  "image_views": 5,
+  "image_views_note": "v04 全图、v05 全图、z01-blur-boundary.png 放大、z02-review.png 放大、v05 像素逐项复核（扫描轮询）。均通过实际图像查看工具打开。",
+  "iterations": {
+    "baseline": 1,
+    "completed_visual": 1,
+    "syntax_fix": 4,
+    "retry": 0,
+    "alternative": 0,
+    "requirement_change": 0,
+    "incomplete": 0
+  },
+  "iterations_note": "baseline = 原稿原样提交；4 次 syntax-fix 为按真实报错逐条修复（各产生一次新请求与新错误，属问题推进而非重复重试）；1 次完整视觉迭代 = 看 v04 -> 修 8 项语义/视觉问题 -> 渲染 v05 -> 看图并逐像素比较。v05 一次通过，未制造多余修改。",
+  "final_pngs": [
+    { "file": "system-pulse.png", "width": 1280, "height": 800, "dsl": "system-pulse.snapshot", "source": "open-snapshot real service response", "bytes": 41456, "png_signature_verified": true }
+  ],
+  "final_png_count": 1,
+  "artifacts": ["system-pulse.png", "system-pulse.snapshot", "repair-log.json", "snapshot-usage.md", "task-metrics.json"],
+  "service": "https://open-snapshot.muedsa.com",
+  "requirements_verification": {
+    "canvas": "1280x800 实测一致",
+    "background_and_margin": "底色 #0B1220；内容包围盒 x32..1247 / y32..766，四边安全边距 32/32/32/33",
+    "title": "fontSize 44，字形 bbox 高 42px",
+    "metric_cards": "三卡等宽 389/390/389，文案 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%，字号 28（字形高 22px）",
+    "live_label": "96x36 @ x1152..1247 y32..67，与标题水平间距 842px，未遮挡",
+    "review_label": "160x56，旋转包围盒宽 165（理论 166.2），右端高左端低 = 视觉逆时针 8°；底色实测 (59,65,76) = 20% 白叠 #0B1220 理论值 (59.8,65.4,76.6)；文字不透明、字号 24",
+    "explanation_card": "500x150 @ x390..889 y325..474，中心 (639.5,399.5) 对齐画布中心；ClipRRect 圆角 24",
+    "colored_bars": "3 条彩色细条 700 宽（x290..989）同时穿过 500 宽卡片（x390..889）左右两侧边界",
+    "background_only_blur": "卡外细条锐利、卡内细条模糊、文字清晰（满强度像素 1223 / 中等 603），放大目视确认",
+    "card_text": "\"Background-only blur\" 字号 28（字形高 26px）",
+    "all_elements_visible": "整体内容包围盒完全落在画布内，无裁切"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "image_input_usage": null,
+    "cost": null,
+    "currency": null,
+    "source": "not provided by the execution platform",
+    "unknown_fields_reason": "执行平台未暴露 token/图像/费用遥测；字段留 null，不以字符数或余量估算。"
+  },
+  "unresolved_issues": []
+}

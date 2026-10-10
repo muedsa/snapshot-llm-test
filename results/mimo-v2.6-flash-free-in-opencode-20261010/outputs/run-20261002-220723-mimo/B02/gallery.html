@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B02 · 候鸟湾观鸟站 · 一个项目的十个触点 — 画廊</title>
+<style>
+  :root{
+    --bg:#0b1211; --card:#111b1a; --line:#1e2f2d; --fg:#e9efee; --dim:#94a9a6;
+    --accent:#7FB2A8; --ok:#E4622C; --deep:#0B3B3A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Noto Sans CJK SC","Noto Sans CJK JP","Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.65; padding:32px 24px 80px;
+  }
+  header{max-width:1500px;margin:0 auto 8px}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .brand svg{width:46px;height:46px;flex:none}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:.5px}
+  .sub{color:var(--dim);font-size:14px}
+  .sub code{background:#14201f;padding:2px 6px;border-radius:4px;font-size:13px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--dim)}
+  .stat b{color:var(--fg);font-weight:600}
+  .stat.hot b{color:var(--ok)}
+  .grid{
+    max-width:1500px;margin:26px auto 0;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;
+  }
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .thumb{display:block;width:100%;background:#07100f;cursor:zoom-in;border-bottom:1px solid var(--line)}
+  .thumb img{
+    display:block;width:100%;height:320px;object-fit:contain;background:
+      repeating-conic-gradient(#0d1615 0% 25%, #121d1c 0% 50%) 50%/24px 24px;
+  }
+  .meta{padding:14px 16px 16px}
+  .id{display:inline-block;font-size:12px;color:var(--accent);letter-spacing:1px;font-weight:600}
+  .title{font-size:17px;font-weight:600;margin:4px 0 8px}
+  .dims{font-size:12px;color:var(--dim);font-family:ui-monospace,Menlo,Consolas,monospace}
+  .stage{display:inline-block;font-size:11px;color:var(--ok);border:1px solid #5a2c17;background:#25140d;border-radius:5px;padding:2px 7px;margin-left:8px}
+  .tagline{font-size:13.5px;color:#b7c9c5;margin:8px 0 10px}
+  .links{display:flex;gap:8px;flex-wrap:wrap}
+  .links a{
+    font-size:12.5px;color:var(--fg);text-decoration:none;
+    background:#16211f;border:1px solid var(--line);border-radius:6px;padding:5px 10px;
+  }
+  .links a:hover{border-color:var(--accent);color:var(--accent)}
+  .badge{font-size:11px;color:var(--accent);border:1px solid #245c55;background:#0f1f1d;border-radius:5px;padding:2px 7px}
+  section.docs{max-width:1500px;margin:34px auto 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  section.docs h2{font-size:16px;margin:0 0 10px}
+  section.docs a{color:var(--accent)}
+  section.docs ul{margin:6px 0 0;padding-left:20px;color:#c3d2d0;font-size:13.5px}
+  footer{max-width:1500px;margin:44px auto 0;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:18px}
+  footer a{color:var(--accent)}
+  /* lightbox — 纯本地，无远程脚本 */
+  #lb{position:fixed;inset:0;background:rgba(3,8,8,.95);display:none;overflow:auto;z-index:99}
+  #lb.on{display:block}
+  #lb img{display:block;max-width:none;margin:24px auto;box-shadow:0 12px 60px rgba(0,0,0,.6)}
+  #lb .bar{position:fixed;left:0;right:0;top:0;padding:10px 16px;background:rgba(3,8,8,.9);border-bottom:1px solid var(--line);font-size:13px;color:var(--dim);display:flex;justify-content:space-between;gap:12px}
+  #lb .bar b{color:var(--fg)}
+  #lb .close{cursor:pointer;color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="10" cy="46" r="4" fill="#7FB2A8"/>
+      <circle cx="24" cy="36" r="4" fill="#7FB2A8"/>
+      <circle cx="38" cy="46" r="4" fill="#7FB2A8"/>
+      <circle cx="52" cy="34" r="6" fill="none" stroke="#E4622C" stroke-width="3"/>
+      <path d="M6 20 L22 30" stroke="#7FB2A8" stroke-width="3" stroke-linecap="round"/>
+      <path d="M22 30 L38 20" stroke="#7FB2A8" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1>B02 · 候鸟湾观鸟站 — 一个项目的十个触点</h1>
+      <div class="sub">MIGRANT BAY BIRD OBSERVATORY　·　虚构项目，全部数据标注「演示数据 DEMO」</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>10</b> 件独立主作品</div>
+    <div class="stat"><b>10</b> 种互不重复的画幅</div>
+    <div class="stat">观看距离 <b>0.25 – 6 m</b>（24 倍跨度）</div>
+    <div class="stat">用户旅程 <b>8</b> 个阶段全覆盖</div>
+    <div class="stat hot"><b>39</b> 次渲染请求 · 31 次 200</div>
+    <div class="stat"><b>43</b> 条迭代记录 · 14 条工具记录</div>
+    <div class="stat"><b>33</b> 次带证据的实际看图</div>
+    <div class="stat">素材：<b>纯 DSL</b>（0 外部素材）</div>
+  </div>
+
+  <div class="sub" style="margin-top:14px">
+    点击任意缩略图按<b>原始尺寸</b>查看；图片使用相对路径，本页面无任何远程脚本或字体依赖。
+  </div>
+</header>
+
+<div class="grid">
+
+  <div class="card">
+    <a class="thumb" href="case-01/final.png" data-title="case-01 · 迁徙季开幕海报 · 1080×1620">
+      <img src="case-01/final.png" alt="case-01 迁徙季开幕海报" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-01</span><span class="stage">发现</span>
+      <div class="title">迁徙季开幕海报</div>
+      <div class="dims">1080 × 1620 · 竖版 · 地铁灯箱 1-8 m</div>
+      <div class="tagline">先给一个总数（第 9 届 · 57 天 · 目标 143 种），再给三个理由，最后给一个动作：10/10 周六 06:30 北门集合。180px 确定性进度环实测 28.19%。</div>
+      <div class="links">
+        <a href="case-01/final.png">原图</a>
+        <a href="case-01/final.snapshot">DSL</a>
+        <a href="case-01/case.md">case.md</a>
+        <span class="badge">7 版 · 看图 5 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-02/final.png" data-title="case-02 · 湿地导览地图 · 1920×720">
+      <img src="case-02/final.png" alt="case-02 湿地导览地图" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-02</span><span class="stage">了解 · 空间</span>
+      <div class="title">湿地导览地图</div>
+      <div class="dims">1920 × 720 · 超宽横幅 · 0.5-3 m</div>
+      <div class="tagline">把空间不确定性降到「我敢自己走」：滩涂、水波纹、栈道/步道分色、四个编号观测点，环线约 2.4 km；右侧独立图例面板不与地图争视线。</div>
+      <div class="links">
+        <a href="case-02/final.png">原图</a>
+        <a href="case-02/final.snapshot">DSL</a>
+        <a href="case-02/case.md">case.md</a>
+        <span class="badge">3 版 · 看图 2 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-03/final.png" data-title="case-03 · 观鸟须知立牌 · 900×1600">
+      <img src="case-03/final.png" alt="case-03 观鸟须知立牌" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-03</span><span class="stage">准备 · 动作</span>
+      <div class="title">观鸟须知立牌</div>
+      <div class="dims">900 × 1600 · 竖版立牌 · 0.4-1.2 m</div>
+      <div class="tagline">受众手上拿着器材，所以结论前置：三步学会调焦 → 望远镜图解（调焦轮用强调色）→ 5 条礼仪。12x42 与 17:30 交回北门服务台跨作品一致。</div>
+      <div class="links">
+        <a href="case-03/final.png">原图</a>
+        <a href="case-03/final.snapshot">DSL</a>
+        <a href="case-03/case.md">case.md</a>
+        <span class="badge">3 版 · 看图 2 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-04/final.png" data-title="case-04 · 每日观测看板 · 1920×1080">
+      <img src="case-04/final.png" alt="case-04 每日观测看板" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-04</span><span class="stage">到场</span>
+      <div class="title">每日观测看板</div>
+      <div class="dims">1920 × 1080 · 16:9 大屏 · 3-6 m</div>
+      <div class="tagline">唯一要求远近双读的作品：16 行鸟种表求和 = 今日个体 412，柱状图 10..17 峰值 41 @11:00、末柱 21 = 在站 21 人；表头 2026-10-05 · 周一与真实日历一致。</div>
+      <div class="links">
+        <a href="case-04/final.png">原图</a>
+        <a href="case-04/final.snapshot">DSL</a>
+        <a href="case-04/case.md">case.md</a>
+        <span class="badge">8 版 · 看图 5 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-05/final.png" data-title="case-05 · 手工坊手册封面 · 1000×1400">
+      <img src="case-05/final.png" alt="case-05 手工坊手册封面" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-05</span><span class="stage">准备 · 目录</span>
+      <div class="title">新手工作坊手册封面</div>
+      <div class="dims">1000 × 1400 · 可印 A5 · 0.25-0.5 m</div>
+      <div class="tagline">把课纲变成一张可操作的目录页：四节课程卡 + A/B/C/D 四组 + 完成清单四项。五要素「时间 / 种类 / 数量 / 行为 / 备注」与记录表列头逐字一致。</div>
+      <div class="links">
+        <a href="case-05/final.png">原图</a>
+        <a href="case-05/final.snapshot">DSL</a>
+        <a href="case-05/case.md">case.md</a>
+        <span class="badge">3 版 · 看图 2 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-06/final.png" data-title="case-06 · 野外记录表 · 830×1170">
+      <img src="case-06/final.png" alt="case-06 野外记录表" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-06</span><span class="stage">参与</span>
+      <div class="title">野外记录表</div>
+      <div class="dims">830 × 1170 · A4 可印 · 0.3-0.5 m</div>
+      <div class="tagline">一张真的能填的纸：表头四格 + 14 行交替底色密集表 + 合计行。六行示例 24+2+8+5+3+4 = 46 只、6 种 = 合计行，行高 38px 实测 14 条分隔线位置吻合。</div>
+      <div class="links">
+        <a href="case-06/final.png">原图</a>
+        <a href="case-06/final.snapshot">DSL</a>
+        <a href="case-06/case.md">case.md</a>
+        <span class="badge">2 版 · 看图 2 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-07/final.png" data-title="case-07 · 志愿者证 · 1040×660">
+      <img src="case-07/final.png" alt="case-07 志愿者证" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-07</span><span class="stage">归属</span>
+      <div class="title">志愿者证</div>
+      <div class="dims">1040 × 660 · 卡套内页 · 0.3-0.8 m</div>
+      <div class="tagline">核验方只看 2 秒：编号 MB-V-0062 · 林一帆 · 412 h · 本届 68 h，三枚权限胶囊语义互不重叠；页脚由两段独立文本承担但站址与 DEMO 不缺。</div>
+      <div class="links">
+        <a href="case-07/final.png">原图</a>
+        <a href="case-07/final.snapshot">DSL</a>
+        <a href="case-07/case.md">case.md</a>
+        <span class="badge">3 版 · 看图 3 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-08/final.png" data-title="case-08 · 十月活动日程 · 1748×760">
+      <img src="case-08/final.png" alt="case-08 十月活动日程" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-08</span><span class="stage">了解 · 时间</span>
+      <div class="title">十月活动日程</div>
+      <div class="dims">1748 × 760 · 超宽日程墙 · 3-5 m</div>
+      <div class="tagline">3×3 矩阵，首场橙色左边条 = 下一场。九张卡的星期逐条与 2026 年真实日历一致；10-11 亲子场余 4 席 6-12 岁与看板 NEXT UP 逐字一致。</div>
+      <div class="links">
+        <a href="case-08/final.png">原图</a>
+        <a href="case-08/final.snapshot">DSL</a>
+        <a href="case-08/case.md">case.md</a>
+        <span class="badge">2 版 · 看图 2 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-09/final.png" data-title="case-09 · 年度数据年报卡 · 1080×1080">
+      <img src="case-09/final.png" alt="case-09 年度数据年报卡" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-09</span><span class="stage">回看</span>
+      <div class="title">年度数据年报卡</div>
+      <div class="dims">1080 × 1080 · 1:1 方图 · 0.25-0.4 m</div>
+      <div class="tagline">信息流里只有 1 秒：78% 确定性进度环（实测 78.47%，起点 12 点方向）+ 超大 4,180 条记录 + 六行头部物种合计 2,404 条 + 341 人 · 每月约 1.7 万元。</div>
+      <div class="links">
+        <a href="case-09/final.png">原图</a>
+        <a href="case-09/final.snapshot">DSL</a>
+        <a href="case-09/case.md">case.md</a>
+        <span class="badge">3 版 · 看图 3 次</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-10/final.png" data-title="case-10 · 认养滩涂捐赠页 · 1080×1526">
+      <img src="case-10/final.png" alt="case-10 认养滩涂捐赠页" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">case-10</span><span class="stage">持续</span>
+      <div class="title">认养滩涂捐赠页</div>
+      <div class="dims">1080 × 1526 · 竖版长图 · 0.25-0.35 m</div>
+      <div class="tagline">五步把信任变成支付：0.5 / 1.2 / 2.5 亩 ← ¥30 / ¥68 / ¥128 ← 214 / 96 / 31 人 ← 341 人合计；214×30 + 96×68 + 31×128 = 16,916 元/月 ≈ 1.7 万元。</div>
+      <div class="links">
+        <a href="case-10/final.png">原图</a>
+        <a href="case-10/final.snapshot">DSL</a>
+        <a href="case-10/case.md">case.md</a>
+        <span class="badge">4 版 · 看图 4 次</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="docs">
+  <h2>本任务的其余交付</h2>
+  <ul>
+    <li><a href="project-brief.md">project-brief.md</a> — 我解决了什么项目问题</li>
+    <li><a href="design-system.json">design-system.json</a> — 真正被用到的 13 条系统规则（逐组件给出实际调用作品与参数）与复用结论</li>
+    <li><a href="touchpoint-map.json">touchpoint-map.json</a> — 十件作品与用户情境的映射、旅程阶段覆盖与独立性检查</li>
+    <li><a href="portfolio.json">portfolio.json</a> — 逐件元数据、完成标准、看图证据与最终审查</li>
+    <li><a href="portfolio.md">portfolio.md</a> — 策展逻辑与各作品用途</li>
+    <li><a href="snapshot-usage.md">snapshot-usage.md</a> — 文档应用、服务调用、逐件看图、踩坑与复现条件</li>
+    <li><a href="task-metrics.json">task-metrics.json</a> — 墙钟、请求、迭代、看图与消耗指标</li>
+  </ul>
+</section>
+
+<footer>
+  <p>本页为 B02 本地画廊，全部图片与文档使用<b>相对链接</b>，不加载任何远程脚本、字体或样式。
+  所有最终 PNG 均为 open-snapshot 服务的原始响应字节，未经任何后处理。</p>
+  <p>run_id：<code>run-20261002-220723-mimo</code>　·　项目与全部数据均为虚构演示，标注「演示数据 DEMO」。</p>
+</footer>
+
+<div id="lb">
+  <div class="bar"><b id="lb-title"></b><span class="close" id="lb-close">关闭 ✕（或按 Esc）</span></div>
+  <img id="lb-img" alt="">
+</div>
+
+<script>
+/* 纯本地 lightbox：仅操作本页元素，不发起任何网络请求 */
+(function(){
+  var lb=document.getElementById('lb'), img=document.getElementById('lb-img'),
+      ttl=document.getElementById('lb-title');
+  function open(src,title){
+    img.src=src; img.alt=title; ttl.textContent=title;
+    lb.classList.add('on'); document.body.style.overflow='hidden';
+  }
+  function close(){ lb.classList.remove('on'); img.src=''; document.body.style.overflow=''; }
+  document.querySelectorAll('a.thumb').forEach(function(a){
+    a.addEventListener('click',function(e){ e.preventDefault(); open(a.getAttribute('href'), a.getAttribute('data-title')||''); });
+  });
+  document.getElementById('lb-close').addEventListener('click',close);
+  lb.addEventListener('click',function(e){ if(e.target===lb) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+
+</body>
+</html>

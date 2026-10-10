@@ -1,0 +1,128 @@
+{
+    "path_base": "suite_root",
+    "schema":  "snapshot-suite/equivalence/v1",
+    "task":  "A19",
+    "kind":  "occlusion-pixel-equivalence",
+    "method":  "GDI+ LockBits read back to raw RGBA bytes and compared byte-for-byte, independently of the PNG container; SHA-256 reported alongside",
+    "image_A":  {
+                    "path":  "tmp/run-20261002-220723-mimo/A19/occ-a-v02.png",
+                    "bytes":  55304,
+                    "width":  800,
+                    "height":  800,
+                    "sha256":  "12FE65E604ABDFE31E5E19779888A693AA805B2A234FDDBA99071954051E9091",
+                    "dsl":  "tmp/run-20261002-220723-mimo/A19/occ-a-v02.snapshot",
+                    "dsl_bytes":  4863,
+                    "dsl_sha256":  "B5CE07313209B24C911A169314EBB717FBDB9F180947F8CFA80504C05174599E",
+                    "hidden_objects":  3,
+                    "render_request_id":  "A19-occA-v02"
+                },
+    "image_B":  {
+                    "path":  "tmp/run-20261002-220723-mimo/A19/occ-b-v02.png",
+                    "bytes":  55304,
+                    "width":  800,
+                    "height":  800,
+                    "sha256":  "12FE65E604ABDFE31E5E19779888A693AA805B2A234FDDBA99071954051E9091",
+                    "dsl":  "tmp/run-20261002-220723-mimo/A19/occ-b-v02.snapshot",
+                    "dsl_bytes":  5191,
+                    "dsl_sha256":  "DB34906E1475F9197700FB23707DA1A1D6BB9A76B13341049E36825830466B51",
+                    "hidden_objects":  4,
+                    "render_request_id":  "A19-occB-v02"
+                },
+    "pixel_comparison":  {
+                             "same_dimensions":  true,
+                             "pixels_compared":  640000,
+                             "differing_pixels":  0,
+                             "differing_bytes":  0,
+                             "identical":  true,
+                             "first_difference_px":  null,
+                             "byte_streams_identical":  true
+                         },
+    "dsl_comparison":  {
+                           "shared_prefix_identical":  true,
+                           "shared_suffix_identical":  true,
+                           "shared_prefix_lines":  7,
+                           "shared_suffix_lines":  68,
+                           "hidden_block_lines_A":  9,
+                           "hidden_block_lines_B":  15,
+                           "hidden_block_differs":  true,
+                           "note":  "prefix = title; suffix = opaque panel, the six visible objects, the panel text, the bar label and the caption. Only the block between \u003c!--HIDDEN-DIFFERS--\u003e and \u003c!--PANEL-OPAQUE--\u003e is allowed to differ, and it is drawn before the opaque panel."
+                       },
+    "occluded_region":  {
+                            "x0":  300,
+                            "y0":  170,
+                            "x1":  700,
+                            "y1":  650
+                        },
+    "containment_check":  {
+                              "A":  [
+                                        {
+                                            "id":  "H-bar",
+                                            "x0":  200,
+                                            "y0":  400,
+                                            "x1":  560,
+                                            "y1":  456,
+                                            "hidden_x0":  300,
+                                            "inside":  true
+                                        },
+                                        {
+                                            "id":  "H1",
+                                            "x0":  430,
+                                            "y0":  230,
+                                            "x1":  570,
+                                            "y1":  370,
+                                            "hidden_x0":  430,
+                                            "inside":  true
+                                        },
+                                        {
+                                            "id":  "H2",
+                                            "x0":  515,
+                                            "y0":  515,
+                                            "x1":  605,
+                                            "y1":  605,
+                                            "hidden_x0":  515,
+                                            "inside":  true
+                                        }
+                                    ],
+                              "B":  [
+                                        {
+                                            "id":  "H-bar",
+                                            "x0":  200,
+                                            "y0":  400,
+                                            "x1":  430,
+                                            "y1":  456,
+                                            "hidden_x0":  300,
+                                            "inside":  true
+                                        },
+                                        {
+                                            "id":  "H1",
+                                            "x0":  420,
+                                            "y0":  220,
+                                            "x1":  580,
+                                            "y1":  380,
+                                            "hidden_x0":  420,
+                                            "inside":  true
+                                        },
+                                        {
+                                            "id":  "H2",
+                                            "x0":  515,
+                                            "y0":  515,
+                                            "x1":  605,
+                                            "y1":  605,
+                                            "hidden_x0":  515,
+                                            "inside":  true
+                                        },
+                                        {
+                                            "id":  "H3",
+                                            "x0":  385,
+                                            "y0":  505,
+                                            "x1":  455,
+                                            "y1":  575,
+                                            "hidden_x0":  385,
+                                            "inside":  true
+                                        }
+                                    ],
+                              "note":  "every hidden object lies fully inside x in [300,700], y in [170,650]; the bar is the only partially occluded one and its differing tail (x \u003e 430) is inside the region"
+                          },
+    "what_differs":  "A hides 3 objects (blue bar to x=560, green circle d140, purple square 90); B hides 4 objects (blue bar to x=430, orange ring outer160/inner80, blue circle d90, green square 70). Counts, shapes and colours all differ; the visible pixels do not.",
+    "verdict":  "EQUIVALENT"
+}

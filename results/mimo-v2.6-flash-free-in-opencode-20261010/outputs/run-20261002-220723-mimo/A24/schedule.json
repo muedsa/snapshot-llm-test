@@ -1,0 +1,385 @@
+{
+    "schema":  "a24/schedule/v1",
+    "source":  "tasks/A24-release-plan-capstone/inputs/release.json",
+    "generated_at":  "2026-10-05T15:44:59+08:00",
+    "timezone":  "UTC+08:00",
+    "brand":  "叠光 · 发布演练",
+    "brand_source":  "tasks/A24-release-plan-capstone/TASK.md 指定品牌；inputs/release.json 无 brand 字段（首版如实写成 null 后按题面补齐）",
+    "window":  {
+                   "day":  "2026-11-07",
+                   "start_clock":  "09:00",
+                   "start_at":  "2026-11-07T09:00:00+08:00",
+                   "deadline_clock":  "16:00",
+                   "deadline_at":  "2026-11-07T16:00:00+08:00",
+                   "window_minutes":  420
+               },
+    "rules":  {
+                  "lanes":  [
+                                "design",
+                                "engineering"
+                            ],
+                  "one_task_per_team":  true,
+                  "no_preemption":  true,
+                  "team_switch_cost":  0,
+                  "two_entry_teams_mean":  "tasks.teams with two entries means pick ONE of them, not both",
+                  "deps_and_durations_immutable":  true
+              },
+    "totals":  {
+                   "task_count":  12,
+                   "total_work_minutes":  485,
+                   "makespan_minutes":  260,
+                   "finish_clock":  "13:20",
+                   "finish_at":  "2026-11-07T13:20:00+08:00",
+                   "buffer_minutes":  160,
+                   "buffer_to_deadline":  "13:20 -\u003e 16:00",
+                   "design_busy":  255,
+                   "engineering_busy":  230
+               },
+    "lower_bounds":  {
+                         "critical_path_minutes_ignoring_resources":  255,
+                         "total_work_minutes":  485,
+                         "two_team_divide_lower_bound_minutes":  243,
+                         "two_team_divide_note":  "ceil(485 / 2) = 243",
+                         "best_team_load_lower_bound_minutes":  245,
+                         "combined_without_resource_conflicts":  255,
+                         "resource_aware_proved_lower_bound_minutes":  260,
+                         "note":  "critical path ignores resources; two-team bound = total work split over 2 single-unit lanes; best-team-load = min over flexible assignments of max(design,engineering) load"
+                     },
+    "critical_path":  {
+                          "tasks":  [
+                                        "R01",
+                                        "R04",
+                                        "R07",
+                                        "R09",
+                                        "R10",
+                                        "R12"
+                                    ],
+                          "length_minutes":  255,
+                          "note":  "longest precedence chain when resources are ignored"
+                      },
+    "lane_assignments":  {
+                             "fixed":  {
+                                           "design":  [
+                                                          "R01",
+                                                          "R04",
+                                                          "R07",
+                                                          "R10"
+                                                      ],
+                                           "engineering":  [
+                                                               "R02",
+                                                               "R03",
+                                                               "R06",
+                                                               "R08",
+                                                               "R11"
+                                                           ]
+                                       },
+                             "flexible_chosen":  {
+                                                     "R12":  0,
+                                                     "R09":  0,
+                                                     "R05":  1
+                                                 },
+                             "flexible_options":  [
+                                                      {
+                                                          "id":  "R05",
+                                                          "options":  [
+                                                                          "design",
+                                                                          "engineering"
+                                                                      ]
+                                                      },
+                                                      {
+                                                          "id":  "R09",
+                                                          "options":  [
+                                                                          "design",
+                                                                          "engineering"
+                                                                      ]
+                                                      },
+                                                      {
+                                                          "id":  "R12",
+                                                          "options":  [
+                                                                          "design",
+                                                                          "engineering"
+                                                                      ]
+                                                      }
+                                                  ]
+                         },
+    "tasks":  [
+                  {
+                      "id":  "R01",
+                      "label":  "需求核对",
+                      "minutes":  25,
+                      "team":  "design",
+                      "eligible_teams":  [
+                                             "design"
+                                         ],
+                      "depends":  [
+
+                                  ],
+                      "start_min":  0,
+                      "end_min":  25,
+                      "start_clock":  "09:00",
+                      "end_clock":  "09:25",
+                      "start_at":  "2026-11-07T09:00:00+08:00",
+                      "end_at":  "2026-11-07T09:25:00+08:00",
+                      "earliest_start_no_resource":  0,
+                      "critical":  true
+                  },
+                  {
+                      "id":  "R02",
+                      "label":  "服务与字体探测",
+                      "minutes":  20,
+                      "team":  "engineering",
+                      "eligible_teams":  [
+                                             "engineering"
+                                         ],
+                      "depends":  [
+
+                                  ],
+                      "start_min":  0,
+                      "end_min":  20,
+                      "start_clock":  "09:00",
+                      "end_clock":  "09:20",
+                      "start_at":  "2026-11-07T09:00:00+08:00",
+                      "end_at":  "2026-11-07T09:20:00+08:00",
+                      "earliest_start_no_resource":  0,
+                      "critical":  false
+                  },
+                  {
+                      "id":  "R04",
+                      "label":  "视觉系统",
+                      "minutes":  60,
+                      "team":  "design",
+                      "eligible_teams":  [
+                                             "design"
+                                         ],
+                      "depends":  [
+                                      "R01"
+                                  ],
+                      "start_min":  25,
+                      "end_min":  85,
+                      "start_clock":  "09:25",
+                      "end_clock":  "10:25",
+                      "start_at":  "2026-11-07T09:25:00+08:00",
+                      "end_at":  "2026-11-07T10:25:00+08:00",
+                      "earliest_start_no_resource":  25,
+                      "critical":  true
+                  },
+                  {
+                      "id":  "R05",
+                      "label":  "文案审校",
+                      "minutes":  30,
+                      "team":  "engineering",
+                      "eligible_teams":  [
+                                             "design",
+                                             "engineering"
+                                         ],
+                      "depends":  [
+                                      "R01"
+                                  ],
+                      "start_min":  25,
+                      "end_min":  55,
+                      "start_clock":  "09:25",
+                      "end_clock":  "09:55",
+                      "start_at":  "2026-11-07T09:25:00+08:00",
+                      "end_at":  "2026-11-07T09:55:00+08:00",
+                      "earliest_start_no_resource":  25,
+                      "critical":  false
+                  },
+                  {
+                      "id":  "R03",
+                      "label":  "数据清洗",
+                      "minutes":  40,
+                      "team":  "engineering",
+                      "eligible_teams":  [
+                                             "engineering"
+                                         ],
+                      "depends":  [
+                                      "R02"
+                                  ],
+                      "start_min":  55,
+                      "end_min":  95,
+                      "start_clock":  "09:55",
+                      "end_clock":  "10:35",
+                      "start_at":  "2026-11-07T09:55:00+08:00",
+                      "end_at":  "2026-11-07T10:35:00+08:00",
+                      "earliest_start_no_resource":  20,
+                      "critical":  false
+                  },
+                  {
+                      "id":  "R07",
+                      "label":  "主海报构建",
+                      "minutes":  70,
+                      "team":  "design",
+                      "eligible_teams":  [
+                                             "design"
+                                         ],
+                      "depends":  [
+                                      "R04",
+                                      "R05"
+                                  ],
+                      "start_min":  85,
+                      "end_min":  155,
+                      "start_clock":  "10:25",
+                      "end_clock":  "11:35",
+                      "start_at":  "2026-11-07T10:25:00+08:00",
+                      "end_at":  "2026-11-07T11:35:00+08:00",
+                      "earliest_start_no_resource":  85,
+                      "critical":  true
+                  },
+                  {
+                      "id":  "R06",
+                      "label":  "图表计算",
+                      "minutes":  45,
+                      "team":  "engineering",
+                      "eligible_teams":  [
+                                             "engineering"
+                                         ],
+                      "depends":  [
+                                      "R03"
+                                  ],
+                      "start_min":  95,
+                      "end_min":  140,
+                      "start_clock":  "10:35",
+                      "end_clock":  "11:20",
+                      "start_at":  "2026-11-07T10:35:00+08:00",
+                      "end_at":  "2026-11-07T11:20:00+08:00",
+                      "earliest_start_no_resource":  60,
+                      "critical":  false
+                  },
+                  {
+                      "id":  "R08",
+                      "label":  "驾驶舱构建",
+                      "minutes":  65,
+                      "team":  "engineering",
+                      "eligible_teams":  [
+                                             "engineering"
+                                         ],
+                      "depends":  [
+                                      "R04",
+                                      "R06"
+                                  ],
+                      "start_min":  140,
+                      "end_min":  205,
+                      "start_clock":  "11:20",
+                      "end_clock":  "12:25",
+                      "start_at":  "2026-11-07T11:20:00+08:00",
+                      "end_at":  "2026-11-07T12:25:00+08:00",
+                      "earliest_start_no_resource":  105,
+                      "critical":  false
+                  },
+                  {
+                      "id":  "R09",
+                      "label":  "手机适配",
+                      "minutes":  45,
+                      "team":  "design",
+                      "eligible_teams":  [
+                                             "design",
+                                             "engineering"
+                                         ],
+                      "depends":  [
+                                      "R07"
+                                  ],
+                      "start_min":  155,
+                      "end_min":  200,
+                      "start_clock":  "11:35",
+                      "end_clock":  "12:20",
+                      "start_at":  "2026-11-07T11:35:00+08:00",
+                      "end_at":  "2026-11-07T12:20:00+08:00",
+                      "earliest_start_no_resource":  155,
+                      "critical":  true
+                  },
+                  {
+                      "id":  "R10",
+                      "label":  "视觉回归检查",
+                      "minutes":  35,
+                      "team":  "design",
+                      "eligible_teams":  [
+                                             "design"
+                                         ],
+                      "depends":  [
+                                      "R07",
+                                      "R08",
+                                      "R09"
+                                  ],
+                      "start_min":  205,
+                      "end_min":  240,
+                      "start_clock":  "12:25",
+                      "end_clock":  "13:00",
+                      "start_at":  "2026-11-07T12:25:00+08:00",
+                      "end_at":  "2026-11-07T13:00:00+08:00",
+                      "earliest_start_no_resource":  200,
+                      "critical":  true
+                  },
+                  {
+                      "id":  "R11",
+                      "label":  "产物与数据核验",
+                      "minutes":  30,
+                      "team":  "engineering",
+                      "eligible_teams":  [
+                                             "engineering"
+                                         ],
+                      "depends":  [
+                                      "R08",
+                                      "R09"
+                                  ],
+                      "start_min":  205,
+                      "end_min":  235,
+                      "start_clock":  "12:25",
+                      "end_clock":  "12:55",
+                      "start_at":  "2026-11-07T12:25:00+08:00",
+                      "end_at":  "2026-11-07T12:55:00+08:00",
+                      "earliest_start_no_resource":  200,
+                      "critical":  false
+                  },
+                  {
+                      "id":  "R12",
+                      "label":  "交付归档",
+                      "minutes":  20,
+                      "team":  "design",
+                      "eligible_teams":  [
+                                             "design",
+                                             "engineering"
+                                         ],
+                      "depends":  [
+                                      "R10",
+                                      "R11"
+                                  ],
+                      "start_min":  240,
+                      "end_min":  260,
+                      "start_clock":  "13:00",
+                      "end_clock":  "13:20",
+                      "start_at":  "2026-11-07T13:00:00+08:00",
+                      "end_at":  "2026-11-07T13:20:00+08:00",
+                      "earliest_start_no_resource":  235,
+                      "critical":  true
+                  }
+              ],
+    "gaps":  [
+                 {
+                     "lane":  "design",
+                     "start_min":  200,
+                     "end_min":  205,
+                     "minutes":  5,
+                     "start":  "12:20",
+                     "end":  "12:25",
+                     "kind":  "idle"
+                 },
+                 {
+                     "lane":  "engineering",
+                     "start_min":  20,
+                     "end_min":  25,
+                     "minutes":  5,
+                     "start":  "09:20",
+                     "end":  "09:25",
+                     "kind":  "idle"
+                 },
+                 {
+                     "lane":  "engineering",
+                     "start_min":  235,
+                     "end_min":  260,
+                     "minutes":  25,
+                     "start":  "12:55",
+                     "end":  "13:20",
+                     "kind":  "standby"
+                 }
+             ]
+}

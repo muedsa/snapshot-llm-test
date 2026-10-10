@@ -1,0 +1,169 @@
+{
+  "path_base": "suite_root",
+  "task_id": "A04",
+  "run_id": "run-20261002-220723-mimo",
+  "generated_at": "2026-10-03T00:20:00+08:00",
+  "source": {
+    "file": "tasks/A04-conversion-paradox/inputs/conversion.csv",
+    "rows": 4,
+    "periods": ["前期", "后期"],
+    "channels": ["直接访问", "推广访问"],
+    "columns": ["期别", "渠道", "访问数", "成交数"],
+    "units": { "访问数": "次", "成交数": "次", "转化率": "%", "变化量": "个百分点" }
+  },
+
+  "exact_fractions": {
+    "group_conversion_rates": [
+      { "period": "前期", "channel": "直接访问", "numerator成交数": 2400, "denominator访问数": 8000, "fraction": "2400/8000", "reduced": "3/10", "exact_percent": "30.0%" },
+      { "period": "后期", "channel": "直接访问", "numerator成交数": 700,  "denominator访问数": 2000, "fraction": "700/2000",  "reduced": "7/20",  "exact_percent": "35.0%" },
+      { "period": "前期", "channel": "推广访问", "numerator成交数": 200,  "denominator访问数": 2000, "fraction": "200/2000",  "reduced": "1/10",  "exact_percent": "10.0%" },
+      { "period": "后期", "channel": "推广访问", "numerator成交数": 960,  "denominator访问数": 8000, "fraction": "960/8000",  "reduced": "3/25",  "exact_percent": "12.0%" }
+    ],
+    "overall_conversion_rates": [
+      { "period": "前期", "numerator成交总数": 2600, "denominator访问总数": 10000, "fraction": "2600/10000", "reduced": "13/50", "exact_percent": "26.0%" },
+      { "period": "后期", "numerator成交总数": 1660, "denominator访问总数": 10000, "fraction": "1660/10000", "reduced": "83/500", "exact_percent": "16.6%" }
+    ],
+    "visit_composition_shares": [
+      { "period": "前期", "channel": "直接访问", "fraction": "8000/10000", "reduced": "4/5", "exact_percent": "80.0%" },
+      { "period": "前期", "channel": "推广访问", "fraction": "2000/10000", "reduced": "1/5", "exact_percent": "20.0%" },
+      { "period": "后期", "channel": "直接访问", "fraction": "2000/10000", "reduced": "1/5", "exact_percent": "20.0%" },
+      { "period": "后期", "channel": "推广访问", "fraction": "8000/10000", "reduced": "4/5", "exact_percent": "80.0%" }
+    ]
+  },
+
+  "displayed_percentages": {
+    "group_rates": {
+      "直接访问": { "前期": "30.0%", "后期": "35.0%", "change_pp": "+5.0" },
+      "推广访问": { "前期": "10.0%", "后期": "12.0%", "change_pp": "+2.0" }
+    },
+    "overall": { "前期": "26.0%", "后期": "16.6%", "change_pp": "-9.4" },
+    "composition": {
+      "前期": { "直接访问": "80.0%", "推广访问": "20.0%" },
+      "后期": { "直接访问": "20.0%", "推广访问": "80.0%" }
+    },
+    "rounding_note": "所有值均为精确小数，无四舍五入损失（30.0/35.0/10.0/12.0/26.0/16.6/80.0/20.0 均由上面的分数精确除尽）。"
+  },
+
+  "weighted_formula": {
+    "statement": "总体转化率 = 成交总数 ÷ 访问总数 = Σ(各渠道成交数) ÷ Σ(各渠道访问数)",
+    "equivalent_weighted_form": "总体转化率 = Σ( 渠道访问占比 × 渠道转化率 )",
+    "periods": [
+      {
+        "period": "前期",
+        "sum_form": "(2400 + 200) / (8000 + 2000) = 2600 / 10000 = 26.0%",
+        "weighted_form": "0.8 × 30.0% + 0.2 × 10.0% = 24.0% + 2.0% = 26.0%",
+        "weights": { "直接访问": 0.8, "推广访问": 0.2 }
+      },
+      {
+        "period": "后期",
+        "sum_form": "(700 + 960) / (2000 + 8000) = 1660 / 10000 = 16.6%",
+        "weighted_form": "0.2 × 35.0% + 0.8 × 12.0% = 7.0% + 9.6% = 16.6%",
+        "weights": { "直接访问": 0.2, "推广访问": 0.8 }
+      }
+    ],
+    "identities_verified": [
+      "2400 + 200 = 2600",
+      "700 + 960 = 1660",
+      "8000 + 2000 = 10000",
+      "2000 + 8000 = 10000",
+      "8000 + 2000 (前期访问构成) = 10000",
+      "2000 + 8000 (后期访问构成) = 10000"
+    ]
+  },
+
+  "rejected_methods": [
+    {
+      "name": "对渠道转化率取简单平均（本题禁止）",
+      "formula": "(渠道A率 + 渠道B率) / 2",
+      "前期": "(30.0% + 10.0%) / 2 = 20.0%",
+      "后期": "(35.0% + 12.0%) / 2 = 23.5%",
+      "implied_change_pp": "+3.5",
+      "truth_change_pp": "-9.4",
+      "why_wrong": "该算法给两个渠道相同权重，无视各渠道访问量从 80/20 反转到 20/80 的事实；它把方向也算反了（显示上升，实际下降）。",
+      "where_shown": "图④ 表头右侧橙色注释"
+    },
+    {
+      "name": "把绝对成交量当转化率（本题禁止）",
+      "formula": "直接比较 成交总数 的绝对值",
+      "前期": "2600 次",
+      "后期": "1660 次",
+      "implied_change": "-36.2%（2600→1660 的成交量降幅）",
+      "truth_change_pp": "-9.4 个百分点（转化率降幅）",
+      "why_wrong": "成交量同时受访问规模和转化率影响，不是比率；本题两期访问总数都恰好是 10,000 次，但即便如此也应以 成交÷访问 的比率作比较。",
+      "where_shown": "图④ 表头右侧橙色注释"
+    }
+  ],
+
+  "direction_analysis": {
+    "question": "分组与总体是否同向？",
+    "answer": "不同向（辛普森悖论）",
+    "group_directions": {
+      "直接访问": "上升（+5.0 个百分点）",
+      "推广访问": "上升（+2.0 个百分点）"
+    },
+    "composition_shift": "访问构成反转：直接访问 80.0% → 20.0%，推广访问 20.0% → 80.0%",
+    "overall_direction": "下降（-9.4 个百分点，26.0% → 16.6%）",
+    "mechanism": "后期把 80% 的访问量转向了转化率较低的推广访问渠道（12.0%），而高转化的直接访问只占 20%。按访问数加权后，低权重渠道的改善被渠道构成的大幅位移抵消并反超，于是两个分组都改善、总体却下降。"
+  },
+
+  "main_conclusion": {
+    "text": "两渠道转化率均上升（直接 30.0%→35.0%，推广 10.0%→12.0%），但访问构成反转（直接 80%→20%，推广 20%→80%），按访问数加权的总体转化率反而由 26.0% 降至 16.6%（-9.4 个百分点），方向相反。",
+    "evidence": [
+      "图① 分组柱状：直接 +5.0pp、推广 +2.0pp，同为上升",
+      "图② 等长堆叠：构成由 80/20 反转为 20/80",
+      "图③ 总体柱状：26.0% → 16.6%，-9.4 个百分点",
+      "图④ 小表：全部 4 行分子分母可逐格核对，合计行 2600/10000 与 1660/10000 直接可算"
+    ],
+    "supported_by_data": true
+  },
+
+  "causality_limitation": {
+    "statement": "不能由该数据证明因果",
+    "reasons": [
+      "仅有前期/后期两期、两个渠道的汇总观测数据，没有随机分流或对照组",
+      "未控制用户构成、渠道质量、季节、促销节奏等同期变化因素",
+      "数据只展示 各组率 按访问数加权得到 总体率 的算术关系",
+      "构成位移与组内改善同时发生，无法从该数据中分离二者对总体的因果贡献"
+    ],
+    "what_the_data_does_show": "纯算术层面：在本数据中，分组率上升与总体率下降可以同时成立，且差异完全由访问构成的权重变化解释。"
+  },
+
+  "chart_spec_verification": {
+    "canvas": { "expected": "1600×1000", "measured": "1600×1000", "pass": true },
+    "shared_0_100_scale": {
+      "panels": ["① 渠道分组转化率", "③ 总体转化率对照"],
+      "gridlines_y_px": [250, 315, 380, 445, 510],
+      "plot_height_px": 260,
+      "scale": "0%–100%",
+      "pass": true
+    },
+    "bar_heights_px_measured": {
+      "直接访问前期": { "px": 78, "theory_px": 78.0, "value": "30.0%" },
+      "直接访问后期": { "px": 91, "theory_px": 91.0, "value": "35.0%" },
+      "推广访问前期": { "px": 26, "theory_px": 26.0, "value": "10.0%" },
+      "推广访问后期": { "px": 31, "theory_px": 31.2, "value": "12.0%" },
+      "总体前期":     { "px": 67, "theory_px": 67.6, "value": "26.0%" },
+      "总体后期":     { "px": 43, "theory_px": 43.16, "value": "16.6%" },
+      "pass": true
+    },
+    "composition_bars_equal_length": {
+      "前期": { "total_px": 420, "直接访问_px": 336, "推广访问_px": 84 },
+      "后期": { "total_px": 420, "直接访问_px": 84,  "推广访问_px": 336 },
+      "theoretical_split_px": { "80%": 336, "20%": 84 },
+      "equal_length": true,
+      "pass": true
+    },
+    "margins_px": { "left": 40, "right": 40, "top": 40, "bottom": 42, "non_background_pixels_in_margin": 0, "pass": true },
+    "font_sizes": { "body": 22, "annotation_min": 18, "panel_title": 24, "main_title": 44, "min_used": 18, "pass": true },
+    "table_columns_no_overlap": { "checked_px_gap": "访问构成占比 末端 ≤1250 vs 相对前期 起始 1275（≥25px 空隙）", "pass": true },
+    "text_fully_visible": { "conclusion_box": "3 行全部在 y=824..958 框内", "limitation_box": "3 行全部在 y=824..958 框内", "legend_right_note": "色相＝渠道，明度＝期别 结束于约 x=1420 < 1600", "pass": true }
+  },
+
+  "deliverables": [
+    "outputs/run-20261002-220723-mimo/A04/conversion-story.png",
+    "outputs/run-20261002-220723-mimo/A04/conversion-story.snapshot",
+    "outputs/run-20261002-220723-mimo/A04/analysis.json",
+    "outputs/run-20261002-220723-mimo/A04/snapshot-usage.md",
+    "outputs/run-20261002-220723-mimo/A04/task-metrics.json"
+  ]
+}

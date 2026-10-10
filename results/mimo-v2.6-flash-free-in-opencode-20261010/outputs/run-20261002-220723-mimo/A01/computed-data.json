@@ -1,0 +1,63 @@
+{
+  "task": "A01",
+  "title": "六个月经营诊断驾驶舱",
+  "source": "tasks/A01-operations-dashboard/inputs/monthly.csv",
+  "units": {
+    "money": "元 (CNY)",
+    "orders": "笔",
+    "sessions": "次",
+    "rates": "percent with 2 decimals"
+  },
+  "definitions": {
+    "net_revenue": "gross_revenue - refund_amount",
+    "operating_profit": "net_revenue - operating_cost",
+    "refund_rate": "refund_amount / gross_revenue",
+    "monthly_conversion_rate": "orders / sessions",
+    "overall_conversion_rate": "sum(orders) / sum(sessions)  (NOT the mean of monthly rates)"
+  },
+  "months": [
+    { "month": "2026-04", "orders": 420, "sessions": 3500, "gross_revenue": 126000, "refund_amount": 6300, "operating_cost": 82000, "net_revenue": 119700, "operating_profit": 37700, "refund_rate_pct": 5.0, "conversion_rate_pct": 12.0 },
+    { "month": "2026-05", "orders": 460, "sessions": 4100, "gross_revenue": 142600, "refund_amount": 7130, "operating_cost": 93500, "net_revenue": 135470, "operating_profit": 41970, "refund_rate_pct": 5.0, "conversion_rate_pct": 11.22 },
+    { "month": "2026-06", "orders": 445, "sessions": 4200, "gross_revenue": 137950, "refund_amount": 11036, "operating_cost": 99000, "net_revenue": 126914, "operating_profit": 27914, "refund_rate_pct": 8.0, "conversion_rate_pct": 10.6 },
+    { "month": "2026-07", "orders": 530, "sessions": 4700, "gross_revenue": 169600, "refund_amount": 8480, "operating_cost": 112000, "net_revenue": 161120, "operating_profit": 49120, "refund_rate_pct": 5.0, "conversion_rate_pct": 11.28 },
+    { "month": "2026-08", "orders": 570, "sessions": 5200, "gross_revenue": 188100, "refund_amount": 15048, "operating_cost": 132000, "net_revenue": 173052, "operating_profit": 41052, "refund_rate_pct": 8.0, "conversion_rate_pct": 10.96 },
+    { "month": "2026-09", "orders": 620, "sessions": 5600, "gross_revenue": 210800, "refund_amount": 8432, "operating_cost": 138000, "net_revenue": 202368, "operating_profit": 64368, "refund_rate_pct": 4.0, "conversion_rate_pct": 11.07 }
+  ],
+  "summary": {
+    "total_orders": 3045,
+    "total_sessions": 27300,
+    "total_gross_revenue": 975050,
+    "total_refund_amount": 56426,
+    "total_net_revenue": 918624,
+    "total_operating_cost": 656500,
+    "total_operating_profit": 262124,
+    "overall_conversion_rate_pct": 11.15,
+    "overall_refund_rate_pct": 5.79,
+    "overall_profit_margin_on_net_pct": 28.53
+  },
+  "axes": {
+    "grouped_bar": {
+      "series": ["net_revenue", "operating_profit"],
+      "shared_zero_baseline": true,
+      "min": 0,
+      "max": 250000,
+      "step": 50000,
+      "unit": "元",
+      "currency_axis_not_shared_with_percent": true
+    },
+    "sessions_chart": { "min": 0, "max": 6000, "step": 1500, "unit": "次" },
+    "conversion_chart": { "min": 10.0, "max": 12.5, "step": 0.5, "unit": "%" },
+    "month_alignment": ["2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"]
+  },
+  "conclusion": {
+    "statement": "六个月净收入与经营利润持续增长，但 6 月与 8 月的利润回落由退款率从 5.00% 升至 8.00% 驱动，优先治理高退款月份即可直接修复利润。",
+    "evidence": [
+      "net_revenue 119700 -> 202368 (+69.06%)",
+      "operating_profit 37700 -> 64368 (+70.74%)",
+      "2026-06 refund_rate 8.00% (11036/137950), profit 27914 = 6-month low, MoM -33.49% vs 41970",
+      "2026-08 refund_rate 8.00% (15048/188100), profit 41052 vs 49120 in 2026-07 = -16.43%",
+      "2026-09 refund_rate 4.00%, profit 64368 = 6-month high, 31.81% of net revenue",
+      "overall_conversion_rate 11.15% = 3045/27300, not the mean of monthly rates (mean would be 11.19%)"
+    ]
+  }
+}

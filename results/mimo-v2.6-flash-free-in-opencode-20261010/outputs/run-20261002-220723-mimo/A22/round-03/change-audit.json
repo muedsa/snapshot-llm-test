@@ -1,0 +1,561 @@
+{
+    "schema":  "snapshot-suite/a22-change-audit/v1",
+    "task":  "A22",
+    "round":  3,
+    "generated_at":  "2026-10-05T12:31:44+08:00",
+    "timezone":  "UTC+08:00",
+    "execution_mode":  "preloaded_sequential（预置三轮连续执行，rounds/round-0N.md 在执行前已存在，不等待外部反馈）",
+    "source_file":  "inputs/monthly.csv (unmodified)",
+    "source_changes":  [
+                           {
+                               "month":  "2026-08",
+                               "field":  "refund_amount",
+                               "old":  15048,
+                               "new":  25048,
+                               "delta":  10000,
+                               "source":  "rounds/round-02.md"
+                           },
+                           {
+                               "month":  "2026-09",
+                               "field":  "operating_cost",
+                               "old":  138000,
+                               "new":  208000,
+                               "delta":  70000,
+                               "source":  "rounds/round-02.md"
+                           }
+                       ],
+    "rows_added":  [
+                       {
+                           "month":  "2026-10",
+                           "orders":  640,
+                           "gross_revenue":  224000,
+                           "refund_amount":  11200,
+                           "operating_cost":  142000,
+                           "sessions":  5900,
+                           "source":  "rounds/round-03.md",
+                           "net_revenue":  212800,
+                           "profit":  70800,
+                           "refund_rate":  0.05,
+                           "conversion_rate":  0.108475
+                       }
+                   ],
+    "propagation":  [
+                        {
+                            "month":  "2026-10",
+                            "status":  "new-row",
+                            "before":  null,
+                            "after":  {
+                                          "month":  "2026-10",
+                                          "orders":  640,
+                                          "gross_revenue":  224000,
+                                          "refund_amount":  11200,
+                                          "operating_cost":  142000,
+                                          "sessions":  5900,
+                                          "net_revenue":  212800,
+                                          "profit":  70800,
+                                          "refund_rate":  0.05,
+                                          "conversion_rate":  0.108475,
+                                          "csv_refund_amount":  11200,
+                                          "csv_operating_cost":  142000,
+                                          "corrected":  false
+                                      },
+                            "changed_fields":  [
+                                                   "orders",
+                                                   "gross_revenue",
+                                                   "refund_amount",
+                                                   "operating_cost",
+                                                   "sessions",
+                                                   "net_revenue",
+                                                   "profit",
+                                                   "refund_rate",
+                                                   "conversion_rate"
+                                               ]
+                        }
+                    ],
+    "totals":  {
+                   "before":  {
+                                  "months":  6,
+                                  "orders":  3045,
+                                  "gross_revenue":  975050,
+                                  "refund_amount":  66426,
+                                  "operating_cost":  726500,
+                                  "sessions":  27300,
+                                  "net_revenue":  908624,
+                                  "profit":  182124,
+                                  "refund_rate":  0.068126,
+                                  "overall_conversion_rate":  0.111538
+                              },
+                   "after":  {
+                                 "months":  7,
+                                 "orders":  3685,
+                                 "gross_revenue":  1199050,
+                                 "refund_amount":  77626,
+                                 "operating_cost":  868500,
+                                 "sessions":  33200,
+                                 "net_revenue":  1121424,
+                                 "profit":  252924,
+                                 "refund_rate":  0.06474,
+                                 "overall_conversion_rate":  0.110994
+                             },
+                   "net_revenue_delta":  212800,
+                   "profit_delta":  70800,
+                   "orders_delta":  640,
+                   "sessions_delta":  5900,
+                   "overall_conversion_rate_before":  0.111538,
+                   "overall_conversion_rate_after":  0.110994
+               },
+    "negative_profit":  {
+                            "exists":  true,
+                            "months":  [
+                                           "2026-09"
+                                       ],
+                            "values":  [
+                                           -5632
+                                       ],
+                            "axis_min":  -50000,
+                            "rendered_below_zero":  true,
+                            "clipped":  false,
+                            "drawn_as_positive":  false,
+                            "note":  "负柱按同一比例尺画在零线以下（Y(profit) \u003e Y(0)），未裁剪、未翻正、未只改数字不改柱高"
+                        },
+    "corrections_still_effective":  [
+                                        {
+                                            "month":  "2026-08",
+                                            "field":  "refund_amount",
+                                            "round_01_value":  15048,
+                                            "round_02_corrected_value":  25048,
+                                            "actual_value":  25048,
+                                            "still_effective":  true,
+                                            "restored_to_round_01_value":  false,
+                                            "derived_now":  {
+                                                                "gross_revenue":  188100,
+                                                                "net_revenue":  163052,
+                                                                "profit":  31052,
+                                                                "refund_rate":  0.133163
+                                                            },
+                                            "round_01_derived":  {
+                                                                     "refund_rate":  0.08,
+                                                                     "net_revenue":  173052,
+                                                                     "profit":  41052
+                                                                 }
+                                        },
+                                        {
+                                            "month":  "2026-09",
+                                            "field":  "operating_cost",
+                                            "round_01_value":  138000,
+                                            "round_02_corrected_value":  208000,
+                                            "actual_value":  208000,
+                                            "still_effective":  true,
+                                            "restored_to_round_01_value":  false,
+                                            "derived_now":  {
+                                                                "net_revenue":  202368,
+                                                                "profit":  -5632
+                                                            },
+                                            "round_01_derived":  {
+                                                                     "profit":  64368,
+                                                                     "net_revenue":  202368
+                                                                 }
+                                        }
+                                    ],
+    "cumulative_axis_conclusion_checks":  {
+                                              "total":  58,
+                                              "passed":  58,
+                                              "failed":  0,
+                                              "covers":  [
+                                                             "每月公式自洽（net/profit/refund_rate/conversion_rate）",
+                                                             "每项累计值（net/profit/orders/sessions/overall_conversion_rate 与逐行之和一致）",
+                                                             "轴（覆盖数据、步长对齐零点、含零、负数据必有负范围、round-01 必须零基）",
+                                                             "结论含各累计值与最后月份",
+                                                             "round-03：KPI 为 7 个月聚合、月份集合含 2026-04 且不缺行"
+                                                         ],
+                                              "rows":  [
+                                                           {
+                                                               "check":  "month_count",
+                                                               "expected":  7,
+                                                               "actual":  7,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "months_present_and_in_order",
+                                                               "expected":  "2026-04,2026-05,2026-06,2026-07,2026-08,2026-09,2026-10",
+                                                               "actual":  "2026-04,2026-05,2026-06,2026-07,2026-08,2026-09,2026-10",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "month_2026_04_not_omitted",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "last_month_is_newest",
+                                                               "expected":  "2026-10",
+                                                               "actual":  "2026-10",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-04.net_revenue = gross - refund",
+                                                               "expected":  119700,
+                                                               "actual":  119700,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-04.profit = net - operating_cost",
+                                                               "expected":  37700,
+                                                               "actual":  37700,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-04.refund_rate = refund / gross",
+                                                               "expected":  0.05,
+                                                               "actual":  0.05,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-04.conversion_rate = orders / sessions",
+                                                               "expected":  0.12,
+                                                               "actual":  0.12,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-05.net_revenue = gross - refund",
+                                                               "expected":  135470,
+                                                               "actual":  135470,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-05.profit = net - operating_cost",
+                                                               "expected":  41970,
+                                                               "actual":  41970,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-05.refund_rate = refund / gross",
+                                                               "expected":  0.05,
+                                                               "actual":  0.05,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-05.conversion_rate = orders / sessions",
+                                                               "expected":  0.112195,
+                                                               "actual":  0.112195,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-06.net_revenue = gross - refund",
+                                                               "expected":  126914,
+                                                               "actual":  126914,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-06.profit = net - operating_cost",
+                                                               "expected":  27914,
+                                                               "actual":  27914,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-06.refund_rate = refund / gross",
+                                                               "expected":  0.08,
+                                                               "actual":  0.08,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-06.conversion_rate = orders / sessions",
+                                                               "expected":  0.105952,
+                                                               "actual":  0.105952,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-07.net_revenue = gross - refund",
+                                                               "expected":  161120,
+                                                               "actual":  161120,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-07.profit = net - operating_cost",
+                                                               "expected":  49120,
+                                                               "actual":  49120,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-07.refund_rate = refund / gross",
+                                                               "expected":  0.05,
+                                                               "actual":  0.05,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-07.conversion_rate = orders / sessions",
+                                                               "expected":  0.112766,
+                                                               "actual":  0.112766,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-08.net_revenue = gross - refund",
+                                                               "expected":  163052,
+                                                               "actual":  163052,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-08.profit = net - operating_cost",
+                                                               "expected":  31052,
+                                                               "actual":  31052,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-08.refund_rate = refund / gross",
+                                                               "expected":  0.133163,
+                                                               "actual":  0.133163,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-08.conversion_rate = orders / sessions",
+                                                               "expected":  0.109615,
+                                                               "actual":  0.109615,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-09.net_revenue = gross - refund",
+                                                               "expected":  202368,
+                                                               "actual":  202368,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-09.profit = net - operating_cost",
+                                                               "expected":  -5632,
+                                                               "actual":  -5632,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-09.refund_rate = refund / gross",
+                                                               "expected":  0.04,
+                                                               "actual":  0.04,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-09.conversion_rate = orders / sessions",
+                                                               "expected":  0.110714,
+                                                               "actual":  0.110714,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-10.net_revenue = gross - refund",
+                                                               "expected":  212800,
+                                                               "actual":  212800,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-10.profit = net - operating_cost",
+                                                               "expected":  70800,
+                                                               "actual":  70800,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-10.refund_rate = refund / gross",
+                                                               "expected":  0.05,
+                                                               "actual":  0.05,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "2026-10.conversion_rate = orders / sessions",
+                                                               "expected":  0.108475,
+                                                               "actual":  0.108475,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "totals.net_revenue = sum(rows)",
+                                                               "expected":  1121424,
+                                                               "actual":  1121424,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "totals.profit = sum(rows)",
+                                                               "expected":  252924,
+                                                               "actual":  252924,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "totals.orders = sum(rows)",
+                                                               "expected":  3685,
+                                                               "actual":  3685,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "totals.sessions = sum(rows)",
+                                                               "expected":  33200,
+                                                               "actual":  33200,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "totals.overall_conversion_rate = total_orders / total_sessions",
+                                                               "expected":  0.110994,
+                                                               "actual":  0.110994,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "axis_covers_data_min",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "axis_covers_data_max",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "axis_min_is_a_step_multiple",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "axis_max_is_a_step_multiple",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "axis_contains_zero",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "negative_data_has_negative_axis_range",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "conclusion_contains_total_net_revenue",
+                                                               "expected":  "1,121,424",
+                                                               "actual":  "1,121,424",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "conclusion_contains_total_profit",
+                                                               "expected":  "252,924",
+                                                               "actual":  "252,924",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "conclusion_contains_total_orders",
+                                                               "expected":  "3,685",
+                                                               "actual":  "3,685",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "conclusion_contains_overall_conversion_rate",
+                                                               "expected":  "11.10%",
+                                                               "actual":  "11.10%",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "conclusion_contains_last_month",
+                                                               "expected":  "2026-10",
+                                                               "actual":  "2026-10",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "conclusion_states_seven_months",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "kpi_values_are_current_aggregates",
+                                                               "expected":  "1,121,424",
+                                                               "actual":  "1,121,424",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "kpi_orders_matches_aggregate",
+                                                               "expected":  "3,685",
+                                                               "actual":  "3,685",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "kpi_row_label_says_7_months",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "claim_newest_month_net_is_7mo_max",
+                                                               "expected":  212800,
+                                                               "actual":  212800,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "claim_newest_month_profit_is_7mo_max",
+                                                               "expected":  70800,
+                                                               "actual":  70800,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "claim_2026_09_is_only_negative_profit",
+                                                               "expected":  "2026-09",
+                                                               "actual":  "2026-09",
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "claim_2026_08_refund_rate_is_max",
+                                                               "expected":  0.133163,
+                                                               "actual":  0.133163,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "claim_2026_06_conversion_rate_is_min",
+                                                               "expected":  0.105952,
+                                                               "actual":  0.105952,
+                                                               "pass":  true
+                                                           },
+                                                           {
+                                                               "check":  "claim_overall_conversion_below_2026_04",
+                                                               "expected":  true,
+                                                               "actual":  true,
+                                                               "pass":  true
+                                                           }
+                                                       ]
+                                          },
+    "unchanged":  [
+                      "画布仍为 1600x1000",
+                      "主区域边界：title (40,34,1520,100)、kpi-row (40,146,1520,160)、chart (40,316,900,410)、table (960,316,600,410)、conclusion (40,746,1520,218) —— 三轮完全一致（差 0px，在 ±2px 内）",
+                      "主字体 Noto Sans CJK SC / Inter 混排栈，正文最小 22",
+                      "配色视觉系统：页面 #EDEFF7、面板 #FFFFFF、正文 #10142E、次要 #3A3F63/#5B6180、净收入柱 #5B4FE8、利润柱 #FFB020（含负值柱，颜色不随轮次改变）、网格 #E4E7F3、零线 #A8ADC9",
+                      "柱图仍为净收入/利润共用零起点的分组柱图，比例尺 y=-50000..250000 步长 50000",
+                      "四 KPI 标签与口径：总净收入=收入-退款、总经营利润=净收入-operating_cost、总订单、总体转化率=总订单/总sessions",
+                      "表格仍为 月份/净收入/利润/退款率/转化率 五列",
+                      "2026-04..2026-09 六个月未被删改；原始 csv 字段 orders/gross_revenue/sessions 三轮完全不变",
+                      "0 个 \u003cImage\u003e、0 个 transform，全部文字 fontSize \u003e= 22",
+                      "round-02 的两项财务更正继续有效：2026-08 refund_amount=25048、2026-09 operating_cost=208000"
+                  ],
+    "visual_regression":  {
+                              "canvas_unchanged":  true,
+                              "region_bounds_unchanged":  true,
+                              "region_bounds":  {
+                                                    "title":  "(40,34,1520,100)",
+                                                    "kpi_row":  "(40,146,1520,160)",
+                                                    "chart":  "(40,316,900,410)",
+                                                    "table":  "(960,316,600,410)",
+                                                    "conclusion":  "(40,746,1520,218)"
+                                                },
+                              "max_region_delta_px":  0,
+                              "tolerance_px":  2,
+                              "fonts_unchanged":  true,
+                              "palette_unchanged":  true,
+                              "bar_colors_unchanged":  true,
+                              "internal_relayout":  "7 行 7 组：表格行高仍 44px（新增第 7 行后底边 702 \u003c= 面板底 726），柱组宽由 125 收窄到 107.14，柱宽由 46.25 收窄到 39.64 —— 均属题面允许的「内部刻度/行距」重排",
+                              "checks":  [
+                                             "画布 1600x1000",
+                                             "五块主区域边界 0px 偏移",
+                                             "柱色与字体不变",
+                                             "负柱在零线以下且高度按同一比例尺",
+                                             "KPI 口径不变仅数值重算"
+                                         ]
+                          },
+    "problems":  [
+
+                 ]
+}

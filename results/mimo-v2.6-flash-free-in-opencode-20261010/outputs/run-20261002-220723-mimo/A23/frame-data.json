@@ -1,0 +1,840 @@
+{
+    "path_base": "suite_root",
+    "schema":  "snapshot-suite/a23-frame-data/v1",
+    "task":  "A23",
+    "generated_at":  "2026-10-05T14:01:10+08:00",
+    "timezone":  "UTC+08:00",
+    "theme":  "结构汇聚成图像",
+    "canvas":  {
+                   "width":  600,
+                   "height":  600,
+                   "background":  "transparent",
+                   "background_evidence":  "根 Container 不写 color；参考文档「渲染入口与输出」明确 Parser 的 \u003cSnapshot\u003e 默认背景为透明，且显式透明背景可保留 Alpha 通道；实测 IHDR colorType=6 (RGBA)、画布像素 A=0"
+               },
+    "unit_count":  12,
+    "unit_size":  {
+                      "width":  60,
+                      "height":  60,
+                      "identical_in_every_frame":  true
+                  },
+    "trajectory":  {
+                       "type":  "linear-interpolation",
+                       "formula":  "p(t) = start + (final - start) * t,  t = (frame_index - 1) / 5",
+                       "t_values":  [
+                                        0,
+                                        0.2,
+                                        0.4,
+                                        0.6,
+                                        0.8,
+                                        1
+                                    ],
+                       "rounding":  "round to 2 decimals (t=0 and t=1 are exact endpoints)",
+                       "continuity":  "每个单元在 6 帧中始终存在且沿直线单调移动，无跳变路径、无消失、无新增",
+                       "consecutive_steps":  [
+                                                 {
+                                                     "from":  1,
+                                                     "to":  2,
+                                                     "max_displacement_px":  30.45,
+                                                     "mean_displacement_px":  20.86,
+                                                     "max_displacement_unit":  "u11",
+                                                     "uniform_step":  true
+                                                 },
+                                                 {
+                                                     "from":  2,
+                                                     "to":  3,
+                                                     "max_displacement_px":  30.46,
+                                                     "mean_displacement_px":  20.86,
+                                                     "max_displacement_unit":  "u11",
+                                                     "uniform_step":  true
+                                                 },
+                                                 {
+                                                     "from":  3,
+                                                     "to":  4,
+                                                     "max_displacement_px":  30.45,
+                                                     "mean_displacement_px":  20.86,
+                                                     "max_displacement_unit":  "u11",
+                                                     "uniform_step":  true
+                                                 },
+                                                 {
+                                                     "from":  4,
+                                                     "to":  5,
+                                                     "max_displacement_px":  30.46,
+                                                     "mean_displacement_px":  20.86,
+                                                     "max_displacement_unit":  "u11",
+                                                     "uniform_step":  true
+                                                 },
+                                                 {
+                                                     "from":  5,
+                                                     "to":  6,
+                                                     "max_displacement_px":  30.45,
+                                                     "mean_displacement_px":  20.86,
+                                                     "max_displacement_unit":  "u11",
+                                                     "uniform_step":  true
+                                                 }
+                                             ]
+                   },
+    "start_layout":  {
+                         "source":  "tmp/\u003crun_id\u003e/A23/start-design.json，由 design-a23.ps1 生成",
+                         "method":  "径向分散搜索：start_i = 画布中心 + s_i * unitvector(final_i - 中心)，400000 次随机候选，仅保留同时满足「全程不重叠」与「完全在画布内」的布局",
+                         "selected_by":  "在全部可行布局中取 frame-01 最小圆心间距最大者",
+                         "trials":  400000,
+                         "feasible_layouts":  3828,
+                         "frame01_min_centre_distance_px":  103.56,
+                         "frame01_box_size_px":  60,
+                         "frame01_reads_as":  "12 个彼此分离、散布满画布的方块：x[42.32..574.06] y[58.49..572.27]，最小圆心间距 103.56px 大于单元边长 60px，两两不接触、不构成一个整体图形；聚合后的整体图形只在 frame-06 出现",
+                         "no_overlap":  {
+                                            "rule":  "任意两单元的包围盒在任意时刻不得同时满足 |dx|\u003c60 且 |dy|\u003c60",
+                                            "samples":  6666,
+                                            "samples_desc":  "101 个 t 采样 (步长 0.01) × 66 个单元对",
+                                            "delivered_frames_checked":  6,
+                                            "overlap_count":  0,
+                                            "overlap_in_delivered_frames":  0,
+                                            "why_it_matters":  "一旦重叠，被压住的单元在画面上会「消失」，违反题面「单元轨迹连续、无突然消失」"
+                                        }
+                     },
+    "units":  [
+                  {
+                      "id":  "u01",
+                      "role":  "roof-eave-1",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#5B4FE8",
+                      "frame_01_start":  {
+                                             "x":  42.32,
+                                             "y":  213.08
+                                         },
+                      "frame_06_final":  {
+                                             "x":  150,
+                                             "y":  240
+                                         },
+                      "path_length_px":  110.99
+                  },
+                  {
+                      "id":  "u02",
+                      "role":  "roof-eave-2",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#5B4FE8",
+                      "frame_01_start":  {
+                                             "x":  145.75,
+                                             "y":  207.88
+                                         },
+                      "frame_06_final":  {
+                                             "x":  210,
+                                             "y":  240
+                                         },
+                      "path_length_px":  71.83
+                  },
+                  {
+                      "id":  "u03",
+                      "role":  "roof-eave-3",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#6E63FF",
+                      "frame_01_start":  {
+                                             "x":  270,
+                                             "y":  165.82
+                                         },
+                      "frame_06_final":  {
+                                             "x":  270,
+                                             "y":  240
+                                         },
+                      "path_length_px":  74.18
+                  },
+                  {
+                      "id":  "u04",
+                      "role":  "roof-eave-4",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#5B4FE8",
+                      "frame_01_start":  {
+                                             "x":  397.74,
+                                             "y":  206.13
+                                         },
+                      "frame_06_final":  {
+                                             "x":  330,
+                                             "y":  240
+                                         },
+                      "path_length_px":  75.74
+                  },
+                  {
+                      "id":  "u05",
+                      "role":  "roof-eave-5",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#5B4FE8",
+                      "frame_01_start":  {
+                                             "x":  514.06,
+                                             "y":  208.98
+                                         },
+                      "frame_06_final":  {
+                                             "x":  390,
+                                             "y":  240
+                                         },
+                      "path_length_px":  127.88
+                  },
+                  {
+                      "id":  "u06",
+                      "role":  "roof-apex",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#8A7DFF",
+                      "frame_01_start":  {
+                                             "x":  270,
+                                             "y":  58.49
+                                         },
+                      "frame_06_final":  {
+                                             "x":  270,
+                                             "y":  180
+                                         },
+                      "path_length_px":  121.51
+                  },
+                  {
+                      "id":  "u07",
+                      "role":  "wall-top-left",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#2DD4BF",
+                      "frame_01_start":  {
+                                             "x":  166.11,
+                                             "y":  321.94
+                                         },
+                      "frame_06_final":  {
+                                             "x":  210,
+                                             "y":  300
+                                         },
+                      "path_length_px":  49.07
+                  },
+                  {
+                      "id":  "u08",
+                      "role":  "window",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#38BDF8",
+                      "frame_01_start":  {
+                                             "x":  270,
+                                             "y":  407.81
+                                         },
+                      "frame_06_final":  {
+                                             "x":  270,
+                                             "y":  300
+                                         },
+                      "path_length_px":  107.81
+                  },
+                  {
+                      "id":  "u09",
+                      "role":  "wall-top-right",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#2DD4BF",
+                      "frame_01_start":  {
+                                             "x":  405.94,
+                                             "y":  337.97
+                                         },
+                      "frame_06_final":  {
+                                             "x":  330,
+                                             "y":  300
+                                         },
+                      "path_length_px":  84.9
+                  },
+                  {
+                      "id":  "u10",
+                      "role":  "wall-bot-left",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#22B8A6",
+                      "frame_01_start":  {
+                                             "x":  125.61,
+                                             "y":  486.58
+                                         },
+                      "frame_06_final":  {
+                                             "x":  210,
+                                             "y":  360
+                                         },
+                      "path_length_px":  152.13
+                  },
+                  {
+                      "id":  "u11",
+                      "role":  "door",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#FF8A3D",
+                      "frame_01_start":  {
+                                             "x":  270,
+                                             "y":  512.27
+                                         },
+                      "frame_06_final":  {
+                                             "x":  270,
+                                             "y":  360
+                                         },
+                      "path_length_px":  152.27
+                  },
+                  {
+                      "id":  "u12",
+                      "role":  "wall-bot-right",
+                      "shape":  "RECTANGLE",
+                      "width":  60,
+                      "height":  60,
+                      "color":  "#22B8A6",
+                      "frame_01_start":  {
+                                             "x":  398.38,
+                                             "y":  462.57
+                                         },
+                      "frame_06_final":  {
+                                             "x":  330,
+                                             "y":  360
+                                         },
+                      "path_length_px":  123.27
+                  }
+              ],
+    "frames":  [
+                   {
+                       "index":  1,
+                       "file":  "frame-01.png",
+                       "dsl":  "frame-01.snapshot",
+                       "t":  0,
+                       "duration_ms":  250,
+                       "contains_text":  false,
+                       "units":  [
+                                     {
+                                         "id":  "u01",
+                                         "x":  42.32,
+                                         "y":  213.08
+                                     },
+                                     {
+                                         "id":  "u02",
+                                         "x":  145.75,
+                                         "y":  207.88
+                                     },
+                                     {
+                                         "id":  "u03",
+                                         "x":  270,
+                                         "y":  165.82
+                                     },
+                                     {
+                                         "id":  "u04",
+                                         "x":  397.74,
+                                         "y":  206.13
+                                     },
+                                     {
+                                         "id":  "u05",
+                                         "x":  514.06,
+                                         "y":  208.98
+                                     },
+                                     {
+                                         "id":  "u06",
+                                         "x":  270,
+                                         "y":  58.49
+                                     },
+                                     {
+                                         "id":  "u07",
+                                         "x":  166.11,
+                                         "y":  321.94
+                                     },
+                                     {
+                                         "id":  "u08",
+                                         "x":  270,
+                                         "y":  407.81
+                                     },
+                                     {
+                                         "id":  "u09",
+                                         "x":  405.94,
+                                         "y":  337.97
+                                     },
+                                     {
+                                         "id":  "u10",
+                                         "x":  125.61,
+                                         "y":  486.58
+                                     },
+                                     {
+                                         "id":  "u11",
+                                         "x":  270,
+                                         "y":  512.27
+                                     },
+                                     {
+                                         "id":  "u12",
+                                         "x":  398.38,
+                                         "y":  462.57
+                                     }
+                                 ]
+                   },
+                   {
+                       "index":  2,
+                       "file":  "frame-02.png",
+                       "dsl":  "frame-02.snapshot",
+                       "t":  0.2,
+                       "duration_ms":  250,
+                       "contains_text":  false,
+                       "units":  [
+                                     {
+                                         "id":  "u01",
+                                         "x":  63.86,
+                                         "y":  218.46
+                                     },
+                                     {
+                                         "id":  "u02",
+                                         "x":  158.6,
+                                         "y":  214.3
+                                     },
+                                     {
+                                         "id":  "u03",
+                                         "x":  270,
+                                         "y":  180.66
+                                     },
+                                     {
+                                         "id":  "u04",
+                                         "x":  384.19,
+                                         "y":  212.9
+                                     },
+                                     {
+                                         "id":  "u05",
+                                         "x":  489.25,
+                                         "y":  215.18
+                                     },
+                                     {
+                                         "id":  "u06",
+                                         "x":  270,
+                                         "y":  82.79
+                                     },
+                                     {
+                                         "id":  "u07",
+                                         "x":  174.89,
+                                         "y":  317.55
+                                     },
+                                     {
+                                         "id":  "u08",
+                                         "x":  270,
+                                         "y":  386.25
+                                     },
+                                     {
+                                         "id":  "u09",
+                                         "x":  390.75,
+                                         "y":  330.38
+                                     },
+                                     {
+                                         "id":  "u10",
+                                         "x":  142.49,
+                                         "y":  461.26
+                                     },
+                                     {
+                                         "id":  "u11",
+                                         "x":  270,
+                                         "y":  481.82
+                                     },
+                                     {
+                                         "id":  "u12",
+                                         "x":  384.7,
+                                         "y":  442.06
+                                     }
+                                 ]
+                   },
+                   {
+                       "index":  3,
+                       "file":  "frame-03.png",
+                       "dsl":  "frame-03.snapshot",
+                       "t":  0.4,
+                       "duration_ms":  250,
+                       "contains_text":  false,
+                       "units":  [
+                                     {
+                                         "id":  "u01",
+                                         "x":  85.39,
+                                         "y":  223.85
+                                     },
+                                     {
+                                         "id":  "u02",
+                                         "x":  171.45,
+                                         "y":  220.73
+                                     },
+                                     {
+                                         "id":  "u03",
+                                         "x":  270,
+                                         "y":  195.49
+                                     },
+                                     {
+                                         "id":  "u04",
+                                         "x":  370.64,
+                                         "y":  219.68
+                                     },
+                                     {
+                                         "id":  "u05",
+                                         "x":  464.44,
+                                         "y":  221.39
+                                     },
+                                     {
+                                         "id":  "u06",
+                                         "x":  270,
+                                         "y":  107.09
+                                     },
+                                     {
+                                         "id":  "u07",
+                                         "x":  183.67,
+                                         "y":  313.16
+                                     },
+                                     {
+                                         "id":  "u08",
+                                         "x":  270,
+                                         "y":  364.69
+                                     },
+                                     {
+                                         "id":  "u09",
+                                         "x":  375.56,
+                                         "y":  322.78
+                                     },
+                                     {
+                                         "id":  "u10",
+                                         "x":  159.37,
+                                         "y":  435.95
+                                     },
+                                     {
+                                         "id":  "u11",
+                                         "x":  270,
+                                         "y":  451.36
+                                     },
+                                     {
+                                         "id":  "u12",
+                                         "x":  371.03,
+                                         "y":  421.54
+                                     }
+                                 ]
+                   },
+                   {
+                       "index":  4,
+                       "file":  "frame-04.png",
+                       "dsl":  "frame-04.snapshot",
+                       "t":  0.6,
+                       "duration_ms":  250,
+                       "contains_text":  false,
+                       "units":  [
+                                     {
+                                         "id":  "u01",
+                                         "x":  106.93,
+                                         "y":  229.23
+                                     },
+                                     {
+                                         "id":  "u02",
+                                         "x":  184.3,
+                                         "y":  227.15
+                                     },
+                                     {
+                                         "id":  "u03",
+                                         "x":  270,
+                                         "y":  210.33
+                                     },
+                                     {
+                                         "id":  "u04",
+                                         "x":  357.1,
+                                         "y":  226.45
+                                     },
+                                     {
+                                         "id":  "u05",
+                                         "x":  439.62,
+                                         "y":  227.59
+                                     },
+                                     {
+                                         "id":  "u06",
+                                         "x":  270,
+                                         "y":  131.4
+                                     },
+                                     {
+                                         "id":  "u07",
+                                         "x":  192.44,
+                                         "y":  308.78
+                                     },
+                                     {
+                                         "id":  "u08",
+                                         "x":  270,
+                                         "y":  343.12
+                                     },
+                                     {
+                                         "id":  "u09",
+                                         "x":  360.38,
+                                         "y":  315.19
+                                     },
+                                     {
+                                         "id":  "u10",
+                                         "x":  176.24,
+                                         "y":  410.63
+                                     },
+                                     {
+                                         "id":  "u11",
+                                         "x":  270,
+                                         "y":  420.91
+                                     },
+                                     {
+                                         "id":  "u12",
+                                         "x":  357.35,
+                                         "y":  401.03
+                                     }
+                                 ]
+                   },
+                   {
+                       "index":  5,
+                       "file":  "frame-05.png",
+                       "dsl":  "frame-05.snapshot",
+                       "t":  0.8,
+                       "duration_ms":  250,
+                       "contains_text":  false,
+                       "units":  [
+                                     {
+                                         "id":  "u01",
+                                         "x":  128.46,
+                                         "y":  234.62
+                                     },
+                                     {
+                                         "id":  "u02",
+                                         "x":  197.15,
+                                         "y":  233.58
+                                     },
+                                     {
+                                         "id":  "u03",
+                                         "x":  270,
+                                         "y":  225.16
+                                     },
+                                     {
+                                         "id":  "u04",
+                                         "x":  343.55,
+                                         "y":  233.23
+                                     },
+                                     {
+                                         "id":  "u05",
+                                         "x":  414.81,
+                                         "y":  233.8
+                                     },
+                                     {
+                                         "id":  "u06",
+                                         "x":  270,
+                                         "y":  155.7
+                                     },
+                                     {
+                                         "id":  "u07",
+                                         "x":  201.22,
+                                         "y":  304.39
+                                     },
+                                     {
+                                         "id":  "u08",
+                                         "x":  270,
+                                         "y":  321.56
+                                     },
+                                     {
+                                         "id":  "u09",
+                                         "x":  345.19,
+                                         "y":  307.59
+                                     },
+                                     {
+                                         "id":  "u10",
+                                         "x":  193.12,
+                                         "y":  385.32
+                                     },
+                                     {
+                                         "id":  "u11",
+                                         "x":  270,
+                                         "y":  390.45
+                                     },
+                                     {
+                                         "id":  "u12",
+                                         "x":  343.68,
+                                         "y":  380.51
+                                     }
+                                 ]
+                   },
+                   {
+                       "index":  6,
+                       "file":  "frame-06.png",
+                       "dsl":  "frame-06.snapshot",
+                       "t":  1,
+                       "duration_ms":  250,
+                       "contains_text":  false,
+                       "units":  [
+                                     {
+                                         "id":  "u01",
+                                         "x":  150,
+                                         "y":  240
+                                     },
+                                     {
+                                         "id":  "u02",
+                                         "x":  210,
+                                         "y":  240
+                                     },
+                                     {
+                                         "id":  "u03",
+                                         "x":  270,
+                                         "y":  240
+                                     },
+                                     {
+                                         "id":  "u04",
+                                         "x":  330,
+                                         "y":  240
+                                     },
+                                     {
+                                         "id":  "u05",
+                                         "x":  390,
+                                         "y":  240
+                                     },
+                                     {
+                                         "id":  "u06",
+                                         "x":  270,
+                                         "y":  180
+                                     },
+                                     {
+                                         "id":  "u07",
+                                         "x":  210,
+                                         "y":  300
+                                     },
+                                     {
+                                         "id":  "u08",
+                                         "x":  270,
+                                         "y":  300
+                                     },
+                                     {
+                                         "id":  "u09",
+                                         "x":  330,
+                                         "y":  300
+                                     },
+                                     {
+                                         "id":  "u10",
+                                         "x":  210,
+                                         "y":  360
+                                     },
+                                     {
+                                         "id":  "u11",
+                                         "x":  270,
+                                         "y":  360
+                                     },
+                                     {
+                                         "id":  "u12",
+                                         "x":  330,
+                                         "y":  360
+                                     }
+                                 ]
+                   }
+               ],
+    "final_figure":  {
+                         "name":  "recognisable symmetric block figure (可识别图形)",
+                         "frame":  6,
+                         "silhouette_rows":  [
+                                                 {
+                                                     "y":  180,
+                                                     "cells_x":  [
+                                                                     270
+                                                                 ],
+                                                     "count":  1
+                                                 },
+                                                 {
+                                                     "y":  240,
+                                                     "cells_x":  [
+                                                                     150,
+                                                                     210,
+                                                                     270,
+                                                                     330,
+                                                                     390
+                                                                 ],
+                                                     "count":  5
+                                                 },
+                                                 {
+                                                     "y":  300,
+                                                     "cells_x":  [
+                                                                     210,
+                                                                     270,
+                                                                     330
+                                                                 ],
+                                                     "count":  3
+                                                 },
+                                                 {
+                                                     "y":  360,
+                                                     "cells_x":  [
+                                                                     210,
+                                                                     270,
+                                                                     330
+                                                                 ],
+                                                     "count":  3
+                                                 }
+                                             ],
+                         "mirror_symmetric_about_x":  300,
+                         "mirror_symmetric":  true,
+                         "roof_span_px":  300,
+                         "body_span_px":  180,
+                         "roof_overhang_each_side_px":  60,
+                         "elements":  "顶部居中尖块 1 + 中部横向长条 5 + 下方上行 3（正中为窗）+ 下方下行 3（正中为门）",
+                         "readings":  "可读作「宽屋檐带尖顶的小屋」，也可读作「张开双臂、头顶有冠的人形」；题面只要求末帧构成可识别图形，两种读法都成立，故不将其锁死为单一物象",
+                         "why_recognisable":  "几何与配色关于 x=300 严格镜像对称；中部横条 300px 比下方主体 180px 左右各出挑 60px；顶部尖块与底部正中橙色门块落在同一中轴，使轮廓具有明确的方向性与重心"
+                     },
+    "bounds":  {
+                   "observed_min_x":  42.32,
+                   "observed_max_x":  574.06,
+                   "observed_min_y":  58.49,
+                   "observed_max_y":  572.27,
+                   "inside_canvas":  true,
+                   "note":  "全部 72 个单元位置（6 帧 × 12）都完整落在 600×600 内，不被裁切"
+               },
+    "colour_consistency":  {
+                               "palette":  [
+                                               {
+                                                   "id":  "u01",
+                                                   "color":  "#5B4FE8"
+                                               },
+                                               {
+                                                   "id":  "u02",
+                                                   "color":  "#5B4FE8"
+                                               },
+                                               {
+                                                   "id":  "u03",
+                                                   "color":  "#6E63FF"
+                                               },
+                                               {
+                                                   "id":  "u04",
+                                                   "color":  "#5B4FE8"
+                                               },
+                                               {
+                                                   "id":  "u05",
+                                                   "color":  "#5B4FE8"
+                                               },
+                                               {
+                                                   "id":  "u06",
+                                                   "color":  "#8A7DFF"
+                                               },
+                                               {
+                                                   "id":  "u07",
+                                                   "color":  "#2DD4BF"
+                                               },
+                                               {
+                                                   "id":  "u08",
+                                                   "color":  "#38BDF8"
+                                               },
+                                               {
+                                                   "id":  "u09",
+                                                   "color":  "#2DD4BF"
+                                               },
+                                               {
+                                                   "id":  "u10",
+                                                   "color":  "#22B8A6"
+                                               },
+                                               {
+                                                   "id":  "u11",
+                                                   "color":  "#FF8A3D"
+                                               },
+                                               {
+                                                   "id":  "u12",
+                                                   "color":  "#22B8A6"
+                                               }
+                                           ],
+                               "same_colours_every_frame":  true,
+                               "same_count_every_frame":  true,
+                               "same_scale_every_frame":  true,
+                               "evidence":  "帧 DSL 由同一份 $UNITS 表生成，仅 x/y 随 t 变化；生成器对 6 帧逐帧断言 units=12"
+                           },
+    "problems":  [
+
+                 ]
+}

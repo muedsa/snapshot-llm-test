@@ -1,0 +1,163 @@
+{
+    "path_base": "suite_root",
+    "schema_version": 1,
+    "task_id": "A10",
+    "title": "透明合成与滤镜语义实验板",
+    "track": "advanced",
+    "round_count": 1,
+    "status": "completed",
+    "started_at": "2026-10-03T12:31:38+08:00",
+    "ended_at": "2026-10-03T13:05:51+08:00",
+    "timezone": "Asia/Shanghai (UTC+08:00)",
+    "wall_clock_seconds": 2053,
+    "wall_clock_note": "12:31:38 起（suite-state 切到 A10=in_progress 的时刻）到 13:05:51 止。含读题面、2 次真实文档请求、生成器编写、2 次交付渲染 + 1 次覆盖恢复渲染、7 次看图、measure/verify/zoom 三个脚本的编写与调试。无平台中断、无限流等待。",
+    "first_image_at": "2026-10-03T12:49:03.431+08:00",
+    "first_image_seconds": 1045.431,
+    "first_usable_image_at": "2026-10-03T12:52:59.505+08:00",
+    "first_usable_image_seconds": 1281.505,
+    "first_usable_image_note": "第一张能渲染出来的图是 v01（1045.431s），但它页脚最后一行被画布底边裁掉，不满足\"所有证据清楚可见\"，因此不算 usable。第一张满足全部要求的是 v02（1281.505s）。236s 的差值就是那一处视觉迭代。2053s 墙钟里服务往返只有 13.5s，其余是本地排版、像素扫描与脚本调试。",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_or_queue_wait_seconds": 0,
+    "rate_limit_note": "3 次 /snapshot 全部 200，无 429/503、无 Retry-After、无排队。",
+    "request_duration_sum_ms": 13456.6,
+    "request_duration_note": "3 次 /snapshot 往返合计 13456.6 ms（8077.4 + 2454.7 + 2924.5）。另 2 次文档请求由 webfetch 工具发出，该工具不暴露状态码与耗时，故 duration 记 null，不计入本和。该和只是网络往返之和，不含本地 DSL 生成、解析解推导、逐像素扫描与看图，也不能当墙钟 2053s。",
+    "requests": {
+        "render_total": 3,
+        "render_success": 3,
+        "render_failed": 0,
+        "render_retry": 0,
+        "render_archive_recovery": 1,
+        "render_archive_recovery_note": "A10-recover-v01-archive 不是重试：它是在 v02 渲染误覆盖交付路径上的 v01 PNG 之后，用同一条 DSL v01 重新渲染到 archive/compositing-lab-v01.png 以恢复\"不覆盖尝试\"这条约定。返回 247252 字节，与 requests.jsonl 里原 v01 响应记录的字节数完全一致。",
+        "other_service_total": 0,
+        "document_total": 2,
+        "document_ids": [
+            "A10-doc-01-ai-guide",
+            "A10-doc-02-parser-tags"
+        ],
+        "document_note": "两次都是本题真实发起的 HTTPS GET（ai-guide.md 与 parser-tags 参考页），不是复用共享准备。webfetch 工具不返回状态码、耗时与响应体大小，故这些字段为 null；实际依赖的原文片段已原样抄入 tmp/run-20261002-220723-mimo/_suite/probe/A10-doc-excerpts.md，并在 composite-audit.json 的 documentation_used 中逐条引用。未缓存的正文在 response_file 中如实标 null，不冒充已落盘。"
+    },
+    "dsl_versions": 2,
+    "dsl_versions_list": [
+        "compositing-lab-v01",
+        "compositing-lab-v02"
+    ],
+    "dsl_versions_note": "gen.ps1 带 -Ver，两个 .snapshot 都保留、互不覆盖（23226 B / 23408 B）。v01 渲染过 1 次（首版，页脚被裁），v02 渲染过 1 次（交付）。交付的 compositing-lab.snapshot 是 v02 的字节拷贝，SHA256 0E7FD4D5E7979C99CF9047E065CDDCA4DC7FDC60209BC6D6B52AB0EDCBC9B0E5。",
+    "image_views": 7,
+    "image_views_note": "全部经实际图像查看工具打开：1) v01 整图 1440x1100（12:49+08:00，发现页脚被底边裁掉）；2) v02 整图（12:53+08:00，交付版，页脚 4 行完整）；3) zoom-sample.png 2.2x（①② 重叠与断口十字）；4) zoom-card3.png 3x（第一次裁剪取错区域，裁到了 ① 的实验区，保留不删）；5) zoom-zone3.png 2.6x（③ 整格：卡外锐利 / 卡内抹平 / 文字锐利）；6) zoom-zone4.png 2.6x（④ 整格：文字与红条一起糊、卡外仍锐利）；7) zoom-clip.png 1.8x（⑤ 金色矩形 vs ⑥ 金色正圆）。另有 measure.ps1 与 verify.ps1 的像素扫描：6 个采样点 + 5x5 邻域、4 条 30px 行程跨度、2 个文字框对比度、2 个金色包围盒、全画布墨迹包围盒——扫描是看图的佐证，不替代看图。",
+    "iterations": {
+        "baseline": 1,
+        "completed_visual": 1,
+        "syntax_fix": 0,
+        "retry": 0,
+        "alternative": 0,
+        "requirement_change": 0,
+        "incomplete": 0,
+        "probe_exploration": 0
+    },
+    "iterations_note": "baseline = v01 首次交付渲染。完成的视觉迭代 1 次：看 v01 时发现页脚第 3 行（\"128/255 与 0.5 的差别\"整段）被 Text 软换行成两行，第二行落到画布底边之外被裁掉，违反\"所有证据清楚可见\"；改成两行短句并把页脚上移到 y=964/994/1024/1054，重渲 v02 后复看 + 4 张局部放大确认达标。语法修复渲染 0（脚本问题都在本地解决，不产生渲染请求）、重试 0、备选 0、需求变更 0、探测 0（本题没做结构探测，Opacity / ClipRRect / ClipOval / ImageFiltered / ColorFiltered 的语义先从真实文档取得再落笔）。首轮只有这一处缺陷，改完即停，没有第 3 张交付 PNG。",
+    "final_pngs": [
+        {
+            "file": "compositing-lab.png",
+            "width": 1440,
+            "height": 1100,
+            "dsl": "compositing-lab.snapshot",
+            "source": "open-snapshot real service response",
+            "bytes": 251582,
+            "png_signature_verified": true,
+            "png_ihdr_verified": "width=1440 height=1100 (bytes 16..23 read as big-endian int32 with int casts)",
+            "service_request_id": "1898d9af-38b5-444e-b1cb-39a27b19534c",
+            "server_timing": "render;dur=494.2, total;dur=510.6",
+            "post_processed": false,
+            "byte_integrity_note": "HTTP 响应体由 render.ps1 直接写入该路径，无中间副本，因此不存在可比对的临时拷贝；post_processed=false，未做任何像素级改动。该路径的字节属于 v02 渲染，属于 v01 的字节见 recovery_notes。",
+            "sha256": "1615110BCA672123B59DC5CE25D359FD620DB08F09F560010557BE4B4E3E8936"
+        }
+    ],
+    "final_png_count": 1,
+    "non_final_images": [
+        {
+            "file": "outputs/run-20261002-220723-mimo/A10/archive/compositing-lab-v01.png",
+            "purpose": "首轮尝试的恢复件：v02 渲染曾误写回交付路径覆盖了 v01 的 PNG，随后用同一条 DSL v01 重新渲染到 archive/ 以保住这次尝试",
+            "bytes": 247252,
+            "service_request_id": "ece538a1-85c4-4ea2-b327-20d61c0f768d",
+            "is_final": false,
+            "disclosure": "不是新版本、不是新要求，是一次覆盖事故的恢复产物；字节数与被覆盖前的原响应记录一致。"
+        },
+        {
+            "file": "tmp/run-20261002-220723-mimo/A10/zoom-sample.png",
+            "purpose": "交付图 2.2x 局部放大：①② 重叠区与断口十字",
+            "is_final": false
+        },
+        {
+            "file": "tmp/run-20261002-220723-mimo/A10/zoom-card3.png",
+            "purpose": "第一次裁剪取错了区域（裁到 ① 的实验区），保留不删，随后补裁 zoom-zone3/zoom-zone4",
+            "is_final": false
+        },
+        {
+            "file": "tmp/run-20261002-220723-mimo/A10/zoom-zone3.png",
+            "purpose": "③ 整格 2.6x：卡外条纹锐利 / 卡内抹平 / 文字锐利",
+            "is_final": false
+        },
+        {
+            "file": "tmp/run-20261002-220723-mimo/A10/zoom-zone4.png",
+            "purpose": "④ 整格 2.6x：文字与红条随子树一起糊、卡外条纹仍锐利",
+            "is_final": false
+        },
+        {
+            "file": "tmp/run-20261002-220723-mimo/A10/zoom-clip.png",
+            "purpose": "⑤ 金色矩形 vs ⑥ 金色正圆，1.8x，裁剪边界证据",
+            "is_final": false
+        }
+    ],
+    "artifacts": [
+        "compositing-lab.png",
+        "compositing-lab.snapshot",
+        "composite-audit.json",
+        "snapshot-usage.md",
+        "task-metrics.json",
+        "archive/compositing-lab-v01.png"
+    ],
+    "service": "https://open-snapshot.muedsa.com",
+    "extra_deliverables": {
+        "composite_audit_json": "41/41 PASS。逐格给出题面原文、实现方式、像素证据与判定（①② 合成、③④ 锐糊 A/B、⑤⑥ 滤色与裁剪）；顶层给出 1440x1100 布局、6 格 320x240、区间距 80/180、左右留白 160/160、卡 240x160 r20、σ=6、#F6B94A MULTIPLY、ClipOval 仅 1 处、Opacity(0.5) 仅 1 处、最小字号 20；sampling 段给出解析解、实测、5x5 均值、±2 LSB 容差及其理由，以及 128/255 与 0.5 差别的四条定量解释；verification_method 段给出 4 类核对方法与反走样处理方式；documentation_used 段给出两条真实文档请求的 URL、时间与逐条原文。"
+    },
+    "visual_defects_fixed": [
+        "页脚第 3 行把「128/255 与 0.5 的差别」和「两个面板的合成顺序」写成一整行，Text 软换行成两行后第二行被画布底边裁掉，只露半截；拆成 y=1024 与 y=1054 两行短句，页脚整体上移到 964 起。复看整图 + 全画布墨迹扫描（墨迹 y959..1076，最后一行干净）确认已修。"
+    ],
+    "artifact_defects_fixed": [
+        "v02 渲染的 response_file 直接写回了交付文件名 compositing-lab.png，覆盖了 v01 的 PNG。违反「不覆盖尝试」。用同一条 DSL v01 重新渲染到 archive/compositing-lab-v01.png 恢复，并在 requests.jsonl 追加 A10-lognote-archive-recovery 说明当前该路径字节属于 v02（日志只追加，不改历史行）。"
+    ],
+    "checker_defects_fixed": [
+        "gen.ps1：格式串与 -f 之间换行导致 `Missing closing ')' in expression.`——PowerShell 在括号表达式里也认为换行后表达式已结束；改成先赋格式串变量再同行 -f",
+        "measure.ps1：`return ,@($minx - $cx, $miny - $cy, ...)` 因逗号比 - 结合更紧，实际是 `$minx - ($cx,$miny) - ...`，抛 op_Subtraction 不存在；逐元素加括号",
+        "gen.ps1：`@([char]0x2460 + '文字', ...)` 同样被逗号吃掉，改为先 `[string][char]0x2460` 存变量再 `('' + $C1 + '文字')`",
+        "verify.ps1：`foreach ($z ...) { $zx = $ZX[$z % 3] }` 的 `$zx` 与 `$ZX` 大小写不敏感，第一次循环就把数组覆盖成整数，报 Cannot index into a null array；循环变量改名 zi/gx/gy",
+        "verify.ps1：G01 用 `<Container width=\"320\" height=\"240\" color=\"#FFFFFF\"/>` 计数得 10 而不是 6——条纹层的白色基底也长这样；改成按 6 个区的绝对坐标找区外壳",
+        "verify.ps1：Z02 在区局部 (6,6) 找纯白，但 ③④ 的 x=0..8 是第一条深色条纹，必然不是白；改成检查 4 个角（内缩 2px）都不是页面底色，即整块被画满",
+        "verify.ps1：`$p1blue` 误用了红叠白的背景，与 `$p1ovl` 算成同一个式子；拆开后 ① 蓝区 (127,127,255)、重叠区 (127,63,191) 才各自对上实测",
+        "verify.ps1：`$arms = @(Rgb ..., Rgb ...)` 这种命令式数组字面量不可靠；改为 4 个独立变量",
+        "verify.ps1：`$out += (Rgb ...)` 会把 int[3] 摊平成 3 个元素，5x5 网格变成 75 个标量；改用 List[object].Add()",
+        "verify.ps1：矩形坐标正则没有收尾引号，`color=\"#FF0000\"` 会同时命中 `#FF000080`；补上收尾引号后 ①② 的不透明/半透明矩形才能分别计数",
+        "measure.ps1：条纹锐度取样行 y=40 正好压在卡的顶边反走样上，导致\"卡内外都是锐的\"假象；下移到 y=70（卡内、文字上方）后才测出真值"
+    ],
+    "recovery_notes": [
+        "覆盖事故：v02 渲染写回交付路径覆盖 v01 PNG。恢复 = 同 DSL 重渲到 archive/，字节数 247252 与原记录一致；事故写入 requests.jsonl 注记行、snapshot-usage.md §5 与本字段，不隐瞒",
+        "裁剪失误：zoom-card3.png 第一次裁到 ① 的区域而不是 ③；保留该文件，另补 zoom-zone3 / zoom-zone4，iterations.jsonl 第 2 条如实记下",
+        "2 次文档请求的响应体未落盘（工具不支持），只保留实际依赖的原文片段于 _suite/probe/A10-doc-excerpts.md，response_file 字段如实标 null"
+    ],
+    "verification_tools": [
+        "tmp/run-20261002-220723-mimo/A10/gen.ps1 -Ver - 读题面常量生成完整 DSL，带 -Ver 保证 v01/v02 都保留",
+        "tmp/run-20261002-220723-mimo/A10/measure.ps1 - 首轮后的快速像素核查（采样点、金色包围盒、条纹锐度、文字对比度、全画布墨迹包围盒、页脚行数）",
+        "tmp/run-20261002-220723-mimo/A10/verify.ps1 - 只读交付件，独立算解析解 + 41 项检查，产出 composite-audit.json",
+        "tmp/run-20261002-220723-mimo/A10/zoom.ps1 - NearestNeighbor 局部放大，产出 5 张 zoom-*.png"
+    ],
+    "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "image_input_usage": null,
+        "cost": null,
+        "currency": null,
+        "source": "not provided by the execution platform",
+        "unknown_fields_reason": "执行平台未暴露 token/图像/费用遥测；字段留 null，不以字符数、文件大小或限流余量估算。"
+    },
+    "unresolved_issues": []
+}

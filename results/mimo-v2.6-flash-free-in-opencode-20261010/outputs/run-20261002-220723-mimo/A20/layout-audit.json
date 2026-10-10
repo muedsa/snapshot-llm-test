@@ -1,0 +1,159 @@
+{
+    "path_base": "suite_root",
+    "generated_at":  "2026-10-05T10:25:37+08:00",
+    "task":  "A20",
+    "canvas":  {
+                   "width":  1600,
+                   "height":  1100
+               },
+    "counts":  {
+                   "markers":  24,
+                   "labels":  24,
+                   "leaders":  4,
+                   "labels_over_24px":  4
+               },
+    "label_intersections":  {
+                                "rule":  "every pair of label boxes separated by \u003e= 4 px",
+                                "threshold_px":  4,
+                                "min_gap_px":  7.9,
+                                "min_gap_pair":  "M06-M04",
+                                "violations":  0,
+                                "detail":  [
+
+                                           ]
+                            },
+    "label_point_coverage":  {
+                                 "rule":  "no label box may cover a marker other than its own (clearance \u003e= marker radius + 6 px)",
+                                 "min_clearance_px":  18,
+                                 "min_clearance_pair":  "M11 vs M18",
+                                 "violations":  0
+                             },
+    "leader_required":  {
+                            "rule":  "labels farther than 24 px from their marker must carry a leader line",
+                            "labels_over_24px":  [
+                                                     "M09",
+                                                     "M11",
+                                                     "M08",
+                                                     "M18"
+                                                 ],
+                            "labels_with_leader":  [
+                                                       "M08",
+                                                       "M11",
+                                                       "M09",
+                                                       "M18"
+                                                   ],
+                            "missing":  [
+
+                                        ],
+                            "violations":  0
+                        },
+    "line_through_label":  {
+                               "rule":  "no leader segment may enter any label box or any annotation text box",
+                               "segments_checked":  7,
+                               "violations":  0
+                           },
+    "line_wrong_point":  {
+                             "rule":  "a leader must not pass within (marker radius + 5 px) of a marker it does not belong to",
+                             "violations":  0
+                         },
+    "line_crossings":  {
+                           "rule":  "at most 3 leader/leader crossings; no junction dot is drawn where lines cross",
+                           "limit":  3,
+                           "count":  0,
+                           "pairs":  [
+
+                                     ],
+                           "junction_dots_drawn":  0,
+                           "violations":  0
+                       },
+    "boundary_check":  {
+                           "rule":  "label boxes inside 1600x1100 with \u003e= 8 px margin, and outside the title band (y\u003c160) and the axis band (y\u003e916)",
+                           "min_margin_px":  274.5,
+                           "violations":  0,
+                           "all_inside":  true
+                       },
+    "annotation_text_check":  {
+                                  "rule":  "label boxes must not sit on axis ticks, captions, title or legend",
+                                  "reserved_boxes":  [
+                                                         "title",
+                                                         "subtitle",
+                                                         "top-note",
+                                                         "y-caption",
+                                                         "ytick-100",
+                                                         "ytick-75",
+                                                         "ytick-50",
+                                                         "ytick-25",
+                                                         "ytick-0",
+                                                         "xtick-0",
+                                                         "xtick-25",
+                                                         "xtick-50",
+                                                         "xtick-75",
+                                                         "xtick-100",
+                                                         "x-caption",
+                                                         "top3-callout",
+                                                         "legend-1",
+                                                         "legend-2"
+                                                     ],
+                                  "violations":  0
+                              },
+    "association_check":  {
+                              "rule":  "a label placed within 24 px (no leader) must be nearest to its own marker",
+                              "min_margin_px":  6.94,
+                              "violations":  0
+                          },
+    "text_size":  {
+                      "label_font_size":  20,
+                      "rule":  "label body text \u003e= 20 px",
+                      "violations":  0
+                  },
+    "marker_geometry":  {
+                            "diameter":  12,
+                            "shrink_applied":  false,
+                            "shrink_to":  0,
+                            "min_edge_gap_px":  11.86,
+                            "min_edge_gap_pair":  "M10-M11",
+                            "occluding_pairs":  0,
+                            "center6":  [
+                                            "M09",
+                                            "M08",
+                                            "M10",
+                                            "M12",
+                                            "M11",
+                                            "M06"
+                                        ],
+                            "note":  "no marker pair occludes another at the specified 12 px diameter, so the permitted shrink to 8 px was not needed; the edge gap is recorded above"
+                        },
+    "annotations_present":  [
+                                "x axis + ticks 0/25/50/75/100",
+                                "y axis + ticks 0/25/50/75/100",
+                                "axis range 0-100 on both axes",
+                                "unit 指数 on the y axis",
+                                "top-3 markers ringed and listed by value"
+                            ],
+    "visual_checks":  {
+                          "center6_zoom":  "CONFIRMED. Crops taken from the delivered render: zoom-center6 (560,440)-(1060,700) at 3x and zoom-tight (700,460)-(980,650) at 5x, plus v-center-01.png cropped from annotated-map-v09. All six centre markers M06/M08/M09/M10/M11/M12 and their label chips verified in place. All four leaders verified: M09 horizontal leader terminates exactly on the M09 dot; M08 leader carries one visible bend (vertical up from the chip NE corner, then horizontal into the ring); M11 short horizontal leader reaches its dot; M18 vertical leader drops into its chip. Opaque chips correctly hide the gridlines they cover; no chip covers any marker.",
+                          "leaders_zoom":  "CONFIRMED. 7 leader segments across 4 leaders inspected at 3x-5x: 0 enter a label box, 0 enter an annotation text box, 0 pass within (marker radius + 5 px) of a marker they do not belong to, 0 leader/leader crossings (limit 3), and no junction dot is drawn anywhere. Closest approach is the M09 horizontal segment passing 9.8 px clear of the M08 ring stroke.",
+                          "whole_view":  "CONFIRMED then RE-CONFIRMED after the fix. Full frame opened after the centre zoom: 24/24 chips carry id + name + value, 24 dots and 3 top-3 rings all present, x/y axes with 0/25/50/75/100 ticks, range 0-100 on both axes, unit on the y axis, top-3 callout and legend legible, nothing clipped. Two real margin defects were found on this view and fixed in the v09 rebuild: (a) the y-axis caption started at x=8 while the title starts at x=41; (b) the top-right note ended at x=1594, only 5 px from the canvas edge. Pixel re-measurement of v09: y-caption left = 40, top-note right = 1558 (41 px margin, matching the title). Final confirmation order on the delivered bytes: centre-6 zoom first, then the whole, as the task requires."
+                      },
+    "problems":  [
+
+                 ],
+    "verified_at":  "2026-10-05T10:26:23+08:00",
+    "view_evidence":  {
+                          "source_render":  "tmp/run-20261002-220723-mimo/A20/annotated-map-v09.png",
+                          "delivered_render":  "outputs/run-20261002-220723-mimo/A20/annotated-map.png (SHA-256 prefix EF25AFBA48881A72, verified equal to source_render; width/height read from the PNG IHDR as 1600x1100)",
+                          "view_order":  "centre-6 zoom first, then the whole, as the task requires; the v08 baseline round opened the whole first and is recorded as such",
+                          "centre6_crops":  [
+                                                "zoom-center6-v08.png (3x, 1500x780)",
+                                                "zoom-tight-v08.png (5x, 1400x950)",
+                                                "v-center-01.png (3x, re-cropped from the delivered bytes)"
+                                            ],
+                          "annotation_crops":  [
+                                                   "v-tnote-01.png (4x, 1440x240)",
+                                                   "v-ycap-01.png (4x, 1520x400)"
+                                               ],
+                          "pixel_measurement":  "measure.ps1 GDI+ band scan over v08 and v09; top-note right edge 1594 -\u003e 1558, y-caption left edge 8 -\u003e 40, all other measured bands unchanged",
+                          "mapping_evidence":  "label-layout.json mapping.corner_checks: all four logical corners map onto the expected plot corners (0,0)-\u003e(280,920) bottom-left, (100,0)-\u003e(1320,920) bottom-right, (0,100)-\u003e(280,160) top-left, (100,100)-\u003e(1320,160) top-right, each computed with the same expressions the marker loader uses; data_mirrored = false",
+                          "note":  "the image viewer returned mismatched buffers for 7 reads, so the margin claims above rest on the GDI+ pixel measurements and on single, uniquely-named re-reads rather than on those reads"
+                      }
+}

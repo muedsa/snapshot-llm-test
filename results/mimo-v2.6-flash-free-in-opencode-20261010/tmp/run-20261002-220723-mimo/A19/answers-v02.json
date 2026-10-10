@@ -1,0 +1,275 @@
+{
+    "schema":  "snapshot-suite/answers/v1",
+    "task":  "A19",
+    "note":  "每个答案附计算方法、坐标容差与可见性依据；uniqueness_check 记录生成时实际做过的唯一性断言。",
+    "geometry_source":  "scene-data.json（与 grid-scene.png 同源的同一份真实几何）",
+    "occlusion_proof":  "equivalence.json",
+    "counts":  {
+                   "total":  14,
+                   "two_step":  5,
+                   "indeterminate":  1
+               },
+    "numbering":  {
+                      "requirement":  "编号\u003e=18",
+                      "interpretation":  "TASK.md 同时规定\"为网格图写12道新题\"与\"为遮挡图写2题\"，合计14题，因此该条不可能指题目数量；它要求带编号的实体至少18个。下面按编号族逐项给出实际数量。",
+                      "grid_object_ids":  "G01..G64",
+                      "grid_object_count":  64,
+                      "occlusion_object_ids":  "V01..V06",
+                      "occlusion_object_count":  6,
+                      "question_ids":  "Q01..Q14",
+                      "question_count":  14,
+                      "numbered_entities":  84,
+                      "meets_18":  true,
+                      "distinct_object_ids_named_in_question_text":  4,
+                      "object_ids_referenced_anywhere_in_questions_or_answers":  28,
+                      "visible_object_ids_named_in_occlusion_text":  6
+                  },
+    "answers":  [
+                    {
+                        "id":  "Q01",
+                        "answer":  "G47",
+                        "answer_type":  "object-id",
+                        "method":  "在 64 个对象上按 color=green AND shape=ring AND size=80 三个条件取交集。",
+                        "coordinate_tolerance":  "1.5 px（按画面量取中心/边缘时的读数容差；答案为 ID 或整数，容差不影响结论）",
+                        "visibility_basis":  "网格图中 64 个对象全部可见、无遮挡，颜色、形状、尺寸均可直接从 grid-scene.png 判读。",
+                        "uniqueness_check":  {
+                                                 "rule":  "three-condition intersection",
+                                                 "matches":  1,
+                                                 "ids":  [
+                                                             "G47"
+                                                         ]
+                                             }
+                    },
+                    {
+                        "id":  "Q02",
+                        "answer":  "G56",
+                        "answer_type":  "object-id",
+                        "method":  "①过滤 color=purple AND size=48，得到 5 个候选（G05,G07,G43,G50,G56）；②按中心 x 升序（x 相同按 y 升序）取最后一名。",
+                        "coordinate_tolerance":  "1.5 px（按画面量取中心/边缘时的读数容差；答案为 ID 或整数，容差不影响结论）",
+                        "visibility_basis":  "同 Q01：全部候选对象在网格图中完整可见。",
+                        "uniqueness_check":  {
+                                                 "rule":  "filter then max cx (tie-break min cy)",
+                                                 "candidates":  5,
+                                                 "candidate_ids":  [
+                                                                       "G05",
+                                                                       "G07",
+                                                                       "G43",
+                                                                       "G50",
+                                                                       "G56"
+                                                                   ],
+                                                 "winner_cx":  1465
+                                             }
+                    },
+                    {
+                        "id":  "Q03",
+                        "answer":  "G29",
+                        "answer_type":  "object-id",
+                        "method":  "在同一行中筛选 cx \u003e 705，得到 4 个（G29,G30,G31,G32），取 cx 最小者；次小者与胜者的中心 x 相差 190 px，无并列。",
+                        "coordinate_tolerance":  "1.5 px（按画面量取中心/边缘时的读数容差；答案为 ID 或整数，容差不影响结论）",
+                        "visibility_basis":  "同一行的 8 个对象全部可见，中心 y 可直接由包围框量得。",
+                        "uniqueness_check":  {
+                                                 "rule":  "same row AND cx \u003e anchor AND min cx",
+                                                 "candidates":  4,
+                                                 "gap_to_next_px":  190
+                                             }
+                    },
+                    {
+                        "id":  "Q04",
+                        "answer":  2,
+                        "answer_type":  "integer-count",
+                        "method":  "①同 cx \u003c 1085 且同 row 取 cx 最大者，得到 X=G29（颜色 green）；②统计第 4 行中 color=green 的对象。",
+                        "coordinate_tolerance":  "整数，无容差",
+                        "visibility_basis":  "第 4 行的 8 个对象与 X 均完全可见，颜色可直接判读。",
+                        "uniqueness_check":  {
+                                                 "rule":  "same row AND cx \u003c anchor AND max cx, then count same colour in that row",
+                                                 "step1_object":  "G29",
+                                                 "step1_color":  "green",
+                                                 "row":  4,
+                                                 "count":  2
+                                             }
+                    },
+                    {
+                        "id":  "Q05",
+                        "answer":  "G28",
+                        "answer_type":  "object-id",
+                        "method":  "对 64 个对象逐一计算到 P(777,613) 的欧氏距离并升序排列，第一名 G28 = 116.82 px，第二名 G20 = 121.61 px，差距 4.78 px，远大于读数容差，无并列。",
+                        "coordinate_tolerance":  "±1.5 px（距离读数容差；与第二名相差 4.8 px，结论不受影响）",
+                        "visibility_basis":  "64 个中心点全部可见；P 点是题面给定的固定点，不依赖画面外信息。",
+                        "uniqueness_check":  {
+                                                 "rule":  "min euclidean distance to P(777,613)",
+                                                 "first_px":  116.82,
+                                                 "second_px":  121.61,
+                                                 "second_id":  "G20",
+                                                 "margin_px":  4.78
+                                             }
+                    },
+                    {
+                        "id":  "Q06",
+                        "answer":  "G53",
+                        "answer_type":  "object-id",
+                        "method":  "①同 row 取 cx 最小且 cx \u003e 705 的对象 -\u003e X=G45（中心 895,1085）；②同 col 取 cy 最小且 cy \u003e 1085 的对象 -\u003e Y=G53（中心 895,1275）。两步各只有 1 个候选满足严格不等式。",
+                        "coordinate_tolerance":  "1.5 px（按画面量取中心/边缘时的读数容差；答案为 ID 或整数，容差不影响结论）",
+                        "visibility_basis":  "两步涉及的同行、同列对象全部可见，无遮挡。",
+                        "uniqueness_check":  {
+                                                 "rule":  "same-row right-neighbour then same-column down-neighbour",
+                                                 "step1":  "G45",
+                                                 "step2":  "G53",
+                                                 "strict_inequalities":  "cx \u003e 705 then cy \u003e 1085"
+                                             }
+                    },
+                    {
+                        "id":  "Q07",
+                        "answer":  "G33",
+                        "answer_type":  "object-id",
+                        "method":  "排序键链 size DESC -\u003e cx ASC -\u003e cy ASC。尺寸 80 的对象共 22 个，其中中心 x 最小为 135（第 1 列），并列的有 G33,G41，再按中心 y 升序取 G33。三段键链构成全序，第一名唯一。",
+                        "coordinate_tolerance":  "1.5 px（按画面量取中心/边缘时的读数容差；答案为 ID 或整数，容差不影响结论）",
+                        "visibility_basis":  "尺寸由画面中圆的直径或方的边长量得，全部对象可见。",
+                        "uniqueness_check":  {
+                                                 "rule":  "size DESC, cx ASC, cy ASC",
+                                                 "winner_size":  80,
+                                                 "winner_cx":  135,
+                                                 "winner_cy":  895,
+                                                 "same_size_same_cx":  [
+                                                                           "G33",
+                                                                           "G41"
+                                                                       ]
+                                             }
+                    },
+                    {
+                        "id":  "Q08",
+                        "answer":  3,
+                        "answer_type":  "integer-count",
+                        "method":  "①蓝色对象共 16 个，按 cx ASC -\u003e cy ASC 排序，第 10 名是 G14（中心 1085,325）；②统计第 2 行中 color=blue 的对象，得到 3 个。",
+                        "coordinate_tolerance":  "整数，无容差",
+                        "visibility_basis":  "全部蓝色对象与其所在行的 8 个对象均完整可见，颜色可直接判读。",
+                        "uniqueness_check":  {
+                                                 "rule":  "sort blue by cx ASC/cy ASC, take 10th, then count blue in that row",
+                                                 "step1_object":  "G14",
+                                                 "step1_rank":  10,
+                                                 "row":  2,
+                                                 "count":  3,
+                                                 "blues_total":  16
+                                             }
+                    },
+                    {
+                        "id":  "Q09",
+                        "answer":  1,
+                        "answer_type":  "integer-count",
+                        "method":  "筛选 row=1 AND color=purple，得到 G15，计 1 个。",
+                        "coordinate_tolerance":  "整数，无容差",
+                        "visibility_basis":  "第 2 行的 8 个对象全部可见，颜色可直接判读。",
+                        "uniqueness_check":  {
+                                                 "rule":  "count row=1 AND color=purple",
+                                                 "row":  2,
+                                                 "count":  1,
+                                                 "ids":  [
+                                                             "G15"
+                                                         ]
+                                             }
+                    },
+                    {
+                        "id":  "Q10",
+                        "answer":  4,
+                        "answer_type":  "integer-count",
+                        "method":  "筛选 shape=rounded-square AND color=purple，得到 G03,G21,G34,G54，计 4 个。",
+                        "coordinate_tolerance":  "整数，无容差",
+                        "visibility_basis":  "64 个主体全部可见，形状（圆角方与正方/圆/圆环的区别）可直接辨认。",
+                        "uniqueness_check":  {
+                                                 "rule":  "count shape=rounded-square AND color=purple",
+                                                 "count":  4,
+                                                 "ids":  [
+                                                             "G03",
+                                                             "G21",
+                                                             "G34",
+                                                             "G54"
+                                                         ]
+                                             }
+                    },
+                    {
+                        "id":  "Q11",
+                        "answer":  3,
+                        "answer_type":  "integer-count",
+                        "method":  "①shape=circle AND size=80 得到 7 个（G08,G12,G18,G37,G41,G45,G46）；②在其中筛选 color=blue，得到 G12,G37,G41，计 3 个。",
+                        "coordinate_tolerance":  "整数，无容差",
+                        "visibility_basis":  "两步全部对象均可见；圆的直径可直接量得。",
+                        "uniqueness_check":  {
+                                                 "rule":  "count circle AND size=80, then count blue within",
+                                                 "step1_count":  7,
+                                                 "step1_ids":  [
+                                                                   "G08",
+                                                                   "G12",
+                                                                   "G18",
+                                                                   "G37",
+                                                                   "G41",
+                                                                   "G45",
+                                                                   "G46"
+                                                               ],
+                                                 "count":  3,
+                                                 "ids":  [
+                                                             "G12",
+                                                             "G37",
+                                                             "G41"
+                                                         ]
+                                             }
+                    },
+                    {
+                        "id":  "Q12",
+                        "answer":  "G37",
+                        "answer_type":  "object-id",
+                        "method":  "先求包围框完全落在 R 内的对象，得到 4 个（G28(s=64,bbox 673..737 × 673..737); G29(s=64,bbox 863..927 × 673..737); G36(s=64,bbox 673..737 × 863..927); G37(s=80,bbox 855..935 × 855..935)）；再要求 size=80，唯一剩下 G37。",
+                        "coordinate_tolerance":  "±1.5 px（按包围框边缘量取；G37 的包围框距 R 各边至少 55 px）",
+                        "visibility_basis":  "包围框由对象自身的中心与尺寸唯一确定，全部可见；R 的边界是题面给定的固定坐标。",
+                        "uniqueness_check":  {
+                                                 "rule":  "bbox fully inside R AND size=80",
+                                                 "inside_R":  [
+                                                                  "G28",
+                                                                  "G29",
+                                                                  "G36",
+                                                                  "G37"
+                                                              ],
+                                                 "inside_R_count":  4,
+                                                 "size80_count":  1
+                                             }
+                    },
+                    {
+                        "id":  "Q13",
+                        "answer":  "无法确定",
+                        "answer_type":  "explicit-indeterminacy",
+                        "method":  "可见画面只给出面板的正面，面板内部不含任何可见信息，因此「完全被覆盖的对象个数」不存在任何可从画面推出的约束。该题的不可判定性由交付物本身证明：occlusion.png 与 occlusion-alternative.png 是像素完全等价的两张图（equivalence.json 记录 640,000 像素中 0 个不同、SHA-256 相同），但两者的隐藏内容不同——A 完全隐藏 2 个对象（绿圆 d140、紫方 90）并半隐藏 1 条蓝条，B 完全隐藏 3 个对象（橙圆环 160/80、蓝圆 90、绿方 70）并半隐藏同一条蓝条的更短一段。同一张可见图对应 2 或 3 两种可能，故无法确定。",
+                        "coordinate_tolerance":  "不适用（该题的答案不依赖任何像素读数）",
+                        "visibility_basis":  "面板为不透明纯色（#1E293B + #0F172A 边框），独立看图确认面板内部只有填充色与其上的两行文字，没有任何第三种颜色、虚线、轮廓或阴影；两份 PNG 逐像素相同，因此任何观众看到的画面都不含被覆盖区域的信息。",
+                        "uniqueness_check":  {
+                                                 "rule":  "not derivable from the visible image",
+                                                 "fully_hidden_in_A":  2,
+                                                 "fully_hidden_in_B":  3,
+                                                 "partially_hidden":  1,
+                                                 "rendered_pixels_identical":  true,
+                                                 "reason":  "the two delivered renders are pixel-identical yet their hidden object counts differ"
+                                             }
+                    },
+                    {
+                        "id":  "Q14",
+                        "answer":  6,
+                        "answer_type":  "integer-count",
+                        "method":  "逐个判断 7 个候选彩色对象（V01–V06 与那条蓝条）的包围框是否与面板矩形不相交：不相交者为 V01,V02,V03,V04,V05,V06，计 6 个。蓝条的包围框是 x 200..560 × y 400..456，与面板相交，因此不计入。",
+                        "coordinate_tolerance":  "整数，无容差（最近的 V05 距面板右缘 715−700 = 15 px，判断余量远大于读数误差）",
+                        "visibility_basis":  "7 个彩色对象与面板的位置关系在可见画面上完全确定；蓝条与面板相交这一事实本身也直接可见（它从面板左缘伸出）。此题不涉及面板背后的任何内容。",
+                        "uniqueness_check":  {
+                                                 "rule":  "objects whose bbox is disjoint from the panel rect",
+                                                 "candidates":  7,
+                                                 "disjoint":  [
+                                                                  "V01",
+                                                                  "V02",
+                                                                  "V03",
+                                                                  "V04",
+                                                                  "V05",
+                                                                  "V06"
+                                                              ],
+                                                 "count":  6,
+                                                 "excluded":  [
+                                                                  "bar"
+                                                              ]
+                                             }
+                    }
+                ]
+}

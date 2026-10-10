@@ -1,0 +1,252 @@
+{
+    "schema":  "snapshot-suite/corrected-data/v1",
+    "task_id":  "A16",
+    "run_id":  "run-20261002-220723-mimo",
+    "generated_at":  "2026-10-03T21:12:04+08:00",
+    "source":  {
+                   "path":  "tasks/A16-visual-data-forensics/inputs/source.csv",
+                   "role":  "唯一可信原始数据",
+                   "header":  "quarter,revenue_wan,cost_wan",
+                   "rows":  [
+                                "Q1,120,90",
+                                "Q2,135,108",
+                                "Q3,128,96",
+                                "Q4,180,126"
+                            ],
+                   "note":  "本文件所有派生值均由 gen.ps1 从上述行计算得到，没有手工转录"
+               },
+    "definitions":  {
+                        "unit":  "万元 (10k CNY), all magnitudes in this file are in 万元 unless the key says _pct",
+                        "profit_wan":  "profit_wan = revenue_wan - cost_wan",
+                        "margin_pct":  "margin_pct = profit_wan / revenue_wan * 100, rounded to 1 decimal",
+                        "cost_rate_pct":  "cost_rate_pct = cost_wan / revenue_wan * 100, rounded to 1 decimal",
+                        "profit_share_of_year_pct":  "profit_share_of_year_pct = profit_wan / annual_profit_wan * 100",
+                        "revenue_qoq_wan":  "revenue_qoq_wan[i] = revenue_wan[i] - revenue_wan[i-1]; null for Q1 (no prior quarter in source.csv)",
+                        "revenue_qoq_pct":  "revenue_qoq_pct[i] = revenue_qoq_wan[i] / revenue_wan[i-1] * 100; null for Q1",
+                        "key_quarter_rule":  "key quarter = max(profit_wan); ties broken by margin_pct then revenue_wan. Not chosen by assertion"
+                    },
+    "quarters":  [
+                     {
+                         "quarter":  "Q1",
+                         "revenue_wan":  120,
+                         "cost_wan":  90,
+                         "profit_wan":  30,
+                         "margin_pct":  25,
+                         "cost_rate_pct":  75,
+                         "profit_share_of_year_pct":  21,
+                         "revenue_qoq_wan":  null,
+                         "revenue_qoq_pct":  null
+                     },
+                     {
+                         "quarter":  "Q2",
+                         "revenue_wan":  135,
+                         "cost_wan":  108,
+                         "profit_wan":  27,
+                         "margin_pct":  20,
+                         "cost_rate_pct":  80,
+                         "profit_share_of_year_pct":  18.9,
+                         "revenue_qoq_wan":  15,
+                         "revenue_qoq_pct":  12.5
+                     },
+                     {
+                         "quarter":  "Q3",
+                         "revenue_wan":  128,
+                         "cost_wan":  96,
+                         "profit_wan":  32,
+                         "margin_pct":  25,
+                         "cost_rate_pct":  75,
+                         "profit_share_of_year_pct":  22.4,
+                         "revenue_qoq_wan":  -7,
+                         "revenue_qoq_pct":  -5.2
+                     },
+                     {
+                         "quarter":  "Q4",
+                         "revenue_wan":  180,
+                         "cost_wan":  126,
+                         "profit_wan":  54,
+                         "margin_pct":  30,
+                         "cost_rate_pct":  70,
+                         "profit_share_of_year_pct":  37.8,
+                         "revenue_qoq_wan":  52,
+                         "revenue_qoq_pct":  40.6
+                     }
+                 ],
+    "annual":  {
+                   "revenue_wan":  563,
+                   "cost_wan":  420,
+                   "profit_wan":  143,
+                   "margin_pct":  25.4
+               },
+    "key_quarter":  {
+                        "quarter":  "Q4",
+                        "rule":  "max(profit_wan)",
+                        "profit_wan":  54,
+                        "margin_pct":  30,
+                        "revenue_wan":  180,
+                        "revenue_qoq_wan":  52,
+                        "revenue_qoq_pct":  40.6,
+                        "cost_rate_pct":  70,
+                        "profit_share_of_year_pct":  37.8,
+                        "evidence":  [
+                                         "profit_wan 54 is the maximum of 30/27/32/54 for Q1/Q2/Q3/Q4",
+                                         "margin_pct 30.0 is the maximum; lowest is Q2 at 20.0, spread 10.0 pp",
+                                         "revenue_wan 180 is the maximum; revenue rose 52 (40.6%) against Q3",
+                                         "cost_rate 70.0% is the lowest of the four quarters",
+                                         "Q3 profit is 32, below Q4; Q3 revenue fell 7 against Q2 - so Q3 cannot be the key quarter"
+                                     ],
+                        "superseded_claim":  "the flawed report asserted Q3 was the highest-profit quarter (and its profit card showed 42); source.csv gives Q3 = 32 and Q4 = 54"
+                    },
+    "axis_definition":  {
+                            "chart_type":  "grouped vertical bar, revenue and cost side by side, common zero baseline",
+                            "x_axis":  {
+                                           "type":  "categorical",
+                                           "categories":  [
+                                                              "Q1",
+                                                              "Q2",
+                                                              "Q3",
+                                                              "Q4"
+                                                          ],
+                                           "series_order":  [
+                                                                "revenue",
+                                                                "cost"
+                                                            ],
+                                           "group_width_px":  264,
+                                           "bars_per_group":  2,
+                                           "bar_width_px":  74,
+                                           "intra_pair_gap_px":  16,
+                                           "group_centres_px":  [
+                                                                    272,
+                                                                    536,
+                                                                    800,
+                                                                    1064
+                                                                ],
+                                           "plot_left_px":  140,
+                                           "plot_right_px":  1196
+                                       },
+                            "y_axis":  {
+                                           "type":  "linear",
+                                           "unit":  "万元",
+                                           "min":  0,
+                                           "max":  200,
+                                           "zero_baseline":  true,
+                                           "truncated":  false,
+                                           "ticks":  [
+                                                         0,
+                                                         50,
+                                                         100,
+                                                         150,
+                                                         200
+                                                     ],
+                                           "px_per_unit":  1.4,
+                                           "baseline_px":  516,
+                                           "top_px":  236,
+                                           "plot_height_px":  280,
+                                           "gridline_px":  [
+                                                               516,
+                                                               446,
+                                                               376,
+                                                               306,
+                                                               236
+                                                           ],
+                                           "common_scale_for_all_bars":  true,
+                                           "rule":  "bar_px_height = value_wan * px_per_unit, measured from the shared 0 baseline at y = 516"
+                                       }
+                        },
+    "bars":  [
+                 {
+                     "quarter":  "Q1",
+                     "series":  "revenue",
+                     "value_wan":  120,
+                     "px_height":  168,
+                     "px_top":  348,
+                     "px_left":  190,
+                     "px_width":  74,
+                     "implied_value_from_axis":  120,
+                     "matches_label":  true
+                 },
+                 {
+                     "quarter":  "Q1",
+                     "series":  "cost",
+                     "value_wan":  90,
+                     "px_height":  126,
+                     "px_top":  390,
+                     "px_left":  280,
+                     "px_width":  74,
+                     "implied_value_from_axis":  90,
+                     "matches_label":  true
+                 },
+                 {
+                     "quarter":  "Q2",
+                     "series":  "revenue",
+                     "value_wan":  135,
+                     "px_height":  189,
+                     "px_top":  327,
+                     "px_left":  454,
+                     "px_width":  74,
+                     "implied_value_from_axis":  135,
+                     "matches_label":  true
+                 },
+                 {
+                     "quarter":  "Q2",
+                     "series":  "cost",
+                     "value_wan":  108,
+                     "px_height":  151.2,
+                     "px_top":  364.8,
+                     "px_left":  544,
+                     "px_width":  74,
+                     "implied_value_from_axis":  108,
+                     "matches_label":  true
+                 },
+                 {
+                     "quarter":  "Q3",
+                     "series":  "revenue",
+                     "value_wan":  128,
+                     "px_height":  179.2,
+                     "px_top":  336.8,
+                     "px_left":  718,
+                     "px_width":  74,
+                     "implied_value_from_axis":  128,
+                     "matches_label":  true
+                 },
+                 {
+                     "quarter":  "Q3",
+                     "series":  "cost",
+                     "value_wan":  96,
+                     "px_height":  134.4,
+                     "px_top":  381.6,
+                     "px_left":  808,
+                     "px_width":  74,
+                     "implied_value_from_axis":  96,
+                     "matches_label":  true
+                 },
+                 {
+                     "quarter":  "Q4",
+                     "series":  "revenue",
+                     "value_wan":  180,
+                     "px_height":  252,
+                     "px_top":  264,
+                     "px_left":  982,
+                     "px_width":  74,
+                     "implied_value_from_axis":  180,
+                     "matches_label":  true
+                 },
+                 {
+                     "quarter":  "Q4",
+                     "series":  "cost",
+                     "value_wan":  126,
+                     "px_height":  176.4,
+                     "px_top":  339.6,
+                     "px_left":  1072,
+                     "px_width":  74,
+                     "implied_value_from_axis":  126,
+                     "matches_label":  true
+                 }
+             ],
+    "verification":  {
+                         "bars_match_labels":  true,
+                         "all_quarters_plotted":  true,
+                         "lowest_value_plottable":  90,
+                         "axis_min":  0,
+                         "note":  "axis min is 0 and the lowest plotted value is 90 万元, so every value is representable - unlike the flawed report whose axis started at 100 while cost reached 90"
+                     }
+}

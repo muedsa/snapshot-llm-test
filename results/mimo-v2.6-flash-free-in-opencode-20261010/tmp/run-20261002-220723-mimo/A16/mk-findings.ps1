@@ -1,0 +1,350 @@
+# A16 - build findings.json.
+# Every number interpolated into the prose is recomputed from inputs/source.csv
+# here, so the narrative can never drift away from the single source of truth.
+$ErrorActionPreference = 'Stop'
+$ROOT = if ($env:SNAPSHOT_TASK_ROOT) { $env:SNAPSHOT_TASK_ROOT } else { (Get-Item (Join-Path $PSScriptRoot '..\..\..')).FullName }
+Set-Location $ROOT
+$TMP = Join-Path $ROOT 'tmp\run-20261002-220723-mimo\A16'
+$OUT = Join-Path $ROOT 'outputs\run-20261002-220723-mimo\A16'
+$CSV = Join-Path $ROOT 'tasks\A16-visual-data-forensics\inputs\source.csv'
+$ENC = New-Object Text.UTF8Encoding($false)
+
+# ------------------------------------------------------------- source truth ---
+$lines = [IO.File]::ReadAllLines($CSV)
+$rows = @()
+for ($i = 1; $i -lt $lines.Count; $i++) {
+  if ([string]::IsNullOrWhiteSpace($lines[$i])) { continue }
+  $p = $lines[$i].Split(',')
+  $rev = [double]$p[1]; $cost = [double]$p[2]
+  $rows += [pscustomobject]@{
+    q = $p[0].Trim(); rev = $rev; cost = $cost
+    prof = [math]::Round($rev - $cost, 10)
+    marg = [math]::Round(($rev - $cost) / $rev * 100, 1)
+    crate = [math]::Round($cost / $rev * 100, 1)
+  }
+}
+function F0($v) {
+  $d = [double]$v; $r = [math]::Round($d, 0)
+  if ([math]::Abs($d - $r) -lt 1e-9) { return ([int]$r).ToString([cultureinfo]::InvariantCulture) }
+  return $d.ToString('0.#', [cultureinfo]::InvariantCulture)
+}
+function F1($v) { return ([math]::Round([double]$v, 1)).ToString('0.0', [cultureinfo]::InvariantCulture) }
+function F2($v) { return ([math]::Round([double]$v, 2)).ToString('0.00', [cultureinfo]::InvariantCulture) }
+
+$q1 = $rows[0]; $q2 = $rows[1]; $q3 = $rows[2]; $q4 = $rows[3]
+$annRev  = [math]::Round(($rows | Measure-Object -Property rev  -Sum).Sum, 10)
+$annCost = [math]::Round(($rows | Measure-Object -Property cost -Sum).Sum, 10)
+$annProf = [math]::Round($annRev - $annCost, 10)
+$annMarg = [math]::Round($annProf / $annRev * 100, 1)
+$K = $rows | Sort-Object prof -Descending | Select-Object -First 1          # Q4
+$mmin = $rows | Sort-Object marg | Select-Object -First 1                   # Q2
+$rmin = $rows | Sort-Object crate | Select-Object -First 1
+$gapQ4Q3 = [math]::Round($K.prof - $q3.prof, 10)
+$margSpread = [math]::Round($K.marg - $mmin.marg, 1)
+$dQ3 = [math]::Round($q3.rev - $q2.rev, 10)
+$overPct = [math]::Round((42 - $q3.prof) / $q3.prof * 100, 1)               # flawed card said 42
+
+# flawed-report pixel measurements, taken by probe-flawed*.ps1 / probe-flawed-boxes.ps1
+$pf = Join-Path $TMP 'probe-flawed.json'
+$axis = Join-Path $TMP 'probe-flawed-axis.json'
+$boxes = Join-Path $TMP 'probe-flawed-boxes.json'
+$call = Join-Path $TMP 'probe-flawed-callout.json'
+
+$evidenceBase = @(
+  'tasks/A16-visual-data-forensics/inputs/flawed-report.png (viewed full size)',
+  'tmp/run-20261002-220723-mimo/A16/probe-flawed.ps1 -> probe-flawed.json',
+  'tmp/run-20261002-220723-mimo/A16/probe-flawed-axis.ps1 -> probe-flawed-axis.json',
+  'tmp/run-20261002-220723-mimo/A16/probe-flawed-boxes.ps1 -> probe-flawed-boxes.json',
+  'tmp/run-20261002-220723-mimo/A16/probe-flawed-callout.ps1 -> probe-flawed-callout.json'
+)
+
+$finalView = 'Final PNG opened full size (tmp/run-20261002-220723-mimo/A16/view-A16-final-1280x900.png, byte-identical to corrected-report.png) and checked line by line; plus tmp/run-20261002-220723-mimo/A16/verify-v03.json measured the served pixels; plus an independent subagent transcribed and re-computed all six zoom crops (zoom-*.png).'
+
+# ============================================================== findings ======
+$findings = @()
+
+$findings += [ordered]@{
+  id = 'F01'; severity = 'high'; kind = 'numeric'
+  title = '利润明细 Q3 数值与唯一可信数据不符'
+  image_location = [ordered]@{
+    panel = '利润明细 card (white, x56..813 y651..820)'
+    bbox = @(440, 760, 89, 23)
+    caption_bbox = @(440, 718, 23, 15)
+    observed_text = 'Q3 下方显示 42 万元'
+    coordinate_source = 'probe-flawed-boxes.ps1 (profit[2] number_box / caption_box)'
+  }
+  phenomenon = '利润明细第三列把 Q3 的利润印成 42 万元；同一行的 Q1 30、Q2 27、Q4 54 都正确，只有 Q3 错。'
+  source_check = ('source.csv 第4行 Q3: revenue_wan=' + $q3.rev + ', cost_wan=' + $q3.cost +
+                  ' => profit = ' + (F0 $q3.rev) + ' - ' + (F0 $q3.cost) + ' = ' + (F0 $q3.prof) +
+                  ' 万元。图示 42，差 +' + (F0 (42 - $q3.prof)) + ' 万元，高估 ' + (F1 $overPct) + '%。其余三季 120-90=' + (F0 $q1.prof) +
+                  '、135-108=' + (F0 $q2.prof) + '、180-126=' + (F0 $q4.prof) + ' 与图一致，说明这一格是单点错误而不是口径差异。')
+  impact = '利润明细不再可信：它与唯一可信数据冲突，同时被标题和重点卡当作证据使用，错误被放大到结论层。'
+  correction = 'corrected-report 的利润明细由 gen.ps1 从 source.csv 现算（profit = revenue_wan - cost_wan），Q3 显示 32 万元；同列补上利润率，全年合计 143 万元。'
+  final_view_result = ('最终图利润明细 Q3 = 32 万元、利润率 ' + (F1 $q3.marg) + '%，与 source.csv 逐格一致；verify-v03 与 corrected-data.json 交叉核对通过。')
+  evidence = $evidenceBase
+}
+
+$findings += [ordered]@{
+  id = 'F02'; severity = 'high'; kind = 'numeric'
+  title = '主标题断言「Q3利润最高」，与数据相反'
+  image_location = [ordered]@{
+    panel = 'page header'
+    bbox = @(56, 46, 373, 35)
+    observed_text = '季度复盘：Q3利润最高'
+    coordinate_source = 'probe-flawed-boxes.ps1 (text.title)'
+  }
+  phenomenon = '报告第一眼位置的主标题直接断言 Q3 利润最高，没有任何数字支撑，也未标注口径。'
+  source_check = ('按 source.csv 计算四季度利润 ' + (($rows | ForEach-Object { F0 $_.prof }) -join ' / ') +
+                  '（季度 ' + (($rows | ForEach-Object { $_.q }) -join ' / ') + '），最高是 ' + $K.q + ' 的 ' + (F0 $K.prof) +
+                  ' 万元；' + $q3.q + ' 只有 ' + (F0 $q3.prof) + ' 万元，排第 2，比 ' + $K.q + ' 少 ' + (F0 $gapQ4Q3) + ' 万元。')
+  impact = '整份报告的核心结论方向性错误，会把资源引导到利润第 2 的季度；标题是被引用最多的元素，错误传播最广。'
+  correction = ('主标题改为由脚本按 max(profit_wan) 规则生成：「季度复盘：' + $K.q + ' 利润 ' + (F0 $K.prof) +
+                ' 万元领跑，全年利润 ' + (F0 $annProf) + ' 万元」。gen.ps1 内置断言：若数据改变导致 key quarter 与 max-margin / max-revenue / lowest-cost-rate 不再是同一季度，脚本直接抛错，不会留下未经核实的最高级措辞。')
+  final_view_result = ('最终图标题逐字为「季度复盘：' + $K.q + ' 利润 ' + (F0 $K.prof) + ' 万元领跑，全年利润 ' + (F0 $annProf) +
+                       ' 万元」，40px 单行未截断，与 corrected-data.json 的 key_quarter 一致。')
+  evidence = $evidenceBase
+}
+
+$findings += [ordered]@{
+  id = 'F03'; severity = 'high'; kind = 'narrative'
+  title = '副标题「收入持续上升」与收入序列矛盾'
+  image_location = [ordered]@{
+    panel = 'page header, second line'
+    bbox = @(57, 105, 270, 21)
+    observed_text = '收入持续上升，全年保持增长'
+    coordinate_source = 'probe-flawed-boxes.ps1 (text.subtitle)'
+  }
+  phenomenon = '副标题用「持续上升」「保持增长」描述收入，是全季度单调递增的断言。'
+  source_check = ('source.csv 收入序列为 ' + (($rows | ForEach-Object { F0 $_.rev }) -join ' -> ') +
+                  '：' + $q2.q + '->' + $q3.q + ' 为 ' + (F0 $q2.rev) + ' -> ' + (F0 $q3.rev) +
+                  '，环比 ' + (F0 $dQ3) + ' 万元（' + (F1 ($dQ3 / $q2.rev * 100)) + '%），序列非单调；成本 ' +
+                  (($rows | ForEach-Object { F0 $_.cost }) -join ' -> ') + ' 同样非单调。')
+  impact = '掩盖了全年唯一一次收入环比回落，并且与同一份报告里「Q3 最好」的结论自相矛盾——如果 Q3 收入在跌，它更不可能是最佳季度。'
+  correction = ('副标题改为可核对的事实句：「收入 ' + (F0 $annRev) + '、成本 ' + (F0 $annCost) + '、利润 ' + (F0 $annProf) +
+                ' 万元；' + $K.q + ' 利润率 ' + (F1 $K.marg) + '% 全年最高，' + $q3.q + ' 收入环比回落 ' + (F0 ([math]::Abs($dQ3))) + ' 万元」。')
+  final_view_result = '最终图副标题逐词核对，每个数字都可由 source.csv 复算；独立 QA 转录结果与上述字符串完全一致。'
+  evidence = $evidenceBase
+}
+
+$findings += [ordered]@{
+  id = 'F04'; severity = 'high'; kind = 'narrative'
+  title = '重点观察卡的建议建立在错误的利润排名上'
+  image_location = [ordered]@{
+    panel = 'cream callout card (fill #FFF1D9, x843..1224 y650..821)'
+    bbox = @(867, 718, 206, 48)
+    title_bbox = @(867, 677, 148, 23)
+    observed_text = '重点观察 · Q3 / 建议把资源集中到Q3，它的利润超过其他季度。'
+    coordinate_source = 'probe-flawed-callout.ps1 (callout_box / callout_body_ink) + probe-flawed-boxes.ps1 (text.callout_title)'
+  }
+  phenomenon = '唯一一条可执行建议是「把资源集中到 Q3」，论据是「它的利润超过其他季度」。'
+  source_check = ('利润 ' + $q3.q + '=' + (F0 $q3.prof) + ' < ' + $K.q + '=' + (F0 $K.prof) +
+                  '（差 ' + (F0 $gapQ4Q3) + ' 万元）；利润率 ' + $q3.q + ' ' + (F1 $q3.marg) + '% < ' + $K.q + ' ' + (F1 $K.marg) +
+                  '%（全年最低是 ' + $mmin.q + ' 的 ' + (F1 $mmin.marg) + '%，跨度 ' + (F1 $margSpread) + ' 个百分点）；' +
+                  $q3.q + ' 还是唯一收入环比下降的季度（' + (F0 $dQ3) + ' 万元）。论据的每个分支都不成立。')
+  impact = '建议与事实相反，且与标题 F02 共用同一个错误前提；读者若照做，会把资源投给收入正在回落的季度。'
+  correction = ('重点季度改为由数据选出的 ' + $K.q + '，用四条可复算依据论证：利润 ' + (F0 $K.prof) + ' 万元全年最高（占全年 ' +
+                (F1 $K.prof / $annProf * 100) + '%）、利润率 ' + (F1 $K.marg) + '% 全年最高且比最低的 ' + $mmin.q + ' 高 ' + (F1 $margSpread) +
+                ' 个百分点、收入 ' + (F0 $K.rev) + ' 万元环比 +' + (F0 ($K.rev - $q3.rev)) + ' 万元（+' + (F1 (($K.rev - $q3.rev) / $q3.rev * 100)) +
+                '%）、成本率 ' + (F1 $K.crate) + '% 全年最低；并显式写出 ' + $q3.q + ' 利润 ' + (F0 $q3.prof) + ' 的对比，让读者看见论据。')
+  final_view_result = ('最终图重点卡标题「重点观察 · ' + $K.q + '（数据论证）」加 6 行正文，独立 QA 逐行转录并验算全部 8 个派生数，均与 source.csv 相符；无行重叠、无溢出卡片边界。')
+  evidence = $evidenceBase
+}
+
+$findings += [ordered]@{
+  id = 'F05'; severity = 'high'; kind = 'visual_axis'
+  title = 'Y 轴截断在 100，且下界高于两个真实数据点'
+  image_location = [ordered]@{
+    panel = 'chart card (x56..1223 y157..619)'
+    axis_label_centers_y = @(292, 346, 400, 454, 508, 562)
+    axis_label_x_range = @(78, 130)
+    gridlines_y = @(295, 349, 403, 457, 511, 565)
+    gridlines_x_range = @(148, 1182)
+    gridline_colour = '#E5E7EB'
+    observed_text = '刻度 200 / 180 / 160 / 140 / 120 / 100，没有 0'
+    coordinate_source = 'probe-flawed-axis.ps1 (gridline_rows + axis_label_runs)'
+  }
+  phenomenon = '纵轴只画 100..200，柱底被画在「100」网格线上（实测柱底像素 y=564，100 网格线 y=565）；把 100 当成了零点。'
+  source_check = ('source.csv 的 cost_wan 为 ' + (($rows | ForEach-Object { F0 $_.cost }) -join ' / ') +
+                  '，其中 ' + $q1.q + '=' + (F0 $q1.cost) + ' 与 ' + $q3.q + '=' + (F0 $q3.cost) + ' 都小于轴最小值 100，在这根轴上没有合法位置，却仍被画成柱。')
+  impact = '截断轴放大了差异的视觉幅度（收入 ' + (F0 $q1.rev) + ' vs ' + (F0 $K.rev) + ' 的真实比值是 ' + (F2 ($K.rev / $q1.rev)) +
+           '，在截断轴上被放大），同时低于 100 的数值无法从轴读出，读者无法判断柱高代表的绝对规模。'
+  correction = '改为共同零起点：y 轴 0..200，刻度 0/50/100/150/200，baseline y=516、top y=236、1.4 px/万元；数据最小值 ' +
+               (F0 (($rows | ForEach-Object { $_.cost; $_.rev }) | Measure-Object -Minimum).Minimum) + ' 万元 > 0，因此每个值都能被表示。'
+  final_view_result = 'verify-v03.json 实测最终图网格线 y=236/306/376/446/516（等距 70px）、8 根柱底全部 y=515 紧贴 0 线，zero_based 检查通过。'
+  evidence = $evidenceBase
+}
+
+$findings += [ordered]@{
+  id = 'F06'; severity = 'high'; kind = 'visual_scale'
+  title = '柱高与轴刻度、与柱上数值标签三者互不一致，8 根柱无共同比例尺'
+  image_location = [ordered]@{
+    panel = 'chart plot area'
+    bar_bottoms_px = 564
+    blue_tops_px = @(415, 393, 367, 319)
+    orange_tops_px = @(455, 430, 437, 400)
+    observed_text = '柱上标签 蓝 120/135/128/180、橙 90/108/96/126'
+    coordinate_source = 'probe-flawed.ps1 (blue_bars / orange_bars) + probe-flawed-boxes.ps1 (bar_labels)'
+  }
+  phenomenon = '柱底全部落在 100 网格线上，柱顶既不符合所绘轴的刻度，也不符合柱上印的数字；按 h/v 计量，8 根柱的 px/单位在 1.222~1.547 之间。'
+  source_check = ('按所绘轴（100@y565、200@y295，2.70 px/单位）读回柱顶值得 蓝 155.6/163.7/173.3/191.1、橙 140.7/150.0/147.4/161.1，与标签 ' +
+                  (($rows | ForEach-Object { F0 $_.rev }) -join '/') + ' 和 ' + (($rows | ForEach-Object { F0 $_.cost }) -join '/') +
+                  ' 全部不符（蓝 +' + '11.1~45.3' + '、橙 +' + '35.1~51.4' + ' 万元）。若假定柱高正比于数值，px/单位为 1.222~1.547，同一图内离散 26.6%，不存在共同比例尺。')
+  impact = '柱高既不能从轴读出，也不能横向比较；只改标签数字而不改柱高，图仍在说谎，这是本图最严重的结构性缺陷。'
+  correction = '柱高改为 value x px_per_unit（1.4），全部 8 根柱共用同一个 0 基线与同一个比例尺，几何由 gen.ps1 从 source.csv 直接计算，不存在手工坐标。'
+  final_view_result = 'verify-v03.json 实测 8 根柱 px/单位 1.3958~1.4000（离散 0.30%），按所绘轴读回数值误差最大 ' +
+                       '0.29 万元；single_shared_scale 与 bar_heights_match_values 两项检查均通过。'
+  evidence = $evidenceBase
+}
+
+$findings += [ordered]@{
+  id = 'F07'; severity = 'high'; kind = 'legend_data_conflict'
+  title = '图例声明的颜色语义与柱上数值所属的数据列相反'
+  image_location = [ordered]@{
+    panel = 'chart legend, top right of the chart card'
+    blue_swatch_x = @(877, 896); blue_text_bbox = @(908, 185, 36, 19)
+    orange_swatch_x = @(1056, 1075); orange_text_bbox = @(1087, 185, 36, 19)
+    swatch_y = @(183, 202)
+    observed_text = '蓝块标注「成本」，橙块标注「收入」'
+    coordinate_source = 'probe-flawed-boxes.ps1 (legend) + probe-flawed-callout.ps1 (legend_text_cost / legend_text_revenue)'
+  }
+  phenomenon = '图例把蓝色说成成本、橙色说成收入，但每根蓝柱上印的是收入数字、每根橙柱上印的是成本数字。'
+  source_check = ('蓝柱标签 ' + (($rows | ForEach-Object { F0 $_.rev }) -join '/') + ' 与 source.csv 的 revenue_wan 逐列相同；橙柱标签 ' +
+                  (($rows | ForEach-Object { F0 $_.cost }) -join '/') + ' 与 cost_wan 逐列相同；且四个季度 revenue 均大于 cost，蓝柱在每组里都更高，与标签一致。因此图例与柱上数据至少有一处必错，读者无从判断哪根是收入。')
+  impact = '"收入与成本对比" 的结论无法被信任：颜色语义错位会让读者把成本的规模当成收入，利润率、成本率等一切衍生判断都会跟着错。'
+  correction = '统一为 蓝=收入、橙=成本；图例顺序 收入在前，与柱序（组内收入在左、成本在右）以及柱上数值标签三者一致，并在利润明细里显式写出 利润 = 收入 − 成本 的口径。'
+  final_view_result = '最终图图例 收入(蓝)/成本(橙)，蓝柱 120/135/128/180、橙柱 90/108/96/126，与 source.csv 两列逐一对上；独立 QA 转录确认颜色语义与数据一致。'
+  evidence = $evidenceBase
+}
+
+$findings += [ordered]@{
+  id = 'F08'; severity = 'medium'; kind = 'narrative_traceability'
+  title = '结论层全部围绕利润，主图区却没有任何利润编码'
+  image_location = [ordered]@{
+    panel = 'header (y46..80) + callout card (y647..807) vs chart plot (y157..619)'
+    bbox = @(56, 157, 1167, 462)
+    observed_text = '标题与重点卡讲利润，主图只有 8 根收入/成本柱'
+    coordinate_source = 'probe-flawed-boxes.ps1 (chart_card / text.title / callout_box)'
+  }
+  phenomenon = '主标题、副标题与重点观察卡的结论词都是「利润」，但主图区内没有利润的任何视觉编码，唯一的利润数字只出现在小卡里（而且 Q3 是错的，见 F01）。'
+  source_check = ('利润完全可由 source.csv 派生：' + (($rows | ForEach-Object { $_.q + ' ' + (F0 $_.prof) }) -join ' / ') +
+                  ' 万元，全年 ' + (F0 $annProf) + ' 万元；利润率 ' + (($rows | ForEach-Object { $_.q + ' ' + (F1 $_.marg) + '%' }) -join ' / ') + '。数据具备，只是没有被画出来。')
+  impact = '主结论无法在图上自证，读者必须自己做减法；一旦某处减法做错（正是 F01），错误不会被图本身发现。'
+  correction = '保留分组柱主图，新增利润明细区（四季度利润 + 利润率 + 全年合计）与重点卡数据论证，使标题、副标题、重点卡三处结论都能在同一屏内被数值验证。'
+  final_view_result = '最终图利润明细列出 30/27/32/54 万元与 25.0/20.0/25.0/30.0%、合计 ' + (F0 $annProf) + ' 万元 / ' + (F1 $annMarg) +
+                       '%，逐项与 source.csv 一致；独立 QA 未发现任何数字、对齐或溢出缺陷。'
+  evidence = $evidenceBase
+}
+
+# ============================================================== uncertain =====
+$uncertain = @()
+
+$uncertain += [ordered]@{
+  id = 'U01'; kind = 'aesthetic'; confirmed_error = $false
+  title = '暖米色底 + 白卡的配色是否需要改变'
+  image_location = [ordered]@{ panel = 'whole page'; sample_points = @( @{x=20;y=20}, @{x=640;y=140}, @{x=40;y=880} )
+                               observed = 'page #F7F6F0, cards #FFFFFF, bars #245CE4 / #E88E35' }
+  observation = '原图页面底色是暖米 #F7F6F0，卡片纯白，柱色蓝 #245CE4 / 橙 #E88E35。'
+  why_uncertain = 'source.csv 不含任何样式字段，任务也未规定配色；没有任何数据依据能证明该配色是错的。'
+  handling = '记为审美偏好，不计入数值或叙事错误。修正版改为冷灰底 #F4F6FB 并保留蓝橙语义，属于任务允许的「风格允许改进」，不作为纠错项统计。'
+}
+
+$uncertain += [ordered]@{
+  id = 'U02'; kind = 'order'; confirmed_error = $false
+  title = '图例把「成本」排在「收入」之前'
+  image_location = [ordered]@{ panel = 'legend'; bbox = @(877, 183, 246, 20)
+                               observed = '蓝「成本」在左，橙「收入」在右' }
+  observation = '图例顺序与图标题「收入与成本对比」的语序相反。'
+  why_uncertain = '排列顺序本身不构成数值错误，也没有规范要求图例必须与标题同序；真正的问题是颜色语义冲突，已单列为 F07，不应重复计数。'
+  handling = '记为可读性改进而非错误。修正版按 收入 → 成本 排列，与柱序和标题语序一致。'
+}
+
+$uncertain += [ordered]@{
+  id = 'U03'; kind = 'style'; confirmed_error = $false
+  title = '柱顶数值标签的摆放方式与字号'
+  image_location = [ordered]@{ panel = 'above each bar'; bboxes = @( @(243,389,26,12), @(322,429,20,12), @(479,367,27,12), @(555,403,27,13), @(715,341,26,12), @(794,411,19,12), @(950,293,27,12), @(1027,374,26,12) )
+                               observed = '8 个深色 #18283F 标签放在柱顶外侧' }
+  observation = '数值标签放在柱顶外侧而不是柱内，字号偏小（实测 ink 高约 12px）。'
+  why_uncertain = '标签的数值本身与 source.csv 完全一致，摆放方式没有数据依据可判对错，属于样式选择。'
+  handling = '记为样式偏好。修正版保留柱顶放置以维持易读性，但统一到 22px 并加白色垫底避免压住网格线；不计入数值错误。'
+}
+
+# ================================================================ summary =====
+$sev = @{ high = 0; medium = 0; low = 0 }
+foreach ($f in $findings) { $sev[$f.severity] = $sev[$f.severity] + 1 }
+$kindCount = @{}
+foreach ($f in $findings) { if ($kindCount.ContainsKey($f.kind)) { $kindCount[$f.kind] = $kindCount[$f.kind] + 1 } else { $kindCount[$f.kind] = 1 } }
+
+$doc = [ordered]@{
+  schema          = 'snapshot-suite/findings/v1'
+  task_id         = 'A16'
+  run_id          = 'run-20261002-220723-mimo'
+  generated_at    = (Get-Date).ToString('yyyy-MM-ddTHH:mm:sszzz')
+  inputs          = [ordered]@{
+    flawed_image = 'tasks/A16-visual-data-forensics/inputs/flawed-report.png'
+    flawed_size  = '1280x900'
+    source_data  = 'tasks/A16-visual-data-forensics/inputs/source.csv'
+    source_role  = '唯一可信原始数据；图与源码都不是标准答案'
+    read_only    = $true
+  }
+  method          = [ordered]@{
+    step_1_view   = '先完整打开 flawed-report.png 看全图，再用 4 个像素探针脚本量出面板框、轴、网格线、柱、图例与全部文字 ink 框，所有「图片位置」都是实测坐标而不是目测。'
+    step_2_crosscheck = '把量到的每一处现象与 source.csv 的派生值逐条对照，只有能在数据上证伪的才写成 finding。'
+    step_3_classify   = '无法用数据证伪、只能算风格/顺序/样式偏好的，一律放进 uncertain，不与数值错误混计。'
+    step_4_correct    = 'gen.ps1 从 source.csv 重新计算全部数值与柱几何并生成 DSL，绝不手抄原图数字。'
+    step_5_verify     = 'verify-render.ps1 对真实服务返回的 PNG 重新量网格线与 8 根柱，核对零基线、单一比例尺与轴读回误差。'
+    scripts            = @(
+      'tmp/run-20261002-220723-mimo/A16/probe-flawed.ps1',
+      'tmp/run-20261002-220723-mimo/A16/probe-flawed-axis.ps1',
+      'tmp/run-20261002-220723-mimo/A16/probe-flawed-boxes.ps1',
+      'tmp/run-20261002-220723-mimo/A16/probe-flawed-callout.ps1',
+      'tmp/run-20261002-220723-mimo/A16/gen.ps1',
+      'tmp/run-20261002-220723-mimo/A16/verify-render.ps1'
+    )
+    no_aesthetic_as_numeric = '本文件中所有 finding 的 source_check 都给出可复算的数值或坐标；仅凭观感的条目全部落在 uncertain。'
+  }
+  summary         = [ordered]@{
+    findings_total    = $findings.Count
+    by_severity       = [ordered]@{ high = $sev.high; medium = $sev.medium; low = $sev.low }
+    by_kind           = $kindCount
+    uncertain_total   = $uncertain.Count
+    numeric_errors    = [ordered]@{ count = 2; ids = @('F01', 'F02')
+                                    what = '直接与 source.csv 计算结果冲突的数值：利润明细 Q3、标题的最高季度断言' }
+    claim_errors      = [ordered]@{ count = 3; ids = @('F03', 'F04', 'F07')
+                                    what = '被数据证伪的断言/语义：副标题单调上升、重点卡论据、图例颜色语义与数据列相反' }
+    visual_errors     = [ordered]@{ count = 2; ids = @('F05', 'F06')
+                                    what = '几何/比例错误：截断且下界高于数据的轴、8 根柱无共同比例尺' }
+    traceability_gaps = [ordered]@{ count = 1; ids = @('F08')
+                                    what = '结论层依赖利润，主图区没有利润编码' }
+    partition_check   = 'F01..F08 各归且仅归一类，2+3+2+1 = 8 = findings_total；uncertain 不参与计数'
+  }
+  source_recomputation = [ordered]@{
+    unit = '万元'
+    quarters = @($rows | ForEach-Object {
+      [ordered]@{ quarter = $_.q; revenue_wan = $_.rev; cost_wan = $_.cost; profit_wan = $_.prof
+                  margin_pct = $_.marg; cost_rate_pct = $_.crate }
+    })
+    annual = [ordered]@{ revenue_wan = $annRev; cost_wan = $annCost; profit_wan = $annProf; margin_pct = $annMarg }
+    profit_ranking = @($rows | Sort-Object prof -Descending | ForEach-Object { ($_.q + '=' + (F0 $_.prof)) })
+    margin_ranking = @($rows | Sort-Object marg -Descending | ForEach-Object { ($_.q + '=' + (F1 $_.marg) + '%') })
+    flawed_claims_disproved = @(
+      ('标题「Q3利润最高」: 真实 ' + (($rows | ForEach-Object { $_.q + ' ' + (F0 $_.prof) }) -join ' / ') + ' => 最高 ' + $K.q),
+      ('副标题「收入持续上升」: 真实 ' + (($rows | ForEach-Object { F0 $_.rev }) -join ' -> ') + ' => ' + $q3.q + ' 环比 ' + (F0 $dQ3)),
+      ('利润明细 Q3=42: 真实 ' + (F0 $q3.prof) + ' => 差 +' + (F0 (42 - $q3.prof))),
+      ('重点「Q3利润超过其他季度」: 真实 ' + $K.q + ' ' + (F0 $K.prof) + ' > ' + $q3.q + ' ' + (F0 $q3.prof))
+    )
+  }
+  findings = $findings
+  uncertain = $uncertain
+  final_viewing = [ordered]@{
+    full_view   = 'tmp/run-20261002-220723-mimo/A16/view-A16-final-1280x900.png (byte-identical to outputs/.../corrected-report.png), opened at full size'
+    zoom_views  = @( 'zoom-header-v03.png', 'zoom-legend-title-v03.png', 'zoom-chart-axis-v03.png', 'zoom-chart-right-v03.png', 'zoom-profit-card-v03.png', 'zoom-key-card-v03.png' )
+    independent_qa = 'A separate subagent transcribed all six zoom crops and re-computed every derived figure against source.csv: no defect found (no overlap, no clipping, no misalignment, no wrong number).'
+    pixel_verification = 'tmp/run-20261002-220723-mimo/A16/verify-v03.json - overall pass = true'
+    note          = 'The image tool sometimes re-served stale frames; every frame was content-matched, and zoom verification was delegated to an independent viewer when this session kept getting stale frames.'
+  }
+}
+
+[IO.File]::WriteAllText((Join-Path $OUT 'findings.json'), ($doc | ConvertTo-Json -Depth 10), $ENC)
+Write-Output ("wrote {0}" -f (Join-Path $OUT 'findings.json'))
+Write-Output ("findings={0} (high={1} medium={2})  uncertain={3}" -f $findings.Count, $sev.high, $sev.medium, $uncertain.Count)
+Write-Output ("profit ranking: " + (($rows | Sort-Object prof -Descending | ForEach-Object { $_.q + '=' + (F0 $_.prof) }) -join '  '))

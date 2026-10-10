@@ -1,0 +1,195 @@
+{
+    "path_base": "suite_root",
+    "schema_version": 1,
+    "task_id": "A11",
+    "title": "文字保真与跨页结算单",
+    "track": "advanced",
+    "round_count": 1,
+    "status": "completed",
+    "started_at": "2026-10-03T13:08:19+08:00",
+    "ended_at": "2026-10-03T14:44:20+08:00",
+    "timezone": "Asia/Shanghai (UTC+08:00)",
+    "wall_clock_seconds": 5762,
+    "wall_clock_note": "13:08:19 起（suite-state 切到 A11=in_progress）到 14:44:20 止（写完本文件）。含读题面与 inputs/invoice.json、2 篇真实解析器文档、4 次保真探针、1 次 /fonts 查询、生成器编写、6 次页面渲染、12 次看图、以及 verify.ps1 从首次写完到 47/47 的三轮调试。无平台中断、无限流等待、无用户反馈等待。",
+    "first_image_at": "2026-10-03T13:12:11.645+08:00",
+    "first_image_seconds": 232.645,
+    "first_image_note": "第一张图是保真探针 fidelity-probe.png（probe01），不是交付页。",
+    "first_deliverable_render_at": "2026-10-03T13:22:51.123+08:00",
+    "first_deliverable_render_seconds": 872.123,
+    "final_usable_image_at": "2026-10-03T14:37:53.656+08:00",
+    "final_usable_image_seconds": 5374.656,
+    "final_usable_note": "v04 第一页渲染完成即为最终可用件（14:37:57 第二页同版完成）。872s 到 5374s 的 4502s 差值里，服务往返只占 6 次渲染的 24.1s，其余是解析器事实的探针、verify.ps1 的编写与三轮修正、以及两处版式缺陷的定位。",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_or_queue_wait_seconds": 0,
+    "rate_limit_note": "12 次 /snapshot 全部 attempt=1，10 次 200、2 次 400（语法被解析器拒绝，不是限流），无 429/503、无 Retry-After、无排队。1 次 /fonts 200。",
+    "request_duration_sum_ms": 39460.6,
+    "request_duration_note": "13 次 HTTP 往返合计 39460.6 ms：probe01 2230.5 + probe02 4772.5 + v02-p01 3052.7 + v02-p02 2023.7 + probe03 1641.7(400) + probe04 2011.2(400) + probe05 1476.1 + probe06 2843.3 + fonts 1692 + v03-p01 6818.1 + v03-p02 4151.8 + v04-p01 3316.5 + v04-p02 3430.5。响应体合计 1405598 B。该和只是网络往返之和，不含本地 DSL 生成、像素扫描与看图，也不能当墙钟 5762s。",
+    "requests": {
+        "total": 13,
+        "render_total": 12,
+        "render_success": 10,
+        "render_http_400": 2,
+        "render_failed_other": 0,
+        "render_retry": 0,
+        "render_retry_note": "没有一次 429/503，因此没有任何重试；2 次 400 是 fontFeatures 语法被拒，属探测轮的语法修复，不是重试。",
+        "fonts_total": 1,
+        "document_total": 2,
+        "document_ids": [
+            "A11-doc-01-parser-tags",
+            "A11-doc-02-parser-guide"
+        ],
+        "document_note": "本题真实取过 /reference/parser-tags/ 与 /guides/parser/ 两篇，得到 CDATA 要求、Text 裁剪 vs Raw 保留、分词器处理范围、fontFamily 列表逗号后不能有空格这四条。两次都由 webfetch 发出，该工具不暴露状态码与耗时，故这些字段为 null，不计入 request_duration_sum_ms；实际依赖的原文片段已抄入 tmp/run-20261002-220723-mimo/_suite/probe/ 并在 snapshot-usage.md §4 引用。",
+        "request_ids": [
+            "A11-probe-01-fidelity",
+            "A11-probe-02-cdata",
+            "A11-render-v02-page-01",
+            "A11-render-v02-page-02",
+            "A11-probe-03-fontfeatures",
+            "A11-probe-04-fontfeatures-fix",
+            "A11-probe-05-zero",
+            "A11-probe-06-fontlineup",
+            "A11-fonts-0001",
+            "A11-render-v03-page-01",
+            "A11-render-v03-page-02",
+            "A11-render-v04-page-01",
+            "A11-render-v04-page-02"
+        ]
+    },
+    "dsl_versions": 4,
+    "dsl_versions_list": [
+        "invoice-page-01-v01",
+        "invoice-page-01-v02",
+        "invoice-page-01-v03",
+        "invoice-page-01-v04",
+        "invoice-page-02-v01",
+        "invoice-page-02-v02",
+        "invoice-page-02-v03",
+        "invoice-page-02-v04"
+    ],
+    "dsl_versions_note": "gen.ps1 带 -Ver，8 个 .snapshot 全部保留互不覆盖。v01（14133 B / 7860 B）由生成器产出但**从未渲染**，如实记录，不当作尝试图。v02 各渲染 1 次（首版交付候选），v03 各渲染 1 次（页眉下移 4px 修安全边距），v04 各渲染 1 次（应付条改整卡满幅修压字）并被采用为交付。交付的 invoice-page-0{1,2}.snapshot 是 v04 的字节拷贝，SHA256 分别为 46F12B7B20D75FF352A4F682056A47A8189344C24E5ED37C9E0752D41612ED87 与 B735CDA666A9E1CFC871D939DB5FB12F2CE939688D41806DCB982F9BF60A6C9D，拷贝前后比对 sha-match=True。",
+    "image_views": 12,
+    "image_views_note": "全部经实际图像查看工具打开：1) fidelity-probe.png（实体不被解码、Text 吃空白、富文本共基线、END 对齐）；2) fidelity-probe02.png（CDATA 解决双空格/首尾空白/尖括号/反斜杠/指令句）；3) fidelity-probe05.png（zero 解析成功但无效）；4) fidelity-probe06.png（5 个面的 O 与 0 全都一样）；5) zoom-sku.png 630x900（SKU O/0 混淆）；6) zoom-batch.png 1560x210（两组双空格）；7) v02 第 1 页整图；8) v02 第 2 页整图；9) v03 第 1 页整图（确认页眉下移、并看到应付条右边框贴住 4215.96 的 6）；10) v03 第 2 页整图；11) v04 第 1 页整图（交付）；12) v04 第 2 页整图（交付）。v01 没有图片可看。另有 bands.ps1 / rowdump.ps1 / verify.ps1 的像素扫描作为看图佐证，不替代看图。",
+    "iterations": {
+        "baseline": 1,
+        "completed_visual": 2,
+        "syntax_fix": 2,
+        "retry": 0,
+        "alternative": 0,
+        "requirement_change": 0,
+        "incomplete": 0,
+        "probe_exploration": 4,
+        "checker": 3
+    },
+    "iterations_note": "baseline = v02 两页首版渲染，看图未发现肉眼可见缺陷，按约定不为凑迭代而改版。完成的视觉迭代 2 轮，都是像素扫描定位到的真实版式缺陷：v03 修「页眉标题墨迹外扩到 y=45、越过 48px 安全边距 3px」（height=1.0 让字形框外扩约 0.075em），v04 修「绿色应付条右边框 x=1135 压在 4215.96 末位墨迹 x=1134 上」（改为整卡满幅 48..1151，文字位置不动，小数点列不受影响）。探测 4 次成功（probe01/02/05/06）+ 2 次 400 语法修复轮（probe03/04，fontFeatures 只接受单个裸标签）。检查器迭代 3 轮：首次跑通 38/47、第二次 46/47、最终 47/47——其中多数失败项是检查器自己的判据写错而非图有毛病，已逐条记入 checker_defects_fixed 与 iterations.jsonl，没有把它们算成视觉迭代。重试 0、备选 0、需求变更 0。",
+    "final_pngs": [
+        {
+            "file": "invoice-page-01.png",
+            "width": 1200,
+            "height": 1600,
+            "dsl": "invoice-page-01.snapshot",
+            "source": "open-snapshot real service response",
+            "bytes": 179476,
+            "png_signature_verified": true,
+            "png_ihdr_verified": "width=1200 height=1600 (bytes 16..23 read as big-endian int32 with int casts)",
+            "request_id": "A11-render-v04-page-01",
+            "post_processed": false,
+            "byte_integrity_note": "render.ps1 把 HTTP 响应体直接写入 tmp/.../A11/render-v04-page-01.png，交付文件是它的字节拷贝，拷贝后 SHA256 比对一致（sha-match=True）。没有二次渲染到交付文件名，没有像素级改动。",
+            "sha256": "DB20294A90222FDB1CD3EC4106F5C319388D1FDD88A73F48A9C335F29DE37172"
+        },
+        {
+            "file": "invoice-page-02.png",
+            "width": 1200,
+            "height": 1600,
+            "dsl": "invoice-page-02.snapshot",
+            "source": "open-snapshot real service response",
+            "bytes": 178349,
+            "png_signature_verified": true,
+            "png_ihdr_verified": "width=1200 height=1600 (bytes 16..23 read as big-endian int32 with int casts)",
+            "request_id": "A11-render-v04-page-02",
+            "post_processed": false,
+            "byte_integrity_note": "同上，交付文件是 render-v04-page-02.png 的字节拷贝，SHA256 比对一致（sha-match=True）。",
+            "sha256": "E3B32026B6358FC9BEE48C910F1F0C353ECA22E5A6431E85A4086BB2B514E44D"
+        }
+    ],
+    "final_png_count": 2,
+    "non_final_images": [
+        { "file": "tmp/run-20261002-220723-mimo/A11/fidelity-probe.png", "purpose": "探针 1：实体不被解码 / Text 吃空白 / 富文本共基线 / END 对齐", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/fidelity-probe02.png", "purpose": "探针 2：CDATA 逐字节搬运双空格、尖括号、反斜杠、英文指令句", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/fidelity-probe05.png", "purpose": "探针 5：fontFeatures=\"zero\" 能解析但无效", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/fidelity-probe06.png", "purpose": "探针 6：5 个候选面的 O 与 0 同排对照，证明 O/0 不可分是字体属性", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/zoom-sku.png", "purpose": "局部放大 630x900：SKU O0-I1-B8 的 O/0 混淆", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/zoom-batch.png", "purpose": "局部放大 1560x210：批次行两组双空格", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/render-v02-page-01.png", "purpose": "基线第 1 页，看图未见缺陷，随后被像素扫描发现越过安全边距", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/render-v02-page-02.png", "purpose": "基线第 2 页", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/render-v03-page-01.png", "purpose": "视觉迭代 1：页眉下移 4px 后的第 1 页，仍剩应付条压字", "is_final": false },
+        { "file": "tmp/run-20261002-220723-mimo/A11/render-v03-page-02.png", "purpose": "视觉迭代 1：第 2 页同版", "is_final": false }
+    ],
+    "artifacts": [
+        "invoice-page-01.png",
+        "invoice-page-01.snapshot",
+        "invoice-page-02.png",
+        "invoice-page-02.snapshot",
+        "invoice-audit.json",
+        "text-map.json",
+        "snapshot-usage.md",
+        "task-metrics.json"
+    ],
+    "service": "https://open-snapshot.muedsa.com",
+    "extra_deliverables": {
+        "invoice_audit_json": "47/47 PASS。P 段 3 项（PNG 签名与 IHDR、两页确实不同）；D 段 11 项（无 BOM、0 个 HTML 实体、CDATA 计数、XML 良构、12/12 字符串逐字节命中、L4 照排不执行）；C 段 3 项（页眉前缀逐字节相同、发票号一致、第 N 页/共 2 页）；T 段 5 项（正文≥24、脚注≥20、全卷≥20、只有两个字族、字族在 /fonts 回复内）；M 段 3 项（两页墨迹都在 48..1151 / 48..1551）；A 段 9 项（十点全检出、极差 0.00px、表账均值差 0.00px、System.Decimal 独立复算 6 项）；L 段 8 项（行宽、字形组数、空格步进、22/39 格、8/8 与 4/4 单行）；B 段 4 项（重叠≥60%、基线差 7px、灰斜杠存在、金额一致）；W 段 3 项。另含 rounding、computation_order、literal_lines（逐条原文+编码+像素证据）、confusable_sku、fonts、verification 段。",
+        "text_map_json": "85 个文字片段（第 1 页 56 + 第 2 页 29）的 x/y/width/height/fontSize/fontFamily/fontWeight/color/textAlign/kind/encoding/source/preview 全量映射，带 legend 与字体来源说明。"
+    },
+    "visual_defects_fixed": [
+        "页眉标题定位在 y=48、字号 40、height=1.0，字形框外扩约 0.075em，实测墨迹从 y=45 起，越过 48px 安全边距 3px。修法：页眉四段整体下移 4px（标题 48→52、副行 100→104、编号 59→63、日期 100→104），分隔线保持 146，标题与编号相对基线不变。v03 起最小墨迹 y=49。",
+        "绿色应付条原为 x=64 w=1072（右边框像素 x=1135），恰好贴在应付金额 4215.96 末位 6 的墨迹（x=1134）上，0px 间隙。修法：改为整卡满幅 x=48 w=1104 r=0，文字位置一动不动（标签仍 x=80、金额右边缘仍 x=1136），数字与右边框之间留 17px，与明细表左右 16px 内缩一致。v04 起十个小数点全数检出且共列。"
+    ],
+    "artifact_defects_fixed": [],
+    "checker_defects_fixed": [
+        "verify.ps1：函数写 `return ,$out` 返回一个包着 List 的单元素，`@(Get-Clusters …)` 拿到的不是簇数组，随后 `$_.y1 - $bottom` 走 member enumeration 得到 Object[] 并报 op_Subtraction 不存在。去掉一元逗号，改 `return $out` 让管道枚举。",
+        "verify.ps1：为定位卡死插入的进度标记被塞进 `[pscustomobject]@{ … }` 与 `{ … }` 的大括号内部，32 个解析错误把文件写坏。把坏版本另存为 verify-attempt-01-broken.ps1 保留，重写干净版，标记只插在独立语句行。",
+        "verify.ps1：报告段调用脚本块写成裸词 `segOut (…)`，PowerShell 当成命令 → CommandNotFound。改为显式 `& $segOut (…)`（最终版直接内联展开）。",
+        "verify.ps1：`$famList = @(Get-Content …)` 的字符串带 FileSystem ETS 属性（PSPath/PSDrive/PSProvider→Credential 成环），`ConvertTo-Json` 时 5 个字体名产出 4441 字节、-Depth 5 产出 11MB、-Depth 7 卡死——这就是那次 600s/300s 超时的真凶。改用 [IO.File]::ReadAllLines，并保留 bench2–bench6 四个复现脚本。",
+        "verify.ps1：第二页富文本扫描把像素通道写成 $B/$G/$R，$G 大小写不敏感地覆盖了脚本级的 $g = $meta.computation，导致报告里所有金额字段变 null。通道改名 $pxB/$pxG/$pxR。",
+        "verify.ps1：小数点候选判据写成单侧 `($_.y1 - $bottom) -le 3`，浮动在基线上方 10px 的减号被当成小数点，-180.00 那行报成 x=1051、极差被撑到 52px。改双侧 [math]::Abs(…) -le 3 后十点全部 1103.00。",
+        "verify.ps1：基线参照取所有簇的最大 y1，绿条右边框贯穿 26px 扫描窗并与末位数字并簇，把参照从 1306 拖到 1311，应付行小数点被误判缺失。改为只在字高≤20 的簇里取参照。",
+        "verify.ps1：L03/L04 用固定带宽 [2×步进−6, 2×步进+16] 并要求两个间隙相等，忽略了全角冒号很宽的右侧边距（47px vs 30px 必然不等）。改为「相对单空格步进」判据 + 用整行宽度封顶。",
+        "verify.ps1：L05 用等分比例 |ratio−39/22|<0.04，但墨迹宽不等于格数×步进（首末字形边距不同），实测差 0.0404 正好越界。改为绝对像素宽 |实测−(22/39)×指令宽|≤10px，掉一个字符会差约 14px。",
+        "verify.ps1：L06 要求 13 个字形组，但相邻字形会并簇（实测 7 组）。改为用 13 格(≈184px)与 24 格实体文字(≈340px)的绝对像素宽做双向判定。",
+        "verify.ps1：W01 阈值写成每页≥40 个文字片段，而第 2 页按设计只有 29 个。改为 45/25。",
+        "verify.ps1：Mark 调用写成 `Mark 'x' + $v`，PowerShell 会把 `+` 当成第二个位置参数。改为 `Mark ('x' + $v)`。"
+    ],
+    "recovery_notes": [
+        "verify.ps1 中途被进度标记写坏（32 个解析错误），坏版本另存为 tmp/run-20261002-220723-mimo/A11/verify-attempt-01-broken.ps1 保留，不是删除。",
+        "fontFeatures 两次 400 的响应体保留在 failures/A11-probe-03-fontfeatures.body 与 failures/A11-probe-04-fontfeatures-fix.body。",
+        "bench2–bench6 四个用于定位 ConvertTo-Json 卡死的脚本全部保留，是第 9 节第 1 条坑的原始证据。",
+        "v01 两个 .snapshot 从未渲染，没有对应 PNG；如实标注，不补渲、不冒充尝试图。"
+    ],
+    "verification_tools": [
+        "tmp/run-20261002-220723-mimo/A11/gen.ps1 -Ver N - 读 inputs/invoice.json，以整数分计算并生成两页 DSL 与 segments-vN.json，-Ver 保证 v01..v04 全部保留",
+        "tmp/run-20261002-220723-mimo/A11/verify.ps1 - 只读交付件，System.Drawing LockBits BGRA 扫描 + 列簇/行簇分割，47 项检查，产出 invoice-audit.json 与 text-map.json",
+        "tmp/run-20261002-220723-mimo/A11/zoom.ps1 - NearestNeighbor 局部放大，产出 zoom-sku.png 与 zoom-batch.png",
+        "tmp/run-20261002-220723-mimo/A11/bands.ps1 - 全页水平墨迹带扫描，用来定位页眉越界与各行基线",
+        "tmp/run-20261002-220723-mimo/A11/rowdump.ps1 - 单行字形簇转储，用来定位应付行小数点漏检",
+        "tmp/run-20261002-220723-mimo/A11/bench2..bench6.ps1 - 定位 ConvertTo-Json 卡死的复现脚本",
+        "tmp/run-20261002-220723-mimo/_suite/render.ps1 - 渲染助手（POST、写 requests.jsonl、429/503 自动重试、失败体入 failures/）"
+    ],
+    "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "image_input_usage": null,
+        "cost": null,
+        "currency": null,
+        "source": "not provided by the execution platform",
+        "unknown_fields_reason": "执行平台未暴露 token/图像/费用遥测；字段留 null，不以字符数、文件大小或限流余量估算。"
+    },
+    "unresolved_issues": [
+        {
+            "id": "A11-confusable-sku",
+            "severity": "informational",
+            "issue": "SKU O0-I1-B8 中的 O 与 0 在本次可用字体下肉眼不可分辨。",
+            "evidence": "probe05 证明 fontFeatures=\"zero\" 能解析但无效；probe06 把 Noto Sans Mono CJK SC、DejaVu Sans Mono、Noto Sans CJK SC、Inter、DejaVu Sans 五个面同排对照，O 与 0 全都一样；DSL 中该 SKU 为字节精确 CDATA，两份 DSL 的 HTML 实体数为 0。",
+            "why_not_fixed": "这是字体属性而非解析或转义缺陷，可用字体里没有能把 O/0 分开的等宽中日文面；把 SKU 改字会违反「字符串逐字节保真」，所以不改排版。I 与 1 可分辨（1 有旗与底衬）。",
+            "action_taken": "写入 invoice-audit.json 的 confusable_sku 段与 snapshot-usage.md §5，作为已知且已披露的限制。"
+        }
+    ]
+}

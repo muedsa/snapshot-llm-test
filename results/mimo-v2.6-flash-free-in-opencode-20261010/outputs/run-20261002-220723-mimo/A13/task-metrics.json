@@ -1,0 +1,162 @@
+{
+  "path_base": "suite_root",
+  "schema": "snapshot-suite/task-metrics/v1",
+  "task_id": "A13",
+  "task_name": "brand-delivery",
+  "run_id": "run-20261002-220723-mimo",
+  "track": "A",
+  "status": "completed",
+  "started_at": "2026-10-03T15:54:10+08:00",
+  "ended_at": "2026-10-03T17:01:04+08:00",
+  "timezone": "+08:00",
+  "wall_clock_s": 4014.6,
+  "wall_clock_note": "from suite-state A13 in_progress to the end of this metrics file; includes reading task docs, probing, three render rounds, pixel forensics, verification and writing deliverables",
+  "requests": {
+    "count": 20,
+    "http_status": { "200": 20 },
+    "failed": 0,
+    "retried": 0,
+    "rate_limit_exceeded": 0,
+    "kind": { "probe": 5, "preview": 4, "final_round_01": 5, "final_round_02": 5, "final_round_03": 1 },
+    "request_duration_ms_sum": 40998.6,
+    "request_duration_ms_note": "sum of the durations reported per request in requests.jsonl; not equal to wall clock, which also covers viewing, measurement and editing",
+    "first_started_utc": "2026-10-03T07:59:34.601Z",
+    "last_ended_utc": "2026-10-03T08:47:39.664Z",
+    "endpoints": { "POST /snapshot": 20 },
+    "shared_requests_new_in_this_task": 0,
+    "shared_requests_reused": [
+      "suite AI guide / DSL doc excerpts (tmp/run-20261002-220723-mimo/_suite/probe/A10-doc-excerpts.md)",
+      "/fonts listing (tmp/run-20261002-220723-mimo/A11/fonts-0001.txt, byte-identical to shared-fonts-0001)"
+    ]
+  },
+  "iterations": {
+    "count": 23,
+    "log": "tmp/run-20261002-220723-mimo/A13/iterations.jsonl",
+    "by_category": {
+      "probe": 5,
+      "baseline": 1,
+      "visual_view": 8,
+      "incomplete_visual": 4,
+      "fix": 3,
+      "checker": 2
+    },
+    "by_category_note": "categories follow A12 (baseline / visual_view / incomplete_visual / checker) plus probe and fix, which this task genuinely needed",
+    "render_rounds": 3,
+    "distinct_defects_found_by_viewing": 3,
+    "defects": [
+      "direction A preview: beam centres offset along their own axis collapsed the mark into one collinear beam",
+      "direction B preview: stray off-centre ink dot inside the rings",
+      "round 01: Transform origin emitted the box size (256,88) instead of the beam centre (128,44), translating the mark (+6.4,+103.4) px and clipping it on the canvas edge",
+      "round 02 poster: top margin 214 px exceeded bottom margin 180 px, so the composition sat low"
+    ],
+    "self_defects_in_verifier": [
+      "gap-recording branch order never recorded an inter-beam channel",
+      "scan-end gap was miscounted as a channel (3 channels reported instead of 2)",
+      "geometry test demanded bit-identical alpha and flagged 872 px of 1-LSB premultiplied rounding"
+    ],
+    "manufactured_iterations": 0
+  },
+  "image_review": {
+    "image_view_events": 21,
+    "note": "every number below counts an actual open of an image file; viewing time was not instrumented, so no duration is claimed",
+    "views_by_kind": {
+      "direction_preview_render": 4,
+      "direction_preview_thumb32": 2,
+      "work_render_round01": 2,
+      "work_render_round02": 5,
+      "work_render_round03": 1,
+      "final_thumb32": 2,
+      "delivered_final_png": 5
+    },
+    "delivered_final_png_note": "4 distinct delivered files opened; launch-poster was opened twice, once as render 02 and once after replacement by render 03",
+    "delivered_finals_opened": 4,
+    "delivered_finals_total": 4,
+    "thumbnails": {
+      "created": 4,
+      "location": "tmp/run-20261002-220723-mimo/A13/",
+      "files": [
+        "preview-a-layers-v2-thumb32.png",
+        "preview-b-rings-v2-thumb32.png",
+        "symbol-color-thumb32.png",
+        "symbol-black-thumb32.png"
+      ],
+      "role": "check previews only, never deliverables; downsampling method HighQualityBicubic",
+      "native_service_render_cross_check": "render-02-symbol-color-native32.png (32x32 rendered by the service itself)"
+    }
+  },
+  "deliverables": {
+    "final_images": 4,
+    "final_images_bytes": 103114,
+    "paired_dsl": 4,
+    "paired_dsl_bytes": 6819,
+    "files": [
+      { "name": "symbol-color.png", "size": [512, 512], "bytes": 9077, "sha256": "077DFECA1384F7B99E7FFDB9CC581441482AC40418586F7FDEC0D537A52F4038", "dsl": "symbol-color.snapshot", "dsl_bytes": 912, "dsl_sha256": "46C5C2C896F4C323923231C21FDEBDE1D74A0BDF0FB749E5114B69F434EA3A8C", "render_version": "02" },
+      { "name": "symbol-black.png", "size": [512, 512], "bytes": 6220, "sha256": "4A009BA5BD4D5C38A563187A869BA2683D1DA6EFABC747B396ADD4855CD329F9", "dsl": "symbol-black.snapshot", "dsl_bytes": 912, "dsl_sha256": "AA16AAE9539EEA754F7F091B084AF26ECBDD48607300CD9C0E66F608CEDC59A4", "render_version": "02" },
+      { "name": "brand-banner.png", "size": [1200, 400], "bytes": 31376, "sha256": "6B74AB20AB8244746E2B1236891A1610C27DE15F62841C0A712B9E546DE995B9", "dsl": "brand-banner.snapshot", "dsl_bytes": 2499, "dsl_sha256": "6CD42D60296834BB957EDE01EE7D2611B5277FCA4ADF3C75D0EF96F934DCB9BA", "render_version": "02" },
+      { "name": "launch-poster.png", "size": [1080, 1350], "bytes": 56441, "sha256": "AA3C7F32B1B2E95EE6B4EAAB638679BB29C12205C76323D24151304DAE8E47B4", "dsl": "launch-poster.snapshot", "dsl_bytes": 2496, "dsl_sha256": "BC2ABE33978D3A9F11831891A322422989740FC911112F319A71F68B7DB6497A", "render_version": "03" }
+    ],
+    "other_files": ["brand-system.json", "rationale.md", "brand-audit.json", "snapshot-usage.md", "task-metrics.json"],
+    "raw_service_png_bytes": true,
+    "post_processing_applied": false,
+    "overwritten_attempts": 0
+  },
+  "verification": {
+    "audit": "outputs/run-20261002-220723-mimo/A13/brand-audit.json",
+    "verifier": "tmp/run-20261002-220723-mimo/A13/verify.ps1",
+    "checks": 29,
+    "passed": 29,
+    "failed": 0,
+    "groups": {
+      "P_png_signature_and_size": 5,
+      "A_transparency": 2,
+      "K_pure_black": 2,
+      "G_identical_geometry": 1,
+      "M_clear_space": 1,
+      "S_beam_separation": 5,
+      "C_required_copy": 7,
+      "N_no_embedded_raster": 4,
+      "H_shared_geometry": 2
+    },
+    "measured": {
+      "clear_space_px_each_side": 66,
+      "clear_space_pct": 12.89,
+      "beam_widths_px": [87.5, 87.75, 87.5],
+      "channel_widths_px": [34, 34],
+      "native32_beam_widths_px": [5.75, 5.75, 5.75],
+      "native32_channel_widths_px": [1.25, 1.25],
+      "black_ink_pixels": 63679,
+      "black_alpha_min": 1,
+      "geometry_solid_coverage_delta_pixels": 0,
+      "geometry_soft_fringe_delta_pixels": 872,
+      "geometry_max_alpha_delta": 1
+    }
+  },
+  "rationale_length": {
+    "file": "outputs/run-20261002-220723-mimo/A13/rationale.md",
+    "raw_chars_including_newlines": 299,
+    "non_whitespace_chars": 267,
+    "cjk_and_fullwidth_chars": 206,
+    "limit": 300,
+    "note": "all three counting methods are reported so the <=300字 limit holds under any reading"
+  },
+  "resources": {
+    "tokens_input": null,
+    "tokens_output": null,
+    "tokens_cache_read": null,
+    "tokens_cache_write": null,
+    "cost_usd": null,
+    "image_generation_units": null,
+    "unknown_reason": "the open-snapshot service and this agent runtime do not report token or cost figures; values are left null rather than estimated from text length"
+  },
+  "artefacts_on_disk": {
+    "output_dir": "outputs/run-20261002-220723-mimo/A13/",
+    "output_file_count": 12,
+    "temp_dir": "tmp/run-20261002-220723-mimo/A13/",
+    "temp_file_count": 42,
+    "logs": ["requests.jsonl (20 rows)", "iterations.jsonl (23 rows)"],
+    "generators": ["gen.ps1", "verify.ps1"],
+    "failure_responses": 0
+  },
+  "open_issues": [],
+  "summary": "A13 delivered a transparent colour icon, a pure-black icon, a 1200x400 banner and a 1080x1350 poster, all built from one 45-degree three-beam rule set regenerated at each scale rather than embedded as a raster. Two directions were actually rendered and judged at 32x32 before choosing A. Three genuine visual defects (collapsed beams, stray dot, mis-placed transform origin) plus one balance issue were found by opening the images, and the verifier's own three bugs were fixed. 20 requests, 23 iteration rows, 21 image views, 29/29 checks passing."
+}

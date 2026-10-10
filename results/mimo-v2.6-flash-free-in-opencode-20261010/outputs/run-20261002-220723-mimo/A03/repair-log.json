@@ -1,0 +1,168 @@
+{
+  "path_base": "suite_root",
+  "schema_version": 1,
+  "task_id": "A03",
+  "title": "多层语义故障恢复 · System Pulse 监控卡",
+  "run_id": "run-20261002-220723-mimo",
+  "service": "https://open-snapshot.muedsa.com",
+  "source_file": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+  "source_preserved": true,
+  "method": "原稿原样提交真实服务 -> 按真实报错逐条修复 -> 显式错误清零后对照官方文档与实际图像继续排查静默忽略/画布尺寸/有界布局/alpha/变换/滤镜语义",
+  "issue_count": 12,
+  "issues": [
+    {
+      "id": 1,
+      "category": "real-error",
+      "category_note": "服务返回 400，解析阶段失败，无图像产生",
+      "location": "inputs/broken.snapshot line 2 - <Container padding=\"24 32\">",
+      "evidence": "HTTP 400 {\"code\":\"PARSE_ERROR\",\"message\":\"Attr [padding] value format error at position 92 near: ...Container padding=\\\"24 32\\\"...\",\"requestId\":\"32e31e42-39a3-4094-b0c0-0c02a4a287e0\"}",
+      "evidence_file": "tmp/run-20261002-220723-mimo/A03/failures/A03-render-broken-v00.body",
+      "doc_basis": "https://snapshot.muedsa.com/reference/parser-tags/ #EdgeInsets: padding/margin 仅支持 \"12\" / \"(8,16)\" / \"(8,12,16,20)\"，括号与逗号是语法的一部分",
+      "change": "padding=\"24 32\" -> padding=\"(24,32)\"；最终按任务安全边距要求收敛为 padding=\"32\"",
+      "verification": "v01 通过 padding 检查，报错位置推进到下一个问题（Transform matrix）",
+      "status": "fixed"
+    },
+    {
+      "id": 2,
+      "category": "real-error",
+      "category_note": "服务返回 400，解析/建树阶段失败",
+      "location": "inputs/broken.snapshot line 10 - <Transform rotate=\"-8\">",
+      "evidence": "HTTP 400 {\"code\":\"PARSE_ERROR\",\"message\":\"Attr [matrix] must not be null at position 466 near: <Transform rotate=\\\"-8\\\">...\"}",
+      "evidence_file": "tmp/run-20261002-220723-mimo/A03/failures/A03-render-v01.body",
+      "doc_basis": "parser-tags #Transform: matrix 为必填列主序 4x4 矩阵，16 个有限 Float，外层括号、值间无空格；Transform 不存在 rotate 属性",
+      "change": "移除不存在的 rotate 属性，改为 matrix=\"(0.9902680687,-0.139173101,0,0,0.139173101,0.9902680687,0,0,0,0,1,0,0,0,0,1)\"（cos8°/sin8° 逆时针 8° 列主序）+ transformAlignment=\"CENTER\"",
+      "verification": "v02 通过 matrix 检查，报错推进到 Positioned 层级问题",
+      "status": "fixed"
+    },
+    {
+      "id": 3,
+      "category": "real-error",
+      "category_note": "服务返回 400，渲染阶段 parentData 校验失败",
+      "location": "inputs/broken.snapshot line 7 - <Positioned right=\"20\"> 作为 <Row> 的直接子节点",
+      "evidence": "HTTP 400 {\"code\":\"RENDER_ERROR\",\"message\":\"renderBox.parentData must be StackParentData\"}",
+      "evidence_file": "tmp/run-20261002-220723-mimo/A03/failures/A03-render-v02.body",
+      "doc_basis": "parser-tags #Positioned: 必须是 Stack 或 IndexedStack 的直接子节点；Row 的子节点必须是 Expanded/Flexible/普通 Widget",
+      "change": "将指标行包进 <Stack>，Positioned 移到 Stack 下作为绝对定位子节点",
+      "verification": "v03 通过层级检查，报错推进到布局尺寸问题",
+      "status": "fixed"
+    },
+    {
+      "id": 4,
+      "category": "real-error",
+      "category_note": "服务返回 400，布局阶段无界尺寸",
+      "location": "inputs/broken.snapshot line 1 + 结构性缺陷 - <Snapshot width=\"1280\" height=\"800\"> 且根 Container 未定尺寸",
+      "evidence": "HTTP 400 {\"code\":\"RENDER_ERROR\",\"message\":\"Layout size is infinite\"}",
+      "evidence_file": "tmp/run-20261002-220723-mimo/A03/failures/A03-render-v03.body",
+      "doc_basis": "parser-tags #Snapshot: 仅 background / debug / type 三个属性，不含 width/height；#Spacer 必须处于有界 Flex 中；指南称画布尺寸由布局决定",
+      "change": "1280x800 下移到根 <Container width=\"1280\" height=\"800\">，使 Column/Spacer 获得有界约束",
+      "verification": "v04 返回 200，实测图像 1280x800，首次可用图像",
+      "status": "fixed"
+    },
+    {
+      "id": 5,
+      "category": "silently-ignored",
+      "category_note": "解析器不报错，属性被静默忽略，只在图像上暴露",
+      "location": "inputs/broken.snapshot line 1 - <Snapshot width=\"1280\" height=\"800\">",
+      "evidence": "同上：Snapshot 标签表仅列 background/debug/type；v01~v03 从未因该属性报错，直到布局期才以无界尺寸形式暴露",
+      "doc_basis": "parser-tags 开篇：标签名和属性名区分大小写，未知属性会被忽略",
+      "change": "宽高移至根 Container（见 issue 4）",
+      "verification": "v04/v05 实测 PNG 1280x800，与需求一致",
+      "status": "fixed"
+    },
+    {
+      "id": 6,
+      "category": "silently-ignored",
+      "category_note": "未知属性，静默忽略，标题字号回退默认值",
+      "location": "inputs/broken.snapshot line 4 - <Text font-size=\"44\">",
+      "evidence": "v04 实测：标题字形 bbox y27..39（h=13）、x596..683（宽87px）；v05 设 fontSize=44 后 y42..83（h=42）、x34..310（宽276px），相差约 3.2 倍；v04 全程无任何报错",
+      "doc_basis": "parser-tags #Text: 字号属性名为 fontSize；属性名区分大小写，未知属性被忽略",
+      "change": "font-size=\"44\" -> fontSize=\"44\"",
+      "verification": "v05 实测标题字形 bbox y 42..83，高 42px，符合 44 字号",
+      "status": "fixed"
+    },
+    {
+      "id": 7,
+      "category": "silently-ignored",
+      "category_note": "8 位颜色 alpha 位置语义变更，颜色/透明度完全错误",
+      "location": "inputs/broken.snapshot line 10 - <Container color=\"#33FFFFFF\">（REVIEW 底色）",
+      "evidence": "v04 实测 REVIEW 底为不透明亮青色 #33FFFF 系（R=51,G=255,B=255,A=255），而非需求的 20% 白",
+      "doc_basis": "parser-tags #颜色: 旧版 Parser 按 #AARRGGBB 解析 8 位色，现按 CSS #RRGGBBAA 解析，alpha 在最后两位",
+      "change": "#33FFFFFF -> #FFFFFF33（白底 alpha 0x33=20%）",
+      "verification": "v05 实测盒内底色 RGB(59,65,76)，与 20% 白叠 #0B1220 的理论值 (59.8,65.4,76.6) 吻合",
+      "status": "fixed"
+    },
+    {
+      "id": 8,
+      "category": "silently-ignored",
+      "category_note": "rotate 不是 Transform 属性，若 matrix 未被强制必填则该旋转将完全失效",
+      "location": "inputs/broken.snapshot line 10 - rotate=\"-8\"",
+      "evidence": "issue 2 的必填 matrix 报错先行暴露了该问题；rotate 属性在任何阶段都不产生效果",
+      "doc_basis": "parser-tags #Transform: 仅 matrix / origin / alignment 三个属性",
+      "change": "用列主序旋转矩阵表达逆时针 8 度，原点取 alignment=\"CENTER\"",
+      "verification": "v05 REVIEW 包围盒 x1082..1246（旋转后宽 165，与 160*cos8+56*sin8=166 相符），右端高左端低，目视逆时针 8 度",
+      "status": "fixed"
+    },
+    {
+      "id": 9,
+      "category": "visual-only",
+      "category_note": "渲染成功但图像与需求不符",
+      "location": "inputs/broken.snapshot line 6 - 仅 1 个指标卡，且写死 width=360 配 Expanded",
+      "evidence": "v04 实测：整行只有一张 360~1216 宽的卡，文字贴在卡片左上角（默认对齐），缺 LATENCY/SUCCESS 两张",
+      "doc_basis": "TASK.md: 第一行三个等宽指标卡，分别 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%，文案字号 28",
+      "change": "改为 <Row mainAxisAlignment=\"SPACE_BETWEEN\"> + 三张 width=389 等宽卡 + alignment=\"CENTER\" 居中文案",
+      "verification": "v05 实测 y=190 行：32..420(389) / 445..834(390) / 859..1247(389)，三卡等宽；USAGE 文字 bbox 高 22px（28 字号）",
+      "status": "fixed"
+    },
+    {
+      "id": 10,
+      "category": "visual-only",
+      "category_note": "位置与尺寸均不符合需求",
+      "location": "inputs/broken.snapshot line 7 - LIVE 仅为 Positioned 内裸文本，right=20",
+      "evidence": "v04 实测：LIVE 文字位于 y~50 处且无 96x36 标签盒，与指标卡同高，存在遮挡风险",
+      "doc_basis": "TASK.md: 右上 LIVE 标签 96×36，不能盖住标题",
+      "change": "改为 Positioned right=0 top=0 width=96 height=36 + Container 96x36 + borderRadius 8 + 居中文本",
+      "verification": "v05 实测 LIVE 盒 x1152..1247(96) y32..67(36)；标题字形止于 x310，二者水平间距 842px，无遮挡",
+      "status": "fixed"
+    },
+    {
+      "id": 11,
+      "category": "visual-only",
+      "category_note": "滤镜语义错误：模糊作用到文字而非仅背景",
+      "location": "inputs/broken.snapshot line 11 - <ImageFiltered sigmaX=10 sigmaY=10> 直接包裹整个卡片（含文字）",
+      "evidence": "v04 实测：说明卡文字 \"Background-only blur\" 被完全模糊不可读；且卡外无彩色细条",
+      "doc_basis": "parser-tags #ImageFiltered: 对子树整体做高斯模糊；TASK.md 要求只模糊卡内背景、文字保持清晰、彩色细条同时穿过卡片两侧边界",
+      "change": "重构为三层：卡外锐利细条 -> ClipRRect 圆角24 内叠深底 + ImageFiltered 只包裹细条副本 -> 文字置于滤镜之外",
+      "verification": "v05 实测：细条 700 宽 x290..989 穿过 500 宽卡 x390..889 两侧；卡外锐利卡内模糊；文字满强度像素 1223、中等 603（清晰）；放大图 z01-blur-boundary.png 目视确认",
+      "status": "fixed"
+    },
+    {
+      "id": 12,
+      "category": "visual-only",
+      "category_note": "画布安全边距与说明卡几何不符",
+      "location": "inputs/broken.snapshot line 2 - padding=\"24 32\"（若按 (24,32) 修复则上下仅 24）且说明卡无定位",
+      "evidence": "需求：安全边距 32、中央说明卡 500x150 圆角 24",
+      "doc_basis": "TASK.md; parser-tags #EdgeInsets; #ClipRRect borderRadius",
+      "change": "padding=\"32\" 四边安全边距；说明卡 Positioned left=258 top=293 定位到画布中央并套 ClipRRect borderRadius=24",
+      "verification": "v05 实测整体内容包围盒 x32..1247 / y32..766，四边边距 32/32/32/33；说明卡 x390..889(500) y325..474(150)，中心 (639.5,399.5) 对齐画布中心 (640,400)",
+      "status": "fixed"
+    }
+  ],
+  "final_state": {
+    "final_image": "outputs/run-20261002-220723-mimo/A03/system-pulse.png",
+    "final_dsl": "outputs/run-20261002-220723-mimo/A03/system-pulse.snapshot",
+    "renders": 6,
+    "first_success_version": "v04",
+    "final_version": "v05",
+    "retained_failures": [
+      "tmp/run-20261002-220723-mimo/A03/broken-v00.snapshot",
+      "tmp/run-20261002-220723-mimo/A03/v01-fix-padding.snapshot",
+      "tmp/run-20261002-220723-mimo/A03/v02-fix-transform-matrix.snapshot",
+      "tmp/run-20261002-220723-mimo/A03/v03-fix-positioned-stack.snapshot",
+      "tmp/run-20261002-220723-mimo/A03/v04-fix-canvas-bounded.snapshot",
+      "tmp/run-20261002-220723-mimo/A03/v04.png",
+      "tmp/run-20261002-220723-mimo/A03/failures/*.body (4 个失败响应体)"
+    ],
+    "unknown_attrs_left_in_final_dsl": false,
+    "note": "最终 DSL 中不含任何未实现需求的未知属性；rotate/font-size/#33FFFFFF 均已替换为文档有效形式"
+  }
+}

@@ -1,0 +1,26 @@
+# 总任务根 .gitignore
+# 依据 templates/gitignore-template.txt 创建；已有规则时合并而非覆盖。
+# 用途：只排除运行时缓存，不排除任何过程证据。
+
+# 保留（不得在此排除）：
+#   outputs/<run_id>/  成品 PNG、同名 .snapshot、case.md、报告、指标、画廊、状态
+#   tmp/<run_id>/      requests.jsonl、iterations.jsonl、tool-usage.jsonl、
+#                      checkpoints/state-0000NN.json、events.jsonl、
+#                      已下载文档缓存、原始请求/响应、错误、草稿、备选方案、
+#                      预览、脚本与素材
+# 上述目录中的内容是过程留痕，必须随任务一起保留和复制。
+
+# --- 运行时缓存（按模板） ---
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- 运行时缓存（按本套实际语言/工具补充） ---
+# 本套执行只使用 PowerShell 5.1、System.Drawing 与 curl.exe，不产生语言级运行时缓存，
+# 因此无需新增规则。若后续改用其他语言，按该语言的缓存目录在此补充，
+# 并保持"只排除缓存、不排除过程证据"的原则。
+# 明确不使用 tmp/、outputs/、cache/、.cache/、*.log 以及任何整体图片/DSL/JSON
+# 通配规则来排除内容——那些属于过程证据。

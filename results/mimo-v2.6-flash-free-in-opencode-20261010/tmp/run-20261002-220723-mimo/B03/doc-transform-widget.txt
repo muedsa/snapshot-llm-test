@@ -1,0 +1,134 @@
+﻿Transform | Snapshot 跳转到内容 Snapshot 
+搜索 Ctrl K 取消 
+GitHub 
+选择主题 深色 浅色 自动 
+菜单 开始使用 概览 
+在线 Playground 
+安装与构建 
+快速开始 
+核心原理 渲染入口与输出 
+核心概念 
+约束、布局与调试 
+Widget 指南 Widget 与布局 
+绘制、装饰与效果 
+图片、文本与富文本 
+布局 Widget API Container 
+SizedBox 
+ConstrainedBox 
+LimitedBox 
+OverflowBox 
+SizedOverflowBox 
+Padding 
+Align 
+Center 
+Flex 
+Row 
+Column 
+Expanded 
+Flexible 
+Stack 
+Positioned 
+Transform 
+AspectRatio 
+FractionallySizedBox 
+IndexedStack 
+Spacer 
+UnconstrainedBox 
+绘制与效果 Widget API ColoredBox 
+DecoratedBox 
+Opacity 
+ColorFiltered 
+ImageFiltered 
+BackdropFilter 
+ClipRect 
+ClipRRect 
+ClipOval 
+ClipPath 
+图片 Widget API RawImage 
+ProviderImage 
+CachedNetworkImage 
+文本 Widget API Text 
+RichText 
+WidgetSpan 
+ImageEmojiSpan 
+类 DOM 解析器 类 DOM 解析器 
+标签与属性参考 
+错误处理与扩展 
+DSL 语言服务 
+测试 测试与 Golden 
+参考 枚举速查 
+FAQ 
+源码索引 
+GitHub 
+选择主题 深色 浅色 自动 
+本页内容 概述 
+函数签名 
+参数 
+旋转示例 
+平移示例 
+注意事项 
+本页内容
+概述 
+函数签名 
+参数 
+旋转示例 
+平移示例 
+注意事项 
+Transform
+Transform
+对子树应用 Matrix44CMO
+，支持旋转、平移、缩放和组合变换。它只影响绘制坐标，不重新参与布局。
+函数签名
+Section titled “函数签名” 
+fun ChildSlot. Transform ( 
+transform: Matrix44CMO, 
+origin: Offset? = null , 
+alignment: BoxAlignment?, 
+content: Transform.() -> Unit = {}, 
+) 
+Unit = {},)"> 
+参数
+Section titled “参数” 
+参数
+默认值
+说明
+transform
+必填
+4×4 列主序变换矩阵
+origin
+null
+在 alignment 之外附加的变换原点偏移
+alignment
+必填，可为 null
+相对自身尺寸计算的变换中心
+content
+空
+最多一个子 Widget
+旋转示例
+Section titled “旋转示例” 
+Transform ( 
+transform = computeRotation ( 0.15f ), 
+alignment = BoxAlignment.CENTER, 
+) { 
+Container (width = 240f , height = 120f , color = 0xFF38BDF8 . toInt ()) 
+} 
+平移示例
+Section titled “平移示例” 
+Transform ( 
+transform = Matrix44CMO. translationValues ( 24f , 12f , 0f ), 
+alignment = null , 
+) { 
+Text ( "translated" ) 
+} 
+Transform.rotate()
+和 Transform.translate()
+也可以创建 Widget 实例，但在 DSL 中直接传矩阵通常更清晰。
+注意事项
+Section titled “注意事项” 
+父节点仍按变换前的尺寸布局，因此旋转或平移后的内容可能与其他节点重叠。
+越界内容是否可见取决于祖先的裁剪策略。
+角度使用弧度。
+不要调用未实现的矩阵接口
+Matrix44CMO.transform(x, y, z)
+当前仍是未实现接口。请使用已经验证的矩阵构造与组合方法。
+上一页 Positioned 下一页 AspectRatio

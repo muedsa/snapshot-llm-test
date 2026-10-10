@@ -1,0 +1,60 @@
+{
+  "id": "A12",
+  "title": "四断点完整内容视觉系统",
+  "category": "跨尺寸系统",
+  "challenge": "窄手机仍须保全六组件，并跨四断点保持设计语义。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "使用 inputs/content.json 为同一活动制作四尺寸：360×800、768×1024、1440×900、\n1920×1080。每张都要保留全部主信息、网站及六张卡的标题和detail，一字不丢；\nCTA是文字，不需要生成二维码。不能用裁切、拉伸或整图Image实现适配。\n手机正文≥16、卡标题≥18；其余正文≥20、主标题≥40。留白、安全边距至少\n手机16/其他32；实际文字盒不能重叠。自行规划手机单列/平板/桌面组合，所有\n尺寸统一色彩、形态与层级，装饰使用相同核心构件但可以重排。\n输入title与subtitle都完整可读，信息之间不因缩屏失去联系。可用生成器从\n一份内容与设计参数生成四个完整DSL，但每张仍要实际渲染并查看。\n交付 design-tokens.json 与 content-map.json：颜色/字号/间距/组件规则、每个\n输入字段在四种画布中的坐标区域和保留情况。小屏内容不得省略或改写成缩写。\n",
+  "inputs": [
+    "inputs/content.json"
+  ],
+  "required_outputs": [
+    {
+      "filename": "mobile.png",
+      "dsl": "mobile.snapshot",
+      "width": 360,
+      "height": 800,
+      "purpose": "窄手机"
+    },
+    {
+      "filename": "tablet.png",
+      "dsl": "tablet.snapshot",
+      "width": 768,
+      "height": 1024,
+      "purpose": "平板"
+    },
+    {
+      "filename": "desktop.png",
+      "dsl": "desktop.snapshot",
+      "width": 1440,
+      "height": 900,
+      "purpose": "桌面"
+    },
+    {
+      "filename": "stage.png",
+      "dsl": "stage.snapshot",
+      "width": 1920,
+      "height": 1080,
+      "purpose": "大屏"
+    }
+  ],
+  "additional_outputs": [
+    "design-tokens.json",
+    "content-map.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A12/",
+  "temp_dir_template": "tmp/{run_id}/A12/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

@@ -1,0 +1,406 @@
+
+
+<html>
+
+<META NAME="keywords" CONTENT="earth rotation, earth rotation, atmosphere, atmosph�re, oceans, oc�ans, hydrology, hydrologie, continental water, eaux continetales, angular momentum, moment cin�tique, length of day, longeur du jour, polar motion, mouvement du p�le, pole coordinates, coordonn�es du p�le, nutation, precession, pr�cession, angular velocity, UT1, UTC,temps universel, universal time, seconde intercalaire, leap second, vitesse de rotation, moon, lune, Mond, sun, soleil, Sonne, tides, mar�es, Gezeiten, earthquake, seism, tremblement de terre, s�isme, excitation, moment d'inertie, matter term, terme mati�re, motion term, terme mouvement, courant, vent"> 
+
+
+<head>
+
+
+<link rel="stylesheet" href="//hpiers.obspm.fr/eop-pc/style.css" type="text/css">
+<link rel="stylesheet" href="//hpiers.obspm.fr/eop-pc/products/operational/jquery-ui_custom.css" type="text/css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css">
+
+
+	
+	
+
+<style>
+
+*{padding:0px;margin:0px}
+
+body{background-color:#c2cedb}
+
+ul{margin-left:40px}
+
+	.ul1 {position:fixed;top:94px;left:0px;border-bottom: solid 0px #6688bb; margin: 0px; padding: 0px; list-style: none; background: #ffffff; color: #fff; width: 171px; font: 11px  "Trebuchet MS", sans-serif;z-index:0;background-color:#e6f5ff} 
+	.search{position:fixed;top:56px;left:0px;font-family:arial;font-size:10px;z-index:2}
+	.flags{position:fixed;top:68px;left:10px;z-index:2}
+	.logo_lte{position:fixed;top: -65px;left:3px;z-index:2;width:163px;height:163px}
+	
+	
+	
+			
+	
+.earth_anime{position:absolute;top: 0px;left:158px;z-index:12}
+.bandeau{position:absolute;top:0px;left:148px;z-index:18}
+
+.body {font-family: verdana; font-size: 11px; line-height: normal;margin:0;padding:0;text-align:justify}
+.body_left {font-family: verdana; font-size: 11px; line-height: normal;margin:0;padding:0;text-align:left}
+
+.body12_ru {font-family: arial; font-size: 12px; line-height: normal;margin:0;padding:0;text-align:justify}
+
+.small{font-family: verdana; font-size: 10px; line-height: normal}
+.titre_page {font-family: verdana; font-size: 18px;text-align:center;font-weight: bold; padding-bottom:4px;padding-top:4px;background-color: #0099FF;width:100%}
+.body12 {font-family: verdana; font-size: 12px; line-height: 0.5cm}
+.titre_web { font-family: verdana; font-size: 24px; font-weight: bold; background-color: #FFFFFF; height: 40px; left: 15px; clip: rect( ); color: #FF0000; background-position: left center; width: 620px; padding-left: 15px; overflow: visible; white-space: normal; border-color: black black black #3300FF; border-left-width: thin}
+.soustitre_page { font-family: verdana; font-size: 16px; font-weight: bold; background-color: #CC0033; height: 40px; left: 15px; clip: rect( ); color: #FFFFFF; background-position: left center; width: 650px; padding-left: 15px; overflow: visible; white-space: normal; border-color: black black black #3300FF; border-left-width: thin }
+
+
+.mission li{margin-left:20px;margin-top:4px;margin-bottom:4px}
+
+.mission ul li{margin-left:40px;margin-top:4px;margin-bottom:4px}
+
+
+.table1{position:absolute;top:40px;left:0px;width:200px}
+
+.table2{font-size:11px;font-family:verdana}
+
+</style>
+
+<script type="text/javascript" src="dygraph-combined.js"></script>
+
+
+</head>
+
+</head>
+
+
+<body onLoad="allumer(div2);">
+
+<a href="https://www.obspm.fr"><img class="logo_lte" name="logo_lte" src='images/logo-obs-2.svg'></a>
+
+<div style="position:absolute;top:4px;left:910px;width:60px;height:60px;cursor:pointer;z-index:110" onclick="location.href='http://www.iers.org'"></div>
+
+
+	<img class="bandeau" src="images/logo26.png" name="bandeau">
+	<img  class="earth_anime" src="images/terre_anime.gif">
+  <div style="position:absolute; top:19px; left:223px; width:689px; height: 28px;z-index:110"></div>
+
+	
+
+
+
+
+
+
+<!--
+<div class="search">  
+<form method=post action="search.php"> 
+Search:<br> <input name="var" size=18 maxlength=60>
+<input type=submit value="Go" name="submit">
+</form>
+</div>
+-->
+<div class="flags">
+
+<a href="index.php?index=bulletins&lang=en&change_lang=true"><img src="images/english-flag.gif" width="25" height="14" border="0"></a>
+&nbsp;
+<a href="index.php?index=bulletins&lang=fr&change_lang=true"><img src="images/french-flag.gif" width="25" height="14" border="0"></a>
+&nbsp;
+<a href="index.php?index=bulletins&lang=ru&change_lang=true"><img src="images/russian-flag.gif" width="25" height="14" border="0"></a>
+&nbsp;
+<a href="index.php?index=bulletins&lang=es&change_lang=true"><img src="images/spanish-flag.jpg" width="25" height="14" border="0"></a>
+&nbsp;
+
+
+</div>
+
+<div style="position:absolute;top:58px; left:218px;font-family:arial;font-size:11px;font-weight:bold; text-decoration:underline ;cursor:pointer;z-index:50" href="#null" onClick="javascript:history.back();">BACK</div>
+
+<a style="position:absolute;top:58px;font-family:arial;font-size:11px;font-weight:bold;left:538px;z-index:50" href="index.php?index=mission&lang=en">HOME</a>
+
+
+<a style="position:absolute;top:58px;font-family:arial;font-size:11px;font-weight:bold;left:812px;z-index:50" href="products/bulletins/bulletins.html">SHOW THIS PAGE</a>
+
+
+
+
+
+<style>
+
+
+
+#ul1{display:none}
+#ul2{display:none}
+#ul3{display:none}
+#ul4{display:none}
+
+.ul_menu, .li_menu{margin:0;padding:0;list-style:none;background-color:#f2f2f6}
+
+.div_menu{position:relative;width:100%;height:28px;background-image:url('images/menu-item-deroule10.png');font-size:11px;font-family:arial;font-weight:bold;color:#224466;border-bottom:1px solid #224466}
+
+.ul_menu li a{position:relative;left:2px;text-decoration:none;font-family:verdana;font-size:11px}
+
+
+ .ul_menu li  a:link {color:blue}
+ .ul_menu li  a:visited {color:blue}
+ .ul_menu li  a:active {color:blue}
+ .ul_menu li  a:hover {color:blue}
+
+
+.ul_menu li{position:relative;width:100%;padding-top:4px;padding-bottom:4px;border-bottom:solid 1px  #224466}
+
+
+.span_menu{position:relative;top:6px;left:2px}
+
+
+</style>
+
+
+
+<script type="text/javascript" src="jquery-1.4.2.js"></script> 
+
+<script type="text/javascript" src="jquery.hoverIntent.js"></script> 
+
+
+
+<script type="text/javascript"> 
+<!-- 
+
+
+$(document).ready(function ()
+{
+	
+	$("#ul2").show();
+	
+	$('#div1').hoverIntent(function () {$("#ul1").show();$("#ul2").hide();$("#ul3").hide();$("#ul4").hide();}, function () {});
+
+	$('#div2').hoverIntent(function () {$("#ul2").show();$("#ul1").hide();$("#ul3").hide();$("#ul4").hide();}, function () {});
+	
+	$('#div3').hoverIntent(function () {$("#ul3").show();$("#ul1").hide();$("#ul2").hide();$("#ul4").hide();}, function () {});
+	
+	$('#div4').hoverIntent(function () {$("#ul4").show();$("#ul1").hide();$("#ul2").hide();$("#ul3").hide();}, function () {});
+	
+	
+
+	$("ul.ul_menu li").mouseover(function() 
+	{	
+		$(this).css({backgroundColor: "#ffffff" });
+	});
+	
+	$("ul.ul_menu li").mouseout(function() 
+	{	
+		$(this).css({backgroundColor: "#f2f0f6" });
+	});
+
+	
+	
+});
+		
+
+function allumer(onglet_triangle)
+{
+	div1.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	div2.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	div3.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	div4.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	
+	
+	onglet_triangle.style.backgroundImage='url(images/menu-item-deroule10_on.png)';
+	
+}
+
+hpiers2hpiers2
+
+// --> 
+
+</script> 
+
+
+<ul class="ul1">
+
+<li id="li2" onMouseOver="allumer(div2);">	
+	
+	<div class="div_menu" id="div2"><span class="span_menu">EOP TIME SERIES</span></div>	
+		
+	<ul class="ul_menu" id="ul2">	
+	<li><a id="a22bis" href="http://hpiers.obspm.fr/eop-pc/index.php?index=FTP&lang=en"><b>FTP products</b></a></li>
+	<li><a id="a22" href="http://hpiers.obspm.fr/eop-pc/index.php?index=C04&lang=en" ><b>Reference C04 series <br> Each day since 1962</b></a></li> 
+	<li><a id="a23" href="http://hpiers.obspm.fr/eop-pc/index.php?index=C01&lang=en" ><b>Reference C01 series <br>Each 0.05 year from 1846</b></a></li>
+	<li><a id="a24" href="http://hpiers.obspm.fr/eop-pc/index.php?index=analysis&lang=en" ><b>EOP series  &amp; analysis</b></a></li>
+        <li><a id="a25" href="http://hpiers.obspm.fr/eop-pc/index.php?index=operational&lang=en" >EOP series &amp; comparison</a></li>  
+	<li><a id="a26" href="http://hpiers.obspm.fr/eop-pc/index.php?index=bulletins&lang=en" ><b>Bulletins B, C, D</b></a></li>  
+        <li><a id="a27" href="http://hpiers.obspm.fr/eop-pc/index.php?index=realtime&lang=en" >Last days for EOP</a></li>           
+	<li><a id="a28" href="http://hpiers.obspm.fr/eop-pc/index.php?index=rotation&lang=en" >Rotation matrix/vector</a></li>
+	<li><a href="http://hpiers.obspm.fr/eop-pc/index.php?index=webservice&lang=en" >WEB Service</a></li>
+        <li><a id="a21" href="http://hpiers.obspm.fr/eop-pc/index.php?index=eoptable&lang=en" >EOP series: synoptic</a></li>
+	<br>
+</ul>
+</li>
+
+	<li id="li1" onMouseOver="allumer(div1);">
+		<div class="div_menu"  id="div1"><span class="span_menu">THEORY AND MODELLING</span></div>
+		<ul class="ul_menu"  id="ul1">
+			<li><a id="a11" href="http://hpiers.obspm.fr/eop-pc/index.php?index=orientation&lang=en"  >Earth Orientation Parameters (EOP)</a></li> 
+			<li><a id="a12" href="http://hpiers.obspm.fr/eop-pc/index.php?index=techniques&lang=en" >Astro-geodetic techniques</a></li> 
+			<li><a id="a13" href="http://hpiers.obspm.fr/eop-pc/index.php?index=models&lang=en" title="Models / Software">Models / Sofware</a></li> 
+			<li><a id="a14" href="http://hpiers.obspm.fr/eop-pc/index.php?index=leapsecond&lang=en" title="Leap second">Leap second</a></li> 
+			<li><a id="a15" href="http://hpiers.obspm.fr/eop-pc/index.php?index=constants&lang=en" title="Constants">Useful constants</a></li> 
+	        <li><a href="http://www.astropage.ru/guide/moon/moon_decl_m1.php?month=10&year=2026&type=1&lang=en" title="Moon declination" target="_blank" id="a16">Moon declination</a></li> 
+			<br><br><br><br><br><br><br><br><br><br><br><br><br>
+		</ul>
+	</li>
+	
+	
+	<li id="li3" onMouseOver="allumer(div3);">	
+		
+		<div class="div_menu" id="div3"><span class="span_menu">GEOPHYSICAL EXCITATION</span></div>	
+	
+		<ul class="ul_menu" id="ul3">
+			
+			<li><a id="a32" href="http://hpiers.obspm.fr/eop-pc/index.php?index=excitactive&lang=en" >Excitation of PM/LOD</a></li> 
+ 			<li><a id="a33" href="http://hpiers.obspm.fr/eop-pc/index.php?index=ceam&lang=en" >Excitation of nutation</a></li>
+            <li><a id="a31" href="http://hpiers.obspm.fr/eop-pc/index.php?index=excitation&lang=en" >Geophysical excitation</a></li> 
+<!-- 			<li><a  href="calendrier/datconv.php" target=_blank>Dates converter</a></li> -->
+ 			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		</ul>
+	</li>
+	
+	<li id="li4" onMouseOver="allumer(div4);">
+		
+		<div  class="div_menu" id="div4"><span class="span_menu">LINKS</span></div>	
+	
+		<ul class="ul_menu" id="ul4">
+			<li><a href="http://www.iers.org/" ><img src="images/syrteFavicon.png" width="16" height="16" alt="IERS" /> IERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+			<li><a href="http://maia.usno.navy.mil/products/eo-products" ><img src="images/syrteFavicon.png width="16" height="16" alt="IERS" /> IERS Rapid Service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+            <li><a href="http://iers-conventions.obspm.fr/" ><img src="images/wtfFavicon.png" width="16" height="16" alt="IERS CONVENTIONS CENTER" /> IERS Conventions</a></li>
+			<li><a href="https://lte.observatoiredeparis.psl.eu/-Le-laboratoire-" ><img src="images/ObsFavicon.png" alt="LTE" width="16" height="16" vspace="16"/> LTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+			<li><a href="http://www.obspm.fr/" ><img src="images/ObsFavicon.png" alt="Paris Observatory" width="16" height="16" vspace="16" /> Paris Observatory</a></li> 
+			<li><a href="http://grgs.obs-mip.fr/" ><img src="images/GRGSFavicon.png" width="16" height="16" alt="GRGS" /> GRGS&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+			<li><a href="http://earthrotation.net/" ><img src="images/wtfFavicon.png" width="16" height="16" alt="Network Earth Rotation Service" /> Network Earth Rotation Service</a></li>
+            <li><a id="a41" href="http://hpiers.obspm.fr/eop-pc/index.php?index=links&lang=en" >Other links</a></li> 
+			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		</ul>
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+ 
+<div style="position:relative;padding-top:90px;padding-bottom:24px;top:0px;left:171px;width:788;background-color:#ffffff;border-left: 1px solid #4bc1ed;border-right: 1px solid #6bd1fe;text-align:center;z-index:4">
+
+
+
+
+
+<center>
+
+
+
+<div style="width:750px;text-align:justify;font-family:arial;font-size:12px;color:#224466;font-family: verdana; font-size: 12px; line-height: 0.5cm">
+
+
+
+
+
+
+<title>Orientation matrix and derived parameters</title>
+
+
+<link rel="stylesheet" href="http://hpiers.obspm.fr/eop-pc/style.css" type="text/css">
+<body bgcolor="#FFFFFF" leftmargin="0" marginwidth="0" class="body12">
+
+<table width="100%"><tr class="titre_page" align="center">
+    <td>BULLETINS B, C, D</td>
+ </tr></table>
+<br>
+<table width="100%"  cellspacing="4" class="body12">
+
+
+	<tr>
+	<td colspan=2 align="center">
+	<b><a href="http://hpiers.obspm.fr/eop-pc/index.php?index=bulletin_registration&lang=en">Subscription to receive
+	bulletins by e-mail </b> <br><br></a> 
+	</td>
+	</tr>
+
+
+<tr> 
+	<td valign="top" width="300"> <img src="http://hpiers.obspm.fr/eop-pc/images/dot-red.gif" width="14" height="14" ><b>
+	 Bulletin B</b> (from 2009): the relooked monthly Bulletin B contains Earth orientation parameters (x,y,UT,dX,dY) 
+	at 1-day over the last 60 days preceding its distribution 
+    </td>
+
+	<td valign="top"> 
+    <ul>
+        <li><a href="https://hpiers.obspm.fr/iers/bul/bulb_new/bulletinb.dat" target="_self">Last version</a></li>     
+        <li><a href="https://hpiers.obspm.fr/iers/bul/bulb_new/">Previous Bulletins B</a></li>
+        <li><a href="https://hpiers.obspm.fr/iers/bul/bulb_new/bulletinb.pdf" target="_self">Read me</a></li>
+    </ul>
+	</td>
+</tr>
+<tr><td></td><tr>
+<tr> 
+	<td valign="top" width="300"> <img src="https://hpiers.obspm.fr/eop-pc/images/dot-red.gif" width="14" height="14" ><b>Old Bulletin 
+      B</b> <a href="https://data.iers.org/products/2/12648/output/35192/message_144.txt.html">stopped in January 2010</a> : the monthly Bulletin B contains Earth orientation parameters (x,y,UT,dPsi,dEps) 
+      at 1-day and 5-days interval over the last 60 days preceding its distribution.</td>
+
+	<td valign="top"><ul>
+	  <li><a href="https://hpiers.obspm.fr/iers/bul/bulb/">Old Bulletins B</a></li>
+        <li><a href="https://hpiers.obspm.fr/iers/bul/bulb/explanatory.rtf" target="_self">Explanatory Supplement</a></li>
+    </ul>
+	</td>
+</tr>
+<tr><td></td><tr>
+<tr> 
+    <td valign="top" width="300"><img src="http://hpiers.obspm.fr/eop-pc/images/dot-red.gif" width="14" height="14" > 
+      <b>Bulletin C</b>: the Bulletin C contains announcement of the leap seconds in UTC.
+	</td>
+
+	<td width="300" valign="top"> 
+	<ul>
+	<li><a href="https://hpiers.obspm.fr/iers/bul/bulc/BULLETINC.GUIDE.html"><b>Guide for Bulletin C</b></a></li>
+	<li><a href="https://hpiers.obspm.fr/iers/bul/bulc/bulletinc.dat">Last Bulletin C</a></li>
+        <li><a href="https://hpiers.obspm.fr/iers/bul/bulc">Previous Bulletins C</a></li>
+        <li><a href="https://hpiers.obspm.fr/eop-pc/index.php?index=TAI-UTC_tab&lang=en">TAI-UTC since 1961</a>
+        <li><a href="https://hpiers.obspm.fr/eop-pc/index.php?index=UTC-offsets_tab&lang=en">Adjustements of UTC since 1961</a></li>
+    </ul>
+	</td>
+</tr>
+<tr><td></td><tr>
+<tr> 
+
+	<td valign="top">
+	<img src="http://hpiers.obspm.fr/eop-pc/images/dot-red.gif" width="14" height="14" >
+	<b>Bulletin D</b>: the Bulletin D contains announcement of the value of dUT1 to be transmitted with time signals 
+	(dUT1 = UT1-UTC expressed with a precision of +/-0.1s). 
+	</td>
+
+    <td valign="top"> 
+      <ul>
+	  	<li><a href="https://hpiers.obspm.fr/iers/bul/buld/bulletind.dat">Last Bulletin D</a></li>
+		<li><a href="https://hpiers.obspm.fr/iers/bul/buld/">Previous Bulletins D</a></li>
+        <li><a href="https://hpiers.obspm.fr/iers/bul/buld/BULLETIND.GUIDE">Guide for Bulletin D </a></li>
+      </ul>
+    </td>
+</tr>
+
+</table>
+
+</body></html>
+
+
+</div>
+
+</center>
+
+</div>
+
+<div style="position:relative;top:0px;left:171px;width:790px;height:24px;background-image:url('images/logo24_quatro_pied_de_page.png');z-index:120">
+
+</div>
+
+
+<br><br><br><br>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1843 @@
+{
+    "path_base": "suite_root",
+    "task":  "A14",
+    "task_name":  "八组文案压力测试与批量生成",
+    "generated_at":  "2026-10-03T18:34:09+08:00",
+    "run_id":  "run-20261002-220723-mimo",
+    "input":  {
+                  "file":  "tasks/A14-content-stress-batch/inputs/cards.json",
+                  "records":  8,
+                  "sha256":  "700DCB72C995FB8AAFA3003A6D4FB2D8D0BD8974ADF16545797F3EF517448563"
+              },
+    "generator":  {
+                      "script":  "tmp/run-20261002-220723-mimo/A14/gen.ps1",
+                      "verifier":  "tmp/run-20261002-220723-mimo/A14/verify.ps1",
+                      "layout_record":  "tmp/run-20261002-220723-mimo/A14/layout-v8.json",
+                      "approach":  "one parametric rule set reads cards.json and emits all 8 DSLs; no per-card hardcoding. Title and speaker sizes come from a shared size ladder; line breaking comes from a conservative per-class width estimator plus an exhaustive balanced splitter that prefers a natural punctuation break. Long input simply steps down the ladder or splits into more rows.",
+                      "shared_rule_set":  {
+                                              "canvas":  {
+                                                             "width":  1200,
+                                                             "height":  630,
+                                                             "safe_margin":  40
+                                                         },
+                                              "palette":  {
+                                                              "background":  "#0B1220",
+                                                              "hairline":  "#23324C",
+                                                              "text_primary":  "#F8FAFC",
+                                                              "text_secondary":  "#9FB0CB",
+                                                              "primary":  "#38BDF8",
+                                                              "accent":  "#F6B94A",
+                                                              "pill_text":  "#0B1220",
+                                                              "cancel_note":  "#F87171",
+                                                              "note":  "Identical on all eight cards - only the status colour changes, and only through the status system."
+                                                          },
+                                              "brand":  {
+                                                            "string":  "Structure / Vision",
+                                                            "box":  {
+                                                                        "x":  96,
+                                                                        "y":  48,
+                                                                        "width":  520,
+                                                                        "height":  24
+                                                                    },
+                                                            "mark":  {
+                                                                         "x1":  40,
+                                                                         "x2":  64,
+                                                                         "y":  50,
+                                                                         "size":  20
+                                                                     }
+                                                        },
+                                              "date":  {
+                                                           "string":  "2026.11.07",
+                                                           "align":  "END",
+                                                           "right_edge":  1160,
+                                                           "row":  "top-aligned with the per-card speaker row",
+                                                           "per_card_box":  "see each card record.date_box"
+                                                       },
+                                              "title_zone":  {
+                                                                 "top":  104,
+                                                                 "bottom":  396,
+                                                                 "height":  292,
+                                                                 "left":  40,
+                                                                 "width":  1120,
+                                                                 "align":  "START",
+                                                                 "vertical_align":  "centred",
+                                                                 "size_ladder":  [
+                                                                                     112,
+                                                                                     104,
+                                                                                     96,
+                                                                                     88,
+                                                                                     80,
+                                                                                     72,
+                                                                                     64,
+                                                                                     56,
+                                                                                     48,
+                                                                                     40,
+                                                                                     36
+                                                                                 ],
+                                                                 "line_height_ratio":  1.16,
+                                                                 "min_size":  36,
+                                                                 "max_lines":  3
+                                                             },
+                                              "footer":  {
+                                                             "anchor":  "bottom",
+                                                             "speaker_row_bottom":  590,
+                                                             "time_row_gap":  18,
+                                                             "time_font_size":  56,
+                                                             "cancel_note_row":  "time row, right column, K06 only",
+                                                             "top_margin":  40,
+                                                             "bottom_margin":  40
+                                                         },
+                                              "speaker_zone":  {
+                                                                   "anchor":  "block bottom on the safe line",
+                                                                   "left":  40,
+                                                                   "width":  560,
+                                                                   "size_ladder":  [
+                                                                                       32,
+                                                                                       30,
+                                                                                       28,
+                                                                                       26,
+                                                                                       24,
+                                                                                       22
+                                                                                   ],
+                                                                   "min_size":  22,
+                                                                   "max_lines":  2
+                                                               },
+                                              "badge":  {
+                                                            "y":  40,
+                                                            "height":  40,
+                                                            "font_size":  26,
+                                                            "padding":  22,
+                                                            "width":  135,
+                                                            "right_edge":  1160
+                                                        },
+                                              "divider":  {
+                                                              "y":  404,
+                                                              "head_width":  240,
+                                                              "x":  40
+                                                          },
+                                              "fonts":  {
+                                                            "prose":  "Noto Sans CJK SC,Noto Sans CJK JP",
+                                                            "numeric":  "Noto Sans Mono CJK SC",
+                                                            "source":  "GET /fonts (shared suite response, tmp/run-20261002-220723-mimo/A11/fonts-0001.txt)"
+                                                        },
+                                              "measurement":  {
+                                                                  "method":  "per-class advance estimate in em, converted to px",
+                                                                  "cjk_fullwidth_em":  1,
+                                                                  "cjk_pad":  1.05,
+                                                                  "latin_note":  "upper .74 lower/digit .58 space .30 other ascii .40 latin1 .55 mono .62 em",
+                                                                  "latin_pad":  1.1,
+                                                                  "purpose":  "keeps every emitted line inside its box without scaling the card"
+                                                              }
+                                          }
+                  },
+    "image_viewing":  {
+                          "tool":  "real image viewer (file opened as raster and described from pixels)",
+                          "badge_probe":  "render-v1-probe-badges.png opened first to prove ○ ◆ △ × exist before the batch render",
+                          "all_eight_finals_opened":  true,
+                          "final_version":  "render-v5 (delivered bytes, byte-identical to outputs)",
+                          "independent_qa":  {
+                                                 "date":  "2026-10-03",
+                                                 "viewer":  "independent QA sub-agent",
+                                                 "session":  "ses_efebc9497ffe0pb21lQxrPA8I7"
+                                             },
+                          "harness_note":  "The image channel re-served stale frames on repeated opens. Each frame was matched against the expected content of the file opened, stale frames were rejected and re-opened, unique-path copies were used where needed, and every delivered PNG was additionally verified from its own bytes (SHA-256 distinctness, status-pill colour, divider tint, title-band ink, footer boxes).",
+                          "contact_sheet_used_as_substitute":  false
+                      },
+    "cards":  [
+                  {
+                      "id":  "K01",
+                      "source":  {
+                                     "title":  "开始",
+                                     "speaker":  "林川",
+                                     "status":  "开放",
+                                     "time":  "09:00",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K01.png",
+                                        "snapshot":  "card-K01.snapshot",
+                                        "png_bytes":  26199,
+                                        "snapshot_bytes":  2037,
+                                        "png_sha256":  "BCF1C6E18E7C764E07108F66497B7B216D3A68BA755DDFD79EE3E3DFE0B27436",
+                                        "snapshot_sha256":  "A485EB7E01B2D6A802424E12DE4ACF9D18A0470AEE128D45950822053EC6D0AB",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K01",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K01-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K01.png",
+                                               "dsl_version":  "card-K01-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  112,
+                                    "min_required":  36,
+                                    "lines":  1,
+                                    "max_allowed":  3,
+                                    "line_height":  130,
+                                    "line_texts":  [
+                                                       "开始"
+                                                   ],
+                                    "natural_break":  null,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  194,
+                                    "block_height":  112,
+                                    "top":  194,
+                                    "bottom":  306,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  194,
+                                                      "width":  1120,
+                                                      "height":  112,
+                                                      "text":  "开始"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "林川"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "林川"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "开放",
+                                              "symbol":  "○",
+                                              "symbol_codepoint":  "U+25CB",
+                                              "color":  "#34D399",
+                                              "label":  "○ 开放",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#34D399"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "○ 开放"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  null,
+                                        "text_box_count":  5
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v4-card-K01.png",
+                                              "render_version":  "render-v4",
+                                              "observed":  "matched own artwork (title 开始, 09:00, 林川, green ○ 开放)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v5-card-K01.png",
+                                              "render_version":  "render-v5 (final)",
+                                              "observed":  "matched own artwork; bottom-anchored footer confirmed",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K01.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  },
+                  {
+                      "id":  "K02",
+                      "source":  {
+                                     "title":  "读文档，也要读懂布局约束",
+                                     "speaker":  "周禾 / 许宁",
+                                     "status":  "满额",
+                                     "time":  "09:40",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K02.png",
+                                        "snapshot":  "card-K02.snapshot",
+                                        "png_bytes":  58809,
+                                        "snapshot_bytes":  2296,
+                                        "png_sha256":  "73E539DD333270E921288F72523DF676494DA599BAD90B3ACFF4A3C065534747",
+                                        "snapshot_sha256":  "415A5A13658209585425A9509686B8B5E223817D092C96F22D3D808FFCD98AE5",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K02",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K02-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K02.png",
+                                               "dsl_version":  "card-K02-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  112,
+                                    "min_required":  36,
+                                    "lines":  2,
+                                    "max_allowed":  3,
+                                    "line_height":  130,
+                                    "line_texts":  [
+                                                       "读文档，也要",
+                                                       "读懂布局约束"
+                                                   ],
+                                    "natural_break":  false,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  129,
+                                    "block_height":  242,
+                                    "top":  129,
+                                    "bottom":  371,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  129,
+                                                      "width":  1120,
+                                                      "height":  112,
+                                                      "text":  "读文档，也要"
+                                                  },
+                                                  {
+                                                      "id":  "title-2",
+                                                      "x":  40,
+                                                      "y":  259,
+                                                      "width":  1120,
+                                                      "height":  112,
+                                                      "text":  "读懂布局约束"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "周禾 / 许宁"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "周禾 / 许宁"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "满额",
+                                              "symbol":  "◆",
+                                              "symbol_codepoint":  "U+25C6",
+                                              "color":  "#F6B94A",
+                                              "label":  "◆ 满额",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#F6B94A"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "◆ 满额"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  null,
+                                        "text_box_count":  6
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v3-card-K02.png",
+                                              "render_version":  "render-v3",
+                                              "observed":  "matched own artwork (读文档，也要 / 读懂布局约束, 09:40, 周禾 / 许宁, amber ◆ 满额)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K02.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  },
+                  {
+                      "id":  "K03",
+                      "source":  {
+                                     "title":  "当所有信息都想成为标题：密集内容中的取舍与层级",
+                                     "speaker":  "顾行",
+                                     "status":  "候补",
+                                     "time":  "10:20",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K03.png",
+                                        "snapshot":  "card-K03.snapshot",
+                                        "png_bytes":  72035,
+                                        "snapshot_bytes":  2318,
+                                        "png_sha256":  "DE2E8CA4D595DCBA5AC2D07E8080EE6B0F26C0E437B2AB421736EAECCE992C72",
+                                        "snapshot_sha256":  "E7C2C96214A0FA774913B587F7756443729494F0C5B9B9C5EA2C9952AAC44661",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K03",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K03-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K03.png",
+                                               "dsl_version":  "card-K03-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  88,
+                                    "min_required":  36,
+                                    "lines":  2,
+                                    "max_allowed":  3,
+                                    "line_height":  102,
+                                    "line_texts":  [
+                                                       "当所有信息都想成为标题：",
+                                                       "密集内容中的取舍与层级"
+                                                   ],
+                                    "natural_break":  true,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  155,
+                                    "block_height":  190,
+                                    "top":  155,
+                                    "bottom":  345,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  155,
+                                                      "width":  1120,
+                                                      "height":  88,
+                                                      "text":  "当所有信息都想成为标题："
+                                                  },
+                                                  {
+                                                      "id":  "title-2",
+                                                      "x":  40,
+                                                      "y":  257,
+                                                      "width":  1120,
+                                                      "height":  88,
+                                                      "text":  "密集内容中的取舍与层级"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "顾行"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "顾行"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "候补",
+                                              "symbol":  "△",
+                                              "symbol_codepoint":  "U+25B3",
+                                              "color":  "#A78BFA",
+                                              "label":  "△ 候补",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#A78BFA"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "△ 候补"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  null,
+                                        "text_box_count":  6
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v3-card-K03.png",
+                                              "render_version":  "render-v3",
+                                              "observed":  "matched own artwork (当所有信息都想成为标题：..., 10:20, 顾行, violet △ 候补)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K03.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  },
+                  {
+                      "id":  "K04",
+                      "source":  {
+                                     "title":  "A < B & C > D：不要把文本当成标签",
+                                     "speaker":  "苏言",
+                                     "status":  "开放",
+                                     "time":  "11:00",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K04.png",
+                                        "snapshot":  "card-K04.snapshot",
+                                        "png_bytes":  62703,
+                                        "snapshot_bytes":  2294,
+                                        "png_sha256":  "D7322B0D677B4E87060AFDC1675251AEF57DC2550BDA3B011A2465ECB4227F4C",
+                                        "snapshot_sha256":  "0A445FADE3521D5BC2131BED8B127F5182BF0B485F59D89DE9675731534EE6A7",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K04",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K04-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K04.png",
+                                               "dsl_version":  "card-K04-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  112,
+                                    "min_required":  36,
+                                    "lines":  2,
+                                    "max_allowed":  3,
+                                    "line_height":  130,
+                                    "line_texts":  [
+                                                       "A < B & C > D：",
+                                                       "不要把文本当成标签"
+                                                   ],
+                                    "natural_break":  true,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  129,
+                                    "block_height":  242,
+                                    "top":  129,
+                                    "bottom":  371,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  129,
+                                                      "width":  1120,
+                                                      "height":  112,
+                                                      "text":  "A < B & C > D："
+                                                  },
+                                                  {
+                                                      "id":  "title-2",
+                                                      "x":  40,
+                                                      "y":  259,
+                                                      "width":  1120,
+                                                      "height":  112,
+                                                      "text":  "不要把文本当成标签"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "苏言"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "苏言"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "开放",
+                                              "symbol":  "○",
+                                              "symbol_codepoint":  "U+25CB",
+                                              "color":  "#34D399",
+                                              "label":  "○ 开放",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#34D399"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "○ 开放"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  null,
+                                        "text_box_count":  6
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v3-card-K04.png",
+                                              "render_version":  "render-v3",
+                                              "observed":  "matched own artwork (A < B & C > D：..., 11:00, 苏言, green ○ 开放)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K04.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  },
+                  {
+                      "id":  "K05",
+                      "source":  {
+                                     "title":  "Color, Alpha & Contrast / 从颜色到可读性",
+                                     "speaker":  "孟澄",
+                                     "status":  "开放",
+                                     "time":  "13:00",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K05.png",
+                                        "snapshot":  "card-K05.snapshot",
+                                        "png_bytes":  54248,
+                                        "snapshot_bytes":  2295,
+                                        "png_sha256":  "8C85126195B2985B0D0FC83AD5BF045078AA11DC7A212C0B42A9C9F2B4C48EBB",
+                                        "snapshot_sha256":  "7B41C8A2049AFD9F510D4C6F19F0C45AB9A88D6D6D5DFD5A41FE342CB9DB676B",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K05",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K05-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K05.png",
+                                               "dsl_version":  "card-K05-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  72,
+                                    "min_required":  36,
+                                    "lines":  2,
+                                    "max_allowed":  3,
+                                    "line_height":  84,
+                                    "line_texts":  [
+                                                       "Color, Alpha & Contrast /",
+                                                       "从颜色到可读性"
+                                                   ],
+                                    "natural_break":  true,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  172,
+                                    "block_height":  156,
+                                    "top":  172,
+                                    "bottom":  328,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  172,
+                                                      "width":  1120,
+                                                      "height":  72,
+                                                      "text":  "Color, Alpha & Contrast /"
+                                                  },
+                                                  {
+                                                      "id":  "title-2",
+                                                      "x":  40,
+                                                      "y":  256,
+                                                      "width":  1120,
+                                                      "height":  72,
+                                                      "text":  "从颜色到可读性"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "孟澄"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "孟澄"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "开放",
+                                              "symbol":  "○",
+                                              "symbol_codepoint":  "U+25CB",
+                                              "color":  "#34D399",
+                                              "label":  "○ 开放",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#34D399"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "○ 开放"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  null,
+                                        "text_box_count":  6
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v5-card-K05.png",
+                                              "render_version":  "render-v5 (final)",
+                                              "observed":  "matched own artwork (Color, Alpha & Contrast / 从颜色到可读性, 13:00, 孟澄)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K05.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  },
+                  {
+                      "id":  "K06",
+                      "source":  {
+                                     "title":  "两张看似相同的图片，为什么不能证明语义相同？",
+                                     "speaker":  "许宁",
+                                     "status":  "取消",
+                                     "time":  "13:40",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K06.png",
+                                        "snapshot":  "card-K06.snapshot",
+                                        "png_bytes":  67850,
+                                        "snapshot_bytes":  2526,
+                                        "png_sha256":  "B3089EEDC129D6D6936B029B5B9D1DE21F96B18F1C3D57FCABC37F37E3558CB2",
+                                        "snapshot_sha256":  "E792014C32B643B8E4FB9CDFB58C8A66C9B915512870EBD94F762E790C8DB715",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K06",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K06-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K06.png",
+                                               "dsl_version":  "card-K06-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  88,
+                                    "min_required":  36,
+                                    "lines":  2,
+                                    "max_allowed":  3,
+                                    "line_height":  102,
+                                    "line_texts":  [
+                                                       "两张看似相同的图片，",
+                                                       "为什么不能证明语义相同？"
+                                                   ],
+                                    "natural_break":  true,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  155,
+                                    "block_height":  190,
+                                    "top":  155,
+                                    "bottom":  345,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  155,
+                                                      "width":  1120,
+                                                      "height":  88,
+                                                      "text":  "两张看似相同的图片，"
+                                                  },
+                                                  {
+                                                      "id":  "title-2",
+                                                      "x":  40,
+                                                      "y":  257,
+                                                      "width":  1120,
+                                                      "height":  88,
+                                                      "text":  "为什么不能证明语义相同？"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "许宁"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "许宁"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "取消",
+                                              "symbol":  "×",
+                                              "symbol_codepoint":  "U+00D7",
+                                              "color":  "#F87171",
+                                              "label":  "× 取消",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#F87171"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "× 取消"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  {
+                                                                "id":  "cancel-note",
+                                                                "x":  660,
+                                                                "y":  484,
+                                                                "width":  500,
+                                                                "height":  30,
+                                                                "text":  "本场取消"
+                                                            },
+                                        "text_box_count":  7
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v3-card-K06.png",
+                                              "render_version":  "render-v3",
+                                              "observed":  "matched own artwork (full title + 13:40 kept, red × 取消, 本场取消 note)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v5-card-K06.png",
+                                              "render_version":  "render-v5 (final)",
+                                              "observed":  "matched own artwork; 本场取消 on time row, date on speaker row",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K06.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  },
+                  {
+                      "id":  "K07",
+                      "source":  {
+                                     "title":  "把一次失败变成可复现记录——服务、字体、数据与视觉检查",
+                                     "speaker":  "Northstar Research · 林川",
+                                     "status":  "候补",
+                                     "time":  "14:20",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K07.png",
+                                        "snapshot":  "card-K07.snapshot",
+                                        "png_bytes":  74187,
+                                        "snapshot_bytes":  2352,
+                                        "png_sha256":  "D84EC4E91061FF9F8F9DC48DEAAA1FD25E32BEBF9CD911D1EB55778B5C01AD52",
+                                        "snapshot_sha256":  "6764E96659D4428109C323F423729276BC2549EEC8DF291A5B01547A88413613",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K07",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K07-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K07.png",
+                                               "dsl_version":  "card-K07-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  72,
+                                    "min_required":  36,
+                                    "lines":  2,
+                                    "max_allowed":  3,
+                                    "line_height":  84,
+                                    "line_texts":  [
+                                                       "把一次失败变成可复现记录——",
+                                                       "服务、字体、数据与视觉检查"
+                                                   ],
+                                    "natural_break":  true,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  172,
+                                    "block_height":  156,
+                                    "top":  172,
+                                    "bottom":  328,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  172,
+                                                      "width":  1120,
+                                                      "height":  72,
+                                                      "text":  "把一次失败变成可复现记录——"
+                                                  },
+                                                  {
+                                                      "id":  "title-2",
+                                                      "x":  40,
+                                                      "y":  256,
+                                                      "width":  1120,
+                                                      "height":  72,
+                                                      "text":  "服务、字体、数据与视觉检查"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "Northstar Research · 林川"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "Northstar Research · 林川"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "候补",
+                                              "symbol":  "△",
+                                              "symbol_codepoint":  "U+25B3",
+                                              "color":  "#A78BFA",
+                                              "label":  "△ 候补",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#A78BFA"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "△ 候补"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  null,
+                                        "text_box_count":  6
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v3-card-K07.png",
+                                              "render_version":  "render-v3",
+                                              "observed":  "matched own artwork (break after ——, 14:20, Northstar Research · 林川, violet △ 候补)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K07.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  },
+                  {
+                      "id":  "K08",
+                      "source":  {
+                                     "title":  "从“已经请求成功”到“已经完成作品”：模型工作能力的最后一公里",
+                                     "speaker":  "周禾",
+                                     "status":  "开放",
+                                     "time":  "15:00",
+                                     "preserved_verbatim":  true
+                                 },
+                      "delivered":  {
+                                        "png":  "card-K08.png",
+                                        "snapshot":  "card-K08.snapshot",
+                                        "png_bytes":  53366,
+                                        "snapshot_bytes":  2342,
+                                        "png_sha256":  "8C45ED15106C304D4A7B230B27F1F9BFA201F9F98DE0E8B9D8153B122780D590",
+                                        "snapshot_sha256":  "092B38BF7126F0A678B257C336BE61B673792607048244BA65A388E9AA0CBAF0",
+                                        "width":  1200,
+                                        "height":  630
+                                    },
+                      "service_response":  {
+                                               "request_id":  "A14-r05-card-K08",
+                                               "http_status":  200,
+                                               "request_file":  "tmp\\run-20261002-220723-mimo\\A14\\card-K08-v8.snapshot",
+                                               "response_file":  "tmp\\run-20261002-220723-mimo\\A14\\render-v5-card-K08.png",
+                                               "dsl_version":  "card-K08-v8.snapshot",
+                                               "render_batch":  "r05",
+                                               "raw_png_bytes_preserved":  true,
+                                               "post_processing_applied":  false
+                                           },
+                      "title":  {
+                                    "font_size":  56,
+                                    "min_required":  36,
+                                    "lines":  2,
+                                    "max_allowed":  3,
+                                    "line_height":  65,
+                                    "line_texts":  [
+                                                       "从“已经请求成功”到“已经完成作品”：",
+                                                       "模型工作能力的最后一公里"
+                                                   ],
+                                    "natural_break":  true,
+                                    "break_rule":  "largest ladder size that fits in <=2 rows and breaks on punctuation/space; a balanced break is used only when no size in the ladder offers a natural break; a single row has no break to judge",
+                                    "zone":  {
+                                                 "top":  104,
+                                                 "height":  292,
+                                                 "width":  1120,
+                                                 "vertical_align":  "block centred vertically inside the shared zone"
+                                             },
+                                    "block_top":  189,
+                                    "block_height":  121,
+                                    "top":  189,
+                                    "bottom":  310,
+                                    "boxes":  [
+                                                  {
+                                                      "id":  "title-1",
+                                                      "x":  40,
+                                                      "y":  189,
+                                                      "width":  1120,
+                                                      "height":  56,
+                                                      "text":  "从“已经请求成功”到“已经完成作品”："
+                                                  },
+                                                  {
+                                                      "id":  "title-2",
+                                                      "x":  40,
+                                                      "y":  254,
+                                                      "width":  1120,
+                                                      "height":  56,
+                                                      "text":  "模型工作能力的最后一公里"
+                                                  }
+                                              ]
+                                },
+                      "speaker":  {
+                                      "font_size":  32,
+                                      "min_required":  22,
+                                      "lines":  1,
+                                      "max_allowed":  2,
+                                      "line_height":  37,
+                                      "line_texts":  [
+                                                         "周禾"
+                                                     ],
+                                      "top":  558,
+                                      "bottom":  590,
+                                      "anchor":  "block bottom rests exactly on the safe line",
+                                      "boxes":  [
+                                                    {
+                                                        "id":  "speaker-1",
+                                                        "x":  40,
+                                                        "y":  558,
+                                                        "width":  560,
+                                                        "height":  32,
+                                                        "text":  "周禾"
+                                                    }
+                                                ]
+                                  },
+                      "status_encoding":  {
+                                              "text":  "开放",
+                                              "symbol":  "○",
+                                              "symbol_codepoint":  "U+25CB",
+                                              "color":  "#34D399",
+                                              "label":  "○ 开放",
+                                              "pill":  {
+                                                           "x":  1025,
+                                                           "y":  40,
+                                                           "width":  135,
+                                                           "height":  40
+                                                       },
+                                              "label_box":  {
+                                                                "x":  1047,
+                                                                "y":  47,
+                                                                "width":  91,
+                                                                "height":  26
+                                                            },
+                                              "divider_head":  {
+                                                                   "x":  40,
+                                                                   "y":  404,
+                                                                   "width":  240,
+                                                                   "height":  1,
+                                                                   "color":  "#34D399"
+                                                               },
+                                              "encoding":  "color + symbol + text (all three, on every card)"
+                                          },
+                      "positions":  {
+                                        "brand_box":  {
+                                                          "x":  96,
+                                                          "y":  48,
+                                                          "width":  520,
+                                                          "height":  24
+                                                      },
+                                        "badge_box":  {
+                                                          "id":  "badge",
+                                                          "x":  1025,
+                                                          "y":  40,
+                                                          "width":  135,
+                                                          "height":  40,
+                                                          "text":  "○ 开放"
+                                                      },
+                                        "time_box":  {
+                                                         "x":  40,
+                                                         "y":  484,
+                                                         "width":  520,
+                                                         "height":  56
+                                                     },
+                                        "date_box":  {
+                                                         "x":  660,
+                                                         "y":  558,
+                                                         "width":  500,
+                                                         "height":  30
+                                                     },
+                                        "cancel_note_box":  null,
+                                        "text_box_count":  6
+                                    },
+                      "geometry_checks":  {
+                                              "safe_margin":  40,
+                                              "boxes_outside_safe_margin":  [
+
+                                                                            ],
+                                              "box_overlaps":  [
+
+                                                               ],
+                                              "note":  "all text boxes inside the 40px safe margin and mutually disjoint"
+                                          },
+                      "checks":  {
+                                     "png_is_real_png":  true,
+                                     "png_size_1200x630":  true,
+                                     "png_is_service_response":  true,
+                                     "snapshot_pair_present":  true,
+                                     "snapshot_bom_free":  true,
+                                     "snapshot_has_no_image_element":  true,
+                                     "snapshot_has_no_transform":  true,
+                                     "title_verbatim_from_input":  true,
+                                     "speaker_verbatim_from_input":  true,
+                                     "time_verbatim_from_input":  true,
+                                     "status_verbatim_from_input":  true,
+                                     "title_lines_present_in_dsl":  true,
+                                     "speaker_lines_present_in_dsl":  true,
+                                     "title_size_ge_36":  true,
+                                     "title_lines_le_3":  true,
+                                     "speaker_size_ge_22":  true,
+                                     "speaker_lines_le_2":  true,
+                                     "all_boxes_within_safe_margin_40":  true,
+                                     "title_clear_of_status_badge":  true,
+                                     "text_boxes_disjoint":  true,
+                                     "status_encodes_color_symbol_text":  true,
+                                     "status_has_matching_divider_head":  true,
+                                     "cancelled_card_keeps_title_time":  true,
+                                     "cancelled_card_has_cancel_note":  true
+                                 },
+                      "failed_checks":  [
+
+                                        ],
+                      "image_views":  [
+                                          {
+                                              "viewer":  "main agent image tool",
+                                              "file":  "render-v3-card-K08.png",
+                                              "render_version":  "render-v3",
+                                              "observed":  "matched own artwork (curly quotes intact, 15:00, 周禾, green ○ 开放)",
+                                              "content_matched_file":  true
+                                          },
+                                          {
+                                              "viewer":  "independent QA sub-agent",
+                                              "session":  "ses_efebc9497ffe0pb21lQxrPA8I7",
+                                              "file":  "render-v5-card-K08.png",
+                                              "render_version":  "render-v5 (final, delivered bytes)",
+                                              "observed":  "opened the delivered final PNG and reported the exact title lines, time, speaker, status pill colour + symbol + text, date row, and no clipping/overlap/tofu",
+                                              "content_matched_file":  true,
+                                              "attempts_for_own_frame":  null
+                                          }
+                                      ],
+                      "verdict":  "PASS"
+                  }
+              ],
+    "summary":  {
+                    "cards":  8,
+                    "passed":  8,
+                    "failed":  0,
+                    "failed_checks":  [
+
+                                      ],
+                    "all_pass":  true,
+                    "canvas":  "1200x630",
+                    "final_png_count":  8
+                }
+}

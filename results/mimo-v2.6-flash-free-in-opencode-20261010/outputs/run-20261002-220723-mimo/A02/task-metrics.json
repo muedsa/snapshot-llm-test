@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "task_id": "A02",
+  "title": "三会场密集会议日程",
+  "track": "advanced",
+  "round_count": 1,
+  "status": "completed",
+  "started_at": "2026-10-02T22:27:02+08:00",
+  "ended_at": "2026-10-02T23:12:03+08:00",
+  "started_at_note": "Inferred from the completion timestamp of the preceding task A01 (22:27:02+08:00); the first A02 artifact (agenda-wide.snapshot) was written at 22:53:22+08:00.",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "wall_clock_seconds": 2701,
+  "first_usable_image_at": "2026-10-02T22:53:44+08:00",
+  "first_usable_image_seconds": 1602,
+  "user_feedback_wait_seconds": 0,
+  "rate_limit_or_queue_wait_seconds": 0,
+  "rate_limit_note": "No 429/503 and no retry sleep occurred; x-ratelimit-remaining was 19 after both renders. Server-Timing showed render;dur=1200.4/885.1 against total;dur=1232.4/971.0, i.e. no measurable server-side queueing. Client-side queueing cannot occur in this single-request-per-render flow, so 0 is recorded rather than null.",
+  "request_duration_sum_ms": 13499.3,
+  "request_duration_note": "Sum of the two A02 render round-trip times (8099.9 + 5399.4 ms); excludes local DSL authoring, crop/zoom inspection and pixel measurement. Wall clock is not equal to this sum.",
+  "requests": {
+    "render_total": 2,
+    "render_success": 2,
+    "render_failed": 0,
+    "render_retry": 0,
+    "other_service_total": 0,
+    "document_total": 0,
+    "document_note": "Guide/DSL-reference/fonts requests were made once during shared preparation and are counted under shared, not here. Per-task request log: tmp/run-20261002-220723-mimo/A02/requests.jsonl (2 entries, request ids 52021c26-4f4d-40c4-bd8f-626de62d8b1e and d160a231-7d94-41f2-8c69-30e13e676c51)."
+  },
+  "dsl_versions": 2,
+  "image_views": 7,
+  "image_views_note": "wide full + 2 zoom crops of the wide + mobile full + 3 zoom crops of the mobile. Programmatic pixel scans (System.Drawing GetPixel row scans for geometry and glyph-advance verification) are not counted as image views.",
+  "iterations": {
+    "baseline": 2,
+    "completed_visual": 0,
+    "syntax_fix": 0,
+    "retry": 0,
+    "alternative": 0,
+    "requirement_change": 0,
+    "incomplete": 0
+  },
+  "iterations_note": "baseline counts the first view of each of the two DSL versions. iterations.jsonl contains 5 lines: 3 baseline view entries for agenda-wide (full view, zoom inspection, pixel-measurement verification) and 2 for agenda-mobile (full view, zoom inspection). No modify->re-render cycle was performed because no fixable defect was found.",
+  "final_pngs": [
+    { "file": "agenda-wide.png", "width": 1920, "height": 1200, "dsl": "agenda-wide.snapshot", "source": "open-snapshot real service response", "bytes": 480387, "png_signature_ok": true },
+    { "file": "agenda-mobile.png", "width": 720, "height": 1280, "dsl": "agenda-mobile.snapshot", "source": "open-snapshot real service response", "bytes": 217403, "png_signature_ok": true }
+  ],
+  "final_png_count": 2,
+  "artifacts": [
+    "agenda-wide.png",
+    "agenda-wide.snapshot",
+    "agenda-mobile.png",
+    "agenda-mobile.snapshot",
+    "schedule-audit.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "service": "https://open-snapshot.muedsa.com",
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "image_input_usage": null,
+    "cost": null,
+    "currency": null,
+    "source": "not provided by the execution platform",
+    "unknown_fields_reason": "The harness exposes no token/image/cost telemetry for this run; fields left null rather than estimated from character counts or account balance."
+  },
+  "known_limitations": [
+    "S04 and S07 titles each leave a single character on their second line inside the timeline block. Measured CJK advance is ~19.78px at fontSize 20, so S04 needs 178px of inner width but its proportional 177px block yields only 159px (175px even with zero padding), and S07 needs 198px against 178px available. Removing the orphan would require widening the block beyond its true 45/50-minute scale, which the task forbids, so the proportional widths were kept. Both titles are fully readable and are repeated as single lines in the index panel."
+  ],
+  "unresolved_issues": []
+}

@@ -1,0 +1,374 @@
+{
+  "path_base": "suite_root",
+  "schema": "snapshot-suite/task-metrics/v1",
+  "task_id": "A17",
+  "task_name": "documentation-handbook",
+  "run_id": "run-20261002-220723-mimo",
+  "track": "A",
+  "status": "completed",
+  "started_at": "2026-10-04T14:49:00+08:00",
+  "ended_at": "2026-10-04T17:07:00+08:00",
+  "timezone": "+08:00",
+  "wall_clock_s": 8280,
+  "wall_clock_note": "from suite-state A17 in_progress (2026-10-04T14:49:00+08:00) to the end of this file; covers reading the brief, 8 real document fetches, 13 measurement and rule probes, building the four example DSLs, building the page generator, four render rounds of the handbook, viewing, the accuracy review and writing four deliverable documents. No session interruption occurred in this window, so wall clock and working time are the same figure.",
+  "first_usable_image": {
+    "first_service_image_at": "2026-10-04T07:14:57.011Z",
+    "first_service_image_kind": "probe-01.snapshot, request A17-probe01b (HTTP 200, 4310.2 ms) - first successful render after A17-probe01 returned 400",
+    "first_deliverable_image_kind": "example-01.png from request A17-ex01b (HTTP 200, 2139.9 ms, 400x240)",
+    "first_delivered_image_kind": "the four example-0N pairs were copied into outputs/ first; the four handbook-0N pairs were copied only after their final v03 render and view",
+    "note": "every render attempt is retained under tmp/ with its version number"
+  },
+  "waiting": {
+    "user_feedback_wait_s": 0,
+    "user_feedback_wait_note": "no mid-task user feedback was given or required; this run executes the whole suite without per-task confirmation",
+    "rate_limit_or_queue_wait_s": 0,
+    "rate_limit_or_queue_wait_note": "no HTTP 429 and no Retry-After occurred on this task; ratelimit_remaining stayed in the 110s on the sampled rows, so the client-side retry path was never triggered",
+    "unmeasurable_wait_s": null,
+    "unmeasurable_wait_note": "no unmeasurable waiting is claimed; if a value were needed and unmeasurable it would be null rather than 0"
+  },
+  "requests": {
+    "count": 50,
+    "http_status": { "200": 45, "400": 5 },
+    "failed": 5,
+    "failed_note": "all five 400 rows are PARSE_ERROR bodies retained under tmp/run-20261002-220723-mimo/A17/failures/. Two were genuine defects in this task's own DSL (A17-probe01 syntax, A17-pg03 a printed line containing ]]> ), two were deliberate negative tests (A17-probe12 Raw outside Text, A17-probe13 Expanded in the wrong place), and one was a deliberate re-send used to prove a reconstructed draft reproduces the original error byte for byte (A17-pg03draft).",
+    "retried_after_failure": 2,
+    "retried_after_failure_note": "A17-probe01 -> A17-probe01b and A17-pg03 -> A17-pg03b; both retries are logged as separate rows and neither original row was removed",
+    "rate_limit_exceeded": 0,
+    "kind": { "render": 42, "document": 8 },
+    "request_duration_ms_sum": 123342.2,
+    "request_duration_ms_by_kind": { "render": 113669.9, "document": 9672.3 },
+    "request_duration_ms_note": "sum of the per-request durations in requests.jsonl (123.3 s total = 113.7 s render + 9.7 s document). This is not wall clock: wall clock also covers reading the brief, writing generators, pixel analysis, viewing and writing deliverables. All requests ran sequentially, so no overlap is involved.",
+    "first_started_utc": "2026-10-04T06:56:16.292Z",
+    "last_ended_utc": "2026-10-04T09:00:35.107Z",
+    "endpoints": {
+      "POST /snapshot": 42,
+      "GET https://open-snapshot.muedsa.com/ai-guide.md": 1,
+      "GET https://open-snapshot.muedsa.com/docs/rendering": 1,
+      "GET https://open-snapshot.muedsa.com/docs/parser-errors": 1,
+      "GET https://open-snapshot.muedsa.com/docs/layout": 1,
+      "GET https://open-snapshot.muedsa.com/docs/parser": 1,
+      "GET https://open-snapshot.muedsa.com/docs/media-text": 1,
+      "GET https://open-snapshot.muedsa.com/docs/painting": 1,
+      "GET https://open-snapshot.muedsa.com/docs/testing": 1
+    },
+    "render_request_ids": [
+      "A17-probe01", "A17-probe01b", "A17-probe02", "A17-ex01b", "A17-ex02b",
+      "A17-ex03b", "A17-ex04b", "A17-probe03", "A17-probe04", "A17-probe05",
+      "A17-probe06", "A17-ex04c", "A17-ex001", "A17-ex002", "A17-ex003",
+      "A17-ex004", "A17-probe07", "A17-probe08", "A17-probe09", "A17-probe10",
+      "A17-probe11", "A17-pg01", "A17-pg02", "A17-pg03", "A17-pg04",
+      "A17-pg03b", "A17-pg04b", "A17-pg01c", "A17-pg02c", "A17-pg03c",
+      "A17-pg04c", "A17-pg03draft", "A17-printed01", "A17-printed02",
+      "A17-printed03", "A17-printed04", "A17-probe12", "A17-probe13",
+      "A17-pg01d", "A17-pg02d", "A17-pg03d", "A17-pg04d"
+    ],
+    "render_breakdown": {
+      "probe": 14,
+      "example": 9,
+      "handbook": 15,
+      "printed_snippet_verification": 4
+    },
+    "bytes_received": {
+      "document": 511484,
+      "png_from_successful_renders": 4229132,
+      "total": 4740616,
+      "total_mib": 4.52
+    },
+    "document_detail": [
+      { "id": "A17-doc-01-ai-guide", "path": "https://open-snapshot.muedsa.com/ai-guide.md", "duration_ms": 1326, "bytes": 3718, "status": 200 },
+      { "id": "A17-doc-02-rendering", "path": "https://open-snapshot.muedsa.com/docs/rendering", "duration_ms": 2397.5, "bytes": 70839, "status": 200 },
+      { "id": "A17-doc-03-parser-errors", "path": "https://open-snapshot.muedsa.com/docs/parser-errors", "duration_ms": 2181, "bytes": 77552, "status": 200 },
+      { "id": "A17-doc-04-layout", "path": "https://open-snapshot.muedsa.com/docs/layout", "duration_ms": 685.3, "bytes": 68617, "status": 200 },
+      { "id": "A17-doc-05-parser", "path": "https://open-snapshot.muedsa.com/docs/parser", "duration_ms": 448.3, "bytes": 85941, "status": 200 },
+      { "id": "A17-doc-06-media-text", "path": "https://open-snapshot.muedsa.com/docs/media-text", "duration_ms": 480.8, "bytes": 70445, "status": 200 },
+      { "id": "A17-doc-07-painting", "path": "https://open-snapshot.muedsa.com/docs/painting", "duration_ms": 923.5, "bytes": 65022, "status": 200 },
+      { "id": "A17-doc-08-testing", "path": "https://open-snapshot.muedsa.com/docs/testing", "duration_ms": 1229.9, "bytes": 69350, "status": 200 }
+    ],
+    "shared_requests_new_in_this_task": 8,
+    "shared_requests_reused": [
+      "GET /fonts listing (tmp/run-20261002-220723-mimo/A11/fonts-0001.txt) - reused, not re-requested; confirms Noto Sans CJK SC and Noto Sans Mono CJK SC are real service families",
+      "tmp/run-20261002-220723-mimo/A15/doc-parser-tags.html - the tag/attribute table was reused for A17 through A17/tag-attrs.md and was not re-requested",
+      "A17/doc-ai-guide.md was first read through the harness webfetch (which exposes no status/timing/bytes), then re-fetched once so the bytes are retained and the measured fields are real; one log row only, disclosed in that row's note rather than double-counted"
+    ],
+    "log_row_order_note": "the four A17-ex001..A17-ex004 rows (the first render of each example) were initially written to outputs/.../A17/requests.jsonl by mistake and were appended into tmp/.../A17/requests.jsonl later, so for those four rows the file position is not their chronological position. Each row still carries its own started_utc/ended_utc, the merged rows are archived at tmp/.../A17/requests-merged-from-outputs.jsonl, and outputs/ now holds deliverables only."
+  },
+  "iterations": {
+    "count": 42,
+    "log": "tmp\\run-20261002-220723-mimo\\A17\\iterations.jsonl",
+    "by_type": {
+      "visual": 16,
+      "alternative": 11,
+      "baseline": 8,
+      "requirement-change": 4,
+      "syntax-fix": 2,
+      "retry": 1
+    },
+    "by_type_note": "the suite type vocabulary: baseline / visual / syntax-fix / alternative / retry / requirement-change",
+    "by_category": {
+      "verification": 14,
+      "filters": 8,
+      "layout": 5,
+      "dsl": 4,
+      "contrast": 4,
+      "content": 4,
+      "parse": 2,
+      "uncategorised": 1
+    },
+    "render_rounds": {
+      "example_01": ["v01", "v02"],
+      "example_02": ["v01", "v02"],
+      "example_03": ["v01", "v02"],
+      "example_04": ["v01", "v02", "v03"],
+      "handbook_01": ["v01", "v02", "v03"],
+      "handbook_02": ["v01", "v02", "v03"],
+      "handbook_03": ["v01", "v01-after-fix", "v02", "v03"],
+      "handbook_04": ["v01", "v02-pregen", "v02", "v03"],
+      "handbook_03_draft1": ["reconstructed and re-sent for verification"]
+    },
+    "dsl_versions_on_disk": 44,
+    "dsl_versions_on_disk_note": "44 .snapshot files under tmp/A17: 9 example, 14 handbook, 13 probes, 4 printed snippets (counts overlap for draft/retry files). Nothing was deleted and nothing was overwritten after it had been rendered, except the one handbook-03 draft recorded under self_defects_in_generator.",
+    "complete_visual_iterations": 10,
+    "complete_visual_iterations_detail": [
+      "example-01 v01 -> view -> left-align the body block -> render v02 -> view",
+      "example-02 v01 -> view -> replace the dark panel with #E2E8F0 so right + bottom is readable -> render v02 -> view",
+      "example-03 v01 -> view -> brighten the two legend lines -> render v02 -> view",
+      "example-04 v01 -> view -> blur missing -> try background / split tags (probe-05, probe-06, still missing) -> move ImageFiltered out of the Stack -> render v03 -> view (blur restored)",
+      "handbook-04 v01 -> view -> illustration backdrop bleed of 6078 px measured -> wrap the illustration in ClipRect -> render v02 -> view (0 px)",
+      "handbook-01 v02 -> view -> copy accuracy pass -> render v03 -> view",
+      "handbook-02 v02 -> view -> copy accuracy pass -> render v03 -> view",
+      "handbook-03 v02 -> view -> copy accuracy pass -> render v03 -> view",
+      "handbook-04 v02 -> view -> copy accuracy pass -> render v03 -> view",
+      "the handbook code heading was corrected after it was seen in the rendered frame: it claimed 可复制的完整文件 while the marker on the same block says 完整文件共 18 行"
+    ],
+    "complete_visual_iterations_note": "a complete iteration is view the old image -> change -> re-render -> view and compare. The three structurally identical re-renders of handbook-01..03 from v01 to v02 (ClipRect wrapper, byte-identical PNG) are counted as structural, not visual, because the pixels did not change.",
+    "measurement_passes": 22,
+    "measurement_passes_detail": [
+      "probe-07 default font line boxes at fs20/22/24/26/40",
+      "probe-08 Noto Sans Mono CJK SC line boxes and per-character advance (fs22 = 11 px/char -> 94 char budget)",
+      "probe-09 Noto Sans CJK SC line boxes at fs20/24/26/40",
+      "probe-10 Text / CDATA / Raw whitespace semantics (trim vs preserve)",
+      "probe-11 Raw + CDATA reproduces leading indentation exactly",
+      "probe-12 Raw outside Text -> 400 (backs a handbook claim)",
+      "probe-13 Expanded not a direct child of Flex/Row/Column -> 400 (backs a handbook claim)",
+      "probe-03 four BackdropFilter structural variants (all blur)",
+      "probe-04 example-04 without ImageFiltered (blurs)",
+      "probe-05 example-04 with background attribute (no blur)",
+      "probe-06 example-04 with split Stack/Column (no blur)",
+      "probe-01 / probe-02 layout baseline probes",
+      "cmp-illu.ps1 x8 (four v02 pages, four delivered pages) - all 0 differing pixels",
+      "check-examples.ps1 line and width audit (rows=83, problems=0)",
+      "page-gen-report.md printed line width audit for all four pages (no line over 1040 px)",
+      "verify-printed.ps1 - four printed 17-line snippets submitted and accepted",
+      "check-a17.ps1 final deliverable audit (problems = 0)"
+    ],
+    "distinct_visual_defects_found_by_viewing": 5,
+    "visual_defects": [
+      "example-01 v01: the body block was centred instead of left-aligned",
+      "example-02 v01: the dark panel made the black right + bottom label unreadable; switched the panel to #E2E8F0",
+      "example-03 v01: the two legend lines were too dim to read against the dark ground",
+      "example-04 v01 and v02: the BackdropFilter blur was simply absent",
+      "handbook pages: the code heading read 可复制的完整文件 while the amber marker in the same block reads 完整文件共 18 行 - a contradiction visible in the rendered frame"
+    ],
+    "defects_found_by_measurement_not_by_eye": 1,
+    "defects_found_by_measurement_detail": [
+      "handbook-04 v01: the illustration differed from example-04.png in 6078 pixels, all inside columns 0-149 x rows 0-191 - the page's white card was being sampled into the BackdropFilter blur. The page still looked plausible by eye, so this one was only caught by cmp-illu.ps1."
+    ],
+    "defects_found_by_document_review_not_by_measurement": 3,
+    "defects_found_by_document_review_detail": [
+      "page 2 asserted 根尺寸由 Snapshot 的 width / height 决定, contradicting ai-guide.md:28 画布尺寸由布局决定; replaced with 根尺寸由根布局决定，受服务端限制",
+      "page 2 said 同一轴上 left / right / width 只能取两个 while the source says 最多只能给两个",
+      "page 4 said 毛玻璃需要 ClipRect / ClipRRect 限区 while the source says 通常需要"
+    ],
+    "self_defects_in_generator": [
+      "the first handbook-03 draft contained a printed line with ]]> inside one CDATA section, so the parser closed it early and returned 400 PARSE_ERROR: Not Support RAWTEXT. Fixed by EmitVerbatim(), which splits the terminator across two CDATA sections.",
+      "the generator then overwrote that first draft in place before it had been archived, which the brief forbids. The draft was reconstructed from the generator's pre-fix logic and re-sent as A17-pg03draft: the response is byte-for-byte identical to the original A17-pg03 failure (same position 5735, same near text), which is what proves the reconstruction is faithful. The failure bodies for both are retained under tmp/A17/failures/.",
+      "the ClipRect wrapper was first hand-edited into handbook-04-v02.snapshot and left a stray closing tag; the render still returned 200 (the parser ignores unmatched end tags, as the guide warns), but the generator was re-run and the page re-rendered from the exact bytes that ship.",
+      "the code heading said 可复制的完整文件 on all four pages while printing only 16 of 18 lines; corrected to 可复制运行：16 行原文 + 1 行省略标注（文件共 18 行）"
+    ],
+    "self_defects_in_tooling": [
+      "verify-printed.ps1 used $out as a local variable, which clobbered the script-level $OUT directory (PowerShell variables are case-insensitive) and produced a bogus path; renamed to $pngPath and the run made idempotent so no request row was duplicated",
+      "verify-printed.ps1 initialised its report with @(), a fixed-length array, so the first .Add() threw Collection was of a fixed size; switched to List[string]",
+      "four render rows were written into outputs/.../A17/requests.jsonl instead of the task log; they were appended into the task log, the misplaced file archived as requests-merged-from-outputs.jsonl and removed from outputs/"
+    ],
+    "harness_image_channel_defect": "on 2026-10-04 the local image tool served frames that did not match the requested path: handbook-01-v03.png and handbook-02-v03.png came back swapped, and handbook-03-v03.png came back as a different page twice. Every opening in this task was content-matched against the file being opened. The two swapped frames were confirmed against the files by SHA-256 and by the badge text inside the DSL, and close-up reading of pages 3 and 4 was delegated to a separate agent that transcribed every string; that delegation is recorded in iterations.jsonl seq 41 and seq 42, while seq 39 and seq 40 record the local reads that failed to match.",
+    "manufactured_iterations": 0
+  },
+  "image_review": {
+    "image_view_events": 22,
+    "image_view_events_derivation": "23 view rows in iterations.jsonl carry view_method read-tool-image (21) or delegated-general-subagent (2); two of the 21 local reads returned a frame for the wrong path and were superseded by the 2 delegated reads, leaving 21 successful logged content views, plus 1 further unlogged local read of printed-02.png used to check the printed snippet really rendered. 14 additional pixel-based observations (column sampling, row banding, ink extent, region comparison) are logged in the same file and are deliberately NOT counted as viewing.",
+    "logged_view_rows": 37,
+    "views_by_kind": {
+      "local_read_tool_logged": 21,
+      "of_which_returned_a_frame_for_the_wrong_path": 2,
+      "delegated_viewer_logged": 2,
+      "unlogged_local_read_disclosed_here": 1,
+      "pixel_observations_not_counted_as_viewing": 14
+    },
+    "delivered_final_png_opened": 8,
+    "delivered_final_png_total": 8,
+    "delivered_final_png_note": "all eight delivered images (4 examples at 400x240 and 4 pages at 1200x1600) were opened with a real image tool and their content matched against the file being opened; examples.json carries the method and timestamp for each, cross-checked against iterations.jsonl with 0 mismatches",
+    "viewed_by_kind": {
+      "example_01_02_03_04": "local read tool, 2026-10-04T15:12:00+08:00",
+      "handbook_01_02": "local read tool, 2026-10-04T16:42:00+08:00 (frames returned swapped; verified against the files by hash and by the badge text in the DSL)",
+      "handbook_03_04": "delegated viewer, 2026-10-04T16:58:00+08:00 (local read returned a different page twice)"
+    },
+    "scales_covered": [
+      "full size 400x240 for the four examples",
+      "full size 1200x1600 for the four handbook pages",
+      "the 400x240 illustration window inside each page at offset (72,242), compared pixel for pixel against the standalone example"
+    ],
+    "independent_viewer_view_events": 2,
+    "independent_viewer_note": "a separate agent opened handbook-03-v03.png and handbook-04-v03.png and transcribed the badge, title, description, code heading, amber marker, both bullet sets and the footer; counted separately from this session's local reads so the total is not inflated",
+    "contact_sheet_used": false,
+    "contact_sheet_note": "no contact sheet was made; it would not have replaced the individual views"
+  },
+  "content": {
+    "handbook_pages": 4,
+    "page_size": "1200x1600",
+    "page_margin": 48,
+    "page_lines_of_dsl": 63,
+    "examples": 4,
+    "example_size": "400x240",
+    "example_lines_of_dsl": 18,
+    "printed_lines_per_page": 17,
+    "printed_lines_breakdown": "16 verbatim lines taken from the matching example-0N.snapshot plus 1 XML-comment omission marker; the omitted pair is 11-12 / 12-13 / 14-15 / 5-6 for pages 1-4",
+    "printed_snippets_accepted": 4,
+    "minimum_body_font_px": 24,
+    "minimum_code_font_px": 22,
+    "code_line_budget": "94 characters / 1040 px at 22 px monospace (advance = 0.5 em => 11 px per latin character); every printed line was measured before rendering",
+    "fonts_used": ["Noto Sans CJK SC", "Noto Sans Mono CJK SC"],
+    "font_source": "GET /fonts live listing cached at tmp/run-20261002-220723-mimo/A11/fonts-0001.txt (reused, not re-requested); line boxes measured with probes 07/08/09",
+    "image_elements_in_dsl": 0,
+    "external_assets": 0,
+    "external_asset_note": "A-class track: pure DSL only. The four illustrations are not Image embeds - each is built from the example's own DSL subtree placed inside the page.",
+    "transform_elements_in_dsl": 0
+  },
+  "verification": {
+    "final_audit": "outputs\\run-20261002-220723-mimo\\A17\\sources.md",
+    "final_audit_script": "tmp\\run-20261002-220723-mimo\\A17\\check-a17.ps1",
+    "final_audit_report": "tmp\\run-20261002-220723-mimo\\A17\\final-audit.md",
+    "tools": [
+      "tmp\\run-20261002-220723-mimo\\A17\\cmp-illu.ps1 (region-by-region pixel comparison of each page illustration against its example)",
+      "tmp\\run-20261002-220723-mimo\\A17\\check-examples.ps1 (line counts, printed lines, per-line width)",
+      "tmp\\run-20261002-220723-mimo\\A17\\check-encoding.ps1 (BOM and mojibake)",
+      "tmp\\run-20261002-220723-mimo\\A17\\verify-printed.ps1 (rebuild the printed 17 lines and submit them)",
+      "tmp\\run-20261002-220723-mimo\\A17\\ink.ps1 / col.ps1 / bands.ps1 (ink extent, column colour, row band position)",
+      "tmp\\run-20261002-220723-mimo\\A17\\check-a17.ps1 (delivered-pair audit)"
+    ],
+    "checks": {
+      "four_examples_render_http_200": true,
+      "four_pages_render_http_200": true,
+      "four_printed_snippets_accepted": true,
+      "illustrations_match_examples_exactly": true,
+      "illustration_differing_pixels_total": 0,
+      "illustration_window": "400x240 at (72,242) in each page",
+      "every_delivered_image_opened_with_a_real_image_tool": true,
+      "delivered_pairs_hash_match_their_source": true,
+      "dsl_files_utf8_no_bom": true,
+      "dsl_files_decode_without_replacement_chars": true,
+      "page_dimensions_correct": true,
+      "line_counts_correct": true,
+      "no_text_line_exceeds_its_box": true,
+      "body_font_at_least_24px": true,
+      "code_font_at_least_22px": true,
+      "all_page_claims_traceable_to_a_cited_source_or_a_probe": true,
+      "no_overwritten_attempts_after_render": true
+    },
+    "all_pass": true,
+    "image_viewing_evidence_in_audit": true,
+    "image_viewing_evidence_note": "examples.json carries viewed/viewed_at/view_method for each of the eight delivered images and was cross-checked against iterations.jsonl (0 mismatches); iterations.jsonl carries the file, tool and timestamp for every view; final-audit.md re-checks the pairs, dimensions, line counts and pixel comparisons"
+  },
+  "deliverables": {
+    "final_images": 8,
+    "final_images_bytes": 1275700,
+    "paired_dsl": 8,
+    "paired_dsl_bytes": 44404,
+    "files": [
+      { "name": "example-01.png", "size": [400, 240], "bytes": 30332, "sha256": "A15B4A09C51815ACCE5F1B570AC750839BFF8E2CCA8F5DA9A9DAC24F26EC856E", "dsl": "example-01.snapshot", "dsl_bytes": 845, "dsl_sha256": "AF4AF2A630696CAEB0CB459C8C90DFE737D455199AFAECC6E6947A383C5AB650", "render_version": "02", "source_request_id": "A17-ex01b", "http_status": 200, "duration_ms": 2139.9 },
+      { "name": "example-02.png", "size": [400, 240], "bytes": 3075, "sha256": "47DC0EC69FD9F29A851E07F7ABC3DB17DAD0969A0BEF505ECF32C6E138798C40", "dsl": "example-02.snapshot", "dsl_bytes": 683, "dsl_sha256": "3F255A347F168934303300D096F377CA4DB05AF76220512525F3D1E2ECE5D75D", "render_version": "02", "source_request_id": "A17-ex02b", "http_status": 200, "duration_ms": 2059.2 },
+      { "name": "example-03.png", "size": [400, 240], "bytes": 24631, "sha256": "16282653D513CF457C478E1D520AB6BA5177EFEC95DD6025D10C968E71089903", "dsl": "example-03.snapshot", "dsl_bytes": 944, "dsl_sha256": "0A1C64809EF2EF66C0A03FCBBD142A32351B140E071B60AF443E9017D2A56B8E", "render_version": "02", "source_request_id": "A17-ex03b", "http_status": 200, "duration_ms": 1865.4 },
+      { "name": "example-04.png", "size": [400, 240], "bytes": 5169, "sha256": "0CBF64480A3CC38AF96B686F5BF053CC39898845BF47D4870DCF187F24C98C87", "dsl": "example-04.snapshot", "dsl_bytes": 778, "dsl_sha256": "96B41C3982886EEE25DD38D7388ECA81D3A82BDECB23B567CFD489BB92C16394", "render_version": "03", "source_request_id": "A17-ex04c", "http_status": 200, "duration_ms": null },
+      { "name": "handbook-01.png", "size": [1200, 1600], "bytes": 323669, "sha256": "72757AA169818CDC55EE4AD0429F4CF6F866D01F3A8FA95FD62A4D04BF2EC418", "dsl": "handbook-01.snapshot", "dsl_bytes": 8329, "dsl_sha256": "63230ECD89C8D79C54C497D225D7DB0EE633C39A8A25583E03AA8A766567AC83", "render_version": "03", "source_request_id": "A17-pg01d", "http_status": 200, "duration_ms": 4895.3 },
+      { "name": "handbook-02.png", "size": [1200, 1600], "bytes": 272184, "sha256": "9952E66B81ECDD5BCCCCDE7143B23CBEC771812CBBEF60E8F9A8330B8AA37E0A", "dsl": "handbook-02.snapshot", "dsl_bytes": 8081, "dsl_sha256": "3FE9E42F0EC32A70669C7D0445C63D8484B74702CCDB5E9833323FEAAAAF6D0B", "render_version": "03", "source_request_id": "A17-pg02d", "http_status": 200, "duration_ms": 3606.6 },
+      { "name": "handbook-03.png", "size": [1200, 1600], "bytes": 319357, "sha256": "F9D43D6DE50679D762451297A203E626A76CDD5DDC41316743BE477C8871E06D", "dsl": "handbook-03.snapshot", "dsl_bytes": 8545, "dsl_sha256": "B7D13F0CFC7F9F109EBB5EE56A559054B1C3FFB27E21AF127A38323B6E06EE07", "render_version": "03", "source_request_id": "A17-pg03d", "http_status": 200, "duration_ms": 3601.1 },
+      { "name": "handbook-04.png", "size": [1200, 1600], "bytes": 289683, "sha256": "7A7EB5DFD3AD90804B10A35921AB922623DDEE4AEB894872BE2C732781085AA0", "dsl": "handbook-04.snapshot", "dsl_bytes": 8232, "dsl_sha256": "52AB47A49A344C3244A71D9E562470A4F7F6CFFB5F4F530213D6F09931FB371E", "render_version": "03", "source_request_id": "A17-pg04d", "http_status": 200, "duration_ms": 4501 }
+    ],
+    "other_files": ["sources.md", "examples.json", "snapshot-usage.md", "task-metrics.json"],
+    "raw_service_png_bytes": true,
+    "post_processing_applied": false,
+    "png_signature_valid": true,
+    "snapshot_bom_free": true,
+    "overwritten_attempts": 1,
+    "overwritten_attempts_note": "exactly one rendered draft was overwritten before it had been archived: the first handbook-03 page draft was regenerated in place by gen-pages.ps1. It was reconstructed, re-sent as A17-pg03draft and produced a byte-identical PARSE_ERROR response, and both failure bodies are retained under tmp/A17/failures/. Everything else was written to a new versioned path first and only promoted after it was accepted; the outputs copies of handbook-0N that had been landed one round early were preserved as tmp/A17/handbook-0N-v02-landed.* before v03 replaced them."
+  },
+  "resources": {
+    "tokens_input": null,
+    "tokens_output": null,
+    "tokens_cache_read": null,
+    "tokens_cache_write": null,
+    "cost_usd": null,
+    "image_generation_units": null,
+    "unknown_reason": "the open-snapshot service and this agent runtime report no token or cost figures; values stay null rather than estimated from text length or account balance"
+  },
+  "artefacts_on_disk": {
+    "output_dir": "outputs\\run-20261002-220723-mimo\\A17/",
+    "output_file_count": 20,
+    "temp_dir": "tmp\\run-20261002-220723-mimo\\A17/",
+    "temp_file_count": 126,
+    "logs": [
+      "requests.jsonl (50 rows: 42 render + 8 document)",
+      "iterations.jsonl (42 rows)",
+      "requests-merged-from-outputs.jsonl (the 4 misplaced render rows, archived)"
+    ],
+    "generators_and_tools": [
+      "gen-pages.ps1 (four 1200x1600 pages, grid constants, width budget, EmitVerbatim)",
+      "log-iter.ps1 / log-iters.ps1 / log-pages.ps1 / log-v03.ps1 / log-views.ps1",
+      "cmp-illu.ps1 / ink.ps1 / col.ps1 / bands.ps1",
+      "check-examples.ps1 / check-encoding.ps1 / check-a17.ps1",
+      "verify-printed.ps1",
+      "fetch-docs.ps1 / doc-excerpts.ps1"
+    ],
+    "script_count": 19,
+    "snapshot_files_on_disk": 44,
+    "png_files_on_disk": 41,
+    "failure_responses": 5,
+    "failure_response_bodies": [
+      "tmp/run-20261002-220723-mimo/A17/failures/A17-probe01.body",
+      "tmp/run-20261002-220723-mimo/A17/failures/A17-pg03.body",
+      "tmp/run-20261002-220723-mimo/A17/failures/A17-pg03draft.body",
+      "tmp/run-20261002-220723-mimo/A17/failures/A17-probe12.body",
+      "tmp/run-20261002-220723-mimo/A17/failures/A17-probe13.body"
+    ],
+    "retained_documents": [
+      "tmp/run-20261002-220723-mimo/A17/doc-ai-guide.md (3718 B)",
+      "tmp/run-20261002-220723-mimo/A17/doc-rendering.html (70839 B)",
+      "tmp/run-20261002-220723-mimo/A17/doc-parser-errors.html (77552 B)",
+      "tmp/run-20261002-220723-mimo/A17/doc-layout.html (68617 B)",
+      "tmp/run-20261002-220723-mimo/A17/doc-parser.html (85941 B)",
+      "tmp/run-20261002-220723-mimo/A17/doc-media-text.html (70445 B)",
+      "tmp/run-20261002-220723-mimo/A17/doc-painting.html (65022 B)",
+      "tmp/run-20261002-220723-mimo/A17/doc-testing.html (69350 B)"
+    ],
+    "reused_documents": [
+      "tmp/run-20261002-220723-mimo/A15/doc-parser-tags.html - reused for the tag/attribute table, not re-requested",
+      "tmp/run-20261002-220723-mimo/A11/fonts-0001.txt - reused for the family listing, not re-requested"
+    ],
+    "derived_indexes": [
+      "tmp/run-20261002-220723-mimo/A17/doc-excerpts.md",
+      "tmp/run-20261002-220723-mimo/A17/tag-attrs.md"
+    ],
+    "verification_reports": [
+      "tmp/run-20261002-220723-mimo/A17/printed-parse-report.md",
+      "tmp/run-20261002-220723-mimo/A17/example-line-audit.md",
+      "tmp/run-20261002-220723-mimo/A17/page-gen-report.md",
+      "tmp/run-20261002-220723-mimo/A17/final-audit.md"
+    ]
+  },
+  "open_issues": [
+    "the local image tool served frames that did not match the requested path for three handbook openings; content matching caught it every time, two pages were verified by hash plus DSL badge text and two were read by a separate agent. Both the failed reads (seq 39/40) and the successful delegated reads (seq 41/42) are in iterations.jsonl.",
+    "four render rows were written to the wrong log file and merged later, so those four rows sit out of chronological order in requests.jsonl; each row keeps its own timestamps and the misplaced file is archived.",
+    "one rendered draft (the first handbook-03 page) was overwritten by the generator before archiving; it was reconstructed and proven faithful by reproducing the original error response exactly, but the original bytes themselves are not recoverable.",
+    "Retry-After values, the server-side canvas size cap and token/cost figures were never observed and are reported as null rather than guessed."
+  ],
+  "summary": "A17 built a four-page Snapshot DSL handbook (1200x1600 each) plus four standalone 400x240 examples. Eight real document fetches (511,484 B, all 200) supplied every claim, and the sources.md file connects each conclusion back to a retained file and line number. Thirteen probes measured line boxes, monospace advance and whitespace semantics, and settled two claims empirically (Raw outside Text and Expanded in the wrong place both return 400). Four BackdropFilter probes isolated a real finding the docs do not contain: an ImageFiltered subtree inside the same Stack disables the backdrop blur, which was fixed by moving it out. The printed code is the example's own text, emitted verbatim through Raw+CDATA with the ]]> terminator split across two CDATA sections, and all four rebuilt 17-line snippets were submitted and accepted. Each page embeds its example's DSL subtree rather than an Image, and after wrapping it in ClipRect all four illustrations compare at 0 differing pixels against their standalone example across the full 400x240 window. 50 requests (42 render, 8 document; 45x200, 5x400 with all bodies retained), 123.3 s of request time, 42 iteration rows with 10 complete visual iterations, 5 defects found by actually opening the images, 1 found only by pixel comparison and 3 caught in a document accuracy review before delivery, 22 successful image views covering all 8 delivered images, and a final audit reporting problems = 0."
+}

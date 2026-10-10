@@ -1,0 +1,139 @@
+{
+    "schema":  "snapshot-suite/questions/v1",
+    "task":  "A19",
+    "note":  "题目不含答案；答案、计算方法、坐标容差与可见性依据见同目录 answers.json。所有题目只能依据最终可见图作答。",
+    "scenes":  {
+                   "grid-scene":  "grid-scene.png (1600x1600), 64 objects G01-G64, row-major numbering left-to-right / top-to-bottom",
+                   "occlusion":  "occlusion.png (800x800); occlusion-alternative.png is pixel-identical to it and is delivered only as the second hidden-content proof"
+               },
+    "conventions":  {
+                        "origin":  "画面左上角 (0,0)，x 向右，y 向下，单位像素",
+                        "row_column":  "8 行 8 列，行号从上到下第 1..8 行，列号从左到右第 1..8 列；单元边长 190 px，网格框左上角 (40,40)",
+                        "centre":  "对象中心 = 其包围框中心 = 该主体的几何中心",
+                        "bbox":  "包围框 = 以中心为心、边长等于对象尺寸的正方形；尺寸按圆直径或方边长计",
+                        "distance":  "中心之间的欧氏距离",
+                        "ordering":  "每题都写明完整排序键链；并列时的处理规则随题给出，保证答案唯一",
+                        "counting":  "只统计 64 个主体，不把编号文字计入对象",
+                        "tolerance":  "涉及像素读数时给出容差；ID 与整数答案不受容差影响"
+                    },
+    "counts":  {
+                   "total":  14,
+                   "grid":  12,
+                   "occlusion":  2,
+                   "two_step":  5,
+                   "indeterminate":  1
+               },
+    "categories":  [
+                       "bounding box",
+                       "colour count",
+                       "composite-attribute-search",
+                       "distance",
+                       "occlusion / information sufficiency",
+                       "ordering",
+                       "shape/colour count",
+                       "strict centre left/right relation",
+                       "two-step count",
+                       "two-step relation",
+                       "visibility count"
+                   ],
+    "questions":  [
+                      {
+                          "id":  "Q01",
+                          "scene":  "grid-scene",
+                          "category":  "composite-attribute-search",
+                          "steps":  1,
+                          "text":  "同时满足以下三个条件的对象是哪一个？条件：①颜色为绿；②形状为圆环；③尺寸为 80。坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。只答该对象的编号，例如 G07。"
+                      },
+                      {
+                          "id":  "Q02",
+                          "scene":  "grid-scene",
+                          "category":  "composite-attribute-search + ordering",
+                          "steps":  2,
+                          "text":  "分两步：第①步，从全部对象中筛出「颜色为紫」且「尺寸为 48」的对象；第②步，在第①步的结果里取中心 x 坐标最大（最靠右）的那一个。它的编号是？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。比较标准：先比较中心 x，若相同再比较中心 y（取 y 较小者）。"
+                      },
+                      {
+                          "id":  "Q03",
+                          "scene":  "grid-scene",
+                          "category":  "strict centre left/right relation",
+                          "steps":  1,
+                          "text":  "以「中心 y 相同（即同一行）且中心 x 严格大于」为准：与 G28 处于同一行、位于 G28 右侧、且与 G28 水平距离最近的对象是哪一个？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。比较标准：中心 y 完全相等，中心 x 严格大于 705，取 x 最小者。"
+                      },
+                      {
+                          "id":  "Q04",
+                          "scene":  "grid-scene",
+                          "category":  "strict centre left/right relation + count",
+                          "steps":  2,
+                          "text":  "分两步：第①步，与 G30 处于同一行、位于 G30 左侧（中心 x 严格小于 1085）、且与 G30 水平距离最近的对象 X 是哪个？第②步，X 所在的那一行中，与 X 颜色相同的对象一共有几个？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。行号从上到下为第 1 行至第 8 行；比较标准：中心 y 相等，中心 x 严格小于，取 x 最大者；计数时只数该行内的对象。"
+                      },
+                      {
+                          "id":  "Q05",
+                          "scene":  "grid-scene",
+                          "category":  "distance",
+                          "steps":  1,
+                          "text":  "以对象中心到点 P(777, 613) 的欧氏距离 sqrt((x-777)^2 + (y-613)^2) 计（单位像素），距离最小的对象是哪一个？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。比较标准：欧氏距离升序，距离并列时取中心 x 较小者。"
+                      },
+                      {
+                          "id":  "Q06",
+                          "scene":  "grid-scene",
+                          "category":  "two-step relation",
+                          "steps":  2,
+                          "text":  "分两步：第①步，找出与 G44 同一行且位于 G44 右侧、水平距离最近的对象 X；第②步，找出与 X 同一列且位于 X 下方、垂直距离最近的对象 Y。Y 的编号是？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。比较标准：第①步要求中心 y 相等且中心 x 严格大于 705，取 x 最小者；第②步要求中心 x 相等且中心 y 严格大于 1085，取 y 最小者。"
+                      },
+                      {
+                          "id":  "Q07",
+                          "scene":  "grid-scene",
+                          "category":  "ordering",
+                          "steps":  1,
+                          "text":  "把全部 64 个对象按下面的键链排序，取第一名：①尺寸降序；②尺寸相同时中心 x 升序；③前两项都相同时中心 y 升序。第一名的编号是？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。"
+                      },
+                      {
+                          "id":  "Q08",
+                          "scene":  "grid-scene",
+                          "category":  "ordering + count",
+                          "steps":  2,
+                          "text":  "分两步：第①步，把所有「蓝色」对象按中心 x 升序（x 相同按中心 y 升序）排列，取第 10 名 X；第②步，X 所在的那一行里，蓝色对象共有几个？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。行号从上到下为第 1 行至第 8 行。"
+                      },
+                      {
+                          "id":  "Q09",
+                          "scene":  "grid-scene",
+                          "category":  "colour count",
+                          "steps":  1,
+                          "text":  "第 2 行（从上数第 2 行）中，颜色为紫的对象有几个？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。行号从上到下为第 1 行至第 8 行，只数第 2 行内的对象。"
+                      },
+                      {
+                          "id":  "Q10",
+                          "scene":  "grid-scene",
+                          "category":  "shape/colour count",
+                          "steps":  1,
+                          "text":  "全图中，形状为圆角方且颜色为紫的对象共有几个？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。只统计网格中 64 个主体，不计编号文字。"
+                      },
+                      {
+                          "id":  "Q11",
+                          "scene":  "grid-scene",
+                          "category":  "two-step count",
+                          "steps":  2,
+                          "text":  "分两步：第①步，数出全图中「形状为圆且尺寸为 80」的对象个数；第②步，在第①步得到的这些对象里，再数出颜色为蓝的有几个。第②步的答案是？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。尺寸指圆的直径。"
+                      },
+                      {
+                          "id":  "Q12",
+                          "scene":  "grid-scene",
+                          "category":  "bounding box",
+                          "steps":  1,
+                          "text":  "记每个对象的包围框为以其为中心、边长等于该对象尺寸的正方形（圆的包围框即其外接正方形）。设矩形区域 R = { (x,y) | 610 ≤ x ≤ 990 且 610 ≤ y ≤ 990 }。哪一个对象的包围框完全落在 R 内（四条边都在 R 内或边界上），且尺寸为 80？坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。比较标准：x0 ≥ 610、x1 ≤ 990、y0 ≥ 610、y1 ≤ 990 四式同时成立。"
+                      },
+                      {
+                          "id":  "Q13",
+                          "scene":  "occlusion",
+                          "category":  "occlusion / information sufficiency",
+                          "steps":  1,
+                          "text":  "在遮挡图中，被遮挡面板完全盖住、观众一点都看不到的对象有几个？（面板区域为 300 ≤ x ≤ 700 且 170 ≤ y ≤ 650）坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。只根据最终可见画面回答；若画面本身不足以判定，就回答「无法确定」。"
+                      },
+                      {
+                          "id":  "Q14",
+                          "scene":  "occlusion",
+                          "category":  "visibility count",
+                          "steps":  1,
+                          "text":  "把遮挡面板占据的矩形记为 300 ≤ x ≤ 700 且 170 ≤ y ≤ 650。完全落在该矩形之外（与它没有任何公共点）的彩色对象有几个？只数对象本身，不计文字，也不计遮挡面板。坐标原点为画面左上角 (0,0)，x 向右增大，y 向下增大，单位为像素；对象中心指该对象包围框的中心点。"
+                      }
+                  ]
+}

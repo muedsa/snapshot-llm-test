@@ -1,0 +1,674 @@
+{
+    "schema_version":  1,
+    "task_id":  "A12",
+    "run_id":  "run-20261002-220723-mimo",
+    "verified_at":  "2026-10-03T15:32:10+08:00",
+    "timezone":  "Asia/Shanghai (UTC+08:00)",
+    "dsl_version":  "v3",
+    "input":  "tasks/A12-responsive-system/inputs/content.json",
+    "canvases":  [
+                     "mobile 360x800 margin 16",
+                     "tablet 768x1024 margin 32",
+                     "desktop 1440x900 margin 48",
+                     "stage 1920x1080 margin 56"
+                 ],
+    "method":  {
+                   "geometry":  "Absolute text boxes come from content-map-v3.json, written by gen.ps1 at emit time rather than measured afterwards.",
+                   "pixels":  "PNG decoded through System.Drawing LockBits (32bppArgb). Ink = max(R,G,B) \u003e= 120, which excludes background #0B1220, surface #132038 and hairline #23324C while catching amber #F6B94A, cyan #38BDF8 and both text colours.",
+                   "overlap":  "Every pair of text boxes in a canvas is intersected; any positive overlap in both axes fails.",
+                   "content":  "The 25 input values must appear inside a CDATA payload of that canvas DSL. The split mobile title is rebuilt as line1 + \" \" + line2 and compared with the input string.",
+                   "fonts":  "The fontFamily lists are checked against the real GET /fonts response obtained earlier in this run.",
+                   "bands":  "The three section gaps and the band under the location chip are pixel-scanned; any ink there means content bled across a boundary."
+               },
+    "totals":  {
+                   "checks":  92,
+                   "passed":  92,
+                   "failed":  0
+               },
+    "checks":  [
+                   {
+                       "id":  "P-mobile",
+                       "group":  "P",
+                       "description":  "mobile PNG signature + IHDR = 360x800",
+                       "result":  "PASS",
+                       "detail":  "360x800"
+                   },
+                   {
+                       "id":  "N-mobile",
+                       "group":  "N",
+                       "description":  "mobile no Image / transform / scale / rotate (adaptation is re-laid-out, never cropped)",
+                       "result":  "PASS",
+                       "detail":  "clean"
+                   },
+                   {
+                       "id":  "C-mobile",
+                       "group":  "C",
+                       "description":  "mobile all 25 input fields present verbatim (Raw+CDATA, no entity encoding)",
+                       "result":  "PASS",
+                       "detail":  "25/25 verbatim, 0 entities"
+                   },
+                   {
+                       "id":  "F-mobile",
+                       "group":  "F",
+                       "description":  "mobile every fontFamily is in the real GET /fonts response",
+                       "result":  "PASS",
+                       "detail":  "Noto Sans CJK SC,Noto Sans CJK JP | Noto Sans Mono CJK SC"
+                   },
+                   {
+                       "id":  "T1-mobile",
+                       "group":  "T",
+                       "description":  "mobile body \u003e= 16 (min found 16)",
+                       "result":  "PASS",
+                       "detail":  16
+                   },
+                   {
+                       "id":  "T2-mobile",
+                       "group":  "T",
+                       "description":  "mobile card title \u003e= 18 (min found 18)",
+                       "result":  "PASS",
+                       "detail":  18
+                   },
+                   {
+                       "id":  "T3-mobile",
+                       "group":  "T",
+                       "description":  "mobile main title \u003e= 40 (min found 40)",
+                       "result":  "PASS",
+                       "detail":  40
+                   },
+                   {
+                       "id":  "T4-mobile",
+                       "group":  "T",
+                       "description":  "mobile every Text node uses height=1.0 (line box == font size)",
+                       "result":  "PASS",
+                       "detail":  25
+                   },
+                   {
+                       "id":  "L-mobile",
+                       "group":  "L",
+                       "description":  "mobile safe margin 16 \u003e= required 16",
+                       "result":  "PASS",
+                       "detail":  16
+                   },
+                   {
+                       "id":  "M-mobile",
+                       "group":  "M",
+                       "description":  "mobile ink bbox inside safe area [16..343]x[16..783]",
+                       "result":  "PASS",
+                       "detail":  "bbox=16,16..343,779 ink_px=31825"
+                   },
+                   {
+                       "id":  "B-mobile",
+                       "group":  "B",
+                       "description":  "mobile all 25 text boxes inside the safe area",
+                       "result":  "PASS",
+                       "detail":  "25 boxes OK"
+                   },
+                   {
+                       "id":  "O-mobile",
+                       "group":  "O",
+                       "description":  "mobile no two text boxes overlap",
+                       "result":  "PASS",
+                       "detail":  "25 boxes disjoint"
+                   },
+                   {
+                       "id":  "V-mobile",
+                       "group":  "V",
+                       "description":  "mobile title box clears the corner motif (motif x=326)",
+                       "result":  "PASS",
+                       "detail":  "clear"
+                   },
+                   {
+                       "id":  "R-mobile-C1",
+                       "group":  "R",
+                       "description":  "mobile tile C1 328x64 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-mobile-C2",
+                       "group":  "R",
+                       "description":  "mobile tile C2 328x64 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-mobile-C3",
+                       "group":  "R",
+                       "description":  "mobile tile C3 328x64 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-mobile-C4",
+                       "group":  "R",
+                       "description":  "mobile tile C4 328x64 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-mobile-C5",
+                       "group":  "R",
+                       "description":  "mobile tile C5 328x64 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-mobile-C6",
+                       "group":  "R",
+                       "description":  "mobile tile C6 328x64 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "G-mobile-header-meta",
+                       "group":  "G",
+                       "description":  "mobile section gap header-\u003emeta rows 157..173 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-mobile-meta-cards",
+                       "group":  "G",
+                       "description":  "mobile section gap meta-\u003ecards rows 245..271 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-mobile-cards-footer",
+                       "group":  "G",
+                       "description":  "mobile section gap cards-\u003efooter rows 697..712 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "W-mobile",
+                       "group":  "W",
+                       "description":  "mobile no ink below the location chip (rows 245..271)",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "P-tablet",
+                       "group":  "P",
+                       "description":  "tablet PNG signature + IHDR = 768x1024",
+                       "result":  "PASS",
+                       "detail":  "768x1024"
+                   },
+                   {
+                       "id":  "N-tablet",
+                       "group":  "N",
+                       "description":  "tablet no Image / transform / scale / rotate (adaptation is re-laid-out, never cropped)",
+                       "result":  "PASS",
+                       "detail":  "clean"
+                   },
+                   {
+                       "id":  "C-tablet",
+                       "group":  "C",
+                       "description":  "tablet all 25 input fields present verbatim (Raw+CDATA, no entity encoding)",
+                       "result":  "PASS",
+                       "detail":  "25/25 verbatim, 0 entities"
+                   },
+                   {
+                       "id":  "F-tablet",
+                       "group":  "F",
+                       "description":  "tablet every fontFamily is in the real GET /fonts response",
+                       "result":  "PASS",
+                       "detail":  "Noto Sans CJK SC,Noto Sans CJK JP | Noto Sans Mono CJK SC"
+                   },
+                   {
+                       "id":  "T1-tablet",
+                       "group":  "T",
+                       "description":  "tablet body \u003e= 20 (min found 20)",
+                       "result":  "PASS",
+                       "detail":  20
+                   },
+                   {
+                       "id":  "T2-tablet",
+                       "group":  "T",
+                       "description":  "tablet card title \u003e= 18 (min found 24)",
+                       "result":  "PASS",
+                       "detail":  24
+                   },
+                   {
+                       "id":  "T3-tablet",
+                       "group":  "T",
+                       "description":  "tablet main title \u003e= 40 (min found 56)",
+                       "result":  "PASS",
+                       "detail":  56
+                   },
+                   {
+                       "id":  "T4-tablet",
+                       "group":  "T",
+                       "description":  "tablet every Text node uses height=1.0 (line box == font size)",
+                       "result":  "PASS",
+                       "detail":  25
+                   },
+                   {
+                       "id":  "L-tablet",
+                       "group":  "L",
+                       "description":  "tablet safe margin 32 \u003e= required 32",
+                       "result":  "PASS",
+                       "detail":  32
+                   },
+                   {
+                       "id":  "M-tablet",
+                       "group":  "M",
+                       "description":  "tablet ink bbox inside safe area [32..735]x[32..991]",
+                       "result":  "PASS",
+                       "detail":  "bbox=32,32..735,986 ink_px=74487"
+                   },
+                   {
+                       "id":  "B-tablet",
+                       "group":  "B",
+                       "description":  "tablet all 25 text boxes inside the safe area",
+                       "result":  "PASS",
+                       "detail":  "25 boxes OK"
+                   },
+                   {
+                       "id":  "O-tablet",
+                       "group":  "O",
+                       "description":  "tablet no two text boxes overlap",
+                       "result":  "PASS",
+                       "detail":  "25 boxes disjoint"
+                   },
+                   {
+                       "id":  "V-tablet",
+                       "group":  "V",
+                       "description":  "tablet title box clears the corner motif (motif x=712)",
+                       "result":  "PASS",
+                       "detail":  "clear"
+                   },
+                   {
+                       "id":  "R-tablet-C1",
+                       "group":  "R",
+                       "description":  "tablet tile C1 340x160 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-tablet-C2",
+                       "group":  "R",
+                       "description":  "tablet tile C2 340x160 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-tablet-C3",
+                       "group":  "R",
+                       "description":  "tablet tile C3 340x160 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-tablet-C4",
+                       "group":  "R",
+                       "description":  "tablet tile C4 340x160 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-tablet-C5",
+                       "group":  "R",
+                       "description":  "tablet tile C5 340x160 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-tablet-C6",
+                       "group":  "R",
+                       "description":  "tablet tile C6 340x160 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "G-tablet-header-meta",
+                       "group":  "G",
+                       "description":  "tablet section gap header-\u003emeta rows 160..209 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-tablet-meta-cards",
+                       "group":  "G",
+                       "description":  "tablet section gap meta-\u003ecards rows 255..314 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-tablet-cards-footer",
+                       "group":  "G",
+                       "description":  "tablet section gap cards-\u003efooter rows 848..897 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "W-tablet",
+                       "group":  "W",
+                       "description":  "tablet no ink below the location chip (rows 255..295)",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "P-desktop",
+                       "group":  "P",
+                       "description":  "desktop PNG signature + IHDR = 1440x900",
+                       "result":  "PASS",
+                       "detail":  "1440x900"
+                   },
+                   {
+                       "id":  "N-desktop",
+                       "group":  "N",
+                       "description":  "desktop no Image / transform / scale / rotate (adaptation is re-laid-out, never cropped)",
+                       "result":  "PASS",
+                       "detail":  "clean"
+                   },
+                   {
+                       "id":  "C-desktop",
+                       "group":  "C",
+                       "description":  "desktop all 25 input fields present verbatim (Raw+CDATA, no entity encoding)",
+                       "result":  "PASS",
+                       "detail":  "25/25 verbatim, 0 entities"
+                   },
+                   {
+                       "id":  "F-desktop",
+                       "group":  "F",
+                       "description":  "desktop every fontFamily is in the real GET /fonts response",
+                       "result":  "PASS",
+                       "detail":  "Noto Sans CJK SC,Noto Sans CJK JP | Noto Sans Mono CJK SC"
+                   },
+                   {
+                       "id":  "T1-desktop",
+                       "group":  "T",
+                       "description":  "desktop body \u003e= 20 (min found 20)",
+                       "result":  "PASS",
+                       "detail":  20
+                   },
+                   {
+                       "id":  "T2-desktop",
+                       "group":  "T",
+                       "description":  "desktop card title \u003e= 18 (min found 30)",
+                       "result":  "PASS",
+                       "detail":  30
+                   },
+                   {
+                       "id":  "T3-desktop",
+                       "group":  "T",
+                       "description":  "desktop main title \u003e= 40 (min found 72)",
+                       "result":  "PASS",
+                       "detail":  72
+                   },
+                   {
+                       "id":  "T4-desktop",
+                       "group":  "T",
+                       "description":  "desktop every Text node uses height=1.0 (line box == font size)",
+                       "result":  "PASS",
+                       "detail":  25
+                   },
+                   {
+                       "id":  "L-desktop",
+                       "group":  "L",
+                       "description":  "desktop safe margin 48 \u003e= required 32",
+                       "result":  "PASS",
+                       "detail":  48
+                   },
+                   {
+                       "id":  "M-desktop",
+                       "group":  "M",
+                       "description":  "desktop ink bbox inside safe area [48..1391]x[48..851]",
+                       "result":  "PASS",
+                       "detail":  "bbox=48,48..1391,844 ink_px=128826"
+                   },
+                   {
+                       "id":  "B-desktop",
+                       "group":  "B",
+                       "description":  "desktop all 25 text boxes inside the safe area",
+                       "result":  "PASS",
+                       "detail":  "25 boxes OK"
+                   },
+                   {
+                       "id":  "O-desktop",
+                       "group":  "O",
+                       "description":  "desktop no two text boxes overlap",
+                       "result":  "PASS",
+                       "detail":  "25 boxes disjoint"
+                   },
+                   {
+                       "id":  "V-desktop",
+                       "group":  "V",
+                       "description":  "desktop title box clears the corner motif (motif x=1362)",
+                       "result":  "PASS",
+                       "detail":  "clear"
+                   },
+                   {
+                       "id":  "R-desktop-C1",
+                       "group":  "R",
+                       "description":  "desktop tile C1 426x150 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-desktop-C2",
+                       "group":  "R",
+                       "description":  "desktop tile C2 426x150 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-desktop-C3",
+                       "group":  "R",
+                       "description":  "desktop tile C3 426x150 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-desktop-C4",
+                       "group":  "R",
+                       "description":  "desktop tile C4 426x150 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-desktop-C5",
+                       "group":  "R",
+                       "description":  "desktop tile C5 426x150 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-desktop-C6",
+                       "group":  "R",
+                       "description":  "desktop tile C6 426x150 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "G-desktop-header-meta",
+                       "group":  "G",
+                       "description":  "desktop section gap header-\u003emeta rows 206..256 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-desktop-meta-cards",
+                       "group":  "G",
+                       "description":  "desktop section gap meta-\u003ecards rows 310..370 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-desktop-cards-footer",
+                       "group":  "G",
+                       "description":  "desktop section gap cards-\u003efooter rows 700..749 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "W-desktop",
+                       "group":  "W",
+                       "description":  "desktop no ink below the location chip (rows 310..350)",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "P-stage",
+                       "group":  "P",
+                       "description":  "stage PNG signature + IHDR = 1920x1080",
+                       "result":  "PASS",
+                       "detail":  "1920x1080"
+                   },
+                   {
+                       "id":  "N-stage",
+                       "group":  "N",
+                       "description":  "stage no Image / transform / scale / rotate (adaptation is re-laid-out, never cropped)",
+                       "result":  "PASS",
+                       "detail":  "clean"
+                   },
+                   {
+                       "id":  "C-stage",
+                       "group":  "C",
+                       "description":  "stage all 25 input fields present verbatim (Raw+CDATA, no entity encoding)",
+                       "result":  "PASS",
+                       "detail":  "25/25 verbatim, 0 entities"
+                   },
+                   {
+                       "id":  "F-stage",
+                       "group":  "F",
+                       "description":  "stage every fontFamily is in the real GET /fonts response",
+                       "result":  "PASS",
+                       "detail":  "Noto Sans CJK SC,Noto Sans CJK JP | Noto Sans Mono CJK SC"
+                   },
+                   {
+                       "id":  "T1-stage",
+                       "group":  "T",
+                       "description":  "stage body \u003e= 20 (min found 24)",
+                       "result":  "PASS",
+                       "detail":  24
+                   },
+                   {
+                       "id":  "T2-stage",
+                       "group":  "T",
+                       "description":  "stage card title \u003e= 18 (min found 34)",
+                       "result":  "PASS",
+                       "detail":  34
+                   },
+                   {
+                       "id":  "T3-stage",
+                       "group":  "T",
+                       "description":  "stage main title \u003e= 40 (min found 88)",
+                       "result":  "PASS",
+                       "detail":  88
+                   },
+                   {
+                       "id":  "T4-stage",
+                       "group":  "T",
+                       "description":  "stage every Text node uses height=1.0 (line box == font size)",
+                       "result":  "PASS",
+                       "detail":  25
+                   },
+                   {
+                       "id":  "L-stage",
+                       "group":  "L",
+                       "description":  "stage safe margin 56 \u003e= required 32",
+                       "result":  "PASS",
+                       "detail":  56
+                   },
+                   {
+                       "id":  "M-stage",
+                       "group":  "M",
+                       "description":  "stage ink bbox inside safe area [56..1863]x[56..1023]",
+                       "result":  "PASS",
+                       "detail":  "bbox=56,56..1863,1016 ink_px=203154"
+                   },
+                   {
+                       "id":  "B-stage",
+                       "group":  "B",
+                       "description":  "stage all 25 text boxes inside the safe area",
+                       "result":  "PASS",
+                       "detail":  "25 boxes OK"
+                   },
+                   {
+                       "id":  "O-stage",
+                       "group":  "O",
+                       "description":  "stage no two text boxes overlap",
+                       "result":  "PASS",
+                       "detail":  "25 boxes disjoint"
+                   },
+                   {
+                       "id":  "V-stage",
+                       "group":  "V",
+                       "description":  "stage title box clears the corner motif (motif x=1828)",
+                       "result":  "PASS",
+                       "detail":  "clear"
+                   },
+                   {
+                       "id":  "R-stage-C1",
+                       "group":  "R",
+                       "description":  "stage tile C1 281x300 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-stage-C2",
+                       "group":  "R",
+                       "description":  "stage tile C2 281x300 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-stage-C3",
+                       "group":  "R",
+                       "description":  "stage tile C3 281x300 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-stage-C4",
+                       "group":  "R",
+                       "description":  "stage tile C4 281x300 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-stage-C5",
+                       "group":  "R",
+                       "description":  "stage tile C5 281x300 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "R-stage-C6",
+                       "group":  "R",
+                       "description":  "stage tile C6 281x300 contains its index/title/detail boxes",
+                       "result":  "PASS",
+                       "detail":  "contained"
+                   },
+                   {
+                       "id":  "G-stage-header-meta",
+                       "group":  "G",
+                       "description":  "stage section gap header-\u003emeta rows 242..330 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-stage-meta-cards",
+                       "group":  "G",
+                       "description":  "stage section gap meta-\u003ecards rows 396..511 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "G-stage-cards-footer",
+                       "group":  "G",
+                       "description":  "stage section gap cards-\u003efooter rows 813..901 free of ink",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   },
+                   {
+                       "id":  "W-stage",
+                       "group":  "W",
+                       "description":  "stage no ink below the location chip (rows 396..436)",
+                       "result":  "PASS",
+                       "detail":  "ink_px=0"
+                   }
+               ]
+}

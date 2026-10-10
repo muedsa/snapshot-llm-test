@@ -1,0 +1,300 @@
+{
+    "task_id":  "A13",
+    "run_id":  "run-20261002-220723-mimo",
+    "generated_at":  "2026-10-03T16:48:03+08:00",
+    "render_version":  "03",
+    "render_versions":  {
+                            "brand-banner":  2,
+                            "symbol-black":  2,
+                            "launch-poster":  3,
+                            "symbol-color-native32":  2,
+                            "symbol-color":  2
+                        },
+    "verifier":  "verify.ps1 (reads only rendered PNG + delivered DSL)",
+    "totals":  {
+                   "failed":  0,
+                   "checks":  29,
+                   "passed":  29
+               },
+    "geometry":  {
+                     "channel":  34,
+                     "clear_space_px":  {
+                                            "left":  66,
+                                            "right":  66,
+                                            "bottom":  66,
+                                            "top":  66
+                                        },
+                     "black_ink_pixels":  63679,
+                     "matrix":  "(0.70710678,-0.70710678,0,0,0.70710678,0.70710678,0,0,0,0,1,0,0,0,0,1)",
+                     "clear_space_pct":  12.89,
+                     "axis_degrees":  45,
+                     "direction":  "A - three layered light beams (chosen from two previews)",
+                     "geometry_delta_pixels":  872,
+                     "native32_runs_px":  [
+                                              5.75,
+                                              5.75,
+                                              5.75
+                                          ],
+                     "black_alpha_min":  1,
+                     "native32_gaps_px":  [
+                                              1.25,
+                                              1.25
+                                          ],
+                     "spacing":  122,
+                     "beam_runs_px":  [
+                                          87.5,
+                                          87.75,
+                                          87.5
+                                      ],
+                     "channel_gaps_px":  [
+                                             34,
+                                             34
+                                         ],
+                     "ink_bbox_512":  {
+                                          "y1":  445,
+                                          "x0":  66,
+                                          "x1":  445,
+                                          "y0":  66
+                                      },
+                     "beam":  {
+                                  "corner_radius":  44,
+                                  "design_box":  512,
+                                  "thickness":  88,
+                                  "length":  256
+                              }
+                 },
+    "checks":  [
+                   {
+                       "id":  "P01",
+                       "group":  "P_png_signature_and_size",
+                       "description":  "symbol-color is a real PNG with the required size",
+                       "expected":  "512x512, sig 89504E47",
+                       "observed":  "512x512, sig_ok=True, 9077 B",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "P02",
+                       "group":  "P_png_signature_and_size",
+                       "description":  "symbol-black is a real PNG with the required size",
+                       "expected":  "512x512, sig 89504E47",
+                       "observed":  "512x512, sig_ok=True, 6220 B",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "P03",
+                       "group":  "P_png_signature_and_size",
+                       "description":  "brand-banner is a real PNG with the required size",
+                       "expected":  "1200x400, sig 89504E47",
+                       "observed":  "1200x400, sig_ok=True, 31376 B",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "P04",
+                       "group":  "P_png_signature_and_size",
+                       "description":  "launch-poster is a real PNG with the required size",
+                       "expected":  "1080x1350, sig 89504E47",
+                       "observed":  "1080x1350, sig_ok=True, 56441 B",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "P05",
+                       "group":  "P_png_signature_and_size",
+                       "description":  "symbol-color-native32 is a real PNG with the required size",
+                       "expected":  "32x32, sig 89504E47",
+                       "observed":  "32x32, sig_ok=True, 806 B",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "A01",
+                       "group":  "A_transparency",
+                       "description":  "symbol-color background is fully transparent",
+                       "expected":  "alpha=0 at all four corners",
+                       "observed":  "corner(0,0)=0 corner(511,511)=0",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "A02",
+                       "group":  "A_transparency",
+                       "description":  "symbol-black background is fully transparent",
+                       "expected":  "alpha=0 at corner",
+                       "observed":  "corner(0,0)=0",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "K01",
+                       "group":  "K_pure_black",
+                       "description":  "every non-transparent pixel of symbol-black has RGB = 0,0,0",
+                       "expected":  "0 pixels with RGB != 0 among A\u003e0",
+                       "observed":  "0 pixels violate (A range 1..255); ink=63679; no violation",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "K02",
+                       "group":  "K_pure_black",
+                       "description":  "antialiasing is present as allowed alpha variation",
+                       "expected":  "alpha values in 1..254 exist (AA allowed)",
+                       "observed":  "alpha range observed = 1..255, ink pixels = 63679",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "G01",
+                       "group":  "G_identical_geometry",
+                       "description":  "the colour icon and the black icon have identical geometry",
+                       "expected":  "solid coverage (A\u003e128) differs on 0 pixels; max alpha jitter \u003c= 1",
+                       "observed":  "solid-coverage diff = 0 px; soft diff = 872 px, max delta = 1 | (204,73) color=31 black=32 | (253,73) color=60 black=61 | (203,74) color=89 black=90 | (256,75) color=26 black=27 | (200,76) color=20 black=21",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "M01",
+                       "group":  "M_clear_space",
+                       "description":  "symbol keeps \u003e=10% clear space on every side",
+                       "expected":  "each side \u003e= 51.2 px (10% of 512)",
+                       "observed":  "L=66 R=66 T=66 B=66 (min 12.89%); ink bbox = x66..445 y66..445",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "S01",
+                       "group":  "S_beam_separation",
+                       "description":  "the mark is made of exactly 3 separate beams",
+                       "expected":  "3 ink runs along the perpendicular scan",
+                       "observed":  "runs = 3 -\u003e 87.5, 87.75, 87.5 (widths px)",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "S02",
+                       "group":  "S_beam_separation",
+                       "description":  "the channels between beams are open (negative space)",
+                       "expected":  "2 gaps, each ~34 px",
+                       "observed":  "gaps = 2 -\u003e 34, 34 px",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "S03",
+                       "group":  "S_beam_separation",
+                       "description":  "beam thickness survives downsampling (\u003e=4 px at 32x32)",
+                       "expected":  "each beam \u003e= 4 px",
+                       "observed":  "512-space run widths = 87.5, 87.75, 87.5 px",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "S04",
+                       "group":  "S_beam_separation",
+                       "description":  "at a native 32x32 render the mark still resolves into 3 beams",
+                       "expected":  "3 ink runs",
+                       "observed":  "runs = 3 -\u003e 5.75, 5.75, 5.75 px; gaps = 1.25, 1.25 px",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "S05",
+                       "group":  "S_beam_separation",
+                       "description":  "native 32x32 render is not empty and not a solid blob",
+                       "expected":  "ink pixels between 150 and 600",
+                       "observed":  "301 ink pixels of 1024",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "C01",
+                       "group":  "C_required_copy",
+                       "description":  "brand-banner contains \u0027叠光 Layerlight\u0027 verbatim in CDATA",
+                       "expected":  "CDATA literal present",
+                       "observed":  "present",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "C02",
+                       "group":  "C_required_copy",
+                       "description":  "brand-banner contains \u0027把复杂信息，组织成清晰画面\u0027 verbatim in CDATA",
+                       "expected":  "CDATA literal present",
+                       "observed":  "present",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "C03",
+                       "group":  "C_required_copy",
+                       "description":  "launch-poster contains \u0027叠光 Layerlight\u0027 verbatim in CDATA",
+                       "expected":  "CDATA literal present",
+                       "observed":  "present",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "C04",
+                       "group":  "C_required_copy",
+                       "description":  "launch-poster contains \u0027把复杂信息，组织成清晰画面\u0027 verbatim in CDATA",
+                       "expected":  "CDATA literal present",
+                       "observed":  "present",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "C05",
+                       "group":  "C_required_copy",
+                       "description":  "launch-poster contains \u00272026.11.07 · ONLINE\u0027 verbatim in CDATA",
+                       "expected":  "CDATA literal present",
+                       "observed":  "present",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "C06",
+                       "group":  "C_required_copy",
+                       "description":  "launch-poster contains \u0027OPEN BETA\u0027 verbatim in CDATA",
+                       "expected":  "CDATA literal present",
+                       "observed":  "present",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "C07",
+                       "group":  "C_required_copy",
+                       "description":  "launch-poster contains \u0027layerlight.example.org\u0027 verbatim in CDATA",
+                       "expected":  "CDATA literal present",
+                       "observed":  "present",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "N01",
+                       "group":  "N_no_embedded_raster",
+                       "description":  "symbol-color builds the mark from DSL primitives only",
+                       "expected":  "no Image/base64/url/transform tokens",
+                       "observed":  "clean",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "N02",
+                       "group":  "N_no_embedded_raster",
+                       "description":  "symbol-black builds the mark from DSL primitives only",
+                       "expected":  "no Image/base64/url/transform tokens",
+                       "observed":  "clean",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "N03",
+                       "group":  "N_no_embedded_raster",
+                       "description":  "brand-banner builds the mark from DSL primitives only",
+                       "expected":  "no Image/base64/url/transform tokens",
+                       "observed":  "clean",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "N04",
+                       "group":  "N_no_embedded_raster",
+                       "description":  "launch-poster builds the mark from DSL primitives only",
+                       "expected":  "no Image/base64/url/transform tokens",
+                       "observed":  "clean",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "H-brand-banner",
+                       "group":  "H_shared_geometry",
+                       "description":  "brand-banner embeds the mark through the same 45deg rule set",
+                       "expected":  "6 occurrences of the rotation matrix (6 beam group(s) x 3 beams)",
+                       "observed":  "6 occurrences of the matrix, 7 rounded bars total",
+                       "result":  "PASS"
+                   },
+                   {
+                       "id":  "H-launch-poster",
+                       "group":  "H_shared_geometry",
+                       "description":  "launch-poster embeds the mark through the same 45deg rule set",
+                       "expected":  "3 occurrences of the rotation matrix (3 beam group(s) x 3 beams)",
+                       "observed":  "3 occurrences of the matrix, 4 rounded bars total",
+                       "result":  "PASS"
+                   }
+               ]
+}

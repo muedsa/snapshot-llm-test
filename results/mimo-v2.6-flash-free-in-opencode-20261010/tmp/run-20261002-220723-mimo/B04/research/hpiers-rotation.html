@@ -1,0 +1,475 @@
+
+
+<html>
+
+<META NAME="keywords" CONTENT="earth rotation, earth rotation, atmosphere, atmosph�re, oceans, oc�ans, hydrology, hydrologie, continental water, eaux continetales, angular momentum, moment cin�tique, length of day, longeur du jour, polar motion, mouvement du p�le, pole coordinates, coordonn�es du p�le, nutation, precession, pr�cession, angular velocity, UT1, UTC,temps universel, universal time, seconde intercalaire, leap second, vitesse de rotation, moon, lune, Mond, sun, soleil, Sonne, tides, mar�es, Gezeiten, earthquake, seism, tremblement de terre, s�isme, excitation, moment d'inertie, matter term, terme mati�re, motion term, terme mouvement, courant, vent"> 
+
+
+<head>
+
+
+<link rel="stylesheet" href="//hpiers.obspm.fr/eop-pc/style.css" type="text/css">
+<link rel="stylesheet" href="//hpiers.obspm.fr/eop-pc/products/operational/jquery-ui_custom.css" type="text/css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css">
+
+
+	
+	
+
+<style>
+
+*{padding:0px;margin:0px}
+
+body{background-color:#c2cedb}
+
+ul{margin-left:40px}
+
+	.ul1 {position:fixed;top:94px;left:0px;border-bottom: solid 0px #6688bb; margin: 0px; padding: 0px; list-style: none; background: #ffffff; color: #fff; width: 171px; font: 11px  "Trebuchet MS", sans-serif;z-index:0;background-color:#e6f5ff} 
+	.search{position:fixed;top:56px;left:0px;font-family:arial;font-size:10px;z-index:2}
+	.flags{position:fixed;top:68px;left:10px;z-index:2}
+	.logo_lte{position:fixed;top: -65px;left:3px;z-index:2;width:163px;height:163px}
+	
+	
+	
+			
+	
+.earth_anime{position:absolute;top: 0px;left:158px;z-index:12}
+.bandeau{position:absolute;top:0px;left:148px;z-index:18}
+
+.body {font-family: verdana; font-size: 11px; line-height: normal;margin:0;padding:0;text-align:justify}
+.body_left {font-family: verdana; font-size: 11px; line-height: normal;margin:0;padding:0;text-align:left}
+
+.body12_ru {font-family: arial; font-size: 12px; line-height: normal;margin:0;padding:0;text-align:justify}
+
+.small{font-family: verdana; font-size: 10px; line-height: normal}
+.titre_page {font-family: verdana; font-size: 18px;text-align:center;font-weight: bold; padding-bottom:4px;padding-top:4px;background-color: #0099FF;width:100%}
+.body12 {font-family: verdana; font-size: 12px; line-height: 0.5cm}
+.titre_web { font-family: verdana; font-size: 24px; font-weight: bold; background-color: #FFFFFF; height: 40px; left: 15px; clip: rect( ); color: #FF0000; background-position: left center; width: 620px; padding-left: 15px; overflow: visible; white-space: normal; border-color: black black black #3300FF; border-left-width: thin}
+.soustitre_page { font-family: verdana; font-size: 16px; font-weight: bold; background-color: #CC0033; height: 40px; left: 15px; clip: rect( ); color: #FFFFFF; background-position: left center; width: 650px; padding-left: 15px; overflow: visible; white-space: normal; border-color: black black black #3300FF; border-left-width: thin }
+
+
+.mission li{margin-left:20px;margin-top:4px;margin-bottom:4px}
+
+.mission ul li{margin-left:40px;margin-top:4px;margin-bottom:4px}
+
+
+.table1{position:absolute;top:40px;left:0px;width:200px}
+
+.table2{font-size:11px;font-family:verdana}
+
+</style>
+
+<script type="text/javascript" src="dygraph-combined.js"></script>
+
+
+</head>
+
+</head>
+
+
+<body onLoad="allumer(div2);">
+
+<a href="https://www.obspm.fr"><img class="logo_lte" name="logo_lte" src='images/logo-obs-2.svg'></a>
+
+<div style="position:absolute;top:4px;left:910px;width:60px;height:60px;cursor:pointer;z-index:110" onclick="location.href='http://www.iers.org'"></div>
+
+
+	<img class="bandeau" src="images/logo26.png" name="bandeau">
+	<img  class="earth_anime" src="images/terre_anime.gif">
+  <div style="position:absolute; top:19px; left:223px; width:689px; height: 28px;z-index:110"></div>
+
+	
+
+
+
+
+
+
+<!--
+<div class="search">  
+<form method=post action="search.php"> 
+Search:<br> <input name="var" size=18 maxlength=60>
+<input type=submit value="Go" name="submit">
+</form>
+</div>
+-->
+<div class="flags">
+
+<a href="index.php?index=rotation&lang=en&change_lang=true"><img src="images/english-flag.gif" width="25" height="14" border="0"></a>
+&nbsp;
+<a href="index.php?index=rotation&lang=fr&change_lang=true"><img src="images/french-flag.gif" width="25" height="14" border="0"></a>
+&nbsp;
+<a href="index.php?index=rotation&lang=ru&change_lang=true"><img src="images/russian-flag.gif" width="25" height="14" border="0"></a>
+&nbsp;
+<a href="index.php?index=rotation&lang=es&change_lang=true"><img src="images/spanish-flag.jpg" width="25" height="14" border="0"></a>
+&nbsp;
+
+
+</div>
+
+<div style="position:absolute;top:58px; left:218px;font-family:arial;font-size:11px;font-weight:bold; text-decoration:underline ;cursor:pointer;z-index:50" href="#null" onClick="javascript:history.back();">BACK</div>
+
+<a style="position:absolute;top:58px;font-family:arial;font-size:11px;font-weight:bold;left:538px;z-index:50" href="index.php?index=mission&lang=en">HOME</a>
+
+
+<a style="position:absolute;top:58px;font-family:arial;font-size:11px;font-weight:bold;left:812px;z-index:50" href="products/matrice/rotation.html">SHOW THIS PAGE</a>
+
+
+
+
+
+<style>
+
+
+
+#ul1{display:none}
+#ul2{display:none}
+#ul3{display:none}
+#ul4{display:none}
+
+.ul_menu, .li_menu{margin:0;padding:0;list-style:none;background-color:#f2f2f6}
+
+.div_menu{position:relative;width:100%;height:28px;background-image:url('images/menu-item-deroule10.png');font-size:11px;font-family:arial;font-weight:bold;color:#224466;border-bottom:1px solid #224466}
+
+.ul_menu li a{position:relative;left:2px;text-decoration:none;font-family:verdana;font-size:11px}
+
+
+ .ul_menu li  a:link {color:blue}
+ .ul_menu li  a:visited {color:blue}
+ .ul_menu li  a:active {color:blue}
+ .ul_menu li  a:hover {color:blue}
+
+
+.ul_menu li{position:relative;width:100%;padding-top:4px;padding-bottom:4px;border-bottom:solid 1px  #224466}
+
+
+.span_menu{position:relative;top:6px;left:2px}
+
+
+</style>
+
+
+
+<script type="text/javascript" src="jquery-1.4.2.js"></script> 
+
+<script type="text/javascript" src="jquery.hoverIntent.js"></script> 
+
+
+
+<script type="text/javascript"> 
+<!-- 
+
+
+$(document).ready(function ()
+{
+	
+	$("#ul2").show();
+	
+	$('#div1').hoverIntent(function () {$("#ul1").show();$("#ul2").hide();$("#ul3").hide();$("#ul4").hide();}, function () {});
+
+	$('#div2').hoverIntent(function () {$("#ul2").show();$("#ul1").hide();$("#ul3").hide();$("#ul4").hide();}, function () {});
+	
+	$('#div3').hoverIntent(function () {$("#ul3").show();$("#ul1").hide();$("#ul2").hide();$("#ul4").hide();}, function () {});
+	
+	$('#div4').hoverIntent(function () {$("#ul4").show();$("#ul1").hide();$("#ul2").hide();$("#ul3").hide();}, function () {});
+	
+	
+
+	$("ul.ul_menu li").mouseover(function() 
+	{	
+		$(this).css({backgroundColor: "#ffffff" });
+	});
+	
+	$("ul.ul_menu li").mouseout(function() 
+	{	
+		$(this).css({backgroundColor: "#f2f0f6" });
+	});
+
+	
+	
+});
+		
+
+function allumer(onglet_triangle)
+{
+	div1.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	div2.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	div3.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	div4.style.backgroundImage='url(images/menu-item-deroule10.png)';
+	
+	
+	onglet_triangle.style.backgroundImage='url(images/menu-item-deroule10_on.png)';
+	
+}
+
+hpiers2hpiers2
+
+// --> 
+
+</script> 
+
+
+<ul class="ul1">
+
+<li id="li2" onMouseOver="allumer(div2);">	
+	
+	<div class="div_menu" id="div2"><span class="span_menu">EOP TIME SERIES</span></div>	
+		
+	<ul class="ul_menu" id="ul2">	
+	<li><a id="a22bis" href="http://hpiers.obspm.fr/eop-pc/index.php?index=FTP&lang=en"><b>FTP products</b></a></li>
+	<li><a id="a22" href="http://hpiers.obspm.fr/eop-pc/index.php?index=C04&lang=en" ><b>Reference C04 series <br> Each day since 1962</b></a></li> 
+	<li><a id="a23" href="http://hpiers.obspm.fr/eop-pc/index.php?index=C01&lang=en" ><b>Reference C01 series <br>Each 0.05 year from 1846</b></a></li>
+	<li><a id="a24" href="http://hpiers.obspm.fr/eop-pc/index.php?index=analysis&lang=en" ><b>EOP series  &amp; analysis</b></a></li>
+        <li><a id="a25" href="http://hpiers.obspm.fr/eop-pc/index.php?index=operational&lang=en" >EOP series &amp; comparison</a></li>  
+	<li><a id="a26" href="http://hpiers.obspm.fr/eop-pc/index.php?index=bulletins&lang=en" ><b>Bulletins B, C, D</b></a></li>  
+        <li><a id="a27" href="http://hpiers.obspm.fr/eop-pc/index.php?index=realtime&lang=en" >Last days for EOP</a></li>           
+	<li><a id="a28" href="http://hpiers.obspm.fr/eop-pc/index.php?index=rotation&lang=en" >Rotation matrix/vector</a></li>
+	<li><a href="http://hpiers.obspm.fr/eop-pc/index.php?index=webservice&lang=en" >WEB Service</a></li>
+        <li><a id="a21" href="http://hpiers.obspm.fr/eop-pc/index.php?index=eoptable&lang=en" >EOP series: synoptic</a></li>
+	<br>
+</ul>
+</li>
+
+	<li id="li1" onMouseOver="allumer(div1);">
+		<div class="div_menu"  id="div1"><span class="span_menu">THEORY AND MODELLING</span></div>
+		<ul class="ul_menu"  id="ul1">
+			<li><a id="a11" href="http://hpiers.obspm.fr/eop-pc/index.php?index=orientation&lang=en"  >Earth Orientation Parameters (EOP)</a></li> 
+			<li><a id="a12" href="http://hpiers.obspm.fr/eop-pc/index.php?index=techniques&lang=en" >Astro-geodetic techniques</a></li> 
+			<li><a id="a13" href="http://hpiers.obspm.fr/eop-pc/index.php?index=models&lang=en" title="Models / Software">Models / Sofware</a></li> 
+			<li><a id="a14" href="http://hpiers.obspm.fr/eop-pc/index.php?index=leapsecond&lang=en" title="Leap second">Leap second</a></li> 
+			<li><a id="a15" href="http://hpiers.obspm.fr/eop-pc/index.php?index=constants&lang=en" title="Constants">Useful constants</a></li> 
+	        <li><a href="http://www.astropage.ru/guide/moon/moon_decl_m1.php?month=10&year=2026&type=1&lang=en" title="Moon declination" target="_blank" id="a16">Moon declination</a></li> 
+			<br><br><br><br><br><br><br><br><br><br><br><br><br>
+		</ul>
+	</li>
+	
+	
+	<li id="li3" onMouseOver="allumer(div3);">	
+		
+		<div class="div_menu" id="div3"><span class="span_menu">GEOPHYSICAL EXCITATION</span></div>	
+	
+		<ul class="ul_menu" id="ul3">
+			
+			<li><a id="a32" href="http://hpiers.obspm.fr/eop-pc/index.php?index=excitactive&lang=en" >Excitation of PM/LOD</a></li> 
+ 			<li><a id="a33" href="http://hpiers.obspm.fr/eop-pc/index.php?index=ceam&lang=en" >Excitation of nutation</a></li>
+            <li><a id="a31" href="http://hpiers.obspm.fr/eop-pc/index.php?index=excitation&lang=en" >Geophysical excitation</a></li> 
+<!-- 			<li><a  href="calendrier/datconv.php" target=_blank>Dates converter</a></li> -->
+ 			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		</ul>
+	</li>
+	
+	<li id="li4" onMouseOver="allumer(div4);">
+		
+		<div  class="div_menu" id="div4"><span class="span_menu">LINKS</span></div>	
+	
+		<ul class="ul_menu" id="ul4">
+			<li><a href="http://www.iers.org/" ><img src="images/syrteFavicon.png" width="16" height="16" alt="IERS" /> IERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+			<li><a href="http://maia.usno.navy.mil/products/eo-products" ><img src="images/syrteFavicon.png width="16" height="16" alt="IERS" /> IERS Rapid Service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+            <li><a href="http://iers-conventions.obspm.fr/" ><img src="images/wtfFavicon.png" width="16" height="16" alt="IERS CONVENTIONS CENTER" /> IERS Conventions</a></li>
+			<li><a href="https://lte.observatoiredeparis.psl.eu/-Le-laboratoire-" ><img src="images/ObsFavicon.png" alt="LTE" width="16" height="16" vspace="16"/> LTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+			<li><a href="http://www.obspm.fr/" ><img src="images/ObsFavicon.png" alt="Paris Observatory" width="16" height="16" vspace="16" /> Paris Observatory</a></li> 
+			<li><a href="http://grgs.obs-mip.fr/" ><img src="images/GRGSFavicon.png" width="16" height="16" alt="GRGS" /> GRGS&nbsp;&nbsp;&nbsp;&nbsp;</a></li> 
+			<li><a href="http://earthrotation.net/" ><img src="images/wtfFavicon.png" width="16" height="16" alt="Network Earth Rotation Service" /> Network Earth Rotation Service</a></li>
+            <li><a id="a41" href="http://hpiers.obspm.fr/eop-pc/index.php?index=links&lang=en" >Other links</a></li> 
+			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		</ul>
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+ 
+<div style="position:relative;padding-top:90px;padding-bottom:24px;top:0px;left:171px;width:788;background-color:#ffffff;border-left: 1px solid #4bc1ed;border-right: 1px solid #6bd1fe;text-align:center;z-index:4">
+
+
+
+
+
+<center>
+
+
+
+<div style="width:750px;text-align:justify;font-family:arial;font-size:12px;color:#224466;font-family: verdana; font-size: 12px; line-height: 0.5cm">
+
+
+<TITLE>EARTH ORIENTATION MATRIX/QUATERNION AND ROTATION VECTOR</TITLE>
+<link rel="stylesheet" href="http://hpiers.obspm.fr/eop-pc/style.css" type="text/css">
+
+
+<center>
+
+<div class="titre_page" style="width:650px">EARTH ORIENTATION MATRIX/QUATERNION AND ROTATION VECTOR</div>
+
+<FORM NAME="matrice" METHOD="get" ACTION="http://hpiers.obspm.fr/eop-pc/products/matrice/rotation.php" target="_blank">
+ <table width="650" class="body12">
+<tr><td colspan="2" align="center" class="body12">
+<a href="http://hpiers.obspm.fr/eop-pc/index.php?index=matrice&lang=en"><b>Compute rotation matrix / quaternion 
+ITRF--&gt; ICRF at a given time or in real time</b> </a><br>
+<br>updated : February 2026
+</td></tr>
+<tr><td colspan="2" align="left" class="body11"></td></tr>
+	
+<tr align="left"><td colspan="2" class="body12"> 
+<br>
+<b>Compute time series of the Earth orientation matrix / quaternion or by-products between two dates:<br></b>
+<br>
+Time scale for civil Gregorian date : UTC &nbsp; &nbsp; &nbsp; &nbsp; Step in seconds 
+<input type="box" name="step" size="3" value="3600"> <br><br>
+&nbsp;First date: year 
+<input type="box" name="an1" size="3" value="2020">&nbsp; month 
+<input type="box" name="mois1" size="2" value="1">&nbsp; day 
+<input type="box" name="jour1" size="2" value="1">&nbsp; &nbsp; hour 
+<input type="box" name="h1" size="2" value="0">&nbsp; min 
+<input type="box" name="m1" size="2" value="0">&nbsp; second 
+<input type="box" name="s1" size="2" value="0">
+<br>
+&nbsp;Last date: year 
+<input type="box" name="an2"   size="3" value="2020">&nbsp; month 
+<input type="box" name="mois2" size="2" value="2">&nbsp; day 
+<input type="box" name="jour2" size="2" value="1">&nbsp; &nbsp; hour 
+<input type="box" name="h2"   size="2" value="0">&nbsp; min 
+<input type="box" name="m2" size="2" value="0">&nbsp; second 
+<input type="box" name="s2" size="2" value="0"><br><br>
+</td></tr>
+	
+<tr><td colspan="2"> 
+Include combined EOP C04 (1962 - today + 6 months prediction) when available : <br>
+celestial pole offsets 
+<input type="checkbox" name="nut" value="1" checked>&nbsp; UT1 - UTC 
+<input type="checkbox" name="ut1" value="1" checked>&nbsp; Polar motion <input type="checkbox" name="pm" value="1" checked>
+<br><br>
+Include diurnal and semidiurnal variations produced by ocean tides <input type="checkbox" name="tides" value="1"> (IERS conventions 2000)<br><br>
+</td></tr>
+
+<tr><td colspan="2" align="center">
+<input type="submit" name="SUBMIT" value="Submit request" >&nbsp; &nbsp;<input type="reset" value="Reset" name="reset">
+</td></tr>
+	  
+<tr><td height="19" colspan="2" valign="top"> 
+        
+<hr>
+<input type="radio" name="option" value="1" checked><b><a href="#description">Orientation matrix / quaternion</a></b><br>
+output for one line : Modified Julian Date in TAI ; civil date in UTC ; matrix elements a<sub>11</sub>, a<sub>12</sub>, a<sub>13</sub>, a<sub>21</sub>, 
+a<sub>22</sub>, a<sub>23</sub>, a<sub>31</sub>, a<sub>32</sub>, a<sub>33</sub>  ; quaternion elements q<sub>1</sub>, q<sub>2</sub>, q<sub>3</sub>, q<sub>4</sub>
+<br><br>Select :<br>	  
+&nbsp; &nbsp; &nbsp;<input type="radio" name="optq" value="0" checked> &nbsp;  from ITRF to ICRF <br> 
+&nbsp; &nbsp; &nbsp;<input type="radio" name="optq" value="1" >        &nbsp;  from Celestial Intermediate Frame (CIF) to ICRF (precession-nutation) <br>  
+&nbsp; &nbsp; &nbsp;<input type="radio" name="optq" value="2" >        &nbsp;  from Terrestrial Intermediate Frame (TIF) to CIF (Earth angle rotation matrix)<br>
+&nbsp; &nbsp; &nbsp;<input type="radio" name="optq" value="3" >        &nbsp;  from ITRF to Terrestrial Intermediate Frame (TIF) <br> 
+&nbsp; &nbsp; &nbsp;<input type="radio" name="optq" value="4" >        &nbsp;  from ITRF to CIF (diurnal rotation + polar motion) <br>    
+<br>
+Converse transformation is obtained by taking the conjugate quaternion (q<sub>1</sub>, -q<sub>2</sub>, -q<sub>3</sub>, -q<sub>4</sub>)
+<hr>
+</td></tr>
+	  
+<tr><td height="24" colspan="2" valign="top"> 
+<input type="radio" name="option" value="2">
+<b>Projection of the geographic axis</b> on the equatorial plane J2000.0 OXY (unit : arcsecond) <br><br>
+<input type="checkbox" name="draw" value="1">Draw 
+<br><br>
+N.B.: by taking the polar motion to zero one obtains the equatorial celestial coordinates of the Celestial Intermediate Pole<br>        
+<hr>
+</td></tr>
+
+<tr>
+<td  valign="top" justify="left"><b>Components (&omega;<sub>1</sub>,&omega;<sub>2</sub>,&omega;<sub>3</sub>) 
+of the instantaneous rotation vector &omega;</b>: <br><br>
+<input type="radio" name="option" value="3"> in the <b>International Terrestrial Reference Frame (ITRF) Oxyz</b> <br>
+<input type="radio" name="option" value="4"> in the<b> local frame</b> Ox'y'z' : Oz'=vertical (either geographic or astronomical), Ox' tangent to the meridian, towards South, Oy' in the horizontal plane, directly orthogonal to Ox':<br>
+Latitude (degree) 
+
+<input type="box" name="lat" size="6" value="49">&nbsp; longitude (degree) <input type="box" name="lon" size="6" value="0"><br>
+<input type="radio" name="option" value="5"> in the <b>International Celestial Reference Frame (ICRF) OXYZ</b>
+<br><br>
+<input type="radio" name="unit" value="1" checked> in nanorad/s &nbsp;&nbsp;
+<input type="radio" name="unit" value="2"><b> (&omega;<sub>1</sub>/&Omega;,&omega;<sub>2</sub>/&Omega;) in arcsec</b> 
+(<b>&Omega;=</b>7.292 115 146 706 4 10<sup>-5</sup> rad/s) 
+<br><input type="checkbox" name="optpn" value="1"> without precession-nutation  
+
+</td>
+<td width="150"  valign="top"> <br>
+<br> 
+&nbsp;&nbsp;<input type="radio" name="plotom" value="0" checked>do not draw<br>
+&nbsp;&nbsp;<input type="radio" name="plotom" value="1">draw (date,&omega;<sub>1</sub>)<br>
+&nbsp;&nbsp;<input type="radio" name="plotom" value="2">draw (date,&omega;<sub>2</sub>) <br>
+&nbsp;&nbsp;<input type="radio" name="plotom" value="3">draw (date,&omega;<sub>3</sub>)<br>
+&nbsp;&nbsp;<input type="radio" name="plotom" value="4">draw (&omega;<sub>1</sub>,&omega;<sub>2</sub>)  &nbsp; 
+</td></tr>
+
+<tr><td height="24" colspan="2" valign="top"><hr>
+<input type="radio" name="option" value="6">
+<b>Figure axes</b> for the real Earth and a rigid Earth (Kinoshita Souchay model) projected on the equatorial plane J2000.0 OXY (unit : arcsecond)   
+<br>
+<input type="checkbox" name="draw1" value="1">Draw<br>
+</td></tr>
+    
+<tr><td  valign="top" colspan="2" class="body"> 
+<hr>
+<a name="description"></a>Transformation from the international terrestrial reference system (ITRF) to the international celestial reference 
+frame (ICRF): transformation coordinate and associated quaternion. Compution of Celestial Pole coordinates (X,Y), Earth rotation angle, 
+Celestial Intermediate Origin locator, Terrestrial Intermediate Origin locator are performed by FORTRAN programs of the 
+</strong>SOFA IAU library</strong>, consistent with the IAU 2000/2006 resolutions.
+<br><br>      
+<ul>
+       
+<li>The quaternion transformation from ITRF to ICRF is calculated according to the expression given in
+<a ref="stylesheet" href="https://insu.hal.science/insu-04475258v1/document" type="text/css">(Bizouard et Cheng, 2023)</a>. 
+The matrix is calculated accordingly. The instantaneous rotation components are derived from quaternion kinematic
+relations, according to the numerical approach developped by Bizouard
+and Titov (REFAG 2026). 
+</li>
+<br>	
+<li><b><font color="#0000FF">from 1962 to the current week</font></b> 
+    the transformation can include the whole EOP set of the IERS combined series 
+    C04 (daily step, 0hUTC), as well as diurnal and semi-diurnal effects produced 
+    by ocean tides, which amount about 0.5 mas (milliarcsecond). Accuracy is 0.05 mas 
+    corresponding to 5 10<sup>-10 </sup>rad. Bewteen two dates at 0hUTC the EOP are interpolated according to a cubic spline. </li> 
+<br>
+<li><font color="#0000FF"><b>from the current week to 6 months after</b></font> the transformation is computed from the prediction of the polar motion and UT1-UTC.
+</li>
+<br>
+<li><font  color="#0000FF"><b>outside the range [1962, current week+ 6 months prediction]</b></font> the transformation is restricted to the diurnal rotation and the precession-nutation model IAU 2000.
+</li>
+<br>
+<li>The <b><font color="#0000FF">last digit (14)</font></b> of the matrix/quaternion elements is equivalent to an angular uncertainty of <b><font color="#0000FF">2 10<sup>-6</sup>mas</font></b>. 
+or a time uncertainty of 0.14 nano seconds (in reason of the diurnal rotation).
+</li>
+<br>
+<li>Components of the instantaneous rotation vector <b><font color="#0000FF">are deduced</font></b> from the quaternion and its time derivative.
+
+<br><br>
+<i>We are grateful to J.C. Marty (CNES, France), Markus Nitshke, Dr. Feipeng Zhang (GFZ, Germany), Luca Cerri (CNES, France), 
+Dr. Jim Beaupre (Teledyne Solutions, USA), Herv&eacute; Manche (IMCCE, Observatoire de Paris), 
+Josef Slavicek (Prague, January 2008), Paul-Eric Pottie (SYRTE,France, November 2021) 
+for their worthful comments, which allow us to improve/correct the computation of the Earth rotation matrix.</i>
+</li>
+</ul>
+</td>
+</tr>
+</table>
+<p>&nbsp;</p>
+</form>
+</center>
+
+</div>
+
+</center>
+
+</div>
+
+<div style="position:relative;top:0px;left:171px;width:790px;height:24px;background-image:url('images/logo24_quatro_pied_de_page.png');z-index:120">
+
+</div>
+
+
+<br><br><br><br>
+
+
+</body>
+
+</html>

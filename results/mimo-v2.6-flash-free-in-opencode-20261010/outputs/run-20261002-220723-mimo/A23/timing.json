@@ -1,0 +1,110 @@
+{
+    "schema":  "snapshot-suite/a23-timing/v1",
+    "task":  "A23",
+    "generated_at":  "2026-10-05T14:01:10+08:00",
+    "timezone":  "UTC+08:00",
+    "playback":  {
+                     "frame_count":  6,
+                     "frame_duration_ms":  250,
+                     "fps":  4,
+                     "frame_order":  [
+                                         1,
+                                         2,
+                                         3,
+                                         4,
+                                         5,
+                                         6
+                                     ],
+                     "frame_files":  [
+                                         "frame-01.png",
+                                         "frame-02.png",
+                                         "frame-03.png",
+                                         "frame-04.png",
+                                         "frame-05.png",
+                                         "frame-06.png"
+                                     ],
+                     "loop":  true,
+                     "loop_mode":  "infinite",
+                     "total_duration_ms":  1500,
+                     "order_semantics":  "frame-01 = 最分散状态，t=0；frame-06 = 成图状态，t=1；按索引升序播放"
+                 },
+    "loop_continuity":  {
+                            "seamless":  false,
+                            "loop_will_jump":  true,
+                            "statement":  "本分镜不宣称无缝循环。第 6 帧回到第 1 帧时每个单元都会瞬移，循环点存在明显跳变。",
+                            "evidence":  {
+                                             "method":  "逐单元计算 frame-06 与 frame-01 的欧氏距离，并与单帧步长比较",
+                                             "per_unit_jump_px":  [
+                                                                      {
+                                                                          "id":  "u01",
+                                                                          "jump_px":  110.99
+                                                                      },
+                                                                      {
+                                                                          "id":  "u02",
+                                                                          "jump_px":  71.83
+                                                                      },
+                                                                      {
+                                                                          "id":  "u03",
+                                                                          "jump_px":  74.18
+                                                                      },
+                                                                      {
+                                                                          "id":  "u04",
+                                                                          "jump_px":  75.74
+                                                                      },
+                                                                      {
+                                                                          "id":  "u05",
+                                                                          "jump_px":  127.88
+                                                                      },
+                                                                      {
+                                                                          "id":  "u06",
+                                                                          "jump_px":  121.51
+                                                                      },
+                                                                      {
+                                                                          "id":  "u07",
+                                                                          "jump_px":  49.07
+                                                                      },
+                                                                      {
+                                                                          "id":  "u08",
+                                                                          "jump_px":  107.81
+                                                                      },
+                                                                      {
+                                                                          "id":  "u09",
+                                                                          "jump_px":  84.9
+                                                                      },
+                                                                      {
+                                                                          "id":  "u10",
+                                                                          "jump_px":  152.13
+                                                                      },
+                                                                      {
+                                                                          "id":  "u11",
+                                                                          "jump_px":  152.27
+                                                                      },
+                                                                      {
+                                                                          "id":  "u12",
+                                                                          "jump_px":  123.27
+                                                                      }
+                                                                  ],
+                                             "jump_sum_px":  1251.59,
+                                             "jump_min_px":  49.07,
+                                             "jump_max_px":  152.27,
+                                             "jump_mean_px":  104.3,
+                                             "normal_step_max_px":  30.45,
+                                             "ratio_jump_over_step":  3.42,
+                                             "conclusion":  "循环点平均跳变距离是正常单帧步长的数倍，且方向不连续，因此按题面要求在 timing 中明示循环会跳变，不声明无缝。"
+                                         },
+                            "if_seamless_is_required":  "可改为闭合轨迹（frame-06 之后继续反向插值回到 frame-01 的环形状态，即增加回程关键帧），但那会破坏「末帧构成可识别图形」，故本交付选择不闭环。"
+                        },
+    "frame_selection":  {
+                            "note":  "6 个关键帧是同一段线性插值在 t=0/0.2/0.4/0.6/0.8/1.0 的等距采样，相邻帧位移一致（见 frame-data.json 的 consecutive_steps）。",
+                            "gaps_are_uniform":  true
+                        },
+    "format_substitution":  {
+                                "requested":  "GIF 动画（6 帧、透明、250ms/帧）",
+                                "delivered":  "6 张 600×600 透明 PNG 关键帧 + 本 timing.json",
+                                "why":  "open-snapshot 仅接受 Snapshot DSL 并只输出 png/jpg/webp，接口与文档中不存在 gif、animation、timeline、duration、frame 等任何参数或端点（见 limitations.md 证据栏）",
+                                "assembly_outside_scope":  "ffmpeg / ImageMagick 等外部工具可按本文件的 frame_order 与 frame_duration_ms 直接合成 GIF；本任务不生成假的 .gif 文件"
+                            },
+    "request":  {
+                    "source":  "TASK.md 第 14-16 行（已授权替代，无需再次询问）"
+                }
+}

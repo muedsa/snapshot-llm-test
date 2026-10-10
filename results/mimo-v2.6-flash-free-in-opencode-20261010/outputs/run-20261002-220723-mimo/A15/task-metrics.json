@@ -1,0 +1,256 @@
+{
+    "path_base": "suite_root",
+    "schema":  "snapshot-suite/task-metrics/v1",
+    "task_id":  "A15",
+    "task_name":  "reference-reconstruction",
+    "run_id":  "run-20261002-220723-mimo",
+    "track":  "A",
+    "status":  "completed",
+    "started_at":  "2026-10-03T18:50:36+08:00",
+    "ended_at":  "2026-10-03T20:30:41+08:00",
+    "timezone":  "+08:00",
+    "wall_clock_s":  6005,
+    "wall_clock_note":  "from suite-state A15 in_progress (2026-10-03T18:50:36+08:00) to the end of this file; covers reading the brief, seven reference measurement probes, building the generator and three measurement tools, six render rounds, viewing, auditing and writing deliverables",
+    "first_usable_image":  {
+                               "first_service_image_s":  3541,
+                               "first_service_image_at":  "2026-10-03T19:49:37+08:00",
+                               "first_service_image_kind":  "reconstructed-v01.png, request A15-r01-reconstructed (HTTP 200, 4184.2 ms)",
+                               "first_aligned_image_s":  4009,
+                               "first_aligned_image_at":  "2026-10-03T19:57:25+08:00",
+                               "first_aligned_image_kind":  "reconstructed-v03.png, the first render with 0 out-of-tolerance text elements",
+                               "first_delivered_image_s":  5355,
+                               "first_delivered_image_at":  "2026-10-03T20:19:51+08:00",
+                               "first_delivered_image_kind":  "reconstructed-v07.png, promoted byte-identically to outputs/reconstructed.png",
+                               "note":  "measured from task start; every render attempt is retained under tmp/ with its version number"
+                           },
+    "waiting":  {
+                    "user_feedback_wait_s":  0,
+                    "user_feedback_wait_note":  "no mid-task user feedback was given or required; this run executes the whole suite without per-task confirmation",
+                    "rate_limit_or_queue_wait_s":  0,
+                    "rate_limit_or_queue_wait_note":  "no HTTP 429 and no Retry-After occurred on this task; x-ratelimit-remaining never dropped below 118, so the client-side retry path was never triggered",
+                    "unmeasurable_wait_s":  null,
+                    "unmeasurable_wait_note":  "no unmeasurable waiting is claimed; if a value were needed and unmeasurable it would be null rather than 0"
+                },
+    "requests":  {
+                     "count":  8,
+                     "http_status":  {
+                                         "200":  8
+                                     },
+                     "failed":  0,
+                     "retried":  0,
+                     "rate_limit_exceeded":  0,
+                     "kind":  {
+                                  "render":  6,
+                                  "document":  2
+                              },
+                     "request_duration_ms_sum":  25933.3,
+                     "request_duration_ms_by_kind":  {
+                                                          "render":  20501.0,
+                                                          "document":  5432.3
+                                                      },
+                     "request_duration_ms_note":  "sum of the per-request durations in requests.jsonl; not equal to wall clock, which also covers reference measurement, generator work, viewing and auditing. All requests ran sequentially, so no overlap is involved. Render timings are the client-observed elapsed times; Server-Timing render/total values are stored per row",
+                     "first_started_utc":  "2026-10-03T11:49:33.102Z",
+                     "last_ended_utc":  "2026-10-03T12:21:42.624Z",
+                     "endpoints":  {
+                                       "POST /snapshot":  6,
+                                       "GET https://snapshot.muedsa.com/reference/parser-tags/":  1,
+                                       "GET https://snapshot.muedsa.com/widgets/layout/container/":  1
+                                   },
+                     "render_duration_ms":  [4184.2, 3876.3, 3207.7, 3659.7, 3142.9, 2430.2],
+                     "render_request_ids":  ["A15-r01-reconstructed", "A15-r02-reconstructed", "A15-r03-reconstructed", "A15-r04-reconstructed", "A15-r05-reconstructed", "A15-r06-reconstructed"],
+                     "shared_requests_new_in_this_task":  2,
+                     "shared_requests_reused":  [
+                                                    "GET /fonts listing (tmp/run-20261002-220723-mimo/A11/fonts-0001.txt) - reused, not re-requested",
+                                                    "suite AI guide / DSL doc excerpts (tmp/run-20261002-220723-mimo/_suite/probe/A10-doc-excerpts.md) - reused, not re-requested"
+                                                ],
+                     "failures_detail":  {
+                                             "count":  0,
+                                             "note":  "no render or document request failed; no error JSON was ever used as an image"
+                                         }
+                 },
+    "iterations":  {
+                       "count":  15,
+                       "log":  "tmp\\run-20261002-220723-mimo\\A15/iterations.jsonl",
+                       "by_type":  {
+                                       "baseline":  3,
+                                       "syntax-fix":  5,
+                                       "visual":  7,
+                                       "alternative":  1
+                                   },
+                       "by_type_note":  "the suite type vocabulary: baseline / visual / syntax-fix / alternative / retry / requirement-change. No retry and no requirement-change rows exist because neither happened",
+                       "render_rounds":  6,
+                       "dsl_versions":  7,
+                       "dsl_versions_note":  "reconstructed-v01..v07.snapshot all retained; v02 was emitted from a corrupted placement state, is kept as a draft on disk and was never submitted to the service",
+                       "complete_visual_iterations":  2,
+                       "complete_visual_iterations_detail":  [
+                                                                 "view v03 + reference -> weight and size edits -> render v04, v05, v06 -> view v06 and compare",
+                                                                 "view v06 -> nav pill 184x48 fix -> render v07 -> view v07 at five scales and compare"
+                                                             ],
+                       "complete_visual_iterations_note":  "a complete iteration is view the old image -> change -> re-render -> view and compare; measurement-only passes are counted separately and are not added on top",
+                       "measurement_passes":  3,
+                       "distinct_visual_defects_found_by_viewing":  1,
+                       "visual_defects":  [
+                                              "viewing v03 against the reference at 1:1 showed the reference sets a markedly heavier weight on the selected nav label, the three KPI labels, the three KPI change values, the three activity item titles, the four table column headers, the three table project names and the three status pill runs; the first version set all of them regular. This was seen with the image tool first and only afterwards quantified (stroke-mass ratios 1.40-1.92 on those 17 elements)"
+                                          ],
+                       "defects_found_by_measurement_not_by_eye":  [
+                                                                       "the selected nav pill was 182x46 at (19,117) against the reference 184x48 at (18,116) - a real 2px error on two axes, too small to see reliably at 1:1 but caught by the geometric anchor probe",
+                                                                       "KPI labels were still 5-6% light and the activity titles had overshot to 10% heavy after the first weight pass, caught by the stroke-mass probe"
+                                                                   ],
+                       "self_defects_in_generator":  [
+                                                          "a Card(...) helper call used as an element of a comma-separated array literal failed with `Missing expression after ','`; had to be inlined",
+                                                          "a duplicated half-written AddT block blocked emission until collapsed to one definition",
+                                                          "-ResetOnly was declared but the snapshot write was not guarded, so the switch still wrote a file",
+                                                          "an inline `powershell -Command` launched from the shell wrapper had its $e / $PL / $o expanded by the outer shell, so the reset silently did nothing; fixed by deleting placement.json before running -ResetOnly as a file"
+                                                      ],
+                       "self_defects_in_measurer":  [
+                                                        "compare.ps1 computed the probe window right edge as rx + padR instead of rx + rw + padR, clipping every ink box and producing nonsense font-size corrections; three passes against v01 were discarded as invalid before the reset was done properly",
+                                                        "probe-anchors.ps1 returned 0 anchors while reporting success: `measure` is a built-in PowerShell alias for Measure-Object and aliases outrank script functions, so `Measure $ref` never ran the script function; renamed to MeasureAnchors"
+                                                    ],
+                       "harness_image_channel_defect":  "the image channel can re-serve stale frames; every opening in this task was content-matched against the file being opened (the v03/v06/v07 opens all showed the expected dashboards, and the thumbnail and four crops each showed exactly their own region). No unique-path copies and no independent QA agent were needed for A15 because no mismatch was observed",
+                       "manufactured_iterations":  0
+                   },
+    "image_review":  {
+                         "image_view_events":  10,
+                         "note":  "each count is an actual open of an image file with the image tool; viewing duration was not instrumented, so no duration is claimed. Window bounds come from the surrounding render and document request timestamps",
+                         "views_by_kind":  {
+                                               "render_v03_full_size":  1,
+                                               "reference_full_size":  1,
+                                               "render_v06_full_size":  1,
+                                               "render_v07_full_size":  1,
+                                               "final_thumbnail_720x450":  1,
+                                               "final_local_crops":  4,
+                                               "delivered_file_reopened":  1
+                                           },
+                         "scales_covered":  ["original size 1440x900", "reduced 720x450 thumbnail", "four local crops (760x300, 760x310, 1140x230, 400x200)"],
+                         "delivered_final_png_opened":  1,
+                         "delivered_final_png_total":  1,
+                         "delivered_final_png_note":  "outputs/reconstructed.png was opened after promotion and shows the same 1440x900 dashboard; it is byte-identical to reconstructed-v07.png (SHA-256 C6C41F6EA13B12CEC8B1ED16EAA7C7F3D872E5530D48CA5A4C675E120AA9C029)",
+                         "reference_viewing_note":  "the reference was opened at full size for side-by-side comparison. Local inspection of reference regions was done with pixel probes (probe-ref1..probe-ref7) rather than by producing reference crops, because the brief forbids cropping the reference",
+                         "viewing_aids":  [
+                                              "view-A15-final-thumb-720x450.png",
+                                              "view-A15-zoom-top-left.png",
+                                              "view-A15-zoom-chart.png",
+                                              "view-A15-zoom-table.png",
+                                              "view-A15-zoom-sidebar.png"
+                                          ],
+                         "viewing_aids_note":  "all five are thumbnails/crops of the agent's own delivered PNG, stored under tmp/ for observation only; they are not deliverables and contain no reference pixel",
+                         "contact_sheet_used":  false,
+                         "contact_sheet_note":  "no contact sheet was made; it would not have replaced the individual views"
+                     },
+    "reconstruction":  {
+                           "canvas":  "1440x900",
+                           "reference_observed_only":  true,
+                           "reference_embedded":  false,
+                           "reference_cropped_or_traced":  false,
+                           "image_elements_in_dsl":  0,
+                           "transform_elements_in_dsl":  0,
+                           "structure":  "36 rectangles + 59 text runs, all constructed by the DSL",
+                           "fonts_used":  ["Inter", "Inter Extra Bold"],
+                           "font_source":  "GET /fonts live listing, cached at tmp/run-20261002-220723-mimo/A11/fonts-0001.txt",
+                           "text_strings_verbatim_from":  "inputs/content.json",
+                           "chart":  "five gridlines at y405/441/477/513/549, zero line y549, bars x=357+101i width 54 with top radius 4, heights 65/87/76/108/97/130 px = 1.2 px per unit, all resting on the zero line",
+                           "table":  "3 rows in order Atlas / Pulse / Orbit with owner, due and a status pill carrying background colour + text colour + text; header band, two separators and four column headers all measured"
+                       },
+    "verification":  {
+                         "audit":  "outputs\\run-20261002-220723-mimo\\A15/reconstruction-audit.json",
+                         "comparison_report":  "outputs\\run-20261002-220723-mimo\\A15/comparison.md",
+                         "tools":  [
+                                       "tmp\\run-20261002-220723-mimo\\A15/compare.ps1 (59 text ink boxes, identical windows on both images)",
+                                       "tmp\\run-20261002-220723-mimo\\A15/probe-anchors.ps1 (44 geometric anchors, identical algorithms on both images)",
+                                       "tmp\\run-20261002-220723-mimo\\A15/probe-weight.ps1 (stroke-mass ratio, translation invariant)",
+                                       "tmp\\run-20261002-220723-mimo\\A15/mk-audit.ps1 (assembles reconstruction-audit.json)"
+                                   ],
+                         "tolerance_px":  8,
+                         "geometry_anchors":  44,
+                         "geometry_anchors_passed":  44,
+                         "geometry_max_abs_delta_px":  1,
+                         "text_anchors":  59,
+                         "text_anchors_passed":  59,
+                         "text_max_abs_delta_px":  3,
+                         "required_anchors":  15,
+                         "required_anchors_passed":  15,
+                         "required_anchor_coverage":  "all four canvas quadrants plus the chart (title, tick, month) and the table (header, owner cell, project cell)",
+                         "text_elements_pixel_identical_stroke_mass":  45,
+                         "text_elements_stroke_mass_within_5pct":  56,
+                         "all_pass":  true,
+                         "image_viewing_evidence_in_audit":  true,
+                         "image_viewing_evidence_note":  "reconstruction-audit.json carries per-anchor reference and reconstructed coordinates plus the stroke-mass ratio, and iterations.jsonl carries which file was opened, with which tool and inside which time window"
+                     },
+    "deliverables":  {
+                         "final_images":  1,
+                         "final_images_bytes":  113766,
+                         "paired_dsl":  1,
+                         "paired_dsl_bytes":  13680,
+                         "files":  [
+                                       {
+                                           "name":  "reconstructed.png",
+                                           "size":  [1440, 900],
+                                           "bytes":  113766,
+                                           "sha256":  "C6C41F6EA13B12CEC8B1ED16EAA7C7F3D872E5530D48CA5A4C675E120AA9C029",
+                                           "dsl":  "reconstructed.snapshot",
+                                           "dsl_bytes":  13680,
+                                           "dsl_sha256":  "135387E958927F89DC017D630A0DBE97167EC0067D4C8ECF67B33C9FFDE58D30",
+                                           "render_version":  "07",
+                                           "dsl_version":  7,
+                                           "source_request_id":  "A15-r06-reconstructed",
+                                           "http_status":  200,
+                                           "duration_ms":  2430.2
+                                       }
+                                   ],
+                         "other_files":  [
+                                             "reconstruction-audit.json",
+                                             "comparison.md",
+                                             "snapshot-usage.md",
+                                             "task-metrics.json"
+                                         ],
+                         "raw_service_png_bytes":  true,
+                         "post_processing_applied":  false,
+                         "png_signature_valid":  true,
+                         "png_ihdr":  "1440x900",
+                         "snapshot_bom_free":  true,
+                         "overwritten_attempts":  0,
+                         "overwritten_attempts_note":  "every render (v01, v03, v04, v05, v06, v07) and every draft (v02.snapshot) is retained under tmp/ with its version number; the output directory was empty before promotion, so nothing was overwritten"
+                     },
+    "resources":  {
+                      "tokens_input":  null,
+                      "tokens_output":  null,
+                      "tokens_cache_read":  null,
+                      "tokens_cache_write":  null,
+                      "cost_usd":  null,
+                      "image_generation_units":  null,
+                      "unknown_reason":  "the open-snapshot service and this agent runtime report no token or cost figures; values stay null rather than estimated from text length or account balance"
+                  },
+    "artefacts_on_disk":  {
+                              "output_dir":  "outputs\\run-20261002-220723-mimo\\A15/",
+                              "output_file_count":  6,
+                              "temp_dir":  "tmp\\run-20261002-220723-mimo\\A15/",
+                              "temp_file_count":  43,
+                              "logs":  [
+                                           "requests.jsonl (8 rows: 6 render + 2 document)",
+                                           "iterations.jsonl (15 rows)"
+                                       ],
+                              "generators_and_tools":  [
+                                                           "gen.ps1 (7 DSL versions)",
+                                                           "compare.ps1",
+                                                           "probe-anchors.ps1",
+                                                           "probe-weight.ps1",
+                                                           "mk-audit.ps1",
+                                                           "fetch-docs.ps1",
+                                                           "views.ps1",
+                                                           "probe-ref1.ps1 .. probe-ref7.ps1"
+                                                       ],
+                              "reference_measurements":  7,
+                              "dsl_versions_on_disk":  7,
+                              "render_rounds_on_disk":  6,
+                              "failure_responses":  0,
+                              "retained_documents":  [
+                                                          "tmp/run-20261002-220723-mimo/A15/doc-parser-tags.html (147409 bytes)",
+                                                          "tmp/run-20261002-220723-mimo/A15/doc-container-widget.html (64827 bytes)"
+                                                      ],
+                              "viewing_aids":  5
+                          },
+    "open_issues":  [
+                        "KPI label stroke mass is 5.2-6.2% lighter than the reference and 1-3px narrower; fs 13.6 was chosen as the compromise between ink width and ink mass because the reference's letter advance for those three all-caps runs is not reproducible with a single Inter size. Well inside the +/-8px tolerance and recorded in comparison.md"
+                    ],
+    "summary": "A15 reconstructed the 1440x900 reference dashboard from inputs/content.json with a 36-rectangle / 59-text DSL built entirely from measurements taken off the reference, which was only ever observed and never cropped, traced or embedded. Seven reference measurement probes, seven DSL versions and six render rounds were needed. The single defect found by actually opening the images was font weight - the reference sets bold on the selected nav label, KPI labels and changes, activity titles, table headers, project names and pill text, which the first version set regular; two further defects (a 2px-small nav pill and a 5-6% light KPI label) were caught by the geometric and stroke-mass probes. Three measurement bugs were fixed along the way, including a clipped probe window and a built-in `measure` alias that silently shadowed the script function. Final state: 44/44 geometry anchors within 1px, 59/59 text anchors within 3px with dx=dy=0 everywhere, 45 elements pixel-identical by stroke mass, all 15 required anchors across four quadrants plus chart and table passing. 8 requests (6 render + 2 document, all HTTP 200, 0 failed, 0 retried), 25933.3 ms of request time, 15 iteration rows, 10 image views across original size, thumbnail and four local crops."
+}

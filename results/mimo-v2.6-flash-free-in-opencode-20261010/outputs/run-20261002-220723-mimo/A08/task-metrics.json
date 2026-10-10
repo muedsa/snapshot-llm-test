@@ -1,0 +1,141 @@
+{
+    "path_base": "suite_root",
+    "schema_version": 1,
+    "task_id": "A08",
+    "title": "网格导览与两条可走路线",
+    "track": "advanced",
+    "round_count": 1,
+    "status": "completed",
+    "started_at": "2026-10-03T02:33:13+08:00",
+    "ended_at": "2026-10-03T11:28:00+08:00",
+    "timezone": "Asia/Shanghai (UTC+08:00)",
+    "wall_clock_seconds": 32087,
+    "wall_clock_note": "02:33:13 起（suite-state 切到 A08=in_progress 的时刻）到 11:28:00 止。其中含一次平台会话中断，见 interruption；中断期间无渲染、无请求、无产物变化。",
+    "interruption": {
+        "type": "platform_session_abort",
+        "detected_at": "2026-10-03T03:19:10+08:00",
+        "resumed_at": "2026-10-03T11:07:07+08:00",
+        "bounded_by": "tmp/run-20261002-220723-mimo/A08/verify.ps1 中断前最后一次写入与恢复后首次写入的文件 mtime；恢复时刻是上界，非精确日志",
+        "seconds_upper_bound": 28077,
+        "note": "会话在一次工具调用中被平台中断。恢复时先读 suite-state.json 与 checkpoints/state-000008.json，核对实际文件后再继续；沿用原 run_id，未新建会话、未覆盖任何历史文件。",
+        "counted_as_service_wait": false
+    },
+    "active_wall_clock_seconds": 4010,
+    "active_wall_clock_note": "wall_clock_seconds 减去 interruption.seconds_upper_bound。仅用于描述有效工时，不替代 wall_clock_seconds。",
+    "first_usable_image_at": "2026-10-03T03:17:45.684+08:00",
+    "first_usable_image_seconds": 2672.684,
+    "first_usable_image_note": "首次可用图 = wayfinding.png（v02，A08-render-v02-wayfinding，03:17:45.684 完成）。v01 在 03:11:51.509 已渲染成功且几何/路线全部正确，但六个标记标签、尺度条数字与侧栏两行统计仍是 18px，不满足正文≥22，故不计为可用图。2672.684s 的构成：网格求解器与生成器编写约 32 分钟、v01 渲染 5.2s、看图与字号核对约 5 分钟、v02 生成与渲染 3.3s；服务等待不足 9s。",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_or_queue_wait_seconds": 0,
+    "rate_limit_note": "三次渲染均 200，无 429/503、无 Retry-After、无排队；x-ratelimit-remaining 每次都是 19（限额 20）。",
+    "request_duration_sum_ms": 15579.3,
+    "request_duration_note": "3 次 /snapshot 渲染往返合计 15579.3 ms（5177.6 + 3324.1 + 7077.6）。本题 0 次文档请求（复用 suite 共享准备）。该和只是网络往返之和，不含本地求解、DSL 生成、像素扫描与看图时间，也绝不能当作任务墙钟 32087s。",
+    "requests": {
+        "render_total": 3,
+        "render_success": 3,
+        "render_failed": 0,
+        "render_retry": 0,
+        "render_failed_note": "无失败、无限流、无重试。第 3 次是 v01 归档补渲染，不是失败重试。",
+        "other_service_total": 0,
+        "document_total": 0,
+        "document_note": "ai-guide.md 与 DSL 参考文档属 suite 启动阶段的真实共享准备（tmp/run-20261002-220723-mimo/_suite/probe/ 有缓存），本题真实复用，按总约定不重复计为新 HTTP 请求；本题未发起新的文档或字体请求。"
+    },
+    "dsl_versions": 2,
+    "dsl_versions_list": [
+        "v01",
+        "v02"
+    ],
+    "dsl_versions_note": "gen.ps1 带 -Ver 参数，v01/v02 的 .snapshot 都保留在临时目录，互不覆盖。v01 60512 B、v02 60504 B；交付的 wayfinding.snapshot 是 v02。",
+    "image_views": 5,
+    "image_views_note": "全部经实际图像查看工具打开：1) wayfinding.png v01 全图 03:12+08:00；2) wayfinding.png v02 全图 11:08+08:00；3) zoom-overlap.png 3x 11:13+08:00（重合段双线型与双色箭头、门洞单格未放大）；4) zoom-exit.png 4x 11:13+08:00（两线终止于格心、标签未越墙列）；5) archive/wayfinding-v01.png 11:15+08:00（v01 归档，对照 18px→22px）。像素扫描另做：468 格四角取样、131 墙格心、34+37 格路线取样、15 重合格双色、70 个标尺字号、6 个标签字形包围盒——扫描是看图的佐证，不替代看图。",
+    "iterations": {
+        "baseline": 1,
+        "completed_visual": 1,
+        "syntax_fix": 0,
+        "retry": 0,
+        "alternative": 0,
+        "requirement_change": 0,
+        "incomplete": 0
+    },
+    "iterations_note": "baseline = v01 首轮。1 次完成的视觉迭代：看 v01 后按正文≥22 逐项核对，发现三组字仍是 18px（六个标记标签、尺度条 0/10 米、侧栏底部两行），且出口标签中心压在格心 x=1082 会在 22px 下顶进右墙列；改字号、放宽标签框到 估算宽x1.4+30、出口标签中心左移 22px 后重渲 v02，全图与两处放大复核通过。0 次语法修复渲染（四处 PowerShell 变量大小写踩坑都发生在本地验证/放大脚本上，不在渲染链路）、0 次重试、0 次备选方案、0 次需求变更。",
+    "final_pngs": [
+        {
+            "file": "wayfinding.png",
+            "width": 1560,
+            "height": 1080,
+            "dsl": "wayfinding.snapshot",
+            "source": "open-snapshot real service response",
+            "bytes": 237094,
+            "png_signature_verified": true,
+            "service_request_id": "f3c7eaca-c5b7-45e4-b589-876070d16db5",
+            "server_timing": "render;dur=655.1, total;dur=837.3",
+            "ratelimit_remaining": 19,
+            "post_processed": false,
+            "byte_integrity_note": "HTTP 响应体由 render.ps1 直接写入 outputs 路径，无中间副本，因此不存在可比对的临时拷贝；post_processed=false，未做任何像素级改动。",
+            "sha256": "241A21D201BBE96ADCB5C272C2E66F70D5C24DC0B55FB0A3783C56807DA72190"
+        }
+    ],
+    "final_png_count": 1,
+    "non_final_images": [
+        {
+            "file": "archive/wayfinding-v01.png",
+            "purpose": "v01 归档补渲染，作为第 1 条迭代的可核验图像证据",
+            "bytes": 232008,
+            "service_request_id": "1fa8eb05-d59e-4add-8ada-52932c564b97",
+            "is_final": false,
+            "disclosure": "原 v01 PNG 被 v02 渲染覆盖后不可追回；此件由保留的 wayfinding-v01.snapshot 重新请求服务取得，是新一次响应，字节数与原记录一致，但不冒充原始字节。"
+        }
+    ],
+    "artifacts": [
+        "wayfinding.png",
+        "wayfinding.snapshot",
+        "paths.json",
+        "wayfinding-audit.json",
+        "label-audit.json",
+        "snapshot-usage.md",
+        "task-metrics.json"
+    ],
+    "service": "https://open-snapshot.muedsa.com",
+    "extra_deliverables": {
+        "paths_json": "26x18 网格定义、6 个标记、两条路线的逐格格心序列与格心像素、直段切分、各段步数与米数、连通分量/门洞/重合/回走统计与逐段自检",
+        "wayfinding_audit_json": "39 项终审逐项 pass/fail + detail，由 verify.ps1 重新解析交付的 .png/.snapshot 并逐像素扫描生成",
+        "label_audit_json": "6 个标记标签的字形包围盒、所覆盖列、是否压墙、字形框内是否有路线像素"
+    },
+    "visual_defects_fixed": [
+        "六个标记标签、尺度条 0/10 米、侧栏底部两行统计共三组字为 18px，低于正文≥22 —— 统一升到 22px（标尺保持 16px 属网格标识）",
+        "出口 E (23,15) 标签中心正压格心 x=1082，升到 22px 后实测末端会越过右墙列 1148 —— 中心左移 22px 到 x=1060，实测字形右端 x=1128",
+        "标签框宽度公式 EW*1.25+20 余量偏小，有回绕风险 —— 放宽到 EW*1.4+30"
+    ],
+    "checker_defects_fixed": [
+        "verify.ps1 用 $o 作循环变量，PowerShell 变量大小写不敏感，覆盖了输出目录 $O，写报告时路径塌成 <root>\\4\\... —— 改名 $ofs，并同步收紧路线取样：红取中心线±4（永远落在 10px 红带内、6px 青带外），青取轴向 ±10 窗口（12px 空档小于 21px 窗口，必中）",
+        "labelcheck.ps1 用 $rows 存结果覆盖了 $ROWS=18、用 $cols 存列号覆盖了 $COLS=26 —— 分别改名 $lbl / $touched",
+        "labelcheck.ps1 首版容差 100 把 D 格内的青色路线误判成靛蓝标签墨色，误报 label=D —— 容差收到 45，并把路线检测限制在标签自身字形框内（路线合法终止于标记格不算碰撞），同时跳过 D 格自身的 2px 描边列",
+        "labelcheck.ps1 用 $raw[$d.y0/$CELL] 取行，band 顶不在格边界时取错行甚至越界 —— 改为按字形框 miny 反算行号",
+        "zoom.ps1 用 $out/$src 作局部变量，与 -Out/-Src 参数同名被覆盖；Bitmap.Clone(Rectangle,PixelFormat) 在本机 PowerShell 不可用 —— 变量改名 $image/$zoom，裁剪改为 Graphics.DrawImage 源矩形 + NearestNeighbor",
+        "verify.ps1 对 route_2 断言存在合并的 cell_centres_px，实际 JSON 只有三个 leg 各自带 —— 拆成三条 leg 检查"
+    ],
+    "artifact_defects_fixed": [
+        "paths.json 的像素口径与渲染不一致：求解器网格原点写成 (46,128)，生成器实际用 (48,116)，导致 grid_origin_px、全部 cell_centres_px 与 6 个 marker centre_px 系统性偏移 2px/12px，JSON 描述的不是随图交付的那张画布 —— 求解器原点改为 (48,116) 并注明必须与 gen.ps1 一致；旧版先存档为 tmp/.../A08/paths-v01-gridorigin46x128.json 再重新生成；verify.ps1 新增 4 项像素口径一致性检查，39/39 PASS"
+    ],
+    "recovery_notes": [
+        "v01 的 PNG 原件被 v02 渲染覆盖（两次渲染共用同一规范输出路径），违反不覆盖旧版本 —— 用保留的 wayfinding-v01.snapshot 重新请求服务产出 outputs/.../A08/archive/wayfinding-v01.png，在 requests.jsonl 单列 A08-render-v01-wayfinding-archive-rerender，在 iterations.jsonl 明确标注这是新一次响应、不冒充原始字节",
+        "平台会话在 03:19:10 中断 —— 恢复时先读 suite-state.json 与 checkpoints/state-000008.json，再核对实际文件与日志，沿用原 run_id 从未完成处继续，未新建 run_id、未覆盖任何历史快照"
+    ],
+    "verification_tools": [
+        "tmp/run-20261002-220723-mimo/A08/solve.ps1 - floor.txt 解析、门洞检测、468 格 BFS 距离场与贪心行走，输出 paths.json；路线一 34 步达到 Manhattan 下界，leg_b/leg_c 也达到各自下界",
+        "tmp/run-20261002-220723-mimo/A08/gen.ps1 -Ver - 读 paths.json 与 floor.txt 一次算出全部像素坐标并生成完整 DSL，带 -Ver 保证 v01/v02 都保留",
+        "tmp/run-20261002-220723-mimo/A08/verify.ps1 - 从交付的 .png/.snapshot/paths.json 重新解析与逐像素扫描，产出 wayfinding-audit.json 的 39 项结果",
+        "tmp/run-20261002-220723-mimo/A08/labelcheck.ps1 - 从交付 PNG 逐像素量出 6 个标签字形包围盒，产出 label-audit.json 的 6 项结果",
+        "tmp/run-20261002-220723-mimo/A08/zoom.ps1 - NearestNeighbor 局部放大，产出 zoom-overlap.png / zoom-exit.png"
+    ],
+    "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "image_input_usage": null,
+        "cost": null,
+        "currency": null,
+        "source": "not provided by the execution platform",
+        "unknown_fields_reason": "执行平台未暴露 token/图像/费用遥测；字段留 null，不以字符数、文件大小或限流余量估算。"
+    },
+    "unresolved_issues": []
+}

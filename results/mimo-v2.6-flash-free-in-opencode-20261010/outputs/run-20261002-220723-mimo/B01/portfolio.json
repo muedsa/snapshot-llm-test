@@ -1,0 +1,553 @@
+{
+    "schema_version":  1,
+    "task_id":  "B01",
+    "run_id":  "run-20261002-220723-mimo",
+    "status":  "completed",
+    "asset_policy":  "dsl_primary_with_supporting_assets",
+    "asset_policy_actual":  "dsl_only_in_practice",
+    "curatorial_statement":  "十件作品按「谁在什么环境里要完成什么判断」来分派媒介，而不是按配色或行业凑数：站台竖屏（远距离瞬时判断）、指挥中心大屏（态势并发监控）、赛道补给卡（节奏控制）、烘焙室复盘卡（工艺数据回溯）、地铁灯箱海报（远看吸引/近看行动）、产线触控作业指导（流程+公差）、方形棋谱讲义（记谱与讲解）、手机端医疗回执（个人下一步动作）、户外安全立牌（结论前置的公共告知）、3:1 广场横幅（空间导览）。十件在媒介、画幅比例（900x1600/1920x1080/1080x1440/1200x900/800x1200/1600x1000/1200x1200/1080x1080/1080x1350/1920x640 全不重复）、配色系统、信息结构与核心视觉主张上均不重叠；没有一件是同版式换色或缩放。视觉上的「炫酷」被定义为：结构化图形系统真正承担了信息任务——锥形进度环的开口角度、公差带的像素刻度、按真实里程换算的分段条、19 路棋盘的坐标换算、24 小时潮位曲线的余弦插值——而不是装饰性的滤镜堆叠。全部 10 件为纯 DSL 构造，经真实 open-snapshot 服务渲染，逐件实际看图并按视觉反馈迭代。",
+    "cases":  [
+                  {
+                      "id":  "case-01",
+                      "title":  "末班地铁到站屏",
+                      "status":  "completed",
+                      "audience":  "深夜通勤乘客与站台值班员",
+                      "use_context":  "地铁站台竖屏 LCD 到站信息屏（或手机端线网查询页）；灯光较暗的地下站台，站位 2–5 米，远距离快速扫视",
+                      "user_goal":  "判断末班车几点到、往哪个方向、本侧站台是否正确、是否还赶得上",
+                      "content_basis":  "自拟演示数据：虚构线路「8 号线」、虚构站点与时刻表；画面内标注「演示数据 DEMO」",
+                      "visual_intent":  "深色荧光站台屏：黑底 + 线路荧光色带，用色带粗细与亮度差建立「线路 \u003e 方向 \u003e 时刻 \u003e 备注」四级信息层级，两侧对称箭头区块制造「本次/下一班」对比",
+                      "png":  "case-01/final.png",
+                      "snapshot":  "case-01/final.snapshot",
+                      "case_md":  "case-01/case.md",
+                      "dimensions":  [
+                                         900,
+                                         1600
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned 栅格",
+                                               "纯色 Box + borderRadius",
+                                               "shape=CIRCLE 徽标",
+                                               "多级 Text + bold + 居中/右对齐",
+                                               "LINEAR 渐变分隔带",
+                                               "Border \"width style color\"",
+                                               "点阵连线"
+                                           ],
+                      "completion_criteria":  [
+                                                  "末班时刻/方向/站台号在缩略图下可辨认",
+                                                  "无文字溢出、无遮挡",
+                                                  "到站时间 \u003c 发车时间且班次间隔合理",
+                                                  "演示数据标识可见"
+                                              ],
+                      "visual_review":  "读图工具实际查看 final.png（B01-c01-r1）一次，四条标准逐条比对通过；因未发现问题未做修改（不制造无意义迭代）",
+                      "request_ids":  [
+                                          "B01-c01-r1"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c01-v1-baseline"
+                                        ],
+                      "dsl_versions":  1,
+                      "render_count":  1,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-02",
+                      "title":  "台风应急指挥板",
+                      "status":  "completed",
+                      "audience":  "城市防汛防台指挥部值班员、气象与应急联动人员",
+                      "use_context":  "指挥中心 16:9 大屏连续值守，观看距离 3–8 米，需要同时读取多个分区",
+                      "user_goal":  "10 秒内判断台风中心位置与未来路径、风圈覆盖区域、前置力量部署是否充足",
+                      "content_basis":  "自拟演示台风数据（虚构编号「海燕」、虚构经纬路径与风圈参数）；标注「演示数据 DEMO」，不构成真实预警",
+                      "visual_intent":  "深色指挥中心风格：同心风圈压在地理网格上作视觉锚点，折线+节点串出 WNW 路径，底部整条时间轴拉通「过去—现在—未来」，力量卡用大数字与单位分行",
+                      "png":  "case-02/final.png",
+                      "snapshot":  "case-02/final.snapshot",
+                      "case_md":  "case-02/case.md",
+                      "dimensions":  [
+                                         1920,
+                                         1080
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "shape=CIRCLE 同心风圈",
+                                               "DASH border 虚线",
+                                               "折线路径由线段/点序列构成（DSL 无 line 元素）",
+                                               "LINEAR/RADIAL 渐变",
+                                               "Text 多字号与右对齐"
+                                           ],
+                      "completion_criteria":  [
+                                                  "风圈圆心与台风中心同心",
+                                                  "路径走向与 WNW 标注一致",
+                                                  "底栏不裁切、页脚不出血",
+                                                  "数值与单位不粘连"
+                                              ],
+                      "visual_review":  "读图工具查看 r1 与 r3 两次：r1 发现 5 处问题，r3 复看确认全部解决",
+                      "request_ids":  [
+                                          "B01-c02-r1",
+                                          "B01-c02-r3"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c02-v1-baseline",
+                                            "ite-B01-c02-v2-visual"
+                                        ],
+                      "dsl_versions":  2,
+                      "render_count":  2,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-03",
+                      "title":  "半程马拉松破风配速卡",
+                      "status":  "completed",
+                      "audience":  "首次参加半程马拉松的业余跑者与配速员",
+                      "use_context":  "赛前打印贴在补给桌/领物袋，或赛前一晚手机查看；赛道上仅在补给点短暂停留扫读",
+                      "user_goal":  "按 21.0975 km 分段目标配速控制节奏，掌握每个补给点的里程、通过时间与补给内容",
+                      "content_basis":  "自拟演示赛事与配速方案；分段里程之和严格等于 21.0975 km，累计比例 0.2378/0.4755/0.7102/0.9460/1.0000 按真实里程计算",
+                      "visual_intent":  "跑道隐喻：深绿跑道底 + 亮色分段进度条，进度条长度严格按累计里程比例换算，使视觉比例与真实里程一致；配速表交替底色便于汗水环境下对位",
+                      "png":  "case-03/final.png",
+                      "snapshot":  "case-03/final.snapshot",
+                      "case_md":  "case-03/case.md",
+                      "dimensions":  [
+                                         1080,
+                                         1440
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "LINEAR 渐变",
+                                               "分段矩形 + borderRadius 胶囊",
+                                               "交替行底色",
+                                               "Text 数字/单位分列与右对齐",
+                                               "水平点线分隔（点阵序列）",
+                                               "Transform matrix 旋转（外层括号 + 16 有限浮点）"
+                                           ],
+                      "completion_criteria":  [
+                                                  "5 段条尾与轨道终点重合（误差 \u003c 1px）",
+                                                  "配速/里程/累计时间三列数字互洽",
+                                                  "无文字溢出或串行"
+                                              ],
+                      "visual_review":  "r1 为 400 失败（无图可看，失败响应体已留档）；r2、r3 各读图一次，r3 确认 5 段条尾精确落在轨道终点",
+                      "request_ids":  [
+                                          "B01-c03-r1",
+                                          "B01-c03-r2",
+                                          "B01-c03-r3"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c03-v1-syntaxfix",
+                                            "ite-B01-c03-v2-baseline",
+                                            "ite-B01-c03-v3-visual"
+                                        ],
+                      "dsl_versions":  3,
+                      "render_count":  3,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-04",
+                      "title":  "精品咖啡烘焙曲线卡",
+                      "status":  "completed",
+                      "audience":  "精品咖啡烘焙师与咖啡馆主理人",
+                      "use_context":  "烘焙室张贴的批次卡，或导出 A4 横版打印夹进批次档案；强侧光、近距离阅读",
+                      "user_goal":  "复盘本锅入豆温/转黄/一爆/下豆时间与失重率，与标准曲线对比后调整火力与风门",
+                      "content_basis":  "自拟演示烘焙曲线（虚构批次号与数据）；温度轴与时间轴共用同一比例换算，节点坐标由该比例推得",
+                      "visual_intent":  "暖褐深底模拟烘焙室暗环境，一条折线串起温度曲线，三个关键节点用「引线 + 标签牌」放在曲线上方空白区，右侧指标区用「标签/大数/注解」三行一列形成纵向节拍",
+                      "png":  "case-04/final.png",
+                      "snapshot":  "case-04/final.snapshot",
+                      "case_md":  "case-04/case.md",
+                      "dimensions":  [
+                                         1200,
+                                         900
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "LINEAR/RADIAL 渐变背景",
+                                               "曲线由点阵 + 矩形段近似（DSL 无 line 元素）",
+                                               "标签牌 borderRadius + border",
+                                               "大字号 Text 分级与右对齐"
+                                           ],
+                      "completion_criteria":  [
+                                                  "3 个节点标签牌不重叠、不压曲线",
+                                                  "指标区四行基线节拍一致（行距 92px）",
+                                                  "时间轴刻度可读无裁切",
+                                                  "升温段曲线单调上升且与指标方向一致"
+                                              ],
+                      "visual_review":  "读图工具查看 r1 与 r3 两次：r1 发现曲线区过矮、标签牌相碰、指标行距不足；r3 复看确认「6:00」刻度可见且无重叠",
+                      "request_ids":  [
+                                          "B01-c04-r1",
+                                          "B01-c04-r3"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c04-v1-baseline",
+                                            "ite-B01-c04-v2-visual"
+                                        ],
+                      "dsl_versions":  2,
+                      "render_count":  2,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-05",
+                      "title":  "独立乐队霓虹巡演海报",
+                      "status":  "completed",
+                      "audience":  "独立乐队乐迷、演出主办方与场地方",
+                      "use_context":  "地铁灯箱、Livehouse 竖版屏、社交平台竖图；观看距离 1–8 米，先看氛围再走近看场次与二维码",
+                      "user_goal":  "被海报吸引后读到巡演主题与主视觉、确认城市/场地/日期，并扫码购票",
+                      "content_basis":  "自拟演示乐队名、巡演主题与 4 场城市场次；标注「演示数据 DEMO」；二维码为 DSL 绘制的示意图形，不指向真实票务链接",
+                      "visual_intent":  "霓虹夜色：品红-青蓝双主色 + 多层发光叠字 + 扫描线栅格；上半部超大标题承担远距离识别，下半部把「扫码购票」与二维码合成独立行动区",
+                      "png":  "case-05/final.png",
+                      "snapshot":  "case-05/final.snapshot",
+                      "case_md":  "case-05/case.md",
+                      "dimensions":  [
+                                         800,
+                                         1200
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "同坐标多层 Text 叠印做描边/发光",
+                                               "Text textShadow 发光",
+                                               "shape=CIRCLE 光晕",
+                                               "LINEAR 渐变",
+                                               "等距细矩形序列做扫描线",
+                                               "Positioned 矩形序列做二维码阵"
+                                           ],
+                      "completion_criteria":  [
+                                                  "主标题缩略图下可辨认",
+                                                  "4 场场次三列对齐",
+                                                  "二维码与 CTA 按钮不重叠且各自留白",
+                                                  "底部版权与 DEMO 标识不裁切"
+                                              ],
+                      "visual_review":  "r1 为 400 失败（失败响应体已留档）；r2、r3 各读图一次，r3 确认 CTA 与二维码分离",
+                      "request_ids":  [
+                                          "B01-c05-r1",
+                                          "B01-c05-r2",
+                                          "B01-c05-r3"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c05-v1-syntaxfix",
+                                            "ite-B01-c05-v2-baseline",
+                                            "ite-B01-c05-v3-visual"
+                                        ],
+                      "dsl_versions":  3,
+                      "render_count":  3,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-06",
+                      "title":  "锂电 PACK 装配工艺指导",
+                      "status":  "completed",
+                      "audience":  "新能源电池 PACK 线操作工与班组长",
+                      "use_context":  "产线工位 16:10 触控一体机，站立距离 0.6–1.2 米，戴手套操作，冷白顶光车间",
+                      "user_goal":  "按 5 步完成电芯入壳与紧固，核对扭矩是否落在 6.2–6.8 N·m 合格带，记住 3 条防错要点并按星形顺序拧紧 5 颗螺栓",
+                      "content_basis":  "自拟演示工艺文件（虚构公司「启源新能源」、虚构工位与工序号）；标注「演示数据 DEMO」，不可用于真实产线",
+                      "visual_intent":  "工业蓝灰 + 琥珀强调：左侧 5 张步骤卡形成纵向阅读流；右上扭矩面板把「合格窗口」画成可视区间（绿=合格带、红=超差、白游标=当前 6.5）；右下用编号圆点 + 点线连线把星形拧紧次序画出来",
+                      "png":  "case-06/final.png",
+                      "snapshot":  "case-06/final.snapshot",
+                      "case_md":  "case-06/case.md",
+                      "dimensions":  [
+                                         1600,
+                                         1000
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "SWEEP 渐变环形徽标",
+                                               "LINEAR 渐变",
+                                               "borderRadius 卡片与 badge",
+                                               "shape=CIRCLE 编号点",
+                                               "DASH border 点线连线",
+                                               "Text 多级 + 右对齐/居中"
+                                           ],
+                      "completion_criteria":  [
+                                                  "5 张步骤卡行距一致、徽标垂直居中",
+                                                  "扭矩绿带位置与 6.2–6.8 刻度一致",
+                                                  "拧紧顺序 1→2→3→4→5 连线与编号正确",
+                                                  "页脚不出血"
+                                              ],
+                      "visual_review":  "读图工具查看 r1 一次即通过，四条标准逐条比对无问题，未做修改",
+                      "request_ids":  [
+                                          "B01-c06-r1"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c06-v1-baseline"
+                                        ],
+                      "dsl_versions":  1,
+                      "render_count":  1,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-07",
+                      "title":  "围棋棋谱解说图",
+                      "status":  "completed",
+                      "audience":  "围棋教室学员与讲义读者",
+                      "use_context":  "教室投影讲解与 A4 方形讲义印刷，观看距离 0.5–3 米",
+                      "user_goal":  "按序号读出序盘 20 手落点坐标，理解三段解说，核对最终目数与分差",
+                      "content_basis":  "自拟演示棋谱（虚构棋手与对局）；坐标按 19 路标准记谱法计算（列 A–T 跳过 I，行号 = 19 − 行索引），星位 D16/Q16/D4/Q4 与天元 K10 落在标准位置；目数自洽：黑 71 + 白 66 + 贴 6.5 = 白 72.5，白胜 1.5 目",
+                      "visual_intent":  "木色棋盘 + 精确坐标系统：20 手全部带序号且与解说互相对应；解说区用「彩色竖条 + 标题 + 手动分行正文」保证中文不出现行首标点；结果区用黑白两段条形图把目数对比可视化",
+                      "png":  "case-07/final.png",
+                      "snapshot":  "case-07/final.snapshot",
+                      "case_md":  "case-07/case.md",
+                      "dimensions":  [
+                                         1200,
+                                         1200
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+                                                "System.Drawing 局部放大图 tmp/.../B01/case-07/zoom-07.png（2x 裁切，仅用于核对小字号，非交付图、不参与合成）"
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "LINEAR 渐变木纹",
+                                               "19 路网格由等距 HLine/VLine 序列",
+                                               "shape=CIRCLE 棋子与星位",
+                                               "圆环 border CIRCLE 标记重点手",
+                                               "TLines 手动控制中文断行",
+                                               "两段条形对比"
+                                           ],
+                      "completion_criteria":  [
+                                                  "19x19 格距均匀、边距对称",
+                                                  "20 手序号与坐标、解说一致",
+                                                  "解说每行不以标点开头且不超出文本框",
+                                                  "目数 + 贴目 = 分差"
+                                              ],
+                      "visual_review":  "读图工具查看 r1、r2 两次发现内容与排版问题；r3 渲染成功但视图被读图工具返回旧缓存字节（判定为未完成迭代）；r4 通过 2x 局部放大图 zoom-07.png 逐行核对，三段解说各 3 行、行首无标点、无溢出、结果栏数字自洽",
+                      "request_ids":  [
+                                          "B01-c07-r1",
+                                          "B01-c07-r2",
+                                          "B01-c07-r3",
+                                          "B01-c07-r4"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c07-v1-baseline",
+                                            "ite-B01-c07-v2-visual",
+                                            "ite-B01-c07-v3-visual-incomplete",
+                                            "ite-B01-c07-v4-visual"
+                                        ],
+                      "dsl_versions":  4,
+                      "render_count":  4,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-08",
+                      "title":  "宠物疫苗接种提醒",
+                      "status":  "completed",
+                      "audience":  "宠物主人（猫犬家长）",
+                      "use_context":  "医院微信/短信推送的电子回执卡片，手机竖屏，通勤路上单手滑到，停留 15–30 秒",
+                      "user_goal":  "确认本次打了什么疫苗与接种部位、免疫程序完成几针、下一针预约时间、术后 4 条注意事项",
+                      "content_basis":  "自拟演示数据（虚构医院「毛星球宠物医院·滨江店」、虚构宠物与批号）；标注「演示数据 DEMO」",
+                      "visual_intent":  "奶油暖色 + 锥形进度环：确定性 DialArc 分段环（100 个 Rotate+C 分段，先铺暗弧再覆盖亮弧）把「4 针中的 3 针」画成自 12 点起顺时针的精确 75% 弧，内圆叠色做甜甜圈镂空，环内留白放「3/4」大字。右侧两张接种卡用淡橙/淡蓝区分疫苗种类，底部 2x2 注意事项用编号方块建立秩序。",
+                      "png":  "case-08/final.png",
+                      "snapshot":  "case-08/final.snapshot",
+                      "case_md":  "case-08/case.md",
+                      "dimensions":  [
+                                         1080,
+                                         1080
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned 栅格",
+                                               "DialArc：Rotate 变换矩阵 + C 矩形分段的确定性进度环（OFF 先铺、ON 后覆盖）",
+                                               "shape=CIRCLE 内圆叠色做甜甜圈镂空",
+                                               "LINEAR 渐变条",
+                                               "borderRadius 卡片 + boxShadow",
+                                               "多级 Text + bold + 居中/右对齐"
+                                           ],
+                      "completion_criteria":  [
+                                                  "进度环开口角度正确（75% 弧、12 点起顺时针）",
+                                                  "环内文字垂直居中且在镂空内",
+                                                  "预约日期醒目不与他字重叠",
+                                                  "4 条注意事项 2x2 对齐"
+                                              ],
+                      "visual_review":  "读图工具实际查看 final.png：r2（B01-c08-r2）逐条核对 4 条完成标准全部通过，橙色亮弧自 12 点起顺时针到 9 点方向即止，缺口落在 9 点→12 点的左上象限，System.Drawing 沿圆周逐 0.5° 复测 542/720 = 75.28%、起点样本 716（= 358°）。另用归档的 v1 DSL 重建渲染 B01-c08-r1b 并打开查看，可见亮弧只覆盖 3 点→6 点→9 点的下半圈（实测 50.14%、自 90° 起），直观复现了首版缺陷。首版 r1 当时记为「首版即合格」的判定已由 ite-B01-c08-v2-visual 撤回。",
+                      "request_ids":  [
+                                          "B01-c08-r1",
+                                          "B01-c08-r2",
+                                          "B01-c08-r1b"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c08-v1-baseline-erroneous-verdict",
+                                            "ite-B01-c08-v2-visual",
+                                            "ite-B01-c08-v1evidence-reconstruction"
+                                        ],
+                      "dsl_versions":  2,
+                      "render_count":  3,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-09",
+                      "title":  "潮汐与海泳安全牌",
+                      "status":  "completed",
+                      "audience":  "海滨浴场游客与救生员",
+                      "use_context":  "浴场入口立牌/闸机旁竖屏，户外强光，3–6 米距离扫视",
+                      "user_goal":  "判断现在能否下水、今天的高低潮时刻与潮位、浪高水温风力等海况，以及 3 条必须遵守的安全约束",
+                      "content_basis":  "自拟演示潮汐数据（虚构「蓝湾海滨浴场」）；曲线由 4 段余弦插值生成 v = vm + amp·cos(π·u) 并按 0.25 h 采样 96 段，像素换算 y = 566 − (v/4.5)×236、x = 140 + (t/24)×830 与网格刻度共用同一比例；15:20 潮位 1.9 m 与页眉一致",
+                      "visual_intent":  "深海青绿 + 结论前置：顶部渐变条直接给出「当前 · 可下水」；主面板 24 小时潮位面积图（填充块 + 顶部亮点序列近似曲线），极值用橙点 + 深色标签牌，当前时刻用红色竖线 + 红点贯穿；下方三块面板并列，编号方块用不同颜色强调优先级",
+                      "png":  "case-09/final.png",
+                      "snapshot":  "case-09/final.snapshot",
+                      "case_md":  "case-09/case.md",
+                      "dimensions":  [
+                                         1080,
+                                         1350
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "LINEAR 渐变页眉",
+                                               "shape=CIRCLE 点阵曲线与极值点",
+                                               "VLine/HLine 网格",
+                                               "borderRadius 面板与标签牌 + border",
+                                               "Text 多级与右对齐",
+                                               "数据驱动的 96 段面积填充"
+                                           ],
+                      "completion_criteria":  [
+                                                  "极值标签的时刻/潮位与曲线一致",
+                                                  "面积填充无可见接缝",
+                                                  "红点落在曲线上",
+                                                  "首末 x 轴标签不与 y 轴标签相撞",
+                                                  "面板底边不超出画布"
+                                              ],
+                      "visual_review":  "读图工具查看 r1 与 r2 两次：r1 发现 96 段填充间的抗锯齿竖向接缝，r2 复看确认填充已成连续色块且极值/当前时刻标注正确",
+                      "request_ids":  [
+                                          "B01-c09-r1",
+                                          "B01-c09-r2"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c09-v1-baseline",
+                                            "ite-B01-c09-v2-visual"
+                                        ],
+                      "dsl_versions":  2,
+                      "render_count":  2,
+                      "unresolved_issues":  [
+
+                                            ]
+                  },
+                  {
+                      "id":  "case-10",
+                      "title":  "社区旧物集市导览横幅",
+                      "status":  "completed",
+                      "audience":  "社区居民与来客",
+                      "use_context":  "社区广场入口横向 LED 横幅/易拉宝横版，观看距离 2–10 米，经过时 5 秒内获取信息",
+                      "user_goal":  "确认活动时间地点、找到想去的摊区及席位号、知道从哪个门进、了解 3 条规则",
+                      "content_basis":  "自拟演示数据（虚构「青禾社区」与集市）；席位数 12+14+10+12 = 48 与统计区「48 交换席位」一致，摊区编号范围与图例一致",
+                      "visual_intent":  "暖纸色 + 三栏信息架构：左栏身份/时间/统计「确认区」，中栏白卡平面图（4 个色块摊区 + 4 个出入口 chip），右栏规则与图例；用「色块 + 字母徽标 + 色号」在平面图与图例间建立双重编码，远看按颜色找摊区、近看按字母找编号",
+                      "png":  "case-10/final.png",
+                      "snapshot":  "case-10/final.snapshot",
+                      "case_md":  "case-10/case.md",
+                      "dimensions":  [
+                                         1920,
+                                         640
+                                     ],
+                      "dimensions_source":  "PNG IHDR 实读",
+                      "supporting_assets":  [
+
+                                            ],
+                      "dsl_capabilities":  [
+                                               "Container/Stack/Positioned",
+                                               "LINEAR 渐变/纯色上下压边",
+                                               "borderRadius 面板与 chip + border",
+                                               "2x2 网格定位 x=656+(i%2)*368、y=168+floor(i/2)*180",
+                                               "TPara 自动换行",
+                                               "Text 分级与右对齐/居中"
+                                           ],
+                      "completion_criteria":  [
+                                                  "三栏边界清晰不越界",
+                                                  "4 个摊区色块尺寸与间距一致（320x156、横纵间距 48/24）",
+                                                  "席位数合计 = 48 与统计一致",
+                                                  "中栏右上角说明不被裁切",
+                                                  "所有文字不溢出卡片"
+                                              ],
+                      "visual_review":  "读图工具查看 r1 与 r2 两次：r1 发现中栏右上角说明文字右边界算到 1404 超出卡片 1400 被裁切，r2 收到 1376（24px 内边距）后复看通过",
+                      "request_ids":  [
+                                          "B01-c10-r1",
+                                          "B01-c10-r2"
+                                      ],
+                      "iteration_ids":  [
+                                            "ite-B01-c10-v1-baseline",
+                                            "ite-B01-c10-v2-visual"
+                                        ],
+                      "dsl_versions":  2,
+                      "render_count":  2,
+                      "unresolved_issues":  [
+
+                                            ]
+                  }
+              ],
+    "shared_preparation":  [
+                               {
+                                   "id":  "B01-probe-01",
+                                   "kind":  "capability_probe",
+                                   "purpose":  "在正式创作前用一张探针图验证 Transform 旋转矩阵、Stroke 文字、textShadow、SWEEP/RADIAL 渐变、ImageFiltered、ColorFiltered(SCREEN)、ClipOval、boxShadow 等能力的真实渲染效果，避免凭文档臆造",
+                                   "png":  "tmp/run-20261002-220723-mimo/B01/probe-01.png",
+                                   "snapshot":  "tmp/run-20261002-220723-mimo/B01/probe-01.snapshot",
+                                   "request_id":  "B01-probe-01",
+                                   "viewed":  true
+                               },
+                               {
+                                   "id":  "B01-docs",
+                                   "kind":  "documentation",
+                                   "purpose":  "真实读取 AI 使用指南与 snapshot 文档的 layout / painting / concepts / widgets / media-text / parser-tags 页面",
+                                   "request_ids":  [
+                                                       "B01-doc-001",
+                                                       "B01-doc-002",
+                                                       "B01-doc-003",
+                                                       "B01-doc-004",
+                                                       "B01-doc-005",
+                                                       "B01-doc-006",
+                                                       "B01-doc-007"
+                                                   ],
+                                   "files":  [
+                                                 "doc-ai-guide.md",
+                                                 "doc-parser-tags.txt",
+                                                 "doc-guides-layout.html",
+                                                 "doc-guides-painting.html",
+                                                 "doc-guides-concepts.html",
+                                                 "doc-guides-widgets.html",
+                                                 "doc-guides-media-text.html",
+                                                 "doc-site-root.html"
+                                             ]
+                               }
+                           ],
+    "final_collection_review":  "对 10 件逐张做了最终审查：(1) 完整性——10 组 final.png / final.snapshot / case.md 齐全，PNG 均为服务原始响应字节（PNG 签名 89504e470d0a1a0a，IHDR 尺寸与声明一致），无后处理补字；(2) 独立性——10 件画幅比例互不相同（900x1600 / 1920x1080 / 1080x1440 / 1200x900 / 800x1200 / 1600x1000 / 1200x1200 / 1080x1080 / 1080x1350 / 1920x640），受众、媒介、信息任务与视觉隐喻均不同，无同版式换色或缩放；(3) 数据一致性——case-03 里程之和 = 21.0975 km 且条形比例与里程一致，case-07 目数 + 贴目 = 分差且坐标符合 19 路记谱，case-09 曲线极值与潮时表一致，case-10 席位数 12+14+10+12 = 48 与统计区一致，case-06 扭矩游标落在绿带内；(4) 可见性——10 件均在画面内标注「演示数据 DEMO」，portfolio 中逐件标为虚构；(5) 留痕——22 条渲染请求、2 条 400 失败响应体、各版本 attempts 目录、requests.jsonl / iterations.jsonl / tool-usage.jsonl 齐备。视觉主张上真正成立的有：case-08 的 75% 锥形进度环停点、case-06 的公差带刻度化、case-03 的按里程换算分段条、case-07 的 19 路坐标换算与中文断行控制、case-09 的 96 段插值面积曲线。未发现仍需修改的可见缺陷。 【关闭后修正 2026-10-06】跨任务环形量测发现 case-08 的进度环并非声明的 75%：实测 50.14%、自 90° 起，根因是真实服务的 SWEEP 渐变不遵循 gradientStops 与 gradientStartAngle（同现象在 B02 case-01 以 f=0.62 复现）。已改用确定性 DialArc 重画并重渲染为 B01-c08-r2，复测 75.28% 自 12 点起，同时以归档 v1 DSL 重建渲染 B01-c08-r1b 保存被取代版本的图像证据。重新生成后 case-06/07/09/10 的 final.snapshot 哈希与修正前完全一致，其余 9 件未受影响。",
+    "unresolved_issues":  [
+                              "已知服务行为（非本作品遗留缺陷）：真实服务的 SWEEP 渐变不遵循 gradientStops 与 gradientStartAngle，任何需要精确弧度比例的进度环必须用分段构造（lib-b01.ps1 / lib-b02.ps1 的 DialArc）。B01 case-08 已按此修正。"
+                          ],
+    "path_base": "output_dir"
+}

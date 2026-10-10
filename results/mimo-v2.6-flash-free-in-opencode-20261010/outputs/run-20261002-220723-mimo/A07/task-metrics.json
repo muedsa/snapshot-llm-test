@@ -1,0 +1,123 @@
+{
+    "path_base": "suite_root",
+    "schema_version":  1,
+    "task_id":  "A07",
+    "title":  "三线换乘图与路线核验",
+    "track":  "advanced",
+    "round_count":  1,
+    "status":  "completed",
+    "started_at":  "2026-10-03T01:38:52+08:00",
+    "ended_at":  "2026-10-03T02:31:39+08:00",
+    "timezone":  "Asia/Shanghai (UTC+08:00)",
+    "wall_clock_seconds":  3168,
+    "first_usable_image_at":  "2026-10-03T02:13:02+08:00",
+    "first_usable_image_seconds":  2050,
+    "first_usable_image_note":  "首次可用图 = network-map.png（A07-render-v01-map，02:13:02 完成）。地图一次渲染即通过，没有更早的探针或失败渲染；2050s 的大头是写 solve.ps1 求解器、gen.ps1 生成器与 verify.ps1 终审脚本，不是服务等待。",
+    "user_feedback_wait_seconds":  0,
+    "rate_limit_or_queue_wait_seconds":  0,
+    "request_duration_sum_ms":  11873.7,
+    "request_duration_note":  "3 次 /snapshot 渲染往返合计 11873.7 ms（5692 + 3235 + 2946.7）。2 次文档请求经 web-fetch 工具发出，耗时不可得记 null，不纳入该和。不含本地求解、DSL 生成、反解比对、像素扫描与看图时间。墙钟 3168s 远大于该和，二者不可混用。",
+    "requests":  {
+                     "render_total":  3,
+                     "render_success":  3,
+                     "render_failed":  0,
+                     "render_retry":  0,
+                     "render_failed_note":  "无失败、无限流、无重试。ratelimit_remaining 三次分别返回 19 / 18 / 19，未触及 20 的限额。",
+                     "other_service_total":  0,
+                     "document_total":  2,
+                     "document_note":  "parser-tags 与 enums 各 1 次真实 GET（200）。enums 是本题新查：确认 BoxShape 只有 RECTANGLE/CIRCLE，据此把站点圆点从 A05 失败过的 OVAL 改为 shape=\"CIRCLE\"；parser-tags 确认 Text 的 textAlign 需要 Positioned 提供 width 才生效。两者的 started_utc/ended_utc/duration_ms 均为 null——web-fetch 工具不暴露计时，不臆造。ai-guide.md 与 /fonts 属 suite 共享准备，真实复用，不在本题重复计数。"
+                 },
+    "dsl_versions":  2,
+    "dsl_versions_list":  [
+                              "v01",
+                              "v02"
+                          ],
+    "image_views":  13,
+    "image_views_note":  "v01-map.png（全图）、v01-card.png（全图）、z1-s04 / z2-s05 / z3-s08 / z4-s13s14 / z5-s16 / z6-card2 / z7-card2alt / z8-card1 局部放大、v02-card.png（全图）、z9-strip1 / z10-strip3 复核两条站序条。全部经实际图像查看工具打开。像素扫描另做：16 个站心是否白色、16 个标签框是否含线色像素、三线颜色是否都出现、琥珀/绿标注像素、全部 Transform 角度是否为 45 度倍数——扫描是看图的佐证，不替代看图。",
+    "iterations":  {
+                       "baseline":  1,
+                       "completed_visual":  1,
+                       "syntax_fix":  0,
+                       "retry":  0,
+                       "alternative":  0,
+                       "requirement_change":  0,
+                       "incomplete":  0
+                   },
+    "iterations_note":  "baseline = 首轮 v01 双图。1 次完成的视觉迭代：首看发现旅行卡的站序条只写站名、不承载各站无障碍状态，两张图没有共用同一套无障碍视觉语言，遂补 ■/□ 前缀、卡片标题行方块图例、站芯片提亮与续接箭头，复核通过。0 次语法修复（solve.ps1 的 $(if...) else 解析错误发生在求解脚本上、不在渲染链路里，属本地编写阶段）、0 次重试、0 次备选方案。地图 DSL 的 v01/v02 SHA256 完全相同，因此没有为迭代重渲地图。",
+    "final_pngs":  [
+                       {
+                           "file":  "network-map.png",
+                           "width":  1600,
+                           "height":  1000,
+                           "dsl":  "network-map.snapshot",
+                           "source":  "open-snapshot real service response",
+                           "bytes":  220348,
+                           "png_signature_verified":  true,
+                           "service_request_id":  "9cc258ea-1a54-4943-b1a8-a6f006ced76e",
+                           "ratelimit_remaining":  19,
+                           "post_processed":  false,
+                           "byte_identical_to_temp_source":  true,
+                           "sha256_prefix":  "84C374D9B6F72C34F91BB8AD9506E32B"
+                       },
+                       {
+                           "file":  "travel-card.png",
+                           "width":  720,
+                           "height":  1280,
+                           "dsl":  "travel-card.snapshot",
+                           "source":  "open-snapshot real service response",
+                           "bytes":  216935,
+                           "png_signature_verified":  true,
+                           "service_request_id":  "864f0fa6-29ea-4aac-b9f2-99777cad7ea2",
+                           "ratelimit_remaining":  19,
+                           "post_processed":  false,
+                           "byte_identical_to_temp_source":  true,
+                           "sha256_prefix":  "1ACDCF04401938EDA752DD8526B254F8"
+                       }
+                   ],
+    "final_png_count":  2,
+    "artifacts":  [
+                      "network-map.png",
+                      "network-map.snapshot",
+                      "travel-card.png",
+                      "travel-card.snapshot",
+                      "routes.json",
+                      "map-audit.json",
+                      "snapshot-usage.md",
+                      "task-metrics.json"
+                  ],
+    "service":  "https://open-snapshot.muedsa.com",
+    "extra_deliverables":  {
+                               "routes_json":  "16 站 / 3 线 / 3 条查询的求解结果，含拓扑定义、逐站 accessible/is_transfer、逐线站序、每条查询的 shortest_ordinary / shortest_accessible / 阻塞原因",
+                               "map_audit_json":  "66 项终审检查逐项 pass/fail + detail，由 verify.ps1 对交付件重新解析与逐像素扫描生成"
+                           },
+    "visual_defects_fixed":  [
+                                 "旅行卡站序条未承载各站无障碍状态，与地图的方块视觉语言不一致——在每个站名前加方块（无障碍=实心白 / 非无障碍=空心琥珀），并在卡片标题行补方块图例；复核 7 站 87px 步距与 5 站 131px 步距均无相邻重叠"
+                             ],
+    "visual_defects_fixed_note":  "地图一次渲染即通过，无缺陷需修。",
+    "checker_defects_fixed":  [
+                                  "终审脚本的线色容差过松，把无障碍芯片绿 #34D399 混色后的像素误判成线绿 #22C55E，12 个站各误报 37 个像素——把绿色判据的蓝通道容差由 40 收到 25 后两类颜色不再相交（芯片绿在能通过绿判据时 B >= 125，线绿 B <= 94）",
+                                  "无障碍段落正则括号配平写错导致 S16 取不到标记（末站段落延伸到图例，同时命中实心与空心方块）——改用下一站标签或图例头做段落上界",
+                                  "把 q2 普通旅程的换乘站 S05 误判为缺陷——那正是本题要暴露、并另求替代解的情况，改成凡报告为无障碍的旅程换乘站必须无障碍、凡否定结论必须带显式原因"
+                              ],
+    "recovery_notes":  [
+                           "重跑生成脚本曾覆盖 card-v01.snapshot（违反不覆盖尝试）：立即给 gen.ps1 加 -Ver 参数，回退 4 处改动重新生成，card-v01.snapshot 复原为 21086 字节、与首次渲染记录一致，再重新施加改动产出 v02，两个版本都保留"
+                       ],
+    "verification_tools":  [
+                               "tmp/run-20261002-220723-mimo/A07/solve.ps1 - 分层 BFS 同时求最短普通旅程与最短无障碍旅程，输出 routes.json，三条查询答案与手算一致",
+                               "tmp/run-20261002-220723-mimo/A07/gen.ps1 - 从 station/line 坐标表一次算出地图与卡片全部坐标，站序条与线路段由 routes.json 驱动，图与卡不可能对不上",
+                               "tmp/run-20261002-220723-mimo/A07/verify.ps1 - 对交付出去的 .png 与 .snapshot 重新解析、重新逐像素扫描，产出 map-audit.json 的 66 项结果",
+                               "tmp/run-20261002-220723-mimo/A07/zoom.ps1 - Bitmap.Clone + NearestNeighbor 局部放大，产出 z1..z10"
+                           ],
+    "usage":  {
+                  "input_tokens":  null,
+                  "output_tokens":  null,
+                  "image_input_usage":  null,
+                  "cost":  null,
+                  "currency":  null,
+                  "source":  "not provided by the execution platform",
+                  "unknown_fields_reason":  "执行平台未暴露 token/图像/费用遥测；字段留 null，不以字符数或余量估算。"
+              },
+    "unresolved_issues":  [
+
+                          ]
+}

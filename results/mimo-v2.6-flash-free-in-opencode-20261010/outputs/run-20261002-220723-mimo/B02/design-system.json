@@ -1,0 +1,253 @@
+{
+  "path_base": "suite_root",
+  "schema_version": 1,
+  "task_id": "B02",
+  "run_id": "run-20261002-220723-mimo",
+  "generated_at": "2026-10-06T14:58:12+08:00",
+  "project": {
+    "name_zh": "候鸟湾观鸟站",
+    "name_en": "MIGRANT BAY BIRD OBSERVATORY",
+    "type": "社区自组织的滨海湿地观鸟站（虚构品牌，全部数据为演示数据）",
+    "asset_policy": "dsl_primary_with_supporting_assets",
+    "asset_policy_actual": "10 件全部为纯 DSL，无外部素材嵌入（见 imagery.external_assets = []）"
+  },
+  "purpose": "登记本题 10 件作品中真正被使用的系统规则，并说明这些规则在不同密度/比例下是否成立。未使用的规则不写入本文件；每条规则给出实际出现的作品与复用组件，便于核对「同一项目、不同环境」是否成立。",
+  "color": {
+    "note": "全部为 8 位 #RRGGBBAA 或 6 位 #RRGGBB；半透明仅用于分隔线与遮罩",
+    "tokens": {
+      "wetland_deep":  { "value": "#0B3B3A", "role": "主背景/深底、正文底色", "used_in": ["case-01","case-02","case-03","case-04","case-06","case-07","case-08","case-10"] },
+      "wetland_ink":   { "value": "#082C2B", "role": "深底上的层次分块", "used_in": ["case-01","case-04","case-07","case-10"] },
+      "tide":          { "value": "#7FB2A8", "role": "次级线、辅助数据、图例点、进度环 ON 段", "used_in": ["case-01","case-02","case-03","case-04","case-05","case-06","case-07","case-08","case-09","case-10"] },
+      "gull":          { "value": "#E8EDE9", "role": "深底上的主文字色、浅色标题", "used_in": ["case-01","case-02","case-03","case-04","case-05","case-06","case-07","case-08","case-09","case-10"] },
+      "sand":          { "value": "#D9CBA8", "role": "滩涂色块、地图陆地、证件照片位", "used_in": ["case-02","case-06","case-07"] },
+      "sunset":        { "value": "#E4622C", "role": "唯一强调色：只标『此刻该做的事』或关键数字", "used_in": ["case-01","case-02","case-03","case-04","case-05","case-06","case-07","case-08","case-09","case-10"] },
+      "night":         { "value": "#132A44", "role": "夜间/晨曦时段、看板时段条", "used_in": ["case-01","case-04","case-08"] },
+      "paper":         { "value": "#F6F2E8", "role": "纸面正文底、卡片底", "used_in": ["case-05","case-06"] },
+      "line_on_dark":  { "value": "#7FB2A855", "role": "深底上的 1px 分隔线", "used_in": ["case-01","case-04","case-08","case-10"] },
+      "line_on_light": { "value": "#0B3B3A33", "role": "浅底上的 1px 分隔线", "used_in": ["case-05","case-06"] }
+    },
+    "rule": "强调色 sunset 在每件作品中至多用于 3 类对象：关键动作/CTA、当前时刻或状态、单项关键数字。禁止整块背景用 sunset。"
+  },
+  "typography": {
+    "family": "Noto Sans CJK SC",
+    "measured": {
+      "note": "以下是从 10 份 final.snapshot 的 fontSize 属性直接统计出来的实际值，不是计划值",
+      "case-01": [13, 14, 16, 17, 20, 22, 26, 35, 36, 44, 84],
+      "case-02": [12, 13, 14, 15, 17, 22, 26, 34],
+      "case-03": [13, 14, 15, 16, 18, 19, 22, 26, 30, 44],
+      "case-04": [12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 33],
+      "case-05": [13, 14, 15, 16, 17, 19, 21, 23, 24, 52],
+      "case-06": [12, 13, 14, 15, 16, 21, 34],
+      "case-07": [12, 13, 14, 15, 17, 18, 19, 21, 50],
+      "case-08": [13, 14, 16, 18, 20, 26, 30],
+      "case-09": [12, 13, 15, 16, 17, 20, 21, 24, 33, 34, 74],
+      "case-10": [12, 13, 14, 15, 17, 18, 22, 23, 36, 46, 52],
+      "union":   [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 30, 33, 34, 35, 36, 44, 46, 50, 52, 74, 84]
+    },
+    "rule": "正文下限 12；单行文本必须在生成期通过宽度校验（need <= box）；中文正文一律手动断行（TLines）不使用自动换行，避免行首标点；同一作品内相邻层级的字号比不小于 1.15",
+    "line_height_ratio": 1.5
+  },
+  "layout": {
+    "outer_margin": "min(w,h) * 0.06，下限 40px（每件按自身画幅计算，函数 B02-Dims）",
+    "gutter": 24,
+    "radius": { "card": 14, "chip": 999, "panel": 8, "raw": 0 },
+    "rule_thickness": { "hairline": 1, "strong": 2 },
+    "rule": "内容分隔一律用双细线 RuleBand（1px + 5px 空 + 2px），不用一整块色条分隔内容"
+  },
+  "components": [
+    {
+      "id": "Mark",
+      "name": "鸟阵人字标",
+      "what": "由圆点 + 斜段组成的『人』字形鸟阵，右侧可带 1 个观测点圆环",
+      "sizes_used": [30, 40, 44, 48, 52, 56],
+      "density_test": "同一结构在 30px（case-01 页脚一排 6 枚装饰）与 56px（case-01/case-03 页眉品牌标）两端都被使用；圆点直径 = 尺寸 × 0.13、斜段粗 = 尺寸 × 0.045，随尺寸线性缩放；小尺寸下观测点圆环仍能分辨",
+      "used_in": ["case-01","case-02","case-03","case-04","case-05","case-06","case-07","case-08","case-09","case-10"]
+    },
+    {
+      "id": "Eyebrow",
+      "name": "字距标签",
+      "what": "全大写英文小标签 + 其下中文小注，用于区块起始",
+      "font_sizes_used": [17, 18, 19, 20],
+      "density_test": "17px 用于 case-04 三栏窄栏与 case-06 表头，20px 用于 case-01 海报；中英文两行在 560px 与 952px 两种栏宽下都通过宽度校验",
+      "used_in": ["case-01","case-02","case-03","case-04","case-05","case-07","case-09","case-10"]
+    },
+    {
+      "id": "RuleBand",
+      "name": "双细线分隔",
+      "what": "1px 主线 + 5px 间距 + 2px 次线；深底用 #7FB2A855，浅底用 #0B3B3A33",
+      "used_in": ["case-01","case-02","case-03","case-04","case-05","case-06","case-07","case-08","case-09","case-10"]
+    },
+    {
+      "id": "StatChip",
+      "name": "数字三行",
+      "what": "小标签 / 大数字 / 单位·注解 三行，左对齐；标签与注解字号 = fs，数字字号 = fs × 2.2，数字行高 = 数字字号 × 1.2",
+      "font_sizes_used": [15, 16],
+      "density_test": "case-01 海报 300px 宽三联排 fs=16（数字 35px）、case-04 看板 220px 窄栏 fs=15（数字 33px）、case-09 年报 190px 紧凑胶囊 fs=15（数字 33px）——同一比例在 300 / 220 / 190 三种栏宽下都没有溢出，也没有把注解挤到下一行",
+      "used_in": ["case-01","case-04","case-09"]
+    },
+    {
+      "id": "SpeciesRow",
+      "name": "物种行",
+      "what": "色点 + 中文名 + 拉丁学名 + 右对齐计数；列宽按父容器比例切分（中文 34% / 学名 44% / 计数固定 90px 右对齐）",
+      "density_test": "case-04 密集 16 行、行高 40、字号 17（760px 栏宽）与 case-09 稀疏 6 行、行高 42、字号 17（950px 栏宽）共用同一列宽比例；同一函数在 1920 宽看板与 1080 宽方图上都成立",
+      "used_in": ["case-04","case-09"]
+    },
+    {
+      "id": "NumChip",
+      "name": "编号方块",
+      "what": "深色/强调色方块内置白色序号，字号 = 方块边长 × 0.46",
+      "sizes_used": [26, 30, 32, 34, 36, 42],
+      "used_in": ["case-01","case-02","case-03","case-05"]
+    },
+    {
+      "id": "FooterLine",
+      "name": "页脚三段",
+      "what": "站址 · 开放时段 · `演示数据 DEMO`；横版两端对齐，竖版居中",
+      "used_in": ["case-01","case-02","case-03","case-04","case-05","case-06","case-08","case-09","case-10"],
+      "exception": "case-07 是证件，页脚改由两段独立文本承担：左下站址+时段（无 DEMO），右下 `证号 MB-V-0062 · 演示数据 DEMO`；两个片段都出现且 DEMO 不缺失"
+    },
+    {
+      "id": "Chip",
+      "name": "胶囊标签",
+      "what": "圆角胶囊，宽度 = TW(文字) + 2×内边距，高度 = 字号 × 1.7，按内容自适应",
+      "font_sizes_used": [13, 14, 15, 16, 18],
+      "padding_used": [9, 12, 13, 14, 15, 16],
+      "density_test": "同一函数既做 case-08 的 13px 余位胶囊（9 张卡各一枚，与页眉 16px 胶囊同函数），也做 case-07 的 18px 类型胶囊、case-01 的 16px 届次胶囊、case-09 的 15px 年度胶囊与 case-10 的 13px『推荐』贴角胶囊；自适应宽度在 2 字（推荐）到 9 字（2025-2026 年度）之间都未越界",
+      "used_in": ["case-01","case-03","case-04","case-05","case-06","case-07","case-08","case-09","case-10"]
+    },
+    {
+      "id": "DialArc",
+      "name": "确定性进度环",
+      "what": "把圆周均分为 N=100 段，每段是一个旋转了 `Rotate` 矩阵的小矩形（`C` 作为裁剪圆），先整圈画 OFF 色，再只画前 f×N 段的 ON 色覆盖在上面",
+      "sizes_used": [134, 180],
+      "thickness_used": [20, 26],
+      "fractions_used": [0.28, 0.78],
+      "why_not_gradient": "文档里的 SWEEP 渐变（gradientStops / gradientStartAngle / gradientEndAngle）经两次像素实测不生效：停点被忽略、起点被固定偏移 90°。因此进度环一律用 DialArc 这种完全确定性的分段方案。B01 的 gen-b01-b.ps1 里保留了 RingProg（SWEEP 版）作为失败记录。",
+      "density_test": "180px/26px 粗环（case-01 海报，远看）与 134px/20px 细环（case-09 年报卡，近看）都通过；System.Drawing 沿中径每 0.5° 取样 720 点，case-01 实测 ON=203/720=28.19%、起点 0°（12 点方向），case-09 实测 78.47%、起点 0°，与参数 0.28 / 0.78 一致",
+      "used_in": ["case-01","case-09"]
+    },
+    {
+      "id": "SectionTitle",
+      "name": "区块标题",
+      "what": "4×18 强调色竖标 + 标题文字，作为表格/图表区块的起始",
+      "used_in": ["case-03","case-04","case-09"]
+    },
+    {
+      "id": "ShadowBox",
+      "name": "投影卡",
+      "what": "底层偏移深色矩形 + 上层卡片，制造 4~6px 的硬投影（DSL 无 shadow 属性）",
+      "used_in": ["case-01","case-02","case-03","case-08","case-10"]
+    },
+    {
+      "id": "TLines",
+      "name": "手动断行多行文本",
+      "what": "按数组逐行输出，用于中文长句，杜绝自动换行带来的行首标点与不可控断点",
+      "used_in": ["case-01","case-05","case-10"]
+    },
+    {
+      "id": "DensityTable",
+      "name": "交替底色密集表",
+      "what": "相邻行用两种底色交替 + 每行一条 hairline 分隔线，行高统一，数值列右对齐",
+      "density_test": "case-04（16 行 / 行高 40）、case-06（14 行 / 行高 38）、case-09（6 行 / 行高 42）三种密度共用同一节奏；case-06 的行高由 38px 与 30% 不透明分隔线叠加而成，System.Drawing 在 x=400 采样 y=545..865 实测 14 条线落在 555/593/631/…/859，与行高完全吻合",
+      "used_in": ["case-04","case-06","case-09"]
+    }
+  ],
+  "imagery": {
+    "policy": "纯 DSL；无外部照片、纹理或生成素材嵌入",
+    "procedural_motifs": [
+      "人字鸟阵（圆点 + 斜段序列）",
+      "潮位/数量折线与柱状图（矩形 + 圆点序列，DSL 无 line 元素）",
+      "滩涂等深线（同心圆角矩形）",
+      "水波纹与航道虚线（等距细矩形序列）",
+      "点阵地图与占用点阵（格点 + 色块）",
+      "望远镜图解（圆角矩形 + 圆 + 橙色调焦轮的几何拼装）",
+      "证件头肩剪影（肩部圆角块 + 头部圆相接）"
+    ],
+    "external_assets": []
+  },
+  "cross_work_invariants": {
+    "note": "这些是「同属一个项目」在内容层的证据，交付前逐条核对过；任何一件改动都会被重新核对",
+    "items": [
+      "品牌名：候鸟湾观鸟站 / MIGRANT BAY BIRD OBSERVATORY —— 10 件全部出现",
+      "人字鸟阵 Mark —— 10 件全部出现；深青 #0B3B3A + 落日橙 #E4622C（≤3 类对象）—— 10 件全部遵守",
+      "站址：候鸟湾湿地公园北门 · 望潮路 128 号 —— 出现站址的 9 件（case-02 地图不含站址文本）用词完全一致",
+      "开放时间：每日 06:00-18:00 免费开放 —— 一致",
+      "12 台双筒望远镜 —— case-03 / case-04（借出 9/12）/ case-09（全年出借 1,043 次）一致",
+      "17:30 前交表到北门服务台 —— case-03 / case-05 / case-06 一致",
+      "集合点北门 + 10/10 周六 06:30 同步调查 —— case-01 / case-04 / case-08 一致，且 2026-10-10 确为周六",
+      "物种数：上一季 132 种、本届新增 11 → 本届目标 143 种 —— case-01 / case-09 一致（132 + 11 = 143）",
+      "志愿者：62 名、证号 MB-V-0062 —— case-01 / case-07 / case-09 一致",
+      "认养：341 人 = 214 + 96 + 31；214×30 + 96×68 + 31×128 = 16,916 元/月 ≈ 1.7 万元 —— case-09 / case-10 一致；三档面积 0.5 / 1.2 / 2.5 亩严格递增",
+      "看板算术：case-04 十六行 96+12+28+36+18+9+44+27+14+8+3+16+22+4+11+64 = 412 = 今日个体；末柱 21 = 在站 21 人",
+      "记录表算术：case-06 六行 24+2+8+5+3+4 = 46 只、6 种 = 合计行",
+      "五要素：时间 / 种类 / 数量 / 行为 / 备注 —— case-05 与 case-06 逐列一致",
+      "日历：2026-10-05 为周一、10-10 周六、10-11/10-18/10-25 周日、10-15/10-22 周四、10-17/10-24/10-31 周六 —— case-04 表头与 case-08 九张卡逐条与真实日历一致"
+    ]
+  },
+  "reuse_findings": {
+    "status": "complete",
+    "completed_at": "2026-10-06T15:02:40+08:00",
+    "method": "先用生成程序统计每个组件的实际调用作品与实际参数，再对 10 张 final.png 逐张看图，最后用 System.Drawing 对进度环做 0.5° 取样、对改版前后做 2px 全图差分",
+    "findings": [
+      {
+        "component": "Mark",
+        "holds": true,
+        "note": "30px 装饰排与 56px 品牌标之间线性缩放正确，未出现圆点糊成一团或斜段断裂；10 件全用，是最稳定的识别锚点。"
+      },
+      {
+        "component": "SpeciesRow",
+        "holds": true,
+        "note": "同一比例在 16 行/行高 40（case-04，1920×1080 三栏之一）与 6 行/行高 42（case-09，1080×1080 方图）都成立；计数列固定 90px 右对齐在两种栏宽下都对齐。"
+      },
+      {
+        "component": "Chip",
+        "holds": true,
+        "note": "自适应宽度在 4 字到 9 字之间都没越界；case-08 一排 3 枚胶囊并置时靠内容宽度自然错落，没有出现等宽呆板。"
+      },
+      {
+        "component": "DensityTable",
+        "holds": true,
+        "note": "三种行高（38/40/42）都能保持行节奏；case-06 初版分隔线过淡（30% 透明 + 1px 在纸面底色上几乎看不见），把交替底色 0x0A→0x0D、线色 0x22→0x4D 之后 14 行才重新读成一张表——密度表对对比度比对行高更敏感。"
+      },
+      {
+        "component": "DialArc",
+        "holds": true,
+        "note": "134px 与 180px 两种直径、20/26 两种厚度都通过 0.5° 取样复核；分段数固定 100 时，0.28 与 0.78 的误差都在 0.5% 以内。代价是 DSL 体积：case-01 因 100 段矩阵比纯矩形版多出约 8KB。"
+      },
+      {
+        "component": "FooterLine",
+        "holds": true,
+        "note": "9 件直接复用；case-07 因为是证件改成两段文本，但站址、时段、DEMO 三段信息没有缺失——组件允许带 $text 覆盖，扩展点成立。"
+      },
+      {
+        "component": "TLines / 手动断行",
+        "holds": true,
+        "note": "只在 case-01、case-05、case-10 三件长文案作品里需要；这三件的行首标点检查全部通过。"
+      },
+      {
+        "component": "SWEEP 渐变（反例）",
+        "holds": false,
+        "note": "文档宣称 SWEEP 渐变支持 gradientStops/gradientStartAngle/gradientEndAngle，实测（B01 case-08 与 B02 case-01 各一次，均由像素量测证实）停点被忽略、起点被固定偏移。结论：凡是要表达『比例』的图形一律不用渐变，改用 DialArc。"
+      },
+      {
+        "component": "Eyebrow",
+        "holds": true,
+        "note": "8 件使用；17px 小字在 case-04 的 260px 窄栏里仍可读，但已经接近可读下限——再窄的栏应改用 16px 且只保留中文小注。"
+      }
+    ],
+    "evidence": [
+      "tmp/run-20261002-220723-mimo/B02/lib-b02.ps1（组件实现，含 DialArc 的注释与 SWEEP 结论）",
+      "tmp/run-20261002-220723-mimo/B02/measure-ring.ps1（0.5° 中径取样，输出 ON/OFF 计数与起点）",
+      "tmp/run-20261002-220723-mimo/B02/diff-weekday.ps1（改版前后 2px 全图差分）",
+      "tmp/run-20261002-220723-mimo/B02/view/（自标注 JPEG 副本与局部裁切）",
+      "tmp/run-20261002-220723-mimo/B02/iterations.jsonl（逐条看图与修改记录）"
+    ]
+  },
+  "out_of_system": [
+    "不使用 ColorFiltered 与 borderRadius 组合（能力探针已证实会残留洋红角）",
+    "不使用一整块色条作内容分隔",
+    "不使用自动换行排中文正文",
+    "不使用 SWEEP 渐变表达比例（gradientStops 实测无效，见 reuse_findings）",
+    "不使用 ColorFiltered 与 borderRadius 组合之外的任何滤镜做修复——修复一律回到几何与颜色层面"
+  ]
+}

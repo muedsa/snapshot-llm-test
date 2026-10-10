@@ -1,0 +1,148 @@
+{
+    "path_base": "suite_root",
+    "schema_version": 1,
+    "task_id": "A09",
+    "title": "十二个非对称图形变换标本",
+    "track": "advanced",
+    "round_count": 1,
+    "status": "completed",
+    "started_at": "2026-10-03T11:21:11+08:00",
+    "ended_at": "2026-10-03T12:31:38+08:00",
+    "timezone": "Asia/Shanghai (UTC+08:00)",
+    "wall_clock_seconds": 4227,
+    "wall_clock_note": "11:21:11 起（suite-state 切到 A09=in_progress 的时刻）到 12:31:38 止。含读取题面与输入、5 次结构探测、生成器与核验器编写、25 项核验的多轮调试。中途无平台中断、无阻塞。",
+    "first_usable_image_at": "2026-10-03T11:48:10.475+08:00",
+    "first_usable_image_seconds": 1619.475,
+    "first_usable_image_note": "首次可用图 = transform-atlas.png（A09-render-v01-transform-atlas，11:48:06.179 发出 + 4296.2ms 往返）。1619.475s 的构成：读题面与两份输入约 4 分钟、5 次结构探测共约 6 分钟（其中 4 次 400 是必要的服务实证）、生成器编写与渲染前字宽度量约 9 分钟、渲染 4.3s、之后全部时间用于看图与 25 项核验的实现与调试。服务等待合计不足 15s。",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_or_queue_wait_seconds": 0,
+    "rate_limit_note": "6 次请求全部 200/400（400 是 PARSE_ERROR，非限流），无 429/503、无 Retry-After、无排队；x-ratelimit-remaining 每次都是 19（限额 20）。",
+    "request_duration_sum_ms": 14193.8,
+    "request_duration_note": "6 次 /snapshot 往返合计 14193.8 ms（1729.9 + 1533.3 + 1618.2 + 1514 + 3502.2 + 4296.2）。本题 0 次文档请求（复用 suite 共享准备）。该和只是网络往返之和，不含本地 DSL 生成、独立复合、像素扫描与看图时间，也绝不能当作任务墙钟 4227s。",
+    "requests": {
+        "render_total": 6,
+        "render_success": 2,
+        "render_failed": 4,
+        "render_retry": 0,
+        "render_failed_note": "4 条 400 全部是 PARSE_ERROR，且是 4 个不同结构的探测（Transform 多子节点 ×2、matrix 裸逗号串、matrix 裸带小数串），不是同一请求的重试，故 retry=0。失败响应体保留在 tmp/run-20261002-220723-mimo/A09/failures/。",
+        "other_service_total": 0,
+        "document_total": 0,
+        "document_note": "ai-guide.md 与 DSL 参考文档属 suite 启动阶段的真实共享准备（tmp/run-20261002-220723-mimo/_suite/probe/ 有缓存），本题真实复用，按总约定不重复计为新 HTTP 请求；本题未发起新的文档或字体请求。"
+    },
+    "dsl_versions": 7,
+    "dsl_versions_list": [
+        "probe-atlas-v01",
+        "probe-atlas-v02",
+        "probe-atlas-v03",
+        "probe-atlas-v04",
+        "probe-atlas-v05",
+        "transform-atlas-v01",
+        "transform-atlas-v02"
+    ],
+    "dsl_versions_note": "5 个探测版（probe-atlas-v01..v05.snapshot）+ 2 个主体版（transform-atlas-v01 47140 B / v02 47136 B）。gen.ps1 带 -Ver 参数，全部 .snapshot 都保留，互不覆盖。v01 从未渲染，因此不存在被覆盖的 PNG；交付的 transform-atlas.snapshot 是 v02，与 outputs 里的件字节相同（SHA256 129BF09936E968C247B9C7E19246D5E2462D522943792AB77B9D209D0D532589）。",
+    "image_views": 4,
+    "image_views_note": "全部经实际图像查看工具打开：1) tmp/.../A09/probe-atlas-v05.png（11:36+08:00，三种 Transform 写法的三张卡）；2) outputs/.../A09/transform-atlas.png 全图 1600×1200（11:48+08:00）；3) zoom-t01.png 3×（11:50+08:00，T01 参考框内印章与刻度）；4) zoom-order.png 2×（11:50+08:00，T07/T08/T11/T12 顺序与旋转）。像素扫描另做：144 个角点、12 个圆点、12 个外接框、96+96 段刻度、中心十字、48 个背景点、12 个矩阵字节比对——扫描是看图的佐证，不替代看图。",
+    "iterations": {
+        "baseline": 1,
+        "completed_visual": 0,
+        "syntax_fix": 0,
+        "retry": 0,
+        "alternative": 0,
+        "requirement_change": 0,
+        "incomplete": 0,
+        "probe_exploration": 5
+    },
+    "iterations_note": "baseline = 唯一一次交付渲染。完成的视觉迭代 0 次：首轮渲染出来后，全图 + zoom-t01 + zoom-order 逐项复核（网格、标题、图例、编号、短名、刻度、中心十字、12 格方向、T07≠T08、无裁切、圆点随变换）即全部达标，没有为了凑迭代次数而改动画，也没有第 2 张最终 PNG。语法修复渲染 0 次（本地核验脚本的调试不产生渲染请求）。重试 0、备选 0、需求变更 0。probe_exploration 5 = 5 个结构探测 DSL，是确定 Transform 子节点规则与 matrix 语法所必需的服务实证，单列不与基线/视觉迭代混算。另有 1 次渲染前的字宽度量修正（transform-atlas-v01 → v02，11:47:32→11:48:00），发生在任何渲染之前，记在 iterations.jsonl 第 2 条，不计为视觉迭代。",
+    "final_pngs": [
+        {
+            "file": "transform-atlas.png",
+            "width": 1600,
+            "height": 1200,
+            "dsl": "transform-atlas.snapshot",
+            "source": "open-snapshot real service response",
+            "bytes": 200495,
+            "png_signature_verified": true,
+            "png_ihdr_verified": "width=1600 height=1200 (bytes 16..23 read as big-endian int32)",
+            "service_request_id": "60bfd7ae-0d10-48f7-880a-3eb8ed70b0e1",
+            "server_timing": "render;dur=1521.1, total;dur=1683.4",
+            "ratelimit_remaining": 19,
+            "post_processed": false,
+            "byte_integrity_note": "HTTP 响应体由 render.ps1 直接写入 outputs 路径，无中间副本，因此不存在可比对的临时拷贝；post_processed=false，未做任何像素级改动。",
+            "sha256": "E403290FD27ED64F08D932DFD1A540E193585B26E9CC95F87E68197751C7EC68"
+        }
+    ],
+    "final_png_count": 1,
+    "non_final_images": [
+        {
+            "file": "tmp/run-20261002-220723-mimo/A09/probe-atlas-v05.png",
+            "purpose": "结构探测渲染：同一张图里并排放 A/B/C 三种 Transform 写法的三张卡，用来确定写法并做逐像素等价比对",
+            "bytes": 49171,
+            "service_request_id": "e0d02a1c-d36c-4fd1-80ea-2c6c5c6f773e",
+            "is_final": false,
+            "disclosure": "探测件，不是本题交付图，留在临时目录。"
+        },
+        {
+            "file": "tmp/run-20261002-220723-mimo/A09/zoom-t01.png",
+            "purpose": "交付图的 3× 局部放大（T01），看图证据",
+            "is_final": false,
+            "disclosure": "本地 NearestNeighbor 放大裁剪，只用于查看，不参与交付。"
+        },
+        {
+            "file": "tmp/run-20261002-220723-mimo/A09/zoom-order.png",
+            "purpose": "交付图的 2× 局部放大（T07/T08/T11/T12），看图证据",
+            "is_final": false,
+            "disclosure": "本地 NearestNeighbor 放大裁剪，只用于查看，不参与交付。"
+        }
+    ],
+    "artifacts": [
+        "transform-atlas.png",
+        "transform-atlas.snapshot",
+        "geometry-audit.json",
+        "snapshot-usage.md",
+        "task-metrics.json"
+    ],
+    "service": "https://open-snapshot.muedsa.com",
+    "extra_deliverables": {
+        "geometry_audit_json": "25/25 PASS。逐格给出列主序 4×4 矩阵与行主序 2×2、transform_origin_local=(60,60)、Positioned 偏移、3 个矩形的源矩形/本地四角/画布四角与 12 个角点探针、圆点源圆心与画布中心及椭圆半轴、解析与实测外接框及四边误差、扫描窗与不裁切判定；顶层给出 layout、labels（37 个文本最小 22）、verification_method 四条 ±1.5px 方法与 summary（144/144 角点、12/12 圆点、最差 1.105px、T07/T08 矩阵不同且 det=-1）。由 verify.ps1 重新解析交付的 .png/.snapshot 并逐像素扫描生成。"
+    },
+    "visual_defects_fixed": [],
+    "visual_defects_note": "首轮渲染即达标，无视觉缺陷需修。",
+    "pre_render_fixes": [
+        "格头操作短名规则：多操作序列原写「左右镜像→顺时针90°」，22px Bold 下估算约 190px，距右侧可用 214px 余量过小，且 T07/T08 会因为都写「顺时针90°」而失去顺序信息 —— 多操作序列改用「旋转N°」（T07/T08/T12），单操作序列保留「顺时针 N°」以体现图像方向语义。发生在任何渲染之前（11:47:32 → 11:48:00）。"
+    ],
+    "checker_defects_fixed": [
+        "`[regex]::'pat'` 写法是错的（会返回 $null），三处改为 `[regex]'pat'`",
+        "函数名 MM 撞 PowerShell 别名，改名 MatMul；MP 撞 Move-ItemProperty（别名优先级高于函数），改名 MapPt",
+        "OpM 返回的矩阵元素经过当前区域性格式化（可能出现逗号小数分隔符），改为 NN() 强制不变文化并保留小数位",
+        "MatMul 对参数的解析改为统一 .Split(',')，主循环也改为先拼字符串再拆成 double，避免对象类型不一致",
+        "WinY0 原取 cy0+0，会把 22px 的格头文字扫进窗口（深色文字会被误判成墨），改为 cy0+40",
+        "角点块改为扁平 8 数组，用 += ,@() / += [pscustomobject] 保证数组形状确定；刻度点拆成 $tkX/$tkY 并行数组",
+        "`$PY` 笔误（应为 `$PVY`）导致 stamp_positioned_offset 取值错误",
+        "**PNG IHDR 读取用了 `[byte] -shl 8`**：字节移位被按 byte 截断，`6 -shl 8` = 0，报出 64×176 的假尺寸 —— 改为先转 [int] 再乘权值，实测 1600×1200",
+        "**OpM 的旋转把 b/c 写反**：返回了逆时针矩阵，使 T02/T04/T07/T08/T11/T12 六格的期望角点全部错误（69/144 角点、6/12 圆点探针失败）—— 改为行主序 (cos, −sin, sin, cos)，与交付件字节比对后 12/12 相同",
+        "**外接框测量判据先后换过两版**：先用「与纯色最大通道差 ≤40」（等价覆盖度 ≥0.796）会把旋转格顶点处整行都不足 50% 覆盖的细楔漏掉，最差 2.105px；再用「对白底算覆盖度 ≥0.5」仍有 T11 最下沿 1.641px；最终改为**调色板判据**（色度 >35 或最小通道 <120），并新增 X06 每格 4 个确定背景点 48/48 不误判，最差降到 1.105px",
+        "新增 L02/L03 检查（12 个编号与 12 个短名确实作为文本出现在 DSL 中），避免「图上有字」只靠目测"
+    ],
+    "artifact_defects_fixed": [],
+    "recovery_notes": [
+        "4 次 400 失败的响应体全部保留在 tmp/run-20261002-220723-mimo/A09/failures/ 并逐条写进 requests.jsonl，不伪造、不重试、不计入成功渲染",
+        "transform-atlas-v01.snapshot 从未渲染，因此不存在「v01 PNG 被覆盖」问题；v01/v02 两个 DSL 版本都保留"
+    ],
+    "verification_tools": [
+        "tmp/run-20261002-220723-mimo/A09/probe.ps1 - 5 个结构探测 DSL 生成与请求，确定 Transform 单子节点规则与 matrix 括号元组语法",
+        "tmp/run-20261002-220723-mimo/A09/probecompare.ps1 - 在 probe-atlas-v05.png 上对 A/B/C 三种写法开 181×181 窗口逐像素比对（0 differing px）",
+        "tmp/run-20261002-220723-mimo/A09/gen.ps1 -Ver - 独立读取 stamp.json/transforms.json 做矩阵复合并生成完整 DSL，带 -Ver 保证 v01/v02 都保留",
+        "tmp/run-20261002-220723-mimo/A09/verify.ps1 - 从交付的 .png/.snapshot/inputs 重新解析、独立复合同一变换、逐像素扫描，产出 geometry-audit.json 的 25 项结果",
+        "tmp/run-20261002-220723-mimo/A09/zoom.ps1 - NearestNeighbor 局部放大，产出 zoom-t01.png / zoom-order.png"
+    ],
+    "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "image_input_usage": null,
+        "cost": null,
+        "currency": null,
+        "source": "not provided by the execution platform",
+        "unknown_fields_reason": "执行平台未暴露 token/图像/费用遥测；字段留 null，不以字符数、文件大小或限流余量估算。"
+    },
+    "unresolved_issues": []
+}

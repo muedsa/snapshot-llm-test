@@ -1,0 +1,351 @@
+{
+    "path_base": "suite_root",
+    "schema":  "snapshot-suite/task-metrics/v1",
+    "task_id":  "A14",
+    "task_name":  "content-stress-batch",
+    "run_id":  "run-20261002-220723-mimo",
+    "track":  "A",
+    "status":  "completed",
+    "started_at":  "2026-10-03T17:05:36+08:00",
+    "ended_at":  "2026-10-03T18:48:38+08:00",
+    "timezone":  "+08:00",
+    "wall_clock_s":  6183,
+    "wall_clock_note":  "from suite-state A14 in_progress (2026-10-03T17:05:36+08:00) to the end of this file; covers reading the brief, eight generator revisions, five render rounds, viewing, the independent QA pass, verification and writing deliverables",
+    "first_usable_image":  {
+                               "first_service_image_s":  2192.6,
+                               "first_service_image_at":  "2026-10-03T17:42:08+08:00",
+                               "first_service_image_kind":  "status glyph probe (not a deliverable)",
+                               "first_card_image_s":  2376.5,
+                               "first_card_image_at":  "2026-10-03T17:45:12+08:00",
+                               "first_card_image_kind":  "first HTTP 200 of render round 02, the first complete visible deck",
+                               "note":  "measured from task start; render round 01 produced no image at all (8 x 400)"
+                           },
+    "waiting":  {
+                    "user_feedback_wait_s":  0,
+                    "user_feedback_wait_note":  "no mid-task user feedback was given or required; this run executes the whole suite without per-task confirmation",
+                    "rate_limit_or_queue_wait_s":  0,
+                    "rate_limit_or_queue_wait_note":  "no HTTP 429 and no Retry-After occurred on this task; the client-side retry path was never triggered",
+                    "unmeasurable_wait_s":  null,
+                    "unmeasurable_wait_note":  "no unmeasurable waiting is claimed; if a value were needed and unmeasurable it would be null rather than 0"
+                },
+    "requests":  {
+                     "count":  41,
+                     "http_status":  {
+                                         "400":  8,
+                                         "200":  33
+                                     },
+                     "failed":  8,
+                     "retried":  0,
+                     "rate_limit_exceeded":  0,
+                     "kind":  {
+                                  "status_glyph_probe":  1,
+                                  "render_round_01_failed":  8,
+                                  "render_round_02":  8,
+                                  "render_round_03":  8,
+                                  "render_round_04":  8,
+                                  "render_round_05_final":  8
+                              },
+                     "request_duration_ms_sum":  86004.4,
+                     "request_duration_ms_note":  "sum of the per-request durations in requests.jsonl; not equal to wall clock, which also covers generator work, viewing and verification. Overlapping requests are not involved (rounds ran sequentially)",
+                     "first_started_utc":  "2026-10-03T09:42:06.694Z",
+                     "last_ended_utc":  "2026-10-03T10:08:10.205Z",
+                     "endpoints":  {
+                                       "POST /snapshot":  41
+                                   },
+                     "shared_requests_new_in_this_task":  0,
+                     "shared_requests_reused":  [
+                                                    "suite AI guide / DSL doc excerpts (tmp/run-20261002-220723-mimo/_suite/probe/A10-doc-excerpts.md)",
+                                                    "/fonts listing (tmp/run-20261002-220723-mimo/A11/fonts-0001.txt)"
+                                                ],
+                     "failures_detail":  {
+                                             "count":  8,
+                                             "http_status":  400,
+                                             "round":  "r01 (card-K01..K08-v4.snapshot)",
+                                             "error":  "PARSE_ERROR: Attr [color] unsupported CSS color",
+                                             "cause":  "the loop variable $line overwrote the script-scope hairline colour $LINE because PowerShell variables are case-insensitive",
+                                             "bodies_retained":  8,
+                                             "bodies_location":  "tmp\\run-20261002-220723-mimo\\A14/failures/",
+                                             "bodies_used_as_images":  false,
+                                             "retries":  0,
+                                             "retry_note":  "the same DSL was corrected and re-submitted as a new version, so no unchanged request was retried"
+                                         }
+                 },
+    "iterations":  {
+                       "count":  20,
+                       "log":  "tmp\\run-20261002-220723-mimo\\A14/iterations.jsonl",
+                       "by_type":  {
+                                       "syntax-fix":  5,
+                                       "alternative":  3,
+                                       "visual":  7,
+                                       "baseline":  5
+                                   },
+                       "by_type_note":  "the suite type vocabulary: baseline / visual / syntax-fix / alternative / retry / requirement-change. No retry and no requirement-change rows exist because neither happened",
+                       "render_rounds":  5,
+                       "generator_versions":  8,
+                       "distinct_visual_defects_found_by_viewing":  3,
+                       "visual_defects":  [
+                                              "render-v2: K01 is a single title row and left a 188px hole beneath it while two-row cards filled the shared zone - the title block was top-aligned rather than centred",
+                                              "render-v3: the footer sat 24px under the rule but stopped 52px short of the safe line, so the bottom margin (82px) was twice the top margin (40px)",
+                                              "render-v4: the rebalance only moved the footer 10px and the right column below the date stayed empty on seven of eight cards, so the footer was re-anchored to the safe line"
+                                          ],
+                       "self_defects_in_generator":  [
+                                                         "r01: $line clobbering $LINE (case-insensitive variables) sent title text into a colour attribute - found by the service response, not by viewing"
+                                                     ],
+                       "self_defects_in_verifier":  [
+                                                        "first run: rectangle test evaluated NOT(both axes separated) instead of NOT(either axis separated), flagging every card as overlapping",
+                                                        "first run: title/badge test compared the title box bottom against the pill top edge instead of testing actual overlap"
+                                                    ],
+                       "harness_image_channel_defect":  "repeated opens re-served stale frames; every frame was content-matched against the file opened, mismatches were rejected and re-opened, unique-path copies were used where the channel stayed stuck, and an independent QA agent re-opened all eight delivered PNGs. The delivered files themselves were proven correct from their bytes (distinct SHA-256, matching status-pill colour and divider tint, distinct title-band ink)",
+                       "manufactured_iterations":  0
+                   },
+    "image_review":  {
+                         "image_view_events":  34,
+                         "note":  "each count is an actual open of an image file; viewing duration was not instrumented, so no duration is claimed",
+                         "views_by_kind":  {
+                                               "status_glyph_probe":  1,
+                                               "render_v2_deck":  8,
+                                               "render_v3_deck":  8,
+                                               "render_v4_intermediate":  1,
+                                               "render_v5_final_deck":  8,
+                                               "independent_qa_delivered_finals":  8
+                                           },
+                         "delivered_final_png_opened":  8,
+                         "delivered_final_png_total":  8,
+                         "delivered_final_png_note":  "all eight delivered card-K01..K08.png are byte-identical to render-v5-card-K01..K08.png, which were opened individually; an independent agent also opened each delivered file and reported its exact title, time, speaker, status pill and defects",
+                         "unique_path_copies":  [
+                                                    "view-K04-a.png",
+                                                    "view-K08-a.png",
+                                                    "inspect-A14-K04-final.png",
+                                                    "inspect-A14-K08-final.png",
+                                                    "qa-K03-fresh-001.png",
+                                                    "qa2-K03.png",
+                                                    "qa2-K04.png",
+                                                    "qa2-K05.png",
+                                                    "qa2-K06.png",
+                                                    "qa2-K07.png",
+                                                    "qa2-K08.png"
+                                                ],
+                         "unique_path_copies_note":  "byte-identical copies used only to get a fresh frame out of the image channel; never deliverables",
+                         "contact_sheet_used":  false,
+                         "contact_sheet_note":  "no contact sheet was made; it would not have replaced the eight individual views"
+                     },
+    "layout":  {
+                   "canvas":  "1200x630",
+                   "safe_margin":  40,
+                   "title_zone":  "y 104..396, width 1120, block vertically centred, START aligned",
+                   "title_size_range":  [
+                                            56,
+                                            112
+                                        ],
+                   "title_max_lines_seen":  2,
+                   "title_min_required":  36,
+                   "title_max_allowed":  3,
+                   "speaker_size_min_seen":  32,
+                   "speaker_min_required":  22,
+                   "speaker_max_lines_seen":  1,
+                   "speaker_max_allowed":  2,
+                   "footer_anchor":  "bottom: speaker block bottom rests on y=590, time row 18px above it, date on the speaker row, cancellation note on the time row",
+                   "rule_y":  404,
+                   "divider_head_width":  240,
+                   "status_system":  [
+                                         "open",
+                                         "full",
+                                         "waitlist",
+                                         "cancelled"
+                                     ],
+                   "status_encoding":  "colour + symbol + text on every card, plus a status-coloured divider head and a 135px pill of uniform width",
+                   "statuses_present":  [
+                                            "开放",
+                                            "满额",
+                                            "候补",
+                                            "开放",
+                                            "开放",
+                                            "取消",
+                                            "候补",
+                                            "开放"
+                                        ],
+                   "single_parametric_rule_set":  true,
+                   "per_card_hardcoding":  false,
+                   "global_image_downscaling":  false
+               },
+    "deliverables":  {
+                         "final_images":  8,
+                         "final_images_bytes":  469397,
+                         "paired_dsl":  8,
+                         "paired_dsl_bytes":  18460,
+                         "files":  [
+                                       {
+                                           "name":  "card-K01.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  26199,
+                                           "sha256":  "BCF1C6E18E7C764E07108F66497B7B216D3A68BA755DDFD79EE3E3DFE0B27436",
+                                           "dsl":  "card-K01.snapshot",
+                                           "dsl_bytes":  2037,
+                                           "dsl_sha256":  "A485EB7E01B2D6A802424E12DE4ACF9D18A0470AEE128D45950822053EC6D0AB",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       },
+                                       {
+                                           "name":  "card-K02.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  58809,
+                                           "sha256":  "73E539DD333270E921288F72523DF676494DA599BAD90B3ACFF4A3C065534747",
+                                           "dsl":  "card-K02.snapshot",
+                                           "dsl_bytes":  2296,
+                                           "dsl_sha256":  "415A5A13658209585425A9509686B8B5E223817D092C96F22D3D808FFCD98AE5",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       },
+                                       {
+                                           "name":  "card-K03.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  72035,
+                                           "sha256":  "DE2E8CA4D595DCBA5AC2D07E8080EE6B0F26C0E437B2AB421736EAECCE992C72",
+                                           "dsl":  "card-K03.snapshot",
+                                           "dsl_bytes":  2318,
+                                           "dsl_sha256":  "E7C2C96214A0FA774913B587F7756443729494F0C5B9B9C5EA2C9952AAC44661",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       },
+                                       {
+                                           "name":  "card-K04.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  62703,
+                                           "sha256":  "D7322B0D677B4E87060AFDC1675251AEF57DC2550BDA3B011A2465ECB4227F4C",
+                                           "dsl":  "card-K04.snapshot",
+                                           "dsl_bytes":  2294,
+                                           "dsl_sha256":  "0A445FADE3521D5BC2131BED8B127F5182BF0B485F59D89DE9675731534EE6A7",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       },
+                                       {
+                                           "name":  "card-K05.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  54248,
+                                           "sha256":  "8C85126195B2985B0D0FC83AD5BF045078AA11DC7A212C0B42A9C9F2B4C48EBB",
+                                           "dsl":  "card-K05.snapshot",
+                                           "dsl_bytes":  2295,
+                                           "dsl_sha256":  "7B41C8A2049AFD9F510D4C6F19F0C45AB9A88D6D6D5DFD5A41FE342CB9DB676B",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       },
+                                       {
+                                           "name":  "card-K06.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  67850,
+                                           "sha256":  "B3089EEDC129D6D6936B029B5B9D1DE21F96B18F1C3D57FCABC37F37E3558CB2",
+                                           "dsl":  "card-K06.snapshot",
+                                           "dsl_bytes":  2526,
+                                           "dsl_sha256":  "E792014C32B643B8E4FB9CDFB58C8A66C9B915512870EBD94F762E790C8DB715",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       },
+                                       {
+                                           "name":  "card-K07.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  74187,
+                                           "sha256":  "D84EC4E91061FF9F8F9DC48DEAAA1FD25E32BEBF9CD911D1EB55778B5C01AD52",
+                                           "dsl":  "card-K07.snapshot",
+                                           "dsl_bytes":  2352,
+                                           "dsl_sha256":  "6764E96659D4428109C323F423729276BC2549EEC8DF291A5B01547A88413613",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       },
+                                       {
+                                           "name":  "card-K08.png",
+                                           "size":  [
+                                                        1200,
+                                                        630
+                                                    ],
+                                           "bytes":  53366,
+                                           "sha256":  "8C45ED15106C304D4A7B230B27F1F9BFA201F9F98DE0E8B9D8153B122780D590",
+                                           "dsl":  "card-K08.snapshot",
+                                           "dsl_bytes":  2342,
+                                           "dsl_sha256":  "092B38BF7126F0A678B257C336BE61B673792607048244BA65A388E9AA0CBAF0",
+                                           "render_version":  "05",
+                                           "dsl_version":  8
+                                       }
+                                   ],
+                         "other_files":  [
+                                             "batch-audit.json",
+                                             "snapshot-usage.md",
+                                             "task-metrics.json"
+                                         ],
+                         "raw_service_png_bytes":  true,
+                         "post_processing_applied":  false,
+                         "overwritten_attempts":  0,
+                         "overwritten_attempts_note":  "every generator version, render round and failure body is retained under tmp/ with versioned names; gen.ps1 re-emitted card-K01-v1 / card-K02-v1 once during development, but those two runs produced byte-identical DSL for those cards, so no distinct attempt was lost"
+                     },
+    "verification":  {
+                         "audit":  "outputs\\run-20261002-220723-mimo\\A14/batch-audit.json",
+                         "verifier":  "tmp\\run-20261002-220723-mimo\\A14/verify.ps1",
+                         "checks_per_card":  24,
+                         "cards":  8,
+                         "passed":  8,
+                         "failed":  0,
+                         "all_pass":  true,
+                         "check_groups":  [
+                                              "png_is_real_png, png_size_1200x630, png_is_service_response, snapshot_pair_present, snapshot_bom_free, snapshot_has_no_image_element, snapshot_has_no_transform",
+                                              "title_verbatim_from_input, speaker_verbatim_from_input, time_verbatim_from_input, status_verbatim_from_input, title_lines_present_in_dsl, speaker_lines_present_in_dsl",
+                                              "title_size_ge_36, title_lines_le_3, speaker_size_ge_22, speaker_lines_le_2",
+                                              "all_boxes_within_safe_margin_40, title_clear_of_status_badge, text_boxes_disjoint",
+                                              "status_encodes_color_symbol_text, status_has_matching_divider_head, cancelled_card_keeps_title_time, cancelled_card_has_cancel_note"
+                                          ],
+                         "image_viewing_evidence_in_audit":  true,
+                         "image_viewing_evidence_note":  "batch-audit.json carries an image_views array per card recording which file was opened, by which tool, what was seen and whether the frame matched that file"
+                     },
+    "resources":  {
+                      "tokens_input":  null,
+                      "tokens_output":  null,
+                      "tokens_cache_read":  null,
+                      "tokens_cache_write":  null,
+                      "cost_usd":  null,
+                      "image_generation_units":  null,
+                      "unknown_reason":  "the open-snapshot service and this agent runtime report no token or cost figures; values stay null rather than estimated from text length or account balance"
+                  },
+    "artefacts_on_disk":  {
+                              "output_dir":  "outputs\\run-20261002-220723-mimo\\A14/",
+                              "output_file_count":  19,
+                              "temp_dir":  "tmp\\run-20261002-220723-mimo\\A14/",
+                              "temp_file_count":  138,
+                              "logs":  [
+                                           "requests.jsonl (41 rows)",
+                                           "iterations.jsonl (20 rows)"
+                                       ],
+                              "generators":  [
+                                                 "gen.ps1",
+                                                 "verify.ps1",
+                                                 "mk-iterations.ps1"
+                                             ],
+                              "layout_records":  8,
+                              "dsl_versions":  8,
+                              "render_rounds_on_disk":  5,
+                              "failure_responses":  8,
+                              "side_copies":  11
+                          },
+    "open_issues":  [
+
+                    ],
+    "summary":  "A14 rendered eight 1200x630 lecture promo cards from inputs/cards.json through one parametric rule set: a shared title zone with a size ladder and a punctuation-aware splitter, a uniform status system carrying colour + symbol + text, and a footer anchored to the safe line. Eight generator revisions and five render rounds were needed; the first round failed with 8 x 400 from a case-insensitive variable collision, and three genuine composition defects were found by opening the images (top-aligned title block, top-heavy footer, footer still short of the safe line). All eight delivered PNGs are raw service bytes paired with their .snapshot, were opened individually, and pass 24 audit checks each. 41 requests (33 x 200, 8 x 400, 0 retried), 20 iteration rows, 34 image views, 8/8 cards passing."
+}

@@ -1,0 +1,297 @@
+{
+  "path_base": "suite_root",
+  "schema": "snapshot-suite/task-metrics/v1",
+  "task_id": "A18",
+  "task_name": "three-act-story",
+  "run_id": "run-20261002-220723-mimo",
+  "track": "A",
+  "status": "completed",
+  "started_at": "2026-10-04T17:27:43+08:00",
+  "ended_at": "2026-10-04T23:00:28+08:00",
+  "timezone": "+08:00",
+  "wall_clock_s": 19965,
+  "wall_clock_note": "from suite-state A18 in_progress (2026-10-04T17:27:43+08:00) to the end of this file. It contains a real session pause of about 6455 s between the final render (request A18-previewA-v06, ended 2026-10-04T21:02:53+08:00) and the resumption of deliverable writing after a context checkpoint, so wall clock is NOT working time here; see waiting.session_pause_s.",
+  "first_usable_image": {
+    "first_service_image_at": "2026-10-04T09:37:57.949Z",
+    "first_service_image_kind": "probe-04.snapshot, request A18-probe04 (HTTP 200, 2048.4 ms) - first accepted render after three deliberate syntax probes returned 400",
+    "first_composition_preview_at": "2026-10-04T10:00:18.201Z",
+    "first_composition_preview_kind": "preview-a-v01.png, request A18-previewA-v01 (HTTP 200, 5145.9 ms) - composition A; preview-b-v01.png followed 5 s later as composition B",
+    "first_deliverable_image_kind": "three-act-story.png is byte-identical to preview-a-v06.png (request A18-previewA-v06, HTTP 200, 4496 ms, 1600x1000), copied only after the audit and the independent view passed",
+    "note": "every render attempt is retained under tmp/ with its version number; the two required composition previews are kept in tmp and are deliberately not promoted to outputs"
+  },
+  "waiting": {
+    "user_feedback_wait_s": 0,
+    "user_feedback_wait_note": "no mid-task user feedback was given or required; this run executes the whole suite without per-task confirmation",
+    "rate_limit_or_queue_wait_s": 0,
+    "rate_limit_or_queue_wait_note": "no HTTP 429 and no Retry-After occurred on this task; every request was a single attempt (attempt = 1 on all 12 rows)",
+    "session_pause_s": 6455,
+    "session_pause_s_note": "measured from the end of the last render (2026-10-04T21:02:53+08:00) to the resumption of work (2026-10-04T23:00:28+08:00) after a context checkpoint. Not working time; no work was redone and nothing was lost - work resumed from suite-state plus the files already on disk.",
+    "unmeasurable_wait_s": null,
+    "unmeasurable_wait_note": "no unmeasurable waiting is claimed; if a value were needed and unmeasurable it would be null rather than 0"
+  },
+  "requests": {
+    "count": 12,
+    "http_status": { "200": 9, "400": 3 },
+    "failed": 3,
+    "failed_note": "all three 400 rows are deliberate Transform syntax probes whose PARSE_ERROR bodies are retained under tmp/run-20261002-220723-mimo/A18/failures/: A18-probe01 (matrix must not be null), A18-probe02 (comma list rejected), A18-probe03 (JSON array rejected). None was an unintended defect in the delivered DSL, and none was retried in place - each probe is its own row.",
+    "retried_after_failure": 0,
+    "rate_limit_exceeded": 0,
+    "kind": { "render": 12, "document": 0 },
+    "request_duration_ms_sum": 35675.7,
+    "request_duration_ms_by_status": { "200": 30028.0, "400": 5647.7 },
+    "request_duration_ms_note": "sum of the per-request durations in requests.jsonl (35.7 s total = 30.0 s accepted renders + 5.6 s rejected probes). This is not wall clock: wall clock also covers reading the brief, writing the generator, viewing, a session pause and writing the deliverables. All requests ran sequentially.",
+    "first_started_utc": "2026-10-04T09:35:44.956Z",
+    "last_ended_utc": "2026-10-04T13:02:53.927Z",
+    "endpoints": { "POST /snapshot": 12 },
+    "render_request_ids": [
+      "A18-probe01", "A18-probe02", "A18-probe03", "A18-probe04",
+      "A18-previewA-v01", "A18-previewB-v01", "A18-previewA-v02", "A18-previewA-v03",
+      "A18-previewA-v04", "A18-previewAv01-recheck", "A18-previewA-v05", "A18-previewA-v06"
+    ],
+    "render_breakdown": { "syntax_probe": 4, "composition_preview": 2, "refinement": 5, "recovery_verification": 1 },
+    "bytes_received": {
+      "png_from_successful_renders": 778006,
+      "error_bodies": 613,
+      "total": 778619,
+      "total_kib": 760.4
+    },
+    "shared_requests_new_in_this_task": 0,
+    "shared_requests_reused": [
+      "GET /fonts listing (tmp/run-20261002-220723-mimo/A11/fonts-0001.txt) - reused, not re-requested; confirms Noto Sans CJK SC is a real service family",
+      "tmp/run-20261002-220723-mimo/A17/doc-parser-tags.html - the Transform / 坐标与矩阵 section supplied the matrix rule that probe-04 then confirmed; not re-requested",
+      "tmp/run-20261002-220723-mimo/A15/doc-parser-tags.html (via A17/tag-attrs.md) - Container / Text / Positioned attribute rows; not re-requested"
+    ],
+    "log_row_order_note": "all 12 rows were written by render.ps1 in chronological order; nothing was merged or reordered"
+  },
+  "iterations": {
+    "count": 21,
+    "log": "tmp\\run-20261002-220723-mimo\\A18\\iterations.jsonl",
+    "by_type": { "visual": 13, "syntax-fix": 4, "alternative": 2, "baseline": 1, "retry": 1 },
+    "by_type_note": "the suite type vocabulary: baseline / visual / syntax-fix / alternative / retry / requirement-change",
+    "render_rounds": {
+      "composition_a_preview": ["v01", "v02", "v03", "v04", "v05", "v06"],
+      "composition_b_preview": ["v01"],
+      "probe": ["probe-01", "probe-02", "probe-03", "probe-04"],
+      "recovery": ["preview-a-v01-recheck"]
+    },
+    "dsl_versions_on_disk": 12,
+    "dsl_versions_on_disk_note": "12 .snapshot files under tmp/A18: 4 probes, 6 composition-A versions, 1 composition-B version, 1 recovered/rechecked composition-A v01. Nothing was deleted; nothing that had been rendered was overwritten again after it was archived (see self_defects_in_generator for the one earlier overwrite).",
+    "complete_visual_iterations": 5,
+    "complete_visual_iterations_detail": [
+      "preview-a-v01 -> view -> bands too thin, names floating outside, no core/shell read -> taller bands + names inside + wider act-1 ellipse -> v02",
+      "preview-a-v02 -> view + 400px thumbnail -> act 1 reads as one undifferentiated blob -> narrow the inner ellipse to separate a core of 5 from a shell of 10 and tighten the act-2 outer ring -> v03",
+      "preview-a-v03 -> view -> colours are segregated by position (blue core / grey top / orange bottom) -> interleave the colour permutation and lift the act-2 inner ring 56->58 off the node -> v04",
+      "preview-a-v04 -> view + 400px thumbnail -> act labels only 6.5 px tall at 400 px -> act-label fontSize 26->32 with box height 40->56 -> v05",
+      "preview-a-v05 -> independent view -> only 13 of 15 act-2 connectors visible because two units touch the node -> act-2 inner ring 58->64 and outer ring 91->94 to keep cross-ring spacing >=36 px -> v06"
+    ],
+    "complete_visual_iterations_note": "a complete iteration is view the old image -> change -> re-render -> view and compare. Five complete cycles were run on the chosen composition; the composition-A/composition-B comparison is logged separately as two baseline/alternative renders plus one decision row.",
+    "composition_proposals_rendered": 2,
+    "composition_choice": "A (horizontal three bands) over B (vertical triptych), decided by viewing both real renders side by side; both previews are retained in tmp",
+    "distinct_visual_defects_found_by_viewing": 5,
+    "visual_defects": [
+      "preview-a-v01: 254 px bands made each act read as a thin strip, and the act names floated outside the panel",
+      "preview-a-v02: act 1 read as one undifferentiated blob - no sense of a core being pulled in from a shell",
+      "preview-a-v03: colours encoded position (blue clustered in the core, grey on top, orange at the bottom), which quietly broke 'the relation must not be inferable from colour alone'",
+      "preview-a-v04: one act-2 unit sat exactly tangent to the node (0.2 px gap), and at 400 px the act labels were only 6.5 px tall",
+      "preview-a-v05 / delivered v05: only 13 of the 15 act-2 links were visible - two units sat so close to the node that the 4 px line was entirely hidden"
+    ],
+    "defects_found_by_measurement_not_by_eye": 1,
+    "defects_found_by_measurement_detail": [
+      "the act-2 tangent at radius 56 was found by the generator's own unit-node gap check (0.2 px) before it was obvious in the picture: the rounded-square node reaches 14*sqrt(2)+18 = 37.8 px at 45 degrees, so 56-18-37.8 leaves only 0.2 px."
+    ],
+    "self_defects_in_generator": [
+      "the first generator run placed every unit at its own panel's centre because the act-3 centres were read from the wrong panel row, and the act-3 assignment produced a3=3 instead of a3=15; both were caught by the generator's own diagnostics before any render.",
+      "an earlier run built act 3 with a double-comma nested array, which PowerShell flattened to scalars (a3=3 with an empty unit id); fixed by building rows explicitly.",
+      "preview-a.snapshot was reused as the working path, so the composition-A v01 DSL was overwritten by a later regeneration before it had been archived. It was rebuilt by reversing the five recorded parameter changes on a copy of the generator (gen-v01.ps1) and then re-submitted as A18-previewAv01-recheck: the re-rendered PNG is SHA256-identical to the surviving original (14D1947B524CB...), which is what proves the recovery is exact rather than approximate. Both files are retained.",
+      "mk-audit.ps1 v1 initialised its accumulator with @() (a fixed-length array) so the first .Add() threw, and a stray comma after a hashtable entry produced 'Missing expression after ,; both were fixed before the audit could pass."
+    ],
+    "harness_image_channel_defect": "on 2026-10-04 the local image tool served a scaled frame for preview-a-v03.png and again for the delivered three-act-story.png (content matched but at roughly 400 px). Both times the delivered bytes were first proven correct by SHA-256 and the content was then verified at full size by a separate agent; those two superseded local reads are logged as iterations seq 10 and seq 14 and the two independent verifications as seq 11 and seq 15.",
+    "manufactured_iterations": 0
+  },
+  "image_review": {
+    "image_view_events": 17,
+    "image_view_events_derivation": "18 rows in iterations.jsonl carry a non-empty view_method; one of them (seq 16, preview-a-v01-recheck) is a SHA-256 comparison rather than an image view and is excluded, leaving 17 real view events. Pixel statistics were not used as viewing anywhere in this task.",
+    "logged_view_rows": 18,
+    "views_by_kind": {
+      "local_read_tool": 13,
+      "of_which_returned_a_scaled_frame": 2,
+      "delegated_viewer": 4
+    },
+    "successful_content_views": 17,
+    "delivered_final_png_opened": 1,
+    "delivered_final_png_total": 1,
+    "delivered_final_png_note": "outputs/run-20261002-220723-mimo/A18/three-act-story.png was opened with a real image tool four times (seq 14 local, seq 15 / seq 18 / seq 21 delegated at full size); the file's SHA-256 matches the viewed preview-a-v06.png exactly, so the viewed bytes are the delivered bytes.",
+    "views_by_kind_detail": "13 local read-tool views (seq 4,5,6,8,9,10,12,13,14,17,19,20 plus the side-by-side at seq 7) and 4 delegated full-size views (seq 11, 15, 18, 21)",
+    "scales_covered": [
+      "full size 1600x1000 of every composition preview and of the delivered image",
+      "the required 400x250 thumbnail of the chosen composition, viewed four times (thumb-a-v02-400, thumb-a-v04-400, thumb-a-v06-400, thumb-final-400)",
+      "the individual act bands within the full-size frame, read one band at a time by the independent viewer"
+    ],
+    "independent_viewer_view_events": 4,
+    "independent_viewer_note": "a separate agent opened the images and reported verbatim text, per-band circle counts, per-node connector counts, the middle node's port shape and measured clearances; counted separately from this session's local reads so the total is not inflated",
+    "thumbnail_checks_required_by_task": 4,
+    "thumbnail_checks_result": "all four passed: title and three act names present, three bands still read as three distinct states, nothing missing or garbled",
+    "contact_sheet_used": false,
+    "contact_sheet_note": "no contact sheet was made; the task asks for the full image and a 400 px thumbnail, both of which were opened individually"
+  },
+  "content": {
+    "canvas": "1600x1000",
+    "acts": 3,
+    "panels_per_act": 1,
+    "panel_size": "1518x294",
+    "units_per_act": 15,
+    "units_total": 45,
+    "unit_diameter": 36,
+    "unit_colors": { "blue": "#3B82F6", "orange": "#F59E0B", "gray": "#94A3B8" },
+    "unit_colour_split_per_act": "5 blue / 5 orange / 5 grey, identical in all three acts",
+    "nodes_per_act": 3,
+    "nodes_total": 9,
+    "node_size": "64x64 rounded 18",
+    "node_port_normal": "26x26 circle",
+    "node_port_overloaded": "52x22 capsule, act 2 centre node only",
+    "links_total": 45,
+    "links_by_act": "act 1: 15 to the centre node; act 2: 15 to the centre node; act 3: 5 + 5 + 5",
+    "chevrons_total": 30,
+    "chevron_rule": "emitted on every link in acts 1 and 3; omitted by construction in act 2, where at minimum spacing there is no room between a unit edge and a node edge",
+    "act3_distribution": "N1 = U01,U02,U06,U07,U11 (2 blue, 2 orange, 1 grey); N2 = U03,U04,U08,U12,U13 (2 blue, 1 orange, 2 grey); N3 = U05,U09,U10,U14,U15 (1 blue, 2 orange, 2 grey) - 5 units and 3 colours each",
+    "text_elements": 4,
+    "text_strings": ["同一系统的三幕演化", "第一幕 · 集中", "第二幕 · 过载", "第三幕 · 重新分配"],
+    "text_size": "title 40 px bold, act names 32 px bold",
+    "text_on_nodes_or_units": 0,
+    "min_unit_to_unit_centre_distance": 38.59,
+    "min_unit_to_node_gap_px": 3.0,
+    "min_unit_to_panel_edge_px": 8.75,
+    "composition_proposals": 2,
+    "composition_proposals_note": "A and B were each rendered as a real 1600x1000 preview before either was chosen; both previews are retained under tmp/ and are not counted as final images",
+    "fonts_used": ["Noto Sans CJK SC"],
+    "font_source": "GET /fonts live listing cached at tmp/run-20261002-220723-mimo/A11/fonts-0001.txt (reused, not re-requested)",
+    "image_elements_in_dsl": 0,
+    "external_assets": 0,
+    "external_asset_note": "A-class track: pure DSL only. The arrowheads are Containers rotated by Transform, not Image embeds.",
+    "transform_elements_in_dsl": 105,
+    "transform_breakdown": "45 link strokes + 60 chevron bars (30 chevrons x 2 bars) = 105 Transform elements; act 2 contributes only its 15 link strokes"
+  },
+  "verification": {
+    "final_audit_script": "tmp\\run-20261002-220723-mimo\\A18\\mk-audit.ps1",
+    "final_audit_report": "outputs\\run-20261002-220723-mimo\\A18\\final-audit.md",
+    "audit_data": "outputs\\run-20261002-220723-mimo\\A18\\story-audit.json",
+    "tools": [
+      "tmp\\run-20261002-220723-mimo\\A18\\gen.ps1 (geometry generator with self-checks: min pair distance, unit-node gap, panel bounds)",
+      "tmp\\run-20261002-220723-mimo\\A18\\mk-audit.ps1 (per-act unit ID/colour/coordinate/receiver plus nine hard-constraint assertions)",
+      "tmp\\run-20261002-220723-mimo\\A18\\thumb.ps1 (GDI+ HighQualityBicubic downscale to 400 px)",
+      "tmp\\run-20261002-220723-mimo\\_suite\\render.ps1 (submission and request logging)"
+    ],
+    "checks": {
+      "composition_a_and_b_each_rendered_before_choice": true,
+      "chosen_composition_rendered_and_viewed_at_every_round": true,
+      "three_acts_have_identical_units": true,
+      "units_identical_count_size_colour_across_acts": true,
+      "unit_diameter_constant_36": true,
+      "no_unit_overlaps_another_unit": true,
+      "no_unit_overlaps_a_node": true,
+      "no_unit_clipped_by_a_panel": true,
+      "three_equal_nodes_present_in_all_three_acts": true,
+      "act3_gives_each_node_exactly_five_units": true,
+      "act3_each_node_has_at_least_two_colours": true,
+      "single_centre_node_receives_all_fifteen_in_acts_1_and_2": true,
+      "no_unit_added_removed_or_shrunk_to_show_congestion": true,
+      "no_warning_text_and_no_deliberate_unreadable_text": true,
+      "text_elements_exactly_four": true,
+      "no_text_on_nodes_or_units": true,
+      "lines_drawn_behind_circles": true,
+      "relations_not_inferable_from_colour_alone": true,
+      "full_image_viewed": true,
+      "four_hundred_px_thumbnail_viewed": true,
+      "three_acts_still_read_at_four_hundred_px": true,
+      "delivered_bytes_identical_to_the_viewed_preview": true,
+      "previews_retained_in_temp": true,
+      "no_overwritten_attempts_after_render": true
+    },
+    "all_pass": true,
+    "problems": 0,
+    "image_viewing_evidence_in_audit": true,
+    "image_viewing_evidence_note": "iterations.jsonl carries the file, tool and timestamp for all 17 view events, including the four independent full-size verifications of the delivered image and its 400 px thumbnail"
+  },
+  "deliverables": {
+    "final_images": 1,
+    "final_images_bytes": 97982,
+    "final_image_dimensions": "1600x1000",
+    "paired_dsl": 1,
+    "paired_dsl_bytes": 40989,
+    "files": [
+      {
+        "name": "three-act-story.png",
+        "size": [1600, 1000],
+        "bytes": 97982,
+        "sha256": "212A6798AA8EADB8A7C67B561D40DFA4F7B9D1539304B5DA4ABD45C50CB69087",
+        "dsl": "three-act-story.snapshot",
+        "dsl_bytes": 40989,
+        "dsl_sha256": "6D50409C21CB22B1C68EC5DB658648626736CF1A8FBD7DED70B04A0369FEFB5A",
+        "render_version": "06",
+        "source_request_id": "A18-previewA-v06",
+        "http_status": 200,
+        "duration_ms": 4496
+      }
+    ],
+    "other_files": ["story-audit.json", "rationale.md", "snapshot-usage.md", "task-metrics.json", "final-audit.md"],
+    "temp_previews_retained": [
+      "preview-a-v01.png", "preview-a-v02.png", "preview-a-v03.png", "preview-a-v04.png", "preview-a-v05.png", "preview-a-v06.png",
+      "preview-b-v01.png", "preview-a-v01-recheck.png", "probe-04.png",
+      "thumb-a-v02-400.png", "thumb-a-v04-400.png", "thumb-a-v05-400.png", "thumb-a-v06-400.png", "thumb-final-400.png"
+    ],
+    "raw_service_png_bytes": true,
+    "post_processing_applied": false,
+    "png_signature_valid": true,
+    "snapshot_bom_free": true,
+    "thumbnail_is_a_separate_helper_output": true,
+    "thumbnail_note": "the 400 px thumbnails are helper outputs used for the required thumbnail check and are kept in tmp; the delivered PNG is the untouched service response",
+    "overwritten_attempts": 1,
+    "overwritten_attempts_note": "exactly one rendered DSL was lost to a path being reused: preview-a.snapshot was regenerated for v02 before the v01 bytes had been archived, so the v01 preview lost its DSL (its PNG survived). It was rebuilt by reversing the five recorded parameter changes on a copy of the generator and then proven byte-exact by re-rendering: the new PNG is SHA256-identical to the original. Every other attempt was written to a new versioned path first and only promoted to outputs after it was accepted."
+  },
+  "resources": {
+    "tokens_input": null,
+    "tokens_output": null,
+    "tokens_cache_read": null,
+    "tokens_cache_write": null,
+    "cost_usd": null,
+    "image_generation_units": null,
+    "unknown_reason": "the open-snapshot service and this agent runtime report no token or cost figures; values stay null rather than estimated from text length or account balance"
+  },
+  "artefacts_on_disk": {
+    "output_dir": "outputs\\run-20261002-220723-mimo\\A18/",
+    "output_file_count": 6,
+    "temp_dir": "tmp\\run-20261002-220723-mimo\\A18/",
+    "temp_file_count": 36,
+    "logs": [
+      "requests.jsonl (12 rows: all render)",
+      "iterations.jsonl (21 rows)"
+    ],
+    "generators_and_tools": ["gen.ps1", "gen-v01.ps1", "mk-audit.ps1", "thumb.ps1"],
+    "script_count": 4,
+    "snapshot_files_on_disk": 12,
+    "png_files_on_disk": 14,
+    "geometry_exports": ["geom-a.json", "geom-a-v01.json", "geom-b.json"],
+    "failure_responses": 3,
+    "failure_response_bodies": [
+      "tmp/run-20261002-220723-mimo/A18/failures/A18-probe01.body",
+      "tmp/run-20261002-220723-mimo/A18/failures/A18-probe02.body",
+      "tmp/run-20261002-220723-mimo/A18/failures/A18-probe03.body"
+    ],
+    "retained_documents": [],
+    "reused_documents": [
+      "tmp/run-20261002-220723-mimo/A17/doc-parser-tags.html - Transform matrix rule, reused, not re-requested",
+      "tmp/run-20261002-220723-mimo/A15/doc-parser-tags.html - Container/Text/Positioned attributes, reused, not re-requested",
+      "tmp/run-20261002-220723-mimo/A11/fonts-0001.txt - font family listing, reused, not re-requested"
+    ],
+    "verification_reports": [
+      "outputs/run-20261002-220723-mimo/A18/story-audit.json",
+      "outputs/run-20261002-220723-mimo/A18/final-audit.md"
+    ]
+  },
+  "open_issues": [
+    "the 400 px thumbnail keeps the title and all three act names present and keeps the three bands clearly distinct, but the dense CJK strokes of the act labels are only about 7 px tall at that size and need magnification to read character by character; at full size the labels are 30 px and perfectly legible. The act names were grown from 26 to 32 px to close most of this gap and it was then measured again.",
+    "the act-2 centre node's capsule port is what makes it read as overloaded, and at 400 px it splits the node's white ring into two bars; this is a thumbnail-only artefact of a deliberate full-size feature.",
+    "token and cost figures were never observed and are reported as null rather than guessed; the server-side canvas size cap and Retry-After values were likewise never observed."
+  ],
+  "summary": "A18 delivered a single 1600x1000 three-act image in which the same 15 units (5 blue, 5 orange, 5 grey, d36) appear unchanged in all three acts while the story moves from one attracting centre to an overloaded single node to an equal redistribution across three nodes. The Transform matrix syntax was settled by four real probes rather than guesswork (three deliberate 400s with retained bodies, one 200 that pinned down column-major parentheses form), and the matrix rule itself came from a retained document reused from A17, so this task issued no document requests at all. Two narrative compositions were each rendered as a real 1600x1000 preview before either was chosen, both are kept in tmp, and composition A (horizontal bands) was selected by viewing them side by side. Five complete visual iterations followed, each driven by actually opening the image: band height and label placement, a core/shell read in act 1, a colour-segregation bug that quietly broke the 'not inferable from colour alone' rule, a tangency of 0.2 px found by measurement, act-label sizing for the required 400 px check, and finally a hidden-link defect an independent viewer reported (13 of 15 connectors visible) that was fixed by moving the act-2 rings while keeping cross-ring spacing at 38.59 px. 12 requests (9x200, 3x400 probe failures, 30.0 s of accepted-render time, 778,619 bytes received), 21 iteration rows with 5 complete visual iterations and 5 distinct defects found by viewing, 17 real image-view events including 4 independent full-size verifications, both required composition previews plus every refinement retained in tmp, and a final audit reporting problems = 0 across nine hard-constraint assertions."
+}

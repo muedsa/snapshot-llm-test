@@ -1,0 +1,318 @@
+{
+  "path_base": "suite_root",
+  "schema_version": 1,
+  "schema_note": "按 tasks/A24-release-plan-capstone/templates/task-metrics-template.json 的字段，并补充本任务的排程、质量与看图明细块；补充块与模板字段不重复计数。",
+  "task_id": "A24",
+  "task_title": "双团队约束下的发布作战计划",
+  "run_id": "run-20261002-220723-mimo",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检（11/11 指定交付齐全、生成器 problems=0、三张最终 PNG 均为服务真实响应并逐张用图像查看工具打开确认、三图一致、schedule-audit 7 项校验全通过）",
+  "execution_mode": "single_pass（读文档 -> 自算排程与最优性枚举 -> 参数化生成 DSL -> 渲染 -> 看图 -> 视觉迭代 -> 交付；无预置轮次、无外部反馈回合）",
+  "output_dir": "outputs/run-20261002-220723-mimo/A24/",
+  "temp_dir": "tmp/run-20261002-220723-mimo/A24/",
+  "timezone": "UTC+08:00",
+  "timings": {
+    "started_at": "2026-10-05T14:17:15+08:00",
+    "ended_at": "2026-10-05T15:50:00+08:00",
+    "elapsed_seconds": 5565,
+    "elapsed_human": "01:32:45",
+    "started_at_source": "_suite/events.jsonl seq 49 task_started",
+    "first_usable_image_at": "2026-10-05T15:26:47.867+08:00",
+    "first_usable_image_seconds": 4172.867,
+    "first_usable_image_note": "首次取得可打开的有效图是 execution-board.png（渲染请求 A24-r1-board 第 3 次尝试，前两次为 400 PARSE_ERROR 未出图）。前两张图 decision-brief.png / action-card.png 分别在 15:28:03.071+08:00 与 15:28:06.930+08:00 取得。",
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_wait_reason": "A24 执行期间没有任何用户回合，确未发生，故记 0 而非 null。",
+    "rate_limit_wait_seconds": 0,
+    "rate_limit_reason": "0 次 429、0 次 Retry-After；ratelimit_remaining 观测区间 117..119，配额充足。确未发生，故记 0。",
+    "queue_wait_seconds": 0,
+    "queue_wait_reason": "17 个请求全部串行发出、无并发重叠，服务端 Server-Timing 有值且与客户端耗时同量级，未观察到排队。确未发生，故记 0；不可测时才会记 null。",
+    "request_duration_sum_seconds": 53.1591,
+    "request_duration_sum_ms": 53159.1,
+    "render_duration_sum_ms": 35685.5,
+    "render_duration_sum_success_ms": 31823.6,
+    "documentation_duration_sum_ms": 17473.6,
+    "server_timing_source": "每个响应的 Server-Timing 头已逐行记入 requests.jsonl 的 server_timing 字段（形如 total;dur=34.0），为服务端口径，不能当作任务耗时",
+    "note_on_wall_clock": "总墙钟 5565s 是 A24 起止的真实经过时间；request_duration_sum 53.1591s 只是 17 个 HTTP 请求耗时之和，远小于墙钟。墙钟里绝大部分是读题与文档、排程求解与最优性枚举、生成器编写与 5 轮调试、6 次看图与报告撰写。请求严格串行无重叠，耗时之和本身也不等于任务总耗时。"
+  },
+  "counts": {
+    "snapshot_requests": 8,
+    "successful_snapshot_requests": 6,
+    "failed_snapshot_requests": 2,
+    "retry_requests": 2,
+    "other_service_requests": 9,
+    "other_service_request_breakdown": "9 次文档 GET = 7x200 + 1x403(https://snapshot.muedsa.com/widgets/text/) + 1x404(https://snapshot.muedsa.com/widgets/container/)；字体查询 0 次（复用同一 run_id 内 A11/A23 已真实取得的 fonts-0001.txt）",
+    "requests_total": 17,
+    "dsl_versions": 3,
+    "dsl_versions_note": "a24-v01 = 同一次生成的中间态（两次 400 未出图）；a24-v02 = 首次成功出图的三件套；a24-v03 = 最终交付。三版 DSL 均保留：v02 在 tmp/.../A24/attempts/v1/，v03 在输出目录。",
+    "image_views": 6,
+    "image_views_note": "6 次全部是用图像查看工具打开真实像素：v02 三张（时间窗 2026-10-05T15:28:07+08:00..15:37:22+08:00）+ v03 三张（时间窗 15:37:42+08:00..15:41:30+08:00）。精确单次时刻未采集，只给可证明的时间窗。",
+    "completed_visual_iterations": 1,
+    "incomplete_visual_iterations": 0,
+    "iteration_rows_logged": 3,
+    "iteration_by_type": {
+      "baseline": 1,
+      "visual": 1,
+      "syntax-fix": 1,
+      "retry": 0,
+      "alternative": 0,
+      "requirement-change": 0
+    },
+    "failed_view_attempts": 0,
+    "rate_limit_events": 0
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "image_input_usage": null,
+    "image_input_unit": null,
+    "cost": null,
+    "currency": null,
+    "billing_scope": null,
+    "source": "not_provided",
+    "unknown_fields_reason": "本执行环境与 open-snapshot 服务均未提供 A24 的 token、图像输入或费用计量指标；按约定记 null，不以字符数、图片字节数、DSL 行数或账号余量估算。",
+    "covered_scope": "A24 的 17 个 HTTP 请求（8 次渲染 + 9 次文档）与 6 次图像查看调用"
+  },
+  "logs": {
+    "requests": "tmp/run-20261002-220723-mimo/A24/requests.jsonl",
+    "iterations": "tmp/run-20261002-220723-mimo/A24/iterations.jsonl"
+  },
+  "request_detail": {
+    "total": 17,
+    "render": 8,
+    "render_breakdown": "A24-r1-board 第1次 400 + 第2次 400 + 第3次 200、A24-r1-brief 200、A24-r1-card 200、A24-r2-board 200、A24-r2-brief 200、A24-r2-card 200",
+    "documentation": 9,
+    "succeeded": 13,
+    "failed": 4,
+    "failed_detail": "渲染 400 x2（PARSE_ERROR，失败响应体保留于 failures/ 与 error_summary）；文档 403 x1、404 x1",
+    "retried": 2,
+    "rate_limited": 0,
+    "http_status_observed": [200, 400, 403, 404],
+    "ratelimit_remaining_observed": [117, 119],
+    "render_response_bytes": 2055748,
+    "documentation_response_bytes": 430930,
+    "duration_ms": 53159.1,
+    "render_duration_ms": 35685.5,
+    "render_duration_success_ms": 31823.6,
+    "documentation_duration_ms": 17473.6,
+    "min_render_ms": 3795.9,
+    "max_render_ms": 7147.1,
+    "request_ids_render": ["A24-r1-board", "A24-r1-board", "A24-r1-board", "A24-r1-brief", "A24-r1-card", "A24-r2-board", "A24-r2-brief", "A24-r2-card"],
+    "request_ids_documentation": ["A24-doc-001", "A24-doc-002", "A24-doc-003", "A24-doc-004", "A24-doc-005", "A24-doc-006", "A24-doc-007", "A24-doc-008", "A24-doc-009"]
+  },
+  "schedule": {
+    "source": "tasks/A24-release-plan-capstone/inputs/release.json",
+    "solver": "tmp/run-20261002-220723-mimo/A24/sched-a24.ps1",
+    "window": "2026-11-07 09:00-16:00 (+08:00)，420 分钟",
+    "task_count": 12,
+    "total_work_minutes": 485,
+    "makespan_minutes": 260,
+    "finish_clock": "13:20",
+    "buffer_minutes": 160,
+    "design_busy_minutes": 255,
+    "engineering_busy_minutes": 230,
+    "critical_path_ignoring_resources_minutes": 255,
+    "critical_path_tasks": ["R01", "R04", "R07", "R09", "R10", "R12"],
+    "lower_bounds": {
+      "two_team_divide_minutes": 243,
+      "two_team_divide_note": "ceil(485 / 2) = 243",
+      "best_team_load_minutes": 245,
+      "resource_aware_proved_minutes": 260
+    },
+    "optimality": {
+      "claimed": "optimal",
+      "proven": true,
+      "proof_location": "outputs/run-20261002-220723-mimo/A24/schedule-audit.json -> optimality",
+      "method": "完整情形枚举：枚举 R05/R09/R12 等全部可分配任务的团队归属（8 个可分配任务），对每种归属枚举工程线相对固定链 R02<R03<R06 的合法排序，取最小 makespan；下界式 max(g+120, max(85,f)+170) 与 R05-on-design 的 >=285 给出解析侧证。",
+      "lower_bound_minutes": 260,
+      "candidate_minutes": 260,
+      "gap_minutes": 0,
+      "note": "题面不强制证明；因有可核验枚举证明（proven=true）才在三张图上写「最优」，否则只会写「最好方案」。"
+    },
+    "lane_assignment": {
+      "design": ["R01", "R04", "R07", "R09", "R10", "R12"],
+      "engineering": ["R02", "R05", "R03", "R06", "R08", "R11"],
+      "flexible_chosen": { "R05": "engineering", "R09": "design", "R12": "design" },
+      "note": "release.json 中这三项 teams 各有两项，按题意二选一，未让任何任务占用两个团队。"
+    },
+    "gaps": [
+      { "lane": "design", "start": "12:20", "end": "12:25", "minutes": 5, "kind": "idle" },
+      { "lane": "engineering", "start": "09:20", "end": "09:25", "minutes": 5, "kind": "idle" },
+      { "lane": "engineering", "start": "12:55", "end": "13:20", "minutes": 25, "kind": "standby" }
+    ],
+    "checks": {
+      "team_eligibility": true,
+      "full_duration": true,
+      "precedence": true,
+      "no_lane_overlap": true,
+      "inside_window": true,
+      "no_preemption": true,
+      "optimality": true,
+      "all_pass": true,
+      "problems": 0
+    }
+  },
+  "images": {
+    "delivered": 3,
+    "files": [
+      {
+        "name": "execution-board.png",
+        "width": 1920,
+        "height": 1080,
+        "bytes": 359450,
+        "sha256": "98910CC19CFD0E12563329176B6D4E22DDA6EC5C1FFF191DF267AA4BB39A5D16",
+        "color_type": 6,
+        "bit_depth": 8,
+        "paired_dsl": "execution-board.snapshot",
+        "paired_dsl_bytes": 33173,
+        "paired_dsl_present": true,
+        "bytes_identical_to_service_response": true,
+        "min_body_font_size": 20,
+        "min_body_font_requirement": 20,
+        "tag_counts": { "Text": 104, "Positioned": 199, "Container": 96, "Image": 0 }
+      },
+      {
+        "name": "decision-brief.png",
+        "width": 1200,
+        "height": 1600,
+        "bytes": 404335,
+        "sha256": "55C764E3A6965829C53693A3E74020088B6A0286E230A79C3623A34018365BCB",
+        "color_type": 6,
+        "bit_depth": 8,
+        "paired_dsl": "decision-brief.snapshot",
+        "paired_dsl_bytes": 19016,
+        "paired_dsl_present": true,
+        "bytes_identical_to_service_response": true,
+        "min_body_font_size": 24,
+        "min_body_font_requirement": 24,
+        "tag_counts": { "Text": 55, "Positioned": 104, "Container": 50, "Image": 0 }
+      },
+      {
+        "name": "action-card.png",
+        "width": 720,
+        "height": 1280,
+        "bytes": 270676,
+        "sha256": "7510ECEF46BAC7FEC5BC960F6A0DB1D947903446C48020827AB9B7A1897BF6C2",
+        "color_type": 6,
+        "bit_depth": 8,
+        "paired_dsl": "action-card.snapshot",
+        "paired_dsl_bytes": 21740,
+        "paired_dsl_present": true,
+        "bytes_identical_to_service_response": true,
+        "min_body_font_size": 20,
+        "min_body_font_requirement": 20,
+        "tag_counts": { "Text": 78, "Positioned": 122, "Container": 45, "Image": 0 }
+      }
+    ],
+    "all_real_png_signature": true,
+    "all_paired_dsl": true,
+    "all_bytes_identical_to_service_response": true,
+    "all_sizes_match_spec": true,
+    "all_min_font_requirements_met": true,
+    "post_processing": "none（服务原始 PNG 字节原样保存，未做任何后处理）",
+    "image_tags": 0,
+    "svg_gif_cmyk_tokens": 0,
+    "forbidden": false
+  },
+  "viewing": {
+    "calls_total": 6,
+    "calls_returned_fresh_pixels": 6,
+    "final_images_individually_viewed": 3,
+    "attempts_images_viewed": 3,
+    "failed_view_attempts": 0,
+    "view_method": "图像查看工具（read 图像路径）",
+    "view_windows": [
+      {
+        "version": "a24-v02",
+        "window_start": "2026-10-05T15:28:07+08:00",
+        "window_end": "2026-10-05T15:37:22+08:00",
+        "basis": "上一次渲染 A24-r1-card 结束到下一次渲染 A24-r2-board 开始之间",
+        "images": [
+          "tmp/run-20261002-220723-mimo/A24/attempts/v1/execution-board.png",
+          "tmp/run-20261002-220723-mimo/A24/attempts/v1/decision-brief.png",
+          "tmp/run-20261002-220723-mimo/A24/attempts/v1/action-card.png"
+        ]
+      },
+      {
+        "version": "a24-v03",
+        "window_start": "2026-10-05T15:37:42+08:00",
+        "window_end": "2026-10-05T15:41:30+08:00",
+        "basis": "最后一次渲染 A24-r2-card 结束之后到任务收尾写报告之前",
+        "images": [
+          "outputs/run-20261002-220723-mimo/A24/execution-board.png",
+          "outputs/run-20261002-220723-mimo/A24/decision-brief.png",
+          "outputs/run-20261002-220723-mimo/A24/action-card.png"
+        ]
+      }
+    ],
+    "note": "看图的精确单次时刻未被采集；iterations.jsonl 用 viewed_at_basis 记录可证明的时间窗，不编造单次时刻。GDI+ 像素统计、SHA-256、IHDR 解析等程序化核对不计入看图次数。"
+  },
+  "quality": {
+    "deliverables_required": 11,
+    "deliverables_present": 11,
+    "deliverables_detail": "3 组 PNG+DSL（execution-board 1920x1080 / decision-brief 1200x1600 / action-card 720x1280）+ schedule.json + schedule-audit.json + content-map.json + snapshot-usage.md + task-metrics.json",
+    "deliverables_all_present": true,
+    "generator_problems": 0,
+    "generator_checks": [
+      "12/12 任务块标签与前驱文本零溢出（TW 护栏，含手工断行的 R02 / R11 / R12）",
+      "执行图时间轴 1884px / 420min = 4.485714 px/min，所有任务块与空档、缓冲带、完成线、截止线走同一映射",
+      "简报依赖边 covered == edgeCount == 16，显式列出且恰为 2 行，每行 TW <= 1104",
+      "简报分层 6 层，层内按 id 排序",
+      "简报 footerY = 1516 <= 1538",
+      "手机卡 footerY = 1248 <= 1254",
+      "手机卡列宽 150 / 224 / 144 / 106，团队胶囊文字宽 + 16 <= 144",
+      "三张图最小正文字号 20 / 24 / 20，分别满足 >=20 / >=24 / >=20",
+      "三张图 0 个 <Image>、0 个 svg/gif/cmyk token",
+      "时间轴、表格与卡片高度断言全部通过"
+    ],
+    "cross_image_consistency": {
+      "checked": true,
+      "consistent": true,
+      "facts": ["finish 13:20", "makespan 260", "buffer 160", "total work 485", "critical path 255 + R01/R04/R07/R09/R10/R12", "team membership for all 12 tasks"],
+      "basis": "三张图全部从 schedule.json 读数（content-map.json.cross_image_rules），不各自硬编码；v02 -> v03 排程数值零变化"
+    },
+    "report_files": [
+      "outputs/run-20261002-220723-mimo/A24/snapshot-usage.md",
+      "outputs/run-20261002-220723-mimo/A24/task-metrics.json"
+    ],
+    "unresolved": [
+      "过程偏差：A24-doc-002（403）与 A24-doc-004（404）的响应正文分别被 A24-doc-005 / A24-doc-006 的同名文件覆盖，正文无法恢复；两次访问的 URL、状态码、字节数、耗时仍在 requests.jsonl 完整保留。同类问题也发生在两次 400 渲染共用 failures/A24-r1-board.body（两次的 error_summary 均在 requests.jsonl 独立成行，可完整追溯）。",
+      "看图精确时钟未采集，只给可证明的时间窗",
+      "token / 图像输入 / 费用平台未提供，记 null",
+      "首版 schedule.json 的 brand 为 null（inputs/release.json 无 brand 字段），已按题面补齐并新增 brand_source；重新生成后与首版仅 generated_at/brand/brand_source 三行不同，重生成的三份 DSL 与交付 .snapshot 逐字节相同，故未重渲染；首版 JSON 归档在 attempts/v1-schedule/"
+    ]
+  },
+  "outputs": [
+    "outputs/run-20261002-220723-mimo/A24/execution-board.png",
+    "outputs/run-20261002-220723-mimo/A24/execution-board.snapshot",
+    "outputs/run-20261002-220723-mimo/A24/decision-brief.png",
+    "outputs/run-20261002-220723-mimo/A24/decision-brief.snapshot",
+    "outputs/run-20261002-220723-mimo/A24/action-card.png",
+    "outputs/run-20261002-220723-mimo/A24/action-card.snapshot",
+    "outputs/run-20261002-220723-mimo/A24/schedule.json",
+    "outputs/run-20261002-220723-mimo/A24/schedule-audit.json",
+    "outputs/run-20261002-220723-mimo/A24/content-map.json",
+    "outputs/run-20261002-220723-mimo/A24/snapshot-usage.md",
+    "outputs/run-20261002-220723-mimo/A24/task-metrics.json"
+  ],
+  "candidates": [
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1/execution-board.png",
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1/execution-board.snapshot",
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1/decision-brief.png",
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1/decision-brief.snapshot",
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1/action-card.png",
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1/action-card.snapshot",
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1-schedule/schedule.json",
+    "tmp/run-20261002-220723-mimo/A24/attempts/v1-schedule/schedule-audit.json"
+  ],
+  "rounds": [],
+  "unresolved_issues": [
+    "无阻塞项：A24 已 completed，generator problems = 0，11/11 指定交付齐全，三张最终 PNG 逐张查看通过",
+    "过程偏差：2 个文档错误响应正文（403/404）与第 1 次 400 的 .body 被同名请求覆盖，无法恢复；对应 URL/状态/字节数/错误摘要仍完整留在 requests.jsonl",
+    "看图的精确单次时刻未采集，iterations.jsonl 以 viewed_at_basis 记录可证明的时间窗（渲染结束 -> 下一次渲染开始），不编造具体时刻",
+    "token、图像输入用量与费用：平台未提供本任务任何计量指标，usage 全部记 null 并注明原因，不用字数或账号余量估造",
+    "首版 schedule.json 的 brand 为 null 已修复并归档旧版；此为唯一一次交付级数据缺陷，修复后 DSL 逐字节未变、PNG 未触碰"
+  ],
+  "resume_notes": "completed；无阻塞，可继续 B01。17 个请求全串行（渲染 8：200=6、400=2；文档 9：200=7、403=1、404=1），0 限流、0 排队，请求耗时之和 53159.1ms，收到渲染 2055748 字节 + 文档 430930 字节。看图 6 次（v02 三张 + v03 三张）。迭代 3 行（baseline 1 / visual 1 / syntax-fix 1），完整视觉迭代 1。墙钟 5565s。"
+}

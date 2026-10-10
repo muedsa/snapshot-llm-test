@@ -1,0 +1,549 @@
+{
+    "task_id":  "A07",
+    "generated_at":  "2026-10-03T01:49:08+08:00",
+    "timezone":  "Asia/Shanghai (UTC+08:00)",
+    "source":  "tasks/A07-transit-topology/inputs/network.json",
+    "definitions":  {
+                        "accessible_journey":  "起点、终点、以及每一次换乘所在的站都必须 accessible=true。仅作为途经站通过非无障碍站是允许的（可乘车通过）。",
+                        "non_geographic":  "本图为示意拓扑图，不按地理比例；站间连线只使用 0°/45°/90° 三种走向。",
+                        "transfer":  "改变乘坐线路；第一次上车不算换乘。换乘次数 = 线路段数 - 1。",
+                        "edge":  "相邻站之间的一段区间（两个相邻站 = 1 条边）。站数 = 边数 + 1，两者不可混用。",
+                        "walkable":  "所有线路无向、可双向乘坐，相邻站耗时相同，因此最少站间边数用等权 BFS 求解。"
+                    },
+    "topology":  {
+                     "line_count":  3,
+                     "crossing_rule":  "三条线两两的共站集合：R∩B={S04}, R∩G={S05}, B∩G={S08}，全部是有站名的换乘站；不存在\"两线相交但无共站\"的情况。布局上也刻意让线路之间不发生无站交叉——所有线条交汇点都是换乘站。",
+                     "non_accessible_stations":  [
+                                                     "S03",
+                                                     "S05",
+                                                     "S09",
+                                                     "S14"
+                                                 ],
+                     "station_count":  16,
+                     "edge_count":  16,
+                     "transfer_stations":  [
+                                               "S04",
+                                               "S05",
+                                               "S08"
+                                           ]
+                 },
+    "stations":  [
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "R"
+                                   ],
+                         "accessible":  true,
+                         "name":  "松林",
+                         "id":  "S01"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "R"
+                                   ],
+                         "accessible":  true,
+                         "name":  "北门",
+                         "id":  "S02"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "R"
+                                   ],
+                         "accessible":  false,
+                         "name":  "书院",
+                         "id":  "S03"
+                     },
+                     {
+                         "is_transfer":  true,
+                         "lines":  [
+                                       "R",
+                                       "B"
+                                   ],
+                         "accessible":  true,
+                         "name":  "中心",
+                         "id":  "S04"
+                     },
+                     {
+                         "is_transfer":  true,
+                         "lines":  [
+                                       "R",
+                                       "G"
+                                   ],
+                         "accessible":  false,
+                         "name":  "东桥",
+                         "id":  "S05"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "R"
+                                   ],
+                         "accessible":  true,
+                         "name":  "江湾",
+                         "id":  "S06"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "B"
+                                   ],
+                         "accessible":  true,
+                         "name":  "西港",
+                         "id":  "S07"
+                     },
+                     {
+                         "is_transfer":  true,
+                         "lines":  [
+                                       "B",
+                                       "G"
+                                   ],
+                         "accessible":  true,
+                         "name":  "工坊",
+                         "id":  "S08"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "B"
+                                   ],
+                         "accessible":  false,
+                         "name":  "花园",
+                         "id":  "S09"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "B"
+                                   ],
+                         "accessible":  true,
+                         "name":  "南门",
+                         "id":  "S10"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "B"
+                                   ],
+                         "accessible":  true,
+                         "name":  "会展",
+                         "id":  "S11"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "R"
+                                   ],
+                         "accessible":  true,
+                         "name":  "机场",
+                         "id":  "S12"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "G"
+                                   ],
+                         "accessible":  true,
+                         "name":  "石溪",
+                         "id":  "S13"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "G"
+                                   ],
+                         "accessible":  false,
+                         "name":  "公园",
+                         "id":  "S14"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "G"
+                                   ],
+                         "accessible":  true,
+                         "name":  "剧院",
+                         "id":  "S15"
+                     },
+                     {
+                         "is_transfer":  false,
+                         "lines":  [
+                                       "G"
+                                   ],
+                         "accessible":  true,
+                         "name":  "研究所",
+                         "id":  "S16"
+                     }
+                 ],
+    "lines":  [
+                  {
+                      "station_count":  7,
+                      "stations":  [
+                                       "S01",
+                                       "S02",
+                                       "S03",
+                                       "S04",
+                                       "S05",
+                                       "S06",
+                                       "S12"
+                                   ],
+                      "name":  "红线",
+                      "id":  "R",
+                      "edge_count":  6
+                  },
+                  {
+                      "station_count":  6,
+                      "stations":  [
+                                       "S07",
+                                       "S08",
+                                       "S04",
+                                       "S09",
+                                       "S10",
+                                       "S11"
+                                   ],
+                      "name":  "蓝线",
+                      "id":  "B",
+                      "edge_count":  5
+                  },
+                  {
+                      "station_count":  6,
+                      "stations":  [
+                                       "S13",
+                                       "S14",
+                                       "S08",
+                                       "S15",
+                                       "S05",
+                                       "S16"
+                                   ],
+                      "name":  "绿线",
+                      "id":  "G",
+                      "edge_count":  5
+                  }
+              ],
+    "queries":  [
+                    {
+                        "query":  {
+                                      "from":  "S01",
+                                      "from_name":  "松林",
+                                      "to":  "S11",
+                                      "to_name":  "会展"
+                                  },
+                        "accessible_blocked_reason":  null,
+                        "shortest_accessible":  {
+                                                    "constraints":  "起点/终点/换乘站均 accessible=true；途经非无障碍站允许，仅不得作为起终点或换乘站",
+                                                    "line_segments":  [
+                                                                          {
+                                                                              "stations":  [
+                                                                                               "S01",
+                                                                                               "S02",
+                                                                                               "S03",
+                                                                                               "S04"
+                                                                                           ],
+                                                                              "line_name":  "红线",
+                                                                              "line":  "R"
+                                                                          },
+                                                                          {
+                                                                              "stations":  [
+                                                                                               "S04",
+                                                                                               "S09",
+                                                                                               "S10",
+                                                                                               "S11"
+                                                                                           ],
+                                                                              "line_name":  "蓝线",
+                                                                              "line":  "B"
+                                                                          }
+                                                                      ],
+                                                    "station_names":  [
+                                                                          "松林",
+                                                                          "北门",
+                                                                          "书院",
+                                                                          "中心",
+                                                                          "花园",
+                                                                          "南门",
+                                                                          "会展"
+                                                                      ],
+                                                    "transfer_count":  1,
+                                                    "transfer_stations":  [
+                                                                              "S04"
+                                                                          ],
+                                                    "edge_count":  6,
+                                                    "same_as_shortest_ordinary":  true,
+                                                    "station_path":  [
+                                                                         "S01",
+                                                                         "S02",
+                                                                         "S03",
+                                                                         "S04",
+                                                                         "S09",
+                                                                         "S10",
+                                                                         "S11"
+                                                                     ],
+                                                    "station_count":  7
+                                                },
+                        "shortest_ordinary":  {
+                                                  "station_count":  7,
+                                                  "transfer_count":  1,
+                                                  "method":  "BFS over undirected equal-weight hops, minimal edge_count first, ties broken by fewest line changes",
+                                                  "line_segments":  [
+                                                                        {
+                                                                            "stations":  [
+                                                                                             "S01",
+                                                                                             "S02",
+                                                                                             "S03",
+                                                                                             "S04"
+                                                                                         ],
+                                                                            "line_name":  "红线",
+                                                                            "line":  "R"
+                                                                        },
+                                                                        {
+                                                                            "stations":  [
+                                                                                             "S04",
+                                                                                             "S09",
+                                                                                             "S10",
+                                                                                             "S11"
+                                                                                         ],
+                                                                            "line_name":  "蓝线",
+                                                                            "line":  "B"
+                                                                        }
+                                                                    ],
+                                                  "station_path":  [
+                                                                       "S01",
+                                                                       "S02",
+                                                                       "S03",
+                                                                       "S04",
+                                                                       "S09",
+                                                                       "S10",
+                                                                       "S11"
+                                                                   ],
+                                                  "station_names":  [
+                                                                        "松林",
+                                                                        "北门",
+                                                                        "书院",
+                                                                        "中心",
+                                                                        "花园",
+                                                                        "南门",
+                                                                        "会展"
+                                                                    ],
+                                                  "edge_count":  6,
+                                                  "transfer_stations":  [
+                                                                            "S04"
+                                                                        ]
+                                              },
+                        "shortest_is_accessible_journey":  true
+                    },
+                    {
+                        "query":  {
+                                      "from":  "S13",
+                                      "from_name":  "石溪",
+                                      "to":  "S12",
+                                      "to_name":  "机场"
+                                  },
+                        "accessible_blocked_reason":  "换乘站 S05 东桥 非无障碍",
+                        "shortest_accessible":  {
+                                                    "constraints":  "起点/终点/换乘站均 accessible=true；途经非无障碍站允许，仅不得作为起终点或换乘站",
+                                                    "line_segments":  [
+                                                                          {
+                                                                              "stations":  [
+                                                                                               "S13",
+                                                                                               "S14",
+                                                                                               "S08"
+                                                                                           ],
+                                                                              "line_name":  "绿线",
+                                                                              "line":  "G"
+                                                                          },
+                                                                          {
+                                                                              "stations":  [
+                                                                                               "S08",
+                                                                                               "S04"
+                                                                                           ],
+                                                                              "line_name":  "蓝线",
+                                                                              "line":  "B"
+                                                                          },
+                                                                          {
+                                                                              "stations":  [
+                                                                                               "S04",
+                                                                                               "S05",
+                                                                                               "S06",
+                                                                                               "S12"
+                                                                                           ],
+                                                                              "line_name":  "红线",
+                                                                              "line":  "R"
+                                                                          }
+                                                                      ],
+                                                    "station_names":  [
+                                                                          "石溪",
+                                                                          "公园",
+                                                                          "工坊",
+                                                                          "中心",
+                                                                          "东桥",
+                                                                          "江湾",
+                                                                          "机场"
+                                                                      ],
+                                                    "transfer_count":  2,
+                                                    "transfer_stations":  [
+                                                                              "S08",
+                                                                              "S04"
+                                                                          ],
+                                                    "edge_count":  6,
+                                                    "same_as_shortest_ordinary":  false,
+                                                    "station_path":  [
+                                                                         "S13",
+                                                                         "S14",
+                                                                         "S08",
+                                                                         "S04",
+                                                                         "S05",
+                                                                         "S06",
+                                                                         "S12"
+                                                                     ],
+                                                    "station_count":  7
+                                                },
+                        "shortest_ordinary":  {
+                                                  "station_count":  7,
+                                                  "transfer_count":  1,
+                                                  "method":  "BFS over undirected equal-weight hops, minimal edge_count first, ties broken by fewest line changes",
+                                                  "line_segments":  [
+                                                                        {
+                                                                            "stations":  [
+                                                                                             "S13",
+                                                                                             "S14",
+                                                                                             "S08",
+                                                                                             "S15",
+                                                                                             "S05"
+                                                                                         ],
+                                                                            "line_name":  "绿线",
+                                                                            "line":  "G"
+                                                                        },
+                                                                        {
+                                                                            "stations":  [
+                                                                                             "S05",
+                                                                                             "S06",
+                                                                                             "S12"
+                                                                                         ],
+                                                                            "line_name":  "红线",
+                                                                            "line":  "R"
+                                                                        }
+                                                                    ],
+                                                  "station_path":  [
+                                                                       "S13",
+                                                                       "S14",
+                                                                       "S08",
+                                                                       "S15",
+                                                                       "S05",
+                                                                       "S06",
+                                                                       "S12"
+                                                                   ],
+                                                  "station_names":  [
+                                                                        "石溪",
+                                                                        "公园",
+                                                                        "工坊",
+                                                                        "剧院",
+                                                                        "东桥",
+                                                                        "江湾",
+                                                                        "机场"
+                                                                    ],
+                                                  "edge_count":  6,
+                                                  "transfer_stations":  [
+                                                                            "S05"
+                                                                        ]
+                                              },
+                        "shortest_is_accessible_journey":  false
+                    },
+                    {
+                        "query":  {
+                                      "from":  "S07",
+                                      "from_name":  "西港",
+                                      "to":  "S16",
+                                      "to_name":  "研究所"
+                                  },
+                        "accessible_blocked_reason":  null,
+                        "shortest_accessible":  {
+                                                    "constraints":  "起点/终点/换乘站均 accessible=true；途经非无障碍站允许，仅不得作为起终点或换乘站",
+                                                    "line_segments":  [
+                                                                          {
+                                                                              "stations":  [
+                                                                                               "S07",
+                                                                                               "S08"
+                                                                                           ],
+                                                                              "line_name":  "蓝线",
+                                                                              "line":  "B"
+                                                                          },
+                                                                          {
+                                                                              "stations":  [
+                                                                                               "S08",
+                                                                                               "S15",
+                                                                                               "S05",
+                                                                                               "S16"
+                                                                                           ],
+                                                                              "line_name":  "绿线",
+                                                                              "line":  "G"
+                                                                          }
+                                                                      ],
+                                                    "station_names":  [
+                                                                          "西港",
+                                                                          "工坊",
+                                                                          "剧院",
+                                                                          "东桥",
+                                                                          "研究所"
+                                                                      ],
+                                                    "transfer_count":  1,
+                                                    "transfer_stations":  [
+                                                                              "S08"
+                                                                          ],
+                                                    "edge_count":  4,
+                                                    "same_as_shortest_ordinary":  true,
+                                                    "station_path":  [
+                                                                         "S07",
+                                                                         "S08",
+                                                                         "S15",
+                                                                         "S05",
+                                                                         "S16"
+                                                                     ],
+                                                    "station_count":  5
+                                                },
+                        "shortest_ordinary":  {
+                                                  "station_count":  5,
+                                                  "transfer_count":  1,
+                                                  "method":  "BFS over undirected equal-weight hops, minimal edge_count first, ties broken by fewest line changes",
+                                                  "line_segments":  [
+                                                                        {
+                                                                            "stations":  [
+                                                                                             "S07",
+                                                                                             "S08"
+                                                                                         ],
+                                                                            "line_name":  "蓝线",
+                                                                            "line":  "B"
+                                                                        },
+                                                                        {
+                                                                            "stations":  [
+                                                                                             "S08",
+                                                                                             "S15",
+                                                                                             "S05",
+                                                                                             "S16"
+                                                                                         ],
+                                                                            "line_name":  "绿线",
+                                                                            "line":  "G"
+                                                                        }
+                                                                    ],
+                                                  "station_path":  [
+                                                                       "S07",
+                                                                       "S08",
+                                                                       "S15",
+                                                                       "S05",
+                                                                       "S16"
+                                                                   ],
+                                                  "station_names":  [
+                                                                        "西港",
+                                                                        "工坊",
+                                                                        "剧院",
+                                                                        "东桥",
+                                                                        "研究所"
+                                                                    ],
+                                                  "edge_count":  4,
+                                                  "transfer_stations":  [
+                                                                            "S08"
+                                                                        ]
+                                              },
+                        "shortest_is_accessible_journey":  true
+                    }
+                ]
+}

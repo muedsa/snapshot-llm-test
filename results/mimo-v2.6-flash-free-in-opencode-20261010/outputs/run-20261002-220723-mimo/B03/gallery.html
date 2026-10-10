@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B03 · 用十件作品探索 DSL 的创意边界 — 画廊</title>
+<style>
+  :root{
+    --bg:#0b0f16; --card:#111826; --line:#1d2b40; --fg:#e8eef7; --dim:#93a4bd;
+    --accent:#7FD4C1; --hot:#E4622C; --gold:#F2C14E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Noto Sans CJK SC","Noto Sans CJK JP","Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.65; padding:32px 24px 80px;
+  }
+  header{max-width:1500px;margin:0 auto 8px}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:.5px}
+  .sub{color:var(--dim);font-size:14px}
+  .sub code{background:#16202f;padding:2px 6px;border-radius:4px;font-size:13px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--dim)}
+  .stat b{color:var(--fg);font-weight:600}
+  .stat.hot b{color:var(--hot)}
+  .grid{
+    max-width:1500px;margin:26px auto 0;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;
+  }
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .thumb{display:block;width:100%;background:#080d14;cursor:zoom-in;border-bottom:1px solid var(--line)}
+  .thumb img{
+    display:block;width:100%;height:320px;object-fit:contain;background:
+      repeating-conic-gradient(#0d1622 0% 25%, #121c2a 0% 50%) 50%/24px 24px;
+  }
+  .meta{padding:14px 16px 16px}
+  .id{display:inline-block;font-size:12px;color:var(--accent);letter-spacing:1px;font-weight:600}
+  .title{font-size:17px;font-weight:600;margin:4px 0 8px}
+  .dims{font-size:12px;color:var(--dim);font-family:ui-monospace,Menlo,Consolas,monospace}
+  .stage{display:inline-block;font-size:11px;color:var(--hot);border:1px solid #5a2c17;background:#25140d;border-radius:5px;padding:2px 7px;margin-left:8px}
+  .tagline{font-size:13.5px;color:#b6c4d6;margin:8px 0 10px}
+  .cap{font-size:12.5px;color:#8fa2ba;margin:0 0 10px;padding-left:10px;border-left:2px solid var(--line)}
+  .links{display:flex;gap:8px;flex-wrap:wrap}
+  .links a{
+    font-size:12.5px;color:var(--fg);text-decoration:none;
+    background:#16202f;border:1px solid var(--line);border-radius:6px;padding:5px 10px;
+  }
+  .links a:hover{border-color:var(--accent);color:var(--accent)}
+  section.docs{max-width:1500px;margin:34px auto 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  section.docs h2{font-size:16px;margin:0 0 10px}
+  section.docs a{color:var(--accent)}
+  section.docs ul{margin:6px 0 0;padding-left:20px;color:#c3d0e0;font-size:13.5px}
+  footer{max-width:1500px;margin:44px auto 0;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:18px}
+  footer a{color:var(--accent)}
+  /* lightbox — 纯本地，无远程脚本 */
+  #lb{position:fixed;inset:0;background:rgba(3,7,13,.96);display:none;overflow:auto;z-index:99}
+  #lb.on{display:block}
+  #lb img{display:block;max-width:none;margin:26px auto 8px;cursor:zoom-out;
+           image-rendering:auto;border:1px solid var(--line);background:#080d14}
+  #lb .cap2{max-width:1100px;margin:0 auto 30px;color:#cbd6e6;font-size:14px;padding:0 20px}
+  #lb .cap2 b{color:var(--gold)}
+  #lb .x{position:fixed;top:14px;right:20px;font-size:26px;color:#cbd6e6;cursor:pointer;text-decoration:none}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B03 · 用十件作品探索 DSL 的创意边界</h1>
+  <div class="sub">
+    run_id <code>run-20261002-220723-mimo</code> ·
+    服务 <code>POST https://open-snapshot.muedsa.com/snapshot</code> ·
+    纯 DSL · 无外部素材 · 所有内容均为虚构演示数据
+  </div>
+  <div class="stats">
+    <div class="stat">作品 <b>10</b></div>
+    <div class="stat">画幅 <b>10 种，全不重复</b></div>
+    <div class="stat">观看距离 <b>0.25 – 10 m</b></div>
+    <div class="stat">最终 PNG 合计 <b>1,626,680 B</b></div>
+    <div class="stat">渲染请求 <b>33 次</b>（含 3 次 400）</div>
+    <div class="stat">能力探针 <b>19 个</b></div>
+    <div class="stat hot">被推翻的结论 <b>3 条</b></div>
+  </div>
+</header>
+
+<div class="grid" id="grid">
+
+  <div class="card">
+    <a class="thumb" href="case-01/final.png" data-t="case-01 · 蓝调不在场" data-c="1080×1528 · 描边/实心叠印 · 1-3 m">
+      <img src="case-01/final.png" alt="case-01 蓝调不在场海报" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-01</span><span class="stage">round 2</span>
+      <div class="title">《蓝调不在场》深夜演出海报</div>
+      <div class="dims">1080 × 1528 · 263,211 B · foregroundMode=STROKE</div>
+      <p class="tagline">实心金黄与 6px 空心薄荷在同一标题里对抗——「不在场」由「只有轮廓没有实体」兑现。</p>
+      <p class="cap">改：描边 4→6px、右上 047 空心水印、橙色 ON SALE 药丸、版心线提亮。</p>
+      <div class="links">
+        <a href="case-01/final.png">PNG</a>
+        <a href="case-01/final.snapshot">DSL</a>
+        <a href="case-01/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-02/final.png" data-t="case-02 · 大堂导视" data-c="1920×720 · BackdropFilter · 2-6 m">
+      <img src="case-02/final.png" alt="case-02 环贸中心大堂导视" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-02</span><span class="stage">round 2</span>
+      <div class="title">环贸中心大堂楼层导视</div>
+      <div class="dims">1920 × 720 · 244,341 B · ClipRRect &gt; BackdropFilter</div>
+      <p class="tagline">上半锐利中庭场景，下半一整块 1848×384 毛玻璃承载三栏信息。</p>
+      <p class="cap">首版四块玻璃全部没虚化；探针 p14–p18 查明：不能夹 Container(color)，且全文档只有第一个生效。</p>
+      <div class="links">
+        <a href="case-02/final.png">PNG</a>
+        <a href="case-02/final.snapshot">DSL</a>
+        <a href="case-02/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-03/final.png" data-t="case-03 · 音乐节票根" data-c="1600×640 · ColorFiltered MULTIPLY · 0.3 m">
+      <img src="case-03/final.png" alt="case-03 潮汐音乐节票根" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-03</span><span class="stage">round 2</span>
+      <div class="title">潮汐音乐节丝网印票根</div>
+      <div class="dims">1600 × 640 · 65,155 B · ColorFiltered blendMode=MULTIPLY</div>
+      <p class="tagline">赭红版与靛蓝版交叠处靠 MULTIPLY 变成第三种深色，是套印最直接的证据。</p>
+      <p class="cap">改：存根标题合并为单行「存根 STUB NO.」、编号 y388→372、右档补蓝色套印版画与图注。</p>
+      <div class="links">
+        <a href="case-03/final.png">PNG</a>
+        <a href="case-03/final.snapshot">DSL</a>
+        <a href="case-03/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-04/final.png" data-t="case-04 · 圈速计时板" data-c="1920×1080 · 各向异性模糊 · 3-8 m">
+      <img src="case-04/final.png" alt="case-04 极速圈速计时板" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-04</span><span class="stage">round 3</span>
+      <div class="title">极速圈速计时板</div>
+      <div class="dims">1920 × 1080 · 179,949 B · ImageFiltered sigmaX=70 sigmaY=4</div>
+      <p class="tagline">横向抹开、纵向仍有边界的速度残影，压在巨型 1:32.847 之后。</p>
+      <p class="cap">r1 400（IBlur 内嵌 Positioned）；r2 条带绝对坐标 756→400；r3 DELTA 独立卡 + 右边界对齐 1848。</p>
+      <div class="links">
+        <a href="case-04/final.png">PNG</a>
+        <a href="case-04/final.snapshot">DSL</a>
+        <a href="case-04/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-05/final.png" data-t="case-05 · 鸟类图鉴内页" data-c="1000×1414 · WidgetSpan · 0.25 m">
+      <img src="case-05/final.png" alt="case-05 城市鸟类图鉴内页" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-05</span><span class="stage">round 2</span>
+      <div class="title">城市鸟类图鉴内页 PLATE 03</div>
+      <div class="dims">1000 × 1414 · 182,307 B · WidgetSpan 行内徽章</div>
+      <p class="tagline">图版识别 → 图 A 数据图 → 能读的句子；句中关键词全换成圆角徽章，扫颜色即可分类。</p>
+      <p class="cap">改：图框底补分隔线与采样说明；页脚死白处新增「辨识要点」第二段（+4 枚 chip），与正文留 10px 间隔未相撞。</p>
+      <div class="links">
+        <a href="case-05/final.png">PNG</a>
+        <a href="case-05/final.snapshot">DSL</a>
+        <a href="case-05/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-06/final.png" data-t="case-06 · 折叠城市封面" data-c="1080×1440 · SizedOverflowBox 出血 · 1-2 m">
+      <img src="case-06/final.png" alt="case-06 折叠城市杂志封面" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-06</span><span class="stage">round 4</span>
+      <div class="title">《折叠城市》杂志封面</div>
+      <div class="dims">1080 × 1440 · 93,707 B · ClipRect &gt; SizedOverflowBox &gt; Text</div>
+      <p class="tagline">FOLDCITY 以 320px 排版、字宽 1610px 超过 1080px 页宽，FOLDC 顶到 x=1079。</p>
+      <p class="cap">迭代最深：r2 墨迹仅 63..891（未出血）；r3 加 maxLines 字节完全相同（无效）；r4 框宽 1032→2000 才由页边裁出真出血 63..1079。</p>
+      <div class="links">
+        <a href="case-06/final.png">PNG</a>
+        <a href="case-06/final.snapshot">DSL</a>
+        <a href="case-06/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-07/final.png" data-t="case-07 · 夜航登机牌" data-c="1748×760 · REPEAT 渐变纹样 · 0.3 m">
+      <img src="case-07/final.png" alt="case-07 夜航登机牌" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-07</span><span class="stage">round 4</span>
+      <div class="title">夜航登机牌</div>
+      <div class="dims">1748 × 760 · 140,684 B · gradientType=REPEAT</div>
+      <p class="tagline">条纹出现两次：底页暗色斜纹压空白，卡内橙黄斜纹带是高饱和航司色带。</p>
+      <p class="cap">r2 补右栏与「次日+1」对齐；r3 修 20px 纵向错位（x880→900）；r4 存根补旅客右对齐列、条码拉满 440px。</p>
+      <div class="links">
+        <a href="case-07/final.png">PNG</a>
+        <a href="case-07/final.snapshot">DSL</a>
+        <a href="case-07/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-08/final.png" data-t="case-08 · ELEVATION 规范" data-c="1200×1500 · boxShadow + clipBehavior · 0.4 m">
+      <img src="case-08/final.png" alt="case-08 ELEVATION 深度与材质规范" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-08</span><span class="stage">round 5</span>
+      <div class="title">ELEVATION 深度与材质规范 v2.4</div>
+      <div class="dims">1200 × 1500 · 209,634 B · boxShadow + clipBehavior</div>
+      <p class="tagline">从直觉（六级阶梯）到参数（可粘贴的两层）到反例（HARD_EDGE 被裁 vs NONE 溢出）。</p>
+      <p class="cap">r3 逐像素发现左右两半完全相同 → 探针 p19 推翻原方案；r4 改版为子节点裁剪对照（差 70px）；r5 修掉指向不存在任务的 B08 引用。</p>
+      <div class="links">
+        <a href="case-08/final.png">PNG</a>
+        <a href="case-08/final.snapshot">DSL</a>
+        <a href="case-08/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-09/final.png" data-t="case-09 · 东港站看板" data-c="1920×480 · fontFeatures +tnum · 3-10 m">
+      <img src="case-09/final.png" alt="case-09 东港站到发看板" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-09</span><span class="stage">round 1</span>
+      <div class="title">东港站到发信息看板</div>
+      <div class="dims">1920 × 480 · 124,832 B · fontFeatures="+tnum"</div>
+      <p class="tagline">一张表，颜色即状态；数值列全部开 +tnum，使四列时间对齐成竖线。</p>
+      <p class="cap">唯一一件首版即通过：逐项核对七列 x、行距 58、分隔线与页脚均在画布内，未发现缺陷，保持 round 1。</p>
+      <div class="links">
+        <a href="case-09/final.png">PNG</a>
+        <a href="case-09/final.snapshot">DSL</a>
+        <a href="case-09/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <a class="thumb" href="case-10/final.png" data-t="case-10 · 软木园等轴测" data-c="1200×1200 · Transform 16 元矩阵 · 0.4 m">
+      <img src="case-10/final.png" alt="case-10 软木园等轴测导览图" loading="lazy">
+    </a>
+    <div class="meta">
+      <span class="id">CASE-10</span><span class="stage">round 5</span>
+      <div class="title">软木园等轴测导览图</div>
+      <div class="dims">1200 × 1200 · 122,860 B · Transform 16 元列主序矩阵</div>
+      <p class="tagline">地面砖、左面、右面、顶面共用同一个矩阵，全图透视严格一致——这是能比较高度的前提。</p>
+      <p class="cap">r1 两处结构错（$U/$u 大小写冲突、矩阵重复平移）；r3 按 (u+v) 深度排序；r4 补 5 馆、r5 补 5 树（图例必须解释每一种形体）。</p>
+      <div class="links">
+        <a href="case-10/final.png">PNG</a>
+        <a href="case-10/final.snapshot">DSL</a>
+        <a href="case-10/case.md">case.md</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="docs">
+  <h2>本任务文档</h2>
+  <ul>
+    <li><a href="portfolio.md">portfolio.md</a> — 策展逻辑、证据表与十件用途</li>
+    <li><a href="portfolio.json">portfolio.json</a> — 结构化作品清单（含尺寸来源、能力、完成标准、视觉复核、请求与迭代 ID）</li>
+    <li><a href="technique-notes.md">technique-notes.md</a> — <b>指定交付</b>：13 节实测技术边界与踩坑记录</li>
+    <li><a href="snapshot-usage.md">snapshot-usage.md</a> — 文档/工具的真实应用与本任务留痕</li>
+    <li><a href="task-metrics.json">task-metrics.json</a> — 请求、迭代、看图与耗时指标</li>
+    <li><a href="case-01/case.md">…</a> — 每件作品的 case.md（受众、场景、完成标准、自检过程）</li>
+    <li>探针 p01–p19 与全部过程日志：<code>tmp/run-20261002-220723-mimo/B03/</code></li>
+  </ul>
+</section>
+
+<footer>
+  B03 · run <code>run-20261002-220723-mimo</code> ·
+  10 张 PNG 均为服务返回的原始字节，与同名 <code>.snapshot</code> 配对，未做任何后处理 ·
+  全部品牌、日期、票号、姓名、时刻均为虚构演示数据（画面自带 <code>DEMO . 演示数据</code>）。
+  <a href="../_suite/index.md">返回套件索引</a>
+</footer>
+
+<div id="lb"><a class="x" href="#" title="关闭">&times;</a><img alt=""><div class="cap2"></div></div>
+
+<script>
+/* 纯本地 lightbox：点缩略图看原尺寸，再点图片或 × 关闭。无任何远程脚本。 */
+(function(){
+  var lb=document.getElementById('lb'), im=lb.querySelector('img'), cap=lb.querySelector('.cap2');
+  function open(href,t,c){
+    im.src=href;
+    cap.innerHTML='<b>'+t+'</b><br>'+c+' · <a href="'+href+'" style="color:#7FD4C1">打开原图</a>';
+    lb.classList.add('on'); document.body.style.overflow='hidden';
+    window.scrollTo(0,0);
+  }
+  function close(){ lb.classList.remove('on'); document.body.style.overflow=''; }
+  document.getElementById('grid').addEventListener('click',function(e){
+    var a=e.target.closest('a.thumb'); if(!a) return;
+    e.preventDefault(); open(a.getAttribute('href'), a.dataset.t||'', a.dataset.c||'');
+  });
+  lb.addEventListener('click',function(e){ if(e.target!==im || im.naturalWidth<=window.innerWidth) close(); });
+  lb.querySelector('.x').addEventListener('click',function(e){ e.preventDefault(); close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+</body>
+</html>

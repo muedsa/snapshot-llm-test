@@ -1,0 +1,287 @@
+
+Positioned | Snapshot
+  
+   
+  
+跳转到内容
+Snapshot
+ 
+搜索
+Ctrl
+K
+取消
+  
+GitHub
+ 
+选择主题
+ 
+深色
+浅色
+自动
+ 
+   
+  
+菜单
+ 
+ 
+开始使用
+ 
+概览
+在线 Playground
+安装与构建
+快速开始
+核心原理
+ 
+渲染入口与输出
+核心概念
+约束、布局与调试
+Widget 指南
+ 
+Widget 与布局
+绘制、装饰与效果
+图片、文本与富文本
+布局 Widget API
+ 
+Container
+SizedBox
+ConstrainedBox
+LimitedBox
+OverflowBox
+SizedOverflowBox
+Padding
+Align
+Center
+Flex
+Row
+Column
+Expanded
+Flexible
+Stack
+Positioned
+Transform
+AspectRatio
+FractionallySizedBox
+IndexedStack
+Spacer
+UnconstrainedBox
+绘制与效果 Widget API
+ 
+ColoredBox
+DecoratedBox
+Opacity
+ColorFiltered
+ImageFiltered
+BackdropFilter
+ClipRect
+ClipRRect
+ClipOval
+ClipPath
+图片 Widget API
+ 
+RawImage
+ProviderImage
+CachedNetworkImage
+文本 Widget API
+ 
+Text
+RichText
+WidgetSpan
+ImageEmojiSpan
+类 DOM 解析器
+ 
+类 DOM 解析器
+标签与属性参考
+错误处理与扩展
+DSL 语言服务
+测试
+ 
+测试与 Golden
+参考
+ 
+枚举速查
+FAQ
+源码索引
+ 
+GitHub
+ 
+选择主题
+ 
+深色
+浅色
+自动
+ 
+ 
+ 
+本页内容 
+概述
+函数签名
+参数
+其他构造方式
+ 
+本页内容
+概述
+函数签名
+参数
+其他构造方式
+ 
+Positioned
+Positioned
+ 是 Stack / IndexedStack 专用的 ParentDataWidget，不创建独立 RenderBox。它把定位参数写入子节点的 
+StackParentData
+。
+函数签名
+ 
+Section titled “函数签名”
+ 
+fun
+ Stack.
+Positioned
+(
+    
+left: Float? 
+=
+ 
+null
+,
+    
+top: Float? 
+=
+ 
+null
+,
+    
+right: Float? 
+=
+ 
+null
+,
+    
+bottom: Float? 
+=
+ 
+null
+,
+    
+width: Float? 
+=
+ 
+null
+,
+    
+height: Float? 
+=
+ 
+null
+,
+    
+content: Positioned.() 
+->
+ Unit 
+=
+ {},
+)
+ Unit = {},)">
+参数
+ 
+Section titled “参数”
+参数
+说明
+left
+ / 
+right
+子节点到 Stack 左右边的距离
+top
+ / 
+bottom
+子节点到 Stack 上下边的距离
+width
+ / 
+height
+显式子节点尺寸
+content
+一个子 Widget
+每个轴最多指定三项中的两项：
+left
+、
+right
+、
+width
+ 最多两个；垂直轴相同。给出两边时尺寸由边距推导；给出一边和尺寸时位置明确；只给尺寸时按 Stack alignment 放置。
+Stack
+ {
+    
+Container
+(width 
+=
+ 
+400f
+, height 
+=
+ 
+240f
+)
+    
+Positioned
+(left 
+=
+ 
+20f
+, right 
+=
+ 
+20f
+, bottom 
+=
+ 
+16f
+, height 
+=
+ 
+48f
+) {
+        
+ColoredBox
+(color 
+=
+ 
+0xFF38BDF8
+.
+toInt
+())
+    
+}
+}
+其他构造方式
+ 
+Section titled “其他构造方式”
+类还提供 
+fromRect()
+、
+fromRelativeRect()
+、
+fill()
+ 与 
+directional()
+ 工厂，适合直接构造 Widget 对象。DSL 同时提供 
+Stack.Positioned()
+ 与 
+IndexedStack.Positioned()
+ 扩展函数。
+ Positioned 的父节点
+Positioned
+ 只能作为 
+Stack
+ 或 
+IndexedStack
+ 的直接子节点。放在 
+Row
+、
+Column
+ 或其他父节点中会因 parentData 类型不匹配而失败。
+ 
+上一页
+Stack
+ 
+下一页
+Transform
+ 

@@ -1,0 +1,748 @@
+{
+    "schema":  "snapshot-suite/a21-contrast-audit/v1",
+    "task":  "A21",
+    "round":  3,
+    "run_id":  "run-20261002-220723-mimo",
+    "generated_at":  "2026-10-05T11:33:23+08:00",
+    "timezone":  "UTC+08:00",
+    "method":  "GDI+ GetPixel 实测每个正文 probe 点的最终像素；对比度一律用 sampled_background_rgb（即最终实际背景）按 WCAG 2.1 相对亮度公式计算，不用声明色代替真实渲染结果。expected_background_composited 是 gen-a21.ps1 按 source-over 对 background_layers_bottom_up 逐层合成的参考值，用来证明叠层声明与真实渲染一致（容差 1 个通道值，见 delta_tolerance）。",
+    "delta_tolerance":  1,
+    "delta_tolerance_reason":  "服务端 8-bit source-over 与参考合成实现的取整可能相差 1；缺层或错层在这套配色下至少差 10，所以 1 以内只可能是取整噪声",
+    "wcag_min_ratio_required":  4.5,
+    "required_body_entries_per_image":  6,
+    "images":  {
+                   "launch-portrait.png":  {
+                                               "image":  "launch-portrait.png",
+                                               "width":  1080,
+                                               "height":  1350,
+                                               "entry_count":  10,
+                                               "entries_required_min":  6,
+                                               "entries_sufficient":  true,
+                                               "min_contrast_ratio":  5.63,
+                                               "required_min_ratio":  4.5,
+                                               "all_entries_ge_required":  true,
+                                               "exact_background_matches":  6,
+                                               "background_matches_within_tolerance":  10,
+                                               "max_channel_delta":  1,
+                                               "reserved_bands":  [
+                                                                      {
+                                                                          "band":  "top",
+                                                                          "rect":  {
+                                                                                       "y":  0,
+                                                                                       "w":  1080,
+                                                                                       "h":  120,
+                                                                                       "x":  0
+                                                                                   },
+                                                                          "sampled":  6200,
+                                                                          "non_background":  0,
+                                                                          "background":  "#F4F5FB",
+                                                                          "empty":  true
+                                                                      },
+                                                                      {
+                                                                          "band":  "bottom",
+                                                                          "rect":  {
+                                                                                       "y":  1180,
+                                                                                       "w":  1080,
+                                                                                       "h":  170,
+                                                                                       "x":  0
+                                                                                   },
+                                                                          "sampled":  8835,
+                                                                          "non_background":  0,
+                                                                          "background":  "#F4F5FB",
+                                                                          "empty":  true
+                                                                      }
+                                                                  ],
+                                               "problems":  [
+
+                                                            ],
+                                               "entries":  [
+                                                               {
+                                                                   "key":  "portrait-wordmark",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "叠光 Layerlight",
+                                                                   "fontSize":  40,
+                                                                   "bold":  true,
+                                                                   "text_color":  "#14173A",
+                                                                   "background_name":  "page",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#F4F5FB",
+                                                                   "probe_point":  {
+                                                                                       "x":  294,
+                                                                                       "y":  186
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  244,
+                                                                                                  "g":  245,
+                                                                                                  "b":  251
+                                                                                              },
+                                                                   "sampled_background_hex":  "#F4F5FB",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  true,
+                                                                   "max_channel_delta":  0,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  15.91,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-eyebrow",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "ONLINE LAUNCH",
+                                                                   "fontSize":  28,
+                                                                   "bold":  true,
+                                                                   "text_color":  "#FFFFFF",
+                                                                   "background_name":  "primary-chip",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "5B4FE8"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#5B4FE8",
+                                                                   "probe_point":  {
+                                                                                       "x":  94,
+                                                                                       "y":  318
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  91,
+                                                                                                  "g":  79,
+                                                                                                  "b":  232
+                                                                                              },
+                                                                   "sampled_background_hex":  "#5B4FE8",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  true,
+                                                                   "max_channel_delta":  0,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  5.63,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-title",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+                                                                   "fontSize":  56,
+                                                                   "bold":  true,
+                                                                   "text_color":  "#14173A",
+                                                                   "background_name":  "bandA",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB",
+                                                                                                       "5B4FE8:1F"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#E1E1F9",
+                                                                   "probe_point":  {
+                                                                                       "x":  82,
+                                                                                       "y":  470
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  225,
+                                                                                                  "g":  225,
+                                                                                                  "b":  248
+                                                                                              },
+                                                                   "sampled_background_hex":  "#E1E1F8",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  false,
+                                                                   "max_channel_delta":  1,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  13.46,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-deck",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "让复杂信息变得清晰",
+                                                                   "fontSize":  30,
+                                                                   "bold":  false,
+                                                                   "text_color":  "#474B77",
+                                                                   "background_name":  "bandA",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB",
+                                                                                                       "5B4FE8:1F"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#E1E1F9",
+                                                                   "probe_point":  {
+                                                                                       "x":  82,
+                                                                                       "y":  623
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  225,
+                                                                                                  "g":  225,
+                                                                                                  "b":  248
+                                                                                              },
+                                                                   "sampled_background_hex":  "#E1E1F8",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  false,
+                                                                   "max_channel_delta":  1,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  6.43,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-date",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "2026.11.07 19:30",
+                                                                   "fontSize":  40,
+                                                                   "bold":  true,
+                                                                   "text_color":  "#14173A",
+                                                                   "background_name":  "page",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#F4F5FB",
+                                                                   "probe_point":  {
+                                                                                       "x":  82,
+                                                                                       "y":  744
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  244,
+                                                                                                  "g":  245,
+                                                                                                  "b":  251
+                                                                                              },
+                                                                   "sampled_background_hex":  "#F4F5FB",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  true,
+                                                                   "max_channel_delta":  0,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  15.91,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-speakers",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "讲者：林川 / 苏言",
+                                                                   "fontSize":  34,
+                                                                   "bold":  false,
+                                                                   "text_color":  "#474B77",
+                                                                   "background_name":  "page",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#F4F5FB",
+                                                                   "probe_point":  {
+                                                                                       "x":  82,
+                                                                                       "y":  827
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  244,
+                                                                                                  "g":  245,
+                                                                                                  "b":  251
+                                                                                              },
+                                                                   "sampled_background_hex":  "#F4F5FB",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  true,
+                                                                   "max_channel_delta":  0,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  7.6,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-sponsor",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "赞助方：Northstar Research / 云构工具",
+                                                                   "fontSize":  28,
+                                                                   "bold":  false,
+                                                                   "text_color":  "#474B77",
+                                                                   "background_name":  "page",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#F4F5FB",
+                                                                   "probe_point":  {
+                                                                                       "x":  82,
+                                                                                       "y":  903
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  244,
+                                                                                                  "g":  245,
+                                                                                                  "b":  251
+                                                                                              },
+                                                                   "sampled_background_hex":  "#F4F5FB",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  true,
+                                                                   "max_channel_delta":  0,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  7.6,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-free",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "免费参加 · 无需报名",
+                                                                   "fontSize":  28,
+                                                                   "bold":  true,
+                                                                   "text_color":  "#FFFFFF",
+                                                                   "background_name":  "primary-chip",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "5B4FE8"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#5B4FE8",
+                                                                   "probe_point":  {
+                                                                                       "x":  94,
+                                                                                       "y":  978
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  91,
+                                                                                                  "g":  79,
+                                                                                                  "b":  232
+                                                                                              },
+                                                                   "sampled_background_hex":  "#5B4FE8",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  true,
+                                                                   "max_channel_delta":  0,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  5.63,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-english",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "Clarity through structure",
+                                                                   "fontSize":  28,
+                                                                   "bold":  true,
+                                                                   "text_color":  "#14173A",
+                                                                   "background_name":  "bandB",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB",
+                                                                                                       "FFB020:29"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#F6EAD8",
+                                                                   "probe_point":  {
+                                                                                       "x":  82,
+                                                                                       "y":  1069
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  245,
+                                                                                                  "g":  233,
+                                                                                                  "b":  215
+                                                                                              },
+                                                                   "sampled_background_hex":  "#F5E9D7",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  false,
+                                                                   "max_channel_delta":  1,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  14.44,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               },
+                                                               {
+                                                                   "key":  "portrait-url",
+                                                                   "orient":  "portrait",
+                                                                   "text":  "layerlight.example.org",
+                                                                   "fontSize":  30,
+                                                                   "bold":  true,
+                                                                   "text_color":  "#3730A3",
+                                                                   "background_name":  "bandB",
+                                                                   "background_layers_bottom_up":  [
+                                                                                                       "F4F5FB",
+                                                                                                       "FFB020:29"
+                                                                                                   ],
+                                                                   "expected_background_composited":  "#F6EAD8",
+                                                                   "probe_point":  {
+                                                                                       "x":  82,
+                                                                                       "y":  1143
+                                                                                   },
+                                                                   "sampled_background_rgb":  {
+                                                                                                  "r":  245,
+                                                                                                  "g":  233,
+                                                                                                  "b":  215
+                                                                                              },
+                                                                   "sampled_background_hex":  "#F5E9D7",
+                                                                   "background_matches_composition":  true,
+                                                                   "background_matches_composition_exact":  false,
+                                                                   "max_channel_delta":  1,
+                                                                   "background_delta_tolerance":  1,
+                                                                   "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                                   "contrast_ratio":  8.29,
+                                                                   "required_min":  4.5,
+                                                                   "passes":  true
+                                                               }
+                                                           ]
+                                           },
+                   "launch-wide.png":  {
+                                           "image":  "launch-wide.png",
+                                           "width":  1440,
+                                           "height":  810,
+                                           "entry_count":  10,
+                                           "entries_required_min":  6,
+                                           "entries_sufficient":  true,
+                                           "min_contrast_ratio":  5.63,
+                                           "required_min_ratio":  4.5,
+                                           "all_entries_ge_required":  true,
+                                           "exact_background_matches":  8,
+                                           "background_matches_within_tolerance":  10,
+                                           "max_channel_delta":  1,
+                                           "reserved_bands":  [
+                                                                  {
+                                                                      "band":  "top",
+                                                                      "rect":  {
+                                                                                   "y":  0,
+                                                                                   "w":  1440,
+                                                                                   "h":  100,
+                                                                                   "x":  0
+                                                                               },
+                                                                      "sampled":  7004,
+                                                                      "non_background":  0,
+                                                                      "background":  "#F4F5FB",
+                                                                      "empty":  true
+                                                                  },
+                                                                  {
+                                                                      "band":  "bottom",
+                                                                      "rect":  {
+                                                                                   "y":  710,
+                                                                                   "w":  1440,
+                                                                                   "h":  100,
+                                                                                   "x":  0
+                                                                               },
+                                                                      "sampled":  7004,
+                                                                      "non_background":  0,
+                                                                      "background":  "#F4F5FB",
+                                                                      "empty":  true
+                                                                  }
+                                                              ],
+                                           "problems":  [
+
+                                                        ],
+                                           "entries":  [
+                                                           {
+                                                               "key":  "wide-wordmark",
+                                                               "orient":  "wide",
+                                                               "text":  "叠光 Layerlight",
+                                                               "fontSize":  34,
+                                                               "bold":  true,
+                                                               "text_color":  "#14173A",
+                                                               "background_name":  "page",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "F4F5FB"
+                                                                                               ],
+                                                               "expected_background_composited":  "#F4F5FB",
+                                                               "probe_point":  {
+                                                                                   "x":  254,
+                                                                                   "y":  153
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  244,
+                                                                                              "g":  245,
+                                                                                              "b":  251
+                                                                                          },
+                                                               "sampled_background_hex":  "#F4F5FB",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  15.91,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-eyebrow",
+                                                               "orient":  "wide",
+                                                               "text":  "ONLINE LAUNCH",
+                                                               "fontSize":  26,
+                                                               "bold":  true,
+                                                               "text_color":  "#FFFFFF",
+                                                               "background_name":  "primary-chip",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "5B4FE8"
+                                                                                               ],
+                                                               "expected_background_composited":  "#5B4FE8",
+                                                               "probe_point":  {
+                                                                                   "x":  102,
+                                                                                   "y":  256
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  91,
+                                                                                              "g":  79,
+                                                                                              "b":  232
+                                                                                          },
+                                                               "sampled_background_hex":  "#5B4FE8",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  5.63,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-title",
+                                                               "orient":  "wide",
+                                                               "text":  "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+                                                               "fontSize":  52,
+                                                               "bold":  true,
+                                                               "text_color":  "#14173A",
+                                                               "background_name":  "bandA",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "F4F5FB",
+                                                                                                   "5B4FE8:1F"
+                                                                                               ],
+                                                               "expected_background_composited":  "#E1E1F9",
+                                                               "probe_point":  {
+                                                                                   "x":  90,
+                                                                                   "y":  400
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  225,
+                                                                                              "g":  225,
+                                                                                              "b":  248
+                                                                                          },
+                                                               "sampled_background_hex":  "#E1E1F8",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  false,
+                                                               "max_channel_delta":  1,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  13.46,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-deck",
+                                                               "orient":  "wide",
+                                                               "text":  "让复杂信息变得清晰",
+                                                               "fontSize":  28,
+                                                               "bold":  false,
+                                                               "text_color":  "#474B77",
+                                                               "background_name":  "bandA",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "F4F5FB",
+                                                                                                   "5B4FE8:1F"
+                                                                                               ],
+                                                               "expected_background_composited":  "#E1E1F9",
+                                                               "probe_point":  {
+                                                                                   "x":  90,
+                                                                                   "y":  542
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  225,
+                                                                                              "g":  225,
+                                                                                              "b":  248
+                                                                                          },
+                                                               "sampled_background_hex":  "#E1E1F8",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  false,
+                                                               "max_channel_delta":  1,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  6.43,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-date",
+                                                               "orient":  "wide",
+                                                               "text":  "2026.11.07 19:30",
+                                                               "fontSize":  34,
+                                                               "bold":  true,
+                                                               "text_color":  "#14173A",
+                                                               "background_name":  "panel",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "FFFFFF"
+                                                                                               ],
+                                                               "expected_background_composited":  "#FFFFFF",
+                                                               "probe_point":  {
+                                                                                   "x":  934,
+                                                                                   "y":  176
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  255,
+                                                                                              "g":  255,
+                                                                                              "b":  255
+                                                                                          },
+                                                               "sampled_background_hex":  "#FFFFFF",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  17.31,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-speakers",
+                                                               "orient":  "wide",
+                                                               "text":  "讲者：林川 / 苏言",
+                                                               "fontSize":  28,
+                                                               "bold":  false,
+                                                               "text_color":  "#474B77",
+                                                               "background_name":  "panel",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "FFFFFF"
+                                                                                               ],
+                                                               "expected_background_composited":  "#FFFFFF",
+                                                               "probe_point":  {
+                                                                                   "x":  934,
+                                                                                   "y":  273
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  255,
+                                                                                              "g":  255,
+                                                                                              "b":  255
+                                                                                          },
+                                                               "sampled_background_hex":  "#FFFFFF",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  8.27,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-sponsor",
+                                                               "orient":  "wide",
+                                                               "text":  "赞助方：Northstar Research / 云构工具",
+                                                               "fontSize":  26,
+                                                               "bold":  false,
+                                                               "text_color":  "#474B77",
+                                                               "background_name":  "panel",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "FFFFFF"
+                                                                                               ],
+                                                               "expected_background_composited":  "#FFFFFF",
+                                                               "probe_point":  {
+                                                                                   "x":  934,
+                                                                                   "y":  380
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  255,
+                                                                                              "g":  255,
+                                                                                              "b":  255
+                                                                                          },
+                                                               "sampled_background_hex":  "#FFFFFF",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  8.27,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-free",
+                                                               "orient":  "wide",
+                                                               "text":  "免费参加 · 无需报名",
+                                                               "fontSize":  26,
+                                                               "bold":  true,
+                                                               "text_color":  "#FFFFFF",
+                                                               "background_name":  "primary-chip",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "5B4FE8"
+                                                                                               ],
+                                                               "expected_background_composited":  "#5B4FE8",
+                                                               "probe_point":  {
+                                                                                   "x":  946,
+                                                                                   "y":  476
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  91,
+                                                                                              "g":  79,
+                                                                                              "b":  232
+                                                                                          },
+                                                               "sampled_background_hex":  "#5B4FE8",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  5.63,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-english",
+                                                               "orient":  "wide",
+                                                               "text":  "Clarity through structure",
+                                                               "fontSize":  26,
+                                                               "bold":  true,
+                                                               "text_color":  "#14173A",
+                                                               "background_name":  "bandB",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "FFFFFF",
+                                                                                                   "FFB020:29"
+                                                                                               ],
+                                                               "expected_background_composited":  "#FFF2DB",
+                                                               "probe_point":  {
+                                                                                   "x":  934,
+                                                                                   "y":  572
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  255,
+                                                                                              "g":  242,
+                                                                                              "b":  219
+                                                                                          },
+                                                               "sampled_background_hex":  "#FFF2DB",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  15.64,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           },
+                                                           {
+                                                               "key":  "wide-url",
+                                                               "orient":  "wide",
+                                                               "text":  "layerlight.example.org",
+                                                               "fontSize":  26,
+                                                               "bold":  true,
+                                                               "text_color":  "#3730A3",
+                                                               "background_name":  "bandB",
+                                                               "background_layers_bottom_up":  [
+                                                                                                   "FFFFFF",
+                                                                                                   "FFB020:29"
+                                                                                               ],
+                                                               "expected_background_composited":  "#FFF2DB",
+                                                               "probe_point":  {
+                                                                                   "x":  934,
+                                                                                   "y":  636
+                                                                               },
+                                                               "sampled_background_rgb":  {
+                                                                                              "r":  255,
+                                                                                              "g":  242,
+                                                                                              "b":  219
+                                                                                          },
+                                                               "sampled_background_hex":  "#FFF2DB",
+                                                               "background_matches_composition":  true,
+                                                               "background_matches_composition_exact":  true,
+                                                               "max_channel_delta":  0,
+                                                               "background_delta_tolerance":  1,
+                                                               "background_delta_tolerance_reason":  "服务端 8-bit source-over 的取整方式与参考合成实现可能相差 1 个通道值；对比度一律按实测像素 sampled_background_hex 计算，合成值只用于校验叠层是否正确",
+                                                               "contrast_ratio":  8.98,
+                                                               "required_min":  4.5,
+                                                               "passes":  true
+                                                           }
+                                                       ]
+                                       }
+               },
+    "summary":  {
+                    "images":  2,
+                    "total_entries":  20,
+                    "entries_sufficient_per_image":  true,
+                    "all_entries_ge_4_5":  true,
+                    "overall_min_contrast":  5.63,
+                    "background_layers_consistent":  true,
+                    "reserved_bands_empty":  true,
+                    "problems":  0,
+                    "pass":  true
+                }
+}
