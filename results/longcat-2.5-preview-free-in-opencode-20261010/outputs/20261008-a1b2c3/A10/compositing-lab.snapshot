@@ -1,0 +1,140 @@
+<Snapshot background="#0F172A" type="png">
+  <Container width="1440" height="1100" padding="(20,24)">
+    <Column crossAxisAlignment="START">
+
+      <!-- 标题 -->
+      <Container width="1392" height="40" color="#1E293B" borderRadius="8" border="1 SOLID #334155" padding="(10,14)">
+        <Text color="#F1F5F9" fontSize="20" fontStyle="BOLD">看到差异，才能说用对了</Text>
+      </Container>
+
+      <SizedBox height="10"/>
+
+      <!-- 实验板 -->
+      <Container width="1024" height="512" color="#1E293B" borderRadius="8" border="1 SOLID #334155">
+        <Stack>
+          <!-- 实验① -->
+          <Positioned left="208" top="100" width="320" height="240">
+            <Stack width="320" height="240">
+              <Container width="320" height="240" color="#FFFFFF"/>
+              <Positioned left="0" top="0" width="320" height="30">
+                <Text color="#000000" fontSize="14" fontStyle="BOLD">① 50% alpha</Text>
+              </Positioned>
+              <Positioned left="40" top="40" width="160" height="120">
+                <Container width="160" height="120" color="#FF000080"/>
+              </Positioned>
+              <Positioned left="120" top="80" width="160" height="120">
+                <Container width="160" height="120" color="#0000FF80"/>
+              </Positioned>
+            </Stack>
+          </Positioned>
+          <!-- 实验② -->
+          <Positioned left="560" top="100" width="320" height="240">
+            <Stack width="320" height="240">
+              <Container width="320" height="240" color="#FFFFFF"/>
+              <Positioned left="0" top="0" width="320" height="30">
+                <Text color="#000000" fontSize="14" fontStyle="BOLD">② Opacity(0.5)</Text>
+              </Positioned>
+              <Positioned left="40" top="40" width="160" height="120">
+                <Opacity opacity="0.5">
+                  <Container width="160" height="120" color="#FF0000"/>
+                </Opacity>
+              </Positioned>
+              <Positioned left="120" top="80" width="160" height="120">
+                <Opacity opacity="0.5">
+                  <Container width="160" height="120" color="#0000FF"/>
+                </Opacity>
+              </Positioned>
+            </Stack>
+          </Positioned>
+          <!-- 实验③ -->
+          <Positioned left="912" top="100" width="320" height="240">
+            <Stack width="320" height="240">
+              <Container width="320" height="240" color="#FFFFFF"/>
+              <Positioned left="0" top="0" width="320" height="30">
+                <Text color="#000000" fontSize="14" fontStyle="BOLD">③ 仅背景模糊</Text>
+              </Positioned>
+              <Positioned left="40" top="40" width="240" height="160">
+                <BackdropFilter sigmaX="6" sigmaY="6">
+                  <ClipRRect borderRadius="20">
+                    <Container width="240" height="160" color="#FFFFFF">
+                      <Text color="#000000" fontSize="24" fontStyle="BOLD" textAlign="CENTER">SHARP / BLUR</Text>
+                    </Container>
+                  </ClipRRect>
+                </BackdropFilter>
+              </Positioned>
+            </Stack>
+          </Positioned>
+          <!-- 实验④ -->
+          <Positioned left="208" top="372" width="320" height="240">
+            <Stack width="320" height="240">
+              <Container width="320" height="240" color="#FFFFFF"/>
+              <Positioned left="0" top="0" width="320" height="30">
+                <Text color="#000000" fontSize="14" fontStyle="BOLD">④ 子树模糊</Text>
+              </Positioned>
+              <Positioned left="40" top="40" width="240" height="160">
+                <ImageFiltered sigmaX="6" sigmaY="6">
+                  <ClipRRect borderRadius="20">
+                    <Container width="240" height="160" color="#FFFFFF">
+                      <Text color="#000000" fontSize="24" fontStyle="BOLD" textAlign="CENTER">SHARP / BLUR</Text>
+                    </Container>
+                  </ClipRRect>
+                </ImageFiltered>
+              </Positioned>
+            </Stack>
+          </Positioned>
+          <!-- 实验⑤ -->
+          <Positioned left="560" top="372" width="320" height="240">
+            <Stack width="320" height="240">
+              <Container width="320" height="240" color="#FFFFFF"/>
+              <Positioned left="0" top="0" width="320" height="30">
+                <Text color="#000000" fontSize="14" fontStyle="BOLD">⑤ MULTIPLY+模糊</Text>
+              </Positioned>
+              <Positioned left="40" top="40" width="240" height="160">
+                <ColorFiltered color="#F6B94A" blendMode="MULTIPLY">
+                  <ImageFiltered sigmaX="6" sigmaY="6">
+                    <Container width="240" height="160" color="#FFFFFF">
+                      <Text color="#000000" fontSize="24" fontStyle="BOLD" textAlign="CENTER">FILTER</Text>
+                    </Container>
+                  </ImageFiltered>
+                </ColorFiltered>
+              </Positioned>
+            </Stack>
+          </Positioned>
+          <!-- 实验⑥ -->
+          <Positioned left="912" top="372" width="320" height="240">
+            <Stack width="320" height="240">
+              <Container width="320" height="240" color="#FFFFFF"/>
+              <Positioned left="0" top="0" width="320" height="30">
+                <Text color="#000000" fontSize="14" fontStyle="BOLD">⑥ 圆形裁剪</Text>
+              </Positioned>
+              <Positioned left="40" top="40" width="240" height="160">
+                <ClipOval>
+                  <ColorFiltered color="#F6B94A" blendMode="MULTIPLY">
+                    <ImageFiltered sigmaX="6" sigmaY="6">
+                      <Container width="240" height="160" color="#FFFFFF">
+                        <Text color="#000000" fontSize="24" fontStyle="BOLD" textAlign="CENTER">FILTER</Text>
+                      </Container>
+                    </ImageFiltered>
+                  </ColorFiltered>
+                </ClipOval>
+              </Positioned>
+            </Stack>
+          </Positioned>
+        </Stack>
+      </Container>
+
+      <!-- 说明 -->
+      <Container width="1392" height="80" color="#1E293B" borderRadius="8" border="1 SOLID #334155" padding="(10,14)">
+        <Column crossAxisAlignment="START">
+          <Text color="#94A3B8" fontSize="12">① 50% alpha：红蓝矩形分别设置50%透明度，重叠处呈现混合色</Text>
+          <Text color="#94A3B8" fontSize="12">② Opacity(0.5)：不透明矩形放在0.5透明度的组内，整体变淡</Text>
+          <Text color="#94A3B8" fontSize="12">③ 仅背景模糊：BackdropFilter只模糊背景，文字保持清晰</Text>
+          <Text color="#94A3B8" fontSize="12">④ 子树模糊：ImageFiltered模糊整个子树，包括文字</Text>
+          <Text color="#94A3B8" fontSize="12">⑤ MULTIPLY+模糊：先颜色混合再高斯模糊</Text>
+          <Text color="#94A3B8" fontSize="12">⑥ 圆形裁剪：效果限定在圆形区域内</Text>
+        </Column>
+      </Container>
+
+    </Column>
+  </Container>
+</Snapshot>

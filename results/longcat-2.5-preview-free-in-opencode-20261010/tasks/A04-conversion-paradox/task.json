@@ -1,0 +1,38 @@
+{
+  "id": "A04",
+  "title": "分组改善与总体下降的数据解释",
+  "category": "数据推理",
+  "challenge": "避免分母变化引发的叙事错误，并用多个图形成可核验解释。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "用 inputs/conversion.csv 制作1600×1000“转化变化，为什么不能只看平均？”信息图。\n每行是某期某渠道的访问数和成交数。必须展示两渠道各自两期转化率、两期访问\n构成、总体转化率，解释分组与总体是否同向；总体必须成交总数/访问总数。\n不准平均渠道比例，也不能把同期不同渠道的绝对成交量当成转化率。\n\n图中至少有渠道分组率图、访问构成堆叠图与总体对照；率图用同一0–100%尺度，\n构成图每期等长、分段按真实占比。所有原始分母/分子能从小表核对。写一条\n由数据支持的主结论，及“不能由该数据证明因果”的限制说明。单位与期名齐全。\n正文≥22、图标注≥18。用色和位置建立三图之间关系，避免结论先行。\n附 analysis.json，列出精确分数、显示百分比、加权公式及结论依据。\n",
+  "inputs": [
+    "inputs/conversion.csv"
+  ],
+  "required_outputs": [
+    {
+      "filename": "conversion-story.png",
+      "dsl": "conversion-story.snapshot",
+      "width": 1600,
+      "height": 1000,
+      "purpose": "分组与总体解释图"
+    }
+  ],
+  "additional_outputs": [
+    "analysis.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A04/",
+  "temp_dir_template": "tmp/{run_id}/A04/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

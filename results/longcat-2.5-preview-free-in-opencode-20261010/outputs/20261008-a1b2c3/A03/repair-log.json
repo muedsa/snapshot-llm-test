@@ -1,0 +1,54 @@
+{
+  "task_id": "A03",
+  "task_title": "多层语义故障恢复",
+  "original_file": "inputs/broken.snapshot",
+  "issues_found": [
+    {
+      "id": "ISSUE-001",
+      "type": "explicit_error",
+      "location": "line 2",
+      "original_code": "padding=\"24 32\"",
+      "problem": "padding格式错误，应使用EdgeInsets格式",
+      "fix": "padding=\"(24,32)\"",
+      "verification": "修复后渲染成功"
+    },
+    {
+      "id": "ISSUE-002",
+      "type": "explicit_error",
+      "location": "line 4",
+      "original_code": "font-size=\"44\"",
+      "problem": "属性名错误，应使用驼峰命名",
+      "fix": "fontSize=\"44\"",
+      "verification": "修复后渲染成功"
+    },
+    {
+      "id": "ISSUE-003",
+      "type": "semantic_error",
+      "location": "line 7",
+      "original_code": "<Positioned right=\"20\"><Text color=\"white\">LIVE</Text></Positioned>",
+      "problem": "Positioned必须是Stack或IndexedStack的直接子节点，不能在Row中使用",
+      "fix": "将LIVE标签移到独立的Row中",
+      "verification": "修复后渲染成功"
+    },
+    {
+      "id": "ISSUE-004",
+      "type": "semantic_error",
+      "location": "line 10",
+      "original_code": "<Transform rotate=\"-8\">",
+      "problem": "Transform不支持rotate属性，需要使用matrix",
+      "fix": "使用matrix=\"(0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1)\"",
+      "verification": "修复后渲染成功"
+    },
+    {
+      "id": "ISSUE-005",
+      "type": "visual_issue",
+      "location": "line 11",
+      "original_code": "<ImageFiltered sigmaX=\"10\" sigmaY=\"10\">",
+      "problem": "ImageFiltered会模糊整个子树，包括文字",
+      "fix": "使用BackdropFilter只模糊背景",
+      "verification": "修复后文字清晰"
+    }
+  ],
+  "final_output": "outputs/20261008-a1b2c3/A03/system-pulse.png",
+  "status": "completed"
+}

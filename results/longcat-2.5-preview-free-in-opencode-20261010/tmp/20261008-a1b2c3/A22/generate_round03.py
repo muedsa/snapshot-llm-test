@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+"""A22 - 第三轮 DSL 生成器（新增2026-10）"""
+import json
+from pathlib import Path
+
+# 数据（第二轮更正 + 新增2026-10）
+months = ["2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"]
+orders = [420, 460, 445, 530, 570, 620, 640]
+gross = [126000, 142600, 137950, 169600, 188100, 210800, 224000]
+refund = [6300, 7130, 11036, 8480, 25048, 8432, 11200]  # 2026-08更正
+cost = [82000, 93500, 99000, 112000, 132000, 208000, 142000]  # 2026-09更正
+sessions = [3500, 4100, 4200, 4700, 5200, 5600, 5900]
+
+net = [g - r for g, r in zip(gross, refund)]
+profit = [n - c for n, c in zip(net, cost)]
+refund_rate = [r / g * 100 for r, g in zip(refund, gross)]
+conv_rate = [o / s * 100 for o, s in zip(orders, sessions)]
+
+total_net = sum(net)
+total_profit = sum(profit)
+total_orders = sum(orders)
+total_sessions = sum(sessions)
+overall_conv = total_orders / total_sessions * 100
+
+computed = {
+    "months": months, "net_revenue": net, "profit": profit,
+    "refund_rate": [round(r, 2) for r in refund_rate],
+    "conversion_rate": [round(r, 2) for r in conv_rate],
+    "total_net_revenue": total_net, "total_profit": total_profit,
+    "total_orders": total_orders, "total_sessions": total_sessions,
+    "overall_conversion_rate": round(overall_conv, 2),
+    "corrections": {
+        "2026-08": {"refund_amount": {"old": 15048, "new": 25048}},
+        "2026-09": {"operating_cost": {"old": 138000, "new": 208000}}
+    },
+    "additions": {
+        "2026-10": {"orders": 640, "gross_revenue": 224000, "refund_amount": 11200, "operating_cost": 142000, "sessions": 5900}
+    }
+}
+
+output_dir = Path("outputs/20261008-a1b2c3/A22/round-03")
+output_dir.mkdir(parents=True, exist_ok=True)
+with open(output_dir / "computed-data.json", "w", encoding="utf-8") as f:
+    json.dump(computed, f, ensure_ascii=False, indent=2)
+
+BG = "#0F172A"
+CARD_BG = "#1E293B"
+CARD_BORDER = "#334155"
+TEXT_PRIMARY = "#F1F5F9"
+TEXT_SECONDARY = "#94A3B8"
+COLOR_BLUE = "#3B82F6"
+COLOR_GREEN = "#10B981"
+COLOR_ORANGE = "#F59E0B"
+COLOR_RED = "#EF4444"
+
+lines = []
+lines.append(f'<Snapshot background="{BG}" type="png">')
+lines.append(f'  <Container width="1600" height="1000" padding="(24,28)">')
+lines.append(f'    <Column crossAxisAlignment="START">')
+lines.append(f'      <Text color="{TEXT_PRIMARY}" fontSize="24" fontStyle="BOLD">Northstar 经营驾驶舱</Text>')
+lines.append(f'      <Text color="{TEXT_SECONDARY}" fontSize="14">2026-04 至 2026-10（7个月汇总）</Text>')
+lines.append(f'      <SizedBox height="16"/>')
+lines.append(f'      <Row mainAxisAlignment="SPACE_BETWEEN">')
+
+kpis = [
+    ("总净收入", f"{total_net:,}", COLOR_BLUE),
+    ("总经营利润", f"{total_profit:,}", COLOR_GREEN if total_profit >= 0 else COLOR_RED),
+    ("总订单", f"{total_orders:,}", COLOR_ORANGE),
+    ("总体转化率", f"{overall_conv:.2f}%", COLOR_GREEN),
+]
+for label, value, color in kpis:
+    lines.append(f'        <Container width="372" height="80" background="{CARD_BG}" borderRadius="8" border="1 SOLID {CARD_BORDER}" padding="(12,14)">')
+    lines.append(f'          <Column crossAxisAlignment="START">')
+    lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="14">{label}</Text>')
+    lines.append(f'            <Text color="{color}" fontSize="28" fontStyle="BOLD">{value}</Text>')
+    lines.append(f'          </Column>')
+    lines.append(f'        </Container>')
+
+lines.append(f'      </Row>')
+lines.append(f'      <SizedBox height="16"/>')
+lines.append(f'      <Container width="1544" height="300" background="{CARD_BG}" borderRadius="8" border="1 SOLID {CARD_BORDER}" padding="(12,14)">')
+lines.append(f'        <Column crossAxisAlignment="START">')
+lines.append(f'          <Text color="{TEXT_PRIMARY}" fontSize="16" fontStyle="BOLD">净收入与经营利润</Text>')
+lines.append(f'          <SizedBox height="8"/>')
+lines.append(f'          <Row crossAxisAlignment="END" mainAxisAlignment="SPACE_EVENLY">')
+
+max_val = max(max(net), max(profit))
+min_val = min(0, min(profit))
+bar_max_h = 180
+for i in range(7):
+    net_h = int(net[i] / max_val * bar_max_h) if net[i] > 0 else 0
+    profit_h = int(abs(profit[i]) / max_val * bar_max_h) if profit[i] > 0 else int(abs(profit[i]) / abs(min_val) * 40)
+    lines.append(f'            <Column crossAxisAlignment="CENTER" mainAxisAlignment="END">')
+    lines.append(f'              <Row crossAxisAlignment="END">')
+    lines.append(f'                <Container width="20" height="{net_h}" color="{COLOR_BLUE}" borderRadius="2"/>')
+    lines.append(f'                <SizedBox width="4"/>')
+    if profit[i] >= 0:
+        lines.append(f'                <Container width="20" height="{profit_h}" color="{COLOR_GREEN}" borderRadius="2"/>')
+    else:
+        lines.append(f'                <Container width="20" height="{profit_h}" color="{COLOR_RED}" borderRadius="2"/>')
+    lines.append(f'              </Row>')
+    lines.append(f'              <Text color="{TEXT_SECONDARY}" fontSize="12">{months[i][-2:]}</Text>')
+    lines.append(f'            </Column>')
+
+lines.append(f'          </Row>')
+lines.append(f'        </Column>')
+lines.append(f'      </Container>')
+lines.append(f'      <SizedBox height="16"/>')
+lines.append(f'      <Container width="1544" height="280" background="{CARD_BG}" borderRadius="8" border="1 SOLID {CARD_BORDER}" padding="(12,14)">')
+lines.append(f'        <Column crossAxisAlignment="START">')
+lines.append(f'          <Text color="{TEXT_PRIMARY}" fontSize="16" fontStyle="BOLD">月度明细</Text>')
+lines.append(f'          <SizedBox height="8"/>')
+lines.append(f'          <Row mainAxisAlignment="SPACE_BETWEEN">')
+lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="12">月份</Text>')
+lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="12">净收入</Text>')
+lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="12">利润</Text>')
+lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="12">退款率</Text>')
+lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="12">转化率</Text>')
+lines.append(f'          </Row>')
+
+for i in range(7):
+    profit_color = COLOR_GREEN if profit[i] >= 0 else COLOR_RED
+    lines.append(f'          <Row mainAxisAlignment="SPACE_BETWEEN">')
+    lines.append(f'            <Text color="{TEXT_PRIMARY}" fontSize="12">{months[i]}</Text>')
+    lines.append(f'            <Text color="{COLOR_BLUE}" fontSize="12">{net[i]:,}</Text>')
+    lines.append(f'            <Text color="{profit_color}" fontSize="12">{profit[i]:,}</Text>')
+    lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="12">{refund_rate[i]:.2f}%</Text>')
+    lines.append(f'            <Text color="{TEXT_SECONDARY}" fontSize="12">{conv_rate[i]:.2f}%</Text>')
+    lines.append(f'          </Row>')
+
+lines.append(f'        </Column>')
+lines.append(f'      </Container>')
+lines.append(f'      <SizedBox height="16"/>')
+lines.append(f'      <Text color="{TEXT_SECONDARY}" fontSize="14">结论：七个月总净收入{total_net:,}元，总经营利润{total_profit:,}元，总体转化率{overall_conv:.2f}%。</Text>')
+lines.append(f'    </Column>')
+lines.append(f'  </Container>')
+lines.append(f'</Snapshot>')
+
+dsl = "\n".join(lines)
+with open(output_dir / "dashboard.snapshot", "w", encoding="utf-8") as f:
+    f.write(dsl)
+
+layout_map = {
+    "kpi": {"x": 28, "y": 70, "w": 1544, "h": 80},
+    "chart": {"x": 28, "y": 170, "w": 1544, "h": 300},
+    "table": {"x": 28, "y": 490, "w": 1544, "h": 280},
+    "conclusion": {"x": 28, "y": 790, "w": 1544, "h": 40}
+}
+with open(output_dir / "layout-map.json", "w", encoding="utf-8") as f:
+    json.dump(layout_map, f, ensure_ascii=False, indent=2)
+
+change_audit = {
+    "changes": [
+        {"field": "2026-08 refund_amount", "old": 15048, "new": 25048},
+        {"field": "2026-09 operating_cost", "old": 138000, "new": 208000},
+        {"field": "2026-10", "action": "新增", "data": {"orders": 640, "gross_revenue": 224000, "refund_amount": 11200, "operating_cost": 142000, "sessions": 5900}}
+    ],
+    "visual_regression": "KPI改为7个月汇总，图与表包括全部7个月"
+}
+with open(output_dir / "change-audit.json", "w", encoding="utf-8") as f:
+    json.dump(change_audit, f, ensure_ascii=False, indent=2)
+
+print(f"DSL generated: {len(dsl)} chars")
+print(f"Total net: {total_net}, Total profit: {total_profit}")
