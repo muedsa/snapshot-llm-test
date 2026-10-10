@@ -8,7 +8,7 @@
   "pack_version": "2.0.0",
   "difficulty": "advanced",
   "instructions_file": "AGENTS.md",
-  "prompt": "inputs/broken.snapshot 是迁移后失效的原稿。先原样提交一次真实服务并保存响应；\n根据报错、官方文档与实际图片修复。修好显式错误后继续查未生效属性、画布尺寸、\n有界布局、alpha、变换及滤镜语义。不要删除出错区块来宣称修复完成。\n\n最终制作1280×800“System Pulse”监控卡：深底#0B1220，安全边距32；44字号标题；\n第一行三个等宽指标卡，分别“USAGE 72%”“LATENCY 148 ms”“SUCCESS 99.2%”。\n右上LIVE标签96×36，不能盖住标题。右下REVIEW标签160×56，视觉逆时针8°，\n白底不透明度20%，文字不透明、字号24。中央说明卡500×150，圆角24；背景有\n同时穿过说明卡两侧边界的彩色细条，只模糊卡内背景，文字保持清晰。\n说明卡显示“Background-only blur”，字号28；三指标文案字号28。各元素完整可见。\n\n交付 repair-log.json，把每个发现的问题对应到原稿位置、依据、修改与验证；\n区分真实报错、静默忽略和只在视觉上暴露的问题。保留逐次失败稿和图片，不\n要通过把未知属性原样留在源码里来声称实现了需求。\n",
+  "prompt": "inputs/broken.snapshot 是迁移后失效的原稿。先原样提交一次真实服务并保存响应；\n根据报错、官方文档与实际图片修复。修好显式错误后继续查未生效属性、画布尺寸、\n有界布局、alpha、变换及滤镜语义。不要删除出错区块来宣称修复完成。\n\n最终制作1280×800“System Pulse”监控卡：深底#0B1220，安全边距32；44字号标题；\n第一行三个等宽指标卡，分别“USAGE 72%”“LATENCY 148 ms”“SUCCESS 99.2%”。\n右上LIVE标签96×36，不能盖住标题。右下REVIEW标签160×56，视觉逆时针8°，\n白底不透明度20%，文字不透明、字号24。中央说明卡500×150，圆角24；背景有\n同时穿过说明卡两侧边界的彩色细条，只模糊卡内背景，文字保持清晰。\n说明卡显示“Background-only blur”，字号28；三指标文案字号28。各元素完整可见。\n\n交付 repair-log.json，把每个发现的问题对应到原稿位置、依据、修改与验证；\n区分真实报错、静默忽略和只在视觉上暴露的问题。保留逐次失败稿和图片，不\n要通过把未知属性原样留在源码里来声称实现了需求。\n\n## 专用审计JSON字段\n\n本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；\n该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用\n同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。\n",
   "inputs": [
     "inputs/broken.snapshot"
   ],
@@ -34,5 +34,8 @@
   "execution_mode": "sequential_suite",
   "output_dir_template": "outputs/{run_id}/A03/",
   "temp_dir_template": "tmp/{run_id}/A03/",
-  "suite_instructions_file": "../../AGENTS.md"
+  "suite_instructions_file": "../../AGENTS.md",
+  "audit_templates": {
+    "repair-log.json": "templates/audit-fields.json"
+  }
 }

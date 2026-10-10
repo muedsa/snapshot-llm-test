@@ -8,7 +8,7 @@
   "pack_version": "2.0.0",
   "difficulty": "advanced",
   "instructions_file": "AGENTS.md",
-  "prompt": "本题按预置要求自动执行三轮。先完成第一轮：为“叠光 Layerlight”发布\n活动做1080×1350竖海报和1440×810横屏。必须包含“让复杂信息变得清晰”\n“2026.11.07 19:30”“ONLINE LAUNCH”“讲者：林川 / 苏言”\n“layerlight.example.org”。两图同一主色、字体层级与可识别的3–6构件品牌图形，\n分别构图；主标题≥56、其余≥24，不得使用整图嵌入或外部图片。\n顶部/底部留有真实可用扩展空间，但不写待添加文字。交付 round-01/ 下\nlaunch-portrait与launch-wide两PNG/DSL，以及 design-tokens.json、content-map.json。\n查看两图并归档第一轮后，立即读取rounds/round-02.md完成第二轮，\n再读取rounds/round-03.md完成第三轮，不等待用户消息。后续轮必须保留上一轮可比版本、内容映射\n与真实变化，按执行约定保存每轮报告/指标。\n",
+  "prompt": "本题按预置要求自动执行三轮。先完成第一轮：为“叠光 Layerlight”发布\n活动做1080×1350竖海报和1440×810横屏。必须包含“让复杂信息变得清晰”\n“2026.11.07 19:30”“ONLINE LAUNCH”“讲者：林川 / 苏言”\n“layerlight.example.org”。两图同一主色、字体层级与可识别的3–6构件品牌图形，\n分别构图；主标题≥56、其余≥24，不得使用整图嵌入或外部图片。\n顶部/底部留有真实可用扩展空间，但不写待添加文字。交付 round-01/ 下\nlaunch-portrait与launch-wide两PNG/DSL，以及 design-tokens.json、content-map.json。\n查看两图并归档第一轮后，立即读取rounds/round-02.md完成第二轮，\n再读取rounds/round-03.md完成第三轮，不等待用户消息。后续轮必须保留上一轮可比版本、内容映射\n与真实变化，按执行约定保存每轮报告/指标。\n\n## 交付路径与轮次归属\n\n本题 task.json 的 required_outputs（PNG/DSL）、additional_outputs（专用审计）、\ncommon_outputs（报告/指标）均使用相对本题输出根的完整路径，顶层列出全部最终交付。\nrounds 内的同名字段是顶层清单按轮次划分的子集；output_subdirectory 仅表示归属目录，\n不能再次拼接到这些已带 round-XX/ 的路径前。同一个路径只交付一次。\nsnapshot-usage.md 与 task-metrics.json 位于本题输出根，汇总三轮；每轮另有\nround-XX/snapshot-usage.md 与 round-XX/task-metrics.json，只记录该轮。\n专用审计仅在清单指定的轮次目录交付，不另在输出根复制一份。\n\n## 专用审计JSON字段\n\n本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；\n该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用\n同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。\n",
   "inputs": [],
   "required_outputs": [
     {
@@ -55,12 +55,23 @@
     }
   ],
   "additional_outputs": [
-    "design-tokens.json",
-    "content-map.json"
+    "round-01/design-tokens.json",
+    "round-01/content-map.json",
+    "round-02/design-tokens.json",
+    "round-02/content-map.json",
+    "round-03/design-tokens.json",
+    "round-03/content-map.json",
+    "round-03/contrast-audit.json"
   ],
   "common_outputs": [
     "snapshot-usage.md",
-    "task-metrics.json"
+    "task-metrics.json",
+    "round-01/snapshot-usage.md",
+    "round-01/task-metrics.json",
+    "round-02/snapshot-usage.md",
+    "round-02/task-metrics.json",
+    "round-03/snapshot-usage.md",
+    "round-03/task-metrics.json"
   ],
   "current_round": 1,
   "source_pack_version": "2.0.0",
@@ -93,12 +104,12 @@
         }
       ],
       "additional_outputs": [
-        "design-tokens.json",
-        "content-map.json"
+        "round-01/design-tokens.json",
+        "round-01/content-map.json"
       ],
       "common_outputs": [
-        "snapshot-usage.md",
-        "task-metrics.json"
+        "round-01/snapshot-usage.md",
+        "round-01/task-metrics.json"
       ]
     },
     {
@@ -122,12 +133,12 @@
         }
       ],
       "additional_outputs": [
-        "design-tokens.json",
-        "content-map.json"
+        "round-02/design-tokens.json",
+        "round-02/content-map.json"
       ],
       "common_outputs": [
-        "snapshot-usage.md",
-        "task-metrics.json"
+        "round-02/snapshot-usage.md",
+        "round-02/task-metrics.json"
       ]
     },
     {
@@ -151,14 +162,24 @@
         }
       ],
       "additional_outputs": [
-        "design-tokens.json",
-        "content-map.json",
-        "contrast-audit.json"
+        "round-03/design-tokens.json",
+        "round-03/content-map.json",
+        "round-03/contrast-audit.json"
       ],
       "common_outputs": [
-        "snapshot-usage.md",
-        "task-metrics.json"
+        "round-03/snapshot-usage.md",
+        "round-03/task-metrics.json"
       ]
     }
-  ]
+  ],
+  "output_path_base": "output_dir",
+  "audit_templates": {
+    "round-01/design-tokens.json": "templates/audit-fields.json",
+    "round-01/content-map.json": "templates/audit-fields.json",
+    "round-02/design-tokens.json": "templates/audit-fields.json",
+    "round-02/content-map.json": "templates/audit-fields.json",
+    "round-03/design-tokens.json": "templates/audit-fields.json",
+    "round-03/content-map.json": "templates/audit-fields.json",
+    "round-03/contrast-audit.json": "templates/audit-fields.json"
+  }
 }

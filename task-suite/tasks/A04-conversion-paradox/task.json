@@ -8,7 +8,7 @@
   "pack_version": "2.0.0",
   "difficulty": "advanced",
   "instructions_file": "AGENTS.md",
-  "prompt": "用 inputs/conversion.csv 制作1600×1000“转化变化，为什么不能只看平均？”信息图。\n每行是某期某渠道的访问数和成交数。必须展示两渠道各自两期转化率、两期访问\n构成、总体转化率，解释分组与总体是否同向；总体必须成交总数/访问总数。\n不准平均渠道比例，也不能把同期不同渠道的绝对成交量当成转化率。\n\n图中至少有渠道分组率图、访问构成堆叠图与总体对照；率图用同一0–100%尺度，\n构成图每期等长、分段按真实占比。所有原始分母/分子能从小表核对。写一条\n由数据支持的主结论，及“不能由该数据证明因果”的限制说明。单位与期名齐全。\n正文≥22、图标注≥18。用色和位置建立三图之间关系，避免结论先行。\n附 analysis.json，列出精确分数、显示百分比、加权公式及结论依据。\n",
+  "prompt": "用 inputs/conversion.csv 制作1600×1000“转化变化，为什么不能只看平均？”信息图。\n每行是某期某渠道的访问数和成交数。必须展示两渠道各自两期转化率、两期访问\n构成、总体转化率，解释分组与总体是否同向；总体必须成交总数/访问总数。\n不准平均渠道比例，也不能把同期不同渠道的绝对成交量当成转化率。\n\n图中至少有渠道分组率图、访问构成堆叠图与总体对照；率图用同一0–100%尺度，\n构成图每期等长、分段按真实占比。所有原始分母/分子能从小表核对。写一条\n由数据支持的主结论，及“不能由该数据证明因果”的限制说明。单位与期名齐全。\n正文≥22、图标注≥18。用色和位置建立三图之间关系，避免结论先行。\n附 analysis.json，列出精确分数、显示百分比、加权公式及结论依据。\n\n## 专用审计JSON字段\n\n本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；\n该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用\n同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。\n",
   "inputs": [
     "inputs/conversion.csv"
   ],
@@ -34,5 +34,8 @@
   "execution_mode": "sequential_suite",
   "output_dir_template": "outputs/{run_id}/A04/",
   "temp_dir_template": "tmp/{run_id}/A04/",
-  "suite_instructions_file": "../../AGENTS.md"
+  "suite_instructions_file": "../../AGENTS.md",
+  "audit_templates": {
+    "analysis.json": "templates/audit-fields.json"
+  }
 }

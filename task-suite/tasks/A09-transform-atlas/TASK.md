@@ -20,6 +20,12 @@ mirror_horizontal 表示左右镜像，mirror_vertical 表示上下镜像。最�
 附 geometry-audit.json：列主序4×4矩阵、每矩形四角、圆点中心、最终外接框，
 以及±1.5像素的视觉/像素核对方法（反走样边缘例外）。标签≥20。
 
+## 专用审计JSON字段
+
+本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；
+该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用
+同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。
+
 ## 输入文件
 
 - [stamp.json](inputs/stamp.json)

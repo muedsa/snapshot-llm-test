@@ -8,7 +8,7 @@
   "pack_version": "2.0.0",
   "difficulty": "advanced",
   "instructions_file": "AGENTS.md",
-  "prompt": "为“Structure / Vision 2026”制作 1920×1200 全日日程及 720×1280 手机导览。\n日期 2026.11.07，地点“云构中心 · A / B / C 会场”，时间均为 Asia/Shanghai。\n完整活动来自 inputs/agenda.csv；公共午休 12:00–13:00，不得与会议合并成一项。\ninputs/venues.json 提供容量与类别标签。\n\n大图是三条会场泳道，09:00–16:00 共用线性时间轴。块的位置与长度按实际起止\n时间比例绘制；空档保留，午休跨三泳道清楚标识。15项活动的编号、标题、讲者、\n起止时间与类别均要能读；短活动通过外侧说明或编号索引解决文字空间，不能\n为塞字把40分钟画成60分钟。正文≥20，时间标签≥18。注明读图方法与会场容量。\n手机图改为分时段列表，全部15项保留编号、标题、会场与起止时间，讲者可移到\n大图，但需写“讲者详见完整日程”；不得直接缩小/裁切大图。手机正文≥18。\n\n交付 schedule-audit.json：每场时长、各会场空档、冲突检查及两图的内容映射。\n不捏造冲突、不调整输入时间；各图实际查看，尤其检查10点附近密集区域。\n",
+  "prompt": "为“Structure / Vision 2026”制作 1920×1200 全日日程及 720×1280 手机导览。\n日期 2026.11.07，地点“云构中心 · A / B / C 会场”，时间均为 Asia/Shanghai。\n完整活动来自 inputs/agenda.csv；公共午休 12:00–13:00，不得与会议合并成一项。\ninputs/venues.json 提供容量与类别标签。\n\n大图是三条会场泳道，09:00–16:00 共用线性时间轴。块的位置与长度按实际起止\n时间比例绘制；空档保留，午休跨三泳道清楚标识。15项活动的编号、标题、讲者、\n起止时间与类别均要能读；短活动通过外侧说明或编号索引解决文字空间，不能\n为塞字把40分钟画成60分钟。正文≥20，时间标签≥18。注明读图方法与会场容量。\n手机图改为分时段列表，全部15项保留编号、标题、会场与起止时间，讲者可移到\n大图，但需写“讲者详见完整日程”；不得直接缩小/裁切大图。手机正文≥18。\n\n交付 schedule-audit.json：每场时长、各会场空档、冲突检查及两图的内容映射。\n不捏造冲突、不调整输入时间；各图实际查看，尤其检查10点附近密集区域。\n\n## 专用审计JSON字段\n\n本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；\n该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用\n同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。\n",
   "inputs": [
     "inputs/agenda.csv",
     "inputs/venues.json"
@@ -42,5 +42,8 @@
   "execution_mode": "sequential_suite",
   "output_dir_template": "outputs/{run_id}/A02/",
   "temp_dir_template": "tmp/{run_id}/A02/",
-  "suite_instructions_file": "../../AGENTS.md"
+  "suite_instructions_file": "../../AGENTS.md",
+  "audit_templates": {
+    "schedule-audit.json": "templates/audit-fields.json"
+  }
 }

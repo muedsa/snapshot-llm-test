@@ -17,6 +17,22 @@ launch-portrait与launch-wide两PNG/DSL，以及 design-tokens.json、content-ma
 再读取rounds/round-03.md完成第三轮，不等待用户消息。后续轮必须保留上一轮可比版本、内容映射
 与真实变化，按执行约定保存每轮报告/指标。
 
+## 交付路径与轮次归属
+
+本题 task.json 的 required_outputs（PNG/DSL）、additional_outputs（专用审计）、
+common_outputs（报告/指标）均使用相对本题输出根的完整路径，顶层列出全部最终交付。
+rounds 内的同名字段是顶层清单按轮次划分的子集；output_subdirectory 仅表示归属目录，
+不能再次拼接到这些已带 round-XX/ 的路径前。同一个路径只交付一次。
+snapshot-usage.md 与 task-metrics.json 位于本题输出根，汇总三轮；每轮另有
+round-XX/snapshot-usage.md 与 round-XX/task-metrics.json，只记录该轮。
+专用审计仅在清单指定的轮次目录交付，不另在输出根复制一份。
+
+## 专用审计JSON字段
+
+本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；
+该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用
+同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。
+
 ## 后续轮次
 
 第一轮实际完成、看图、保存后，自动读取 [第二轮](rounds/round-02.md)；第二轮归档后自动读取 [第三轮](rounds/round-03.md)。全部需求预置可访问，报告注明连续执行模式。
@@ -33,3 +49,23 @@ launch-portrait与launch-wide两PNG/DSL，以及 design-tokens.json、content-ma
 | `round-03/launch-wide.png` + `round-03/launch-wide.snapshot` | 1440×810 |
 
 各轮额外文件和报告/指标见task.json的rounds。任务输出根另有三轮累计snapshot-usage.md与task-metrics.json。保留所有旧轮，三轮完成后继续总任务下一题。
+
+## 全部审计文件与报告
+
+| 相对本题输出根的路径 | 归属 |
+|---|---|
+| `round-01/design-tokens.json` | round-01 |
+| `round-01/content-map.json` | round-01 |
+| `round-02/design-tokens.json` | round-02 |
+| `round-02/content-map.json` | round-02 |
+| `round-03/design-tokens.json` | round-03 |
+| `round-03/content-map.json` | round-03 |
+| `round-03/contrast-audit.json` | round-03 |
+| `snapshot-usage.md` | 三轮任务汇总 |
+| `task-metrics.json` | 三轮任务汇总 |
+| `round-01/snapshot-usage.md` | round-01 |
+| `round-01/task-metrics.json` | round-01 |
+| `round-02/snapshot-usage.md` | round-02 |
+| `round-02/task-metrics.json` | round-02 |
+| `round-03/snapshot-usage.md` | round-03 |
+| `round-03/task-metrics.json` | round-03 |

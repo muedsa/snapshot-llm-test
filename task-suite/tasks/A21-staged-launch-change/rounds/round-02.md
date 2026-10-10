@@ -5,3 +5,13 @@
 不变，允许移动和缩放装饰。两尺寸不变。不能用变形压窄文字。
 保存round-02/的两图与同名DSL、design-tokens.json、content-map.json，
 查看两张后说明如何避免长标题与新增信息碰撞；旧轮完整保留。
+
+本轮最终文件（均相对本题输出根，已含轮次目录，不再拼接）：
+- `round-02/launch-portrait.png`
+- `round-02/launch-portrait.snapshot`
+- `round-02/launch-wide.png`
+- `round-02/launch-wide.snapshot`
+- `round-02/design-tokens.json`
+- `round-02/content-map.json`
+- `round-02/snapshot-usage.md`
+- `round-02/task-metrics.json`

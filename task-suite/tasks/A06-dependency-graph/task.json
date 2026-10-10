@@ -8,7 +8,7 @@
   "pack_version": "2.0.0",
   "difficulty": "advanced",
   "instructions_file": "AGENTS.md",
-  "prompt": "依据 inputs/graph.json，制作1600×1000“从需求到可复现交付”依赖解释图。\nsolid_edges 是有向先决依赖，feedback_edges 是另外标明的反馈关系，不参与DAG\n排序。所有14节点的编号与标签完整出现，每条边的方向可辨；反馈边用虚线和\n专用图例，不能画成普通先决依赖。交叉线没有连接点时不构成新的依赖。\n节点位置体现先后和并行；用侧边弯折/线段绕行减少线压文字。先决边不能出现\n指向过去层的布局歧义。图内解释“失败后回到构建”和“检查发现问题后修复”。\n节点字号≥22、注释≥18；不允许把14条文字当作没有连接关系的列表。\n附 graph-audit.json：先决关系的拓扑层、每节点入/出邻居、最长先决路径（按\n节点数，允许多解，至少给一条）及每条反馈边在图中的表示位置。\n",
+  "prompt": "依据 inputs/graph.json，制作1600×1000“从需求到可复现交付”依赖解释图。\nsolid_edges 是有向先决依赖，feedback_edges 是另外标明的反馈关系，不参与DAG\n排序。所有14节点的编号与标签完整出现，每条边的方向可辨；反馈边用虚线和\n专用图例，不能画成普通先决依赖。交叉线没有连接点时不构成新的依赖。\n节点位置体现先后和并行；用侧边弯折/线段绕行减少线压文字。先决边不能出现\n指向过去层的布局歧义。图内解释“失败后回到构建”和“检查发现问题后修复”。\n节点字号≥22、注释≥18；不允许把14条文字当作没有连接关系的列表。\n附 graph-audit.json：先决关系的拓扑层、每节点入/出邻居、最长先决路径（按\n节点数，允许多解，至少给一条）及每条反馈边在图中的表示位置。\n\n## 专用审计JSON字段\n\n本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；\n该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用\n同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。\n",
   "inputs": [
     "inputs/graph.json"
   ],
@@ -34,5 +34,8 @@
   "execution_mode": "sequential_suite",
   "output_dir_template": "outputs/{run_id}/A06/",
   "temp_dir_template": "tmp/{run_id}/A06/",
-  "suite_instructions_file": "../../AGENTS.md"
+  "suite_instructions_file": "../../AGENTS.md",
+  "audit_templates": {
+    "graph-audit.json": "templates/audit-fields.json"
+  }
 }

@@ -85,3 +85,13 @@ Markdown 渲染器不会展开环境变量，本地图片/文件链接必须是�
 服务/工具的原始响应或原始命令输出按留痕要求保持原始字节；自建记录引用其相对路径即可，
 不为改写路径而篡改原始证据。输入中要求逐字排版的路径文本属于内容数据，保持原样，
 例如 A11 的 `Path: C:\work\cards\v2`；不要将这种文案用作文件操作路径。
+
+## A21/A22 多轮交付清单
+
+task.json 的 output_path_base 为 output_dir。顶层 required_outputs、
+additional_outputs、common_outputs 是全轮次最终交付的完整清单；rounds 中同名字段
+仅声明各文件所属轮次，路径仍相对本题输出根。同一路径在两处出现是索引关系，
+不表示两份交付。output_subdirectory 不参与二次拼接。
+例如 A22 的 round-02/computed-data.json 解析为
+outputs/<run_id>/A22/round-02/computed-data.json，不产生双重 round-02/。
+任务根 snapshot-usage.md、task-metrics.json 汇总全部轮次；轮次内同名报告只覆盖本轮。

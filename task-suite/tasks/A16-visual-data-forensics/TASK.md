@@ -18,6 +18,12 @@ inputs/flawed-report.png 是同事制作的1280×900经营图，inputs/source.cs
 查看结果；未确认是否错误的部分独立记录为不确定，避免把审美偏好混作数值错。
 附 corrected-data.json 的计算与轴定义。正文≥22、标注≥18，无外部图像。
 
+## 专用审计JSON字段
+
+本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；
+该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用
+同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。
+
 ## 输入文件
 
 - [source.csv](inputs/source.csv)

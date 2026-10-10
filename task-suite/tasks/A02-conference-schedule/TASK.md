@@ -23,6 +23,12 @@ inputs/venues.json 提供容量与类别标签。
 交付 schedule-audit.json：每场时长、各会场空档、冲突检查及两图的内容映射。
 不捏造冲突、不调整输入时间；各图实际查看，尤其检查10点附近密集区域。
 
+## 专用审计JSON字段
+
+本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；
+该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用
+同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。
+
 ## 输入文件
 
 - [agenda.csv](inputs/agenda.csv)

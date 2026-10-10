@@ -8,7 +8,7 @@
   "pack_version": "2.0.0",
   "difficulty": "advanced",
   "instructions_file": "AGENTS.md",
-  "prompt": "给 inputs/cards.json 中8条讲座制作8张1200×630宣传卡，文件名card-K01至card-K08。\n统一主色、标题区域、日期“2026.11.07”、品牌“Structure / Vision”及状态体系，\n保留每条标题、讲者、时间、状态的原始文字。标题字号≥36、最多3行；讲者≥22。\n状态用颜色加文字/符号共同区分：开放、满额、候补、取消；取消卡仍须显示完整\n标题与时间，另注明“本场取消”，不能把它删除或只出灰底。长讲者允许两行。\n各卡安全边距40，标题不与状态徽标碰撞，不通过全局缩小整图适配长标题。\n采用一套参数化规则从数据生成，允许长度触发不同网格/换行，但不要逐条硬改\n输入。保留生成脚本在临时目录；运行后每張真实查看，可另做接触表检查一致性。\n附 batch-audit.json，逐卡记录内容、标题字号/行数、位置、状态编码与图片查看。\n没有查看到某张就不能声称八张通过。接触表不能替代八张最终服务原图。\n",
+  "prompt": "给 inputs/cards.json 中8条讲座制作8张1200×630宣传卡，文件名card-K01至card-K08。\n统一主色、标题区域、日期“2026.11.07”、品牌“Structure / Vision”及状态体系，\n保留每条标题、讲者、时间、状态的原始文字。标题字号≥36、最多3行；讲者≥22。\n状态用颜色加文字/符号共同区分：开放、满额、候补、取消；取消卡仍须显示完整\n标题与时间，另注明“本场取消”，不能把它删除或只出灰底。长讲者允许两行。\n各卡安全边距40，标题不与状态徽标碰撞，不通过全局缩小整图适配长标题。\n采用一套参数化规则从数据生成，允许长度触发不同网格/换行，但不要逐条硬改\n输入。保留生成脚本在临时目录；运行后每張真实查看，可另做接触表检查一致性。\n附 batch-audit.json，逐卡记录内容、标题字号/行数、位置、状态编码与图片查看。\n没有查看到某张就不能声称八张通过。接触表不能替代八张最终服务原图。\n\n## 专用审计JSON字段\n\n本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；\n该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用\n同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。\n",
   "inputs": [
     "inputs/cards.json"
   ],
@@ -83,5 +83,8 @@
   "execution_mode": "sequential_suite",
   "output_dir_template": "outputs/{run_id}/A14/",
   "temp_dir_template": "tmp/{run_id}/A14/",
-  "suite_instructions_file": "../../AGENTS.md"
+  "suite_instructions_file": "../../AGENTS.md",
+  "audit_templates": {
+    "batch-audit.json": "templates/audit-fields.json"
+  }
 }

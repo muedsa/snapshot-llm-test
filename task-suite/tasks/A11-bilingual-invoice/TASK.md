@@ -21,6 +21,12 @@ PAID绿色、斜线灰色、中文深色，自然共用基线；该字样只是�
 附 invoice-audit.json（逐行金额、精确计税基数、四舍五入方法、最终应付及
 literal_lines 原样字符串）与 text-map.json（每段对应页面/位置/字体）。
 
+## 专用审计JSON字段
+
+本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；
+该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用
+同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。
+
 ## 输入文件
 
 - [invoice.json](inputs/invoice.json)

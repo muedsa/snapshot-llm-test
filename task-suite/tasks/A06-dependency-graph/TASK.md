@@ -18,6 +18,12 @@ solid_edges 是有向先决依赖，feedback_edges 是另外标明的反馈关�
 附 graph-audit.json：先决关系的拓扑层、每节点入/出邻居、最长先决路径（按
 节点数，允许多解，至少给一条）及每条反馈边在图中的表示位置。
 
+## 专用审计JSON字段
+
+本题指定的专用JSON须遵循[最小字段约定](templates/audit-fields.json)，可增加字段；
+该文件只解释结构、单位、坐标/路径基准及证据要求，不是已完成答案。多轮任务复用
+同名文件的字段约定，仍按task.json各轮完整路径交付；不要在输出根增加重复文件。
+
 ## 输入文件
 
 - [graph.json](inputs/graph.json)

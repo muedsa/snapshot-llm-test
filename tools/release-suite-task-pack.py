@@ -15,6 +15,7 @@ import re
 import zipfile
 
 from validate_a08_wayfinding import validate_repository as validate_a08
+from validate_task_contracts import validate_suite
 
 ROOT=Path(__file__).resolve().parents[1]
 PACK=ROOT/'task-suite'
@@ -175,6 +176,11 @@ def main():
             check(task['id']+' Markdown gallery delivery','gallery.md' in spec['common_outputs'] and 'gallery.md' in prose and all(text in agents for text in ['gallery.md','Markdown图片预览','原PNG和对应.snapshot链接']))
             check(task['id']+' at least ten independent cases',spec['minimum_independent_cases']==local_config['minimum_independent_cases']==10)
             check(task['id']+' unrestricted subject/style/dimensions',all(spec[k] is None for k in ['preassigned_scenarios','preassigned_style','fixed_canvas_dimensions']))
+    try:
+        contract_summary = validate_suite(PACK)
+        check('all task prompts outputs rounds and audit contracts synchronized', True, contract_summary)
+    except (ValueError, KeyError, OSError, TypeError, IndexError) as exc:
+        check('all task prompts outputs rounds and audit contracts synchronized', False, str(exc))
     try:
         a08_reference = validate_a08(ROOT)
         check('A08 unique routes shared passages and author reference', True, a08_reference['invariants'])
