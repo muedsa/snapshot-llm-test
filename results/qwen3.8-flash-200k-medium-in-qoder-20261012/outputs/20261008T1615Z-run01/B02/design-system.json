@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B02",
+  "run_id": "20261008T1615Z-run01",
+  "purpose": "本题十个版面共用一套判断规则，而不是共用一张主视觉。本文件记录实际生效（不是设想）的令牌、字号下限、构件退化规则与数据口径分级；每条都能指回真实构件或真实迭代。",
+  "source_files": {
+    "kit": "tmp/20261008T1615Z-run01/B02/b02kit.py",
+    "data_generator": "tmp/20261008T1615Z-run01/B02/b02data.py",
+    "single_data_source": "tmp/20261008T1615Z-run01/B02/data.json",
+    "text_fit_checker": "tmp/20261008T1615Z-run01/_suite/scripts/dslkit.py（TextFit）",
+    "component_smoke_evidence": "tmp/20261008T1615Z-run01/B02/kit-smoke.png 与 qa2~qa6-*.png"
+  },
+  "color_tokens": {
+    "paper": "#F2EBDD",
+    "paper2": "#E9E0CE",
+    "ink": "#1B1E22",
+    "ink2": "#4A5158",
+    "ink3": "#7C848C",
+    "orange": "#C8552B（品牌主色，同时是 EMT 电动工具类目色）",
+    "steel": "#2E5468（钢青，同时是 PNU 类目色与「在借」状态色）",
+    "brass": "#E0A526（计量黄，同时是 WOD 类目色与吊牌加强圈色）",
+    "green": "#3F7A55（可借 / HND 类目色）",
+    "red": "#A6382F（逾期与禁止 / MTL 类目色）",
+    "greyblue": "#6E7F8D（维修中 / GDN 类目色）",
+    "dark": "#16181B",
+    "dark2": "#22262B",
+    "white": "#FFFDF8"
+  },
+  "status_colors": {
+    "在馆": "#3F7A55",
+    "在借": "#2E5468",
+    "维修中": "#6E7F8D",
+    "报废待处理": "#A6382F",
+    "rule": "四个状态色互不相同且不与类目色混用；同一状态在 case-03 触摸屏、case-04 小票、case-09 吊牌上取同一 STATE_COLOR 值，深底版面统一走 blend(色, a, dark) 提亮后再用。"
+  },
+  "category_colors": {
+    "map": {
+      "EMT": "orange",
+      "PNU": "steel",
+      "HND": "green",
+      "WOD": "brass",
+      "MTL": "red",
+      "GDN": "greyblue",
+      "MSR": "ink",
+      "CLN": "blend(orange,0.45,paper)",
+      "LIF": "blend(green,0.45,paper)"
+    },
+    "rule": "九个类目色由 CAT_COLOR 单点定义，case-01 构成条、case-03 结果表、case-08 年报、case-10 铝牌共用；深底取 cat_color(code, dark=True) 提亮 30%，禁止在各版面另调一套。"
+  },
+  "typography": {
+    "font": "Inter,Noto Sans CJK SC",
+    "numerals": "所有对齐的数字加 features=\"tnum\"（刻度值、金额、天数、编号、件数）",
+    "scale_used_in_this_task": {
+      "户外/三米": "case-01 最大字 190px（最小 11px 只用于页脚），case-10 字母 320px（正文 15–24px）",
+      "两米": "case-06 海报最大 150px，case-08 年报主句 44px",
+      "一米内屏读": "case-03 触摸屏最大 44px、表格 13–18px；case-05 锁屏时钟 108px、通知文字 12–17px",
+      "手持纸面": "case-02 正面最大 42px / 背面 11–26px、case-04 小票最大 46px（正文 12–15px）、case-09 吊牌 10–32px",
+      "长图": "case-07 最大 46px、正文 14–18px、来源说明 11px"
+    },
+    "minimum_rules": [
+      "小字号只允许出现在页脚与来源说明：十个版面的最小字号为 10–12px（case-09 的 10px 是台账来源行），信息字一律上调一档",
+      "3 米版面（case-01/10）正文不低于 15px、关键信息 22px 以上；1 米屏读不低于 12px；手持纸面允许 11px 于说明",
+      "行盒高度 ≥ 1.45×字号（TextFit 的 PITCH 常量），字宽预算留 0.96 余量（SLACK）",
+      "Snapshot 裁字不给省略号：所有文字必须先经 B.tlab() 的 TextFit 检查再落图，本题十个触点累计 0 条溢出"
+    ]
+  },
+  "components": {
+    "paper_doc": "纸底/铝板底构造器；dark=True 走深灰底并自动切换调色板。noise 按媒介取值：喷绘与纸面 9–22（case-01 22、case-02 13、case-04 16、case-06/07 16、case-08 14、case-09 9、case-03 深底屏 20 作微弱颗粒），case-05 锁屏与 case-10 铝牌取 0——前者要贴近 iOS 系统的干净底（改 0 后逐行取样 200 行，最大行差 0.59 亮度、无可见横纹），后者要靠 gradient_bands 表现金属反射而非纸纹",
+    "gradient_bands": "深底不用真渐变，用等高分带逼近（case-10 band=16，case-05 锁屏压暗）",
+    "brand_mark": "六边形 + 扳手孔标志，任何尺寸下同一套 hex_verts 计算，不重画",
+    "hex_chip": "类目/安全级六角标；深底先 lighten 再描边内缩（边线内缩=圆角半径，否则角上露底）",
+    "pill": "状态胶囊；宽度按字号与字数预算，不允许文字顶到圆端",
+    "ruler": "统一比例尺：track/fill 同圆角、ticks=full 每 10% 一道（50% 加长）、compact 只留 50%、micro 无刻线；深底刻线在填充内与在轨道上取两种色。frac 必须是真实比例，不得为了画面好看做归一化（case-10 渲染前修正）",
+    "card": "浅/深两档容器，边框内缩圆角",
+    "section_head": "编号 + 标题 + 副标题的分区头，年报与长图共用",
+    "footer": "同一行识别信息四档退化：full（品牌+馆点+双档年费+无押金+维修责任，并附第二行虚构声明）/ short / micro / receipt（归还口+逾期费+电话）。密度不够时删信息层级不删虚构声明",
+    "stamp": "旋转双线印章。踩坑记录：把 Stack/Positioned 塞进带 border 的 Container 时文字整块消失，因此框与文字拆成同心的三层旋转图元（构件烟雾 v1/v3 两次验证）",
+    "qr_placeholder": "占位码，明确标注不是真实编码；不得暗示可扫",
+    "tlab": "所有文字的落图入口（先 TextFit 后 label）",
+    "money/pct/date_cn": "格式化单点定义，避免同一金额在小票与通知里写成两种样式"
+  },
+  "layout_rules": [
+    "边距按画布宽度分档（实测值，非统一常数）：case-01 2400px→M=90（3.75%）、case-08 1600px→64（4.0%）、case-10 1200px→56（4.7%）、case-06/07 1080px→72（6.7%）、case-09 640px→40（6.3%）。越大的画布边距占比越小，把空间还给内容密度；小画布反而要留足占比才不显挤",
+    "堆叠条用方角轨道 + 2px 纸色分隔：圆角轨道配方角分段会在两端出现缺口（case-08 v01→v02）",
+    "任何绝对定位版面在生成末尾断言内容止点 ≤ 画布高（case-08 BODY_BOTTOM 断言、case-09 assert y < H-6），溢出在渲染前暴露",
+    "文字盒与相邻图形至少留 6px；跨列数字右边界与下一列色片之间留 ≥80px（case-10 v02→v03）"
+  ],
+  "data_provenance_tiers": {
+    "tier1_recomputable": "由 data.json 现算：2946 次借阅、364 条逾期（12.4%）、逾期 2597 天、滞纳金 ¥12,985、续借 593（20.1%）、峰值 10 月 359 / 谷值 2 月 142、各类目件数与占比、检索命中数、会员 WH-M-0417 的在借与欠费",
+    "tier2_modelled_estimate": "模型估算，出现处必须自带估算说明：避免购买 1344 件、少买 10589.8 kg、折算 ¥1,551,382、loans_per_tool 7.15",
+    "tier3_not_reportable": "明确写「不折算/无法折算」而不是补数：会费总收入（缺卡型构成）、维修实际支出（无发票流水）、捐赠折算（无捐赠记录）",
+    "tier4_authored_demo_material": "为让版面成立而自造、并在数据块与图面双重标注来源的虚构演示材料：D[safety] 馆方自定条文（分级依据为工具表 safety_level）、D[ledger] 逐件购入/保养/维修流水（独立 Random(\"ledger:\"+id)）",
+    "rule": "四档不得互相冒充：估算值不写进 KPI 主位、自造材料不称服务返回、结论句一律由 max()/all() 一类计算生成"
+  },
+  "cross_touchpoint_consistency": [
+    "会员额度：case-02「额度 3 / 3 件」+「同时在借已满 · 归还后可再借」= case-04「额度 3 件」= case-05「额度 3/3 件已满 · 续借额度已用尽」",
+    "逾期口径：「逾期 4 天」与「¥20」在 case-02/04/05 三处一致（4 天 × ¥5/件·天）",
+    "营业时间与周一保养：case-01/02 背面/03/05/06/10 共用 brand.hours",
+    "类目占比 28.5%：case-08 年报与 case-10 铝牌同一分母（全馆 2946 次）",
+    "归还口：case-04 receipt 页脚与 case-10 左卡副行同取 brand.rules.return_point 原文"
+  ],
+  "accessibility_rules": [
+    "状态不只靠颜色：case-03 状态色旁必带文字，case-07 禁止事项同时给图形与文字，case-09 状态横幅为实底色块",
+    "深底版面文字最低对比：正文用 blend(#FFFFFF,0.72~0.90,dark)，说明性小字不低于 0.40",
+    "不使用纯红/纯绿区分唯一信息（红只用于逾期与禁止，绿只用于可借与 HND 类目）"
+  ],
+  "known_limits": [
+    "Snapshot 不给文字溢出提示，只能事前 TextFit + 事后放大裁切；case-09 v03 的横幅文字被裁即由此暴露",
+    "alpha 混色在大面积填充上偏灰，因此统一走 blend() 预算实色而非 8 位 alpha",
+    "构件在极小尺寸（≤14px 高）下刻线与描边会退化，页脚与索引条按档位删层级而非缩字号"
+  ],
+  "iteration_discipline": [
+    "每个触点：先 baseline，再按实际图片反馈逐轮修改；每轮记录 observed/changed 与请求 ID",
+    "定稿用 promote.py 按 md5 反查确认 final.png 就是某次真实服务响应的原始字节，DSL 从同一请求 body 切出",
+    "PIL 放大裁切仅作为看图证据（qa-*.png），不作为交付物，也不参与作品计数"
+  ]
+}

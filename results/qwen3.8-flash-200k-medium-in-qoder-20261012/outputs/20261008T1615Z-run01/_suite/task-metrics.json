@@ -1,0 +1,3140 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "suite_version": "1.0.0",
+  "run_id": "20261008T1615Z-run01",
+  "profile": "all",
+  "status": "completed",
+  "stop_reason": "30 题（A01–A24、B01–B06）全部 completed：125 张最终图片（题库最低 124），每张都有同名完整 .snapshot 且实际开图自检；B01–B06 每题 10 个开放用例独立作品；A21/A22 三个预置轮次全部交付；套件级 index/gallery/snapshot-usage/task-metrics/suite-state 五件总交付齐备并通过总审查。",
+  "started_at": "2026-10-08T08:15:00+00:00",
+  "ended_at": "2026-10-11T15:26:55.953294+00:00",
+  "elapsed_seconds": 285116.0,
+  "task_status_counts": {
+    "completed": 30
+  },
+  "counts": {
+    "final_pngs": 125,
+    "independent_creative_cases": 60,
+    "snapshot_requests": 765,
+    "successful_snapshot_requests": 643,
+    "failed_snapshot_requests": 122,
+    "retry_requests": 23,
+    "other_service_requests": 1,
+    "document_requests": 66,
+    "dsl_versions": 555,
+    "image_views": 552,
+    "completed_visual_iterations": 346,
+    "incomplete_visual_iterations": 36,
+    "suite_documents_fetched": 15
+  },
+  "counts_note": {
+    "aggregation": "只累加每题实发请求日志与各题 task-metrics.json 顶层自有计数；轮次/用例明细不再重复相加。",
+    "log_recount": {
+      "rule": "snapshot_requests / successful / failed / document_requests / other_service_requests 一律按 tmp/<run>/<task>/requests.jsonl 的实发记录重新点数（URL 以 /snapshot 结尾或 kind=snapshot 记为服务渲染请求；kind∈doc/document/guide/research/reference 记为文档或资料请求；其余 GET 记为其他服务请求），再与 shared 阶段的 15 次文档请求相加。",
+      "divergences": [
+        "B03.snapshot_requests 自报 135 → 实发日志 131",
+        "B03.successful_snapshot_requests 自报 108 → 实发日志 104",
+        "B04.snapshot_requests 自报 86 → 实发日志 45"
+      ],
+      "why": "总审查发现各题自报字段口径不一：B04 的 http_requests_total 把 40 次外部资料 GET 与 1 次 fonts 查询算进了请求数，B03 的 snapshot_requests 把 4 次文档 GET 算进渲染请求数。套件层改用日志实数，各题自报值保留在 task_summaries[].counts 中以便对照，不改写各题原文件。"
+    },
+    "field_normalization": {
+      "snapshot_requests": [
+        "http_requests_total",
+        "renders",
+        "requests_total",
+        "snapshot_requests"
+      ],
+      "successful_snapshot_requests": [
+        "render_ok",
+        "requests_success",
+        "successful_snapshot_requests"
+      ],
+      "failed_snapshot_requests": [
+        "failed_snapshot_requests",
+        "render_transport_or_truncated",
+        "requests_failed"
+      ],
+      "retry_requests": [
+        "retries",
+        "retry_requests"
+      ],
+      "image_views": [
+        "image_views",
+        "images_viewed"
+      ],
+      "completed_visual_iterations": [
+        "completed_visual_iterations",
+        "visual_iterations"
+      ],
+      "incomplete_visual_iterations": [
+        "incomplete_visual_iterations"
+      ],
+      "dsl_versions": [
+        "dsl_versions"
+      ],
+      "other_service_requests": [
+        "other_service_requests",
+        "tool_usage_records"
+      ],
+      "document_requests": [
+        "document_requests"
+      ]
+    },
+    "missing_for_tasks": {
+      "document_requests": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "A17",
+        "A18",
+        "A19",
+        "A20",
+        "A21",
+        "A22",
+        "A23",
+        "A24"
+      ],
+      "retry_requests": [
+        "A13"
+      ],
+      "completed_visual_iterations": [
+        "A13"
+      ],
+      "incomplete_visual_iterations": [
+        "A13",
+        "A14",
+        "B04",
+        "B05"
+      ],
+      "other_service_requests": [
+        "A13",
+        "A14",
+        "B05"
+      ]
+    },
+    "failed_definition": "失败 = 非 200 响应 + 传输截断/无响应体；各题原始日志保留具体 http_status（0/None 表示传输层失败）。",
+    "derived": [
+      "A13.successful_snapshot_requests=29（http_status_breakdown['200']）",
+      "A13.failed_snapshot_requests=9（http_status_breakdown 非 200 项之和）",
+      "B04.retry_requests=1（iterations_by_type.retry）",
+      "B05.retry_requests=1（iterations_by_type.retry）",
+      "B05.completed_visual_iterations=27（iterations_by_type.visual）",
+      "B06.retry_requests=1（iterations_by_type.retry）"
+    ],
+    "document_requests_note": "A 轨多数题目未单列文档请求（服务指南与 DSL 文档在 shared 阶段一次抓取并缓存复用），文档请求数只统计日志里确有 GET 的题（shared+A17+B03+B04）；缓存复用不重复计数。",
+    "gate_blocked_note": "B03–B06 另有文字闸门（TextFit）拦下、未发请求的尝试，计在各题 counts 的 gate_blocked_no_request / gate_blocked_events / gate_warnings_blocked，不在上面的请求数内。"
+  },
+  "shared_preparation": {
+    "dir": "tmp/20261008T1615Z-run01/_suite/",
+    "requests": 15,
+    "document_requests": 15,
+    "docs_cache": "tmp/20261008T1615Z-run01/_suite/docs/",
+    "note": "服务指南与 DSL 文档在 shared 阶段抓取并缓存；后续题只读缓存不重复计数（各题 document_requests_note 有说明）。"
+  },
+  "timing_accounting": {
+    "suite_started_at": "2026-10-08T08:15:00+00:00",
+    "suite_ended_at": "2026-10-11T15:26:55.953294+00:00",
+    "suite_elapsed_seconds": 285116.0,
+    "suite_evidence_first_at": "2026-10-08T08:14:32.571670+00:00",
+    "suite_evidence_last_at": "2026-10-11T15:20:18.292913+00:00",
+    "suite_evidence_span_seconds": 284745.7,
+    "suite_idle_seconds_over_300s": 230966.1,
+    "suite_idle_gap_count_over_300s": 129,
+    "suite_idle_gaps_over_300s": [
+      {
+        "from": "2026-10-08T08:14:58.597664+00:00",
+        "to": "2026-10-08T08:20:30.329974+00:00",
+        "seconds": 331.7
+      },
+      {
+        "from": "2026-10-08T08:34:01.518153+00:00",
+        "to": "2026-10-08T08:46:04.163211+00:00",
+        "seconds": 722.6
+      },
+      {
+        "from": "2026-10-08T09:08:40.325474+00:00",
+        "to": "2026-10-08T09:14:33.856778+00:00",
+        "seconds": 353.5
+      },
+      {
+        "from": "2026-10-08T09:31:57.282422+00:00",
+        "to": "2026-10-08T09:53:41.660943+00:00",
+        "seconds": 1304.4
+      },
+      {
+        "from": "2026-10-08T10:14:51.223144+00:00",
+        "to": "2026-10-08T10:26:19.020606+00:00",
+        "seconds": 687.8
+      },
+      {
+        "from": "2026-10-08T10:26:19.020606+00:00",
+        "to": "2026-10-08T10:31:33.475355+00:00",
+        "seconds": 314.5
+      },
+      {
+        "from": "2026-10-08T10:40:00.027545+00:00",
+        "to": "2026-10-08T10:51:43.936693+00:00",
+        "seconds": 703.9
+      },
+      {
+        "from": "2026-10-08T10:56:10.292126+00:00",
+        "to": "2026-10-08T11:01:17.281154+00:00",
+        "seconds": 307.0
+      },
+      {
+        "from": "2026-10-08T11:06:46.763032+00:00",
+        "to": "2026-10-08T11:32:43.737361+00:00",
+        "seconds": 1557.0
+      },
+      {
+        "from": "2026-10-08T11:48:28.784892+00:00",
+        "to": "2026-10-08T12:21:17.648057+00:00",
+        "seconds": 1968.9
+      },
+      {
+        "from": "2026-10-08T12:26:42.115417+00:00",
+        "to": "2026-10-08T12:32:52.927557+00:00",
+        "seconds": 370.8
+      },
+      {
+        "from": "2026-10-08T12:32:52.927557+00:00",
+        "to": "2026-10-08T12:41:23.554647+00:00",
+        "seconds": 510.6
+      },
+      {
+        "from": "2026-10-08T12:45:05+00:00",
+        "to": "2026-10-08T12:54:10.714519+00:00",
+        "seconds": 545.7
+      },
+      {
+        "from": "2026-10-08T13:01:30.799179+00:00",
+        "to": "2026-10-08T13:27:12.088631+00:00",
+        "seconds": 1541.3
+      },
+      {
+        "from": "2026-10-08T13:27:52.802686+00:00",
+        "to": "2026-10-08T13:33:41.209113+00:00",
+        "seconds": 348.4
+      },
+      {
+        "from": "2026-10-08T13:33:41.209113+00:00",
+        "to": "2026-10-08T13:48:08.951551+00:00",
+        "seconds": 867.7
+      },
+      {
+        "from": "2026-10-08T13:50:51.144398+00:00",
+        "to": "2026-10-08T14:07:10+00:00",
+        "seconds": 978.9
+      },
+      {
+        "from": "2026-10-08T14:14:00+00:00",
+        "to": "2026-10-08T14:19:52.050223+00:00",
+        "seconds": 352.1
+      },
+      {
+        "from": "2026-10-08T14:23:00+00:00",
+        "to": "2026-10-08T14:30:00+00:00",
+        "seconds": 420.0
+      },
+      {
+        "from": "2026-10-08T14:33:58.366284+00:00",
+        "to": "2026-10-08T14:43:34.792764+00:00",
+        "seconds": 576.4
+      },
+      {
+        "from": "2026-10-08T14:55:27.257529+00:00",
+        "to": "2026-10-08T15:00:49.736710+00:00",
+        "seconds": 322.5
+      },
+      {
+        "from": "2026-10-08T15:00:55.439811+00:00",
+        "to": "2026-10-08T15:14:02.628009+00:00",
+        "seconds": 787.2
+      },
+      {
+        "from": "2026-10-08T15:14:16.693387+00:00",
+        "to": "2026-10-08T15:29:07.544177+00:00",
+        "seconds": 890.9
+      },
+      {
+        "from": "2026-10-08T15:29:12.065555+00:00",
+        "to": "2026-10-08T16:04:25.008277+00:00",
+        "seconds": 2112.9
+      },
+      {
+        "from": "2026-10-08T16:05:01.102062+00:00",
+        "to": "2026-10-08T16:10:28.139696+00:00",
+        "seconds": 327.0
+      },
+      {
+        "from": "2026-10-08T16:22:42.399301+00:00",
+        "to": "2026-10-08T16:46:54.533725+00:00",
+        "seconds": 1452.1
+      },
+      {
+        "from": "2026-10-08T17:01:30.042044+00:00",
+        "to": "2026-10-08T22:36:00+00:00",
+        "seconds": 20070.0
+      },
+      {
+        "from": "2026-10-08T22:36:00+00:00",
+        "to": "2026-10-09T01:06:00.899970+00:00",
+        "seconds": 9000.9
+      },
+      {
+        "from": "2026-10-09T01:13:16.638892+00:00",
+        "to": "2026-10-09T01:29:57.167470+00:00",
+        "seconds": 1000.5
+      },
+      {
+        "from": "2026-10-09T01:32:32.086691+00:00",
+        "to": "2026-10-09T02:06:54.427106+00:00",
+        "seconds": 2062.3
+      },
+      {
+        "from": "2026-10-09T02:20:39.852799+00:00",
+        "to": "2026-10-09T02:28:29.160903+00:00",
+        "seconds": 469.3
+      },
+      {
+        "from": "2026-10-09T02:28:29.160903+00:00",
+        "to": "2026-10-09T02:36:10+00:00",
+        "seconds": 460.8
+      },
+      {
+        "from": "2026-10-09T02:36:10+00:00",
+        "to": "2026-10-09T02:41:17.711156+00:00",
+        "seconds": 307.7
+      },
+      {
+        "from": "2026-10-09T02:54:15+00:00",
+        "to": "2026-10-09T03:14:54.494724+00:00",
+        "seconds": 1239.5
+      },
+      {
+        "from": "2026-10-09T03:15:26.038828+00:00",
+        "to": "2026-10-09T03:21:39.741784+00:00",
+        "seconds": 373.7
+      },
+      {
+        "from": "2026-10-09T03:23:03.920675+00:00",
+        "to": "2026-10-09T03:28:43.939188+00:00",
+        "seconds": 340.0
+      },
+      {
+        "from": "2026-10-09T03:32:48.399671+00:00",
+        "to": "2026-10-09T03:42:29.757523+00:00",
+        "seconds": 581.4
+      },
+      {
+        "from": "2026-10-09T03:52:23.476421+00:00",
+        "to": "2026-10-09T04:05:10.758917+00:00",
+        "seconds": 767.3
+      },
+      {
+        "from": "2026-10-09T04:05:14.407967+00:00",
+        "to": "2026-10-09T04:29:21.066316+00:00",
+        "seconds": 1446.7
+      },
+      {
+        "from": "2026-10-09T04:39:22.941735+00:00",
+        "to": "2026-10-09T04:48:43.994232+00:00",
+        "seconds": 561.1
+      },
+      {
+        "from": "2026-10-09T04:58:05.058608+00:00",
+        "to": "2026-10-09T05:07:05.459713+00:00",
+        "seconds": 540.4
+      },
+      {
+        "from": "2026-10-09T05:07:05.459713+00:00",
+        "to": "2026-10-09T05:19:54.753967+00:00",
+        "seconds": 769.3
+      },
+      {
+        "from": "2026-10-09T05:19:54.753967+00:00",
+        "to": "2026-10-09T05:26:09.843664+00:00",
+        "seconds": 375.1
+      },
+      {
+        "from": "2026-10-09T05:33:43.102809+00:00",
+        "to": "2026-10-09T05:39:14.563676+00:00",
+        "seconds": 331.5
+      },
+      {
+        "from": "2026-10-09T05:48:29.079722+00:00",
+        "to": "2026-10-09T05:54:10.200472+00:00",
+        "seconds": 341.1
+      },
+      {
+        "from": "2026-10-09T05:54:10.200472+00:00",
+        "to": "2026-10-09T06:00:48.025625+00:00",
+        "seconds": 397.8
+      },
+      {
+        "from": "2026-10-09T06:02:42.997317+00:00",
+        "to": "2026-10-09T06:08:42.420276+00:00",
+        "seconds": 359.4
+      },
+      {
+        "from": "2026-10-09T06:13:45.027023+00:00",
+        "to": "2026-10-09T06:19:35.171143+00:00",
+        "seconds": 350.1
+      },
+      {
+        "from": "2026-10-09T06:19:38.611665+00:00",
+        "to": "2026-10-09T06:29:02.574985+00:00",
+        "seconds": 564.0
+      },
+      {
+        "from": "2026-10-09T06:29:02.574985+00:00",
+        "to": "2026-10-09T06:42:55.822825+00:00",
+        "seconds": 833.2
+      },
+      {
+        "from": "2026-10-09T06:42:55.822825+00:00",
+        "to": "2026-10-09T06:48:33.645803+00:00",
+        "seconds": 337.8
+      },
+      {
+        "from": "2026-10-09T06:48:33.645803+00:00",
+        "to": "2026-10-09T06:53:40.975281+00:00",
+        "seconds": 307.3
+      },
+      {
+        "from": "2026-10-09T06:53:40.975281+00:00",
+        "to": "2026-10-09T06:59:54.433266+00:00",
+        "seconds": 373.5
+      },
+      {
+        "from": "2026-10-09T07:11:01.552298+00:00",
+        "to": "2026-10-09T07:41:36.225665+00:00",
+        "seconds": 1834.7
+      },
+      {
+        "from": "2026-10-09T07:43:13.407727+00:00",
+        "to": "2026-10-09T07:48:17.504621+00:00",
+        "seconds": 304.1
+      },
+      {
+        "from": "2026-10-09T07:48:39.671624+00:00",
+        "to": "2026-10-09T08:05:11.680300+00:00",
+        "seconds": 992.0
+      },
+      {
+        "from": "2026-10-09T08:08:43.455483+00:00",
+        "to": "2026-10-09T16:20:30+08:00",
+        "seconds": 706.5
+      },
+      {
+        "from": "2026-10-09T16:20:30+08:00",
+        "to": "2026-10-09T08:55:30.605697+00:00",
+        "seconds": 2100.6
+      },
+      {
+        "from": "2026-10-09T09:03:34.017145+00:00",
+        "to": "2026-10-09T09:11:59.879564+00:00",
+        "seconds": 505.9
+      },
+      {
+        "from": "2026-10-09T09:14:54.972291+00:00",
+        "to": "2026-10-09T09:26:08.602117+00:00",
+        "seconds": 673.6
+      },
+      {
+        "from": "2026-10-09T09:33:48.818690+00:00",
+        "to": "2026-10-09T09:40:00+00:00",
+        "seconds": 371.2
+      },
+      {
+        "from": "2026-10-09T09:40:00+00:00",
+        "to": "2026-10-09T10:04:55.018541+00:00",
+        "seconds": 1495.0
+      },
+      {
+        "from": "2026-10-09T10:06:09.230667+00:00",
+        "to": "2026-10-09T10:18:01.794252+00:00",
+        "seconds": 712.6
+      },
+      {
+        "from": "2026-10-09T10:19:23.202752+00:00",
+        "to": "2026-10-09T10:40:51.745738+00:00",
+        "seconds": 1288.5
+      },
+      {
+        "from": "2026-10-09T10:43:27.045908+00:00",
+        "to": "2026-10-09T10:51:16.866968+00:00",
+        "seconds": 469.8
+      },
+      {
+        "from": "2026-10-09T11:10:31.038123+00:00",
+        "to": "2026-10-09T11:26:01.433178+00:00",
+        "seconds": 930.4
+      },
+      {
+        "from": "2026-10-09T11:36:28.071008+00:00",
+        "to": "2026-10-10T00:55:27.228727+00:00",
+        "seconds": 47939.2
+      },
+      {
+        "from": "2026-10-10T01:00:56.168840+00:00",
+        "to": "2026-10-10T01:11:07.038117+00:00",
+        "seconds": 610.9
+      },
+      {
+        "from": "2026-10-10T01:28:57.932621+00:00",
+        "to": "2026-10-10T01:38:37.020007+00:00",
+        "seconds": 579.1
+      },
+      {
+        "from": "2026-10-10T01:39:05.258703+00:00",
+        "to": "2026-10-10T01:49:50.515263+00:00",
+        "seconds": 645.3
+      },
+      {
+        "from": "2026-10-10T01:59:08.563474+00:00",
+        "to": "2026-10-10T02:06:32.680860+00:00",
+        "seconds": 444.1
+      },
+      {
+        "from": "2026-10-10T02:27:05.727694+00:00",
+        "to": "2026-10-10T02:37:23.876967+00:00",
+        "seconds": 618.1
+      },
+      {
+        "from": "2026-10-10T03:08:19.021357+00:00",
+        "to": "2026-10-10T03:27:49.780083+00:00",
+        "seconds": 1170.8
+      },
+      {
+        "from": "2026-10-10T03:27:49.780083+00:00",
+        "to": "2026-10-10T03:38:37.436003+00:00",
+        "seconds": 647.7
+      },
+      {
+        "from": "2026-10-10T03:38:37.436003+00:00",
+        "to": "2026-10-10T03:45:00.796973+00:00",
+        "seconds": 383.4
+      },
+      {
+        "from": "2026-10-10T03:46:40.977207+00:00",
+        "to": "2026-10-10T03:57:36.985981+00:00",
+        "seconds": 656.0
+      },
+      {
+        "from": "2026-10-10T04:02:33.741125+00:00",
+        "to": "2026-10-10T04:30:56.133598+00:00",
+        "seconds": 1702.4
+      },
+      {
+        "from": "2026-10-10T04:30:56.133598+00:00",
+        "to": "2026-10-10T04:36:24.989404+00:00",
+        "seconds": 328.9
+      },
+      {
+        "from": "2026-10-10T04:56:43.391552+00:00",
+        "to": "2026-10-10T05:06:56.808116+00:00",
+        "seconds": 613.4
+      },
+      {
+        "from": "2026-10-10T05:32:18.168966+00:00",
+        "to": "2026-10-10T05:42:06.843535+00:00",
+        "seconds": 588.7
+      },
+      {
+        "from": "2026-10-10T05:45:21.118430+00:00",
+        "to": "2026-10-10T05:52:37.822855+00:00",
+        "seconds": 436.7
+      },
+      {
+        "from": "2026-10-10T05:56:11.671952+00:00",
+        "to": "2026-10-10T06:07:53.563795+00:00",
+        "seconds": 701.9
+      },
+      {
+        "from": "2026-10-10T06:10:21.190639+00:00",
+        "to": "2026-10-10T06:16:40.726976+00:00",
+        "seconds": 379.5
+      },
+      {
+        "from": "2026-10-10T06:20:13.366228+00:00",
+        "to": "2026-10-10T06:26:53.357346+00:00",
+        "seconds": 400.0
+      },
+      {
+        "from": "2026-10-10T06:34:03.494676+00:00",
+        "to": "2026-10-10T06:52:31.305412+00:00",
+        "seconds": 1107.8
+      },
+      {
+        "from": "2026-10-10T06:52:31.305412+00:00",
+        "to": "2026-10-10T07:12:07.469118+00:00",
+        "seconds": 1176.2
+      },
+      {
+        "from": "2026-10-10T07:12:16.114322+00:00",
+        "to": "2026-10-10T07:17:47.942528+00:00",
+        "seconds": 331.8
+      },
+      {
+        "from": "2026-10-10T07:22:16.672570+00:00",
+        "to": "2026-10-10T07:37:29.601767+00:00",
+        "seconds": 912.9
+      },
+      {
+        "from": "2026-10-10T07:51:25.881379+00:00",
+        "to": "2026-10-10T08:08:02.330467+00:00",
+        "seconds": 996.4
+      },
+      {
+        "from": "2026-10-10T08:21:33.931215+00:00",
+        "to": "2026-10-10T08:29:47.730085+00:00",
+        "seconds": 493.8
+      },
+      {
+        "from": "2026-10-10T08:49:43.267067+00:00",
+        "to": "2026-10-10T09:32:02.969202+00:00",
+        "seconds": 2539.7
+      },
+      {
+        "from": "2026-10-10T09:55:33.299747+00:00",
+        "to": "2026-10-10T10:09:42.823313+00:00",
+        "seconds": 849.5
+      },
+      {
+        "from": "2026-10-10T10:26:21.562784+00:00",
+        "to": "2026-10-10T10:34:37.277243+00:00",
+        "seconds": 495.7
+      },
+      {
+        "from": "2026-10-10T10:46:36.811125+00:00",
+        "to": "2026-10-10T11:00:21.106234+00:00",
+        "seconds": 824.3
+      },
+      {
+        "from": "2026-10-10T11:00:21.106234+00:00",
+        "to": "2026-10-10T11:05:29.217034+00:00",
+        "seconds": 308.1
+      },
+      {
+        "from": "2026-10-10T11:09:00.347195+00:00",
+        "to": "2026-10-10T11:16:32.432381+00:00",
+        "seconds": 452.1
+      },
+      {
+        "from": "2026-10-10T11:21:35.622216+00:00",
+        "to": "2026-10-10T11:27:35+00:00",
+        "seconds": 359.4
+      },
+      {
+        "from": "2026-10-10T11:27:35+00:00",
+        "to": "2026-10-10T12:54:37.339815+00:00",
+        "seconds": 5222.3
+      },
+      {
+        "from": "2026-10-10T12:58:21.765891+00:00",
+        "to": "2026-10-10T13:06:55.744887+00:00",
+        "seconds": 514.0
+      },
+      {
+        "from": "2026-10-10T13:06:55.744887+00:00",
+        "to": "2026-10-10T13:14:36.176352+00:00",
+        "seconds": 460.4
+      },
+      {
+        "from": "2026-10-10T13:14:36.176352+00:00",
+        "to": "2026-10-10T13:21:37.435772+00:00",
+        "seconds": 421.3
+      },
+      {
+        "from": "2026-10-10T13:21:37.435772+00:00",
+        "to": "2026-10-10T13:27:26.247731+00:00",
+        "seconds": 348.8
+      },
+      {
+        "from": "2026-10-10T13:27:26.247731+00:00",
+        "to": "2026-10-10T13:36:02+00:00",
+        "seconds": 515.8
+      },
+      {
+        "from": "2026-10-10T13:36:02+00:00",
+        "to": "2026-10-11T05:36:32.652988+00:00",
+        "seconds": 57630.7
+      },
+      {
+        "from": "2026-10-11T05:44:42.102778+00:00",
+        "to": "2026-10-11T05:50:28.488846+00:00",
+        "seconds": 346.4
+      },
+      {
+        "from": "2026-10-11T05:55:53+00:00",
+        "to": "2026-10-11T06:02:42.510475+00:00",
+        "seconds": 409.5
+      },
+      {
+        "from": "2026-10-11T06:20:18+00:00",
+        "to": "2026-10-11T06:54:01.063299+00:00",
+        "seconds": 2023.1
+      },
+      {
+        "from": "2026-10-11T06:55:54.562123+00:00",
+        "to": "2026-10-11T07:06:51+00:00",
+        "seconds": 656.4
+      },
+      {
+        "from": "2026-10-11T07:06:51+00:00",
+        "to": "2026-10-11T07:21:09.119607+00:00",
+        "seconds": 858.1
+      },
+      {
+        "from": "2026-10-11T07:32:34.706297+00:00",
+        "to": "2026-10-11T07:38:03.842682+00:00",
+        "seconds": 329.1
+      },
+      {
+        "from": "2026-10-11T07:46:17.855793+00:00",
+        "to": "2026-10-11T07:57:10.477628+00:00",
+        "seconds": 652.6
+      },
+      {
+        "from": "2026-10-11T08:05:29.669119+00:00",
+        "to": "2026-10-11T08:14:36.858302+00:00",
+        "seconds": 547.2
+      },
+      {
+        "from": "2026-10-11T08:17:31.912611+00:00",
+        "to": "2026-10-11T08:30:05.937373+00:00",
+        "seconds": 754.0
+      },
+      {
+        "from": "2026-10-11T08:40:03.970885+00:00",
+        "to": "2026-10-11T08:55:57.487819+00:00",
+        "seconds": 953.5
+      },
+      {
+        "from": "2026-10-11T09:01:55.472388+00:00",
+        "to": "2026-10-11T09:21:16.185509+00:00",
+        "seconds": 1160.7
+      },
+      {
+        "from": "2026-10-11T09:37:05.976068+00:00",
+        "to": "2026-10-11T09:53:56.834274+00:00",
+        "seconds": 1010.9
+      },
+      {
+        "from": "2026-10-11T10:03:35.711454+00:00",
+        "to": "2026-10-11T10:24:21.648105+00:00",
+        "seconds": 1245.9
+      },
+      {
+        "from": "2026-10-11T10:38:29.159364+00:00",
+        "to": "2026-10-11T11:15:56.180028+00:00",
+        "seconds": 2247.0
+      },
+      {
+        "from": "2026-10-11T11:24:23.267426+00:00",
+        "to": "2026-10-11T11:29:51.539831+00:00",
+        "seconds": 328.3
+      },
+      {
+        "from": "2026-10-11T11:52:58.145264+00:00",
+        "to": "2026-10-11T11:58:08.153371+00:00",
+        "seconds": 310.0
+      },
+      {
+        "from": "2026-10-11T12:33:32.120275+00:00",
+        "to": "2026-10-11T12:38:58.287126+00:00",
+        "seconds": 326.2
+      },
+      {
+        "from": "2026-10-11T12:50:03.548846+00:00",
+        "to": "2026-10-11T12:55:15.238374+00:00",
+        "seconds": 311.7
+      },
+      {
+        "from": "2026-10-11T12:58:29.543714+00:00",
+        "to": "2026-10-11T13:03:43.806903+00:00",
+        "seconds": 314.3
+      },
+      {
+        "from": "2026-10-11T13:07:03.828773+00:00",
+        "to": "2026-10-11T13:35:01.303725+00:00",
+        "seconds": 1677.5
+      },
+      {
+        "from": "2026-10-11T14:04:59.732041+00:00",
+        "to": "2026-10-11T14:10:19.775737+00:00",
+        "seconds": 320.0
+      },
+      {
+        "from": "2026-10-11T14:13:22.662943+00:00",
+        "to": "2026-10-11T14:20:40.637867+00:00",
+        "seconds": 438.0
+      },
+      {
+        "from": "2026-10-11T14:42:44.713805+00:00",
+        "to": "2026-10-11T14:49:43.342942+00:00",
+        "seconds": 418.6
+      },
+      {
+        "from": "2026-10-11T14:54:21.844875+00:00",
+        "to": "2026-10-11T15:03:48.397649+00:00",
+        "seconds": 566.6
+      },
+      {
+        "from": "2026-10-11T15:10:37.693218+00:00",
+        "to": "2026-10-11T15:16:28.691375+00:00",
+        "seconds": 351.0
+      }
+    ],
+    "elapsed_time_note": "elapsed_seconds / 时间跨度包含大量非工作空档（本 run 跨 2026-10-08→2026-10-11，会话多次恢复、等待与人工看图间歇）。空档按日志时间戳重算：相邻证据事件间隔 >300s 记为 idle，合计 230966.1，绝不把这些时间说成连续工作。只记录了单一 elapsed 的早期题目（A 轨与 B01/B02 部分）未拆分 active/idle，其真实工作时长以 request_duration_sum_seconds + 迭代/看图日志时间戳为上界参考。",
+    "per_task": {
+      "A01": {
+        "started_at": "2026-10-08T08:15:00+00:00",
+        "ended_at": "2026-10-08T08:34:53.267731+00:00",
+        "recorded_elapsed_seconds": 1193.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 57.2,
+        "recomputed_evidence_span_seconds": 811.2,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "A02": {
+        "started_at": "2026-10-08T08:36:53+00:00",
+        "ended_at": "2026-10-08T09:03:15.997418+00:00",
+        "recorded_elapsed_seconds": 1583.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 74.2,
+        "recomputed_evidence_span_seconds": 971.9,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "A03": {
+        "started_at": "2026-10-08T09:03:49.441246+00:00",
+        "ended_at": "2026-10-08T09:35:57.703899+00:00",
+        "recorded_elapsed_seconds": 1928.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 46.6,
+        "recomputed_evidence_span_seconds": 1614.1,
+        "recomputed_idle_seconds_over_300s": 353.5,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "A04": {
+        "started_at": "2026-10-08T09:40:16.698658+00:00",
+        "ended_at": "2026-10-08T10:11:24.162455+00:00",
+        "recorded_elapsed_seconds": 1867.5,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 27.7,
+        "recomputed_evidence_span_seconds": 983.8,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "A05": {
+        "started_at": "2026-10-08T10:13:07.322322+00:00",
+        "ended_at": "2026-10-08T10:41:28.281988+00:00",
+        "recorded_elapsed_seconds": 1701.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 27.8,
+        "recomputed_evidence_span_seconds": 1508.8,
+        "recomputed_idle_seconds_over_300s": 1002.3,
+        "recomputed_idle_gap_count_over_300s": 2,
+        "elapsed_time_note": null
+      },
+      "A06": {
+        "started_at": "2026-10-08T10:43:31.169724+00:00",
+        "ended_at": "2026-10-08T11:09:39.441820+00:00",
+        "recorded_elapsed_seconds": 1568.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 42.3,
+        "recomputed_evidence_span_seconds": 902.8,
+        "recomputed_idle_seconds_over_300s": 307.0,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "A07": {
+        "started_at": "2026-10-08T11:11:19.655951+00:00",
+        "ended_at": "2026-10-08T11:56:45.464577+00:00",
+        "recorded_elapsed_seconds": 2725.8,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 45.4,
+        "recomputed_evidence_span_seconds": 945.0,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "A08": {
+        "started_at": "2026-10-08T11:57:44.207965+00:00",
+        "ended_at": "2026-10-08T13:11:56.911578+00:00",
+        "recorded_elapsed_seconds": 4452.7,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 441.6,
+        "recomputed_evidence_span_seconds": 2413.2,
+        "recomputed_idle_seconds_over_300s": 1427.1,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": null
+      },
+      "A09": {
+        "started_at": "2026-10-08T13:12:49.070031+00:00",
+        "ended_at": "2026-10-08T13:52:22.028079+00:00",
+        "recorded_elapsed_seconds": 2373.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 24.9,
+        "recomputed_evidence_span_seconds": 1419.1,
+        "recomputed_idle_seconds_over_300s": 1216.1,
+        "recomputed_idle_gap_count_over_300s": 2,
+        "elapsed_time_note": null
+      },
+      "A10": {
+        "started_at": "2026-10-08T13:55:32.274684+00:00",
+        "ended_at": "2026-10-08T14:48:19.713932+00:00",
+        "recorded_elapsed_seconds": 3167.4,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 93.6,
+        "recomputed_evidence_span_seconds": 30530.0,
+        "recomputed_idle_seconds_over_300s": 29458.5,
+        "recomputed_idle_gap_count_over_300s": 4,
+        "elapsed_time_note": null
+      },
+      "A11": {
+        "started_at": "2026-10-08T14:49:15.086876+00:00",
+        "ended_at": "2026-10-08T15:44:52.169799+00:00",
+        "recorded_elapsed_seconds": 3337.1,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 43.5,
+        "recomputed_evidence_span_seconds": 2150.5,
+        "recomputed_idle_seconds_over_300s": 2000.6,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": null
+      },
+      "A12": {
+        "started_at": "2026-10-08T15:45:23.451380+00:00",
+        "ended_at": "2026-10-08T16:40:56.716502+00:00",
+        "recorded_elapsed_seconds": 3333.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 122.6,
+        "recomputed_evidence_span_seconds": 1097.4,
+        "recomputed_idle_seconds_over_300s": 327.0,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "A13": {
+        "started_at": "2026-10-08T16:42:50.055825+00:00",
+        "ended_at": "2026-10-09T01:19:40.382244+00:00",
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 31010.3,
+        "recorded_active_seconds": 2232.9,
+        "recorded_idle_gap_seconds": 28777.5,
+        "request_duration_sum_seconds": null,
+        "recomputed_evidence_span_seconds": 30382.1,
+        "recomputed_idle_seconds_over_300s": 29070.9,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "A14": {
+        "started_at": null,
+        "ended_at": null,
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 620.0,
+        "recorded_active_seconds": 620.0,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": null,
+        "recomputed_evidence_span_seconds": 154.9,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "A15": {
+        "started_at": "2026-10-09T01:41:32+00:00",
+        "ended_at": "2026-10-09T02:32:27.084782+00:00",
+        "recorded_elapsed_seconds": 3055.1,
+        "recorded_wall_clock_seconds": 3055.1,
+        "recorded_active_seconds": 3055.1,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 35.8,
+        "recomputed_evidence_span_seconds": 1294.7,
+        "recomputed_idle_seconds_over_300s": 469.3,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A16": {
+        "started_at": "2026-10-09T02:32:46+00:00",
+        "ended_at": "2026-10-09T03:00:28.724867+00:00",
+        "recorded_elapsed_seconds": 1662.7,
+        "recorded_wall_clock_seconds": 1662.7,
+        "recorded_active_seconds": 1662.7,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 31.2,
+        "recomputed_evidence_span_seconds": 1085.0,
+        "recomputed_idle_seconds_over_300s": 307.7,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A17": {
+        "started_at": "2026-10-09T03:14:54.494724+00:00",
+        "ended_at": "2026-10-09T04:16:59.019023+00:00",
+        "recorded_elapsed_seconds": 3724.5,
+        "recorded_wall_clock_seconds": 3724.5,
+        "recorded_active_seconds": 3449.5,
+        "recorded_idle_gap_seconds": 275.0,
+        "request_duration_sum_seconds": 206.2,
+        "recomputed_evidence_span_seconds": 3019.9,
+        "recomputed_idle_seconds_over_300s": 2062.4,
+        "recomputed_idle_gap_count_over_300s": 4,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A18": {
+        "started_at": "2026-10-09T04:20:23.574151+00:00",
+        "ended_at": "2026-10-09T04:48:44.097234+00:00",
+        "recorded_elapsed_seconds": 1700.5,
+        "recorded_wall_clock_seconds": 1700.5,
+        "recorded_active_seconds": 1580.5,
+        "recorded_idle_gap_seconds": 120.0,
+        "request_duration_sum_seconds": 41.3,
+        "recomputed_evidence_span_seconds": 1162.9,
+        "recomputed_idle_seconds_over_300s": 561.1,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A19": {
+        "started_at": "2026-10-09T04:49:15+00:00",
+        "ended_at": "2026-10-09T05:10:10.460770+00:00",
+        "recorded_elapsed_seconds": 1255.5,
+        "recorded_wall_clock_seconds": 1255.5,
+        "recorded_active_seconds": 1125.5,
+        "recorded_idle_gap_seconds": 130.0,
+        "request_duration_sum_seconds": 37.7,
+        "recomputed_evidence_span_seconds": 935.9,
+        "recomputed_idle_seconds_over_300s": 540.4,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A20": {
+        "started_at": "2026-10-09T05:10:51+00:00",
+        "ended_at": "2026-10-09T05:35:18.337447+00:00",
+        "recorded_elapsed_seconds": 1467.3,
+        "recorded_wall_clock_seconds": 1467.3,
+        "recorded_active_seconds": 1467.3,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 18.0,
+        "recomputed_evidence_span_seconds": 828.3,
+        "recomputed_idle_seconds_over_300s": 375.1,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A21": {
+        "started_at": "2026-10-09T05:36:00+00:00",
+        "ended_at": "2026-10-09T06:32:20.785526+00:00",
+        "recorded_elapsed_seconds": 3380.8,
+        "recorded_wall_clock_seconds": 3380.8,
+        "recorded_active_seconds": 3380.8,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 46.5,
+        "recomputed_evidence_span_seconds": 2988.0,
+        "recomputed_idle_seconds_over_300s": 2012.4,
+        "recomputed_idle_gap_count_over_300s": 5,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A22": {
+        "started_at": "2026-10-09T06:33:00+00:00",
+        "ended_at": "2026-10-09T07:22:30.032715+00:00",
+        "recorded_elapsed_seconds": 2970.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 32.8,
+        "recomputed_evidence_span_seconds": 1685.7,
+        "recomputed_idle_seconds_over_300s": 1018.6,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": null
+      },
+      "A23": {
+        "started_at": "2026-10-09T07:41:36.225665+00:00",
+        "ended_at": "2026-10-09T08:23:25.250887+00:00",
+        "recorded_elapsed_seconds": 2509.0,
+        "recorded_wall_clock_seconds": 2509.0,
+        "recorded_active_seconds": 2509.0,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 48.9,
+        "recomputed_evidence_span_seconds": 2333.8,
+        "recomputed_idle_seconds_over_300s": 2002.6,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "A24": {
+        "started_at": "2026-10-09T08:36:17+00:00",
+        "ended_at": "2026-10-09T09:49:11.279547+00:00",
+        "recorded_elapsed_seconds": 4374.3,
+        "recorded_wall_clock_seconds": 4374.3,
+        "recorded_active_seconds": 4130.3,
+        "recorded_idle_gap_seconds": 244.0,
+        "request_duration_sum_seconds": 125.7,
+        "recomputed_evidence_span_seconds": 2669.4,
+        "recomputed_idle_seconds_over_300s": 1550.7,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "B01": {
+        "started_at": "2026-10-09T09:52:09.403761+00:00",
+        "ended_at": "2026-10-10T04:20:50.958566+00:00",
+        "recorded_elapsed_seconds": 66521.6,
+        "recorded_wall_clock_seconds": 66059.0,
+        "recorded_active_seconds": 18383.1,
+        "recorded_idle_gap_seconds": 47675.9,
+        "request_duration_sum_seconds": 873.1,
+        "recomputed_evidence_span_seconds": 64658.7,
+        "recomputed_idle_seconds_over_300s": 57095.9,
+        "recomputed_idle_gap_count_over_300s": 14,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "B02": {
+        "started_at": "2026-10-10T04:22:25.279131+00:00",
+        "ended_at": "2026-10-10T07:06:35.660447+00:00",
+        "recorded_elapsed_seconds": 9850.4,
+        "recorded_wall_clock_seconds": 9850.4,
+        "recorded_active_seconds": 9850.4,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 257.7,
+        "recomputed_evidence_span_seconds": 8495.2,
+        "recomputed_idle_seconds_over_300s": 4556.9,
+        "recomputed_idle_gap_count_over_300s": 8,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "B03": {
+        "started_at": "2026-10-10T07:12:07.469118+00:00",
+        "ended_at": "2026-10-11T06:16:21.432903+00:00",
+        "recorded_elapsed_seconds": 83054.0,
+        "recorded_wall_clock_seconds": 83054.0,
+        "recorded_active_seconds": 20508.8,
+        "recorded_idle_gap_seconds": 62545.2,
+        "request_duration_sum_seconds": 1065.0,
+        "recomputed_evidence_span_seconds": 83290.5,
+        "recomputed_idle_seconds_over_300s": 74432.9,
+        "recomputed_idle_gap_count_over_300s": 20,
+        "elapsed_time_note": "elapsed/wall 是本题时间窗，不等于连续工作；空闲（会话未运行、无写入证据的区间）已扣除并逐条列出证据；request_duration_sum 只统计真实服务调用"
+      },
+      "B04": {
+        "started_at": null,
+        "ended_at": null,
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 14931.9,
+        "recorded_active_seconds": 14020.5,
+        "recorded_idle_gap_seconds": 911.4,
+        "request_duration_sum_seconds": 359.2,
+        "recomputed_evidence_span_seconds": 13468.1,
+        "recomputed_idle_seconds_over_300s": 8168.4,
+        "recomputed_idle_gap_count_over_300s": 10,
+        "elapsed_time_note": "墙钟 14931s（4.15 h）＝本题最早与最晚留痕之差；其中 1 段相邻留痕间隔 >900s 共 911s 记为空闲/经过时间（跨日中断、等待与不活动期），不计入有效工时 14020s（3.89 h）。有效工时只是“有记录的时间上界”，不等于持续专注时长；单请求耗时见 request_duration_*。"
+      },
+      "B05": {
+        "started_at": null,
+        "ended_at": null,
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 7698.0,
+        "recorded_active_seconds": 7698.0,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 4440.8,
+        "recomputed_evidence_span_seconds": 6667.6,
+        "recomputed_idle_seconds_over_300s": 1590.5,
+        "recomputed_idle_gap_count_over_300s": 5,
+        "elapsed_time_note": "墙钟 7698s（2.14 h）＝本题最早与最晚留痕之差；其中 0 段相邻留痕间隔 >900s 共 0s 记为空闲/经过时间（上下文压缩、等待与不活动期），不计入有效工时 7698s（2.14 h）。有效工时只是「有记录的时间上界」，不等于持续专注时长；单请求端到端耗时见 request_duration_sum_seconds（含 33 次超时/截断的等待），服务渲染耗时见 server_render_sum_seconds。"
+      },
+      "B06": {
+        "started_at": "2026-10-11T13:23:53.125965+00:00",
+        "ended_at": "2026-10-11T15:26:55.953294+00:00",
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 7382.8,
+        "recorded_active_seconds": 7382.8,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 750.9,
+        "recomputed_evidence_span_seconds": 6317.0,
+        "recomputed_idle_seconds_over_300s": 2094.2,
+        "recomputed_idle_gap_count_over_300s": 5,
+        "elapsed_time_note": "墙钟 7382.8s（2.05 h）＝本题 started_at 与最晚留痕之差。按总根口径（相邻留痕间隔 >900s 计空闲）本题为 0 段共 0.0s，因此有效工时记 7382.8s（2.05 h）。为了不把「无超阈间隔」读成全程无间断，另列 4 段 300–900s 的间隔（sub_threshold_gaps_over_300s）及其右端实际写出的文件，这些间隔对应本地工作（写上一件的 case.md、撰写下一件的 caseNN.py 与生成器修订），不是空闲也不是等待服务。有效工时只是「有留痕覆盖的时间上界」，不等于持续专注时长；单请求端到端耗时见 request_duration_sum_seconds（含 8 次失败/截断的等待），服务渲染耗时见 server_render_sum_seconds，两者与墙钟互不相加。"
+      }
+    },
+    "sources": [
+      "tmp/20261008T1615Z-run01/_suite/requests.jsonl",
+      "tmp/20261008T1615Z-run01/<task>/requests.jsonl",
+      "tmp/20261008T1615Z-run01/<task>/iterations.jsonl",
+      "outputs/20261008T1615Z-run01/<task>/task-metrics.json timings"
+    ]
+  },
+  "delivery": {
+    "suite_dir": "outputs/20261008T1615Z-run01/_suite/",
+    "artifacts": [
+      "outputs/20261008T1615Z-run01/_suite/index.md",
+      "outputs/20261008T1615Z-run01/_suite/gallery.md",
+      "outputs/20261008T1615Z-run01/_suite/snapshot-usage.md",
+      "outputs/20261008T1615Z-run01/_suite/task-metrics.json",
+      "outputs/20261008T1615Z-run01/_suite/suite-state.json"
+    ],
+    "gallery_images": 125,
+    "root_gitignore": ".gitignore",
+    "runtime_cache_rules": [
+      "__pycache__/",
+      "*.pyc",
+      "*.pyo",
+      ".pytest_cache/",
+      ".mypy_cache/",
+      ".ruff_cache/",
+      "node_modules/",
+      ".pnpm-store/",
+      ".eslintcache",
+      "*.pyd",
+      "*.egg-info/",
+      "build/",
+      "dist/",
+      ".idea/",
+      ".vscode/"
+    ],
+    "evidence_not_ignored": "outputs/ 与 tmp/ 未设忽略规则；过程证据（草稿、失败响应、预览、脚本、日志、检查点）全部保留。"
+  },
+  "final_review": {
+    "checked_at": "2026-10-11T16:15:17.703523+00:00",
+    "script": "tmp/20261008T1615Z-run01/_suite/final_review.py",
+    "machine_readable": "tmp/20261008T1615Z-run01/_suite/final-review-checks.json",
+    "png_provenance": "tmp/20261008T1615Z-run01/_suite/png-provenance.json",
+    "dsl_provenance": "tmp/20261008T1615Z-run01/_suite/dsl-provenance.json",
+    "checks": [
+      {
+        "check": "套件五件交付齐备",
+        "result": "PASS",
+        "detail": "现有 index.md,gallery.md,snapshot-usage.md,task-metrics.json,suite-state.json"
+      },
+      {
+        "check": "gallery.md 链接全部可解析",
+        "result": "PASS",
+        "detail": "失效 0：[]"
+      },
+      {
+        "check": "画廊逐图覆盖 125 张（预览 + PNG + DSL 链接齐全）",
+        "result": "PASS",
+        "detail": "缺链 []"
+      },
+      {
+        "check": "index.md 链接全部可解析",
+        "result": "PASS",
+        "detail": "失效 []"
+      },
+      {
+        "check": "每张最终 PNG 的 md5 对到留存的服务响应字节（.bin 125 张 / 响应落盘预览 0 张）",
+        "result": "PASS",
+        "detail": "找不到来源 0：[]"
+      },
+      {
+        "check": "每张最终 DSL 与留存请求体/工作 DSL 字节一致（独立留存 125/125，其中 2 张留存文件为 CRLF 写入需换行归一）",
+        "result": "PASS",
+        "detail": "无独立留存 0：[]"
+      },
+      {
+        "check": "最终图为合法 PNG 且 IHDR 尺寸可读",
+        "result": "PASS",
+        "detail": "[]"
+      },
+      {
+        "check": "每题最终图 ≥ 题内最低要求",
+        "result": "PASS",
+        "detail": "[]"
+      },
+      {
+        "check": "全套最终图 125 ≥ 题库最低 124",
+        "result": "PASS",
+        "detail": ""
+      },
+      {
+        "check": "B01–B06 各 ≥10 个独立用例",
+        "result": "PASS",
+        "detail": "{\"B01\": 10, \"B02\": 10, \"B03\": 10, \"B04\": 10, \"B05\": 10, \"B06\": 10}"
+      },
+      {
+        "check": "B 轨每题 tool-usage.jsonl 存在且非空",
+        "result": "PASS",
+        "detail": "{\"B01\": 23, \"B02\": 12, \"B03\": 48, \"B04\": 40, \"B05\": 13, \"B06\": 32}"
+      },
+      {
+        "check": "A21/A22 三个预置轮次目录齐备",
+        "result": "PASS",
+        "detail": "{\"A21\": [\"round-01\", \"round-02\", \"round-03\"], \"A22\": [\"round-01\", \"round-02\", \"round-03\"]}"
+      },
+      {
+        "check": "每题 requests.jsonl + iterations.jsonl 存在",
+        "result": "PASS",
+        "detail": "[]"
+      },
+      {
+        "check": "根 .gitignore 未忽略过程证据",
+        "result": "PASS",
+        "detail": "[]"
+      },
+      {
+        "check": "套件交付文件无机器绝对路径/用户目录",
+        "result": "PASS",
+        "detail": "[]"
+      },
+      {
+        "check": "交付 DSL 内不写机器路径（题面点名要逐字保真的输入样本除外）",
+        "result": "PASS",
+        "detail": "命中 1 个文件；白名单外 []。白名单理由：A11 要求 4 行特殊字样逐字保真，其中一行原文即含盘符路径"
+      },
+      {
+        "check": "画廊只列最终作品（无 preview/zoom/qa/probe 链接）",
+        "result": "PASS",
+        "detail": "[]"
+      }
+    ],
+    "result": "passed",
+    "checks_total": 17,
+    "checks_passed": 17,
+    "corrections_made_during_review": [
+      "B01/task-metrics.json 的 status 由陈旧 in_progress 改为 completed，并补 status_before_correction / status_corrected_at / stop_reason 与计数说明；作品数、请求数、迭代数未改动。",
+      "套件请求/文档计数改按各题实发日志重数：B03 snapshot_requests 135→131（4 次文档 GET 归回文档类），B04 86→45（40 次外部资料 GET 与 1 次 GET /fonts 单列）。各题自报原值保留在 task_summaries[].counts。",
+      "汇总脚本 tmp/_suite/collect_suite_facts.py 存在列表别名缺陷（suite_recs = shared 后被 += 就地扩展），使 shared 请求数写成 1402；改为 list(shared) 后重算为 15 次文档 GET，文档总数 66。",
+      "B01 case-06 / case-09 的留存 .body.txt 当年按文本模式写入带 CRLF；DSL 字节比对对换行做归一后与交付 .snapshot 完全一致，provenance 记为 retained_request_lf_normalized 并在报告注明。",
+      "gallery.md 与 index.md 的图片/DSL 链接统一改为相对 _suite/ 的 ../<task>/…；索引状态与请求口径改为直接读 task-metrics.json，避免两处数字漂移。",
+      "最终审查新增两项：交付 DSL 内不写机器路径（唯一命中 A11/invoice-page-02.snapshot 是题面要求逐字保真的输入样本原文），以及画廊只列最终作品不含 preview/zoom/qa/probe。"
+    ]
+  },
+  "aggregation_rule": "Only task-level totals plus shared preparation; never add round/case detail again.",
+  "output_dir": "outputs/20261008T1615Z-run01/",
+  "temp_dir": "tmp/20261008T1615Z-run01/",
+  "unresolved_issues": [
+    {
+      "task_id": "A09",
+      "issue": "无"
+    },
+    {
+      "task_id": "A10",
+      "issue": "无"
+    },
+    {
+      "task_id": "A11",
+      "issue": "无"
+    },
+    {
+      "task_id": "A12",
+      "issue": "无。已知约束：mobile 的 gap_multiplier 落在节奏带下限 0.5，800px 高要装下 6 张完整卡片 + 3 行 meta + 页脚；再加内容只能放宽卡片行数或允许卡内换行，不能继续压缩节奏带"
+    },
+    {
+      "task_id": "A13",
+      "issue": "outputs/20261008T1615Z-run01/requests/ 里留有 A13-v03-banner 的三个归档文件：render.py 的 --out 被误传成目录，请求本身成功（200），字节与 v04 完全相同；按「失败与意外不清理」的约定原样保留，正确路径的重渲是 A13-v04-banner。"
+    },
+    {
+      "task_id": "A13",
+      "issue": "512 母版经 LANCZOS 缩到 32px 会丢琥珀节点：这是重采样属性而非 DSL 缺陷，已作为 measurement 记录，规范要求小尺寸从 DSL 原生渲染。"
+    },
+    {
+      "task_id": "A14",
+      "issue": "grid B 规则存在但本批 8 条数据在 36pt 下限内都能放进 grid A，从未触发；该分支只经过代码路径检查（bars_h/顶栏），没有对应的实渲样本"
+    },
+    {
+      "task_id": "A14",
+      "issue": "v01 的八张 PNG 被 v02 就地覆盖，只有 requests/*.response.bin 与 preview/v01/*.png 保留了原始字节"
+    },
+    {
+      "task_id": "A15",
+      "issue": "参考字体身份不可确定：Inter + BOLD 在字宽与笔画上匹配，仍存 1-2px 墨迹宽度差（最大见 export_label ±2）"
+    },
+    {
+      "task_id": "A15",
+      "issue": "卡片与侧栏小卡的真实圆角半径无法从单行 AA 像素测得，取 12px/10px 近似"
+    },
+    {
+      "task_id": "A15",
+      "issue": "v05 的同字节重发得到 cache;desc=hit，不算一次真实渲染；两次补丁脚本因 assert 提前退出而未改动生成器，均已留痕"
+    },
+    {
+      "task_id": "A16",
+      "issue": "U1-U4 不确定项保留在 findings.json，未夸大为缺陷"
+    },
+    {
+      "task_id": "A17",
+      "issue": "示例插图内文字最小 14px（400×240 画幅限制，非手册正文）；缓存命中条件文档未说明，只报告观测"
+    },
+    {
+      "task_id": "A21",
+      "issue": "浅色主题成品图上没有文字压在叠光板上的实例（净空设计），反例已按 3.12:1 计算并写入第 3 轮报告"
+    },
+    {
+      "task_id": "A23",
+      "issue": "GIF/APNG 合成、SVG 矢量化、CMYK 分色须在服务之外完成（本题已授权不做）"
+    },
+    {
+      "task_id": "A23",
+      "issue": "服务只输出 RGBA 容器 PNG，严格 RGB 色型需外部重编码"
+    },
+    {
+      "task_id": "A23",
+      "issue": "缓动使循环首 500ms 位移偏小（7.2px），未改造成匀速；服务无补间能力"
+    },
+    {
+      "task_id": "A24",
+      "issue": "排程口径限于题面约束（切换不计时/不可抢占/柔性不拆分）"
+    },
+    {
+      "task_id": "A24",
+      "issue": "执行图不画依赖线，依赖由编号索引与简报层次图承载"
+    },
+    {
+      "task_id": "A24",
+      "issue": "TextFit 与盒高闸门为本地预估，最终以看图为准"
+    },
+    {
+      "task_id": "B02",
+      "issue": "服务无矢量 path 图元，折线/多边形只能用 polyline 与逐段矩形近似（平台边界，case-06/08 已记入 case.md）"
+    },
+    {
+      "task_id": "B02",
+      "issue": "b02kit 的 rotate 不绕图形中心，印章与倾斜标记需自行计算偏移（已封装为 rotated_centered，仍在 design-system.json 记为已知限制）"
+    },
+    {
+      "task_id": "B02",
+      "issue": "会员编号、工具序列号、演示流水号为按固定种子生成的演示数据，不是任何外部系统的真实记录（asset-sources.json 的 data_layer 已分级）"
+    },
+    {
+      "task_id": "B03",
+      "issue": "服务无矢量 path 图元：曲线/星图轨迹只能用逐段矩形与 polyline 逼近（case-01/07/08）"
+    },
+    {
+      "task_id": "B03",
+      "issue": "fontFeatures 只被解析不被应用，等宽数字与小型大写需版式手工兜底（case-10 实测四组零差）"
+    },
+    {
+      "task_id": "B03",
+      "issue": "Container 的 clipBehavior 对整幅子树会 400，遮罩只能用 ClipRRect/ClipOval（探针 03）"
+    },
+    {
+      "task_id": "B03",
+      "issue": "未安装字族回退到同一平台默认字体，字族清单以 GET /fonts 实际返回为准（case-10 §05）"
+    },
+    {
+      "task_id": "B04",
+      "issue": "件-02、件-03 的 case.md 与成品 DSL 里没有以路径形式点名任何来源文件（早期只写“见 sources/ 目录”），件-01 仅 1 处；已由件-10 在图上手列去重后 25 页作为补救，未回头改写前三件的报告"
+    },
+    {
+      "task_id": "B04",
+      "issue": "证据四级（已证实/来源结论/推算/演示）在图上多为自标词，件-10 统计的是自标覆盖率而非内容真值率"
+    },
+    {
+      "task_id": "B04",
+      "issue": "服务无矢量 path 图元：曲线类图形（沙罗阶梯、余弦曲线、等值线）都由矩形/圆/多边形拼出，曲率细节受限"
+    },
+    {
+      "task_id": "B05",
+      "issue": "风险分权重与四级阈值未经历史倒伏数据回溯校验，只有内部一致性"
+    },
+    {
+      "task_id": "B05",
+      "issue": "两套冠幅公式并存（π(D/2)² 与 0.72·D²，差 9.1 %），已在件-10 ⑤ 公开但未统一"
+    },
+    {
+      "task_id": "B05",
+      "issue": "岩前 −11 户、云屿压线 0/阻路 15、灾情 30 起未去重：做到页面披露 + 排补数账，未回源核对"
+    },
+    {
+      "task_id": "B05",
+      "issue": "十件均未做真实用户验证；大屏 3 米可读性与打印件现场可读性仅为目测"
+    },
+    {
+      "task_id": "B05",
+      "issue": "iterations.jsonl 早期 7 条缺 caseNN- 前缀，收尾时按 image_path 补齐并标注 metadata_correction"
+    },
+    {
+      "task_id": "B06",
+      "issue": "十件均未做真实用户验证；design-review.md 把可观察改善与未验证效果分栏，未验证项一律不主张"
+    },
+    {
+      "task_id": "B06",
+      "issue": "件-05／09／10 的医疗、营养、法律口径只复述公开常识并标注需核对，未回源核实现行条文、指南与参考区间"
+    },
+    {
+      "task_id": "B06",
+      "issue": "件-02／03／04／06／07 的时长、价格、费率、用量与程序参数为自拟演示值"
+    },
+    {
+      "task_id": "B06",
+      "issue": "曲线为图元逼近（类 DOM 无矢量 path），2× 放大可见折线边；十件 final 未使用 ClipRect/ClipOval/BackdropFilter，与 PLAN.md 的设想有偏差"
+    },
+    {
+      "task_id": "B06",
+      "issue": "requests.jsonl 中 case00 早期 4 条（v01/v02/v03×2）的 request_file/response_file 字段带重复目录前缀且对应文件不在磁盘上：这四次是探针最初几发，请求原文未落盘，只有 .snapshot 与 error_summary 保留；后续版本路径正常"
+    },
+    {
+      "task_id": "B06",
+      "issue": "case.md 与 gallery 中的过程预览（vNN-preview.png）落在 OUTPUT_DIR 而非 TEMP_DIR（b06run 默认输出路径），与 B03–B05 一致；它们不计入十件作品，gallery 只列 final"
+    }
+  ],
+  "task_summaries": [
+    {
+      "task_id": "A01",
+      "title": "六个月经营诊断驾驶舱",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 11,
+        "successful_snapshot_requests": 11,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 9,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 5,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 11,
+        "successful_snapshot_requests": 11,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T08:15:00+00:00",
+        "ended_at": "2026-10-08T08:34:53.267731+00:00",
+        "recorded_elapsed_seconds": 1193.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 57.2,
+        "recomputed_evidence_span_seconds": 811.2,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A01/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A01/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A02",
+      "title": "三会场密集会议日程",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 2,
+      "minimum_final_pngs": 2,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 13,
+        "successful_snapshot_requests": 13,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 6,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 6,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 13,
+        "successful_snapshot_requests": 13,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T08:36:53+00:00",
+        "ended_at": "2026-10-08T09:03:15.997418+00:00",
+        "recorded_elapsed_seconds": 1583.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 74.2,
+        "recomputed_evidence_span_seconds": 971.9,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A02/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A02/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A03",
+      "title": "多层语义故障恢复",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 20,
+        "successful_snapshot_requests": 17,
+        "failed_snapshot_requests": 3,
+        "retry_requests": 0,
+        "image_views": 6,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 20,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 20,
+        "successful_snapshot_requests": 17,
+        "failed_snapshot_requests": 3,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T09:03:49.441246+00:00",
+        "ended_at": "2026-10-08T09:35:57.703899+00:00",
+        "recorded_elapsed_seconds": 1928.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 46.6,
+        "recomputed_evidence_span_seconds": 1614.1,
+        "recomputed_idle_seconds_over_300s": 353.5,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A03/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A03/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A04",
+      "title": "分组改善与总体下降的数据解释",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 6,
+        "successful_snapshot_requests": 6,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 5,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 6,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 6,
+        "successful_snapshot_requests": 6,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T09:40:16.698658+00:00",
+        "ended_at": "2026-10-08T10:11:24.162455+00:00",
+        "recorded_elapsed_seconds": 1867.5,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 27.7,
+        "recomputed_evidence_span_seconds": 983.8,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A04/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A04/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A05",
+      "title": "不规则采样与缺测的仪表报告",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 6,
+        "successful_snapshot_requests": 6,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 5,
+        "completed_visual_iterations": 3,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 5,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 6,
+        "successful_snapshot_requests": 6,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T10:13:07.322322+00:00",
+        "ended_at": "2026-10-08T10:41:28.281988+00:00",
+        "recorded_elapsed_seconds": 1701.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 27.8,
+        "recomputed_evidence_span_seconds": 1508.8,
+        "recomputed_idle_seconds_over_300s": 1002.3,
+        "recomputed_idle_gap_count_over_300s": 2,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A05/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A05/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A06",
+      "title": "十四节点依赖图与反馈回路",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 7,
+        "successful_snapshot_requests": 6,
+        "failed_snapshot_requests": 1,
+        "retry_requests": 0,
+        "image_views": 5,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 6,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 7,
+        "successful_snapshot_requests": 6,
+        "failed_snapshot_requests": 1,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T10:43:31.169724+00:00",
+        "ended_at": "2026-10-08T11:09:39.441820+00:00",
+        "recorded_elapsed_seconds": 1568.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 42.3,
+        "recomputed_evidence_span_seconds": 902.8,
+        "recomputed_idle_seconds_over_300s": 307.0,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A06/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A06/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A07",
+      "title": "三线换乘图与路线核验",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 2,
+      "minimum_final_pngs": 2,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 8,
+        "successful_snapshot_requests": 8,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 6,
+        "completed_visual_iterations": 5,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 6,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 8,
+        "successful_snapshot_requests": 8,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T11:11:19.655951+00:00",
+        "ended_at": "2026-10-08T11:56:45.464577+00:00",
+        "recorded_elapsed_seconds": 2725.8,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 45.4,
+        "recomputed_evidence_span_seconds": 945.0,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A07/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A07/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A08",
+      "title": "网格导览与两条可走路线",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 8,
+        "successful_snapshot_requests": 7,
+        "failed_snapshot_requests": 1,
+        "retry_requests": 1,
+        "image_views": 5,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 6,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 8,
+        "successful_snapshot_requests": 7,
+        "failed_snapshot_requests": 1,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T11:57:44.207965+00:00",
+        "ended_at": "2026-10-08T13:11:56.911578+00:00",
+        "recorded_elapsed_seconds": 4452.7,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 441.6,
+        "recomputed_evidence_span_seconds": 2413.2,
+        "recomputed_idle_seconds_over_300s": 1427.1,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A08/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A08/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A09",
+      "title": "十二个非对称图形变换标本",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 4,
+        "successful_snapshot_requests": 3,
+        "failed_snapshot_requests": 1,
+        "retry_requests": 0,
+        "image_views": 3,
+        "completed_visual_iterations": 2,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 4,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 4,
+        "successful_snapshot_requests": 3,
+        "failed_snapshot_requests": 1,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T13:12:49.070031+00:00",
+        "ended_at": "2026-10-08T13:52:22.028079+00:00",
+        "recorded_elapsed_seconds": 2373.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 24.9,
+        "recomputed_evidence_span_seconds": 1419.1,
+        "recomputed_idle_seconds_over_300s": 1216.1,
+        "recomputed_idle_gap_count_over_300s": 2,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A09/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A09/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 1
+    },
+    {
+      "task_id": "A10",
+      "title": "透明合成与滤镜语义实验板",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 6,
+        "successful_snapshot_requests": 5,
+        "failed_snapshot_requests": 1,
+        "retry_requests": 0,
+        "image_views": 18,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 7,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 6,
+        "successful_snapshot_requests": 5,
+        "failed_snapshot_requests": 1,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T13:55:32.274684+00:00",
+        "ended_at": "2026-10-08T14:48:19.713932+00:00",
+        "recorded_elapsed_seconds": 3167.4,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 93.6,
+        "recomputed_evidence_span_seconds": 30530.0,
+        "recomputed_idle_seconds_over_300s": 29458.5,
+        "recomputed_idle_gap_count_over_300s": 4,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A10/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A10/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 1
+    },
+    {
+      "task_id": "A11",
+      "title": "文字保真与跨页结算单",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 2,
+      "minimum_final_pngs": 2,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 10,
+        "successful_snapshot_requests": 8,
+        "failed_snapshot_requests": 2,
+        "retry_requests": 0,
+        "image_views": 14,
+        "completed_visual_iterations": 3,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 7,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 10,
+        "successful_snapshot_requests": 8,
+        "failed_snapshot_requests": 2,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T14:49:15.086876+00:00",
+        "ended_at": "2026-10-08T15:44:52.169799+00:00",
+        "recorded_elapsed_seconds": 3337.1,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 43.5,
+        "recomputed_evidence_span_seconds": 2150.5,
+        "recomputed_idle_seconds_over_300s": 2000.6,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A11/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A11/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 1
+    },
+    {
+      "task_id": "A12",
+      "title": "四断点完整内容视觉系统",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 4,
+      "minimum_final_pngs": 4,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 28,
+        "successful_snapshot_requests": 28,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 26,
+        "completed_visual_iterations": 17,
+        "incomplete_visual_iterations": 8,
+        "dsl_versions": 7,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 28,
+        "successful_snapshot_requests": 28,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T15:45:23.451380+00:00",
+        "ended_at": "2026-10-08T16:40:56.716502+00:00",
+        "recorded_elapsed_seconds": 3333.3,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 122.6,
+        "recomputed_evidence_span_seconds": 1097.4,
+        "recomputed_idle_seconds_over_300s": 327.0,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A12/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A12/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 1
+    },
+    {
+      "task_id": "A13",
+      "title": "品牌标志到完整活动应用",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 4,
+      "minimum_final_pngs": 4,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 38,
+        "successful_snapshot_requests": 29,
+        "failed_snapshot_requests": 9,
+        "retry_requests": null,
+        "image_views": 19,
+        "completed_visual_iterations": null,
+        "incomplete_visual_iterations": null,
+        "dsl_versions": 37,
+        "document_requests": null,
+        "other_service_requests": null
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 38,
+        "successful_snapshot_requests": 29,
+        "failed_snapshot_requests": 9,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-08T16:42:50.055825+00:00",
+        "ended_at": "2026-10-09T01:19:40.382244+00:00",
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 31010.3,
+        "recorded_active_seconds": 2232.9,
+        "recorded_idle_gap_seconds": 28777.5,
+        "request_duration_sum_seconds": null,
+        "recomputed_evidence_span_seconds": 30382.1,
+        "recomputed_idle_seconds_over_300s": 29070.9,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A13/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A13/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 2
+    },
+    {
+      "task_id": "A14",
+      "title": "八组文案压力测试与批量生成",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 8,
+      "minimum_final_pngs": 8,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 16,
+        "successful_snapshot_requests": 16,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 15,
+        "completed_visual_iterations": 6,
+        "incomplete_visual_iterations": null,
+        "dsl_versions": 2,
+        "document_requests": null,
+        "other_service_requests": null
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 16,
+        "successful_snapshot_requests": 16,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": null,
+        "ended_at": null,
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 620.0,
+        "recorded_active_seconds": 620.0,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": null,
+        "recomputed_evidence_span_seconds": 154.9,
+        "recomputed_idle_seconds_over_300s": 0,
+        "recomputed_idle_gap_count_over_300s": 0,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A14/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A14/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 2
+    },
+    {
+      "task_id": "A15",
+      "title": "复杂界面视觉复刻",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 12,
+        "successful_snapshot_requests": 12,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 10,
+        "completed_visual_iterations": 7,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 10,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 12,
+        "successful_snapshot_requests": 12,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T01:41:32+00:00",
+        "ended_at": "2026-10-09T02:32:27.084782+00:00",
+        "recorded_elapsed_seconds": 3055.1,
+        "recorded_wall_clock_seconds": 3055.1,
+        "recorded_active_seconds": 3055.1,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 35.8,
+        "recomputed_evidence_span_seconds": 1294.7,
+        "recomputed_idle_seconds_over_300s": 469.3,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A15/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A15/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 3
+    },
+    {
+      "task_id": "A16",
+      "title": "从错误图表恢复可信叙事",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 8,
+        "successful_snapshot_requests": 8,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 8,
+        "completed_visual_iterations": 6,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 8,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 8,
+        "successful_snapshot_requests": 8,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T02:32:46+00:00",
+        "ended_at": "2026-10-09T03:00:28.724867+00:00",
+        "recorded_elapsed_seconds": 1662.7,
+        "recorded_wall_clock_seconds": 1662.7,
+        "recorded_active_seconds": 1662.7,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 31.2,
+        "recomputed_evidence_span_seconds": 1085.0,
+        "recomputed_idle_seconds_over_300s": 307.7,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A16/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A16/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 1
+    },
+    {
+      "task_id": "A17",
+      "title": "四页可实践的DSL入门手册",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 8,
+      "minimum_final_pngs": 8,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 35,
+        "successful_snapshot_requests": 34,
+        "failed_snapshot_requests": 1,
+        "retry_requests": 0,
+        "image_views": 34,
+        "completed_visual_iterations": 21,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 35,
+        "document_requests": null,
+        "other_service_requests": 7
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 35,
+        "successful_snapshot_requests": 34,
+        "failed_snapshot_requests": 1,
+        "document_requests": 7,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T03:14:54.494724+00:00",
+        "ended_at": "2026-10-09T04:16:59.019023+00:00",
+        "recorded_elapsed_seconds": 3724.5,
+        "recorded_wall_clock_seconds": 3724.5,
+        "recorded_active_seconds": 3449.5,
+        "recorded_idle_gap_seconds": 275.0,
+        "request_duration_sum_seconds": 206.2,
+        "recomputed_evidence_span_seconds": 3019.9,
+        "recomputed_idle_seconds_over_300s": 2062.4,
+        "recomputed_idle_gap_count_over_300s": 4,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A17/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A17/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 1
+    },
+    {
+      "task_id": "A18",
+      "title": "守恒对象的三幕视觉叙事",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 10,
+        "successful_snapshot_requests": 10,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 9,
+        "completed_visual_iterations": 8,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 10,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 10,
+        "successful_snapshot_requests": 10,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T04:20:23.574151+00:00",
+        "ended_at": "2026-10-09T04:48:44.097234+00:00",
+        "recorded_elapsed_seconds": 1700.5,
+        "recorded_wall_clock_seconds": 1700.5,
+        "recorded_active_seconds": 1580.5,
+        "recorded_idle_gap_seconds": 120.0,
+        "request_duration_sum_seconds": 41.3,
+        "recomputed_evidence_span_seconds": 1162.9,
+        "recomputed_idle_seconds_over_300s": 561.1,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A18/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A18/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A19",
+      "title": "构造可核验的视觉题场",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 3,
+      "minimum_final_pngs": 3,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 10,
+        "successful_snapshot_requests": 10,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 10,
+        "completed_visual_iterations": 6,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 10,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 10,
+        "successful_snapshot_requests": 10,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T04:49:15+00:00",
+        "ended_at": "2026-10-09T05:10:10.460770+00:00",
+        "recorded_elapsed_seconds": 1255.5,
+        "recorded_wall_clock_seconds": 1255.5,
+        "recorded_active_seconds": 1125.5,
+        "recorded_idle_gap_seconds": 130.0,
+        "request_duration_sum_seconds": 37.7,
+        "recomputed_evidence_span_seconds": 935.9,
+        "recomputed_idle_seconds_over_300s": 540.4,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A19/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A19/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A20",
+      "title": "二十四密集点的无重叠标注",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 1,
+      "minimum_final_pngs": 1,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 4,
+        "successful_snapshot_requests": 4,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 5,
+        "completed_visual_iterations": 5,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 4,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 4,
+        "successful_snapshot_requests": 4,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T05:10:51+00:00",
+        "ended_at": "2026-10-09T05:35:18.337447+00:00",
+        "recorded_elapsed_seconds": 1467.3,
+        "recorded_wall_clock_seconds": 1467.3,
+        "recorded_active_seconds": 1467.3,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 18.0,
+        "recomputed_evidence_span_seconds": 828.3,
+        "recomputed_idle_seconds_over_300s": 375.1,
+        "recomputed_idle_gap_count_over_300s": 1,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A20/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A20/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A21",
+      "title": "真实需求变更：双尺寸发布物",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [
+        "round-01",
+        "round-02",
+        "round-03"
+      ],
+      "cases": [],
+      "final_images": 6,
+      "minimum_final_pngs": 6,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 17,
+        "successful_snapshot_requests": 16,
+        "failed_snapshot_requests": 1,
+        "retry_requests": 0,
+        "image_views": 15,
+        "completed_visual_iterations": 10,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 17,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 17,
+        "successful_snapshot_requests": 16,
+        "failed_snapshot_requests": 1,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T05:36:00+00:00",
+        "ended_at": "2026-10-09T06:32:20.785526+00:00",
+        "recorded_elapsed_seconds": 3380.8,
+        "recorded_wall_clock_seconds": 3380.8,
+        "recorded_active_seconds": 3380.8,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 46.5,
+        "recomputed_evidence_span_seconds": 2988.0,
+        "recomputed_idle_seconds_over_300s": 2012.4,
+        "recomputed_idle_gap_count_over_300s": 5,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A21/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A21/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 1
+    },
+    {
+      "task_id": "A22",
+      "title": "真实数据更正与局部回归",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [
+        "round-01",
+        "round-02",
+        "round-03"
+      ],
+      "cases": [],
+      "final_images": 3,
+      "minimum_final_pngs": 3,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 7,
+        "successful_snapshot_requests": 7,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 7,
+        "completed_visual_iterations": 4,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 7,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 7,
+        "successful_snapshot_requests": 7,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T06:33:00+00:00",
+        "ended_at": "2026-10-09T07:22:30.032715+00:00",
+        "recorded_elapsed_seconds": 2970.0,
+        "recorded_wall_clock_seconds": null,
+        "recorded_active_seconds": null,
+        "recorded_idle_gap_seconds": null,
+        "request_duration_sum_seconds": 32.8,
+        "recomputed_evidence_span_seconds": 1685.7,
+        "recomputed_idle_seconds_over_300s": 1018.6,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": null
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A22/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A22/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "A23",
+      "title": "格式边界下的动画分镜交付",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 7,
+      "minimum_final_pngs": 7,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 22,
+        "successful_snapshot_requests": 18,
+        "failed_snapshot_requests": 4,
+        "retry_requests": 0,
+        "image_views": 11,
+        "completed_visual_iterations": 2,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 10,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 22,
+        "successful_snapshot_requests": 18,
+        "failed_snapshot_requests": 4,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T07:41:36.225665+00:00",
+        "ended_at": "2026-10-09T08:23:25.250887+00:00",
+        "recorded_elapsed_seconds": 2509.0,
+        "recorded_wall_clock_seconds": 2509.0,
+        "recorded_active_seconds": 2509.0,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 48.9,
+        "recomputed_evidence_span_seconds": 2333.8,
+        "recomputed_idle_seconds_over_300s": 2002.6,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A23/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A23/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 3
+    },
+    {
+      "task_id": "A24",
+      "title": "双团队约束下的发布作战计划",
+      "track": "advanced",
+      "status": "completed",
+      "rounds": [],
+      "cases": [],
+      "final_images": 3,
+      "minimum_final_pngs": 3,
+      "independent_creative_works": null,
+      "counts": {
+        "snapshot_requests": 23,
+        "successful_snapshot_requests": 18,
+        "failed_snapshot_requests": 5,
+        "retry_requests": 0,
+        "image_views": 8,
+        "completed_visual_iterations": 5,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 7,
+        "document_requests": null,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 23,
+        "successful_snapshot_requests": 18,
+        "failed_snapshot_requests": 5,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T08:36:17+00:00",
+        "ended_at": "2026-10-09T09:49:11.279547+00:00",
+        "recorded_elapsed_seconds": 4374.3,
+        "recorded_wall_clock_seconds": 4374.3,
+        "recorded_active_seconds": 4130.3,
+        "recorded_idle_gap_seconds": 244.0,
+        "request_duration_sum_seconds": 125.7,
+        "recomputed_evidence_span_seconds": 2669.4,
+        "recomputed_idle_seconds_over_300s": 1550.7,
+        "recomputed_idle_gap_count_over_300s": 3,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/A24/",
+      "temp_dir": "tmp/20261008T1615Z-run01/A24/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json"
+      ],
+      "unresolved_issue_count": 3
+    },
+    {
+      "task_id": "B01",
+      "title": "十张真实场景的炫酷用例",
+      "track": "creative",
+      "status": "completed",
+      "rounds": [],
+      "cases": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "final_images": 10,
+      "minimum_final_pngs": 10,
+      "independent_creative_works": 10,
+      "counts": {
+        "snapshot_requests": 90,
+        "successful_snapshot_requests": 67,
+        "failed_snapshot_requests": 23,
+        "retry_requests": 15,
+        "image_views": 69,
+        "completed_visual_iterations": 57,
+        "incomplete_visual_iterations": 8,
+        "dsl_versions": 76,
+        "document_requests": 15,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 90,
+        "successful_snapshot_requests": 67,
+        "failed_snapshot_requests": 23,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-09T09:52:09.403761+00:00",
+        "ended_at": "2026-10-10T04:20:50.958566+00:00",
+        "recorded_elapsed_seconds": 66521.6,
+        "recorded_wall_clock_seconds": 66059.0,
+        "recorded_active_seconds": 18383.1,
+        "recorded_idle_gap_seconds": 47675.9,
+        "request_duration_sum_seconds": 873.1,
+        "recomputed_evidence_span_seconds": 64658.7,
+        "recomputed_idle_seconds_over_300s": 57095.9,
+        "recomputed_idle_gap_count_over_300s": 14,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/B01/",
+      "temp_dir": "tmp/20261008T1615Z-run01/B01/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json",
+        "gallery.md",
+        "portfolio.md",
+        "portfolio.json",
+        "asset-sources.json"
+      ],
+      "unresolved_issue_count": 0
+    },
+    {
+      "task_id": "B02",
+      "title": "为一个自选项目设计完整视觉生态",
+      "track": "creative",
+      "status": "completed",
+      "rounds": [],
+      "cases": [
+        "case-01",
+        "case-02",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "final_images": 11,
+      "minimum_final_pngs": 10,
+      "independent_creative_works": 10,
+      "counts": {
+        "snapshot_requests": 48,
+        "successful_snapshot_requests": 48,
+        "failed_snapshot_requests": 0,
+        "retry_requests": 0,
+        "image_views": 43,
+        "completed_visual_iterations": 30,
+        "incomplete_visual_iterations": 0,
+        "dsl_versions": 48,
+        "document_requests": 3,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 48,
+        "successful_snapshot_requests": 48,
+        "failed_snapshot_requests": 0,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-10T04:22:25.279131+00:00",
+        "ended_at": "2026-10-10T07:06:35.660447+00:00",
+        "recorded_elapsed_seconds": 9850.4,
+        "recorded_wall_clock_seconds": 9850.4,
+        "recorded_active_seconds": 9850.4,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 257.7,
+        "recomputed_evidence_span_seconds": 8495.2,
+        "recomputed_idle_seconds_over_300s": 4556.9,
+        "recomputed_idle_gap_count_over_300s": 8,
+        "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/B02/",
+      "temp_dir": "tmp/20261008T1615Z-run01/B02/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json",
+        "gallery.md",
+        "portfolio.md",
+        "portfolio.json",
+        "asset-sources.json"
+      ],
+      "unresolved_issue_count": 3
+    },
+    {
+      "task_id": "B03",
+      "title": "用十件作品探索DSL的创意边界",
+      "track": "creative",
+      "status": "completed",
+      "rounds": [],
+      "cases": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "final_images": 10,
+      "minimum_final_pngs": 10,
+      "independent_creative_works": 10,
+      "counts": {
+        "snapshot_requests": 135,
+        "successful_snapshot_requests": 108,
+        "failed_snapshot_requests": 27,
+        "retry_requests": 4,
+        "image_views": 60,
+        "completed_visual_iterations": 50,
+        "incomplete_visual_iterations": 2,
+        "dsl_versions": 64,
+        "document_requests": 4,
+        "other_service_requests": 4
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 131,
+        "successful_snapshot_requests": 104,
+        "failed_snapshot_requests": 27,
+        "document_requests": 4,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-10T07:12:07.469118+00:00",
+        "ended_at": "2026-10-11T06:16:21.432903+00:00",
+        "recorded_elapsed_seconds": 83054.0,
+        "recorded_wall_clock_seconds": 83054.0,
+        "recorded_active_seconds": 20508.8,
+        "recorded_idle_gap_seconds": 62545.2,
+        "request_duration_sum_seconds": 1065.0,
+        "recomputed_evidence_span_seconds": 83290.5,
+        "recomputed_idle_seconds_over_300s": 74432.9,
+        "recomputed_idle_gap_count_over_300s": 20,
+        "elapsed_time_note": "elapsed/wall 是本题时间窗，不等于连续工作；空闲（会话未运行、无写入证据的区间）已扣除并逐条列出证据；request_duration_sum 只统计真实服务调用"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/B03/",
+      "temp_dir": "tmp/20261008T1615Z-run01/B03/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json",
+        "gallery.md",
+        "portfolio.md",
+        "portfolio.json"
+      ],
+      "unresolved_issue_count": 4
+    },
+    {
+      "task_id": "B04",
+      "title": "自主研究一个真实主题并制作十件视觉特辑",
+      "track": "creative",
+      "status": "completed",
+      "rounds": [],
+      "cases": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "final_images": 10,
+      "minimum_final_pngs": 10,
+      "independent_creative_works": 10,
+      "counts": {
+        "snapshot_requests": 86,
+        "successful_snapshot_requests": 43,
+        "failed_snapshot_requests": 2,
+        "retry_requests": 1,
+        "image_views": 43,
+        "completed_visual_iterations": 32,
+        "incomplete_visual_iterations": null,
+        "dsl_versions": 43,
+        "document_requests": 40,
+        "other_service_requests": 40
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 45,
+        "successful_snapshot_requests": 43,
+        "failed_snapshot_requests": 2,
+        "document_requests": 40,
+        "other_service_requests": 1
+      },
+      "timings": {
+        "started_at": null,
+        "ended_at": null,
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 14931.9,
+        "recorded_active_seconds": 14020.5,
+        "recorded_idle_gap_seconds": 911.4,
+        "request_duration_sum_seconds": 359.2,
+        "recomputed_evidence_span_seconds": 13468.1,
+        "recomputed_idle_seconds_over_300s": 8168.4,
+        "recomputed_idle_gap_count_over_300s": 10,
+        "elapsed_time_note": "墙钟 14931s（4.15 h）＝本题最早与最晚留痕之差；其中 1 段相邻留痕间隔 >900s 共 911s 记为空闲/经过时间（跨日中断、等待与不活动期），不计入有效工时 14020s（3.89 h）。有效工时只是“有记录的时间上界”，不等于持续专注时长；单请求耗时见 request_duration_*。"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/B04/",
+      "temp_dir": "tmp/20261008T1615Z-run01/B04/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json",
+        "gallery.md",
+        "portfolio.md",
+        "portfolio.json"
+      ],
+      "unresolved_issue_count": 3
+    },
+    {
+      "task_id": "B05",
+      "title": "从零构想产品并设计十个关键使用画面",
+      "track": "creative",
+      "status": "completed",
+      "rounds": [],
+      "cases": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "final_images": 10,
+      "minimum_final_pngs": 10,
+      "independent_creative_works": 10,
+      "counts": {
+        "snapshot_requests": 73,
+        "successful_snapshot_requests": 40,
+        "failed_snapshot_requests": 33,
+        "retry_requests": 1,
+        "image_views": 38,
+        "completed_visual_iterations": 27,
+        "incomplete_visual_iterations": null,
+        "dsl_versions": 37,
+        "document_requests": 0,
+        "other_service_requests": null
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 73,
+        "successful_snapshot_requests": 40,
+        "failed_snapshot_requests": 33,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": null,
+        "ended_at": null,
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 7698.0,
+        "recorded_active_seconds": 7698.0,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 4440.8,
+        "recomputed_evidence_span_seconds": 6667.6,
+        "recomputed_idle_seconds_over_300s": 1590.5,
+        "recomputed_idle_gap_count_over_300s": 5,
+        "elapsed_time_note": "墙钟 7698s（2.14 h）＝本题最早与最晚留痕之差；其中 0 段相邻留痕间隔 >900s 共 0s 记为空闲/经过时间（上下文压缩、等待与不活动期），不计入有效工时 7698s（2.14 h）。有效工时只是「有记录的时间上界」，不等于持续专注时长；单请求端到端耗时见 request_duration_sum_seconds（含 33 次超时/截断的等待），服务渲染耗时见 server_render_sum_seconds。"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/B05/",
+      "temp_dir": "tmp/20261008T1615Z-run01/B05/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json",
+        "gallery.md",
+        "portfolio.md",
+        "portfolio.json"
+      ],
+      "unresolved_issue_count": 5
+    },
+    {
+      "task_id": "B06",
+      "title": "把十个日常信息难题变成惊艳而好用的作品",
+      "track": "creative",
+      "status": "completed",
+      "rounds": [],
+      "cases": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "final_images": 10,
+      "minimum_final_pngs": 10,
+      "independent_creative_works": 10,
+      "counts": {
+        "snapshot_requests": 49,
+        "successful_snapshot_requests": 41,
+        "failed_snapshot_requests": 8,
+        "retry_requests": 1,
+        "image_views": 40,
+        "completed_visual_iterations": 12,
+        "incomplete_visual_iterations": 18,
+        "dsl_versions": 45,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "service_counts_from_logs": {
+        "snapshot_requests": 49,
+        "successful_snapshot_requests": 41,
+        "failed_snapshot_requests": 8,
+        "document_requests": 0,
+        "other_service_requests": 0
+      },
+      "timings": {
+        "started_at": "2026-10-11T13:23:53.125965+00:00",
+        "ended_at": "2026-10-11T15:26:55.953294+00:00",
+        "recorded_elapsed_seconds": null,
+        "recorded_wall_clock_seconds": 7382.8,
+        "recorded_active_seconds": 7382.8,
+        "recorded_idle_gap_seconds": 0.0,
+        "request_duration_sum_seconds": 750.9,
+        "recomputed_evidence_span_seconds": 6317.0,
+        "recomputed_idle_seconds_over_300s": 2094.2,
+        "recomputed_idle_gap_count_over_300s": 5,
+        "elapsed_time_note": "墙钟 7382.8s（2.05 h）＝本题 started_at 与最晚留痕之差。按总根口径（相邻留痕间隔 >900s 计空闲）本题为 0 段共 0.0s，因此有效工时记 7382.8s（2.05 h）。为了不把「无超阈间隔」读成全程无间断，另列 4 段 300–900s 的间隔（sub_threshold_gaps_over_300s）及其右端实际写出的文件，这些间隔对应本地工作（写上一件的 case.md、撰写下一件的 caseNN.py 与生成器修订），不是空闲也不是等待服务。有效工时只是「有留痕覆盖的时间上界」，不等于持续专注时长；单请求端到端耗时见 request_duration_sum_seconds（含 8 次失败/截断的等待），服务渲染耗时见 server_render_sum_seconds，两者与墙钟互不相加。"
+      },
+      "output_dir": "outputs/20261008T1615Z-run01/B06/",
+      "temp_dir": "tmp/20261008T1615Z-run01/B06/",
+      "artifacts_present": [
+        "snapshot-usage.md",
+        "task-metrics.json",
+        "gallery.md",
+        "portfolio.md",
+        "portfolio.json",
+        "design-review.md",
+        "problem-evidence.json"
+      ],
+      "unresolved_issue_count": 6
+    }
+  ],
+  "service_response_breakdown": {
+    "snapshot_post_status_counts": {
+      "200": 643,
+      "400": 50,
+      "0": 48,
+      "500": 10,
+      "None": 14
+    },
+    "cache_hit_posts": {
+      "A06": 1,
+      "A12": 4,
+      "A13": 1,
+      "A15": 1,
+      "A21": 1,
+      "A24": 2,
+      "B05": 1,
+      "B06": 1
+    },
+    "cache_hit_note": "Server-Timing: cache;desc=hit 的字节相同提交——服务端命中缓存返回同一图，属无效渲染尝试，各题已记录且未当作成品；这些次已包含在上面的 200 计数里。",
+    "gate_blocked_by_task": {
+      "B04": {
+        "gate_blocked_no_request": 4
+      },
+      "B05": {
+        "gate_blocked_no_request": 2
+      },
+      "B06": {
+        "gate_blocked_events": 5,
+        "gate_warnings_blocked": 11
+      }
+    },
+    "gate_blocked_note": "本地 TextFit/结构闸门拦下、未发出请求的尝试，各题字段名不同，原值列于此，不计入请求数。"
+  }
+}

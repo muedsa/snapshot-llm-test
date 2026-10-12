@@ -1,0 +1,408 @@
+{
+  "path_base": "suite_root",
+  "task_id": "A19",
+  "coordinate_origin": "画布左上角为原点，x 向右、y 向下，单位像素",
+  "comparison_standard": "主体几何中心（圆环取外径圆心）；编号标签位于主体之外，不计入主体",
+  "answer_count": 18,
+  "two_step_question_count": 9,
+  "undeterminable_answers": [
+    "Q16",
+    "Q17"
+  ],
+  "answers": [
+    {
+      "id": "Q01",
+      "category": "复合属性检索",
+      "requires_two_step_relation": false,
+      "answer": [
+        "G05",
+        "G38",
+        "G43",
+        "G54"
+      ],
+      "computation_method": "按 color=绿 且 shape=圆环 双属性过滤 64 个主体，得 4 个；逐个读取其左上角编号标签。",
+      "coordinate_tolerance": "编号为离散值，无容差",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q02",
+      "category": "复合属性检索",
+      "requires_two_step_relation": true,
+      "answer": [
+        "G49",
+        "G51",
+        "G55"
+      ],
+      "computation_method": "三重过滤：shape=方 ∧ size=48 ∧ row∈{7,8}；先按行分组再逐格核对形状与尺寸。",
+      "coordinate_tolerance": "编号为离散值，无容差",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q03",
+      "category": "严格中心左右关系",
+      "requires_two_step_relation": true,
+      "answer": {
+        "reference": "G28",
+        "ids": [
+          "G33",
+          "G34",
+          "G35",
+          "G41",
+          "G42",
+          "G43",
+          "G49",
+          "G50",
+          "G51",
+          "G57",
+          "G58",
+          "G59"
+        ],
+        "excluded_equal_coordinate": [
+          "G04",
+          "G12",
+          "G20",
+          "G25",
+          "G26",
+          "G27",
+          "G29",
+          "G30",
+          "G31",
+          "G32",
+          "G36",
+          "G44",
+          "G52",
+          "G60"
+        ],
+        "reference_center": [
+          700.0,
+          688.0
+        ]
+      },
+      "computation_method": "取 G28 中心 (700,688)，对其余 63 个主体判定 cx<700 ∧ cy>688；与 G28 同列（cx 相等）或同行（cy 相等）的主体因严格不等号被排除，并在 excluded_equal_coordinate 中单列，故结果集不受并列影响。",
+      "coordinate_tolerance": "中心坐标 ±2 px；编号离散",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q04",
+      "category": "严格中心左右关系",
+      "requires_two_step_relation": false,
+      "answer": {
+        "left": [
+          "G41",
+          "G42",
+          "G43"
+        ],
+        "right": [
+          "G45",
+          "G46",
+          "G47",
+          "G48"
+        ]
+      },
+      "computation_method": "第6行 8 个主体中心横坐标互不相同（列间隔 200 px），与 G44 的 cx=700 逐一比较得左右两组。",
+      "coordinate_tolerance": "编号离散；中心 ±2 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q05",
+      "category": "距离",
+      "requires_two_step_relation": false,
+      "answer": {
+        "center_a": [
+          100.0,
+          88.0
+        ],
+        "center_b": [
+          300.0,
+          1088.0
+        ],
+        "euclidean_px": 1019.8
+      },
+      "computation_method": "读取两中心 (100,88) 与 (300,1088)，欧氏距离 √(Δx²+Δy²)=√(40000+1000000)=1019.8 px。",
+      "coordinate_tolerance": "中心 ±2 px，距离 ±3 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q06",
+      "category": "距离",
+      "requires_two_step_relation": true,
+      "answer": {
+        "nearest": "G31",
+        "distance_px": 200.0,
+        "runner_up": "G30",
+        "runner_up_distance_px": 400.0
+      },
+      "computation_method": "先定位第4行的 7 个非 G32 主体，再对每个计算到 G32 中心 (1500,688) 的欧氏距离并排序；最小 200.0 px 与次小 400.0 px 相差 200.0 px，已在生成阶段断言无并列。（若基准取中间列，左右两格会等距而并列，故基准特意取该行端点列。）",
+      "coordinate_tolerance": "距离 ±3 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q07",
+      "category": "排序",
+      "requires_two_step_relation": false,
+      "answer": {
+        "ids": [
+          "G01",
+          "G02",
+          "G03",
+          "G19",
+          "G35",
+          "G44",
+          "G15"
+        ],
+        "centers_x": [
+          100,
+          300,
+          500,
+          500,
+          500,
+          700,
+          1300
+        ],
+        "cx_tie_groups_resolved_by_cy": [
+          500
+        ]
+      },
+      "computation_method": "过滤 shape=圆角方 ∧ size=80 得 7 个，按 (cx, cy) 升序字典序排列；横坐标相同的 [500] 组由题面规定的第二关键字 cy 决定先后，故序列唯一。",
+      "coordinate_tolerance": "编号序列离散；cx ±2 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q08",
+      "category": "排序",
+      "requires_two_step_relation": true,
+      "answer": {
+        "ids": [
+          "G10",
+          "G13",
+          "G16",
+          "G22",
+          "G29",
+          "G34",
+          "G40"
+        ],
+        "centers_y": [
+          288,
+          288,
+          288,
+          488,
+          688,
+          888,
+          888
+        ],
+        "cy_tie_groups_resolved_by_cx": [
+          288,
+          888
+        ]
+      },
+      "computation_method": "过滤 橙 ∧ 圆环 得 7 个，按 (cy, cx) 升序；纵坐标相同的 [288, 888] 组由第二关键字 cx 决定先后。",
+      "coordinate_tolerance": "编号序列离散；cy ±2 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q09",
+      "category": "包围框",
+      "requires_two_step_relation": false,
+      "answer": {
+        "ids": [
+          "G23",
+          "G24",
+          "G27",
+          "G50",
+          "G57",
+          "G64"
+        ],
+        "bbox": [
+          76,
+          448,
+          1540,
+          1528
+        ],
+        "width": 1464,
+        "height": 1080
+      },
+      "computation_method": "紫色圆共 6 个；联合包围框取 min(x0),min(y0),max(x1),max(y1)，其中 x0=cx-s/2、x1=cx+s/2（圆按直径）。",
+      "coordinate_tolerance": "包围框四边 ±3 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q10",
+      "category": "包围框",
+      "requires_two_step_relation": true,
+      "answer": {
+        "bbox": [
+          68,
+          848,
+          1532,
+          928
+        ],
+        "width": 1464,
+        "height": 80
+      },
+      "computation_method": "第5行 8 个主体的轴对齐并集包围框；最左边界来自该行 size 最大且 col 最小的主体，最右边界来自 col=8 的主体。",
+      "coordinate_tolerance": "包围框四边 ±3 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q11",
+      "category": "颜色计数",
+      "requires_two_step_relation": false,
+      "answer": {
+        "column": 5,
+        "counts": {
+          "蓝": 3,
+          "橙": 3,
+          "绿": 2,
+          "紫": 0
+        },
+        "total": 8,
+        "ids_by_color": {
+          "蓝": [
+            "G37",
+            "G53",
+            "G61"
+          ],
+          "橙": [
+            "G13",
+            "G21",
+            "G29"
+          ],
+          "绿": [
+            "G05",
+            "G45"
+          ],
+          "紫": []
+        }
+      },
+      "computation_method": "第5列即 x∈[800,1000) 的一格列；逐格读取颜色后计数，总数应为 8。",
+      "coordinate_tolerance": "计数为精确整数",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q12",
+      "category": "形状计数",
+      "requires_two_step_relation": true,
+      "answer": {
+        "count": 9,
+        "ids": [
+          "G05",
+          "G06",
+          "G10",
+          "G22",
+          "G28",
+          "G29",
+          "G37",
+          "G40",
+          "G52"
+        ]
+      },
+      "computation_method": "先数出全部圆环（外径≥64），再筛掉 size=48 的圆环；圆环以中空特征识别。",
+      "coordinate_tolerance": "计数为精确整数",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q13",
+      "category": "颜色/形状计数",
+      "requires_two_step_relation": true,
+      "answer": {
+        "count": 6,
+        "ids": [
+          "G22",
+          "G29",
+          "G36",
+          "G43",
+          "G50",
+          "G57"
+        ]
+      },
+      "computation_method": "反对角线 row+col=9 共 8 格（G08,G15,G22,G29,G36,G43,G50,G57），其中形状为圆或圆环者计数。",
+      "coordinate_tolerance": "计数为精确整数",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q14",
+      "category": "复合属性检索",
+      "requires_two_step_relation": true,
+      "answer": {
+        "count": 9,
+        "ids": [
+          "G43",
+          "G44",
+          "G45",
+          "G51",
+          "G52",
+          "G53",
+          "G59",
+          "G60",
+          "G61"
+        ]
+      },
+      "computation_method": "按中心坐标做区间过滤 cx∈[400,1000) ∧ cy≥1000；cx 落在格心 100+200k，故区间等价于列 3–5、行 6–8 的交集。",
+      "coordinate_tolerance": "计数与编号离散；中心 ±2 px",
+      "visibility_basis": "答案完全可由最终可见图片推出：所有相关主体与其编号标签均未被遮挡。"
+    },
+    {
+      "id": "Q15",
+      "category": "遮挡·可见几何",
+      "requires_two_step_relation": true,
+      "answer": {
+        "ids": [
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "V8",
+          "V9"
+        ],
+        "plate_bbox": [
+          200,
+          210,
+          600,
+          610
+        ]
+      },
+      "computation_method": "遮挡板包围框 x∈[200,600]、y∈[210,610]；对 9 个可见对象逐个比较其主体右边界（x+size）与 200、左边界与 600，凡主体完全在板左侧者入选。V6 在板右侧、V7 在板右下侧，故排除。",
+      "coordinate_tolerance": "编号离散；边界 ±3 px",
+      "visibility_basis": "遮挡板为纯色不透明矩形，其左边界像素清晰可辨；V1–V5、V8、V9 主体全部在该边界左侧。"
+    },
+    {
+      "id": "Q16",
+      "category": "遮挡·不可推断",
+      "requires_two_step_relation": false,
+      "answer": "无法确定",
+      "computation_method": "遮挡板是不透明纯色矩形，板内不存在任何可见像素证据（无虚线、无边缘泄漏、无半透明），因此隐藏对象的个数无法由可见部分推出；给出任何具体数字都缺乏依据。",
+      "coordinate_tolerance": "无数值答案，不适用",
+      "visibility_basis": "最终图片在板内只有板色与两行说明文字，未泄漏任何被遮主体的轮廓或颜色。"
+    },
+    {
+      "id": "Q17",
+      "category": "遮挡·不可推断",
+      "requires_two_step_relation": false,
+      "answer": "无法确定",
+      "computation_method": "可见部分只能确定板的范围与其外部对象；板内既无可见像素也无任何标注，既不能证明存在圆环也不能证明不存在，故只能回答无法确定。",
+      "coordinate_tolerance": "无数值答案，不适用",
+      "visibility_basis": "遮挡板完全覆盖隐藏层，图中没有任何虚线、阴影或颜色溢出提示板下内容。"
+    },
+    {
+      "id": "Q18",
+      "category": "遮挡·可见几何",
+      "requires_two_step_relation": false,
+      "answer": {
+        "top_left": [
+          200,
+          210
+        ],
+        "bottom_right": [
+          600,
+          610
+        ],
+        "width": 400,
+        "height": 400
+      },
+      "computation_method": "扫描 #334155 板色像素的最小/最大行列，得轴对齐包围框；宽=600-200=400、高=610-210=400。",
+      "coordinate_tolerance": "包围框四边 ±3 px",
+      "visibility_basis": "遮挡板四边与底纹网格线相交，边界像素可直接读取。"
+    }
+  ]
+}

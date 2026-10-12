@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A13",
+  "run_id": "20261008T1615Z-run01",
+  "brand": {
+    "name_zh": "叠光",
+    "name_en": "Layerlight",
+    "concept": "信息叠加后仍然清晰",
+    "tagline": "把复杂信息，组织成清晰画面"
+  },
+  "generated_by": {
+    "tokens_and_geometry": "tmp/20261008T1615Z-run01/A13/plan_a13.py",
+    "compositions": "tmp/20261008T1615Z-run01/A13/generate_a13.py",
+    "previews": "tmp/20261008T1615Z-run01/A13/preview_a13.py, preview2_a13.py, sheets_a13.py",
+    "independent_check": "tmp/20261008T1615Z-run01/A13/check_a13.py",
+    "check_report": "tmp/20261008T1615Z-run01/A13/check-report.json"
+  },
+  "colours": {
+    "layers": {
+      "blue": "#3E63DD",
+      "green": "#30A46C",
+      "red": "#E5484D"
+    },
+    "node": "#F59E0B",
+    "light_surface": {
+      "paper": "#F4F6FA",
+      "ink": "#0F1724",
+      "ink_secondary": "#3E4C63",
+      "muted": "#6B7A93",
+      "hairline": "#E7ECF4"
+    },
+    "dark_surface": {
+      "night": "#0B1220",
+      "panel": "#151F33",
+      "on_night": "#F2F6FC",
+      "on_night_dim": "#8FA3C2",
+      "rule_on_night": "#2A3A55"
+    },
+    "monochrome": {
+      "black": "#000000",
+      "usage": "symbol-black only; every painted pixel is RGB (0,0,0) with alpha carrying the shape"
+    },
+    "rule": "the three layer hues are the additive primaries; they never blend into a fourth colour inside the mark — overlap is expressed by position, not by mixing, which is the brand claim made visible",
+    "contrast_pairs": [
+      {"fg": "#0F1724", "bg": "#F4F6FA", "px": 76, "where": "banner wordmark 叠光", "ratio": 16.61, "floor": 3.0},
+      {"fg": "#3E4C63", "bg": "#F4F6FA", "px": 40, "where": "banner wordmark Layerlight", "ratio": 8.02, "floor": 3.0},
+      {"fg": "#3E4C63", "bg": "#F4F6FA", "px": 30, "where": "banner tagline", "ratio": 8.02, "floor": 3.0},
+      {"fg": "#F2F6FC", "bg": "#151F33", "px": 96, "where": "poster OPEN BETA (worst case scored against the panel it overlaps)", "ratio": 15.18, "floor": 3.0},
+      {"fg": "#8FA3C2", "bg": "#151F33", "px": 28, "where": "poster tagline / url", "ratio": 6.42, "floor": 4.5}
+    ],
+    "contrast_method": "check_a13.py computes WCAG relative-luminance ratios for every <Text> run and scores each against the tightest surface it can sit on (canvas background or the panel behind it), so no line is credited for a background it does not actually touch; results in check-report.json contrast"
+  },
+  "geometry": {
+    "unit": "S = side of the mark box; every length below is a fraction of S, so the same rule renders at 512, at 32 and inside a layout",
+    "chosen_direction": "A",
+    "A_translation": {
+      "plate": 0.66,
+      "step": 0.17,
+      "stroke": 0.07,
+      "stroke_small_size": 0.085,
+      "radius_of_plate": 0.12,
+      "node": 0.115,
+      "node_radius_of_node": 0.22,
+      "invariant": "plate + 2*step == 1.0 (the three frames exactly fill the mark box on the diagonal)"
+    },
+    "B_rotation_rejected": {
+      "frame": 0.92,
+      "stroke": 0.06,
+      "radius": 0.14,
+      "diamond": 0.4,
+      "diamond_r": 0.06,
+      "beam": 0.115,
+      "dot": 0.1,
+      "rejection": "preview tmp/.../A13/preview/alt-B-512.png reads as a prohibition sign at 32px and the 45-degree beam destroys the negative space the concept depends on"
+    },
+    "constructs": {
+      "limit": 6,
+      "used": 4,
+      "list": ["frame 1 (blue)", "frame 2 (green)", "frame 3 (red)", "node (amber)"],
+      "measured": "check_a13.py mark_blocks() returns 4 shapes on all four delivered DSLs"
+    },
+    "clear_space": {
+      "minimum": 0.3,
+      "unit": "fraction of the mark's own span S, measured to every edge of the canvas",
+      "measured_symbol_color": "margin 96px / ink span 320px = 0.300 (alpha bounding box of the delivered PNG)",
+      "measured_brand_banner": "S=220 -> left 0.300, top 0.409, bottom 0.409, right 4.155",
+      "measured_launch_poster": "S=430 -> left 0.756, right 0.756, top 0.337, bottom 1.802",
+      "correction": "banner v02 used a 56px edge margin and a 64px wordmark gap (0.255 S and 0.291 S). v04 moved both to round(0.30*S)=66px, which is what the checker now asserts for every application, not only for the symbol."
+    },
+    "service_constraint": {
+      "rule": "borderRadius must be >= the border width, otherwise POST /snapshot returns HTTP 500 {\"code\":\"INTERNAL_ERROR\"} with no diagnostic",
+      "evidence": "tmp/20261008T1615Z-run01/A13/probes/p01..p10 (.snapshot + .png + archived responses); 1.58<1.7, 1.0<1.7, 1.6<1.7, 1.9<2.0 fail, radius==stroke and radius>stroke return 200",
+      "handling": "plan_a13.frame() clamps radius to max(radius, stroke) before emitting"
+    }
+  },
+  "small_size_rule": {
+    "threshold": "S <= 48px",
+    "stroke": 0.085,
+    "why": "at 32px the 0.070 stroke renders as 2.2px and the two inner frames merge in the overlap; raising it to 0.085 (2.7px) keeps all four hues individually present — verified by check_a13.py on the native 32px service renders check-32-base.png / check-32-tuned.png",
+    "measured_limitation": "resampling the delivered 512 master down to 32 with LANCZOS loses the amber node (3.7px target). Recorded as a measurement, not a failure: icons must be rendered from the DSL at the target size, not scaled down. See check-report.json measurements.downscale_512_to_32_missing_hues."
+  },
+  "applications": {
+    "symbol-color": {
+      "file": "outputs/20261008T1615Z-run01/A13/symbol-color.png",
+      "dsl": "outputs/20261008T1615Z-run01/A13/symbol-color.snapshot",
+      "canvas": [512, 512],
+      "background": "transparent",
+      "png_bytes": 6700,
+      "served_by": "A13-v01-color-20261008T165348Z",
+      "mark": {"S": 320, "centre": [256, 256], "stroke": 22.4, "bbox": [96, 96, 416, 416]},
+      "derivation": "icon(direction=A, variant=color) at S=320 inside the 512 box (clear space 0.30)"
+    },
+    "symbol-black": {
+      "file": "outputs/20261008T1615Z-run01/A13/symbol-black.png",
+      "dsl": "outputs/20261008T1615Z-run01/A13/symbol-black.snapshot",
+      "canvas": [512, 512],
+      "background": "transparent",
+      "png_bytes": 4557,
+      "served_by": "A13-v01-black-20261008T165349Z",
+      "mark": {"S": 320, "centre": [256, 256], "stroke": 22.4, "bbox": [96, 96, 416, 416]},
+      "derivation": "same icon() call with variant=black; check_a13.py compares the colour-stripped geometry attribute lists and they are identical, and all 49177 painted pixels are RGB (0,0,0)"
+    },
+    "brand-banner": {
+      "file": "outputs/20261008T1615Z-run01/A13/brand-banner.png",
+      "dsl": "outputs/20261008T1615Z-run01/A13/brand-banner.snapshot",
+      "canvas": [1200, 400],
+      "background": "#F4F6FA",
+      "png_bytes": 32277,
+      "served_by": "A13-v04-banner-20261009T010648Z",
+      "mark": {"S": 220, "centre": [176, 200], "stroke": 15.4, "bbox": [66, 90, 286, 310]},
+      "type": "叠光 76pt BOLD + Layerlight 40pt tracked 1.5 + 3-segment layer rule + tagline 30pt, wordmark column starts at x=352",
+      "derivation": "icon() re-emitted at S=220 plus a ghost layer set at 0.22/0.18/0.14 opacity bleeding off the right edge; mark blocks normalise to the symbol fingerprint"
+    },
+    "launch-poster": {
+      "file": "outputs/20261008T1615Z-run01/A13/launch-poster.png",
+      "dsl": "outputs/20261008T1615Z-run01/A13/launch-poster.snapshot",
+      "canvas": [1080, 1350],
+      "background": "#0B1220",
+      "png_bytes": 62750,
+      "served_by": "A13-v06-poster-20261009T011316Z",
+      "mark": {"S": 430, "centre": [540, 360], "stroke": 30.1, "bbox": [325, 145, 755, 575]},
+      "type": "OPEN BETA 96pt tracked 6, night panel #151F33 radius 28 with 叠光 Layerlight 40 / tagline 28 / rule / date 34 / colour-chip row, url 28pt",
+      "derivation": "independent vertical composition: 780px ghost frames at stroke 4 behind the mark, clipped to y<=660 by a ClipRect so the hairlines stop above the headline; panel block below the fold of the title; aspect 0.80 vs the banner's 3.00 and a disjoint colour set (#0B1220/#151F33/#F2F6FC/#8FA3C2/#2A3A55) prove it is not an enlarged banner"
+    }
+  },
+  "typography": {
+    "family": "Inter,Noto Sans CJK SC",
+    "mono_family": "Noto Sans Mono CJK SC",
+    "line_box_rule": "1.45em per line (A12 measurement), reused for every text box here",
+    "scale": [96, 76, 40, 34, 28, 26],
+    "tracking": "96pt display line carries letterSpacing 6; body lines carry 0-2"
+  },
+  "forbidden_and_honoured": [
+    "no ready-made logo, no text-as-icon: the mark is 4 geometric Containers, the wordmark is separate from it",
+    "no external images: check_a13.py asserts no <Image, no http(s), no base64 in any delivered DSL",
+    "no raster embedding of the icon into the banner/poster: the mark is re-derived from the same ratios (mark_rebuilt_from_symbol_geometry)",
+    "thumbnails at 32x32 live only in tmp/.../A13/preview/ and are never delivered as final art"
+  ],
+  "verification": {
+    "script": "tmp/20261008T1615Z-run01/A13/check_a13.py",
+    "report": "tmp/20261008T1615Z-run01/A13/check-report.json",
+    "checks_passed": "52/52",
+    "covers": ["canvas sizes", "PNG bytes == archived service response", "delivered DSL == archived request body",
+               "no raster/external asset", "all required strings present", "<=6 mark constructs",
+               "transparent canvases and RGB-zero black symbol", "colour/black geometry identity",
+               "mark re-derived (not embedded) in banner and poster", "clear space >= 0.30 S per application",
+               "poster is not an enlarged banner (aspect + disjoint palette)", "WCAG text contrast floors",
+               "four hues survive a native 32px service render"],
+    "probes": "tmp/20261008T1615Z-run01/A13/probes/ p01..p10 — the borderRadius vs border-width boundary that produces HTTP 500"
+  }
+}

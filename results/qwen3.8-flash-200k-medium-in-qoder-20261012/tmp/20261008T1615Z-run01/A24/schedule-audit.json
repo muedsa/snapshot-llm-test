@@ -1,0 +1,94 @@
+{
+ "search": {
+  "flexible_tasks": [
+   "R05",
+   "R09",
+   "R12"
+  ],
+  "flexible_team_assignments": 8,
+  "team_order_pairs_evaluated": 112,
+  "team_order_pairs_deadlocked": 48,
+  "method": "全枚举：3 个柔性任务的 8 种团队分配 × 两团队各自所有与先决相容的内部顺序（design/engineering 线性扩展），对每组取半主动排程（尽量早开工）。因为任何可行排程都隐含一组团队顺序、且半主动化只会更早，所以该枚举覆盖全局最优。两组顺序之间若出现跨团队循环等待，则该顺序对没有任何可行排程，计为 deadlocked 后跳过，不影响最优性。",
+  "proof_of_optimality": "可复核穷举：solve.py 的 solve() 无随机、无剪枝近似",
+  "best_makespan_min": 260
+ },
+ "bounds": {
+  "critical_path_no_resource_min": 255,
+  "critical_path": "R01->R04->R07->R09->R10->R12",
+  "total_work_min": 485,
+  "teams": 2,
+  "lower_bound_work_div_teams": 243,
+  "lower_bound_overall": 255,
+  "achieved_makespan_min": 260,
+  "conclusion": "本排程为全枚举最优 260 分钟，但高于资源无关下界 255：下界在此不可达，故不宣称它是最优解之外的更强结论",
+  "per_team_lower_bound": {
+   "design": 255,
+   "engineering": 230,
+   "note": "给定本分配后各团队自身工作量也是下界"
+  }
+ },
+ "checks": {
+  "resource_conflicts": {
+   "count": 0,
+   "pairs": []
+  },
+  "precedence_violations": {
+   "count": 0,
+   "detail": []
+  },
+  "duration_exact": {
+   "count": 0,
+   "detail": [],
+   "note": "12 个任务全部按 inputs 原时长完整执行"
+  },
+  "team_eligibility": {
+   "count": 0,
+   "detail": [],
+   "note": "teams 两项的任务只占用被选中的那一个团队"
+  },
+  "all_tasks_scheduled": {
+   "expected": 12,
+   "actual": 12,
+   "missing": []
+  },
+  "deadline": {
+   "deadline": "2026-11-07T16:00:00+08:00",
+   "finish": "2026-11-07T13:20:00+08:00",
+   "within_deadline": true,
+   "buffer_minutes": 160,
+   "buffer_pct_of_window": 38.1
+  },
+  "idle_windows": {
+   "design": {
+    "gaps": [
+     {
+      "from_min": 85,
+      "to_min": 90,
+      "minutes": 5,
+      "before": "R07"
+     }
+    ],
+    "idle_minutes": 5,
+    "busy_minutes": 255
+   },
+   "engineering": {
+    "gaps": [
+     {
+      "from_min": 200,
+      "to_min": 205,
+      "minutes": 5,
+      "before": "R11"
+     },
+     {
+      "from_min": 235,
+      "to_min": 260,
+      "minutes": 25,
+      "before": "(排程结束)"
+     }
+    ],
+    "idle_minutes": 30,
+    "busy_minutes": 230
+   }
+  }
+ }
+}

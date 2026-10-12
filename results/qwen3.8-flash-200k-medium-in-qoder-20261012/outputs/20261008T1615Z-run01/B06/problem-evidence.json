@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B06",
+  "run_id": "20261008T1615Z-run01",
+  "purpose": "逐件记录：问题的实际来源或假设、场景要求、重构选择，以及根据最终图判断的改进（区分可观察的可读性改善与未经用户实验验证的效果）",
+  "method": {
+    "how_problems_were_found": "从日常公共界面与包装上反复出现的原文形式中挑选：药盒与说明书文字、站内末班告示、租房列表页价格行、外卖结算页两行金额、体检报告结论页、运营商套餐详情小字、停车场入口立牌、洗衣机旋钮程序带、饮料背标营养成分表、劳动合同与 HR 口头说明。",
+    "what_was_not_done": "没有做任何现场调研、访谈、问卷、可用性测试或用户实验；没有拍摄/收集实物照片；没有从任何网站抓取数据。本题全部数值由本地生成器给出。",
+    "no_scoring_material_used": "未使用任何外部评分材料作为输入。",
+    "source_labels": {
+      "observed": "可在公共场所／包装／界面直接读到的原文形式（本文件只复述形式，未保存实物图像）",
+      "self_defined_demo": "数值、名称、情境为我拟定的合理演示，不对应任何在营服务或真实个人",
+      "common_rule_needs_check": "按公开常识复述的常见规定／建议，落地前需核对现行条文、说明书与当地口径"
+    },
+    "dataset": "tmp/<run>/B06/research/demo.json（b06data.py，seed 20261011，city 汀州市（虚构，与 B05 同一虚构城市但不共享实体））"
+  },
+  "problems": [
+    {
+      "case": "case-01",
+      "work_id": "20261008T1615Z-run01-case-01",
+      "title": "今天几点吃药",
+      "canvas": [
+        1080,
+        1080
+      ],
+      "medium": "冰箱贴／药盒侧贴（1080×1080 方卡）",
+      "observed_form": "药盒与说明书上的「一日三次」「饭后服用」「空腹」字样",
+      "source_type": [
+        "observed",
+        "common_rule_needs_check",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "把「一日三次」当成跟着三餐吃（间隔变成 4–5 h 加夜里 14 h），把「空腹」理解成饿着肚子随时都行",
+      "scenario_requirements": "冰箱门前站立 10 秒读完；结论必须是能直接抄进日历的具体钟点；不能替人判断该不该吃",
+      "reframing_choice": "用 24 h 圆盘把间隔摊成三圈钟点，清醒窗口做成外带；右侧三行做「原口径→每 N h→钟点串→下一次还剩」",
+      "transformation": "把「一日三次」这句系统口径画成 24 小时盘上的三圈钟点：颜色＝圈＝药，盘外是清醒窗口，右侧三行给可抄走的钟点",
+      "improvement_observed_in_final_image": "4 字口径 → 3 个具体钟点＋1 个等待小时数；「夜里最长间隔 14 h」这类原本需要自己算的量直接可见",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "没有对照实验：无法证明这张卡减少了实际漏服；夜间最长间隔对不同药物是否要紧需药师核对",
+      "data_provenance": "demo.json case01.drugs（钟点、interval_h、wait_h、overnight_gap_h 为演示）；间隔口径标 common_rule_needs_check",
+      "review_evidence": "case01-v01…v04 四次看图；qa-v04-clock.png／qa-v04-amber.png 为 2× 裁图（仅观察）",
+      "deliverables": {
+        "png": "case-01/final.png",
+        "snapshot": "case-01/final.snapshot",
+        "case_report": "case-01/case.md"
+      },
+      "final_request": "B06-case01-v04-20261011T135032Z"
+    },
+    {
+      "case": "case-02",
+      "work_id": "20261008T1615Z-run01-case-02",
+      "title": "末班车还赶得上吗",
+      "canvas": [
+        1080,
+        2160
+      ],
+      "medium": "手机长图（1080×2160，站内告示的替代物）",
+      "observed_form": "地铁站内「末班 23:41」式告示牌",
+      "source_type": [
+        "observed",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "告示只回答「这班车几点开」，不回答「我从这里出发今晚能不能按时到家、最迟几点动身」；换乘走行、二线车程、出站步行全靠脑补",
+      "scenario_requirements": "剩余决策时间约 15 分钟，单手持手机，一屏读完；跨零点要能自洽回绕；不得暗示运营方承诺",
+      "reframing_choice": "把末班时刻倒推成六段行程条（含 5 min 保守缓冲），结论只留一个可执行时刻 23:23；三种情况里第三种写明「本卡不含该信息，不编造」",
+      "transformation": "把「末班 23:41」这一个数摊成 72 分钟的六段行程条，再用倒推得到唯一可执行结论：最迟 23:23 动身",
+      "improvement_observed_in_final_image": "1 个时刻 → 6 段时长＋合计 72 min＋最迟出发时刻＋当下剩余 16 min；「来不及」被拆成具体缺哪一段",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "换乘走行与出闸步行为自设值，未在任何车站实测；未在真实强光与单手条件下测过阅读时间",
+      "data_provenance": "demo.json case02：城市、六段时长、缓冲全为演示；缓冲口径为自设",
+      "review_evidence": "case02-v01…v04 四次看图；v01 无图（card 位置参数用错）已在迭代留痕记录",
+      "deliverables": {
+        "png": "case-02/final.png",
+        "snapshot": "case-02/final.snapshot",
+        "case_report": "case-02/case.md"
+      },
+      "final_request": "B06-case02-v04-20261011T135509Z"
+    },
+    {
+      "case": "case-03",
+      "work_id": "20261008T1615Z-run01-case-03",
+      "title": "月租不能比较",
+      "canvas": [
+        1600,
+        1000
+      ],
+      "medium": "桌面对比页（1600×1000，租房列表页的替代物）",
+      "observed_form": "租房列表页价格行「2780 元/月 ＋ 押一付三 ＋ 单程 35 min」",
+      "source_type": [
+        "observed",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "决定贵不贵的押金方式、中介费、物业费、水电、免租期与通勤都不在价格行里；列表页最便宜的一套往往签约当天拿出最多、住进去每月最贵",
+      "scenario_requirements": "坐下来对比，可打印带走；必须能同时看三套并指出可谈项；时间折算口径要写在页面上",
+      "reframing_choice": "把六笔钱与一段通勤折进 12 个月现金流堆叠（押金画成条尾空心框不计入年度负担），再按真实月均重排并给三笔可谈项的省额",
+      "transformation": "把六笔钱与一段通勤折进 12 个月：五段堆叠条＋条尾押金空心框，让「列表页最便宜的一套真实月均最高」这个反转在同一画面里成立",
+      "improvement_observed_in_final_image": "3 个数 → 5 列明细＋排序反转：C 列表最便宜（1,980）真实月均 3,567，比 B（2,150→3,308）每月贵 259 元，方向与列表页相反",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "物业费、水电网费与中介费率为演示值，未取自任何在营房源；「可谈的三笔钱」能省多少没有实际议价数据支撑",
+      "data_provenance": "demo.json case03：三套房、租金、免租期、通勤为演示；30 元/h、每月 22 天往返为自设口径（页面明写）",
+      "review_evidence": "case03-v01…v04 四次看图＋qa/ 局部裁图核对表列对齐",
+      "deliverables": {
+        "png": "case-03/final.png",
+        "snapshot": "case-03/final.snapshot",
+        "case_report": "case-03/case.md"
+      },
+      "final_request": "B06-case03-v04-20261011T140414Z"
+    },
+    {
+      "case": "case-04",
+      "work_id": "20261008T1615Z-run01-case-04",
+      "title": "外卖价格解剖",
+      "canvas": [
+        1080,
+        1440
+      ],
+      "medium": "手机结算页替代物（1080×1440）",
+      "observed_form": "外卖结算页两行「¥23.22」「已优惠 ¥13.00」",
+      "source_type": [
+        "observed",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "五件不同的事（菜品原价、满减、券、包装费、按里程的配送费）被压成一个数，于是没法比两家店、也算不出凑单值不值、每克多少钱",
+      "scenario_requirements": "下单前 30 秒；瀑布每一行要能对上账；结论要是一句「凑／不凑」",
+      "reframing_choice": "五步同比例尺瀑布（16 px＝1 元）＋累计列；再换分母做每 100 g 单价与包装配送占比；凑单算净多支出",
+      "transformation": "五步价格瀑布（同一比例尺 16 px＝1 元）：浮动条＋每步金额＋累计列，最后一行累计正好等于页面上的实付数，可对账",
+      "improvement_observed_in_final_image": "2 行 → 5 步瀑布（30→22→17→19.50→23.22 逐行可对账）＋凑单结论「净多支出 9.00 元→不值」",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "满减与优惠券叠加规则按本页假设，实际平台常有互斥与限量；未测过真实用户在结算倒计时内能否读完",
+      "data_provenance": "demo.json case04：两家店全部价格为演示；配送费公式为自设口径",
+      "review_evidence": "case04-v01…v03 三次看图；出图前 3 次本地 assert 中止（③④卡与 note 溢出）已记录",
+      "deliverables": {
+        "png": "case-04/final.png",
+        "snapshot": "case-04/final.snapshot",
+        "case_report": "case-04/case.md"
+      },
+      "final_request": "B06-case04-v03-20261011T141233Z"
+    },
+    {
+      "case": "case-05",
+      "work_id": "20261008T1615Z-run01-case-05",
+      "title": "报告单的箭头不够用",
+      "canvas": [
+        1440,
+        1080
+      ],
+      "medium": "体检报告阅读页（1440×1080，平板／打印横版）",
+      "observed_form": "体检报告结论页的 12 项 ×（结果、参考区间、↑/↓），其中 3 项区间只有单边",
+      "source_type": [
+        "observed",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "箭头只有两种形状，不区分「刚过线 0.1」和「超出 1.8 倍半宽」，也不给复查顺序与科室，读者拿到一堆等宽符号",
+      "scenario_requirements": "平板或打印平铺阅读；排序必须能解释；不得给诊断结论或引用条文号",
+      "reframing_choice": "dev＝|结果−区间中点|÷半宽（自设口径，仅用于排序），画成 12 行发散条；再并排「按 dev」与「按超界百分比」两种口径，最后给四档复查节奏与 5 个科室先后",
+      "transformation": "以区间中值为 0 的 12 行发散条：条长＝|结果−中点|／半宽，左＝低于区间、右＝高于区间；再并排展示「按 dev」与「按超界百分比」两种口径会换第一",
+      "improvement_observed_in_final_image": "9 个等宽符号 → 12 条可比长度＋复查节奏分档＋科室先后；关键对照（维 D 超下界 43.3% 幅度最大但 dev 第 7，血红蛋白只超 6.9% 但 dev 第 5）直接印在画面上",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "dev 不是医学阈值，只是排序工具；分诊先后与复查节奏未经任何临床复核，落地必须听医生",
+      "data_provenance": "demo.json case05：12 项数值、区间、科室归属、复查节奏全部为演示，非任何实验室参考值",
+      "review_evidence": "case05-v01…v03 三次看图；TextFit 闸门 4 警（③ 数值盒 46×22）在发请求前修掉",
+      "deliverables": {
+        "png": "case-05/final.png",
+        "snapshot": "case-05/final.snapshot",
+        "case_report": "case-05/case.md"
+      },
+      "final_request": "B06-case05-v03-20261011T142228Z"
+    },
+    {
+      "case": "case-06",
+      "work_id": "20261008T1615Z-run01-case-06",
+      "title": "100 GB 的两行小字",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "medium": "套餐详情／投屏页（1920×1080 横版）",
+      "observed_form": "套餐详情页大字「100 GB」＋两行小字「高速流量 40 GB，超出后降至 1 Mbps，次月恢复」",
+      "source_type": [
+        "observed",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "两行小字都不带时间轴：算不出这个月哪天开始卡，也不知道 1 Mbps 之后手上的事还能不能做",
+      "scenario_requirements": "网页或投屏横版，远看可读；降速点必须精确到日与小时；不得暗示真实运营商报价",
+      "reframing_choice": "30 天逐日累计画成台阶面积与 40 GB 额度线求交→第 22 天 18:30；把 1 Mbps 换算成每小时 0.45 GB 与七件事可用／会卡；把 40 GB 摊成每日预算 1.33 GB",
+      "transformation": "逐日累计台阶面积（柱＝当日增量，青＝额度内、珊瑚＝降速后仍在用）与 40 GB 金色额度线求交，把「第 22 天 18:30」画成一根竖线",
+      "improvement_observed_in_final_image": "两行小字 → 撞线时刻＋实际日均 1.87 GB（超预算 40%）＋超预算 15 天＋第 15 天预警线；③ 用七行判定把「1 Mbps」变成行动约束",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "逐日用量为演示分布；降速后实际可用带宽因网络而异，本页按 1 Mbps 上限算，未做测速验证",
+      "data_provenance": "demo.json case06：额度、降速值、月费、30 天用量、各应用带宽全部为演示",
+      "review_evidence": "case06-v01…v05 五次看图；出图前 3 次本地 assert 中止记录在案；qa/ 多张裁图核对竖线与标签",
+      "deliverables": {
+        "png": "case-06/final.png",
+        "snapshot": "case-06/final.snapshot",
+        "case_report": "case-06/case.md"
+      },
+      "final_request": "B06-case06-v05-20261011T143014Z"
+    },
+    {
+      "case": "case-07",
+      "work_id": "20261008T1615Z-run01-case-07",
+      "title": "入口立牌的四行字",
+      "canvas": [
+        1200,
+        1600
+      ],
+      "medium": "停车场立牌／手机（1200×1600 竖版）",
+      "observed_form": "停车场入口立牌四行字：免费 15 分钟／首小时 6 元／之后每 30 分钟 3 元／24 小时内封顶 40 元",
+      "source_type": [
+        "observed",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "四行字各自都懂，合在一起没人能口算停 45 分钟付多少、停到几点不划算、封顶要停多久；「不足一段按一段计」意味着价格是台阶不是斜线",
+      "scenario_requirements": "进门前 30 秒 glance；三个常见时长要有明确金额；跳变点要指出来；跨天要说明",
+      "reframing_choice": "按四行字逐分钟扫描得 14 段台阶、13 个跳变点，封顶落在第 406 分钟（6 h 46 min）而非字面 24 小时；再给 45 min／2 h／8 h 三档金额与折算单价",
+      "transformation": "把「不足一段按一段计」画成分钟→元的 14 段台阶（不是斜线），13 条珊瑚跳变竖线＋40 元封顶平台，第 406 分钟到顶",
+      "improvement_observed_in_final_image": "4 行字 → 可读出金额的台阶函数＋「跳变点前 1 分钟最划算（76 min 刚跳 9 元，105 min 同样 9 元）」＋封顶后不必盯表、跨天 25 h＝46 元",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "真实停车场的免费期口径、计费取整方式与跨天规则各不相同，本页只按四行字自洽推算，未核对任何现行公示价",
+      "data_provenance": "demo.json case07：费率、封顶、三个时长全部为演示；城市虚构",
+      "review_evidence": "case07-v01…v05 五次看图＋qa/ 台阶与跳变线裁图核对",
+      "deliverables": {
+        "png": "case-07/final.png",
+        "snapshot": "case-07/final.snapshot",
+        "case_report": "case-07/case.md"
+      },
+      "final_request": "B06-case07-v05-20261011T144201Z"
+    },
+    {
+      "case": "case-08",
+      "work_id": "20261008T1615Z-run01-case-08",
+      "title": "14 个图标，我只想选对这一件",
+      "canvas": [
+        1080,
+        1920
+      ],
+      "medium": "洗衣机面板贴纸（1080×1920 竖版）",
+      "observed_form": "洗衣机旋钮旁一排 14 个程序图标（只写名字与温度）",
+      "source_type": [
+        "observed",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "面板给的是程序清单，用户要的是「手上这一件怎么选」，中间缺面料、脏污、时间三层判断；选错要么洗坏要么来不及干",
+      "scenario_requirements": "洗衣前站在机器前 1 分钟；必须收敛到一个程序并给结束时刻；也要明确列出该避开的程序",
+      "reframing_choice": "三层同心扇环，14 个程序各占 12.857° 槽位：外环面料（14→6）、中环脏污（6→3）、内环今晚时间（3→3），中心按评分与结束时刻取 1 个",
+      "transformation": "三层同心扇环：14 个程序各占 12.857° 槽位，外环看面料（14→6）、中环看脏污（6→3）、内环看今晚时间（3→3），中心盘给最终答案",
+      "improvement_observed_in_final_image": "14 个图标 → 一条可见的收敛路径＋选定程序 P03（78 min，含 15 min 预处理后 22:13 结束、剩 77 min 晾晒）＋4 个易误选程序的失败原因计数",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "真实机器的程序参数差异很大；三问顺序与评分权重是本页设定，未做用户选择实验，也未与任何说明书核对",
+      "data_provenance": "demo.json case08：程序参数与情境全部为演示，note 要求以自家机器说明书为准",
+      "review_evidence": "case08-v01…v03 三次看图；首版署名行 1084 px 超 1000 px 盒被闸门拦下；qa/ 扇环局部裁图核对分层归属",
+      "deliverables": {
+        "png": "case-08/final.png",
+        "snapshot": "case-08/final.snapshot",
+        "case_report": "case-08/case.md"
+      },
+      "final_request": "B06-case08-v03-20261011T145326Z"
+    },
+    {
+      "case": "case-09",
+      "work_id": "20261008T1615Z-run01-case-09",
+      "title": "「0 蔗糖」那瓶，方糖堆到第 6 块",
+      "canvas": [
+        1080,
+        1350
+      ],
+      "medium": "饮料背标／货架卡（1080×1350）",
+      "observed_form": "饮料背标营养成分表「每 100 mL 含糖 9.1 g」＋旁边的「0 蔗糖」宣称",
+      "source_type": [
+        "observed",
+        "common_rule_needs_check",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "9.1 这个数从来没按整瓶算过；「0 蔗糖」与「无糖」是两回事却常被当成一回事；每日建议上限也没人和一瓶对上",
+      "scenario_requirements": "货架前几秒，手上就是那瓶；要能一眼看出堆到第几块、喝多少毫升过线；不得给诊断建议",
+      "reframing_choice": "整瓶克数＝每 100 mL × 净含量 ÷ 100，按 4.5 g／块折成方糖堆（每行 3 块＝13.5 g），叠 25 g／50 g 两条常见建议线，再单独算「喝到多少毫升吃掉 25 g」",
+      "transformation": "按整瓶折算后堆成方糖塔（1 块 4.5 g，每行 3 块＝13.5 g），25 g／50 g 两条虚线横切，「喝到多少毫升过线」再单独画",
+      "improvement_observed_in_final_image": "每 100 mL 口径 → 整瓶克数（S3 27.3 g＝6 块）、过线毫升与占整瓶比例，以及金框「0 蔗糖」与绿框「无糖」的并排对照；两种字样不再混为一谈",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "含糖量与宣称字样为演示；每日建议上限适用人群因人而异（儿童、糖尿病人群不同），未咨询营养师，也未做货架实拍验证",
+      "data_provenance": "demo.json case09：含量、瓶型为演示；25 g／50 g 为常见公开建议口径，标 common_rule_needs_check",
+      "review_evidence": "case09-v01…v05 五次看图；v01 只看图才发现 label 语义错位（无糖茶被标成「0 蔗糖」），回生成器修字段并用递归 diff 证明只增 5 个键",
+      "deliverables": {
+        "png": "case-09/final.png",
+        "snapshot": "case-09/final.snapshot",
+        "case_report": "case-09/case.md"
+      },
+      "final_request": "B06-case09-v05-20261011T151020Z"
+    },
+    {
+      "case": "case-10",
+      "work_id": "20261008T1615Z-run01-case-10",
+      "title": "入职第一个月，我只把这 8 条对上了",
+      "canvas": [
+        1240,
+        1754
+      ],
+      "medium": "A4 打印核对打孔卡（1240×1754）",
+      "observed_form": "劳动合同正文＋附件＋HR 口头说明里分散的试用期、社保起缴、加班费基数、公积金、年假、竞业条款",
+      "source_type": [
+        "observed",
+        "common_rule_needs_check",
+        "self_defined_demo"
+      ],
+      "user_stuck_point": "新人手里既有「合同写试用期 8 个月」也有「转正后再缴」这种没出处的话；缺的不是法律知识，而是一张能逐项打勾并写明下一步的纸",
+      "scenario_requirements": "A4 打印放桌面逐项核对；判定状态要一眼数得清；每条要有一句可执行动作；必须声明不是法律意见",
+      "reframing_choice": "压成打孔卡：左缘一个孔＝一项，孔色＝判定（不符／缺项／通过），五列中后四列照抄来源文本不改写；加班 61 h 与 36 h 上限同轴直接读差额",
+      "transformation": "打孔卡：左缘一个孔＝一项，孔色即判定（珊瑚＝不符、金＝缺项），五列里后四列照抄来源文本不改写；加班 61 h 与 36 h 上限放到同一根 0–80 h 轴上",
+      "improvement_observed_in_final_image": "散落四处的条款 → 一屏判定分布（不符 5／缺项 3／通过 0）＋每项一句动作＋第一个月 6 个时间点；加班超出 25 h＝上限的 69% 无需口算",
+      "effect_claim_requires_user_testing": true,
+      "not_verified": "未做真实用户验证，也没有逐条核对现行法条与当地口径；「该是多少」是常见规定复述，签任何字前需咨询当地人社部门或工会",
+      "data_provenance": "demo.json case10：8 项文本（7 项 common_rule_needs_check、1 项 self_defined_demo）、月薪 12,000、排班 61 h 为演示；note 声明本表为核对清单不是法律意见",
+      "review_evidence": "case10-v01…v04 四次看图＋qa/ 6 张裁图（打孔条、表头对齐、加班轴）；出图前 2 轮本地 assert 中止记录在案",
+      "deliverables": {
+        "png": "case-10/final.png",
+        "snapshot": "case-10/final.snapshot",
+        "case_report": "case-10/case.md"
+      },
+      "final_request": "B06-case10-v04-20261011T151946Z"
+    }
+  ],
+  "cross_case_findings": [
+    "十件里最危险的错误都不是画错，而是口径抄错：件-01 把「0 蔗糖」安到无糖茶上、件-02 的行程合计 63 与 72 不一致、件-09 的 label 字段缺失——三次都在数据生成器或断言层面修，而不是在画面上手改数字",
+    "TextFit 闸门只校验单个文字盒，看不出遮挡（件-01 的三圈被盘心盖住、件-08 的扇环标签互相压字）；遮挡只能靠打开实际 PNG 与 1.5–1.6× 裁图发现",
+    "垂直溢出靠出图前 assert 拦下（件-04、件-06、件-07、件-08、件-09、件-10 共 12 次本地中止，未发请求），比渲染后再看图省一整轮",
+    "台阶 vs 斜线是本题的图形论点：件-06、件-07 的换算都必须按「不足一段按一段计」画成台阶，用斜线就会把临界点算错",
+    "十件的⑤／④口径块长度是被迫的：演示值与需核对项越多，限制文字越长，进而多次触发 TextFit 警告——这与真实信息产品的合规文本行为一致"
+  ],
+  "verification_boundary": "以下每件 improvement_observed_in_final_image 只主张「从最终 PNG 与结构对比可看到的改善」；effect_claim_requires_user_testing 一律为 true，即任何「更快／更少出错／更放心」的效果结论都需要真实用户测试，本题未做。"
+}

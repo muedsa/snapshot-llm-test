@@ -1,0 +1,216 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A12",
+ "run_id": "20261008T1615Z-run01",
+ "source_content": "tasks/A12-responsive-system/inputs/content.json",
+ "generated_by": "tmp/20261008T1615Z-run01/A12/plan_a12.py (this table) + tmp/20261008T1615Z-run01/A12/generate_a12.py (layout engine that reads it)",
+ "shared_across_all_breakpoints": {
+  "palette": {
+   "paper": "#EEF2F7",
+   "panel": "#FFFFFF",
+   "hero": "#0F1B2D",
+   "hero2": "#16263D",
+   "ink": "#0F1B2D",
+   "ink2": "#475569",
+   "muted": "#64748B",
+   "line": "#D7DFEA",
+   "accent": "#1D4ED8",
+   "accent2": "#3B82F6",
+   "accentSoft": "#E4ECFB",
+   "onHero": "#F8FAFC",
+   "onHeroDim": "#9DB4D0",
+   "onHeroAccent": "#93C5FD",
+   "rule": "#C6D2E2"
+  },
+  "line_height_factor": 1.45,
+  "font_families": {
+   "display_and_body": "Inter,Noto Sans CJK SC",
+   "index_and_website": "Noto Sans Mono CJK SC"
+  },
+  "core_constructs": [
+   "heroPanel",
+   "accentBar",
+   "indexChip",
+   "pill",
+   "dotRow",
+   "ruleLine"
+  ],
+  "radii": {
+   "panel": 18,
+   "card": 14,
+   "chip": 8,
+   "pill": 999
+  },
+  "rule_thickness": 1,
+  "accent_bar_role": "left edge of every card and the hero panel; identical hue at every breakpoint, only its length/weight scales"
+ },
+ "type_scale_pt": {
+  "title": [
+   26,
+   48,
+   56,
+   72
+  ],
+  "subtitle": [
+   16,
+   22,
+   26,
+   30
+  ],
+  "meta": [
+   16,
+   20,
+   22,
+   26
+  ],
+  "metaLabel": [
+   16,
+   20,
+   22,
+   26
+  ],
+  "cta": [
+   16,
+   22,
+   24,
+   28
+  ],
+  "website": [
+   16,
+   20,
+   22,
+   26
+  ],
+  "cardTitle": [
+   18,
+   26,
+   28,
+   34
+  ],
+  "cardDetail": [
+   16,
+   20,
+   22,
+   26
+  ],
+  "cardIndex": [
+   16,
+   20,
+   22,
+   26
+  ],
+  "kicker": [
+   16,
+   20,
+   22,
+   26
+  ]
+ },
+ "type_floors": {
+  "mobile": {
+   "body": 16,
+   "cardTitle": 18
+  },
+  "tablet": {
+   "body": 20,
+   "title": 40
+  },
+  "desktop": {
+   "body": 20,
+   "title": 40
+  },
+  "stage": {
+   "body": 20,
+   "title": 40
+  }
+ },
+ "breakpoints": {
+  "mobile": {
+   "canvas": [
+    360,
+    800
+   ],
+   "safe_margin": 16,
+   "card_columns": 1,
+   "card_gap_xy": [
+    6,
+    14
+   ],
+   "panel_padding": 10,
+   "card_inner_padding": 7,
+   "hero_padding": 12,
+   "block_gap": 12,
+   "accent_bar_width": 4,
+   "hero_placement": "stack",
+   "hero_width": "full content column (canvas - 2 x safe margin)"
+  },
+  "tablet": {
+   "canvas": [
+    768,
+    1024
+   ],
+   "safe_margin": 32,
+   "card_columns": 2,
+   "card_gap_xy": [
+    20,
+    20
+   ],
+   "panel_padding": 20,
+   "card_inner_padding": 16,
+   "hero_padding": 28,
+   "block_gap": 24,
+   "accent_bar_width": 6,
+   "hero_placement": "stack",
+   "hero_width": "full content column (canvas - 2 x safe margin)"
+  },
+  "desktop": {
+   "canvas": [
+    1440,
+    900
+   ],
+   "safe_margin": 32,
+   "card_columns": 3,
+   "card_gap_xy": [
+    24,
+    20
+   ],
+   "panel_padding": 24,
+   "card_inner_padding": 18,
+   "hero_padding": 32,
+   "block_gap": 26,
+   "accent_bar_width": 6,
+   "hero_placement": "stack",
+   "hero_width": "full content column (canvas - 2 x safe margin)"
+  },
+  "stage": {
+   "canvas": [
+    1920,
+    1080
+   ],
+   "safe_margin": 40,
+   "card_columns": 3,
+   "card_gap_xy": [
+    28,
+    24
+   ],
+   "panel_padding": 28,
+   "card_inner_padding": 20,
+   "hero_padding": 40,
+   "block_gap": 30,
+   "accent_bar_width": 8,
+   "hero_placement": "stack",
+   "hero_width": "full content column (canvas - 2 x safe margin)"
+  }
+ },
+ "component_rules": {
+  "card": "white panel, 1px #D7DFEA border, 14px radius, accent bar on the left edge, mono index chip, title above detail; never truncated at any size",
+  "hero": "dark #0F1B2D panel across the full content column at every breakpoint; title, subtitle, the measured meta flow and the CTA pill; never a left column (1440x900 is too short for one — see snapshot-usage.md §4)",
+  "meta_flow": "date/time/place groups are laid out by measured width, not by a per-breakpoint flag: they flow into one line while they fit and wrap as a unit otherwise. Observed: 3 lines at 360, 2 at 768, 1 at 1440 and 1920",
+  "cta": "pill with centred text; the input string is rendered as text, no QR code is generated anywhere (no <Image> / no raster asset in any DSL). When the meta flow is a single line and the pill still fits, the pill joins that line and is vertically centred to the taller of the two boxes (1440, 1920); otherwise it sits below the flow (360, 768)",
+  "website": "mono line with a leading accent dot, pinned to the bottom of the content column at every breakpoint",
+  "rearrangement": "same constructs, different composition: 1 column at 360, 2x3 at 768, 3x2 at 1440 and 3x2 at 1920 — the rhythm multiplier and the type scale carry the size difference"
+ },
+ "fidelity_rule": "every field of inputs/content.json appears on all four canvases with its exact string; content-map.json records the box each one occupies per canvas",
+ "box_height_rule": "text boxes are sized round(fontSize * 1.45 * lines) + 2, not fontSize, because the renderer's line box is 1.45 em (A11 measured clipping at ratio 0.577 when h == fontSize), and the +2 is the descender allowance A12 measured on the mono website line"
+}

@@ -1,0 +1,135 @@
+"""B01 探针结论落盘：capability findings + tool-usage.jsonl 追加。"""
+import json
+import os
+from pathlib import Path
+
+root = Path(os.environ.get("SNAPSHOT_TASK_ROOT", "."))
+rid = os.environ["SNAPSHOT_RUN_ID"]
+TMP = root / "tmp" / rid / "B01"
+OUT = root / "outputs" / rid / "B01"
+now = "2026-10-09T10:28:00+00:00"
+
+FINDINGS = [
+    {"cap": "ClipRRect + BackdropFilter", "verdict": "works",
+     "evidence": "probe/caps-v01.png panel1（req B01-probe-caps-02）：模糊只作用于裁剪区域内的背景，白色 20% 叠加形成毛玻璃；背景无内容时看不出效果",
+     "note": "必须与已有背景重叠；sigma 18 时文字仍需放在滤镜层之上单独 Positioned"},
+    {"cap": "ImageFiltered sigmaX/sigmaY", "verdict": "works",
+     "evidence": "caps-v01 panel2：三条色带上模糊下清晰，边缘按 sigma 外扩",
+     "note": "只支持高斯模糊；子树整体模糊，适合做景深/背景虚化"},
+    {"cap": "ClipOval", "verdict": "works",
+     "evidence": "caps-v01 panel3：220x220 容器裁成正圆，边缘抗锯齿"},
+    {"cap": "ColorFiltered color+blendMode", "verdict": "works",
+     "evidence": "caps-v01 panel4：MULTIPLY #F87171 把青/白/绿/琥珀分别变为石板蓝/浅鲑/墨绿/橙",
+     "note": "可整棵子树做双色调，适合统一插画色板"},
+    {"cap": "Text textShadow 多条", "verdict": "works",
+     "evidence": "caps-v01 panel5：56px 中文标题叠青/粉/白三层，得到色散霓虹效果",
+     "note": "格式 x y [blur] [color]，逗号分隔"},
+    {"cap": "Container boxShadow", "verdict": "works",
+     "evidence": "caps-v01 panel6：自定义 0 10 24 0 #000000AA NORMAL 与 ELEVATION_16 均出现投影"},
+    {"cap": "Container transform + transformAlignment", "verdict": "works",
+     "evidence": "caps-v01 panel7：20° 旋转卡片，内部文字随子树一起旋转",
+     "note": "16 值列主序矩阵；与 Positioned 组合可做斜切带/阶梯布局"},
+    {"cap": "Image dataUri（PNG base64）", "verdict": "works",
+     "evidence": "caps-v01 panel8：PIL 生成 24x24 渐变放大到 200x200，双线性平滑、无网络请求",
+     "note": "解码器仅 PNG/JPEG/WebP；建树期解码"},
+    {"cap": "Text overflow=ELLIPSIS", "verdict": "works",
+     "evidence": "caps-v01 panel9：超宽中文被裁成“…”，letterSpacing=6 同时生效",
+     "note": "整套此前一直按 CLIP 手工算宽；ELLIPSIS 可作兜底但不能替代精确排版"},
+    {"cap": "Text maxLines + height 行高", "verdict": "works",
+     "evidence": "caps-v01 panel9 第二格：maxLines=2 自动折行并省略第三行，height=1.35 生效"},
+    {"cap": "Text wordSpacing / decoration + decorationColor", "verdict": "works",
+     "evidence": "caps-v01 panel9 第三格：青色 LINE_THROUGH 穿过 WORD SPACING SIX"},
+    {"cap": "Text 嵌套子 Text 富文本", "verdict": "works",
+     "evidence": "caps-v01 panel10：行内混排 26/34px、琥珀强调段、绿底深字标签、下划线与删除线",
+     "note": "子 Text 继承未覆盖样式；可做真正的编辑级排版"},
+    {"cap": "gradientType=RADIAL", "verdict": "works-with-constraint",
+     "evidence": "caps2-v01 panel1（req B01-probe-caps2-02）：gradientRadius=\"0.5\" 出现完整径向渐变；探针1 用 gradientRadius=\"110\"（像素）时整块退化为第一色纯色（caps-v01 panel3）",
+     "note": "半径是 0~1 比例（相对容器），不是像素；踩坑点"},
+    {"cap": "gradientBegin/End 枚举", "verdict": "constraint",
+     "evidence": "400 PARSE_ERROR \"Attr [gradientBegin] value format error\"（req B01-probe-caps2-01, requestId 6745a1d6-a839-4eb4-9337-46d4ea43b796）：LEFT_CENTER/RIGHT_CENTER 非法",
+     "note": "只接受 TOP_LEFT/TOP_CENTER/TOP_RIGHT/CENTER_LEFT/CENTER/CENTER_RIGHT/BOTTOM_LEFT/BOTTOM_CENTER/BOTTOM_RIGHT 或 \"(x,y)\""},
+    {"cap": "RADIAL gradientBegin 混用", "verdict": "constraint",
+     "evidence": "400 \"Attr [gradientBegin] is not supported by this gradient type\"（req B01-probe-caps-01, requestId 5943c76d-c9b8-436d-8f52-e73269a21947）",
+     "note": "不同渐变类型专用参数不可混用；RADIAL 用 gradientCenter/Radius/Focal"},
+    {"cap": "RADIAL gradientFocal + gradientFocalRadius", "verdict": "works",
+     "evidence": "caps2-v01 panel2：焦点偏到 TOP_LEFT 形成单向聚光/暗角"},
+    {"cap": "gradientType=SWEEP", "verdict": "works",
+     "evidence": "caps2-v01 panel3：六色扫描渐变渲染成完整色轮，中心再叠圆孔成活动环",
+     "note": "角度为弧度；做环形进度/风玫瑰/仪表盘的关键能力"},
+    {"cap": "Text foregroundColor + foregroundMode=STROKE", "verdict": "works",
+     "evidence": "caps2-v01 panel4：镂空描边（不传 color 即空心）与 STROKE_AND_FILL（color 作填充）"},
+    {"cap": "WidgetSpan 行内控件", "verdict": "works",
+     "evidence": "caps2-v01 panel5：绿色 ON 胶囊嵌在 24px 文案中间，alignment=MIDDLE 生效"},
+    {"cap": "Emoji dataUri 行内图片", "verdict": "works",
+     "evidence": "caps2-v01 panel5 第二行：30x30 PIL 图标与中文同排、基线对齐"},
+    {"cap": "fontFeatures tnum=2", "verdict": "inconclusive",
+     "evidence": "caps2-v01 panel6：无报错，两行数字宽度差异肉眼不明显；smcp=2 因样本全大写看不出效果",
+     "note": "结论：可安全写入但不宣称视觉差异已验证"},
+    {"cap": "Raw 保留首尾空格", "verdict": "works",
+     "evidence": "caps2-v01 panel6：Raw 内 \"  首尾空格保留  \" 与后续“尾”之间出现可见空隙"},
+    {"cap": "Container clipBehavior（有装饰路径）", "verdict": "works",
+     "evidence": "caps2-v01 panel7：超宽旋转色带被 220x220 圆角渐变容器裁成八边形效果"},
+    {"cap": "BackdropFilter blendMode", "verdict": "works-weak-demo",
+     "evidence": "caps2-v01 panel8：COLOR 与 SCREEN 两块都出现模糊且色调不同，但两块与白色竖条不重叠，混合差异主要来自渐变背景本身",
+     "note": "要证明 blendMode 需让毛玻璃覆盖高对比内容；正式作品里按 panel1 的重叠方式用"},
+    {"cap": "Border 标签（渐变边框）", "verdict": "does-not-appear",
+     "evidence": "caps2-v01 panel9 第一块：4px 渐变 Border 不可见，只见子 Container",
+     "note": "原因未确认（推测：Border 标签的 border 宽度/渐变未走同一条绘制路径）。改用已验证的 Container border= + 双层容器模拟渐变描边"},
+    {"cap": "DecoratedBox position=FOREGROUND", "verdict": "works",
+     "evidence": "caps2-v01 panel9 第二块：前景装饰把子文字完全盖住，只剩阴影轮廓",
+     "note": "语义确认：FOREGROUND 在子节点之后绘制"},
+    {"cap": "ColoredBox", "verdict": "works",
+     "evidence": "caps2-v01 panel9 第三块：#34D39922 半透明铺底"},
+    {"cap": "Image repeat=REPEAT", "verdict": "unreliable",
+     "evidence": "caps2-v01 panel10：fit=NONE+repeat 的透明纹理块渲染成整块青色实心（colorBlendMode=MULTIPLY），CONTAIN/COVER 两块只画出一张放大图，没有平铺",
+     "note": "结论：不依赖 Image repeat 做图案；图案用 Positioned 阵列或 DSL 形状自绘"},
+]
+
+(TMP / "capability-findings.json").write_text(
+    json.dumps({"run_id": rid, "task_id": "B01", "recorded_at": now,
+                "probes": [
+                    {"file": "tmp/%s/B01/probe/caps.snapshot" % rid,
+                     "image": "tmp/%s/B01/probe/caps-v01.png" % rid,
+                     "request_id": "B01-probe-caps-02-20261009T100609Z",
+                     "service_request_id": "647552f8-f8f3-483c-a113-fcb3e24f7a35",
+                     "failed_attempt": {"request_id": "B01-probe-caps-01-20261009T100455Z",
+                                        "service_request_id": "5943c76d-c9b8-436d-8f52-e73269a21947",
+                                        "error": "gradientBegin not supported by RADIAL"},
+                     "panels": 10},
+                    {"file": "tmp/%s/B01/probe/caps2.snapshot" % rid,
+                     "image": "tmp/%s/B01/probe/caps2-v01.png" % rid,
+                     "request_id": "B01-probe-caps2-02-20261009T101923Z",
+                     "service_request_id": "57c599c8-591f-4101-b372-f0d9eaf1e0fd",
+                     "failed_attempt": {"request_id": "B01-probe-caps2-01-20261009T101801Z",
+                                        "service_request_id": "6745a1d6-a839-4eb4-9337-46d4ea43b796",
+                                        "error": "gradientBegin LEFT_CENTER/RIGHT_CENTER 非法枚举"},
+                     "panels": 10}],
+                "images_viewed": ["probe/caps-v01.png 全图 + panel-00..09 十张 2x 裁切",
+                                  "probe/caps2-v01.png 全图 + p2-00..09 十张裁切"],
+                "findings": FINDINGS},
+               ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+TOOLS = [
+    {"tool": "python + PIL", "purpose": "生成探针用 24x24 渐变图与 32x32 图标、16x16 纹理，Base64 后作为 Image/Emoji dataUri 输入",
+     "input": "tmp/%s/B01/probe_capabilities.py, probe_capabilities2.py" % rid,
+     "output": "tmp/%s/B01/probe/caps.snapshot, caps2.snapshot" % rid,
+     "at": now, "affects": "B01 全部用例（能力面确认）", "requests_ref": ["B01-probe-caps-02-20261009T100609Z", "B01-probe-caps2-02-20261009T101923Z"]},
+    {"tool": "python + PIL 裁切放大", "purpose": "把两张 1680x1024 探针图切成 20 张单格 2x 图，逐格判断滤镜/裁剪/描边是否真实生效",
+     "input": "tmp/%s/B01/probe/caps-v01.png, caps2-v01.png" % rid,
+     "output": "tmp/%s/B01/probe/panel-00..09.png, p2-00..09.png" % rid,
+     "at": now, "affects": "B01 全部用例", "requests_ref": []},
+    {"tool": "grep/sed 检索已缓存文档", "purpose": "在 _suite/docs 缓存中定位 gradientRadius 比例语义、Alignment 枚举、foreground* 描边、WidgetSpan/Emoji/Raw 规则",
+     "input": "tmp/%s/_suite/docs/parser-tags.html.txt, media-text.html.txt, painting.html.txt" % rid,
+     "output": "tmp/%s/B01/capability-findings.json" % rid,
+     "at": now, "affects": "B01 全部用例", "requests_ref": [],
+     "note": "复用 A01–A24 已真实下载的文档缓存，不重复计为新 HTTP 请求"},
+    {"tool": "python 包探测", "purpose": "确认环境无 qrcode/segno，因此作品不使用伪二维码；numpy/matplotlib/PIL 可用",
+     "input": "当前 python 环境", "output": "tmp/%s/B01/capability-findings.json 备注" % rid,
+     "at": now, "affects": "B01 case-06 等含“扫码”位的设计"},
+]
+with open(TMP / "tool-usage.jsonl", "a", encoding="utf-8") as f:
+    for i, t in enumerate(TOOLS, 1):
+        t["id"] = "B01-tool-%03d" % i
+        t["path_base"] = "suite_root"
+        f.write(json.dumps(t, ensure_ascii=False) + "\n")
+print("findings", len(FINDINGS), "tools", len(TOOLS))

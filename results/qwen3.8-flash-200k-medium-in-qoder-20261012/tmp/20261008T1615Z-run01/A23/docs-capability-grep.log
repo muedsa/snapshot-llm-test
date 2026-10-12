@@ -1,0 +1,17 @@
+# A23 文档能力核查（在已缓存的 43 份正文抽取文本上执行，命令与输出原样保留）
+# cwd: tmp/<run_id>/_suite/docs   时间: 2026-10-09T16:13+08:00
+
+$ ls | grep -c txt
+43
+
+$ grep -riE "svg|vector|矢量" --include="*.txt" . | head -6
+(命中行数: 0)
+
+$ grep -riE "animation|动画|\bgif\b|关键帧|帧动画" --include="*.txt" . | head -6
+(命中行数: 0)
+
+$ grep -riE "cmyk|colorSpace|色彩空间" --include="*.txt" . | head -6
+(命中行数: 0)
+
+$ grep -rhoE "type` 决定输出[^\n]{0,60}" --include="*.txt" . | head -3
+type` 决定输出 `p

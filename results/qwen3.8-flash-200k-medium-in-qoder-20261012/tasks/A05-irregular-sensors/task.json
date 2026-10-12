@@ -1,0 +1,38 @@
+{
+  "id": "A05",
+  "title": "不规则采样与缺测的仪表报告",
+  "category": "数据可视化",
+  "challenge": "不等间隔、断线、负轴与多单位的共同约束。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "制作1440×1000“实验舱 · 08:00–12:30”三联趋势报告，数据在 inputs/readings.csv。\n温度单位°C、相对湿度%、压差kPa；空单元格表示缺测，不是0。\n三图必须共用08:00–12:30真实时间比例的横轴，并对齐纵向参考线。温度/湿度\n缺测所在采样点前后的线段断开；不能用直线或虚线擅自补值。压差可正可负，\n零线清晰。每个真实读数可见独立采样标记，每图独立且清晰的纵轴单位。\n标注09:40–10:50压差为负的实际采样区段，别声称连续期间每一刻均为负。\n上方列各指标有效采样数和观察到的最小/最大值，下方有全部12时点的简短表。\n表格缺测用“—”，图中给出缺测与断线图例。正文≥20、轴/表≥18。\n附 normalized-data.json，包含分钟偏移、null缺测、范围、有效数量与连接段。\n",
+  "inputs": [
+    "inputs/readings.csv"
+  ],
+  "required_outputs": [
+    {
+      "filename": "sensor-report.png",
+      "dsl": "sensor-report.snapshot",
+      "width": 1440,
+      "height": 1000,
+      "purpose": "三联趋势与明细"
+    }
+  ],
+  "additional_outputs": [
+    "normalized-data.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A05/",
+  "temp_dir_template": "tmp/{run_id}/A05/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

@@ -1,0 +1,394 @@
+{
+  "task_id": "A17",
+  "run_id": "20261008T1615Z-run01",
+  "path_base": "suite_root",
+  "generated_at": "2026-10-09T03:56:00+00:00",
+  "service": {
+    "endpoint": "https://open-snapshot.muedsa.com/snapshot",
+    "request_content_type": "text/plain; charset=utf-8",
+    "docs_root": "https://snapshot.muedsa.com/"
+  },
+  "note": "dsl 字段与 outputs/<run_id>/A17/<id>.snapshot 字节一致；手册页印刷的代码片段由 gen_handbook.py 直接读取这些文件生成，因此手册与独立渲染用的是同一份 DSL。",
+  "examples": [
+    {
+      "id": "example-01",
+      "handbook_page": "handbook-01",
+      "section": "第 1 页 · 调用契约",
+      "purpose": "把一次成功调用与一次失败调用的关键字段排成 6 行卡片：请求体类型、响应 Content-Type 与响应头、以及 400 错误体的 {code,message,requestId} 形状。演示 Column + Text + Raw 的 CDATA 写法（文本里要出现 < 或 > 时用 CDATA），以及用 height=\"1\" 的 Container 画分隔线。",
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/example-01.snapshot",
+      "dsl_temp_file": "tmp/20261008T1615Z-run01/A17/examples/example-01.snapshot",
+      "dsl_lines": 20,
+      "dsl_bytes": 946,
+      "dsl_sha256": "df887c5fa4d217f150d15398eb9c8d086597fc7c9dde9bba1e2f28f248eef305",
+      "dsl": "<Snapshot type=\"png\" background=\"#0B1220\">\n  <Container width=\"400\" height=\"240\" padding=\"(16,20)\">\n    <Column crossAxisAlignment=\"START\">\n      <Text color=\"#93C5FD\" fontSize=\"13\" letterSpacing=\"2.4\">REQUEST</Text>\n      <Text color=\"#F8FAFC\" fontSize=\"15\" fontStyle=\"BOLD\">\n        <Raw><![CDATA[POST /snapshot · text/plain; charset=utf-8]]></Raw>\n      </Text>\n      <Container width=\"360\" height=\"1\" color=\"#2B4C7E\" />\n      <Text color=\"#34D399\" fontSize=\"13\" letterSpacing=\"2.4\">RESPONSE 200</Text>\n      <Text color=\"#E2E8F0\" fontSize=\"15\">\n        <Raw><![CDATA[image/png · X-Request-Id · Server-Timing]]></Raw>\n      </Text>\n      <Container width=\"360\" height=\"1\" color=\"#2B4C7E\" />\n      <Text color=\"#F87171\" fontSize=\"13\" letterSpacing=\"2.4\">ERROR 400</Text>\n      <Text color=\"#FCA5A5\" fontSize=\"14\">\n        <Raw><![CDATA[{\"code\":\"PARSE_ERROR\",\"requestId\":\"…\"}]]></Raw>\n      </Text>\n    </Column>\n  </Container>\n</Snapshot>\n",
+      "printed_ranges": [
+        {
+          "from": 1,
+          "to": 13
+        }
+      ],
+      "printed_range_text": "1-13",
+      "printed_note": "独立渲染为 400x240；手册第 1 页印刷第 1-13 行 / 全 19 行，省略第 14-19 行（ERROR 400 段落与三个收尾标签）并在片段下方用 ⋮/↳ 图例标明省略与续行。",
+      "render": {
+        "request_id": "A17-example01-v03-20261009T033226Z",
+        "request_id_header": "0b675a0a-d70a-4f81-8c61-fbee7f3c641b",
+        "http_status": 200,
+        "content_type": "image/png",
+        "response_bytes": 20501,
+        "server_timing": "render;dur=33.1, total;dur=37.5",
+        "snapshot_cache": "miss",
+        "duration_seconds": 3.218,
+        "started_at": "2026-10-09T03:32:26.887093+00:00",
+        "ended_at": "2026-10-09T03:32:30.117866+00:00",
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example01-v03-20261009T033226Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example01-v03-20261009T033226Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example01-v03-20261009T033226Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/example-01.png",
+        "png_sha256": "1d4136ba12c37143adb8488412fc872b4507516daf1cce5602119a34b1c77697"
+      }
+    },
+    {
+      "id": "example-02",
+      "handbook_page": "handbook-02",
+      "section": "第 2 页 · 布局与定位",
+      "purpose": "在 400x240 画布上对照两件事：Row 里三个 Expanded（flex 2:1:1）在有界主轴上瓜分剩余空间；Stack 里两种 Positioned 写法（left+top+right+height 由两边推出宽度，left+bottom+width+height 推出另一侧）。同时展示 clipBehavior=\"NONE\"。",
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/example-02.snapshot",
+      "dsl_temp_file": "tmp/20261008T1615Z-run01/A17/examples/example-02.snapshot",
+      "dsl_lines": 24,
+      "dsl_bytes": 1177,
+      "dsl_sha256": "ef138e54be7524b21ad650764d770a8c2a199af3f531fb3151c9b99d21a5faf8",
+      "dsl": "<Snapshot background=\"#0B1220\" type=\"png\">\n  <Container width=\"400\" height=\"240\" padding=\"(16,20)\" color=\"#0B1220\">\n    <Column crossAxisAlignment=\"STRETCH\">\n      <Text color=\"#94A3B8\" fontSize=\"13\">Row：主轴有界，Expanded 才有剩余空间可分</Text>\n      <Row crossAxisAlignment=\"START\">\n        <Expanded flex=\"2\"><Container height=\"46\" color=\"#38BDF8\" /></Expanded>\n        <Expanded flex=\"1\"><Container height=\"46\" color=\"#A78BFA\" /></Expanded>\n        <Expanded flex=\"1\"><Container height=\"46\" color=\"#34D399\" /></Expanded>\n      </Row>\n      <Container height=\"12\" />\n      <Text color=\"#94A3B8\" fontSize=\"13\">Stack：Positioned 每轴最多给两项</Text>\n      <Container width=\"360\" height=\"76\" color=\"#132038\">\n        <Stack alignment=\"TOP_LEFT\" clipBehavior=\"NONE\">\n          <Positioned left=\"12\" top=\"12\" right=\"12\" height=\"20\">\n            <Container color=\"#FBBF24\" />\n          </Positioned>\n          <Positioned left=\"12\" bottom=\"10\" width=\"170\" height=\"18\">\n            <Text color=\"#7A8AA6\" fontSize=\"13\">left + width ⇒ 推出右侧</Text>\n          </Positioned>\n        </Stack>\n      </Container>\n    </Column>\n  </Container>\n</Snapshot>\n",
+      "printed_ranges": [
+        {
+          "from": 4,
+          "to": 13
+        }
+      ],
+      "printed_range_text": "4-13",
+      "printed_note": "独立渲染为 400x240；手册第 2 页印刷第 4-13 行 / 全 24 行，省略第 1-3 行（根标签与内边距）与第 14-24 行（Stack 演示块与收尾标签）。",
+      "render": {
+        "request_id": "A17-example02-v01-20261009T032145Z",
+        "request_id_header": "edddcd4b-88d4-46ac-b80e-2210ad926262",
+        "http_status": 200,
+        "content_type": "image/png",
+        "response_bytes": 13295,
+        "server_timing": "render;dur=557.3, total;dur=558.6",
+        "snapshot_cache": "miss",
+        "duration_seconds": 2.797,
+        "started_at": "2026-10-09T03:21:45.544925+00:00",
+        "ended_at": "2026-10-09T03:21:48.348590+00:00",
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example02-v01-20261009T032145Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example02-v01-20261009T032145Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example02-v01-20261009T032145Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/example-02.png",
+        "png_sha256": "850c010b4abb748af63706f24cd6a1314020e5d1a33a69c7fdc5c9180819ecbd"
+      }
+    },
+    {
+      "id": "example-03",
+      "handbook_page": "handbook-03",
+      "section": "第 3 页 · 文本与颜色",
+      "purpose": "三组对照：CDATA 内的 <b>标签</b> 与 &amp; 原样保留（解析器不做 HTML 实体解码）；嵌套 Text 作为行内 Span、段落属性只作用于最外层；#RRGGBBAA 的最后一组才是 alpha，三个红色块分别用 FF/80/1A 叠在同一深色底上。",
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/example-03.snapshot",
+      "dsl_temp_file": "tmp/20261008T1615Z-run01/A17/examples/example-03.snapshot",
+      "dsl_lines": 29,
+      "dsl_bytes": 1389,
+      "dsl_sha256": "8897e404b21d864a2e04d7dc7b84d2cd10f21cbecdcbe386496a673897afe5d9",
+      "dsl": "<Snapshot background=\"#0B1220\" type=\"png\">\n  <Container width=\"400\" height=\"240\" padding=\"(16,20)\" color=\"#0B1220\">\n    <Column crossAxisAlignment=\"START\">\n      <Text color=\"#94A3B8\" fontSize=\"13\"><![CDATA[实体不会被解码：< 与 & 要放进 CDATA]]></Text>\n      <Text color=\"#E2E8F0\" fontSize=\"16\">\n        <Raw><![CDATA[原样保留 <b>标签</b> 和 &amp; 号]]></Raw>\n      </Text>\n      <Container height=\"8\" />\n      <Text color=\"#94A3B8\" fontSize=\"13\">嵌套 Text 是行内 Span，段落属性看最外层</Text>\n      <Text fontSize=\"16\">\n        <Text color=\"#38BDF8\" fontSize=\"16\">收入</Text>\n        <Raw><![CDATA[ − ]]></Raw>\n        <Text color=\"#FBBF24\" fontSize=\"16\">成本</Text>\n        <Raw><![CDATA[ = ]]></Raw>\n        <Text color=\"#34D399\" fontSize=\"16\" fontStyle=\"BOLD\">利润</Text>\n      </Text>\n      <Container height=\"10\" />\n      <Text color=\"#94A3B8\" fontSize=\"13\">#RRGGBBAA：最后一组才是 alpha</Text>\n      <Row crossAxisAlignment=\"CENTER\">\n        <Container width=\"34\" height=\"34\" color=\"#FF0000FF\" />\n        <Container width=\"10\" height=\"34\" />\n        <Container width=\"34\" height=\"34\" color=\"#FF000080\" />\n        <Container width=\"10\" height=\"34\" />\n        <Container width=\"34\" height=\"34\" color=\"#FF00001A\" />\n        <Text color=\"#94A3B8\" fontSize=\"13\">  FF / 80 / 1A</Text>\n      </Row>\n    </Column>\n  </Container>\n</Snapshot>\n",
+      "printed_ranges": [
+        {
+          "from": 6,
+          "to": 8
+        },
+        {
+          "from": 18,
+          "to": 22
+        }
+      ],
+      "printed_range_text": "6-8、18-22",
+      "printed_note": "独立渲染为 400x240；手册第 3 页分两段印刷第 6-8 行与第 18-22 行 / 全 29 行，中间以 ⋮ 行标明省略。",
+      "render": {
+        "request_id": "A17-example03-v02-20261009T032301Z",
+        "request_id_header": "2a0fdd84-e389-4565-b7b3-9ef898fe9f38",
+        "http_status": 200,
+        "content_type": "image/png",
+        "response_bytes": 25286,
+        "server_timing": "render;dur=71.5, total;dur=72.4",
+        "snapshot_cache": "miss",
+        "duration_seconds": 2.031,
+        "started_at": "2026-10-09T03:23:01.890592+00:00",
+        "ended_at": "2026-10-09T03:23:03.920675+00:00",
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example03-v02-20261009T032301Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example03-v02-20261009T032301Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example03-v02-20261009T032301Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/example-03.png",
+        "png_sha256": "8c3db28fd331df933996a530c80b5c80b62618a8ab7acc6df7f08e3a8cea6c30"
+      }
+    },
+    {
+      "id": "example-04",
+      "handbook_page": "handbook-04",
+      "section": "第 4 页 · 滤镜与交付",
+      "purpose": "先铺一条 6 色 Expanded 背景，再用 ClipRRect + BackdropFilter(sigmaX=sigmaY=14) 在其上开一块毛玻璃（滤镜读的是身后已绘像素），另用 ImageFiltered(sigmaX=sigmaY=1.5) 软化自己的子树标题条。两个标签方向不同：一个处理子树，一个处理背景。",
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/example-04.snapshot",
+      "dsl_temp_file": "tmp/20261008T1615Z-run01/A17/examples/example-04.snapshot",
+      "dsl_lines": 33,
+      "dsl_bytes": 1719,
+      "dsl_sha256": "19a40e82e322b7a72ad1114eaa4850b029f7d8e3ee20718b7cfa020f0f6e7a11",
+      "dsl": "<Snapshot background=\"#0B1220\" type=\"png\">\n  <Container width=\"400\" height=\"240\" color=\"#0B1220\">\n    <Stack alignment=\"TOP_LEFT\" clipBehavior=\"NONE\">\n      <!-- 先把背景画出来，BackdropFilter 才有内容可读 -->\n      <Positioned left=\"0\" top=\"0\" width=\"400\" height=\"240\">\n        <Row crossAxisAlignment=\"START\">\n          <Expanded><Container height=\"240\" color=\"#38BDF8\" /></Expanded>\n          <Expanded><Container height=\"240\" color=\"#A78BFA\" /></Expanded>\n          <Expanded><Container height=\"240\" color=\"#F472B6\" /></Expanded>\n          <Expanded><Container height=\"240\" color=\"#FBBF24\" /></Expanded>\n          <Expanded><Container height=\"240\" color=\"#34D399\" /></Expanded>\n          <Expanded><Container height=\"240\" color=\"#60A5FA\" /></Expanded>\n        </Row>\n      </Positioned>\n      <Positioned left=\"40\" top=\"56\" width=\"320\" height=\"132\">\n        <ClipRRect borderRadius=\"20\" clipBehavior=\"ANTI_ALIAS\">\n          <BackdropFilter sigmaX=\"14\" sigmaY=\"14\" tileMode=\"CLAMP\">\n            <Container width=\"320\" height=\"132\" color=\"#FFFFFF26\" alignment=\"CENTER\">\n              <Text color=\"#F8FAFC\" fontSize=\"17\" fontStyle=\"BOLD\">毛玻璃读的是身后的像素</Text>\n            </Container>\n          </BackdropFilter>\n        </ClipRRect>\n      </Positioned>\n      <Positioned left=\"40\" top=\"12\" width=\"236\" height=\"28\">\n        <ImageFiltered sigmaX=\"1.5\" sigmaY=\"1.5\">\n          <Container width=\"236\" height=\"28\" color=\"#F8FAFC\" alignment=\"CENTER\">\n            <Text color=\"#0B1220\" fontSize=\"15\" fontStyle=\"BOLD\" textAlign=\"CENTER\">ImageFiltered 作用于自己的子树</Text>\n          </Container>\n        </ImageFiltered>\n      </Positioned>\n    </Stack>\n  </Container>\n</Snapshot>\n",
+      "printed_ranges": [
+        {
+          "from": 19,
+          "to": 26
+        }
+      ],
+      "printed_range_text": "19-26",
+      "printed_note": "独立渲染为 400x240；手册第 4 页印刷第 19-26 行 / 全 33 行，省略第 1-18 行（根标签与彩色背景条）与第 27-33 行（ImageFiltered 块与收尾标签）。sigma 由 2.5 降到 1.5 是看图后的修正：2.5 会把 15px 标题糊到不可读。",
+      "render": {
+        "request_id": "A17-example04-v02-20261009T035000Z",
+        "request_id_header": "f3610879-c341-4037-9884-5296f573ed65",
+        "http_status": 200,
+        "content_type": "image/png",
+        "response_bytes": 17515,
+        "server_timing": "render;dur=209.5, total;dur=212.5",
+        "snapshot_cache": "miss",
+        "duration_seconds": 2.313,
+        "started_at": "2026-10-09T03:50:00.053860+00:00",
+        "ended_at": "2026-10-09T03:50:02.379713+00:00",
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example04-v02-20261009T035000Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example04-v02-20261009T035000Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-example04-v02-20261009T035000Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/example-04.png",
+        "png_sha256": "63492162d33d8182644b2b2b601a4aa6c54ee5ff12fcd9cfa823c8351c427082"
+      }
+    }
+  ],
+  "handbook_pages": [
+    {
+      "id": "handbook-01",
+      "title": "一次请求，一张图片（契约与错误）",
+      "size": [
+        1200,
+        1600
+      ],
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/handbook-01.snapshot",
+      "dsl_lines": 1,
+      "dsl_bytes": 20894,
+      "dsl_sha256": "b1a1846bd953f15defc29bca5df51c74aa420e4e410f07d4ce7893d97167ccd0",
+      "final_render": {
+        "request_id": "A17-hb01-v06-20261009T035154Z",
+        "request_id_header": "7d5001d7-2e00-4726-8bc1-50369d19bef5",
+        "http_status": 200,
+        "server_timing": "render;dur=784.1, total;dur=800.3",
+        "snapshot_cache": "miss",
+        "response_bytes": 464493,
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb01-v06-20261009T035154Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb01-v06-20261009T035154Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb01-v06-20261009T035154Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/handbook-01.png",
+        "png_sha256": "fdbb01b1c1f9ad639699503bc7d661dea19b1fc98a077b43406b010247460d52"
+      },
+      "superseded_versions": [
+        "hb01-v01",
+        "hb01-v02",
+        "hb01-v03",
+        "hb01-v04",
+        "hb01-v05"
+      ]
+    },
+    {
+      "id": "handbook-02",
+      "title": "尺寸来自布局，不是 CSS（布局与定位）",
+      "size": [
+        1200,
+        1600
+      ],
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/handbook-02.snapshot",
+      "dsl_lines": 1,
+      "dsl_bytes": 16664,
+      "dsl_sha256": "426927bf9c119ffc35a99ae33f49b53aeea68219934a8c719877c4c59c7c4062",
+      "final_render": {
+        "request_id": "A17-hb02-v06-20261009T035203Z",
+        "request_id_header": "0ec0b5ac-62b3-4e8d-8092-93f2fabece4e",
+        "http_status": 200,
+        "server_timing": "render;dur=735.6, total;dur=748.9",
+        "snapshot_cache": "miss",
+        "response_bytes": 416227,
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb02-v06-20261009T035203Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb02-v06-20261009T035203Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb02-v06-20261009T035203Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/handbook-02.png",
+        "png_sha256": "daa0d9711bc9507404a1c1633ffe0bfea5b65ee3ca0fd0f233a7702576b1b28d"
+      },
+      "superseded_versions": [
+        "hb02-v01",
+        "hb02-v02",
+        "hb02-v03",
+        "hb02-v04",
+        "hb02-v05"
+      ]
+    },
+    {
+      "id": "handbook-03",
+      "title": "文本、转义与颜色（文本与颜色）",
+      "size": [
+        1200,
+        1600
+      ],
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/handbook-03.snapshot",
+      "dsl_lines": 1,
+      "dsl_bytes": 17508,
+      "dsl_sha256": "5c5ac617387856415891c941d958c47bdc4143e5ec8391512d66d74c671075fb",
+      "final_render": {
+        "request_id": "A17-hb03-v06-20261009T035209Z",
+        "request_id_header": "780b6399-c0a6-484d-ac21-124b25c3a445",
+        "http_status": 200,
+        "server_timing": "render;dur=654.8, total;dur=668.6",
+        "snapshot_cache": "miss",
+        "response_bytes": 434055,
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb03-v06-20261009T035209Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb03-v06-20261009T035209Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb03-v06-20261009T035209Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/handbook-03.png",
+        "png_sha256": "a3f5e9e05d7caea02e793b0d35a10c71c5c6fa0e034e2361c4be38c41f8eb64f"
+      },
+      "superseded_versions": [
+        "hb03-v01",
+        "hb03-v02",
+        "hb03-v03",
+        "hb03-v04",
+        "hb03-v05"
+      ]
+    },
+    {
+      "id": "handbook-04",
+      "title": "滤镜、自检与可复现交付（效果与交付）",
+      "size": [
+        1200,
+        1600
+      ],
+      "dsl_file": "outputs/20261008T1615Z-run01/A17/handbook-04.snapshot",
+      "dsl_lines": 1,
+      "dsl_bytes": 15515,
+      "dsl_sha256": "d72b0938ecfb6ba200df29578e16a07d71a0fe3ca04ac946f35dcb8e3bf66418",
+      "final_render": {
+        "request_id": "A17-hb04-v09-20261009T040510Z",
+        "request_id_header": "0babcb65-81d2-4d93-82a8-a57e4460035d",
+        "http_status": 200,
+        "server_timing": "render;dur=762.9, total;dur=766.2",
+        "snapshot_cache": "miss",
+        "response_bytes": 466463,
+        "request_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb04-v09-20261009T040510Z.body.txt",
+        "headers_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb04-v09-20261009T040510Z.response-headers.txt",
+        "raw_response_file": "tmp/20261008T1615Z-run01/A17/preview/requests/A17-hb04-v09-20261009T040510Z.response.bin",
+        "png": "outputs/20261008T1615Z-run01/A17/handbook-04.png",
+        "png_sha256": "e1321590bf1bb45d38416dc5691ab0474ac66ea69d963501f71ee6c368fbc5be"
+      },
+      "superseded_versions": [
+        "hb04-v01",
+        "hb04-v02",
+        "hb04-v03",
+        "hb04-v04",
+        "hb04-v05",
+        "hb04-v06",
+        "hb04-v07",
+        "hb04-v08"
+      ]
+    }
+  ],
+  "doc_reads_this_task": [
+    {
+      "request_id": "A17-parser-errors-20261009T031454Z",
+      "url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "http_status": 200,
+      "cached_html": "tmp/20261008T1615Z-run01/_suite/docs/parser-errors.html",
+      "cached_text": "tmp/20261008T1615Z-run01/_suite/docs/parser-errors.html.txt"
+    },
+    {
+      "request_id": "A17-positioned-20261009T031457Z",
+      "url": "https://snapshot.muedsa.com/widgets/layout/positioned/",
+      "http_status": 200,
+      "cached_html": "tmp/20261008T1615Z-run01/_suite/docs/positioned.html",
+      "cached_text": "tmp/20261008T1615Z-run01/_suite/docs/positioned.html.txt"
+    },
+    {
+      "request_id": "A17-expanded-20261009T031501Z",
+      "url": "https://snapshot.muedsa.com/widgets/layout/expanded/",
+      "http_status": 200,
+      "cached_html": "tmp/20261008T1615Z-run01/_suite/docs/expanded.html",
+      "cached_text": "tmp/20261008T1615Z-run01/_suite/docs/expanded.html.txt"
+    },
+    {
+      "request_id": "A17-backdrop-filter-20261009T031503Z",
+      "url": "https://snapshot.muedsa.com/widgets/painting/backdrop-filter/",
+      "http_status": 200,
+      "cached_html": "tmp/20261008T1615Z-run01/_suite/docs/backdrop-filter.html",
+      "cached_text": "tmp/20261008T1615Z-run01/_suite/docs/backdrop-filter.html.txt"
+    },
+    {
+      "request_id": "A17-image-filtered-20261009T031505Z",
+      "url": "https://snapshot.muedsa.com/widgets/painting/image-filtered/",
+      "http_status": 200,
+      "cached_html": "tmp/20261008T1615Z-run01/_suite/docs/image-filtered.html",
+      "cached_text": "tmp/20261008T1615Z-run01/_suite/docs/image-filtered.html.txt"
+    },
+    {
+      "request_id": "A17-testing-20261009T031509Z",
+      "url": "https://snapshot.muedsa.com/guides/testing/",
+      "http_status": 200,
+      "cached_html": "tmp/20261008T1615Z-run01/_suite/docs/testing.html",
+      "cached_text": "tmp/20261008T1615Z-run01/_suite/docs/testing.html.txt"
+    },
+    {
+      "request_id": "A17-parser-errors-20261009T031526Z",
+      "url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "http_status": 200,
+      "cached_html": "tmp/20261008T1615Z-run01/_suite/docs/parser-errors.html",
+      "cached_text": "tmp/20261008T1615Z-run01/_suite/docs/parser-errors.html.txt"
+    }
+  ],
+  "doc_reads_reused_from_earlier_runs": [
+    {
+      "page": "ai-guide.md",
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "cached": "tmp/20261008T1615Z-run01/_suite/docs/ai-guide.md",
+      "first_fetched_by": "shared-doc-001-guide-ai"
+    },
+    {
+      "page": "container.html",
+      "url": "https://snapshot.muedsa.com/widgets/layout/container/",
+      "cached": "tmp/20261008T1615Z-run01/_suite/docs/container.html",
+      "first_fetched_by": "shared-doc-006-doc-container"
+    },
+    {
+      "page": "painting.html",
+      "url": "https://snapshot.muedsa.com/guides/painting/",
+      "cached": "tmp/20261008T1615Z-run01/_suite/docs/painting.html",
+      "first_fetched_by": "shared-doc-009-doc-painting"
+    },
+    {
+      "page": "text.html",
+      "url": "https://snapshot.muedsa.com/widgets/text/text/",
+      "cached": "tmp/20261008T1615Z-run01/_suite/docs/text.html",
+      "first_fetched_by": "shared-textdoc-20261008T145223Z"
+    },
+    {
+      "page": "rich-text.html",
+      "url": "https://snapshot.muedsa.com/widgets/text/rich-text/",
+      "cached": "tmp/20261008T1615Z-run01/_suite/docs/rich-text.html",
+      "first_fetched_by": "shared-richtext-20261008T145221Z"
+    },
+    {
+      "page": "clip-rect.html",
+      "url": "https://snapshot.muedsa.com/widgets/painting/clip-rect/",
+      "cached": "tmp/20261008T1615Z-run01/_suite/docs/clip-rect.html",
+      "first_fetched_by": "shared-cliprect-20261009T011244Z"
+    },
+    {
+      "page": "fonts.txt",
+      "url": "https://open-snapshot.muedsa.com/fonts",
+      "cached": "tmp/20261008T1615Z-run01/_suite/docs/fonts.txt",
+      "first_fetched_by": "pre-suite probe, headers dated 2026-10-08T08:14:01Z; no per-task JSONL record exists for it"
+    }
+  ]
+}

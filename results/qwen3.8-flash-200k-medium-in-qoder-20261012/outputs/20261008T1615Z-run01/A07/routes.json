@@ -1,0 +1,1189 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A07",
+  "run_id": "20261008T1615Z-run01",
+  "source": "tasks/A07-transit-topology/inputs/network.json",
+  "definitions": {
+    "hop": "相邻站之间的一条可双向通行区间；图上 16 条区间等长 (200px)，相邻站耗时相同",
+    "station_count_vs_edges": "站数 = 区间数 + 1（两者都记录，避免把站数误作区间数）",
+    "interchange": "改变乘坐线路；第一次上车不计为换乘",
+    "accessible_journey": "起终点与全部换乘站必须 accessible=true；无设施站可乘车通过（passes_non_accessible 列出）",
+    "tie_break": "先比区间数，再比换乘次数，仍并列按站序字典序；全部同区间数解列在 same_edge_alternatives"
+  },
+  "network": {
+    "stations": [
+      {
+        "id": "S01",
+        "name": "松林",
+        "accessible": true,
+        "lines": [
+          "R"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [
+          "①"
+        ],
+        "position": [
+          160.0,
+          516.0
+        ],
+        "label_box": [
+          67.0,
+          442.0,
+          253.0,
+          500.0
+        ]
+      },
+      {
+        "id": "S02",
+        "name": "北门",
+        "accessible": true,
+        "lines": [
+          "R"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [],
+        "position": [
+          360.0,
+          516.0
+        ],
+        "label_box": [
+          267.0,
+          536.0,
+          453.0,
+          594.0
+        ]
+      },
+      {
+        "id": "S03",
+        "name": "书院",
+        "accessible": false,
+        "lines": [
+          "R"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [],
+        "position": [
+          560.0,
+          516.0
+        ],
+        "label_box": [
+          467.0,
+          536.0,
+          653.0,
+          594.0
+        ]
+      },
+      {
+        "id": "S04",
+        "name": "中心",
+        "accessible": true,
+        "lines": [
+          "B",
+          "R"
+        ],
+        "interchange": true,
+        "query_endpoint_of": [],
+        "position": [
+          760.0,
+          516.0
+        ],
+        "label_box": [
+          786.0,
+          546.0,
+          972.0,
+          604.0
+        ]
+      },
+      {
+        "id": "S05",
+        "name": "东桥",
+        "accessible": false,
+        "lines": [
+          "G",
+          "R"
+        ],
+        "interchange": true,
+        "query_endpoint_of": [],
+        "position": [
+          960.0,
+          516.0
+        ],
+        "label_box": [
+          867.0,
+          290.0,
+          1053.0,
+          348.0
+        ]
+      },
+      {
+        "id": "S06",
+        "name": "江湾",
+        "accessible": true,
+        "lines": [
+          "R"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [],
+        "position": [
+          1160.0,
+          516.0
+        ],
+        "label_box": [
+          1067.0,
+          442.0,
+          1253.0,
+          500.0
+        ]
+      },
+      {
+        "id": "S07",
+        "name": "西港",
+        "accessible": true,
+        "lines": [
+          "B"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [
+          "③"
+        ],
+        "position": [
+          418.58,
+          374.58
+        ],
+        "label_box": [
+          325.58,
+          300.58,
+          511.58,
+          358.58
+        ]
+      },
+      {
+        "id": "S08",
+        "name": "工坊",
+        "accessible": true,
+        "lines": [
+          "B",
+          "G"
+        ],
+        "interchange": true,
+        "query_endpoint_of": [],
+        "position": [
+          618.58,
+          374.58
+        ],
+        "label_box": [
+          406.58,
+          404.58,
+          592.58,
+          462.58
+        ]
+      },
+      {
+        "id": "S09",
+        "name": "花园",
+        "accessible": false,
+        "lines": [
+          "B"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [],
+        "position": [
+          618.58,
+          657.42
+        ],
+        "label_box": [
+          525.58,
+          677.42,
+          711.58,
+          735.42
+        ]
+      },
+      {
+        "id": "S10",
+        "name": "南门",
+        "accessible": true,
+        "lines": [
+          "B"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [],
+        "position": [
+          418.58,
+          657.42
+        ],
+        "label_box": [
+          325.58,
+          677.42,
+          511.58,
+          735.42
+        ]
+      },
+      {
+        "id": "S11",
+        "name": "会展",
+        "accessible": true,
+        "lines": [
+          "B"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [
+          "①"
+        ],
+        "position": [
+          218.58,
+          657.42
+        ],
+        "label_box": [
+          125.58,
+          677.42,
+          311.58,
+          735.42
+        ]
+      },
+      {
+        "id": "S12",
+        "name": "机场",
+        "accessible": true,
+        "lines": [
+          "R"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [
+          "②"
+        ],
+        "position": [
+          1360.0,
+          516.0
+        ],
+        "label_box": [
+          1267.0,
+          442.0,
+          1453.0,
+          500.0
+        ]
+      },
+      {
+        "id": "S13",
+        "name": "石溪",
+        "accessible": true,
+        "lines": [
+          "G"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [
+          "②"
+        ],
+        "position": [
+          277.16,
+          233.16
+        ],
+        "label_box": [
+          184.16,
+          159.16,
+          370.16,
+          217.16
+        ]
+      },
+      {
+        "id": "S14",
+        "name": "公园",
+        "accessible": false,
+        "lines": [
+          "G"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [],
+        "position": [
+          477.16,
+          233.16
+        ],
+        "label_box": [
+          384.16,
+          159.16,
+          570.16,
+          217.16
+        ]
+      },
+      {
+        "id": "S15",
+        "name": "剧院",
+        "accessible": true,
+        "lines": [
+          "G"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [],
+        "position": [
+          818.58,
+          374.58
+        ],
+        "label_box": [
+          725.58,
+          224.58,
+          911.58,
+          282.58
+        ]
+      },
+      {
+        "id": "S16",
+        "name": "研究所",
+        "accessible": true,
+        "lines": [
+          "G"
+        ],
+        "interchange": false,
+        "query_endpoint_of": [
+          "③"
+        ],
+        "position": [
+          1101.42,
+          657.42
+        ],
+        "label_box": [
+          1008.42,
+          677.42,
+          1194.42,
+          735.42
+        ]
+      }
+    ],
+    "lines": [
+      {
+        "id": "R",
+        "name": "红线",
+        "colour": "#F87171",
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "hops": 6
+      },
+      {
+        "id": "B",
+        "name": "蓝线",
+        "colour": "#60A5FA",
+        "stations": [
+          "S07",
+          "S08",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "hops": 5
+      },
+      {
+        "id": "G",
+        "name": "绿线",
+        "colour": "#34D399",
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "hops": 5
+      }
+    ],
+    "hops": [
+      {
+        "line": "R",
+        "from": "S01",
+        "to": "S02",
+        "length_px": 200.0
+      },
+      {
+        "line": "R",
+        "from": "S02",
+        "to": "S03",
+        "length_px": 200.0
+      },
+      {
+        "line": "R",
+        "from": "S03",
+        "to": "S04",
+        "length_px": 200.0
+      },
+      {
+        "line": "R",
+        "from": "S04",
+        "to": "S05",
+        "length_px": 200.0
+      },
+      {
+        "line": "R",
+        "from": "S05",
+        "to": "S06",
+        "length_px": 200.0
+      },
+      {
+        "line": "R",
+        "from": "S06",
+        "to": "S12",
+        "length_px": 200.0
+      },
+      {
+        "line": "B",
+        "from": "S07",
+        "to": "S08",
+        "length_px": 200.0
+      },
+      {
+        "line": "B",
+        "from": "S08",
+        "to": "S04",
+        "length_px": 200.0
+      },
+      {
+        "line": "B",
+        "from": "S04",
+        "to": "S09",
+        "length_px": 200.0
+      },
+      {
+        "line": "B",
+        "from": "S09",
+        "to": "S10",
+        "length_px": 200.0
+      },
+      {
+        "line": "B",
+        "from": "S10",
+        "to": "S11",
+        "length_px": 200.0
+      },
+      {
+        "line": "G",
+        "from": "S13",
+        "to": "S14",
+        "length_px": 200.0
+      },
+      {
+        "line": "G",
+        "from": "S14",
+        "to": "S08",
+        "length_px": 200.0
+      },
+      {
+        "line": "G",
+        "from": "S08",
+        "to": "S15",
+        "length_px": 200.0
+      },
+      {
+        "line": "G",
+        "from": "S15",
+        "to": "S05",
+        "length_px": 200.0
+      },
+      {
+        "line": "G",
+        "from": "S05",
+        "to": "S16",
+        "length_px": 200.0
+      }
+    ],
+    "interchanges": [
+      {
+        "station": "S04",
+        "name": "中心",
+        "lines": [
+          "B",
+          "R"
+        ],
+        "accessible": true
+      },
+      {
+        "station": "S05",
+        "name": "东桥",
+        "lines": [
+          "G",
+          "R"
+        ],
+        "accessible": false
+      },
+      {
+        "station": "S08",
+        "name": "工坊",
+        "lines": [
+          "B",
+          "G"
+        ],
+        "accessible": true
+      }
+    ],
+    "layout_checks": {
+      "hop_length_px": 200.0,
+      "bend_angles_deg": [
+        45,
+        90
+      ],
+      "hop_pairs_tested": 120,
+      "crossings_without_station": 0,
+      "stations_on_non_incident_hop": 0,
+      "note": "check_layout() 在生成 DSL 前逐条断言，任一失败即不出图"
+    }
+  },
+  "queries": [
+    {
+      "index": 1,
+      "from": "S01",
+      "to": "S11",
+      "from_name": "松林",
+      "to_name": "会展",
+      "normal_shortest": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "station_names": [
+          "S01 松林",
+          "S02 北门",
+          "S03 书院",
+          "S04 中心",
+          "S09 花园",
+          "S10 南门",
+          "S11 会展"
+        ],
+        "station_count": 7,
+        "edges": 6,
+        "interchanges": 1,
+        "interchange_stations": [
+          "S04"
+        ],
+        "line_sequence": "R+B",
+        "line_segments": [
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "hops": 3
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "hops": 3
+          }
+        ],
+        "passes_non_accessible": [
+          "S03",
+          "S09"
+        ],
+        "accessible_journey_eligible": true
+      },
+      "same_edge_alternatives": [
+        {
+          "stations": [
+            "S01",
+            "S02",
+            "S03",
+            "S04",
+            "S09",
+            "S10",
+            "S11"
+          ],
+          "station_names": [
+            "S01 松林",
+            "S02 北门",
+            "S03 书院",
+            "S04 中心",
+            "S09 花园",
+            "S10 南门",
+            "S11 会展"
+          ],
+          "station_count": 7,
+          "edges": 6,
+          "interchanges": 1,
+          "interchange_stations": [
+            "S04"
+          ],
+          "line_sequence": "R+B",
+          "line_segments": [
+            {
+              "line": "R",
+              "line_name": "红线",
+              "stations": [
+                "S01",
+                "S02",
+                "S03",
+                "S04"
+              ],
+              "hops": 3
+            },
+            {
+              "line": "B",
+              "line_name": "蓝线",
+              "stations": [
+                "S04",
+                "S09",
+                "S10",
+                "S11"
+              ],
+              "hops": 3
+            }
+          ],
+          "passes_non_accessible": [
+            "S03",
+            "S09"
+          ],
+          "accessible_journey_eligible": true
+        }
+      ],
+      "normal_is_accessible": true,
+      "normal_block_reason": "",
+      "accessible_shortest": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "station_names": [
+          "S01 松林",
+          "S02 北门",
+          "S03 书院",
+          "S04 中心",
+          "S09 花园",
+          "S10 南门",
+          "S11 会展"
+        ],
+        "station_count": 7,
+        "edges": 6,
+        "interchanges": 1,
+        "interchange_stations": [
+          "S04"
+        ],
+        "line_sequence": "R+B",
+        "line_segments": [
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "hops": 3
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "hops": 3
+          }
+        ],
+        "passes_non_accessible": [
+          "S03",
+          "S09"
+        ],
+        "accessible_journey_eligible": true
+      },
+      "accessible_is_same_route": true
+    },
+    {
+      "index": 2,
+      "from": "S13",
+      "to": "S12",
+      "from_name": "石溪",
+      "to_name": "机场",
+      "normal_shortest": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "station_names": [
+          "S13 石溪",
+          "S14 公园",
+          "S08 工坊",
+          "S15 剧院",
+          "S05 东桥",
+          "S06 江湾",
+          "S12 机场"
+        ],
+        "station_count": 7,
+        "edges": 6,
+        "interchanges": 1,
+        "interchange_stations": [
+          "S05"
+        ],
+        "line_sequence": "G+R",
+        "line_segments": [
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S13",
+              "S14",
+              "S08",
+              "S15",
+              "S05"
+            ],
+            "hops": 4
+          },
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "hops": 2
+          }
+        ],
+        "passes_non_accessible": [
+          "S14",
+          "S05"
+        ],
+        "accessible_journey_eligible": false
+      },
+      "same_edge_alternatives": [
+        {
+          "stations": [
+            "S13",
+            "S14",
+            "S08",
+            "S15",
+            "S05",
+            "S06",
+            "S12"
+          ],
+          "station_names": [
+            "S13 石溪",
+            "S14 公园",
+            "S08 工坊",
+            "S15 剧院",
+            "S05 东桥",
+            "S06 江湾",
+            "S12 机场"
+          ],
+          "station_count": 7,
+          "edges": 6,
+          "interchanges": 1,
+          "interchange_stations": [
+            "S05"
+          ],
+          "line_sequence": "G+R",
+          "line_segments": [
+            {
+              "line": "G",
+              "line_name": "绿线",
+              "stations": [
+                "S13",
+                "S14",
+                "S08",
+                "S15",
+                "S05"
+              ],
+              "hops": 4
+            },
+            {
+              "line": "R",
+              "line_name": "红线",
+              "stations": [
+                "S05",
+                "S06",
+                "S12"
+              ],
+              "hops": 2
+            }
+          ],
+          "passes_non_accessible": [
+            "S14",
+            "S05"
+          ],
+          "accessible_journey_eligible": false
+        },
+        {
+          "stations": [
+            "S13",
+            "S14",
+            "S08",
+            "S04",
+            "S05",
+            "S06",
+            "S12"
+          ],
+          "station_names": [
+            "S13 石溪",
+            "S14 公园",
+            "S08 工坊",
+            "S04 中心",
+            "S05 东桥",
+            "S06 江湾",
+            "S12 机场"
+          ],
+          "station_count": 7,
+          "edges": 6,
+          "interchanges": 2,
+          "interchange_stations": [
+            "S08",
+            "S04"
+          ],
+          "line_sequence": "G+B+R",
+          "line_segments": [
+            {
+              "line": "G",
+              "line_name": "绿线",
+              "stations": [
+                "S13",
+                "S14",
+                "S08"
+              ],
+              "hops": 2
+            },
+            {
+              "line": "B",
+              "line_name": "蓝线",
+              "stations": [
+                "S08",
+                "S04"
+              ],
+              "hops": 1
+            },
+            {
+              "line": "R",
+              "line_name": "红线",
+              "stations": [
+                "S04",
+                "S05",
+                "S06",
+                "S12"
+              ],
+              "hops": 3
+            }
+          ],
+          "passes_non_accessible": [
+            "S14",
+            "S05"
+          ],
+          "accessible_journey_eligible": true
+        }
+      ],
+      "normal_is_accessible": false,
+      "normal_block_reason": "换乘站 S05 东桥 缺无障碍设施",
+      "accessible_shortest": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "station_names": [
+          "S13 石溪",
+          "S14 公园",
+          "S08 工坊",
+          "S04 中心",
+          "S05 东桥",
+          "S06 江湾",
+          "S12 机场"
+        ],
+        "station_count": 7,
+        "edges": 6,
+        "interchanges": 2,
+        "interchange_stations": [
+          "S08",
+          "S04"
+        ],
+        "line_sequence": "G+B+R",
+        "line_segments": [
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S13",
+              "S14",
+              "S08"
+            ],
+            "hops": 2
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S08",
+              "S04"
+            ],
+            "hops": 1
+          },
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S04",
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "hops": 3
+          }
+        ],
+        "passes_non_accessible": [
+          "S14",
+          "S05"
+        ],
+        "accessible_journey_eligible": true
+      },
+      "accessible_is_same_route": false
+    },
+    {
+      "index": 3,
+      "from": "S07",
+      "to": "S16",
+      "from_name": "西港",
+      "to_name": "研究所",
+      "normal_shortest": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "station_names": [
+          "S07 西港",
+          "S08 工坊",
+          "S15 剧院",
+          "S05 东桥",
+          "S16 研究所"
+        ],
+        "station_count": 5,
+        "edges": 4,
+        "interchanges": 1,
+        "interchange_stations": [
+          "S08"
+        ],
+        "line_sequence": "B+G",
+        "line_segments": [
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "hops": 1
+          },
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "hops": 3
+          }
+        ],
+        "passes_non_accessible": [
+          "S05"
+        ],
+        "accessible_journey_eligible": true
+      },
+      "same_edge_alternatives": [
+        {
+          "stations": [
+            "S07",
+            "S08",
+            "S15",
+            "S05",
+            "S16"
+          ],
+          "station_names": [
+            "S07 西港",
+            "S08 工坊",
+            "S15 剧院",
+            "S05 东桥",
+            "S16 研究所"
+          ],
+          "station_count": 5,
+          "edges": 4,
+          "interchanges": 1,
+          "interchange_stations": [
+            "S08"
+          ],
+          "line_sequence": "B+G",
+          "line_segments": [
+            {
+              "line": "B",
+              "line_name": "蓝线",
+              "stations": [
+                "S07",
+                "S08"
+              ],
+              "hops": 1
+            },
+            {
+              "line": "G",
+              "line_name": "绿线",
+              "stations": [
+                "S08",
+                "S15",
+                "S05",
+                "S16"
+              ],
+              "hops": 3
+            }
+          ],
+          "passes_non_accessible": [
+            "S05"
+          ],
+          "accessible_journey_eligible": true
+        },
+        {
+          "stations": [
+            "S07",
+            "S08",
+            "S04",
+            "S05",
+            "S16"
+          ],
+          "station_names": [
+            "S07 西港",
+            "S08 工坊",
+            "S04 中心",
+            "S05 东桥",
+            "S16 研究所"
+          ],
+          "station_count": 5,
+          "edges": 4,
+          "interchanges": 2,
+          "interchange_stations": [
+            "S04",
+            "S05"
+          ],
+          "line_sequence": "B+R+G",
+          "line_segments": [
+            {
+              "line": "B",
+              "line_name": "蓝线",
+              "stations": [
+                "S07",
+                "S08",
+                "S04"
+              ],
+              "hops": 2
+            },
+            {
+              "line": "R",
+              "line_name": "红线",
+              "stations": [
+                "S04",
+                "S05"
+              ],
+              "hops": 1
+            },
+            {
+              "line": "G",
+              "line_name": "绿线",
+              "stations": [
+                "S05",
+                "S16"
+              ],
+              "hops": 1
+            }
+          ],
+          "passes_non_accessible": [
+            "S05"
+          ],
+          "accessible_journey_eligible": false
+        }
+      ],
+      "normal_is_accessible": true,
+      "normal_block_reason": "",
+      "accessible_shortest": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "station_names": [
+          "S07 西港",
+          "S08 工坊",
+          "S15 剧院",
+          "S05 东桥",
+          "S16 研究所"
+        ],
+        "station_count": 5,
+        "edges": 4,
+        "interchanges": 1,
+        "interchange_stations": [
+          "S08"
+        ],
+        "line_sequence": "B+G",
+        "line_segments": [
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "hops": 1
+          },
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "hops": 3
+          }
+        ],
+        "passes_non_accessible": [
+          "S05"
+        ],
+        "accessible_journey_eligible": true
+      },
+      "accessible_is_same_route": true
+    }
+  ]
+}

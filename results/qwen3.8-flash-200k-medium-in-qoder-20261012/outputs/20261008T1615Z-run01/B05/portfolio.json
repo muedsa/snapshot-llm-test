@@ -1,0 +1,547 @@
+{
+  "schema_version": "b05-portfolio/1",
+  "path_base": "suite_root",
+  "task_id": "B05",
+  "run_id": "20261008T1615Z-run01",
+  "status": "completed",
+  "asset_policy": "DSL 主导，允许局部辅助素材；本题十件全部为纯 Snapshot DSL 构造，未引入外部位图素材",
+  "theme": "枝安 · 城市行道树风险巡检与处置协同平台（虚构品牌与演示数据）",
+  "audience": "市民 / 巡检员 / 值班调度 / 技术复核 / 班组长 / 上级主管六种角色",
+  "curatorial_statement": "同一份种子数据、同一个风险分，穿过六种介质与十种状态。选题的赌注是：一套图能不能既让市民在 30 秒内报对一棵树，又让决策者看见 24.9 % 这个不好看的数字。十件里所有红色与橙色都来自同一个算法，所有缺陷都印在页面上——包括我自己留下的两套冠幅公式。",
+  "risk_model": {
+    "formula": "R = 0.30·S_倾斜 + 0.25·S_空洞 + 0.20·S_根系 + 0.15·S_暴露对象 + 0.10·S_历史病害",
+    "bands": {
+      "立即处置": "R>=70",
+      "限期处置": "55-69",
+      "观察期": "40-54",
+      "正常": "<40"
+    },
+    "provenance": "产品自定口径，未经历史倒伏数据回溯校验"
+  },
+  "final_collection_review": {
+    "works": 10,
+    "distinct_canvases": [
+      "1080x1620",
+      "1080x2340",
+      "1080x2400",
+      "1200x1600",
+      "1240x1754",
+      "1440x2000",
+      "1600x1200",
+      "1920x1080",
+      "1920x1200",
+      "2560x1440"
+    ],
+    "render_requests": 73,
+    "http_200": 40,
+    "failed_or_truncated": 33,
+    "iterations_logged": 38,
+    "images_actually_opened": 38,
+    "every_final_is_service_response": true,
+    "every_final_has_paired_snapshot": true,
+    "user_validation_done": false,
+    "checks": [
+      "10/10 件均有 final.png + 同名 final.snapshot + case.md",
+      "10 件 md5 互不相同，尺寸互不相同，无占位图与 lorem ipsum",
+      "每张 final.png 均有 requests.jsonl 中 HTTP 200 的对应请求与 request_id",
+      "iterations.jsonl 每条均有 image_viewed=true 与 image_path",
+      "跨件数字互校：四级求和 = 3,725；工单 327 / 超时 87；TZ-JS-0417 六件一致"
+    ]
+  },
+  "cases": [
+    {
+      "case": "case-01",
+      "title": "市民报修：拍一张照片就完成一次有效上报",
+      "kind": "手机报修流程页（未提交态）",
+      "role": "市民",
+      "device": "手机",
+      "stage": "发现问题→上报",
+      "canvas": "1080x2340",
+      "audience": "人行道上的普通市民",
+      "reading_env": "单手、强光、4G，站立 30 秒内完成",
+      "content_basis": "定位到具体树号 TZ-JS-0417 + 路段 + 危害对象三个必填字段，提交前可回退",
+      "visual_claim": "把「我拍了一张歪树」升级成「哪棵、挡了什么、谁该来看」，字段少而每个都能解释为什么要填",
+      "hypothesis": "市民愿意为「这棵树能被认出来」多填两个字段（位置、大致危害对象）",
+      "missing_evidence": "没有真实报修完成率对照；未测试强光+单手下的字段数量上限",
+      "files": {
+        "final_png": "case-01/final.png",
+        "final_snapshot": "case-01/final.snapshot",
+        "case_report": "case-01/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case01.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 277468,
+      "png_md5": "53e5a90c6441dfeba6759fb0b7aac921",
+      "snapshot_bytes": 26425,
+      "snapshot_md5": "c1f6586b6ae2062c1969b874ba8df002",
+      "versions": [
+        "case01-v01",
+        "case01-v02",
+        "case01-v03"
+      ],
+      "previews": 3,
+      "qa_crops": 0,
+      "render_requests": {
+        "ok": 3,
+        "failed_or_truncated": 2
+      },
+      "iterations": {
+        "logged": 3,
+        "viewed": 3,
+        "visual": 2,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case01-v03-20261011T112209Z",
+      "server_timing": "render;dur=873.2, total;dur=888.5"
+    },
+    {
+      "case": "case-02",
+      "title": "巡检员单株档案卡（户外强光模式）",
+      "kind": "手持机档案页（现场态）",
+      "role": "巡检员",
+      "device": "手持机",
+      "stage": "现场核查→录实测",
+      "canvas": "1080x2400",
+      "audience": "巡检员",
+      "reading_env": "戴手套、单手持、户外强光下站读",
+      "content_basis": "实测四分项（倾斜/空洞/根系/暴露对象）+ 权重 + R=76 的算法行",
+      "visual_claim": "不只显示结论等级，而把等级怎么算出来的摊在卡上，换人巡检也是同一个结论",
+      "hypothesis": "现场能在不看说明书的情况下读懂判级依据（四个分项+权重）",
+      "missing_evidence": "没有巡检员实测阅读时间；高对比配色未在真实阳光下校色",
+      "files": {
+        "final_png": "case-02/final.png",
+        "final_snapshot": "case-02/final.snapshot",
+        "case_report": "case-02/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case02.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 370158,
+      "png_md5": "14af5245ef9ff253b71fd657dca16aa8",
+      "snapshot_bytes": 31707,
+      "snapshot_md5": "21762b37cf895e769ab1adc633c3f92b",
+      "versions": [
+        "case02-v01",
+        "case02-v02",
+        "case02-v03"
+      ],
+      "previews": 3,
+      "qa_crops": 0,
+      "render_requests": {
+        "ok": 3,
+        "failed_or_truncated": 4
+      },
+      "iterations": {
+        "logged": 4,
+        "viewed": 4,
+        "visual": 2,
+        "retry": 1,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case02-v03-20261011T114333Z",
+      "server_timing": "render;dur=717.1, total;dur=741.6"
+    },
+    {
+      "case": "case-03",
+      "title": "值班室调度大屏",
+      "kind": "2560×1440 大屏态势页（实时态）",
+      "role": "值班调度",
+      "device": "2560×1440 大屏",
+      "stage": "态势研判→派工",
+      "canvas": "2560x1440",
+      "audience": "值班调度",
+      "reading_env": "值班室 3 米外、全天常亮",
+      "content_basis": "四级 98/229/669/2,729、工单 327、超时 87、今日派工与班组负荷",
+      "visual_claim": "风险在哪、今天谁做什么、哪单超时，一屏同时可读，字号按 3 米距离放大",
+      "hypothesis": "风险地理分布+工单漏斗+今日派工+超时能在一屏内同时被读到",
+      "missing_evidence": "未做 3 米可读性真机测试；未验证调度员是否会跳过漏斗直接看名单",
+      "files": {
+        "final_png": "case-03/final.png",
+        "final_snapshot": "case-03/final.snapshot",
+        "case_report": "case-03/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case03.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 417022,
+      "png_md5": "e4566e507a84451f8899d6496e7109e7",
+      "snapshot_bytes": 56496,
+      "snapshot_md5": "79e65b61fdc22ad6484496c1e7f43944",
+      "versions": [
+        "case03-v01",
+        "case03-v02",
+        "case03-v03"
+      ],
+      "previews": 3,
+      "qa_crops": 0,
+      "render_requests": {
+        "ok": 3,
+        "failed_or_truncated": 1
+      },
+      "iterations": {
+        "logged": 3,
+        "viewed": 3,
+        "visual": 2,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case03-v03-20261011T120049Z",
+      "server_timing": "render;dur=1013.7, total;dur=1185.6"
+    },
+    {
+      "case": "case-04",
+      "title": "行道树隐患处置单（A4 打印件）",
+      "kind": "1240×1754 纸质单据（已派单态）",
+      "role": "作业班组长",
+      "device": "A4 打印 1240×1754",
+      "stage": "接单→作业→签字",
+      "canvas": "1240x1754",
+      "audience": "作业班组长",
+      "reading_env": "现场纸质交底，可能没有网络",
+      "content_basis": "责任链、措施、时间线（到场 10-11 09:58 / 复测 10-13 09:58）、签字位",
+      "visual_claim": "一张纸能独立支撑一次作业，不依赖回看设备；同一棵树与件-01/02/07 时刻一致",
+      "hypothesis": "一张纸能承载责任链、措施、时间线与签字位而不必回看设备",
+      "missing_evidence": "未做雨天/手套条件下的字迹与纸张测试",
+      "files": {
+        "final_png": "case-04/final.png",
+        "final_snapshot": "case-04/final.snapshot",
+        "case_report": "case-04/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case04.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 395288,
+      "png_md5": "242055324698e6c9efe683665dfba1b1",
+      "snapshot_bytes": 40083,
+      "snapshot_md5": "c6ad9807bc72a9d82043b5e11abb422b",
+      "versions": [
+        "case04-v01",
+        "case04-v02"
+      ],
+      "previews": 2,
+      "qa_crops": 0,
+      "render_requests": {
+        "ok": 2,
+        "failed_or_truncated": 1
+      },
+      "iterations": {
+        "logged": 2,
+        "viewed": 2,
+        "visual": 1,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case04-v02-20261011T115827Z",
+      "server_timing": "render;dur=621.9, total;dur=801.0"
+    },
+    {
+      "case": "case-05",
+      "title": "台风前 48 小时加固优先序",
+      "kind": "1920×1200 平板规划页（规划态）",
+      "role": "技术复核 + 调度",
+      "device": "1920×1200 平板",
+      "stage": "排序→定优先序",
+      "canvas": "1920x1200",
+      "audience": "技术复核 + 调度",
+      "reading_env": "台风前 48 h，办公室平板",
+      "content_basis": "排序公式、边界样本、被排除项与 Top 清单",
+      "visual_claim": "先给出「为什么是这 100 棵」，再给清单；被排除项同样列出理由",
+      "hypothesis": "把权重摊开之后，复核者才敢按这份名单先干哪 100 棵",
+      "missing_evidence": "权重本身未经历史倒伏数据回溯校验（见 product-brief 第 4 节）",
+      "files": {
+        "final_png": "case-05/final.png",
+        "final_snapshot": "case-05/final.snapshot",
+        "case_report": "case-05/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case05.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 434001,
+      "png_md5": "fe8b119775f5d48a5d93f13005340221",
+      "snapshot_bytes": 49412,
+      "snapshot_md5": "ce8a4c8d7b65c1662a981e9e87555da6",
+      "versions": [
+        "case05-v01",
+        "case05-v02",
+        "case05-v03",
+        "case05-v04",
+        "case05-v05"
+      ],
+      "previews": 5,
+      "qa_crops": 0,
+      "render_requests": {
+        "ok": 6,
+        "failed_or_truncated": 6
+      },
+      "iterations": {
+        "logged": 5,
+        "viewed": 5,
+        "visual": 4,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case05-v05-20261011T121655Z",
+      "server_timing": "render;dur=1303.1, total;dur=1535.3"
+    },
+    {
+      "case": "case-06",
+      "title": "现场围挡与交通导改图",
+      "kind": "1600×1200 作业前布设说明图",
+      "role": "班组长交底",
+      "device": "1600×1200 说明图",
+      "stage": "作业安全边界",
+      "canvas": "1600x1200",
+      "audience": "班组长与现场安全员",
+      "reading_env": "作业前交底，可能打印张贴",
+      "content_basis": "围挡半径、导改车道、比例尺与 pedestrian 绕行距离",
+      "visual_claim": "静态说明图刻意不做导航栏与假按钮；弧线为示意并在图内注明非规范尺寸",
+      "hypothesis": "围挡半径与交通导改用一张带比例尺的图比文字交底更不容易出错",
+      "missing_evidence": "未与真实交通导改方案做过一致性核对；弧线是示意而非规范尺寸",
+      "files": {
+        "final_png": "case-06/final.png",
+        "final_snapshot": "case-06/final.snapshot",
+        "case_report": "case-06/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case06.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 236079,
+      "png_md5": "09d4d6f6c5cfda3ec9a20d0cdacf8d16",
+      "snapshot_bytes": 38416,
+      "snapshot_md5": "02217119fa4789f636b236d25ef616e1",
+      "versions": [
+        "case06-v01",
+        "case06-v02",
+        "case06-v03",
+        "case06-v04",
+        "case06-v05"
+      ],
+      "previews": 5,
+      "qa_crops": 0,
+      "render_requests": {
+        "ok": 6,
+        "failed_or_truncated": 6
+      },
+      "iterations": {
+        "logged": 5,
+        "viewed": 5,
+        "visual": 4,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case06-v05-20261011T121813Z",
+      "server_timing": "cache;desc=hit, total;dur=30.2"
+    },
+    {
+      "case": "case-07",
+      "title": "倾斜仪读数序列判读",
+      "kind": "1200×1600 平板复核页（复核态）",
+      "role": "技术复核",
+      "device": "1200×1600 平板",
+      "stage": "时序判读→复核结论",
+      "canvas": "1200x1600",
+      "audience": "技术复核",
+      "reading_env": "办公室平板，逐点核对",
+      "content_basis": "时序折线、阈值线、报警规则、连续两次 <5.0° 才撤围的判据",
+      "visual_claim": "把「该不该撤围」变成可复核的规则；2026-09 风速 0 节标为缺测而非无风",
+      "hypothesis": "倾斜序列+阈值线能把「该不该撤围」变成可复核的判断",
+      "missing_evidence": "缺测月份（2026-09 风速 0 节）已标注为缺测，但没有补测数据验证结论稳健性",
+      "files": {
+        "final_png": "case-07/final.png",
+        "final_snapshot": "case-07/final.snapshot",
+        "case_report": "case-07/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case07.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 255715,
+      "png_md5": "869b385abb2199e8aa96838c4b8722df",
+      "snapshot_bytes": 33294,
+      "snapshot_md5": "39cec4e4d8982cff564b627e70c6a97e",
+      "versions": [
+        "case07-v01",
+        "case07-v02",
+        "case07-v03",
+        "case07-v04",
+        "case07-v05"
+      ],
+      "previews": 5,
+      "qa_crops": 0,
+      "render_requests": {
+        "ok": 6,
+        "failed_or_truncated": 4
+      },
+      "iterations": {
+        "logged": 5,
+        "viewed": 5,
+        "visual": 4,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case07-v05-20261011T121702Z",
+      "server_timing": "render;dur=1231.2, total;dur=1257.9"
+    },
+    {
+      "case": "case-08",
+      "title": "社区认养与遮荫收益卡",
+      "kind": "1080×1620 手机长图 / 树池张贴（长期态）",
+      "role": "认养居民",
+      "device": "1080×1620",
+      "stage": "长期关系维护",
+      "canvas": "1080x1620",
+      "audience": "认养居民",
+      "reading_env": "手机看或贴在树池边长期读",
+      "content_basis": "正投影 π(D/2)²=69.4 m²、264/1,123=23.5 % 认养率、双方义务、时间轴",
+      "visual_claim": "只写算得出的好处，不引用降温与固碳；−11 户的数据缺陷用红字向居民本人披露",
+      "hypothesis": "居民只需要看懂「这棵树给我什么、我要做什么、我能不能查」",
+      "missing_evidence": "未做居民可读性测试；遮荫面积 69.4 m² 是正投影口径，与汇总口径差 9.1 %（件-10 已并列写出）",
+      "files": {
+        "final_png": "case-08/final.png",
+        "final_snapshot": "case-08/final.snapshot",
+        "case_report": "case-08/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case08.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 345565,
+      "png_md5": "71716f19178b0f675e311e34bee51fd5",
+      "snapshot_bytes": 22614,
+      "snapshot_md5": "d716fcb012da2b96b9fed41db7dd29a3",
+      "versions": [
+        "case08-v01",
+        "case08-v02",
+        "case08-v03",
+        "case08-v04",
+        "case08-v05"
+      ],
+      "previews": 5,
+      "qa_crops": 4,
+      "render_requests": {
+        "ok": 5,
+        "failed_or_truncated": 0
+      },
+      "iterations": {
+        "logged": 5,
+        "viewed": 5,
+        "visual": 4,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case08-v05-20261011T123218Z",
+      "server_timing": "render;dur=631.3, total;dur=640.5"
+    },
+    {
+      "case": "case-09",
+      "title": "雨后灾情快报",
+      "kind": "1440×2000 上报通报（灾后 6 h）",
+      "role": "值班室→上级",
+      "device": "1440×2000 快报",
+      "stage": "灾情统计上报",
+      "canvas": "1440x2000",
+      "audience": "值班室与上级主管",
+      "reading_env": "灾后 6 h 对内通报，随后逐级转发",
+      "content_basis": "113 起（83 已核实/30 待核实）、242 枝干、25 压线、51 阻路、每千株上报",
+      "visual_claim": "已核实与待核实分列不合并；用归一化列把南门的「表现好」改判为疑漏报；拒绝引用风力等级",
+      "hypothesis": "已核实与待核实必须分列，否则数字到上级手里就失真",
+      "missing_evidence": "南门「每千株 4.2 起 vs 全市 30.3」只是疑漏报的证据，不是漏报结论，尚未实地核查",
+      "files": {
+        "final_png": "case-09/final.png",
+        "final_snapshot": "case-09/final.snapshot",
+        "case_report": "case-09/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case09.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 486041,
+      "png_md5": "22f641caa660c1cbaa650e59de510c13",
+      "snapshot_bytes": 42058,
+      "snapshot_md5": "57face4fda6839b8fbc1f63c0a73aebf",
+      "versions": [
+        "case09-v01",
+        "case09-v02",
+        "case09-v03",
+        "case09-v04"
+      ],
+      "previews": 4,
+      "qa_crops": 2,
+      "render_requests": {
+        "ok": 4,
+        "failed_or_truncated": 3
+      },
+      "iterations": {
+        "logged": 4,
+        "viewed": 4,
+        "visual": 3,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case09-v04-20261011T124856Z",
+      "server_timing": "render;dur=868.0, total;dur=894.1"
+    },
+    {
+      "case": "case-10",
+      "title": "年度覆盖率与数据质量",
+      "kind": "1920×1080 决策投屏（年度态）",
+      "role": "上级主管",
+      "device": "1920×1080 投屏",
+      "stage": "年度复盘→补数排期",
+      "canvas": "1920x1080",
+      "audience": "上级主管",
+      "reading_env": "会议室投屏",
+      "content_basis": "90 天覆盖率 24.9 %、726 株超一年、4 项待修字段、87 张超时、三笔补数账",
+      "visual_claim": "对前面九件做口径审计：两套冠幅公式、认养达标率算不出、三色可信度同页公开",
+      "hypothesis": "决策者需要知道哪些数暂时不能用，而不是只看一个好看的覆盖率",
+      "missing_evidence": "60 % 目标、人均 40 株/人·日、三色可信度均为产品自定口径，未经外部校准",
+      "files": {
+        "final_png": "case-10/final.png",
+        "final_snapshot": "case-10/final.snapshot",
+        "case_report": "case-10/case.md",
+        "dsl_source": "tmp/20261008T1615Z-run01/B05/case10.py",
+        "kit": "tmp/20261008T1615Z-run01/B05/b05kit.py",
+        "dataset": "tmp/20261008T1615Z-run01/B05/research/stats.json"
+      },
+      "png_bytes": 378517,
+      "png_md5": "4e544a08f798b4c1b0db9ce91afdcb38",
+      "snapshot_bytes": 33681,
+      "snapshot_md5": "ea4ab84f301c0ebbc18e492d6535cb1a",
+      "versions": [
+        "case10-v01",
+        "case10-v02"
+      ],
+      "previews": 2,
+      "qa_crops": 11,
+      "render_requests": {
+        "ok": 2,
+        "failed_or_truncated": 6
+      },
+      "iterations": {
+        "logged": 2,
+        "viewed": 2,
+        "visual": 1,
+        "retry": 0,
+        "syntax_fix": 0,
+        "alternative": 0
+      },
+      "promoted_request_id": "B05-case10-v02-20261011T130343Z",
+      "server_timing": "render;dur=1392.3, total;dur=1415.3"
+    }
+  ],
+  "unresolved_issues": [
+    "风险分权重与四级阈值未经历史倒伏数据回溯，只是内部自洽",
+    "两套冠幅公式（π(D/2)² 与 0.72·D²）并存，差 9.1 %，已在件-10 ⑤ 公开但未统一",
+    "岩前 −11 户、云屿压线 0/阻路 15、灾情 30 起未去重三项缺陷只做到「页面披露 + 排补数账」，未真正回源核对",
+    "全部十件未做任何真实用户验证；大屏 3 米可读性与打印件现场可读性均为目测判断",
+    "件-06 的导改弧线为 DSL 图元逼近的示意，不是规范尺寸图"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+ "task_round": 3,
+ "rounds_completed": [1, 2, 3],
+ "round_metrics": {
+  "round-01": "outputs/20261008T1615Z-run01/A22/round-01/task-metrics.json",
+  "round-02": "outputs/20261008T1615Z-run01/A22/round-02/task-metrics.json",
+  "round-03": "outputs/20261008T1615Z-run01/A22/round-03/task-metrics.json"
+ },
+ "audits": {
+  "per_round_pixel_verify": [
+   "outputs/20261008T1615Z-run01/A22/round-01/verify.json",
+   "outputs/20261008T1615Z-run01/A22/round-02/verify.json",
+   "outputs/20261008T1615Z-run01/A22/round-03/verify.json"],
+  "change_audit": [
+   "outputs/20261008T1615Z-run01/A22/round-02/change-audit.json",
+   "outputs/20261008T1615Z-run01/A22/round-03/change-audit.json"],
+  "verify_script": "tmp/20261008T1615Z-run01/A22/verify.py",
+  "text_elements_checked": [73, 75, 81],
+  "ink_overlaps_final": [0, 0, 0],
+  "elements_outside_region_final": [0, 0, 0],
+  "bars_checked": [12, 12, 14],
+  "bars_within_3px": [12, 12, 14],
+  "region_boundary_max_delta_px": 0,
+  "negative_bar": {"month": "2026-09", "value": -5632,
+                   "dsl_h_px": 5.8, "measured_px": 5,
+                   "note": "自第 2 轮起向下绘制，未裁切、未取绝对值"}
+ },
+ "cross_round_invariance": {
+  "single_generator": "tmp/20261008T1615Z-run01/A22/gen_dash.py",
+  "round_dsl_md5": ["ae41cdbc4d0c7dd8283fcb6533958483",
+                    "bde4cd7b6c13ab3a6362da5d7e9dc241",
+                    "65673d54655b17d0815b41cfde7fb7eb"],
+  "byte_reproduced_after_later_rounds": true,
+  "note": "每轮改完都重新生成前几轮 DSL 并与归档文件比对 md5；后轮的负轴细网格线（仅 bot<0 启用）与表格行距预留（仅 n>6 启用）都不改动旧轮成品"
+ },
+ "totals_by_round": {
+  "1": {"months": 6, "net_revenue": 918624, "operating_profit": 262124,
+        "orders": 3045, "conversion": 0.11153846153846154},
+  "2": {"months": 6, "net_revenue": 908624, "operating_profit": 182124,
+        "orders": 3045, "conversion": 0.11153846153846154},
+  "3": {"months": 7, "net_revenue": 1121424, "operating_profit": 252924,
+        "orders": 3685, "conversion": 0.11099397590361446}
+ },
+ "requirement_source": "tasks/A22-staged-data-correction/TASK.md + rounds/round-02.md + rounds/round-03.md（预置可读，连续执行）",
+ "regression_note": "画布 1600x1000 与五个主区域边界三轮常量复用，verify.py 实测跨轮位移 0px（要求 ±2px）；主字体、字号阶梯、配色、列宽三轮一致"
+}

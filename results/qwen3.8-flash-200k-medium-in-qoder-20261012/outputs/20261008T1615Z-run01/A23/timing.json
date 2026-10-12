@@ -1,0 +1,78 @@
+{
+ "task": "A23",
+ "theme": "结构汇聚成图像",
+ "delivered_as": "6 张 600×600 透明 PNG 关键帧 + timing.json（服务不支持 GIF，见 limitations.md）",
+ "frame_order": [
+  "frame-01.png",
+  "frame-02.png",
+  "frame-03.png",
+  "frame-04.png",
+  "frame-05.png",
+  "frame-06.png"
+ ],
+ "frame_duration_ms": 250,
+ "total_cycle_ms": 1500,
+ "loop": true,
+ "playback_rule": "按 frame_order 顺序，每帧显示 250ms，播完第 6 帧后回到第 1 帧",
+ "easing_between_frames": "无：服务不输出动图，帧间不做补间；DSL 内的 smoothstep 只决定 6 个采样时刻的位置，播放时相邻帧之间是瞬时切换",
+ "seamless": false,
+ "loop_jump": {
+  "statement": "第 6 帧（塔形）→ 第 1 帧（圆环）是跳变，不宣称无缝",
+  "measured_from_frame_data": {
+   "from_frame": 6,
+   "to_frame": 1,
+   "mean_jump_px": 145.7,
+   "max_jump_px": 226.0
+  },
+  "in_cycle_steps": [
+   {
+    "from_frame": 1,
+    "to_frame": 2,
+    "mean_jump_px": 7.2,
+    "max_jump_px": 23.5
+   },
+   {
+    "from_frame": 2,
+    "to_frame": 3,
+    "mean_jump_px": 32.5,
+    "max_jump_px": 56.0
+   },
+   {
+    "from_frame": 3,
+    "to_frame": 4,
+    "mean_jump_px": 46.4,
+    "max_jump_px": 66.9
+   },
+   {
+    "from_frame": 4,
+    "to_frame": 5,
+    "mean_jump_px": 41.6,
+    "max_jump_px": 56.0
+   },
+   {
+    "from_frame": 5,
+    "to_frame": 6,
+    "mean_jump_px": 18.0,
+    "max_jump_px": 23.5
+   }
+  ],
+  "note": "跳变量由 frame-data.json 的逐帧格心直接相减得到，不是估计"
+ },
+ "optional_smooth_loop_recipe": {
+  "ping_pong": "把 frame_order 播放为 1..6 再接 5..2（共 10 帧、2500ms）即可首尾连续，无需新增图片；这是建议的播放方式，不是已交付的 GIF",
+  "true_gif": "需要外部合成工具（服务无动图能力），本题已授权不做"
+ },
+ "cover_pixel_check": {
+  "mode": "RGBA",
+  "bands": [
+   "R",
+   "G",
+   "B",
+   "A"
+  ],
+  "fully_opaque_px": 960000,
+  "total_px": 960000,
+  "note": "服务统一输出 8 位 RGBA PNG；封面 alpha 全为 255，等效 RGB 位图，但不是三通道容器（见 limitations.md 第 4 条）"
+ },
+ "generated_at": "2026-10-09T16:11:00+08:00"
+}

@@ -1,0 +1,271 @@
+# -*- coding: utf-8 -*-
+"""件-10《阅读路线与证据分级》：把整套手册的留痕倒回来看的元页面。
+
+页面上每个数字都由 meta_stats.py 现场从真实日志算出（requests/iterations/
+build-log/tool-usage 四份 jsonl + 九份 case.md + 九份 final.snapshot + 九个生成器
+脚本），存进 research/meta.json；本件不引入任何新数据，只做呈现与自我审查。
+1080×1520 深空底。
+"""
+import json
+import os
+import sys
+from pathlib import Path
+
+ROOT = Path(os.environ["SNAPSHOT_TASK_ROOT"])
+RID = os.environ["SNAPSHOT_RUN_ID"]
+sys.path.insert(0, str(ROOT / "tmp" / RID / "B04"))
+import b04kit as B  # noqa: E402
+
+MONO = B.MONO
+EMBER, CYAN, CORONA = B.EMBER, B.CYAN, B.CORONA
+W, H = 1080, 1520
+MX, MW = 72, 936          # 左边距与内容宽
+CELL0, CELL1, CELL2 = "#0D1326", "#1E2C4A", "#2F5D70"
+SAFE, DANGER, AMBER = "#2E7B86", "#5C2415", "#3A2A18"
+hrule, vrule = B.hrule, B.vrule
+
+
+def short(url):
+    return url.replace("https://", "").replace("http://", "")
+
+
+def build():
+    P = ROOT / "tmp" / RID / "B04" / "research" / "meta.json"
+    M = json.loads(P.read_text(encoding="utf-8"))
+    cs, T = M["cases"], M["totals"]
+    inp, edges = M["inputs_per_case"], M["shared_input_edges"]
+    srcs, srcs_img = M["sources_per_case"], M["sources_per_case_on_image"]
+    mk, okp, fails = M["image_marks"], M["ok_pages"], M["failed_pages"]
+    d, tf = B.doc(W, H)
+    keys = ["case-%02d" % n for n in range(1, 10)]
+
+    tot_tu = sum(mk[k][u"推算"] for k in keys)
+    tot_ok = sum(mk[k][u"已证实"] for k in keys)
+    tot_sc = sum(mk[k][u"来源结论"] for k in keys)
+    tot_qt = sum(mk[k][u"原文"] for k in keys)
+    tot_lm = sum(mk[k][u"限制"] for k in keys)
+    tot_dm = sum(mk[k][u"演示"] for k in keys)
+    deg = [k for k in keys if not edges_case(k, edges)]
+    cnt = {k: len(edges_case(k, edges)) for k in keys if k not in deg}
+    lo = min(cnt.values())
+    ks = sorted(k for k, v in cnt.items() if v == lo)
+    nbrs = sorted({(e["to"] if e["from"] == k else e["from"])
+                   for k in ks for e in edges_case(k, edges)})
+    iso = u"%s 只与 %s 相连（共 %d 份）" % (u"、".join(k[-2:] for k in ks),
+                                        u"、".join(n[-2:] for n in nbrs), lo)
+
+    B.header(d, tf, "hd", "拾", "阅读路线与证据分级",
+             "十件成品 · %d 次真实请求 · %d 条迭代留痕 · %d 页成功来源 / %d 页失败"
+             % (T["http_requests"], T["iterations"], T["distinct_ok_pages"], len(fails)),
+             size=46)
+
+    # ================= A · 共享输入矩阵 =================
+    ay = 180
+    B.tlab(d, tf, "a-t", MX, ay, MW, 24,
+           u"A · 阅读路线的地基：前九件共用了哪几份推算产物", 17, d.P["t0"], style="BOLD")
+    B.mono(d, tf, "a-n", MX, ay + 24, MW, 16,
+           u"格值＝行、列两件共同读取的 research/*.json 份数；对角＝该件自己读了几份输入。"
+           u"关系不靠回忆，由生成器脚本里的 load() 逐份抠出。件-10 只读 meta.json，不入矩阵。",
+           10.5, d.P["t2"], lines=2)
+    x0, cw, y0, rh = 200, 40, ay + 62, 26
+    for i, k in enumerate(keys):
+        B.mono(d, tf, "a-ch%d" % i, x0 + i * cw, ay + 44, cw - 4, 16, k[-2:], 11,
+               d.P["t2"], align="CENTER")
+        B.mono(d, tf, "a-rh%d" % i, x0 - 12, y0 + i * rh + 5, 40, 16, k[-2:], 11,
+               d.P["t2"], align="END")
+        for j in range(9):
+            if i == j:
+                val, col, fg = len(inp[k]), AMBER, CORONA
+            else:
+                val = len(set(inp[k]) & set(inp[keys[j]]))
+                col = [CELL0, CELL1, CELL2, CYAN][min(val, 3)]
+                fg = d.P["t2"] if val == 0 else B.PAPER
+            d.rect(x0 + j * cw, y0 + i * rh, cw - 4, rh - 4, col)
+            if val:
+                B.mono(d, tf, "a-c%d%d" % (i, j), x0 + j * cw, y0 + i * rh + 5,
+                       cw - 4, 16, str(val), 11, fg, align="CENTER")
+    px = x0 + 9 * cw + 26          # 586
+    B.tlab(d, tf, "a-lt", px, ay + 44, MX + MW - px, 18, u"怎么读", 13, d.P["t0"], style="BOLD")
+    leg = [(u"对角金底＝该件自己的输入份数", CORONA),
+           (u"0（近黑）＝两件没共用任何推算产物", CELL0),
+           (u"1–2＝共用一份，多为 catalog/derived", CELL1),
+           (u"3（青底）＝整块共用同一批目录统计", CYAN)]
+    for i, (t, c) in enumerate(leg):
+        yy = ay + 70 + i * 18
+        d.rect(px, yy + 2, 11, 11, c)
+        B.mono(d, tf, "a-l%d" % i, px + 17, yy, MX + MW - px - 17, 15, t, 10, d.P["t1"])
+    top = sorted(edges, key=lambda e: (-e["w"], e["from"]))[:4]
+    B.mono(d, tf, "a-e0", px, ay + 148, MX + MW - px, 15,
+           u"%d 条非零边里最粗的四对：" % len(edges), 10.5, d.P["t0"])
+    for i, e in enumerate(top):
+        B.mono(d, tf, "a-e%d" % (i + 1), px, ay + 165 + i * 16, MX + MW - px, 14,
+               u"%s↔%s 共 %d：%s" % (e["from"][-2:], e["to"][-2:], e["w"],
+                                     " ".join(f[:-5] for f in e["shared"])),
+               10, d.P["t2"])
+    B.mono(d, tf, "a-i1", px, ay + 235, MX + MW - px, 15,
+           u"孤岛：%s 与任何一件都没有共用输入。" % u"、".join(k[-2:] for k in deg),
+           10, EMBER)
+    B.mono(d, tf, "a-i2", px, ay + 252, MX + MW - px, 15, u"最孤立：%s。" % iso, 10, d.P["t2"])
+
+    # ================= B · 证据四级 =================
+    by = ay + 300
+    B.tlab(d, tf, "b-t", MX, by, MW, 24,
+           u"B · 证据分级：图上每块内容属于哪一级，各出现多少次", 17, d.P["t0"], style="BOLD")
+    B.mono(d, tf, "b-n", MX, by + 24, MW, 15,
+           u"计数＝九份 final.snapshot 文本里这些自标词出现的次数（不是估算，是字符串计数）。",
+           10.5, d.P["t2"])
+    tiers = [(u"已证实", u"只由几何/算术必然得出、与目录数据无关的事实", CYAN, tot_ok),
+             (u"来源结论", u"NASA 页面上的陈述，转述并注明出处", B.MOON, tot_sc),
+             (u"我的推算", u"由真实数据经模型/算术得到，图上逐处自标", CORONA, tot_tu),
+             (u"演示 / 虚构", u"编造数值或占位数据", EMBER, tot_dm)]
+    for i, (name, why, col, n) in enumerate(tiers):
+        yy = by + 48 + i * 32
+        d.rect(MX, yy + 2, 6, 24, col)
+        B.tlab(d, tf, "b-l%d" % i, MX + 16, yy, 150, 18, name, 12.5, col, style="BOLD")
+        B.mono(d, tf, "b-c%d" % i, MX + 170, yy, 66, 18, "%d 处" % n, 12,
+               d.P["t0"] if n else EMBER, align="END")
+        B.mono(d, tf, "b-w%d" % i, MX + 250, yy + 2, 686, 15, why, 10.5, d.P["t1"])
+    B.mono(d, tf, "b-x", MX + 16, by + 180, 920, 15,
+           u"另两类自标：%d 处“原文”（逐字引用后照排上去）、%d 处“限制”（本页自己也有一节）。"
+           u"“演示”为 0 处：全册没有一处占位数值。" % (tot_qt, tot_lm), 10.5, d.P["t2"])
+
+    # ================= C · 十件账 =================
+    cy = by + 214
+    B.tlab(d, tf, "c-t", MX, cy, MW, 24, u"C · 十件的账：图幅、DSL、渲染、留痕、自标、点名来源",
+           17, d.P["t0"], style="BOLD")
+    cols = [(MX, u"编号", "END"), (118, u"标题", "START"), (452, u"尺寸", "END"),
+            (556, u"DSL", "END"), (640, u"渲染", "END"), (706, u"迭代", "END"),
+            (772, u"推算", "END"), (838, u"点名", "END"), (910, u"图内", "END"),
+            (MX + MW, u"闸门", "END")]
+    hrule(d, MX, cy + 26, MW, d.P["border"], 1)
+    for x, t, al in cols:
+        w = 300 if t == u"标题" else (126 if al == "END" else 300)
+        xx = x - w if al == "END" else x
+        B.tlab(d, tf, "c-h" + str(x), xx, cy + 30, w, 16, t, 10.5, d.P["t2"], align=al)
+    rowh = 20
+    for i, c in enumerate(cs):
+        yy = cy + 50 + i * rowh
+        if i % 2:
+            d.rect(MX, yy - 3, MW, rowh, "#0B1120")
+        k = c["case"]
+        B.mono(d, tf, "c-%d-0" % i, MX + 26, yy, 44, 16, k[-2:], 11, EMBER, align="END")
+        B.tlab(d, tf, "c-%d-1" % i, 118, yy, 330, 16, c["title"] or u"（未交付）", 11, d.P["t0"])
+        B.mono(d, tf, "c-%d-2" % i, 452, yy, 100, 16,
+               "%d×%d" % tuple(c["dimensions"]) if c["dimensions"] else u"—", 10.5,
+               d.P["t1"], align="END")
+        B.mono(d, tf, "c-%d-3" % i, 556, yy, 80, 16, "{:,}".format(c["final_snapshot_bytes"] or 0),
+               10.5, d.P["t1"], align="END")
+        B.mono(d, tf, "c-%d-4" % i, 640, yy, 60, 16,
+               "%d/%d" % (c["render_ok"], c["render_requests"]), 10.5,
+               CYAN if c["render_ok"] == c["render_requests"] else EMBER, align="END")
+        B.mono(d, tf, "c-%d-5" % i, 706, yy, 60, 16, str(c["iterations_logged"]), 10.5,
+               d.P["t1"], align="END")
+        B.mono(d, tf, "c-%d-6" % i, 772, yy, 60, 16, str(mk[k][u"推算"]), 10.5,
+               CORONA if mk[k][u"推算"] else EMBER, align="END")
+        B.mono(d, tf, "c-%d-7" % i, 838, yy, 66, 16, str(len(srcs[k])), 10.5,
+               d.P["t1"] if srcs[k] else EMBER, align="END")
+        B.mono(d, tf, "c-%d-8" % i, 910, yy, 66, 16, str(len(srcs_img[k])), 10.5,
+               d.P["t1"] if srcs_img[k] else EMBER, align="END")
+        B.mono(d, tf, "c-%d-9" % i, MX + MW, yy, 40, 16, str(c["gate_blocked_attempts"]), 10.5,
+               CORONA if c["gate_blocked_attempts"] else d.P["t2"], align="END")
+    yy = cy + 50 + 10 * rowh
+    hrule(d, MX, yy - 5, MW, d.P["border"], 1)
+    B.mono(d, tf, "c-sum", MX, yy + 2, MW, 15,
+           u"合计：渲染 %d/%d 全部 200 · 迭代 %d 条（baseline %d／visual %d／语法修复 %d／重试 %d）· "
+           u"成品 DSL %s B · 成品 PNG %s B"
+           % (T["renders_ok"], T["renders"], T["iterations"],
+              T["iteration_types"].get("baseline", 0), T["iteration_types"].get("visual", 0),
+              T["iteration_types"].get("syntax-fix", 0), T["iteration_types"].get("retry", 0),
+              "{:,}".format(T["final_dsl_bytes"]), "{:,}".format(T["final_png_bytes"])),
+           10.5, d.P["t1"])
+    B.mono(d, tf, "c-note", MX, yy + 19, MW, 15,
+           u"后三列：推算＝图面上自标“推算”的次数；点名＝case.md 里写出的 sources/probe/research 路径数；"
+           u"图内＝成品 DSL 里写出的同类路径数。02、03 两项皆 0（早期只写“见 sources/ 目录”，未逐一点名）——"
+           u"这是留痕缺陷，见 D 区补出的整份清单。", 10, d.P["t2"], lines=2)
+
+    # ================= D · 来源账 =================
+    dy = cy + 50 + 10 * rowh + 60
+    B.tlab(d, tf, "d-t", MX, dy, MW, 24,
+           u"D · 来源账：%d 次文档抓取里 %d 次失败，成功的 %d 页全在这里"
+           % (T["document_requests"], len(fails), T["distinct_ok_pages"]),
+           17, d.P["t0"], style="BOLD")
+    n200, n404, nto = (T["document_by_status"]["200"], T["document_by_status"]["404"],
+                       T["document_by_status"]["0"])
+    bw = MW / float(T["document_requests"])
+    d.rect(MX, dy + 28, n200 * bw, 18, SAFE)
+    d.rect(MX + n200 * bw, dy + 28, n404 * bw, 18, DANGER)
+    d.rect(MX + (n200 + n404) * bw, dy + 28, nto * bw, 18, AMBER)
+    B.mono(d, tf, "d-b1", MX + 6, dy + 30, n200 * bw - 10, 14, u"200 共 %d 次" % n200, 10, B.PAPER)
+    B.mono(d, tf, "d-b2", MX + n200 * bw + 6, dy + 30, n404 * bw - 8, 14, u"404 %d" % n404, 10, B.MOON)
+    B.mono(d, tf, "d-b3", MX + (n200 + n404) * bw + 4, dy + 30, nto * bw - 6, 14,
+           u"超时 %d" % nto, 9.5, CORONA)
+    hosts = sorted(T["document_hosts"].items(), key=lambda kv: -kv[1])
+    B.mono(d, tf, "d-h0", MX, dy + 52, MW, 14,
+           u"按主机：" + u"　".join("%s %d" % (h, n) for h, n in hosts), 10, d.P["t1"])
+    half = (len(okp) + 1) // 2
+    for i, u in enumerate(okp):
+        col_i, row_i = divmod(i, half)
+        B.mono(d, tf, "d-p%d" % i, MX + col_i * 476, dy + 70 + row_i * 12, 470, 12,
+               u"%2d %s" % (i + 1, short(u)), 8.5, d.P["t2"])
+    fy = dy + 70 + half * 12 + 6
+    B.mono(d, tf, "d-f0", MX, fy, MW, 14, u"失败样本（逐条留在 requests.jsonl，含 curl 原文）：",
+           10, d.P["t1"])
+    for i in range(2):
+        f = fails[i]
+        B.mono(d, tf, "d-f%d" % (i + 1), MX, fy + 15 + i * 13, MW, 13,
+               u"   %s  %s" % (f["status"], short(f["url"])), 9.5, d.P["t2"])
+    wfail = [f for f in fails if str(f["status"]) == "0"]
+    B.mono(d, tf, "d-f3", MX, fy + 41, MW, 13,
+           u"其中 %d 条是 en.wikipedia.org 连不上（curl 28）：这 %d 页一律未当作已读来源引用。"
+           % (len(wfail), len(wfail)), 9.5, d.P["t2"])
+
+    # ================= E · 三条阅读路线 =================
+    ey = fy + 62
+    B.tlab(d, tf, "e-t", MX, ey, MW, 24, u"E · 三条阅读路线（按共用的推算产物接起来）",
+           17, d.P["t0"], style="BOLD")
+    routes = [(u"只想知道为什么有全食也有环食", u"01 → 06 → 09", CYAN,
+               u"本影锥够不够长 → 最长能有多久 → 那一段里能不能裸眼"),
+              (u"今年真要出门看一次", u"02 → 05 → 07 → 09", EMBER,
+               u"在账本里挑一次 → 读它的路径页 → 算影速与落点 → 定摘镜时刻"),
+              (u"要核对数据本身", u"02 → 08 → 03 → 04 → 10", CORONA,
+               u"逐行解析 → 投到地图上 → 查周期与退行 → 回到本页看口径")]
+    for i, (t, chain, col, why) in enumerate(routes):
+        yy = ey + 28 + i * 30
+        d.rect(MX, yy + 2, 4, 24, col)
+        B.tlab(d, tf, "e-t%d" % i, MX + 14, yy, 300, 16, t, 12, d.P["t0"], style="BOLD")
+        B.mono(d, tf, "e-c%d" % i, MX + 330, yy, 170, 16, chain, 11.5, col)
+        B.mono(d, tf, "e-w%d" % i, MX + 14, yy + 15, 920, 14, why, 10, d.P["t2"])
+
+    # ================= F · 全套限制 =================
+    gy = ey + 28 + 3 * 30 + 8
+    B.tlab(d, tf, "f-t", MX, gy, MW, 24, u"F · 这十页共同的限制（不是某一页的）",
+           17, d.P["t0"], style="BOLD")
+    lims = [
+        u"服务没有矢量 path：圆、环、曲线、折线都由矩形与圆角矩形扫描线拼出，放大必见接缝；"
+        u"但所有比例都按“同一像素＝同一秒／同一千米”严格线性，没有一张图偷偷改比例。",
+        u"目录食分是地心值、经纬度按最近 1° 量化（±0.5°，赤道约 ±56 km），站点上的实际值另有出入；",
+        u"接触时刻、离轴窗口、裸眼占比、影速等一律是推算（图上共自标 %d 次），不是 NASA 的结论。" % tot_tu,
+        u"全册只用 UT 与地方真太阳时，不采用任何国家时区，也不换算成“钟表几点”。",
+        u"观测安全以 NASA 安全页原文为准（件-09 逐字引用），本册不替代它，更不是医疗建议。",
+    ]
+    for i, ln in enumerate(lims):
+        B.mono(d, tf, "f-l%d" % i, MX, gy + 26 + i * 15, MW, 14, ln, 10,
+               d.P["t1"] if not ln.startswith(u"  ") else d.P["t2"], lines=2)
+
+    B.footband(d, tf, "fb", [
+        u"本页数字来源：meta_stats.py 现场读取 requests.jsonl(%d 行)、iterations.jsonl(%d 行)、"
+        u"build-log.jsonl、tool-usage.jsonl(%d 行) 与九份 case.md／final.snapshot → research/meta.json。"
+        % (T["http_requests"], T["iterations"], T["tool_usage_records"]),
+        u"口径：文档请求按 URL 逐条计（同页重抓分别计次）；渲染次数＝实际 POST；"
+        u"闸门拦下 %d 次（件-09 v01 页脚超宽，request_sent:false，未向服务发出请求）。" % T["gate_blocked"],
+        u"十件成品：01 本影锥／02 账本／03 沙罗／04 食季／05 2024 档案／06 时长／07 影速／"
+        u"08 食甚点地理／09 裸眼窗口／10 本页。每件入口见各自 case-NN/case.md。",
+    ], size=10.5)
+
+    info = {"renders": T["renders"], "docs": T["document_requests"],
+            "iters": T["iterations"], "tiers": tot_ok + tot_sc + tot_tu + tot_dm}
+    return d, tf, info
+
+
+def edges_case(key, edges):
+    return [e for e in edges if e["from"] == key or e["to"] == key]

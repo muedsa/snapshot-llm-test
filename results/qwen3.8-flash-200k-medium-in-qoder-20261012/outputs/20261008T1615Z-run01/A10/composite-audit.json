@@ -1,0 +1,1522 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A10",
+ "run_id": "20261008T1615Z-run01",
+ "canvas": [
+  1440,
+  1100
+ ],
+ "layout": {
+  "area": [
+   320,
+   240
+  ],
+  "columns": 3,
+  "rows": 2,
+  "col_x": [
+   40,
+   500,
+   960
+  ],
+  "row_y": [
+   152,
+   584
+  ],
+  "slot": [
+   440,
+   420
+  ],
+  "area_origin_in_slot": [
+   60,
+   40
+  ],
+  "min_gap_between_areas": 80,
+  "background": "#0A1120",
+  "area_background": "#FFFFFF"
+ },
+ "filters": {
+  "sigmaX": 6.0,
+  "sigmaY": 6.0,
+  "tileMode": "CLAMP",
+  "predicted_step_edge_rise_10_90_px": 15.38,
+  "card": {
+   "rect_in_area": [
+    40,
+    40,
+    240,
+    160
+   ],
+   "radius": 20,
+   "text": "SHARP / BLUR",
+   "text_font_size": 24
+  },
+  "stripe": {
+   "pitch": 16,
+   "width": 8,
+   "color": "#1D4ED8",
+   "direction": "vertical",
+   "spans_whole_area": true
+  },
+  "circle": {
+   "center_area": [
+    160.0,
+    120.0
+   ],
+   "radius": 100,
+   "clip_behavior": "ANTI_ALIAS"
+  }
+ },
+ "shapes": {
+  "red": {
+   "xywh_in_area": [
+    40,
+    40,
+    160,
+    120
+   ],
+   "color": "#FF0000"
+  },
+  "blue": {
+   "xywh_in_area": [
+    120,
+    80,
+    160,
+    120
+   ],
+   "color": "#0000FF",
+   "z": "above red"
+  },
+  "sample_point_in_area": [
+   180,
+   100
+  ],
+  "content_box": {
+   "xywh_in_area": [
+    60,
+    45,
+    200,
+    150
+   ],
+   "used_by": [
+    "⑤",
+    "⑥"
+   ]
+  },
+  "content_rects": {
+   "dark": {
+    "xywh_in_content": [
+     0,
+     5,
+     120,
+     80
+    ],
+    "color": "#1E293B",
+    "shadow": "0 6 14 0 #00000066 NORMAL"
+   },
+   "darker": {
+    "xywh_in_content": [
+     95,
+     85,
+     105,
+     60
+    ],
+    "color": "#0F172A"
+   },
+   "ring": {
+    "xywh_in_content": [
+     150,
+     0,
+     44,
+     44
+    ],
+    "color": "#22D3EE",
+    "border_px": 7,
+    "band_radius": [
+     15,
+     22
+    ]
+   }
+  }
+ },
+ "cells": [
+  {
+   "index": 0,
+   "number": "①",
+   "name": "两个矩形各带 50% alpha",
+   "slot_rect": [
+    40,
+    152,
+    440,
+    420
+   ],
+   "area_origin": [
+    100,
+    192
+   ],
+   "area_size": [
+    320,
+    240
+   ],
+   "sample_canvas": [
+    280,
+    292
+   ]
+  },
+  {
+   "index": 1,
+   "number": "②",
+   "name": "不透明矩形放进 Opacity(0.5) 组",
+   "slot_rect": [
+    500,
+    152,
+    440,
+    420
+   ],
+   "area_origin": [
+    560,
+    192
+   ],
+   "area_size": [
+    320,
+    240
+   ],
+   "sample_canvas": [
+    740,
+    292
+   ]
+  },
+  {
+   "index": 2,
+   "number": "③",
+   "name": "圆角卡：只有背景被模糊",
+   "slot_rect": [
+    960,
+    152,
+    440,
+    420
+   ],
+   "area_origin": [
+    1020,
+    192
+   ],
+   "area_size": [
+    320,
+    240
+   ],
+   "sample_canvas": [
+    1200,
+    292
+   ]
+  },
+  {
+   "index": 3,
+   "number": "④",
+   "name": "圆角卡：文字与形状一起子树模糊",
+   "slot_rect": [
+    40,
+    584,
+    440,
+    420
+   ],
+   "area_origin": [
+    100,
+    624
+   ],
+   "area_size": [
+    320,
+    240
+   ],
+   "sample_canvas": [
+    280,
+    724
+   ]
+  },
+  {
+   "index": 4,
+   "number": "⑤",
+   "name": "MULTIPLY 之后再做子树高斯模糊",
+   "slot_rect": [
+    500,
+    584,
+    440,
+    420
+   ],
+   "area_origin": [
+    560,
+    624
+   ],
+   "area_size": [
+    320,
+    240
+   ],
+   "sample_canvas": [
+    740,
+    724
+   ]
+  },
+  {
+   "index": 5,
+   "number": "⑥",
+   "name": "⑤ 的效果限定在圆形裁剪区内",
+   "slot_rect": [
+    960,
+    584,
+    440,
+    420
+   ],
+   "area_origin": [
+    1020,
+    624
+   ],
+   "area_size": [
+    320,
+    240
+   ],
+   "sample_canvas": [
+    1200,
+    724
+   ]
+  }
+ ],
+ "measurements": {
+  "note": "所有坐标由本文件常量推出，check_a10.py 不自带任何像素位置；expected 值与图上印的期望值同源",
+  "samples": [
+   {
+    "cell": "①",
+    "label": "overlap",
+    "canvas": [
+     280,
+     292
+    ],
+    "expected": [
+     127,
+     63,
+     191
+    ],
+    "tolerance": 2,
+    "claim": "两层各带 hex 80，逐层 source-over"
+   },
+   {
+    "cell": "①",
+    "label": "red_only",
+    "canvas": [
+     160,
+     252
+    ],
+    "expected": [
+     255,
+     127,
+     127
+    ],
+    "tolerance": 2,
+    "claim": "单层 50% 红压在白底上"
+   },
+   {
+    "cell": "①",
+    "label": "blue_only",
+    "canvas": [
+     350,
+     372
+    ],
+    "expected": [
+     127,
+     127,
+     255
+    ],
+    "tolerance": 2,
+    "claim": "单层 50% 蓝压在白底上"
+   },
+   {
+    "cell": "②",
+    "label": "overlap",
+    "canvas": [
+     740,
+     292
+    ],
+    "expected": [
+     128,
+     128,
+     255
+    ],
+    "tolerance": 2,
+    "claim": "组内先拍平，只剩纯蓝按 0.5 合成"
+   },
+   {
+    "cell": "②",
+    "label": "red_only",
+    "canvas": [
+     620,
+     252
+    ],
+    "expected": [
+     255,
+     128,
+     128
+    ],
+    "tolerance": 2,
+    "claim": "拍平后红侧与①相差 1 级（hex 80 与 0.5 之差）"
+   },
+   {
+    "cell": "②",
+    "label": "blue_only",
+    "canvas": [
+     810,
+     372
+    ],
+    "expected": [
+     128,
+     128,
+     255
+    ],
+    "tolerance": 2,
+    "claim": "蓝侧即整层 0.5 的结果"
+   },
+   {
+    "cell": "⑤",
+    "label": "dark_rect",
+    "canvas": [
+     680,
+     714
+    ],
+    "expected": [
+     29,
+     30,
+     17
+    ],
+    "tolerance": 3,
+    "claim": "MULTIPLY 后再模糊，离边 >=40px 处即精确值"
+   },
+   {
+    "cell": "⑤",
+    "label": "amber_gap",
+    "canvas": [
+     780,
+     733
+    ],
+    "expected": [
+     246,
+     185,
+     74
+    ],
+    "tolerance": 3,
+    "claim": "透明间隙被 MULTIPLY 染成实心滤色"
+   },
+   {
+    "cell": "⑤",
+    "label": "ring_blurred",
+    "canvas": [
+     777,
+     702
+    ],
+    "expected": [
+     152,
+     171,
+     72
+    ],
+    "tolerance": 12,
+    "claim": "7px 青环经 sigma=6 后的保留值（含色相旋转）"
+   },
+   {
+    "cell": "⑥",
+    "label": "unfiltered_dark",
+    "canvas": [
+     1095,
+     679
+    ],
+    "expected": [
+     30,
+     41,
+     59
+    ],
+    "tolerance": 2,
+    "claim": "圆外是完全未滤镜的原图"
+   },
+   {
+    "cell": "⑥",
+    "label": "unfiltered_ring",
+    "canvas": [
+     1267,
+     680
+    ],
+    "expected": [
+     34,
+     211,
+     238
+    ],
+    "tolerance": 3,
+    "claim": "青环跨圆界：界外仍是纯青 (34,211,238)"
+   },
+   {
+    "cell": "⑥",
+    "label": "filtered_dark",
+    "canvas": [
+     1140,
+     714
+    ],
+    "expected": [
+     29,
+     30,
+     17
+    ],
+    "tolerance": 3,
+    "claim": "圆内与⑤同点同值：裁剪只限定作用范围"
+   }
+  ],
+  "area_geometry": [
+   {
+    "cell": "①",
+    "expected_bbox": [
+     100,
+     192,
+     320,
+     240
+    ]
+   },
+   {
+    "cell": "②",
+    "expected_bbox": [
+     560,
+     192,
+     320,
+     240
+    ]
+   },
+   {
+    "cell": "③",
+    "expected_bbox": [
+     1020,
+     192,
+     320,
+     240
+    ]
+   },
+   {
+    "cell": "④",
+    "expected_bbox": [
+     100,
+     624,
+     320,
+     240
+    ]
+   },
+   {
+    "cell": "⑤",
+    "expected_bbox": [
+     560,
+     624,
+     320,
+     240
+    ]
+   },
+   {
+    "cell": "⑥",
+    "expected_bbox": [
+     1020,
+     624,
+     320,
+     240
+    ]
+   }
+  ],
+  "area_geometry_method": {
+   "lum_bright": 60,
+   "row_fraction_min": 0.9,
+   "col_fraction_min": 0.9,
+   "search_margin_px": 10,
+   "tolerance_px": 2,
+   "note": "整行/整列亮占比 >=0.9 才算实验区边缘，避免把区头上方的说明文字当成边界"
+  },
+  "ripple": {
+   "channel": "R",
+   "outside": {
+    "cells": [
+     "③",
+     "④"
+    ],
+    "row_area_y": 20,
+    "x_range": [
+     8,
+     32
+    ],
+    "expected_p2p": {
+     "③": 226,
+     "④": 226
+    }
+   },
+   "inside": {
+    "cells": [
+     "③",
+     "④"
+    ],
+    "row_area_y": 70,
+    "x_range": [
+     64,
+     96
+    ],
+    "expected_p2p": {
+     "③": 16.1,
+     "④": 67.4
+    }
+   }
+  },
+  "card_edge": {
+   "cell_3_rim": {
+    "row_area_y": 70,
+    "x_range": [
+     30,
+     50
+    ],
+    "lum_max_dark": 40,
+    "expected_columns": [
+     40,
+     41
+    ],
+    "tolerance_px": 1.5
+   },
+   "cell_4_profile": {
+    "col_range_area_x": [
+     64,
+     256
+    ],
+    "y_range": [
+     10,
+     80
+    ],
+    "edge_area_y": 40,
+    "channel": "R",
+    "expected_rise_10_90_px": 15.38,
+    "rise_tol_px": 2.5,
+    "plateau_outside_mean_R": 142,
+    "plateau_inside_mean_R": 221
+   }
+  },
+  "text_band_gradient": {
+   "area_rect": [
+    40,
+    96.0,
+    280,
+    132.0
+   ],
+   "channel": "B",
+   "rule": "③ / ④ >= 2.5",
+   "sharp_edge_counts_expected": {
+    "③": "> 0",
+    "④": "0"
+   }
+  },
+  "arc_profile": {
+   "cell": "⑥",
+   "angle_deg": 220,
+   "r_range": [
+    88,
+    109
+   ],
+   "plateau_samples": 5,
+   "channel": "B",
+   "step_window_r": [
+    98,
+    106
+   ],
+   "inside": [
+    29,
+    30,
+    17
+   ],
+   "outside": [
+    30,
+    41,
+    59
+   ],
+   "expected_rise_10_90_px_max": 3.0,
+   "note": "半径 88..100 段内值缓升（19→25）本身就是证据：模糊发生在裁剪之前，滤镜场自己的梯度一直延续到圆界；台阶宽度只在紧邻边界的 98..106 窗口内测",
+   "claim": "ClipOval 在滤镜之后裁剪：边界是硬边，不是 15px 羽化"
+  },
+  "filter_halo_profile": {
+   "cell": "⑤",
+   "content_x": 135,
+   "canvas_x": 755,
+   "y_range": [
+    630,
+    667
+   ],
+   "channel": "B",
+   "box_top_canvas_y": 669,
+   "amber_B": 74,
+   "white_B": 255,
+   "assertions": {
+    "B_at_minus_6_max": 100,
+    "B_at_minus_30_min": 250,
+    "midpoint_offset_px_range": [
+     8,
+     22
+    ]
+   },
+   "naive_step_model_rejected": {
+    "6": [
+     253.6,
+     243.9,
+     226.3
+    ],
+    "12": [
+     254.8,
+     253.4,
+     250.9
+    ],
+    "30": [
+     255.0,
+     255.0,
+     255.0
+    ]
+   },
+   "claim": "ImageFiltered 的晕染越过滤镜盒外沿：6px 处仍是琥珀，30px 处回到白"
+  }
+ },
+ "predicted": {
+  "note": "全部为按上面公式算出的期望值，check_a10.py 会在最终 PNG 上取同一点实测",
+  "c1_alpha_meaning": {
+   "hex_alpha": "80",
+   "as_fraction": 0.501961,
+   "vs_half": 0.001961,
+   "percent_error": 0.392
+  },
+  "cell1_overlap": {
+   "if_alpha_were_0.5": [
+    128,
+    64,
+    192
+   ],
+   "with_hex_80": [
+    127,
+    63,
+    191
+   ],
+   "delta_levels": [
+    -1,
+    -1,
+    -1
+   ]
+  },
+  "cell1_red_only": [
+   255,
+   127,
+   127
+  ],
+  "cell1_blue_only": [
+   127,
+   127,
+   255
+  ],
+  "cell2_overlap": [
+   128,
+   128,
+   255
+  ],
+  "cell2_red_only": [
+   255,
+   128,
+   128
+  ],
+  "cell2_blue_only": [
+   128,
+   128,
+   255
+  ],
+  "cell1_vs_cell2_overlap": [
+   1,
+   65,
+   64
+  ],
+  "multiply": {
+   "filter_color": "#F6B94A",
+   "dark_rect": [
+    29,
+    30,
+    17
+   ],
+   "darker_rect": [
+    14,
+    17,
+    12
+   ],
+   "cyan_ring": [
+    33,
+    153,
+    69
+   ],
+   "cyan_ring_after_sigma6": [
+    152,
+    171,
+    72
+   ],
+   "cyan_ring_retention": 0.4403,
+   "bleed_outside_box_naive_step_model": {
+    "6": [
+     253.6,
+     243.9,
+     226.3
+    ],
+    "12": [
+     254.8,
+     253.4,
+     250.9
+    ],
+    "30": [
+     255.0,
+     255.0,
+     255.0
+    ]
+   },
+   "white_or_gap": [
+    246,
+    185,
+    74
+   ],
+   "gap_rule": "MULTIPLY 在图层透明处留下源色，因此滤镜边界内的透明间隙会变成实心 #F6B94A（文档：部分混合模式也会给边界内的透明间隙着色）"
+  }
+ },
+ "measured": {
+  "area_geometry": [
+   {
+    "cell": "①",
+    "expected": [
+     100,
+     192,
+     320,
+     240
+    ],
+    "measured": [
+     100,
+     192,
+     320,
+     240
+    ],
+    "deviation": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "tolerance_px": 2,
+    "pass": true
+   },
+   {
+    "cell": "②",
+    "expected": [
+     560,
+     192,
+     320,
+     240
+    ],
+    "measured": [
+     560,
+     192,
+     320,
+     240
+    ],
+    "deviation": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "tolerance_px": 2,
+    "pass": true
+   },
+   {
+    "cell": "③",
+    "expected": [
+     1020,
+     192,
+     320,
+     240
+    ],
+    "measured": [
+     1020,
+     192,
+     320,
+     240
+    ],
+    "deviation": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "tolerance_px": 2,
+    "pass": true
+   },
+   {
+    "cell": "④",
+    "expected": [
+     100,
+     624,
+     320,
+     240
+    ],
+    "measured": [
+     100,
+     624,
+     320,
+     240
+    ],
+    "deviation": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "tolerance_px": 2,
+    "pass": true
+   },
+   {
+    "cell": "⑤",
+    "expected": [
+     560,
+     624,
+     320,
+     240
+    ],
+    "measured": [
+     560,
+     624,
+     320,
+     240
+    ],
+    "deviation": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "tolerance_px": 2,
+    "pass": true
+   },
+   {
+    "cell": "⑥",
+    "expected": [
+     1020,
+     624,
+     320,
+     240
+    ],
+    "measured": [
+     1020,
+     624,
+     320,
+     240
+    ],
+    "deviation": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "tolerance_px": 2,
+    "pass": true
+   }
+  ],
+  "samples": [
+   {
+    "cell": "①",
+    "label": "overlap",
+    "canvas": [
+     280,
+     292
+    ],
+    "expected": [
+     127,
+     63,
+     191
+    ],
+    "measured": [
+     127,
+     63,
+     191
+    ],
+    "delta_levels": [
+     0,
+     0,
+     0
+    ],
+    "tolerance": 2,
+    "claim": "两层各带 hex 80，逐层 source-over",
+    "pass": true
+   },
+   {
+    "cell": "①",
+    "label": "red_only",
+    "canvas": [
+     160,
+     252
+    ],
+    "expected": [
+     255,
+     127,
+     127
+    ],
+    "measured": [
+     255,
+     127,
+     127
+    ],
+    "delta_levels": [
+     0,
+     0,
+     0
+    ],
+    "tolerance": 2,
+    "claim": "单层 50% 红压在白底上",
+    "pass": true
+   },
+   {
+    "cell": "①",
+    "label": "blue_only",
+    "canvas": [
+     350,
+     372
+    ],
+    "expected": [
+     127,
+     127,
+     255
+    ],
+    "measured": [
+     127,
+     127,
+     255
+    ],
+    "delta_levels": [
+     0,
+     0,
+     0
+    ],
+    "tolerance": 2,
+    "claim": "单层 50% 蓝压在白底上",
+    "pass": true
+   },
+   {
+    "cell": "②",
+    "label": "overlap",
+    "canvas": [
+     740,
+     292
+    ],
+    "expected": [
+     128,
+     128,
+     255
+    ],
+    "measured": [
+     126,
+     126,
+     255
+    ],
+    "delta_levels": [
+     -2,
+     -2,
+     0
+    ],
+    "tolerance": 2,
+    "claim": "组内先拍平，只剩纯蓝按 0.5 合成",
+    "pass": true
+   },
+   {
+    "cell": "②",
+    "label": "red_only",
+    "canvas": [
+     620,
+     252
+    ],
+    "expected": [
+     255,
+     128,
+     128
+    ],
+    "measured": [
+     255,
+     126,
+     126
+    ],
+    "delta_levels": [
+     0,
+     -2,
+     -2
+    ],
+    "tolerance": 2,
+    "claim": "拍平后红侧与①相差 1 级（hex 80 与 0.5 之差）",
+    "pass": true
+   },
+   {
+    "cell": "②",
+    "label": "blue_only",
+    "canvas": [
+     810,
+     372
+    ],
+    "expected": [
+     128,
+     128,
+     255
+    ],
+    "measured": [
+     126,
+     126,
+     255
+    ],
+    "delta_levels": [
+     -2,
+     -2,
+     0
+    ],
+    "tolerance": 2,
+    "claim": "蓝侧即整层 0.5 的结果",
+    "pass": true
+   },
+   {
+    "cell": "⑤",
+    "label": "dark_rect",
+    "canvas": [
+     680,
+     714
+    ],
+    "expected": [
+     29,
+     30,
+     17
+    ],
+    "measured": [
+     29,
+     30,
+     18
+    ],
+    "delta_levels": [
+     0,
+     0,
+     1
+    ],
+    "tolerance": 3,
+    "claim": "MULTIPLY 后再模糊，离边 >=40px 处即精确值",
+    "pass": true
+   },
+   {
+    "cell": "⑤",
+    "label": "amber_gap",
+    "canvas": [
+     780,
+     733
+    ],
+    "expected": [
+     246,
+     185,
+     74
+    ],
+    "measured": [
+     246,
+     185,
+     74
+    ],
+    "delta_levels": [
+     0,
+     0,
+     0
+    ],
+    "tolerance": 3,
+    "claim": "透明间隙被 MULTIPLY 染成实心滤色",
+    "pass": true
+   },
+   {
+    "cell": "⑤",
+    "label": "ring_blurred",
+    "canvas": [
+     777,
+     702
+    ],
+    "expected": [
+     152,
+     171,
+     72
+    ],
+    "measured": [
+     147,
+     170,
+     72
+    ],
+    "delta_levels": [
+     -5,
+     -1,
+     0
+    ],
+    "tolerance": 12,
+    "claim": "7px 青环经 sigma=6 后的保留值（含色相旋转）",
+    "pass": true
+   },
+   {
+    "cell": "⑥",
+    "label": "unfiltered_dark",
+    "canvas": [
+     1095,
+     679
+    ],
+    "expected": [
+     30,
+     41,
+     59
+    ],
+    "measured": [
+     30,
+     41,
+     59
+    ],
+    "delta_levels": [
+     0,
+     0,
+     0
+    ],
+    "tolerance": 2,
+    "claim": "圆外是完全未滤镜的原图",
+    "pass": true
+   },
+   {
+    "cell": "⑥",
+    "label": "unfiltered_ring",
+    "canvas": [
+     1267,
+     680
+    ],
+    "expected": [
+     34,
+     211,
+     238
+    ],
+    "measured": [
+     34,
+     211,
+     238
+    ],
+    "delta_levels": [
+     0,
+     0,
+     0
+    ],
+    "tolerance": 3,
+    "claim": "青环跨圆界：界外仍是纯青 (34,211,238)",
+    "pass": true
+   },
+   {
+    "cell": "⑥",
+    "label": "filtered_dark",
+    "canvas": [
+     1140,
+     714
+    ],
+    "expected": [
+     29,
+     30,
+     17
+    ],
+    "measured": [
+     29,
+     30,
+     18
+    ],
+    "delta_levels": [
+     0,
+     0,
+     1
+    ],
+    "tolerance": 3,
+    "claim": "圆内与⑤同点同值：裁剪只限定作用范围",
+    "pass": true
+   }
+  ],
+  "stripe_ripple": [
+   {
+    "cell": "③",
+    "side": "outside",
+    "channel": "R",
+    "row_area_y": 20,
+    "x_range": [
+     8,
+     32
+    ],
+    "measured_p2p": 226,
+    "expected_p2p": 226,
+    "tolerance": 40.7,
+    "pass": true
+   },
+   {
+    "cell": "④",
+    "side": "outside",
+    "channel": "R",
+    "row_area_y": 20,
+    "x_range": [
+     8,
+     32
+    ],
+    "measured_p2p": 226,
+    "expected_p2p": 226,
+    "tolerance": 40.7,
+    "pass": true
+   },
+   {
+    "cell": "③",
+    "side": "inside",
+    "channel": "R",
+    "row_area_y": 70,
+    "x_range": [
+     64,
+     96
+    ],
+    "measured_p2p": 14,
+    "expected_p2p": 16.1,
+    "tolerance": 8,
+    "pass": true
+   },
+   {
+    "cell": "④",
+    "side": "inside",
+    "channel": "R",
+    "row_area_y": 70,
+    "x_range": [
+     64,
+     96
+    ],
+    "measured_p2p": 68,
+    "expected_p2p": 67.4,
+    "tolerance": 23.6,
+    "pass": true
+   }
+  ],
+  "cell3_rim_position": [
+   {
+    "cell": "③",
+    "spec": {
+     "row_area_y": 70,
+     "x_range": [
+      30,
+      50
+     ],
+     "lum_max_dark": 40,
+     "expected_columns": [
+      40,
+      41
+     ],
+     "tolerance_px": 1.5
+    },
+    "dark_columns_area_x": [
+     40,
+     41
+    ],
+    "expected_columns": [
+     40,
+     41
+    ],
+    "centroid": 40.5,
+    "tolerance_px": 1.5,
+    "pass": true
+   }
+  ],
+  "cell4_card_edge": [
+   {
+    "cell": "④",
+    "profiled_along": "y across the card top edge",
+    "mean_over_area_x": [
+     64,
+     256
+    ],
+    "plateau_outside_mean_R": 141.4,
+    "expected_outside": 142,
+    "plateau_inside_mean_R": 220.8,
+    "expected_inside": 221,
+    "rise_10_90_px": 14.28,
+    "predicted_rise_10_90_px": 15.38,
+    "implied_sigma_px": 5.57,
+    "crossing_10_area_y": 32.36,
+    "crossing_90_area_y": 46.65,
+    "crossing_50_area_y": 39.5,
+    "expected_edge_area_y": 40,
+    "rise_tol_px": 2.5,
+    "pass": true
+   }
+  ],
+  "text_band_gradient": [
+   {
+    "band_area_rect": [
+     40,
+     96.0,
+     280,
+     132.0
+    ],
+    "channel": "B",
+    "mean_abs_dB_per_px": {
+     "③": 13.29,
+     "④": 2.141
+    },
+    "pixels_with_abs_dB_ge_60": {
+     "③": 820,
+     "④": 0
+    },
+    "ratio_3_over_4": 6.21,
+    "rule": "③ / ④ >= 2.5",
+    "pass": true
+   }
+  ],
+  "cell5_blur_halo": [
+   {
+    "cell": "⑤",
+    "canvas_x": 755,
+    "channel": "B",
+    "box_top_canvas_y": 669,
+    "profile_B_above_box": {
+     "630": 255,
+     "631": 255,
+     "632": 255,
+     "633": 255,
+     "634": 255,
+     "635": 255,
+     "636": 255,
+     "637": 255,
+     "638": 255,
+     "639": 255,
+     "640": 254,
+     "641": 254,
+     "642": 252,
+     "643": 250,
+     "644": 247,
+     "645": 244,
+     "646": 239,
+     "647": 232,
+     "648": 225,
+     "649": 216,
+     "650": 206,
+     "651": 195,
+     "652": 182,
+     "653": 170,
+     "654": 159,
+     "655": 147,
+     "656": 134,
+     "657": 123,
+     "658": 113,
+     "659": 104,
+     "660": 97,
+     "661": 90,
+     "662": 85,
+     "663": 82,
+     "664": 79,
+     "665": 77,
+     "666": 75,
+     "667": 75
+    },
+    "B_at_6px_outside": 82,
+    "B_at_30px_outside": 255,
+    "expected_amber_B": 74,
+    "expected_white_B": 255,
+    "rise_10_90_px": 14.29,
+    "midpoint_canvas_y": 653.45,
+    "midpoint_offset_outside_box_px": 15.55,
+    "assertions": {
+     "B_at_minus_6_max": 100,
+     "B_at_minus_30_min": 250,
+     "midpoint_offset_px_range": [
+      8,
+      22
+     ]
+    },
+    "claim": "ImageFiltered 的晕染越过滤镜盒外沿：6px 处仍是琥珀，30px 处回到白",
+    "naive_step_model_rejected": {
+     "6": [
+      253.6,
+      243.9,
+      226.3
+     ],
+     "12": [
+      254.8,
+      253.4,
+      250.9
+     ],
+     "30": [
+      255.0,
+      255.0,
+      255.0
+     ]
+    },
+    "pass": true
+   }
+  ],
+  "cell6_clip_arc_edge": [
+   {
+    "cell": "⑥",
+    "angle_deg": 220,
+    "channel": "B",
+    "center_canvas": [
+     1180.0,
+     744.0
+    ],
+    "r_range": [
+     88,
+     109
+    ],
+    "profile_B_vs_radius": {
+     "88": 18,
+     "89": 18,
+     "90": 18,
+     "91": 18,
+     "92": 19,
+     "93": 19,
+     "94": 19,
+     "95": 20,
+     "96": 21,
+     "97": 21,
+     "98": 23,
+     "99": 24,
+     "100": 25,
+     "101": 48,
+     "102": 59,
+     "103": 59,
+     "104": 59,
+     "105": 59,
+     "106": 59,
+     "107": 59,
+     "108": 59,
+     "109": 59
+    },
+    "inside_plateau": 18.2,
+    "expected_inside": [
+     29,
+     30,
+     17
+    ],
+    "outside_plateau": 59.0,
+    "expected_outside": [
+     30,
+     41,
+     59
+    ],
+    "step_window_r": [
+     98,
+     106
+    ],
+    "rise_10_90_px": 1.6,
+    "crossing_10_r": 100.07,
+    "crossing_90_r": 101.67,
+    "predicted_max_rise_px": 3.0,
+    "note": "半径 88..100 段内值缓升（19→25）本身就是证据：模糊发生在裁剪之前，滤镜场自己的梯度一直延续到圆界；台阶宽度只在紧邻边界的 98..106 窗口内测",
+    "claim": "ClipOval 在滤镜之后裁剪：边界是硬边，不是 15px 羽化",
+    "pass": true
+   }
+  ],
+  "source_png": "outputs/20261008T1615Z-run01/A10/compositing-lab.png",
+  "size": [
+   1440,
+   1100
+  ],
+  "summary": {
+   "checks": 27,
+   "passed": 27,
+   "failed": [],
+   "max_sample_delta_levels": 5
+  },
+  "verified_at": "2026-10-08T14:44:19+00:00"
+ }
+}

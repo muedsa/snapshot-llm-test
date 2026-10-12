@@ -1,0 +1,167 @@
+{
+  "start": "2026-11-07T09:00:00+08:00",
+  "deadline": "2026-11-07T16:00:00+08:00",
+  "teams": [
+    "design",
+    "engineering"
+  ],
+  "tasks": [
+    {
+      "id": "R01",
+      "label": "需求核对",
+      "minutes": 25,
+      "teams": [
+        "design"
+      ],
+      "depends": []
+    },
+    {
+      "id": "R02",
+      "label": "服务与字体探测",
+      "minutes": 20,
+      "teams": [
+        "engineering"
+      ],
+      "depends": []
+    },
+    {
+      "id": "R03",
+      "label": "数据清洗",
+      "minutes": 40,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R02"
+      ]
+    },
+    {
+      "id": "R04",
+      "label": "视觉系统",
+      "minutes": 60,
+      "teams": [
+        "design"
+      ],
+      "depends": [
+        "R01"
+      ]
+    },
+    {
+      "id": "R05",
+      "label": "文案审校",
+      "minutes": 30,
+      "teams": [
+        "design",
+        "engineering"
+      ],
+      "depends": [
+        "R01"
+      ]
+    },
+    {
+      "id": "R06",
+      "label": "图表计算",
+      "minutes": 45,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R03"
+      ]
+    },
+    {
+      "id": "R07",
+      "label": "主海报构建",
+      "minutes": 70,
+      "teams": [
+        "design"
+      ],
+      "depends": [
+        "R04",
+        "R05"
+      ]
+    },
+    {
+      "id": "R08",
+      "label": "驾驶舱构建",
+      "minutes": 65,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R04",
+        "R06"
+      ]
+    },
+    {
+      "id": "R09",
+      "label": "手机适配",
+      "minutes": 45,
+      "teams": [
+        "design",
+        "engineering"
+      ],
+      "depends": [
+        "R07"
+      ]
+    },
+    {
+      "id": "R10",
+      "label": "视觉回归检查",
+      "minutes": 35,
+      "teams": [
+        "design"
+      ],
+      "depends": [
+        "R07",
+        "R08",
+        "R09"
+      ]
+    },
+    {
+      "id": "R11",
+      "label": "产物与数据核验",
+      "minutes": 30,
+      "teams": [
+        "engineering"
+      ],
+      "depends": [
+        "R08",
+        "R09"
+      ]
+    },
+    {
+      "id": "R12",
+      "label": "交付归档",
+      "minutes": 20,
+      "teams": [
+        "design",
+        "engineering"
+      ],
+      "depends": [
+        "R10",
+        "R11"
+      ]
+    }
+  ],
+  "risks": [
+    {
+      "id": "K1",
+      "task": "R02",
+      "impact": "服务限流导致等待",
+      "mitigation": "保留响应并依据Retry-After重试"
+    },
+    {
+      "id": "K2",
+      "task": "R05",
+      "impact": "长文案导致版式回归",
+      "mitigation": "冻结文案后再完成适配"
+    },
+    {
+      "id": "K3",
+      "task": "R10",
+      "impact": "实际图像暴露裁剪或比例错误",
+      "mitigation": "预留返工缓冲，不跳过看图"
+    }
+  ]
+}

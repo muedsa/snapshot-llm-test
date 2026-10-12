@@ -1,0 +1,87 @@
+{
+  "id": "A14",
+  "title": "八组文案压力测试与批量生成",
+  "category": "规模与鲁棒性",
+  "challenge": "长短文案、特殊字符、多状态与批量无遗漏。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "给 inputs/cards.json 中8条讲座制作8张1200×630宣传卡，文件名card-K01至card-K08。\n统一主色、标题区域、日期“2026.11.07”、品牌“Structure / Vision”及状态体系，\n保留每条标题、讲者、时间、状态的原始文字。标题字号≥36、最多3行；讲者≥22。\n状态用颜色加文字/符号共同区分：开放、满额、候补、取消；取消卡仍须显示完整\n标题与时间，另注明“本场取消”，不能把它删除或只出灰底。长讲者允许两行。\n各卡安全边距40，标题不与状态徽标碰撞，不通过全局缩小整图适配长标题。\n采用一套参数化规则从数据生成，允许长度触发不同网格/换行，但不要逐条硬改\n输入。保留生成脚本在临时目录；运行后每張真实查看，可另做接触表检查一致性。\n附 batch-audit.json，逐卡记录内容、标题字号/行数、位置、状态编码与图片查看。\n没有查看到某张就不能声称八张通过。接触表不能替代八张最终服务原图。\n",
+  "inputs": [
+    "inputs/cards.json"
+  ],
+  "required_outputs": [
+    {
+      "filename": "card-K01.png",
+      "dsl": "card-K01.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "开始"
+    },
+    {
+      "filename": "card-K02.png",
+      "dsl": "card-K02.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "读文档，也要读懂布局约束"
+    },
+    {
+      "filename": "card-K03.png",
+      "dsl": "card-K03.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "当所有信息都想成为标题：密集内容中的取舍与层级"
+    },
+    {
+      "filename": "card-K04.png",
+      "dsl": "card-K04.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "A < B & C > D：不要把文本当成标签"
+    },
+    {
+      "filename": "card-K05.png",
+      "dsl": "card-K05.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "Color, Alpha & Contrast / 从颜色到可读性"
+    },
+    {
+      "filename": "card-K06.png",
+      "dsl": "card-K06.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "两张看似相同的图片，为什么不能证明语义相同？"
+    },
+    {
+      "filename": "card-K07.png",
+      "dsl": "card-K07.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "把一次失败变成可复现记录——服务、字体、数据与视觉检查"
+    },
+    {
+      "filename": "card-K08.png",
+      "dsl": "card-K08.snapshot",
+      "width": 1200,
+      "height": 630,
+      "purpose": "从“已经请求成功”到“已经完成作品”：模型工作能力的最后一公里"
+    }
+  ],
+  "additional_outputs": [
+    "batch-audit.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A14/",
+  "temp_dir_template": "tmp/{run_id}/A14/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

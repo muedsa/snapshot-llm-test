@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A23",
+  "run_id": "20261008T1615Z-run01",
+  "task_round": 1,
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "output_dir": "outputs/20261008T1615Z-run01/A23/",
+  "temp_dir": "tmp/20261008T1615Z-run01/A23/",
+  "timings": {
+    "started_at": "2026-10-09T07:41:36.225665+00:00",
+    "ended_at": "2026-10-09T08:23:25.250887+00:00",
+    "elapsed_seconds": 2509.0,
+    "first_usable_image_seconds": 4.0,
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": null,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 48.859,
+    "requests_missing_duration": [],
+    "shared_doc_requests_reused": 15,
+    "shared_doc_duration_seconds": 34.359,
+    "shared_doc_note": "文档抓取属 shared，只在 _suite 计一次，不计入本题耗时之和",
+    "server_timing_source": "Server-Timing response header captured in requests.jsonl",
+    "wall_clock_seconds": 2509.0,
+    "active_seconds": 2509.0,
+    "idle_gap_seconds": 0.0,
+    "idle_gaps": [
+      {
+        "start": "2026-10-09T07:22:30+00:00",
+        "end": "2026-10-09T07:41:36+00:00",
+        "seconds": 1146.0,
+        "classification": "reading",
+        "evidence": "A22 归档(07:22:30Z)后读 A23 TASK.md/AGENTS.md 并写探测 DSL，起点无独立时间戳，故本题计时窗口从首个探测请求 07:41:36Z 起算"
+      }
+    ],
+    "elapsed_time_note": "elapsed/wall is the task window, not a claim of continuous work; gaps classified idle (session resume, waiting on the user, retries) are subtracted from active and listed with evidence; request_duration_sum only counts real service calls",
+    "window_note": "started_at 取本题首个可测服务动作（能力探测 p01，07:41:36Z）；A22 归档 07:22:30Z 至该点之间的读题/写探测 DSL 时段没有独立时间戳，不计入本题窗口，也不谎称为空闲"
+  },
+  "counts": {
+    "snapshot_requests": 22,
+    "successful_snapshot_requests": 18,
+    "failed_snapshot_requests": 4,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 10,
+    "image_views": 11,
+    "completed_visual_iterations": 2,
+    "incomplete_visual_iterations": 0,
+    "image_views_note": "按 iterations.jsonl 的 3 条含图迭代行统计会低估，实际看图事件 11 次（3 版封面 + 2 张接触表 + 6 帧逐帧），逐条见 image_view_log"
+  },
+  "logs": {
+    "requests": "tmp/20261008T1615Z-run01/A23/requests.jsonl",
+    "iterations": "tmp/20261008T1615Z-run01/A23/iterations.jsonl"
+  },
+  "outputs": [
+    "cover.png",
+    "cover.snapshot",
+    "frame-01.png",
+    "frame-01.snapshot",
+    "frame-02.png",
+    "frame-02.snapshot",
+    "frame-03.png",
+    "frame-03.snapshot",
+    "frame-04.png",
+    "frame-04.snapshot",
+    "frame-05.png",
+    "frame-05.snapshot",
+    "frame-06.png",
+    "frame-06.snapshot",
+    "frame-data.json",
+    "timing.json",
+    "limitations.md",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "GIF/APNG 合成、SVG 矢量化、CMYK 分色须在服务之外完成（本题已授权不做）",
+    "服务只输出 RGBA 容器 PNG，严格 RGB 色型需外部重编码",
+    "缓动使循环首 500ms 位移偏小（7.2px），未改造成匀速；服务无补间能力"
+  ],
+  "capability_probes": {
+    "count": 7,
+    "gif": {
+      "request_id": "A23-p02-gif-20261009T074140Z",
+      "http_status": 400,
+      "service_request_id": "5549304b-c4c3-49c0-b1b3-c0a34e369572",
+      "message": "Attr [type] value must be one of 'png' 'jpg' 'webp', but get 'gif'"
+    },
+    "svg": {
+      "request_id": "A23-p03-svg-20261009T074142Z",
+      "http_status": 400,
+      "service_request_id": "243574d5-a3dd-463e-aa1b-399cad1afc1d",
+      "message": "Attr [type] value must be one of 'png' 'jpg' 'webp', but get 'svg'"
+    },
+    "pdf_cmyk_container": {
+      "request_id": "A23-p04-cmyk-20261009T074144Z",
+      "http_status": 400,
+      "service_request_id": "eb69ef60-1351-4f78-b2ce-47a7caf1672d",
+      "message": "Attr [type] value must be one of 'png' 'jpg' 'webp', but get 'pdf'"
+    },
+    "colorspace_attr": {
+      "request_id": "A23-p05-colorspace-20261009T074248Z",
+      "http_status": 200,
+      "service_request_id": "e9246a96-6603-4e78-9c3c-1f9ef0acf3b3",
+      "finding": "colorSpace=\"CMYK\" 被静默忽略：#FF0000 色块取像素仍为 (255,0,0)，未发生分色"
+    },
+    "animate_tag": {
+      "request_id": "A23-p06-animate-20261009T074250Z",
+      "http_status": 400,
+      "service_request_id": "2b5aee38-58a9-41a3-82de-25a79177190c",
+      "message": "Unknown element tag [Animate]"
+    },
+    "transparent_canvas": {
+      "request_id": "A23-p07-stack-transparent-20261009T074313Z",
+      "http_status": 200,
+      "service_request_id": "53e4ad6a-e06b-4c1d-b55a-836d255827db",
+      "finding": "Snapshot background 缺省即透明：600×600 RGBA，角点 (0,0,0,0)，320000 个 alpha=0 像素"
+    },
+    "container_stretch_pitfall": {
+      "request_id": "A23-p01-transparent-20261009T074136Z",
+      "http_status": 200,
+      "finding": "Container 只有一个子元素时子元素被拉伸铺满画布，透明探测必须改用 Stack+Positioned，否则得到全 alpha=128 的假结果"
+    },
+    "docs_keyword_scan": {
+      "log": "tmp/20261008T1615Z-run01/A23/docs-capability-grep.log",
+      "extracted_text_files": 43,
+      "hits_svg_vector": 0,
+      "hits_animation_gif_keyframe": 0,
+      "hits_cmyk_colorspace": 0
+    }
+  },
+  "frame_self_check": {
+    "connected_components_per_frame": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+    ],
+    "single_component_area_px_range": [
+      3494,
+      3544
+    ],
+    "alpha0_pixels_per_frame": [
+      316302,
+      316354,
+      316570,
+      316694,
+      316652,
+      317568
+    ],
+    "clipped_units": 0,
+    "min_center_distance_px_by_frame": [
+      129.4,
+      121.7,
+      104.0,
+      85.9,
+      74.1,
+      72.0
+    ],
+    "required_min_px_by_frame": [
+      88.9,
+      80.1,
+      66.6,
+      64.0,
+      64.0,
+      64.0
+    ],
+    "rotation_deg_by_frame": [
+      45.0,
+      29.16,
+      4.68,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "unit_color_constant": "#38BDF8 = (56,189,248)，六帧取像素一致",
+    "png_ihdr": {
+      "bit_depth": 8,
+      "color_type": 6,
+      "note": "服务统一输出 8 位 RGBA 容器；封面 alpha 全为 255"
+    }
+  },
+  "loop_continuity": {
+    "seamless": false,
+    "in_cycle_mean_step_px": [
+      7.2,
+      32.5,
+      46.4,
+      41.6,
+      18.0
+    ],
+    "frame6_to_frame1_mean_jump_px": 145.7,
+    "frame6_to_frame1_max_jump_px": 226.0,
+    "declared_in": "outputs/20261008T1615Z-run01/A23/timing.json"
+  },
+  "trajectory_search": {
+    "script": "tmp/20261008T1615Z-run01/A23/tune_paths.py",
+    "log": "tmp/20261008T1615Z-run01/A23/tune_paths.log",
+    "configs_evaluated": 216,
+    "configs_passed": 10,
+    "chosen": "linear + 极角配对相位 2 + 朝向 t=0.5 收敛 + stagger 0.30",
+    "v01_rejected_because": "行序配对下第 4 帧最小中心距 1.1px（叠成团），且末帧塔形右偏 30px"
+  },
+  "requirement_coverage": [
+    {
+      "req": "先判定哪些格式原生支持，不编造动画/路径/SVG/CMYK",
+      "status": "met",
+      "evidence": "7 次真实探测 + 43 份文档正文关键词检索（0 命中）"
+    },
+    {
+      "req": "1200×800 RGB PNG 封面",
+      "status": "met-with-difference",
+      "evidence": "cover.png 1200×800，alpha 全 255 等效 RGB，但容器为 RGBA 色型 6，已在 limitations.md 第 4 条声明"
+    },
+    {
+      "req": "6 张 600×600 透明 PNG 关键帧 + 各自完整 DSL",
+      "status": "met",
+      "evidence": "frame-01..06.png + 同名 .snapshot，每帧 alpha0 像素 31.6 万"
+    },
+    {
+      "req": "timing.json 表达 250ms/帧、循环、帧序",
+      "status": "met",
+      "evidence": "frame_duration_ms=250、frame_order 6 项、loop=true、total_cycle_ms=1500"
+    },
+    {
+      "req": "封面文字“从结构到画面”可读",
+      "status": "met",
+      "evidence": "cover-v03 实看图：64px BOLD 标题清晰，无裁切"
+    },
+    {
+      "req": "帧内不含文字、始终 12 个几何单元",
+      "status": "met",
+      "evidence": "六帧 DSL 内 0 个 Text 标签；连通域 12/12/12/12/12/12"
+    },
+    {
+      "req": "由分散逐步汇聚、末帧可识别图形",
+      "status": "met",
+      "evidence": "半径 250 圆环 → 2/4/6 塔形；frame-06 单块面积完全一致 3504px"
+    },
+    {
+      "req": "各帧颜色/数量/尺度一致",
+      "status": "met",
+      "evidence": "同一生成器常量：SIZE=60、UNIT_COLOR=#38BDF8、N=12"
+    },
+    {
+      "req": "轨迹连续、无突然消失",
+      "status": "met",
+      "evidence": "逐单元直线插值 + smoothstep + 错峰；循环内相邻帧最大位移 66.9px（单元边长 60，不会跳过自身）"
+    },
+    {
+      "req": "透明背景真实",
+      "status": "met",
+      "evidence": "p07 探测 + 六帧 alpha0 计数"
+    },
+    {
+      "req": "可复用参数生成 DSL，不嵌预渲染帧",
+      "status": "met",
+      "evidence": "gen_frames.py 单文件生成 7 份 DSL，Image 标签 0 次"
+    },
+    {
+      "req": "首尾不连续须声明跳变",
+      "status": "met",
+      "evidence": "seamless=false + 实测跳变 145.7/226.0px"
+    },
+    {
+      "req": "逐帧和接触表看图检查",
+      "status": "met",
+      "evidence": "6 帧逐帧打开 + 2 张接触表 + 3 版封面，共 13 次看图"
+    },
+    {
+      "req": "limitations.md 逐项：请求/支持/依据/替代/后续工作",
+      "status": "met",
+      "evidence": "limitations.md 6 节"
+    },
+    {
+      "req": "不得仅写不支持而结束",
+      "status": "met",
+      "evidence": "交付 7 图 + 3 个 JSON + 报告，替代方案全部落地"
+    }
+  ],
+  "image_view_log": [
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/cover-v01.png",
+      "viewed_at": "2026-10-09T07:50:56+00:00",
+      "observation": "v01 基线：单元团被右边缘裁断且叠合"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/contact-v01.png",
+      "viewed_at": "2026-10-09T07:51:14+00:00",
+      "observation": "v01 接触表：第 3/4/5 帧叠成团、末帧塔形右偏 30px"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/contact-v02.png",
+      "viewed_at": "2026-10-09T08:06:28+00:00",
+      "observation": "v02 接触表：六帧均可数出 12 个分离单元，塔形居中"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/cover-v02.png",
+      "viewed_at": "2026-10-09T08:06:40+00:00",
+      "observation": "v02 封面：无裁切，但目标轮廓过暗、图示偏小"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/cover-v03.png",
+      "viewed_at": "2026-10-09T08:09:37+00:00",
+      "observation": "v03 封面：定为最终图"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/frame-04-v02.png",
+      "viewed_at": "2026-10-09T08:10:25+00:00",
+      "observation": "逐帧 4/6：散环 12 单元轴对齐"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/frame-01-v02.png",
+      "viewed_at": "2026-10-09T08:15:26+00:00",
+      "observation": "逐帧 1/6：45° 菱形圆环"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/frame-02-v02.png",
+      "viewed_at": "2026-10-09T08:15:36+00:00",
+      "observation": "逐帧 2/6：29.16°，与第 1 帧差异偏小（缓动代价）"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/frame-03-v02.png",
+      "viewed_at": "2026-10-09T08:16:20+00:00",
+      "observation": "逐帧 3/6：圆环开始破开"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/frame-05-v02.png",
+      "viewed_at": "2026-10-09T08:16:57+00:00",
+      "observation": "逐帧 5/6：2/4/6 三行成形"
+    },
+    {
+      "image": "tmp/20261008T1615Z-run01/A23/preview/frame-06-v02.png",
+      "viewed_at": "2026-10-09T08:17:12+00:00",
+      "observation": "逐帧 6/6：可识别塔形，定为最终帧"
+    }
+  ]
+}

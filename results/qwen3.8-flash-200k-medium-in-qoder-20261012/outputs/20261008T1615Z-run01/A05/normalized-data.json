@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A05",
+  "run_id": "20261008T1615Z-run01",
+  "source": "tasks/A05-irregular-sensors/inputs/readings.csv",
+  "missing_value_policy": "空单元格 → null（缺测），不参与最小/最大/连线；不填 0、不插值",
+  "units": {
+    "temperature_c": "°C",
+    "humidity_pct": "%",
+    "pressure_kpa": "kPa"
+  },
+  "time_window": {
+    "start": "08:00",
+    "end": "12:30",
+    "start_minute_offset": 480,
+    "end_minute_offset": 750,
+    "span_minutes": 270,
+    "sample_intervals_minutes": [
+      10,
+      25,
+      25,
+      15,
+      25,
+      30,
+      40,
+      10,
+      40,
+      30,
+      20
+    ],
+    "axis": "横轴按分钟偏移线性映射；采样间隔不等（10/25/25/15/25/30/40/10/40/30/20 分钟），三图共用同一 x 映射与整点纵向参考线"
+  },
+  "rows": [
+    {
+      "time": "08:00",
+      "minute_offset_from_0000": 480,
+      "temperature_c": 19.2,
+      "humidity_pct": 41.0,
+      "pressure_kpa": 0.2,
+      "minute_offset_from_window_start": 0,
+      "index": 0
+    },
+    {
+      "time": "08:10",
+      "minute_offset_from_0000": 490,
+      "temperature_c": 19.6,
+      "humidity_pct": 40.0,
+      "pressure_kpa": 0.4,
+      "minute_offset_from_window_start": 10,
+      "index": 1
+    },
+    {
+      "time": "08:35",
+      "minute_offset_from_0000": 515,
+      "temperature_c": 20.1,
+      "humidity_pct": 39.0,
+      "pressure_kpa": 0.7,
+      "minute_offset_from_window_start": 35,
+      "index": 2
+    },
+    {
+      "time": "09:00",
+      "minute_offset_from_0000": 540,
+      "temperature_c": 21.0,
+      "humidity_pct": 38.0,
+      "pressure_kpa": 1.1,
+      "minute_offset_from_window_start": 60,
+      "index": 3
+    },
+    {
+      "time": "09:15",
+      "minute_offset_from_0000": 555,
+      "temperature_c": null,
+      "humidity_pct": 37.0,
+      "pressure_kpa": 1.3,
+      "minute_offset_from_window_start": 75,
+      "index": 4
+    },
+    {
+      "time": "09:40",
+      "minute_offset_from_0000": 580,
+      "temperature_c": 21.9,
+      "humidity_pct": null,
+      "pressure_kpa": -0.2,
+      "minute_offset_from_window_start": 100,
+      "index": 5
+    },
+    {
+      "time": "10:10",
+      "minute_offset_from_0000": 610,
+      "temperature_c": 22.3,
+      "humidity_pct": 35.0,
+      "pressure_kpa": -0.8,
+      "minute_offset_from_window_start": 130,
+      "index": 6
+    },
+    {
+      "time": "10:50",
+      "minute_offset_from_0000": 650,
+      "temperature_c": 23.1,
+      "humidity_pct": 34.0,
+      "pressure_kpa": -0.3,
+      "minute_offset_from_window_start": 170,
+      "index": 7
+    },
+    {
+      "time": "11:00",
+      "minute_offset_from_0000": 660,
+      "temperature_c": 22.8,
+      "humidity_pct": 35.0,
+      "pressure_kpa": 0.1,
+      "minute_offset_from_window_start": 180,
+      "index": 8
+    },
+    {
+      "time": "11:40",
+      "minute_offset_from_0000": 700,
+      "temperature_c": null,
+      "humidity_pct": 36.0,
+      "pressure_kpa": 0.6,
+      "minute_offset_from_window_start": 220,
+      "index": 9
+    },
+    {
+      "time": "12:10",
+      "minute_offset_from_0000": 730,
+      "temperature_c": 22.0,
+      "humidity_pct": 37.0,
+      "pressure_kpa": 0.3,
+      "minute_offset_from_window_start": 250,
+      "index": 10
+    },
+    {
+      "time": "12:30",
+      "minute_offset_from_0000": 750,
+      "temperature_c": 21.7,
+      "humidity_pct": 38.0,
+      "pressure_kpa": 0.0,
+      "minute_offset_from_window_start": 270,
+      "index": 11
+    }
+  ],
+  "metrics": [
+    {
+      "metric": "temperature_c",
+      "name": "温度",
+      "unit": "°C",
+      "valid_sample_count": 10,
+      "total_sample_count": 12,
+      "missing_count": 2,
+      "missing_times": [
+        "09:15",
+        "11:40"
+      ],
+      "observed_min": {
+        "value": 19.2,
+        "time": "08:00",
+        "display": "19.2 °C"
+      },
+      "observed_max": {
+        "value": 23.1,
+        "time": "10:50",
+        "display": "23.1 °C"
+      },
+      "axis_range": [
+        18.0,
+        24.0
+      ],
+      "connected_segments": [
+        [
+          "08:00",
+          "08:10",
+          "08:35",
+          "09:00"
+        ],
+        [
+          "09:40",
+          "10:10",
+          "10:50",
+          "11:00"
+        ],
+        [
+          "12:10",
+          "12:30"
+        ]
+      ],
+      "segment_count": 3,
+      "isolated_points": [],
+      "drawn_line_subsegments": 7,
+      "not_drawn": [
+        "温度：缺测点 09:15 前后各成一段，未用直线或虚线补值",
+        "温度：缺测点 11:40 前后各成一段，未用直线或虚线补值"
+      ]
+    },
+    {
+      "metric": "humidity_pct",
+      "name": "相对湿度",
+      "unit": "%",
+      "valid_sample_count": 11,
+      "total_sample_count": 12,
+      "missing_count": 1,
+      "missing_times": [
+        "09:40"
+      ],
+      "observed_min": {
+        "value": 34.0,
+        "time": "10:50",
+        "display": "34 %"
+      },
+      "observed_max": {
+        "value": 41.0,
+        "time": "08:00",
+        "display": "41 %"
+      },
+      "axis_range": [
+        30.0,
+        45.0
+      ],
+      "connected_segments": [
+        [
+          "08:00",
+          "08:10",
+          "08:35",
+          "09:00",
+          "09:15"
+        ],
+        [
+          "10:10",
+          "10:50",
+          "11:00",
+          "11:40",
+          "12:10",
+          "12:30"
+        ]
+      ],
+      "segment_count": 2,
+      "isolated_points": [],
+      "drawn_line_subsegments": 9,
+      "not_drawn": [
+        "相对湿度：缺测点 09:40 前后各成一段，未用直线或虚线补值"
+      ]
+    },
+    {
+      "metric": "pressure_kpa",
+      "name": "压差",
+      "unit": "kPa",
+      "valid_sample_count": 12,
+      "total_sample_count": 12,
+      "missing_count": 0,
+      "missing_times": [],
+      "observed_min": {
+        "value": -0.8,
+        "time": "10:10",
+        "display": "−0.8 kPa"
+      },
+      "observed_max": {
+        "value": 1.3,
+        "time": "09:15",
+        "display": "1.3 kPa"
+      },
+      "axis_range": [
+        -1.5,
+        1.5
+      ],
+      "connected_segments": [
+        [
+          "08:00",
+          "08:10",
+          "08:35",
+          "09:00",
+          "09:15",
+          "09:40",
+          "10:10",
+          "10:50",
+          "11:00",
+          "11:40",
+          "12:10",
+          "12:30"
+        ]
+      ],
+      "segment_count": 1,
+      "isolated_points": [],
+      "drawn_line_subsegments": 11,
+      "not_drawn": []
+    }
+  ],
+  "negative_pressure_samples": [
+    {
+      "time": "09:40",
+      "pressure_kpa": -0.2
+    },
+    {
+      "time": "10:10",
+      "pressure_kpa": -0.8
+    },
+    {
+      "time": "10:50",
+      "pressure_kpa": -0.3
+    }
+  ],
+  "negative_interval_note": "09:40–10:50 是三个连续负值采样点构成的实际采样区段；09:15→09:40 与 10:50→11:00 未采样，不能推断任意时刻的符号",
+  "chart": {
+    "canvas": [
+      1440,
+      1000
+    ],
+    "x_axis_pixels": [
+      110,
+      1386
+    ],
+    "panels_top": [
+      204,
+      380,
+      556
+    ],
+    "panel_height": 170,
+    "plot_geometry": {
+      "top_offset": 46,
+      "height": 84
+    },
+    "sample_x_pixels": {
+      "08:00": 110.0,
+      "08:10": 157.26,
+      "08:35": 275.41,
+      "09:00": 393.56,
+      "09:15": 464.44,
+      "09:40": 582.59,
+      "10:10": 724.37,
+      "10:50": 913.41,
+      "11:00": 960.67,
+      "11:40": 1149.7,
+      "12:10": 1291.48,
+      "12:30": 1386.0
+    }
+  },
+  "deliverable": "outputs/20261008T1615Z-run01/A05/sensor-report.png + sensor-report.snapshot"
+}

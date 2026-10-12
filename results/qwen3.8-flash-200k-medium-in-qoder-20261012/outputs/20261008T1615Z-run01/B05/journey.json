@@ -1,0 +1,417 @@
+{
+  "schema": "b05-journey/1",
+  "path_base": "suite_root",
+  "run_id": "20261008T1615Z-run01",
+  "task_id": "B05",
+  "product": {
+    "name": "枝安",
+    "tagline": "城市行道树风险巡检与处置协同平台",
+    "demo_city": "汀州市（虚构）",
+    "dataset": {
+      "source": "tmp/20261008T1615Z-run01/B05/b05data.py（固定种子 20261011）",
+      "trees": 3725,
+      "road_segments": 23,
+      "streets": 6,
+      "generated_at": "2026-10-11T09:20:00+08:00",
+      "demo_data": true
+    }
+  },
+  "problem": "行道树管理链条上人人路过、无人负责到底：判定散在个人经验、台风前无法可解释排序、市民上报无回音、雨后统计混入未核实项。",
+  "risk_model": {
+    "formula": "R = 0.30·S_倾斜 + 0.25·S_空洞 + 0.20·S_根系 + 0.15·S_暴露对象 + 0.10·S_历史病害",
+    "bands": {
+      "立即处置": "R>=70",
+      "限期处置": "55-69",
+      "观察期": "40-54",
+      "正常": "<40"
+    },
+    "provenance": "产品自定口径，未经历史倒伏数据回溯校验"
+  },
+  "stages": [
+    "发现上报(01)",
+    "现场核查(02)",
+    "态势派工(03)",
+    "纸质处置(04)",
+    "台风前排序(05)",
+    "作业交底(06)",
+    "时序复核(07)",
+    "社区认养(08)",
+    "灾后通报(09)",
+    "年度复盘(10)"
+  ],
+  "pieces": [
+    {
+      "case": "case-01",
+      "piece_no": 1,
+      "role": "市民",
+      "ctx": "人行道，一手遮阳一手操作，4G",
+      "stage": "发现问题→上报",
+      "dev": "手机",
+      "hyp": "市民愿意为「这棵树能被认出来」多填两个字段（位置、大致危害对象）",
+      "miss": "没有真实报修完成率对照；未测试强光+单手下的字段数量上限",
+      "key": "报修对象锁定 TZ-JS-0417，页面把「哪棵」用路段+树号+照片框讲清，未提交态可回退",
+      "visual_versions": [
+        "case01-v01",
+        "case01-v02",
+        "case01-v03"
+      ],
+      "render_requests_total": 5,
+      "http_200": 3,
+      "failed_or_truncated": 2,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-01",
+      "width_px": 1080,
+      "height_px": 2340,
+      "final_png_bytes": 277468,
+      "final_png_md5": "53e5a90c6441dfeba6759fb0b7aac921",
+      "final_snapshot_bytes": 26425,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-01/case.md",
+      "iterations_logged": 3,
+      "images_actually_opened": 3,
+      "promoted_request_id": "B05-case01-v03-20261011T112209Z"
+    },
+    {
+      "case": "case-02",
+      "piece_no": 2,
+      "role": "巡检员",
+      "ctx": "户外强光、戴手套、单手持",
+      "stage": "现场核查→录实测",
+      "dev": "手持机",
+      "hyp": "现场能在不看说明书的情况下读懂判级依据（四个分项+权重）",
+      "miss": "没有巡检员实测阅读时间；高对比配色未在真实阳光下校色",
+      "key": "倾斜 6.8°、空洞 34 cm、根系、暴露对象四项拆开列并给出 R=76 的算法，避免只给结论",
+      "visual_versions": [
+        "case02-v01",
+        "case02-v02",
+        "case02-v03"
+      ],
+      "render_requests_total": 7,
+      "http_200": 3,
+      "failed_or_truncated": 4,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-02",
+      "width_px": 1080,
+      "height_px": 2400,
+      "final_png_bytes": 370158,
+      "final_png_md5": "14af5245ef9ff253b71fd657dca16aa8",
+      "final_snapshot_bytes": 31707,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-02/case.md",
+      "iterations_logged": 4,
+      "images_actually_opened": 4,
+      "promoted_request_id": "B05-case02-v03-20261011T114333Z"
+    },
+    {
+      "case": "case-03",
+      "piece_no": 3,
+      "role": "值班调度",
+      "ctx": "值班室 3 米外",
+      "stage": "态势研判→派工",
+      "dev": "2560×1440 大屏",
+      "hyp": "风险地理分布+工单漏斗+今日派工+超时能在一屏内同时被读到",
+      "miss": "未做 3 米可读性真机测试；未验证调度员是否会跳过漏斗直接看名单",
+      "key": "98 立即/229 限期/669 观察/2,729 正常与 327 单、87 超时同屏，数字与件-05/09/10 互校",
+      "visual_versions": [
+        "case03-v01",
+        "case03-v02",
+        "case03-v03"
+      ],
+      "render_requests_total": 4,
+      "http_200": 3,
+      "failed_or_truncated": 1,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-03",
+      "width_px": 2560,
+      "height_px": 1440,
+      "final_png_bytes": 417022,
+      "final_png_md5": "e4566e507a84451f8899d6496e7109e7",
+      "final_snapshot_bytes": 56496,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-03/case.md",
+      "iterations_logged": 3,
+      "images_actually_opened": 3,
+      "promoted_request_id": "B05-case03-v03-20261011T120049Z"
+    },
+    {
+      "case": "case-04",
+      "piece_no": 4,
+      "role": "作业班组长",
+      "ctx": "现场或打印纸质",
+      "stage": "接单→作业→签字",
+      "dev": "A4 打印 1240×1754",
+      "hyp": "一张纸能承载责任链、措施、时间线与签字位而不必回看设备",
+      "miss": "未做雨天/手套条件下的字迹与纸张测试",
+      "key": "处置单锁定同一棵树 TZ-JS-0417，时间线与件-01/02/07 的巡检、派单、复测时刻一致",
+      "visual_versions": [
+        "case04-v01",
+        "case04-v02"
+      ],
+      "render_requests_total": 3,
+      "http_200": 2,
+      "failed_or_truncated": 1,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-04",
+      "width_px": 1240,
+      "height_px": 1754,
+      "final_png_bytes": 395288,
+      "final_png_md5": "242055324698e6c9efe683665dfba1b1",
+      "final_snapshot_bytes": 40083,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-04/case.md",
+      "iterations_logged": 2,
+      "images_actually_opened": 2,
+      "promoted_request_id": "B05-case04-v02-20261011T115827Z"
+    },
+    {
+      "case": "case-05",
+      "piece_no": 5,
+      "role": "技术复核 + 调度",
+      "ctx": "台风前 48 h，办公室平板",
+      "stage": "排序→定优先序",
+      "dev": "1920×1200 平板",
+      "hyp": "把权重摊开之后，复核者才敢按这份名单先干哪 100 棵",
+      "miss": "权重本身未经历史倒伏数据回溯校验（见 product-brief 第 4 节）",
+      "key": "给出排序公式、边界样本与被排除项，而不是只给一个 Top 列表",
+      "visual_versions": [
+        "case05-v01",
+        "case05-v02",
+        "case05-v03",
+        "case05-v04",
+        "case05-v05"
+      ],
+      "render_requests_total": 12,
+      "http_200": 6,
+      "failed_or_truncated": 6,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-05",
+      "width_px": 1920,
+      "height_px": 1200,
+      "final_png_bytes": 434001,
+      "final_png_md5": "fe8b119775f5d48a5d93f13005340221",
+      "final_snapshot_bytes": 49412,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-05/case.md",
+      "iterations_logged": 5,
+      "images_actually_opened": 5,
+      "promoted_request_id": "B05-case05-v05-20261011T121655Z"
+    },
+    {
+      "case": "case-06",
+      "piece_no": 6,
+      "role": "班组长交底",
+      "ctx": "作业前，现场说明图",
+      "stage": "作业安全边界",
+      "dev": "1600×1200 说明图",
+      "hyp": "围挡半径与交通导改用一张带比例尺的图比文字交底更不容易出错",
+      "miss": "未与真实交通导改方案做过一致性核对；弧线是示意而非规范尺寸",
+      "key": "静态说明图，刻意不加导航栏与假按钮；比例尺与围挡距离都标注来源",
+      "visual_versions": [
+        "case06-v01",
+        "case06-v02",
+        "case06-v03",
+        "case06-v04",
+        "case06-v05"
+      ],
+      "render_requests_total": 12,
+      "http_200": 6,
+      "failed_or_truncated": 6,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-06",
+      "width_px": 1600,
+      "height_px": 1200,
+      "final_png_bytes": 236079,
+      "final_png_md5": "09d4d6f6c5cfda3ec9a20d0cdacf8d16",
+      "final_snapshot_bytes": 38416,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-06/case.md",
+      "iterations_logged": 5,
+      "images_actually_opened": 5,
+      "promoted_request_id": "B05-case06-v05-20261011T121813Z"
+    },
+    {
+      "case": "case-07",
+      "piece_no": 7,
+      "role": "技术复核",
+      "ctx": "办公室平板",
+      "stage": "时序判读→复核结论",
+      "dev": "1200×1600 平板",
+      "hyp": "倾斜序列+阈值线能把「该不该撤围」变成可复核的判断",
+      "miss": "缺测月份（2026-09 风速 0 节）已标注为缺测，但没有补测数据验证结论稳健性",
+      "key": "报警规则与连续两次 <5.0° 才撤围的判据写在同一张图上",
+      "visual_versions": [
+        "case07-v01",
+        "case07-v02",
+        "case07-v03",
+        "case07-v04",
+        "case07-v05"
+      ],
+      "render_requests_total": 10,
+      "http_200": 6,
+      "failed_or_truncated": 4,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-07",
+      "width_px": 1200,
+      "height_px": 1600,
+      "final_png_bytes": 255715,
+      "final_png_md5": "869b385abb2199e8aa96838c4b8722df",
+      "final_snapshot_bytes": 33294,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-07/case.md",
+      "iterations_logged": 5,
+      "images_actually_opened": 5,
+      "promoted_request_id": "B05-case07-v05-20261011T121702Z"
+    },
+    {
+      "case": "case-08",
+      "piece_no": 8,
+      "role": "认养居民",
+      "ctx": "手机或张贴在树池边",
+      "stage": "长期关系维护",
+      "dev": "1080×1620",
+      "hyp": "居民只需要看懂「这棵树给我什么、我要做什么、我能不能查」",
+      "miss": "未做居民可读性测试；遮荫面积 69.4 m² 是正投影口径，与汇总口径差 9.1 %（件-10 已并列写出）",
+      "key": "只写算得出的好处，不引用降温/固碳等本数据集不支持的数字；−11 户的数据缺陷用红字向居民披露",
+      "visual_versions": [
+        "case08-v01",
+        "case08-v02",
+        "case08-v03",
+        "case08-v04",
+        "case08-v05"
+      ],
+      "render_requests_total": 5,
+      "http_200": 5,
+      "failed_or_truncated": 0,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-08",
+      "width_px": 1080,
+      "height_px": 1620,
+      "final_png_bytes": 345565,
+      "final_png_md5": "71716f19178b0f675e311e34bee51fd5",
+      "final_snapshot_bytes": 22614,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-08/case.md",
+      "iterations_logged": 5,
+      "images_actually_opened": 5,
+      "promoted_request_id": "B05-case08-v05-20261011T123218Z"
+    },
+    {
+      "case": "case-09",
+      "piece_no": 9,
+      "role": "值班室→上级",
+      "ctx": "雨后 6 h 对内通报",
+      "stage": "灾情统计上报",
+      "dev": "1440×2000 快报",
+      "hyp": "已核实与待核实必须分列，否则数字到上级手里就失真",
+      "miss": "南门「每千株 4.2 起 vs 全市 30.3」只是疑漏报的证据，不是漏报结论，尚未实地核查",
+      "key": "113 起中 30 起待核实、242 枝干、25 压线、51 阻路；拒绝引用风力等级（wind_kts 为逐月点采样）",
+      "visual_versions": [
+        "case09-v01",
+        "case09-v02",
+        "case09-v03",
+        "case09-v04"
+      ],
+      "render_requests_total": 7,
+      "http_200": 4,
+      "failed_or_truncated": 3,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-09",
+      "width_px": 1440,
+      "height_px": 2000,
+      "final_png_bytes": 486041,
+      "final_png_md5": "22f641caa660c1cbaa650e59de510c13",
+      "final_snapshot_bytes": 42058,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-09/case.md",
+      "iterations_logged": 4,
+      "images_actually_opened": 4,
+      "promoted_request_id": "B05-case09-v04-20261011T124856Z"
+    },
+    {
+      "case": "case-10",
+      "piece_no": 10,
+      "role": "上级主管",
+      "ctx": "会议室投屏",
+      "stage": "年度复盘→补数排期",
+      "dev": "1920×1080 投屏",
+      "hyp": "决策者需要知道哪些数暂时不能用，而不是只看一个好看的覆盖率",
+      "miss": "60 % 目标、人均 40 株/人·日、三色可信度均为产品自定口径，未经外部校准",
+      "key": "90 天覆盖率 24.9 %、726 株超一年未巡检、4 项待修字段、87 张超时；本件同时审计前九件的口径",
+      "visual_versions": [
+        "case10-v01",
+        "case10-v02"
+      ],
+      "render_requests_total": 8,
+      "http_200": 2,
+      "failed_or_truncated": 6,
+      "final_png": "outputs/20261008T1615Z-run01/B05/case-10",
+      "width_px": 1920,
+      "height_px": 1080,
+      "final_png_bytes": 378517,
+      "final_png_md5": "4e544a08f798b4c1b0db9ce91afdcb38",
+      "final_snapshot_bytes": 33681,
+      "case_report": "outputs/20261008T1615Z-run01/B05/case-10/case.md",
+      "iterations_logged": 2,
+      "images_actually_opened": 2,
+      "promoted_request_id": "B05-case10-v02-20261011T130343Z"
+    }
+  ],
+  "cross_checks": [
+    {
+      "check": "同一棵树贯穿",
+      "detail": "件-01/02/04/08 四件携带完整档案且逐项一致：TZ-JS-0417、香樟、胸径 62 cm、高 14.2 m、冠幅 9.4 m、倾斜 6.8°、空洞 34 cm、路段建设路、末次巡检 2026-09-28、巡检员陈拓。件-05/06/07/10 引用同一棵树与其中部分字段（树号、冠幅 9.4、路段建设路），未重复整份档案。（此条为收尾时用脚本回查十份 final.snapshot 的实际字段后改写，原文把六件并列、暗示整份档案在六件中都出现，超出实际。）"
+    },
+    {
+      "check": "总量互校（按页面实际出现位置）",
+      "detail": "立即处置 98 → 件-01/03/05/06/09/10；在册 3,725 → 件-03/09/10；工单 327 与超时 87(26.6%) → 件-03/09/10；90 天覆盖率 24.9% → 件-03/10；超一年 726 → 件-03/09/10；灾后 113 起 → 件-07/09/10；遮荫 69.4 m² → 件-08/10；−11 户 → 件-08/10。限期 229 只在件-03；观察期 669 与正常 2,729 未印在任何一页（件-03 标注「条长＝非正常棵数，不含正常」），四级求和=3,725 属数据集层校验。"
+    },
+    {
+      "check": "时间线互校",
+      "detail": "件-04 处置单与件-08 时间轴的到场 10-11 09:58 与复测窗口 10-13 09:58（到场+48h）一致"
+    },
+    {
+      "check": "口径冲突公开",
+      "detail": "冠幅 π(D/2)²=69.4 m²（件-08）与 0.72·D²=63.6 m²（汇总字段）差 9.1%，两数同页印在件-10 ⑤"
+    },
+    {
+      "check": "数据缺陷公开",
+      "detail": "岩前 −11 户（件-08 红字/件-10 ③④）、云屿压线 0 而阻路 15（件-09 ③/件-10 ④）、灾情 30 起未去重、件-07 2026-09 风速 0 节标为缺测"
+    },
+    {
+      "check": "字段级回查方法",
+      "detail": "逐件 grep final.snapshot 得：树号出现在 01/02/04/05/06/07/08/10；高 14.2 在 02/04/06/08；冠幅 9.4 在 02/04/05/06/07/08/10；倾斜 6.8 在 01/02/04/05/07/08；末检日期与巡检员姓名只在 01/02/04/08；WO-20261227 只在 01/02/04/08。"
+    },
+    {
+      "check": "回查改写记录",
+      "detail": "收尾时用脚本按数字边界 grep 十份 final.snapshot，据此改写了 cross_checks[0]/[1]、product-brief.md 第 3 节两条与件-01/case.md 两处（标签栏共用、工单号所在件次）的过度声明；tmp/<run>/B05/PLAN.md 的对应行也已加更正批注。原始渲染与日志未改。"
+    }
+  ],
+  "honesty": {
+    "user_validation": false,
+    "note": "未做真实用户验证：无访谈、无可用性测试、没有真机字号/照度校验。逐件的假设与缺失证据见 pieces[].hyp / pieces[].miss。收尾另做了一次跨件字段回查（脚本 grep 十份 final.snapshot），据此改写了本文件cross_checks[0] 与件-01/case.md 的两处过度声明（标签栏共用、工单号出现在件-05）。",
+    "self_defined_metrics": [
+      "风险分权重与四级阈值",
+      "90 天覆盖率目标 60%",
+      "人均 40 株/人·日",
+      "三笔补数成本",
+      "可信度绿/橙/红三级"
+    ],
+    "refused_claims": [
+      "台风风力等级（wind_kts 为逐月点采样，非过程极大值）",
+      "认养树巡检达标率（缺单株认养标记）",
+      "降温与固碳收益（本数据集不支持）"
+    ]
+  },
+  "process": {
+    "requests_jsonl": "tmp/20261008T1615Z-run01/B05/requests.jsonl",
+    "iterations_jsonl": "tmp/20261008T1615Z-run01/B05/iterations.jsonl",
+    "tool_usage_jsonl": "tmp/20261008T1615Z-run01/B05/tool-usage.jsonl",
+    "build_log": "tmp/20261008T1615Z-run01/B05/build-log.jsonl",
+    "plan": "tmp/20261008T1615Z-run01/B05/PLAN.md",
+    "qa_crops_dir": "tmp/20261008T1615Z-run01/B05/case-NN/（2× 裁图，仅过程证据）"
+  },
+  "totals": {
+    "pieces": 10,
+    "render_requests": 73,
+    "http_200": 40,
+    "failed_or_truncated": 33,
+    "visual_versions": 37,
+    "images_actually_opened": 38,
+    "distinct_canvases": [
+      "1080x1620",
+      "1080x2340",
+      "1080x2400",
+      "1200x1600",
+      "1240x1754",
+      "1440x2000",
+      "1600x1200",
+      "1920x1080",
+      "1920x1200",
+      "2560x1440"
+    ],
+    "iterations_logged": 38
+  },
+  "log_note": "iterations.jsonl 原有 7 条缺 caseNN- 前缀，收尾核对时按 image_path 补齐并标注 metadata_correction，原始问题/改动/看图记录未改"
+}

@@ -1,0 +1,53 @@
+{
+  "id": "A19",
+  "title": "构造可核验的视觉题场",
+  "category": "构建评测数据",
+  "challenge": "同时构造画面、可回答问题、可靠答案及信息不足的证据。",
+  "staged": false,
+  "schema_version": 2,
+  "pack_version": "2.0.0",
+  "difficulty": "advanced",
+  "instructions_file": "AGENTS.md",
+  "prompt": "你来构造一组新的视觉诊断材料，而非回答现成题。制作1600×1600的8×8网格\n场景，64个带编号对象G01–G64，编号从左到右/从上到下；每格恰好一个主体。\n4颜色（蓝/橙/绿/紫）、4形状（圆/方/圆环/圆角方）、3尺寸（48/64/80；圆按\n直径、方按边长）交叉分布，4颜色与4形状各恰好16个，每行至少3颜色与3形状。\n圆环外径按尺寸，内径为一半；ID在主体外，不计入主体。不得外部图像。\n生成另一个800×800专用遮挡场景：展示至少两个不同隐藏内容却得到同一最终\n图片的完整遮挡案例，只给观众可见部分（不能画虚线泄漏）。另交付两份隐藏\n内容不同的完整DSL和真实服务PNG，证明像素等价；其中一图命名occlusion。\n\n为网格图写12道新题，覆盖复合属性检索、严格中心左右关系、距离、排序、\n包围框、颜色/形状计数，至少4题需要两步关系；题目写明确比较标准、坐标原点，\n不让关系并列导致唯一题多解。为遮挡图写2题，至少1题正确答案为“无法确定”。\n交付 scene-data.json（种子与真实几何）、questions.json（题目不含答案）、\nanswers.json（答案、计算方法、坐标容差、可见性依据）与 equivalence.json\n（两遮挡原始PNG哈希/像素对比）。编号≥18；题目只能根据最终可见图回答，\n不能把隐藏对象数量作为标准答案。实际看图检查所有目标与标签。\n",
+  "inputs": [],
+  "required_outputs": [
+    {
+      "filename": "grid-scene.png",
+      "dsl": "grid-scene.snapshot",
+      "width": 1600,
+      "height": 1600,
+      "purpose": "64对象可问答场景"
+    },
+    {
+      "filename": "occlusion.png",
+      "dsl": "occlusion.snapshot",
+      "width": 800,
+      "height": 800,
+      "purpose": "遮挡场景A"
+    },
+    {
+      "filename": "occlusion-alternative.png",
+      "dsl": "occlusion-alternative.snapshot",
+      "width": 800,
+      "height": 800,
+      "purpose": "隐藏内容不同的等价场景B"
+    }
+  ],
+  "additional_outputs": [
+    "scene-data.json",
+    "questions.json",
+    "answers.json",
+    "equivalence.json"
+  ],
+  "common_outputs": [
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "current_round": null,
+  "source_pack_version": "2.0.0",
+  "suite_version": "1.0.0",
+  "execution_mode": "sequential_suite",
+  "output_dir_template": "outputs/{run_id}/A19/",
+  "temp_dir_template": "tmp/{run_id}/A19/",
+  "suite_instructions_file": "../../AGENTS.md"
+}

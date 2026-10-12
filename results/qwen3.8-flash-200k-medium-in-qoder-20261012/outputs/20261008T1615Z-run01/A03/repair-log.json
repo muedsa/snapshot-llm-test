@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A03",
+  "run_id": "20261008T1615Z-run01",
+  "artifact_under_repair": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+  "final_output": {
+    "png": "outputs/20261008T1615Z-run01/A03/system-pulse.png",
+    "dsl": "outputs/20261008T1615Z-run01/A03/system-pulse.snapshot",
+    "size": "1280x800",
+    "png_sha256": "95a0357ebe264e24a1f98103cdd6c0c38bfcc667a2dd981b33760f82ca5efe4c",
+    "source_version": "r05",
+    "byte_identical_to_rendered_response": "tmp/20261008T1615Z-run01/A03/preview/r05.png"
+  },
+  "first_submission": {
+    "note": "原稿按字节原样提交（仅去掉行尾差异，未改内容）",
+    "dsl": "tmp/20261008T1615Z-run01/A03/broken-original.snapshot",
+    "request_id": "A03-broken-original-20261008T090503Z",
+    "http_status": 400,
+    "response": "tmp/20261008T1615Z-run01/A03/requests/A03-broken-original-20261008T090503Z.response.bin",
+    "code": "PARSE_ERROR",
+    "message": "Attr [padding] value format error at position 92 near: \"png\">\\r\\n  <Container padding=\"24 32\" borderRadius=\"24\">",
+    "service_request_id": "ab7f312a-a46d-476a-8744-3d4fb10bfd25"
+  },
+  "evidence_policy": {
+    "classes": {
+      "service-error": "服务返回4xx并给出code/message，可完全定位",
+      "silently-ignored": "请求返回200但属性不生效：文档规定“未知属性会被忽略”，只能靠单点探针或像素测量发现",
+      "visual-only": "语法与属性都合法，只有在真实图片上才暴露语义错误"
+    },
+    "probes_dir": "tmp/20261008T1615Z-run01/A03/probe/",
+    "probe_script": "tmp/20261008T1615Z-run01/A03/probes.py",
+    "measurement_scripts": [
+      "tmp/20261008T1615Z-run01/A03/check_geom.py",
+      "tmp/20261008T1615Z-run01/A03/blur_profile.py",
+      "tmp/20261008T1615Z-run01/A03/hprofile.py"
+    ],
+    "docs": [
+      "https://open-snapshot.muedsa.com/ai-guide.md（请求体/编码/错误结构）",
+      "https://snapshot.muedsa.com/ DSL：EdgeInsets 三种写法、颜色 #RRGGBBAA 迁移说明、Transform.matrix 必填、Expanded/Flexible 必须为 Flex 直接子节点且使用 TIGHT 约束、Positioned 必须为 Stack 直接子节点、ImageFiltered=子树模糊 / BackdropFilter=背景模糊、容器尺寸由根 Container 决定"
+    ]
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "line": 2,
+      "original": "<Container padding=\"24 32\" borderRadius=\"24\">",
+      "symptom": "整份 DSL 无法解析，首次提交即 HTTP 400",
+      "class": "service-error",
+      "evidence": "A03-broken-original-20261008T090503Z → PARSE_ERROR: Attr [padding] value format error at position 92",
+      "doc_basis": "EdgeInsets 只接受 \"12\" | \"(8,16)\" | \"(8,12,16,20)\"，空格分隔不是合法写法",
+      "fix": "padding=\"32\"（四边等距安全边距，正是题面要求的 32）",
+      "verification": "r01 起全部请求 200；check_geom 测得内容左边界 x=32、右边界 x=1247、上 y=32，外圈 32px 环内非背景像素数=0"
+    },
+    {
+      "id": "F02",
+      "line": 1,
+      "original": "<Snapshot width=\"1280\" height=\"800\" ...>",
+      "symptom": "根标签的 width/height 被接受但完全不影响画布，画布塌成内容尺寸，1280×800 要求落空",
+      "class": "silently-ignored",
+      "evidence": "probe-root-wh（A03-probe-root-wh-20261008T090822Z）声明 1280×800 却返回 200×100 PNG；probe-empty-root（A03-probe-empty-root-20261008T090840Z）无固定尺寸时返回 345×117",
+      "doc_basis": "Snapshot 不接受单独的画布宽高；画布尺寸来自根 Container/SizedBox 的确定尺寸",
+      "fix": "把尺寸交给根容器：<Container width=\"1280\" height=\"800\" color=\"#0B1220\" padding=\"32\">，同时保留原稿的 background/type 属性",
+      "verification": "check_geom 对 system-pulse.png 测得 canvas=1280x800（真实 PNG IHDR，非声明值）"
+    },
+    {
+      "id": "F03",
+      "line": 2,
+      "original": "borderRadius=\"24\"（该 Container 无 color/decoration）",
+      "symptom": "无背景的 Container 上 borderRadius 既不绘制也不裁剪子节点，是纯空操作",
+      "class": "silently-ignored",
+      "evidence": "probe-radius-nocolor（A03-probe-radius-nocolor-20261008T092557Z）：左侧 borderRadius=24 无 color 的容器里红色子块四角仍是直角，右侧同半径但带 color 的绿色块四角为圆角",
+      "doc_basis": "圆角要成为裁剪路径必须同时具备背景装饰",
+      "fix": "根容器补上 color=\"#0B1220\"；24 圆角真正落在说明卡上（Container radius=24 画边框 + ClipRRect borderRadius=24 包滤镜）",
+      "verification": "r05 图片中说明卡四角为圆角、边框 bbox=500x150；红色直角对照图保留在 tmp/.../probe/radius-nocolor.png"
+    },
+    {
+      "id": "F04",
+      "line": 4,
+      "original": "<Text font-size=\"44\" color=\"#FFFFFF\">System Pulse</Text>",
+      "symptom": "kebab-case 属性名被忽略，标题按默认字号渲染，44 字号要求未达成且没有任何报错",
+      "class": "silently-ignored",
+      "evidence": "probe-kebab（A03-probe-kebab-20261008T090825Z）返回 200，图中 “System Pulse” 只有默认小字号（见 probe/kebab.png）",
+      "doc_basis": "属性名区分大小写且须用 camelCase；未知属性被忽略",
+      "fix": "改为 fontSize=\"44\"（全套 DSL 统一 camelCase）",
+      "verification": "check_geom 测得标题墨迹 bbox=288x41（44 号 Inter Bold 的 “System Pulse”），y=46..87 完整落在标题行内"
+    },
+    {
+      "id": "F05",
+      "line": 6,
+      "original": "<Expanded flex=\"1\"><Container width=\"360\" height=\"200\" ...>",
+      "symptom": "Expanded 给子节点 TIGHT 约束，Container 的 width=360 被静默覆盖，写死宽度不起作用",
+      "class": "silently-ignored",
+      "evidence": "probe-expanded-fixed（A03-probe-expanded-fixed-20261008T090839Z）：1200 宽 Row 内两个 width=360 的容器实际各占 600（probe/expanded-fixed.png）",
+      "doc_basis": "Expanded 使用 TIGHT 约束，内部固定宽度会被忽略",
+      "fix": "指标卡内部只声明 height，不声明 width，宽度交给 Expanded 均分",
+      "verification": "在 y=200 逐列扫描：三张卡分别为 x=32..421、445..834、858..1247，宽度均为 390px，等宽成立"
+    },
+    {
+      "id": "F06",
+      "line": "5-8",
+      "original": "<Row> 内只有 1 个 Expanded + 1 个 Positioned",
+      "symptom": "即便修掉语法，这一行也只有一张卡，无法满足“第一行三个等宽指标卡”，且缺 LATENCY/SUCCESS 两卡",
+      "class": "visual-only",
+      "evidence": "原稿整份只出现 USAGE 72% 一个指标文案",
+      "doc_basis": "题面要求三个等宽指标卡",
+      "fix": "Row 内三个 <Expanded flex=\"1\"> 分别渲染 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%，卡间用 24px 空 Container 分隔；28 号字保持",
+      "verification": "r05 图中三卡等宽（390px）且三段 28 号文案完整可见，未截断"
+    },
+    {
+      "id": "F07",
+      "line": 7,
+      "original": "<Row> ... <Positioned right=\"20\"><Text color=\"white\">LIVE</Text></Positioned>",
+      "symptom": "Positioned 不是 Stack 的直接子节点，渲染阶段崩溃",
+      "class": "service-error",
+      "evidence": "probe-pos-in-row（A03-probe-pos-in-row-20261008T090828Z）→ 400 RENDER_ERROR: renderBox.parentData must be StackParentData",
+      "doc_basis": "Positioned 只能作为 Stack/IndexedStack 直接子节点",
+      "fix": "头部改为 <Stack alignment=\"TOP_LEFT\" clipBehavior=\"NONE\">，LIVE 用 Positioned left/top/width/height 精确定位到 96×36，放在右上；原稿的 Text color=\"white\" 换成显式 #34D399 描边胶囊",
+      "verification": "check_geom 测得 LIVE bbox=(1152,38) 95x36（含 1px 描边即 96×36），标题墨迹最右 x=322，二者无重叠"
+    },
+    {
+      "id": "F08",
+      "line": 9,
+      "original": "<Spacer flex=\"1\"/>",
+      "symptom": "Spacer 本身合法（Column 是 Flex），但原稿根容器没有确定高度，可分配空间未定义，撑开行为不可预测",
+      "class": "visual-only",
+      "evidence": "probe-empty-root 显示无确定尺寸时画布直接缩到内容大小，说明父链无界",
+      "doc_basis": "Spacer 必须在 Flex 中，且需要主轴有界才能分配剩余空间",
+      "fix": "保留 Column + Spacer 骨架（未删除），在 1280×800 有界容器内用两个 <Spacer flex=\"1\"/> 分配剩余 104px（各 52px）",
+      "verification": "r04/r05 DSL 中 <Spacer flex=\"1\"/> 出现两次并参与布局；实测说明卡上沿 y=330 = 32(边距)+84(头部)+1+11+150(指标行)+52(Spacer)，与声明一致"
+    },
+    {
+      "id": "F09",
+      "line": 10,
+      "original": "<Transform rotate=\"-8\">",
+      "symptom": "Transform 没有 rotate 属性，matrix 缺失直接报错",
+      "class": "service-error",
+      "evidence": "probe-transform-rotate（A03-probe-transform-rotate-20261008T090830Z）→ 400 PARSE_ERROR: Attr [matrix] must not be null at position 78",
+      "doc_basis": "matrix 必填：列主序 4×4、16 个有限浮点、带括号且不含空格",
+      "fix": "matrix=\"(0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1)\" + alignment=\"CENTER\"。注意符号陷阱：y 轴向下的画布里 rotate=\"-8\" 对应顺时针，题面要求视觉逆时针，因此矩阵取 +8°（cos=0.990268, sin=0.139173）",
+      "verification": "1:1 裁切 probe/r03-review.png 可见 REVIEW 左低右高（逆时针）；r05 实测其文字 bbox=162x74，与 160×56 旋转 8° 后的理论包围盒 166x78 一致"
+    },
+    {
+      "id": "F10",
+      "line": 10,
+      "original": "<Container width=\"160\" height=\"56\" color=\"#33FFFFFF\">",
+      "symptom": "8 位十六进制按旧 AARRGGBB 理解会以为这是 20% 白；迁移后解析器按 CSS #RRGGBBAA，#33FFFFFF 实际是不透明青色 #33FFFF，标签会变成一个刺眼实心块",
+      "class": "silently-ignored",
+      "evidence": "probe-alpha-hex（A03-probe-alpha-hex-20261008T090833Z）：#33FFFFFF 为实心青色，#FFFFFF33 才是 20% 白（probe/alpha-hex.png）",
+      "doc_basis": "文档迁移说明：旧解析器读作 #AARRGGBB，现为 #RRGGBBAA，例 #80FF0000 须写作 #FF000080",
+      "fix": "改为 color=\"#FFFFFF33\"，并加 1px #FFFFFF 描边保证在深底上可辨",
+      "verification": "实测 REVIEW 底色像素=(59,65,76)，与 0.2×255+0.8×(11,18,32)=(59.8,65.4,76.4) 精确吻合，即 20% 白"
+    },
+    {
+      "id": "F11",
+      "line": 10,
+      "original": "<Text color=\"white\">REVIEW</Text>",
+      "symptom": "无 fontSize，默认字号达不到题面 24；命名色本身合法（不是错误）",
+      "class": "visual-only",
+      "evidence": "probe-named-color（A03-probe-named-color-20261008T090827Z）证明 white 等命名色被正确解析（白字白底不可见），因此该属性无需改动，只缺字号",
+      "doc_basis": "支持命名颜色且大小写不敏感",
+      "fix": "fontSize=\"24\" + color=\"#FFFFFF\"（不透明白），保留在 160×56 容器内居中",
+      "verification": "r05 中 REVIEW 文字为不透明白，bbox 162x74（含旋转），字高与 24 号一致"
+    },
+    {
+      "id": "F12",
+      "line": 11,
+      "original": "<ImageFiltered sigmaX=\"10\" sigmaY=\"10\"><Container ...><Text>Background-only blur</Text></Container></ImageFiltered>",
+      "symptom": "ImageFiltered 模糊的是整棵子树，卡内文字一起被糊掉；题面要求“只模糊卡内背景，文字保持清晰”，语义用反",
+      "class": "visual-only",
+      "evidence": "probe-imgfilt（A03-probe-imgfilt-20261008T090835Z）文字与色块同样糊；probe-backdrop（A03-probe-backdrop-20261008T090837Z）卡片背景被糊而文字锐利（probe/imgfilt.png、probe/backdrop.png）",
+      "doc_basis": "ImageFiltered=子树高斯模糊；BackdropFilter=背景高斯模糊，只影响其后方已绘制内容",
+      "fix": "改为 <ClipRRect borderRadius=\"24\"><BackdropFilter sigmaX=\"10\" sigmaY=\"10\"><Container 500x150 color=\"#FFFFFF0F\"/></BackdropFilter></ClipRRect>，文字放在滤镜子树之外的独立 Positioned 图层；区块本身（500×150、圆角 24、28 号 “Background-only blur”）完整保留",
+      "verification": "blur_profile.py：卡外 x=300 处四条细条分别为 6/5/7/5 行硬边、间隙为 0；卡内 x=600 处同一条带扩散为 65 行渐变且间隙被填充。hprofile.py 在 y=350 穿过标题：310 个采样里 98 次硬跳变、仅 11 个中间灰度像素，说明文字未被模糊"
+    },
+    {
+      "id": "F13",
+      "line": 11,
+      "original": "说明卡背后没有任何彩色细条",
+      "symptom": "缺少题面要求的“同时穿过说明卡两侧边界的彩色细条”，没有细条就无法证明“只模糊卡内背景”",
+      "class": "visual-only",
+      "evidence": "原稿全文无对应节点",
+      "doc_basis": "题面 A03 需求",
+      "fix": "四条 5~7px 高的细条（#38BDF8/#FBBF24/#A78BFA/#34D399）横贯 x=250..980（画布绝对 282..1012），说明卡占 390..890，因此每条都同时穿过左右边界；细条位于滤镜后方图层",
+      "verification": "check_geom 测得蓝色细条 bbox=(283,424) 728x6，左端在卡外、右端在卡外，中段被模糊"
+    },
+    {
+      "id": "F14",
+      "line": 11,
+      "original": "<Container width=\"500\" height=\"150\" color=\"#FFFFFF44\">",
+      "symptom": "非缺陷：27% 白面板叠在模糊背景上过重，几乎看不出“背景被模糊”的差异",
+      "class": "visual-only",
+      "evidence": "r01 实际看图：卡内背景与卡外几乎无差别",
+      "doc_basis": "设计判断（记录为调整而非错误）",
+      "fix": "面板降到 #FFFFFF0F（约 6% 白），并加 #4A5F86 1px 边框界定卡片范围",
+      "verification": "实测卡内空白处像素=(25,31,45)，接近底色但可辨；卡边框 bbox 恰为 500x150"
+    },
+    {
+      "id": "F15",
+      "line": "1-14",
+      "original": "整份原稿没有画布级安全边距实现（只有 padding 一个属性）",
+      "symptom": "旋转元素会越出安全边距：r04 把 REVIEW 放在底边时，旋转后的包围盒下沿到达 y=777，越出 768 这条 32px 安全线",
+      "class": "visual-only",
+      "evidence": "check_geom 对 r04 统计外圈 32px 环内的非背景像素=297，且首个坐标为 (1085,768)",
+      "doc_basis": "题面“安全边距 32”；Stack clipBehavior=\"NONE\" 允许子节点越出自身块范围",
+      "fix": "footer 块内 REVIEW 的 Positioned top 由 2 改为 -10（Stack 不裁剪，负偏移合法）",
+      "verification": "check_geom 对 r05 统计外圈非背景像素=0，REVIEW 文字 bbox y=689..763 全部在安全边距内"
+    }
+  ],
+  "class_counts": {
+    "service-error": 3,
+    "silently-ignored": 5,
+    "visual-only": 7
+  },
+  "preserved_original_constructs": [
+    "根 <Snapshot background=\"#0B1220\" type=\"png\">（属性原样保留）",
+    "带 padding 与 borderRadius 的根 <Container>（padding 改合法写法并补 color 使圆角有意义）",
+    "顶层 <Column>",
+    "<Spacer flex=\"1\"/>（两处，真实参与布局）",
+    "<Row> + <Expanded flex=\"1\"> 指标卡（三张）",
+    "<Positioned> 的 LIVE 标签（移入 Stack 后仍为 Positioned）",
+    "<Transform> 旋转的 REVIEW 标签（matrix 化）",
+    "500×150 圆角 24 的 “Background-only blur” 说明卡（滤镜语义改正，区块保留）",
+    "28 号指标文案与 44 号标题"
+  ],
+  "iterations_summary": {
+    "dsl_versions_of_the_work": ["r01", "r02", "r03", "r04", "r05"],
+    "diagnostic_probes": 11,
+    "baseline_views": 1,
+    "completed_visual_iterations": 4,
+    "detail": "tmp/20261008T1615Z-run01/A03/iterations.jsonl"
+  },
+  "unresolved": [],
+  "notes": "所有失败响应、探针 DSL/图片、草稿预览与测量脚本均保留在临时目录，未删除也未把未知属性原样留在最终 DSL 中。r02/r03 与 r04 的画面几乎相同，差别在于 r04 恢复了原稿的 Column/Spacer 骨架并加入像素级几何测量。"
+}

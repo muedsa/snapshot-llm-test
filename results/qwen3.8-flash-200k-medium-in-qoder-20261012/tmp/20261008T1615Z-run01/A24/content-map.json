@@ -1,0 +1,318 @@
+{
+ "path_base": "suite_root",
+ "brand": "叠光 · 发布演练",
+ "data_source": "tasks/A24-release-plan-capstone/inputs/release.json 经 solve.py 全枚举排程",
+ "shared_facts": {
+  "brand": "叠光 · 发布演练",
+  "start": "2026-11-07T09:00:00+08:00",
+  "deadline": "2026-11-07T16:00:00+08:00",
+  "window_minutes": 420,
+  "makespan_minutes": 260,
+  "finish_clock": "13:20",
+  "buffer_minutes": 160,
+  "buffer_pct": 38.1,
+  "total_work_minutes": 485,
+  "critical_path_minutes": 255,
+  "critical_path": "R01->R04->R07->R09->R10->R12",
+  "lower_bound_overall": 255,
+  "lower_bound_work_div_teams": 243,
+  "team_load_minutes": {
+   "design": 255,
+   "engineering": 230
+  },
+  "flexible_assignment": {
+   "R05": "engineering",
+   "R09": "design",
+   "R12": "design"
+  },
+  "enumeration": {
+   "team_order_pairs_evaluated": 112,
+   "deadlocked_pairs_skipped": 48,
+   "flexible_team_assignments": 8
+  },
+  "idle_gaps": {
+   "design": {
+    "gaps": [
+     {
+      "from_min": 85,
+      "to_min": 90,
+      "minutes": 5,
+      "before": "R07"
+     }
+    ],
+    "idle_minutes": 5,
+    "busy_minutes": 255
+   },
+   "engineering": {
+    "gaps": [
+     {
+      "from_min": 200,
+      "to_min": 205,
+      "minutes": 5,
+      "before": "R11"
+     },
+     {
+      "from_min": 235,
+      "to_min": 260,
+      "minutes": 25,
+      "before": "(排程结束)"
+     }
+    ],
+    "idle_minutes": 30,
+    "busy_minutes": 230
+   }
+  },
+  "risks": [
+   {
+    "id": "K1",
+    "task": "R02",
+    "impact": "服务限流导致等待",
+    "mitigation": "保留响应并依据Retry-After重试"
+   },
+   {
+    "id": "K2",
+    "task": "R05",
+    "impact": "长文案导致版式回归",
+    "mitigation": "冻结文案后再完成适配"
+   },
+   {
+    "id": "K3",
+    "task": "R10",
+    "impact": "实际图像暴露裁剪或比例错误",
+    "mitigation": "预留返工缓冲，不跳过看图"
+   }
+  ]
+ },
+ "boards": {
+  "execution-board": {
+   "canvas": "1920x1080",
+   "body_font_min": 20,
+   "elements": [
+    {
+     "element": "任务块 R01–R12",
+     "source": "schedule.json schedule[].start_min/end_min/team",
+     "value": {
+      "R01": "R01 09:00–09:25 design",
+      "R02": "R02 09:00–09:20 engineering",
+      "R03": "R03 09:20–10:00 engineering",
+      "R04": "R04 09:25–10:25 design",
+      "R05": "R05 10:00–10:30 engineering",
+      "R06": "R06 10:30–11:15 engineering",
+      "R07": "R07 10:30–11:40 design",
+      "R08": "R08 11:15–12:20 engineering",
+      "R09": "R09 11:40–12:25 design",
+      "R10": "R10 12:25–13:00 design",
+      "R11": "R11 12:25–12:55 engineering",
+      "R12": "R12 13:00–13:20 design"
+     }
+    },
+    {
+     "element": "时间轴 09:00–16:00",
+     "source": "release.json start/deadline",
+     "value": "同一尺度 3.9524 px/分钟"
+    },
+    {
+     "element": "空档空心框",
+     "source": "schedule-audit.json checks.idle_windows",
+     "value": {
+      "design": [
+       {
+        "from_min": 85,
+        "to_min": 90,
+        "minutes": 5,
+        "before": "R07"
+       }
+      ],
+      "engineering": [
+       {
+        "from_min": 200,
+        "to_min": 205,
+        "minutes": 5,
+        "before": "R11"
+       },
+       {
+        "from_min": 235,
+        "to_min": 260,
+        "minutes": 25,
+        "before": "(排程结束)"
+       }
+      ]
+     }
+    },
+    {
+     "element": "缓冲带+截止线",
+     "source": "makespan/window",
+     "value": "剩余 160 分钟（38.1%）"
+    },
+    {
+     "element": "底部三栏说明",
+     "source": "schedule/audit 文本",
+     "value": [
+      "资源空档（与时间同尺度）",
+      "柔性任务的取舍",
+      "下界与结论口径"
+     ]
+    }
+   ]
+  },
+  "decision-brief": {
+   "canvas": "1200x1600",
+   "body_font_min": 24,
+   "elements": [
+    {
+     "element": "四张统计卡",
+     "source": "schedule.json / audit bounds",
+     "value": [
+      "完成时间=13:20",
+      "剩余缓冲=160 分钟",
+      "总工作量=485 分钟",
+      "达成/下界=260 / 255"
+     ]
+    },
+    {
+     "element": "依赖概览层次",
+     "source": "release.json depends",
+     "value": {
+      "0": [
+       "R01",
+       "R02"
+      ],
+      "1": [
+       "R03",
+       "R04",
+       "R05"
+      ],
+      "2": [
+       "R06",
+       "R07"
+      ],
+      "3": [
+       "R08",
+       "R09"
+      ],
+      "4": [
+       "R10",
+       "R11"
+      ],
+      "5": [
+       "R12"
+      ]
+     }
+    },
+    {
+     "element": "关键路径琥珀边",
+     "source": "audit bounds.critical_path",
+     "value": [
+      [
+       "R01",
+       "R04"
+      ],
+      [
+       "R04",
+       "R07"
+      ],
+      [
+       "R07",
+       "R09"
+      ],
+      [
+       "R09",
+       "R10"
+      ],
+      [
+       "R10",
+       "R12"
+      ]
+     ]
+    },
+    {
+     "element": "排程依据四段",
+     "source": "audit search/bounds",
+     "value": [
+      "规则口径",
+      "求解方法",
+      "下界差距"
+     ]
+    },
+    {
+     "element": "三风险/对策",
+     "source": "release.json risks",
+     "value": [
+      "K1→R02 保留响应并依据Retry-After重试",
+      "K2→R05 冻结文案后再完成适配",
+      "K3→R10 预留返工缓冲，不跳过看图"
+     ]
+    }
+   ]
+  },
+  "action-card": {
+   "canvas": "720x1280",
+   "body_font_min": 20,
+   "elements": [
+    {
+     "element": "12 行任务（时间序）",
+     "source": "schedule.json",
+     "value": [
+      "R01|design|09:00–09:25|25",
+      "R02|engineering|09:00–09:20|20",
+      "R03|engineering|09:20–10:00|40",
+      "R04|design|09:25–10:25|60",
+      "R05|engineering|10:00–10:30|30",
+      "R06|engineering|10:30–11:15|45",
+      "R07|design|10:30–11:40|70",
+      "R08|engineering|11:15–12:20|65",
+      "R09|design|11:40–12:25|45",
+      "R10|design|12:25–13:00|35",
+      "R11|engineering|12:25–12:55|30",
+      "R12|design|13:00–13:20|20"
+     ]
+    },
+    {
+     "element": "风险提醒行",
+     "source": "release.json risks",
+     "value": {
+      "R02": "K1 服务限流导致等待",
+      "R05": "K2 长文案导致版式回归",
+      "R10": "K3 实际图像暴露裁剪或比例错误"
+     }
+    },
+    {
+     "element": "页脚口径",
+     "source": "audit",
+     "value": [
+      "柔性任务单团队执行",
+      "关键路径 R01->R04->R07->R09->R10->R12"
+     ]
+    }
+   ]
+  }
+ },
+ "cross_board_consistency": {
+  "finish_time": "13:20",
+  "buffer": 160,
+  "makespan": 260,
+  "lower_bound": 255,
+  "critical_path": "R01->R04->R07->R09->R10->R12",
+  "team_load": {
+   "design": 255,
+   "engineering": 230
+  },
+  "flexible_assignment": {
+   "R05": "engineering",
+   "R09": "design",
+   "R12": "design"
+  },
+  "note": "三图的起止、团队、时长、缓冲与下界均取自同一 schedule.json/schedule-audit.json，数值与文字口径一致；执行图块宽=分钟×同一比例，简报与行动卡的时间字符串同源。"
+ },
+ "textfit": {
+  "estimated_text": 89,
+  "problems": [],
+  "note": "TextFit 为本地预估闸门（CJK 1.02×字号），实际以渲染后看图为准。"
+ },
+ "dsl_facts_from_probes": {
+  "multiline": "Text 带 height= 时整段不渲染（probe/multiline.png 变体 A 空白），改用 maxLines 由容器宽自动换行；显式 \\n 亦可。",
+  "label_height": "标签盒高需 ≥1.15×字号：24px 放进 height=26 的盒子上下沿被切，24/28、24/30 正常；本脚本按该比例逐 Positioned 自检。",
+  "background_none": "background=\"None\" 返回 400 PARSE_ERROR（unsupported CSS color）。",
+  "doc_label_positional": "Doc.label 第 8 个位置参数是 style，align 必须用关键字，否则产生 400 Attr [fontStyle] value is invalid。"
+ }
+}

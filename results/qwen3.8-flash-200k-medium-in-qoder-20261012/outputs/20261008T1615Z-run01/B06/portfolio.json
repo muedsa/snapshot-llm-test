@@ -1,0 +1,981 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B06",
+  "run_id": "20261008T1615Z-run01",
+  "status": "completed",
+  "asset_policy": "DSL 主导，允许局部辅助素材；本题十件均为纯 Snapshot DSL 构造，未引入任何外部位图素材（参考原文只作观察，未嵌入或描摹）",
+  "curatorial_statement": "十件作品打的是同一个缺陷：日常信息不缺数据，缺最后一次性换算。药盒写「一日三次」、告示写「末班 23:41」、列表页写「2780 元/月」、报告单印 9 个一模一样的箭头、立牌写四行费率——字都认识，但没人把它翻译成「那我几点做、我多花多少钱、要不要去医院」。所以十张图共用一条结构：原始口径 → 换算 → 你能做的事，但用十种不同的图形语言（环形钟、倒推段条、现金流堆叠、价格瀑布、发散偏差条、累计面积、阶梯函数、决策扇形、方糖堆叠、核对打孔卡）。深色底是刻意的：它表明这是翻译层，不是原文。所有数字来自同一个固定种子生成器，图上每个数都能复算；医疗、法律、营养类内容只复述公开常识并标注需核对，十件都没有做真实用户验证，也没有把任何参考界面重新描摹成素材。",
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "今天几点吃药",
+      "audience": "每天要按间隔服药的人，以及替父母分药的家属",
+      "use_context": "厨房冰箱门前或药盒侧面，站着看 10 秒，光线下读一次就要记住下一次",
+      "user_goal": "知道今天每种药还剩哪几次、几点吃、下一次还要等多久",
+      "content_basis": "demo.json case01（钟点、间隔、等待小时为演示值）；每 8／12 小时的间隔口径属常见公开说明，标 common_rule_needs_check",
+      "visual_intent": "把「一日三次」这句系统口径画成 24 小时盘上的三圈钟点：颜色＝圈＝药，盘外是清醒窗口，右侧三行给可抄走的钟点",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        1080,
+        1080
+      ],
+      "png_bytes": 251810,
+      "png_md5": "243708a3c80e8b57989afbaf2f2247ca",
+      "snapshot_bytes": 89220,
+      "snapshot_md5": "03d118bc80f9c0066bb005e096f8203b",
+      "dsl_chars": 88296,
+      "case_report": "case-01/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "环形钟（pie_ring 图元逼近）＋三行换算＋等待进度条＋口径块",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-01/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 4,
+        "previews": [
+          "case-01/v01-preview.png",
+          "case-01/v02-preview.png",
+          "case-01/v03-preview.png",
+          "case-01/v04-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-01/qa-v04-amber.png",
+          "tmp/20261008T1615Z-run01/B06/case-01/qa-v04-clock.png"
+        ],
+        "final_version": "case01-v04",
+        "conclusion": "原口径只有四个字（一日三次），图上有 3 个具体钟点＋一个等待小时数；对照 ② 的钟点串可在 10 秒内抄进手机日历（此为目测判断，未做用户实验）"
+      },
+      "request_ids": [
+        "B06-case01-v01-20261011T134827Z",
+        "B06-case01-v02-20261011T134943Z",
+        "B06-case01-v03-20261011T135011Z",
+        "B06-case01-v04-20261011T135032Z"
+      ],
+      "render_ok": 4,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case01-v04-20261011T135032Z",
+      "final_server_timing": "render;dur=655.4, total;dur=976.2",
+      "iteration_ids": [
+        "B06-case01-v01-135106",
+        "B06-case01-v02-135106",
+        "B06-case01-v03-135106",
+        "B06-case01-v04-135106"
+      ],
+      "unresolved_issues": [
+        "没有对照实验：无法证明这张卡减少了实际漏服；夜间最长间隔对不同药物是否要紧需药师核对"
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "末班车还赶得上吗",
+      "audience": "晚上要从城里另一头赶回家、必须某点前到家的通勤者",
+      "use_context": "站厅／出站口单手持手机，剩余决策时间约 15 分钟，画面须一屏读完不倒回",
+      "user_goal": "判断这班车上车后今晚能否按时到家，以及最迟几点必须动身",
+      "content_basis": "demo.json case02：城市（汀州市）、六段时长、缓冲 5 min 全部为 self_defined_demo；缓冲取保守值是本页口径，非运营方承诺",
+      "visual_intent": "把「末班 23:41」这一个数摊成 72 分钟的六段行程条，再用倒推得到唯一可执行结论：最迟 23:23 动身",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1080,
+        2160
+      ],
+      "png_bytes": 300488,
+      "png_md5": "f9667c73ff496c1650131b2c3c7716b5",
+      "snapshot_bytes": 22590,
+      "snapshot_md5": "0f52acbf5711fd91bf0f2776c51b7858",
+      "dsl_chars": 21289,
+      "case_report": "case-02/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "倒推段条（六行 470 px 条形）＋大字结论＋状态栏时刻",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-02/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 4,
+        "previews": [
+          "case-02/v02-preview.png",
+          "case-02/v03-preview.png",
+          "case-02/v04-preview.png"
+        ],
+        "qa_crops": [],
+        "final_version": "case02-v04",
+        "conclusion": "告示给 1 个时刻，本卡给 6 段时长＋1 个最迟出发时刻＋1 个当下剩余分钟；④ 三种情况里明确写出不含限流与加班车，避免把演示当承诺"
+      },
+      "request_ids": [
+        "B06-case02-v01-20261011T135251Z",
+        "B06-case02-v02-20261011T135322Z",
+        "B06-case02-v03-20261011T135425Z",
+        "B06-case02-v04-20261011T135509Z"
+      ],
+      "render_ok": 3,
+      "render_failed_or_truncated": 1,
+      "final_request": "B06-case02-v04-20261011T135509Z",
+      "final_server_timing": "render;dur=527.2, total;dur=539.3",
+      "iteration_ids": [
+        "B06-case02-v01-135535",
+        "B06-case02-v02-135535",
+        "B06-case02-v03-135535",
+        "B06-case02-v04-135535"
+      ],
+      "unresolved_issues": [
+        "换乘走行与出闸步行为自设值，未在任何车站实测；未在真实强光与单手条件下测过阅读时间"
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "月租不能比较",
+      "audience": "一次筛十几套房的租房者，尤其第一次签约、不知道哪些钱能谈的人",
+      "use_context": "桌面或笔记本，签约前坐下来逐项对比，可打印带走",
+      "user_goal": "比较三套房 12 个月的真实负担，而不是列表页上的月租数字",
+      "content_basis": "demo.json case03：三套房、租金、免租期、通勤时长为 self_defined_demo；时间单价 30 元/h、每月 22 天往返是本页自设口径，页面上明写",
+      "visual_intent": "把六笔钱与一段通勤折进 12 个月：五段堆叠条＋条尾押金空心框，让「列表页最便宜的一套真实月均最高」这个反转在同一画面里成立",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "png_bytes": 272225,
+      "png_md5": "55501e20178ff5da620e7879f4392b03",
+      "snapshot_bytes": 28017,
+      "snapshot_md5": "f6fd5bb2e2d21c30fa03e891a1ea82de",
+      "dsl_chars": 26721,
+      "case_report": "case-03/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "现金流堆叠条（五段＋空心押金框）＋9 列明细表＋行动面板",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-03/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 4,
+        "previews": [
+          "case-03/v01-preview.png",
+          "case-03/v02-preview.png",
+          "case-03/v03-preview.png",
+          "case-03/v04-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-03/qa/v03-act.png",
+          "tmp/20261008T1615Z-run01/B06/case-03/qa/v03-dep.png"
+        ],
+        "final_version": "case03-v04",
+        "conclusion": "列表页 3 个数（2780／押一付三／35 min）变成年实付、真实月均、占月租百分比、签约当天现金、通勤年小时五列；关键差（C 比 B 每月贵 259 元）由脚本算出并印在结论里"
+      },
+      "request_ids": [
+        "B06-case03-v01-20261011T135910Z",
+        "B06-case03-v02-20261011T140138Z",
+        "B06-case03-v03-20261011T140251Z",
+        "B06-case03-v04-20261011T140414Z"
+      ],
+      "render_ok": 4,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case03-v04-20261011T140414Z",
+      "final_server_timing": "render;dur=579.9, total;dur=601.7",
+      "iteration_ids": [
+        "B06-case03-v01-140459",
+        "B06-case03-v02-140459",
+        "B06-case03-v03-140459",
+        "B06-case03-v04-140459"
+      ],
+      "unresolved_issues": [
+        "物业费、水电网费与中介费率为演示值，未取自任何在营房源；「可谈的三笔钱」能省多少没有实际议价数据支撑"
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "外卖价格解剖",
+      "audience": "在两单之间比价、纠结要不要凑单的人",
+      "use_context": "下单前的手机屏幕上，30 秒内决定；不需要滚动两次就能得到结论",
+      "user_goal": "算清实付由哪五步构成、每 100 g 多少钱、再花 15 元凑单到底省不省",
+      "content_basis": "demo.json case04：两家店、菜品、价格、里程、满减档为 self_defined_demo；「配送费＝起步＋超出免费里程×单价」是本页自设算法，非任何平台报价",
+      "visual_intent": "五步价格瀑布（同一比例尺 16 px＝1 元）：浮动条＋每步金额＋累计列，最后一行累计正好等于页面上的实付数，可对账",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1080,
+        1440
+      ],
+      "png_bytes": 262625,
+      "png_md5": "06d5c3c70d652b2c404efaf48278028a",
+      "snapshot_bytes": 22016,
+      "snapshot_md5": "b96fbf447280077ba83cd410cd18531b",
+      "dsl_chars": 20882,
+      "case_report": "case-04/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "瀑布图（正负浮动条＋累计列）＋三段并排条＋凑单判定",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-04/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 3,
+        "previews": [
+          "case-04/v01-preview.png",
+          "case-04/v02-preview.png",
+          "case-04/v03-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-04/qa/v03-c3.png",
+          "tmp/20261008T1615Z-run01/B06/case-04/qa/v03-head.png"
+        ],
+        "final_version": "case04-v03",
+        "conclusion": "原页面 2 行（¥23.22／已优惠 ¥13.00）变成 5 步瀑布＋每 100 g 单价＋凑单结论（净多支出 9.00 元→不值）；占比与「换个分母」并排让两单可比"
+      },
+      "request_ids": [
+        "B06-case04-v01-20261011T141019Z",
+        "B06-case04-v02-20261011T141130Z",
+        "B06-case04-v03-20261011T141233Z"
+      ],
+      "render_ok": 3,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case04-v03-20261011T141233Z",
+      "final_server_timing": "render;dur=459.8, total;dur=470.1",
+      "iteration_ids": [
+        "B06-case04-v01-141322",
+        "B06-case04-v02-141322",
+        "B06-case04-v03-141322"
+      ],
+      "unresolved_issues": [
+        "满减与优惠券叠加规则按本页假设，实际平台常有互斥与限量；未测过真实用户在结算倒计时内能否读完"
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "报告单的箭头不够用",
+      "audience": "拿到 12 项报告、看见 9 个箭头却不知道先管哪一项的人",
+      "use_context": "诊室外等待或回家后平铺阅读，可能打印；需要一眼看出轻重次序",
+      "user_goal": "把「偏了多少」变成可排序的量，决定复查节奏与先挂哪一科",
+      "content_basis": "demo.json case05：12 项数值、参考区间、科室归属与复查节奏全部是 self_defined_demo；dev 归一化偏离度为本页自定义口径，不作诊断、不预测疾病、非任何实验室参考值",
+      "visual_intent": "以区间中值为 0 的 12 行发散条：条长＝|结果−中点|／半宽，左＝低于区间、右＝高于区间；再并排展示「按 dev」与「按超界百分比」两种口径会换第一",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "png_bytes": 310744,
+      "png_md5": "936d5bf9b6b3b75b3f7f67e3b9732ba2",
+      "snapshot_bytes": 41585,
+      "snapshot_md5": "5ea251a389ec2384de76abf7366c7ea8",
+      "dsl_chars": 39973,
+      "case_report": "case-05/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "发散偏差条（中线＋双向条）＋三口径对照＋科室排序表",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-05/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 3,
+        "previews": [
+          "case-05/v01-preview.png",
+          "case-05/v02-preview.png",
+          "case-05/v03-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-05/qa/v02-c2-top.png",
+          "tmp/20261008T1615Z-run01/B06/case-05/qa/v02-c3.png"
+        ],
+        "final_version": "case05-v03",
+        "conclusion": "9 个等宽符号变成 12 条可比较长度＋四档复查节奏＋5 个科室先后＋需重新空腹采血的 5 项；关键对照（维 D 超界 43.3% 但 dev 排第 7）由数据算出"
+      },
+      "request_ids": [
+        "B06-case05-v01-20261011T142040Z",
+        "B06-case05-v02-20261011T142139Z",
+        "B06-case05-v03-20261011T142228Z"
+      ],
+      "render_ok": 3,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case05-v03-20261011T142228Z",
+      "final_server_timing": "render;dur=633.3, total;dur=662.8",
+      "iteration_ids": [
+        "B06-case05-v01-142259",
+        "B06-case05-v02-142300",
+        "B06-case05-v03-142300"
+      ],
+      "unresolved_issues": [
+        "dev 不是医学阈值，只是排序工具；分诊先后与复查节奏未经任何临床复核，落地必须听医生"
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "100 GB 的两行小字",
+      "audience": "被「100 GB 大流量」吸引、但每天用量不固定的手机用户",
+      "use_context": "网页详情区或电视投屏，横向时间轴要在大画布上站远可读",
+      "user_goal": "算出这个月哪天几点开始降速，以及降到 1 Mbps 后手上的事还能不能做",
+      "content_basis": "demo.json case06：100 GB／40 GB／1 Mbps／¥39／30 天用量／各应用所需带宽全部 self_defined_demo，不对应任何在营套餐",
+      "visual_intent": "逐日累计台阶面积（柱＝当日增量，青＝额度内、珊瑚＝降速后仍在用）与 40 GB 金色额度线求交，把「第 22 天 18:30」画成一根竖线",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "png_bytes": 295109,
+      "png_md5": "16fdc6de02d5b7feb5e3abcf6f275368",
+      "snapshot_bytes": 45290,
+      "snapshot_md5": "f78794dea10763ac97acb44d2988ee80",
+      "dsl_chars": 44054,
+      "case_report": "case-06/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "台阶面积图＋额度虚线＋撞线竖线＋带宽判定表",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-06/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 5,
+        "previews": [
+          "case-06/v01-preview.png",
+          "case-06/v02-preview.png",
+          "case-06/v03-preview.png",
+          "case-06/v04-preview.png",
+          "case-06/v05-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-06/qa/v02-c2-chart.png",
+          "tmp/20261008T1615Z-run01/B06/case-06/qa/v02-c34.png",
+          "tmp/20261008T1615Z-run01/B06/case-06/qa/v03-c1-head.png",
+          "tmp/20261008T1615Z-run01/B06/case-06/qa/v03-c3-chart.png",
+          "tmp/20261008T1615Z-run01/B06/case-06/qa/v03-c3-right.png",
+          "tmp/20261008T1615Z-run01/B06/case-06/qa/v05-c4-action.png"
+        ],
+        "final_version": "case06-v05",
+        "conclusion": "两行小字变成撞线时刻＋每日预算 1.33 GB＋实际日均 1.87 GB（超 40%）＋第 15 天预警线；③ 把 1 Mbps 换算成七件事的可用／会卡判定"
+      },
+      "request_ids": [
+        "B06-case06-v01-20261011T142747Z",
+        "B06-case06-v02-20261011T142824Z",
+        "B06-case06-v03-20261011T142900Z",
+        "B06-case06-v04-20261011T142954Z",
+        "B06-case06-v05-20261011T143014Z"
+      ],
+      "render_ok": 5,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case06-v05-20261011T143014Z",
+      "final_server_timing": "render;dur=655.6, total;dur=842.1",
+      "iteration_ids": [
+        "B06-case06-v01-143048",
+        "B06-case06-v02-143048",
+        "B06-case06-v03-143048",
+        "B06-case06-v04-143048",
+        "B06-case06-v05-143048"
+      ],
+      "unresolved_issues": [
+        "逐日用量为演示分布；降速后实际可用带宽因网络而异，本页按 1 Mbps 上限算，未做测速验证"
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "入口立牌的四行字",
+      "audience": "开车进停车场、进门前只有 30 秒决定停多久的人",
+      "use_context": "入口处站立或摇下车窗 glance 一次；打印后可贴在前挡；字号需远处可辨",
+      "user_goal": "知道停 45 分钟／2 小时／8 小时各付多少、哪一分钟跳价、停到什么时候封顶",
+      "content_basis": "demo.json case07：四行费率、封顶与三个时长为 self_defined_demo，不是任何在营停车场的现行价格；城市为虚构汀州市",
+      "visual_intent": "把「不足一段按一段计」画成分钟→元的 14 段台阶（不是斜线），13 条珊瑚跳变竖线＋40 元封顶平台，第 406 分钟到顶",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1200,
+        1600
+      ],
+      "png_bytes": 247831,
+      "png_md5": "4bd70b3954c12885d18e704c55e4def3",
+      "snapshot_bytes": 37428,
+      "snapshot_md5": "32555ebbfedf126c344062773845f459",
+      "dsl_chars": 36188,
+      "case_report": "case-07/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "分段阶梯函数（台阶柱＋跳变竖线＋封顶平台）＋时长对照表＋临界点面板",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-07/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 5,
+        "previews": [
+          "case-07/v01-preview.png",
+          "case-07/v02-preview.png",
+          "case-07/v03-preview.png",
+          "case-07/v04-preview.png",
+          "case-07/v05-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-07/qa/v02-bottom.png",
+          "tmp/20261008T1615Z-run01/B06/case-07/qa/v02-c2-chart.png",
+          "tmp/20261008T1615Z-run01/B06/case-07/qa/v02-c345.png",
+          "tmp/20261008T1615Z-run01/B06/case-07/qa/v03-v03-bottom.png",
+          "tmp/20261008T1615Z-run01/B06/case-07/qa/v04-v04-c2-label.png",
+          "tmp/20261008T1615Z-run01/B06/case-07/qa/v04-v04-c3.png",
+          "tmp/20261008T1615Z-run01/B06/case-07/qa/v05-v05-c2.png"
+        ],
+        "final_version": "case07-v05",
+        "conclusion": "四行字变成逐分钟扫描出的台阶函数：三个常见时长直接给金额与折算单价，跳变点前 1 分钟最划算（76 min 刚跳 9 元，105 min 同样 9 元），封顶时刻 6 h 46 min 而非字面 24 h"
+      },
+      "request_ids": [
+        "B06-case07-v01-20261011T143450Z",
+        "B06-case07-v02-20261011T143529Z",
+        "B06-case07-v03-20261011T143617Z",
+        "B06-case07-v04-20261011T144004Z",
+        "B06-case07-v05-20261011T144201Z"
+      ],
+      "render_ok": 5,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case07-v05-20261011T144201Z",
+      "final_server_timing": "render;dur=457.7, total;dur=476.2",
+      "iteration_ids": [
+        "B06-case07-v01-143829",
+        "B06-case07-v02-143829",
+        "B06-case07-v03-143829",
+        "B06-case07-v04-144244",
+        "B06-case07-v05-144244"
+      ],
+      "unresolved_issues": [
+        "真实停车场的免费期口径、计费取整方式与跨天规则各不相同，本页只按四行字自洽推算，未核对任何现行公示价"
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "14 个图标，我只想选对这一件",
+      "audience": "站在滚筒机前、手上只有一件具体衣服的人",
+      "use_context": "洗衣前贴在面板旁的贴纸，1 分钟内做出选择；竖版适配手机拍照查看",
+      "user_goal": "给「沾了火锅红油的棉 T 恤、20:40 到家、23:30 前必须干」选出唯一程序，并知道几点结束",
+      "content_basis": "demo.json case08：程序名、温度、转速、时长、评分与情境全部 self_defined_demo，note 字段要求以自家机器说明书为准",
+      "visual_intent": "三层同心扇环：14 个程序各占 12.857° 槽位，外环看面料（14→6）、中环看脏污（6→3）、内环看今晚时间（3→3），中心盘给最终答案",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "png_bytes": 366200,
+      "png_md5": "951301bbb37df66dcc64e862dfa463c9",
+      "snapshot_bytes": 68585,
+      "snapshot_md5": "fc5dabd66734bc91f9257e4590e99806",
+      "dsl_chars": 67035,
+      "case_report": "case-08/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "决策扇形（三层环×14 槽，pie_ring 逼近）＋候选对照表＋时间流程条",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-08/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 3,
+        "previews": [
+          "case-08/v01-preview.png",
+          "case-08/v02-preview.png",
+          "case-08/v03-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-08/qa/v02-v02-fan.png",
+          "tmp/20261008T1615Z-run01/B06/case-08/qa/v03-v03-bottom.png",
+          "tmp/20261008T1615Z-run01/B06/case-08/qa/v03-v03-note.png"
+        ],
+        "final_version": "case08-v03",
+        "conclusion": "14 个程序名变成一条收敛路径＋选定程序的完整账（78 min、含 15 min 预处理、22:13 结束、剩 77 min 晾晒）＋4 个最易误选程序及其失败原因计数"
+      },
+      "request_ids": [
+        "B06-case08-v01-20261011T144943Z",
+        "B06-case08-v02-20261011T145224Z",
+        "B06-case08-v03-20261011T145326Z"
+      ],
+      "render_ok": 3,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case08-v03-20261011T145326Z",
+      "final_server_timing": "render;dur=658.3, total;dur=836.8",
+      "iteration_ids": [
+        "B06-case08-v01-145421",
+        "B06-case08-v02-145421",
+        "B06-case08-v03-145421"
+      ],
+      "unresolved_issues": [
+        "真实机器的程序参数差异很大；三问顺序与评分权重是本页设定，未做用户选择实验，也未与任何说明书核对"
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "「0 蔗糖」那瓶，方糖堆到第 6 块",
+      "audience": "在货架前手拿一瓶、想看糖多少的购买者",
+      "use_context": "货架前几秒，手上就是那瓶；卡片可挂在货架边或存进手机",
+      "user_goal": "把「每 100 mL 9.1 g」换算成这一瓶喝下去多少糖，并分清「0 蔗糖」与「无糖」",
+      "content_basis": "demo.json case09：5 款饮品的每 100 mL 克数、净含量与宣称字样为 self_defined_demo；25 g／50 g 是常见公开建议口径，note 要求落地前核对现行指南",
+      "visual_intent": "按整瓶折算后堆成方糖塔（1 块 4.5 g，每行 3 块＝13.5 g），25 g／50 g 两条虚线横切，「喝到多少毫升过线」再单独画",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        1080,
+        1350
+      ],
+      "png_bytes": 233886,
+      "png_md5": "d4332b8c513d527b311169e2bc25c9fa",
+      "snapshot_bytes": 50215,
+      "snapshot_md5": "2b959a113789cbdfa073a035144e93c6",
+      "dsl_chars": 49111,
+      "case_report": "case-09/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "方糖堆叠（1 块 4.5 g，34 px，每行 3 块）＋两条建议线＋毫升过线条形",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-09/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 5,
+        "previews": [
+          "case-09/v01-preview.png",
+          "case-09/v02-preview.png",
+          "case-09/v03-preview.png",
+          "case-09/v04-preview.png",
+          "case-09/v05-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-09/qa/v03-labels.png",
+          "tmp/20261008T1615Z-run01/B06/case-09/qa/v03-plot.png",
+          "tmp/20261008T1615Z-run01/B06/case-09/qa/v04-labels.png",
+          "tmp/20261008T1615Z-run01/B06/case-09/qa/v04-plot.png"
+        ],
+        "final_version": "case09-v05",
+        "conclusion": "每 100 mL 口径变成整瓶克数（S3 27.3 g＝6 块）、过线毫升数与占整瓶比例；金框只给「0 蔗糖」、绿框只给「无糖」，S3 与 S5 并排对照，消除「0 蔗糖＝无糖」的误读"
+      },
+      "request_ids": [
+        "B06-case09-v01-20261011T150348Z",
+        "B06-case09-v02-20261011T150711Z",
+        "B06-case09-v03-20261011T150804Z",
+        "B06-case09-v04-20261011T150940Z",
+        "B06-case09-v05-20261011T151020Z"
+      ],
+      "render_ok": 5,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case09-v05-20261011T151020Z",
+      "final_server_timing": "render;dur=389.5, total;dur=553.5",
+      "iteration_ids": [
+        "B06-case09-v01-150401",
+        "B06-case09-v02-150824",
+        "B06-case09-v03-150824",
+        "B06-case09-v04-150953",
+        "B06-case09-v05-151037"
+      ],
+      "unresolved_issues": [
+        "含糖量与宣称字样为演示；每日建议上限适用人群因人而异（儿童、糖尿病人群不同），未咨询营养师，也未做货架实拍验证"
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "入职第一个月，我只把这 8 条对上了",
+      "audience": "入职第一个月、手里有合同但不知道哪些条款要自己核对的新人",
+      "use_context": "打印在 A4 上放桌面逐项核对，左缘打孔便于夹在文件夹里；需要能逐条划勾与记录",
+      "user_goal": "逐项判断合同／HR 说的与应有的差在哪，以及不对的下一步做什么",
+      "content_basis": "demo.json case10：8 项条款文本（7 项标 common_rule_needs_check、1 项 self_defined_demo）、月薪 12000、排班 61 h、HR 说法均为演示；note 写明本表是核对清单不是法律意见",
+      "visual_intent": "打孔卡：左缘一个孔＝一项，孔色即判定（珊瑚＝不符、金＝缺项），五列里后四列照抄来源文本不改写；加班 61 h 与 36 h 上限放到同一根 0–80 h 轴上",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1240,
+        1754
+      ],
+      "png_bytes": 404755,
+      "png_md5": "62c75b980d699c58cfe3ec82165cb40c",
+      "snapshot_bytes": 38082,
+      "snapshot_md5": "264de06c502c85d2fb4cd512e66a35ad",
+      "dsl_chars": 35855,
+      "case_report": "case-10/case.md",
+      "supporting_assets": [],
+      "dsl_capabilities": {
+        "tags": [
+          "Container",
+          "Positioned",
+          "Snapshot",
+          "Stack",
+          "Text",
+          "Transform"
+        ],
+        "attributes": [
+          "alignment",
+          "background",
+          "border",
+          "borderRadius",
+          "clipBehavior",
+          "color",
+          "fontFamily",
+          "fontSize",
+          "fontStyle",
+          "height",
+          "left",
+          "matrix",
+          "textAlign",
+          "top",
+          "type",
+          "width"
+        ],
+        "construct": "打孔状态条（8 孔＋计数芯片）＋5 列核对表＋0–80 h 单轴＋6 节点时间线",
+        "note": "全部由 Container/Positioned/Stack/Text/Snapshot 构造；圆与扇形用图元逼近，斜切用 Transform matrix，圆角用 borderRadius，无位图素材"
+      },
+      "completion_criteria": [
+        "画面上「原始口径 → 换算 → 行动」三段都能在实际图中指认（见 case-10/case.md 的块表）",
+        "所有可见数字可由 tmp/<run>/B06/research/demo.json 复算，无手写数",
+        "口径与限制块如实标注演示值与需核对项，不冒充权威建议",
+        "逐版本真实看图并记录问题；final.png 为 HTTP 200 原始响应字节"
+      ],
+      "visual_review": {
+        "iterations_viewed": 4,
+        "previews": [
+          "case-10/v01-preview.png",
+          "case-10/v02-preview.png",
+          "case-10/v03-preview.png",
+          "case-10/v04-preview.png"
+        ],
+        "qa_crops": [
+          "tmp/20261008T1615Z-run01/B06/case-10/qa/v01-ot-month.png",
+          "tmp/20261008T1615Z-run01/B06/case-10/qa/v01-punch.png",
+          "tmp/20261008T1615Z-run01/B06/case-10/qa/v01-rows-a.png",
+          "tmp/20261008T1615Z-run01/B06/case-10/qa/v01-rows-b.png",
+          "tmp/20261008T1615Z-run01/B06/case-10/qa/v03-rows-top.png",
+          "tmp/20261008T1615Z-run01/B06/case-10/qa/v04-rows-bottom.png"
+        ],
+        "final_version": "case10-v04",
+        "conclusion": "分散在合同正文、附件与口头说明里的 8 件事变成一屏判定分布（不符 5／缺项 3／通过 0）＋每项一句可执行动作＋第一个月 6 个时间点"
+      },
+      "request_ids": [
+        "B06-case10-v01-20261011T151628Z",
+        "B06-case10-v02-20261011T151813Z",
+        "B06-case10-v03-20261011T151850Z",
+        "B06-case10-v04-20261011T151946Z"
+      ],
+      "render_ok": 4,
+      "render_failed_or_truncated": 0,
+      "final_request": "B06-case10-v04-20261011T151946Z",
+      "final_server_timing": "render;dur=667.6, total;dur=694.3",
+      "iteration_ids": [
+        "B06-case10-v01-151706",
+        "B06-case10-v02-152018",
+        "B06-case10-v03-152018",
+        "B06-case10-v04-152018"
+      ],
+      "unresolved_issues": [
+        "未做真实用户验证，也没有逐条核对现行法条与当地口径；「该是多少」是常见规定复述，签任何字前需咨询当地人社部门或工会"
+      ]
+    }
+  ],
+  "case_field_guide": {
+    "id": "case-01 等唯一 ID",
+    "title": "作品名",
+    "audience": "具体受众",
+    "use_context": "设备／媒介／观看环境",
+    "user_goal": "使用者要完成的事",
+    "content_basis": "实际来源或自拟内容的标识（observed / self_defined_demo / common_rule_needs_check）",
+    "visual_intent": "主要视觉主张",
+    "png": "相对本题输出根的主图路径",
+    "snapshot": "相对本题输出根的同名主体 DSL 路径",
+    "dimensions": "实际 PNG 头部读取的 [width, height]",
+    "supporting_assets": "本题十件为空数组：全部内容由 DSL 构造，演示数值由 b06data.py（seed 20261011）生成",
+    "dsl_capabilities": "从 final.snapshot 实际解析出的标签与属性计数",
+    "completion_criteria": "自主设定并可对照实际图的标准（见各 case.md 与本文件 judgment 字段）",
+    "visual_review": "实际看图／局部裁图的证据（相对本题输出根）",
+    "request_ids": "该件全部真实渲染请求 ID",
+    "iteration_ids": "该件真实版本与迭代 ID",
+    "unresolved_issues": "当前仍存在的问题"
+  },
+  "shared": {
+    "dataset": "tmp/<run>/B06/research/demo.json（b06data.py，seed 20261011，source self_defined_demo unless noted，city 汀州市（虚构，与 B05 同一虚构城市但不共享实体））",
+    "kit": [
+      "tmp/<run>/B06/b06kit.py",
+      "tmp/<run>/B06/b06run.py",
+      "tmp/<run>/B06/promote.py",
+      "tmp/<run>/B06/qa.py",
+      "tmp/<run>/B06/tlog.py"
+    ],
+    "capability_probe": "tmp/<run>/B06/case-00/（ClipRect/ClipOval/BackdropFilter/Transform matrix 九项探针，含 3 次 400 与 4 次传输失败留痕）",
+    "plan": "tmp/<run>/B06/PLAN.md"
+  },
+  "final_collection_review": "十件逐条核对通过：每张 final.png 都是 HTTP 200 的服务原始响应字节（promote.py 按 md5 与响应体核对后提升），均有同名 final.snapshot（字节数与 build-log 记录一致）；十件画布互不重复（1080×1080、1080×2160、1600×1000、1080×1440、1440×1080、1920×1080、1200×1600、1080×1920、1080×1350、1240×1754）；同一件内所有数字取自 demo.json 同一 case，且每件都有 ⑤／④ 口径块说明哪些是演示、哪些需核对；gallery.md 十张逐图给出预览＋PNG＋DSL＋用例报告链接，链接相对本题输出根。跨件复核确认：无参考界面描摹、无外部位图、无后处理成品、QA 裁图全部留在临时目录。",
+  "unresolved_issues": [
+    "十件均未做真实用户验证：所有「更容易理解／更好用」的判断来自实际看图与结构对比，不是实验结果",
+    "医疗（件-05）、营养（件-09）、法律（件-10）三件只复述公开常识并在页面上标注需核对，未回源核实现行条文、指南与实验室参考区间",
+    "件-02／03／04／06／07 的时长、费率、价格与用量均为自拟演示值，不对应任何在营服务",
+    "曲线与扇形仍是图元逼近：类 DOM 解析器只有 ClipRect/ClipOval/ClipRRect，ClipPath 与 PathBuilder 只在 Kotlin DSL，2× 放大可见折线边",
+    "十件 final.snapshot 未使用 ClipRect/ClipOval/BackdropFilter（计划曾打算用）：能力在 case-00 探针中验证过，成品改用图元＋Transform matrix，此偏差已在 snapshot-usage.md 记录",
+    "requests.jsonl 中 case00 早期 4 次请求（v01×1、v02×1、v03×2）的 request_file 字段带重复目录前缀且对应文件不在磁盘上，仅 DSL 与错误摘要保留"
+  ]
+}

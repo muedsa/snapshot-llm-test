@@ -1,0 +1,155 @@
+{
+  "path_base": "suite_root",
+  "task_id": "A19",
+  "claim": "两份隐藏内容完全不同的完整 DSL，经真实服务渲染后得到像素级一致的最终图片",
+  "method": "对两次真实服务响应的原始 PNG 做 sha256 与 numpy 逐像素（RGB 三通道）差值比较",
+  "primary_pair": {
+    "left": "tmp/20261008T1615Z-run01/A19/preview/occlusion-v02.png",
+    "right": "tmp/20261008T1615Z-run01/A19/preview/occlusion-alternative-v02.png",
+    "size_left": [
+      800,
+      800
+    ],
+    "size_right": [
+      800,
+      800
+    ],
+    "sha256_left": "d2fcc9e4814aab8b92dcb1c02a8449d082dc272aa1687424e1f3ba987cd1a022",
+    "sha256_right": "d2fcc9e4814aab8b92dcb1c02a8449d082dc272aa1687424e1f3ba987cd1a022",
+    "bytes_identical": true,
+    "differing_pixels": 0,
+    "total_pixels": 640000,
+    "differing_fraction": 0.0,
+    "max_channel_difference": 0,
+    "difference_bbox": null
+  },
+  "dsls": {
+    "occlusion": {
+      "snapshot": "outputs/20261008T1615Z-run01/A19/occlusion.snapshot",
+      "png": "outputs/20261008T1615Z-run01/A19/occlusion.png",
+      "dsl_bytes": 12232,
+      "dsl_sha256": "a388193e123fc3b960946baddb5f32e21a5d9fb66a43985a867bcaceb5295636",
+      "png_sha256": "d2fcc9e4814aab8b92dcb1c02a8449d082dc272aa1687424e1f3ba987cd1a022",
+      "hidden_subjects": 5
+    },
+    "occlusion-alternative": {
+      "snapshot": "outputs/20261008T1615Z-run01/A19/occlusion-alternative.snapshot",
+      "png": "outputs/20261008T1615Z-run01/A19/occlusion-alternative.png",
+      "dsl_bytes": 13041,
+      "dsl_sha256": "ebd4e38df60ef814dc11f348108b5a82cf0ef33e9ff1409774eee6791494eefa",
+      "png_sha256": "d2fcc9e4814aab8b92dcb1c02a8449d082dc272aa1687424e1f3ba987cd1a022",
+      "hidden_subjects": 11
+    }
+  },
+  "hidden_content_differs": {
+    "subject_counts": {
+      "occlusion": 5,
+      "occlusion-alternative": 11
+    },
+    "shape_multiset_left": [
+      "circle",
+      "ring",
+      "rounded",
+      "square",
+      "square"
+    ],
+    "shape_multiset_right": [
+      "circle",
+      "circle",
+      "circle",
+      "circle",
+      "ring",
+      "ring",
+      "rounded",
+      "square",
+      "square",
+      "square",
+      "square"
+    ],
+    "dsl_bytes_equal": false
+  },
+  "control_removed_plate": {
+    "note": "同一批 DSL 去掉遮挡板后的诊断渲染（仅留痕于临时目录，不是交付图），用来证明两者隐藏内容确实不同，且差异像素完全落在板的包围框内。",
+    "hidden_a_vs_hidden_b": {
+      "left": "tmp/20261008T1615Z-run01/A19/preview/occlusion-noplate-v02.png",
+      "right": "tmp/20261008T1615Z-run01/A19/preview/occlusion-alternative-noplate-v02.png",
+      "size_left": [
+        800,
+        800
+      ],
+      "size_right": [
+        800,
+        800
+      ],
+      "sha256_left": "f4c4ce4620babfc0c2c784d03731d1398fd0eae6b2bd76430047b83f9ee7c613",
+      "sha256_right": "0e0a2f7912e0b47ccc64a3d157e2e0957ef385aa6978c389b0f0c3624f87fa1e",
+      "bytes_identical": false,
+      "differing_pixels": 37248,
+      "total_pixels": 640000,
+      "differing_fraction": 0.0582,
+      "max_channel_difference": 250,
+      "difference_bbox": [
+        249,
+        250,
+        543,
+        543
+      ]
+    },
+    "a_covered_vs_a_exposed": {
+      "left": "tmp/20261008T1615Z-run01/A19/preview/occlusion-v02.png",
+      "right": "tmp/20261008T1615Z-run01/A19/preview/occlusion-noplate-v02.png",
+      "size_left": [
+        800,
+        800
+      ],
+      "size_right": [
+        800,
+        800
+      ],
+      "sha256_left": "d2fcc9e4814aab8b92dcb1c02a8449d082dc272aa1687424e1f3ba987cd1a022",
+      "sha256_right": "f4c4ce4620babfc0c2c784d03731d1398fd0eae6b2bd76430047b83f9ee7c613",
+      "bytes_identical": false,
+      "differing_pixels": 160000,
+      "total_pixels": 640000,
+      "differing_fraction": 0.25,
+      "max_channel_difference": 204,
+      "difference_bbox": [
+        200,
+        210,
+        599,
+        609
+      ]
+    },
+    "b_covered_vs_b_exposed": {
+      "left": "tmp/20261008T1615Z-run01/A19/preview/occlusion-alternative-v02.png",
+      "right": "tmp/20261008T1615Z-run01/A19/preview/occlusion-alternative-noplate-v02.png",
+      "size_left": [
+        800,
+        800
+      ],
+      "size_right": [
+        800,
+        800
+      ],
+      "sha256_left": "d2fcc9e4814aab8b92dcb1c02a8449d082dc272aa1687424e1f3ba987cd1a022",
+      "sha256_right": "0e0a2f7912e0b47ccc64a3d157e2e0957ef385aa6978c389b0f0c3624f87fa1e",
+      "bytes_identical": false,
+      "differing_pixels": 160000,
+      "total_pixels": 640000,
+      "differing_fraction": 0.25,
+      "max_channel_difference": 204,
+      "difference_bbox": [
+        200,
+        210,
+        599,
+        609
+      ]
+    }
+  },
+  "conclusion": {
+    "final_images_pixel_identical": true,
+    "hidden_layers_actually_differ": true,
+    "hidden_difference_confined_to_plate": true,
+    "no_leakage_of_hidden_content": true
+  }
+}
