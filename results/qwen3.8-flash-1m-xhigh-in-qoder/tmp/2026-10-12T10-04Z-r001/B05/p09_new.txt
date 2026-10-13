@@ -1,0 +1,57 @@
+    cols = [("#", 48), ("药品", 84), ("服用者", 268), ("用法", 356),
+            ("剩余", 470), ("效期(天)", 548), ("依从", 634), ("状态", 706)]
+    for name, x in cols:
+        s.text("p", name, x, 182, 16, INK2, bold=True)
+    y = 212
+    for i, m in enumerate(D["meds"], 1):
+        s.line(48, y - 10, w - 48, y - 10, "#DDD8CC", 1.0)
+        vals = [(str(i), 48), (m["name"][:9], 84), (PEOPLE[m["who"]]["name"], 268),
+                (" ".join(m["doses"]) or "按需", 356),
+                (f"{m['remaining']}{m['form']}", 470), (str(m["expiry_days"]), 548),
+                (f"{m['adherence_14']:.0f}%" if m["adherence_14"] is not None
+                 else "不计", 634),
+                ("需补货" if m["need_refill"] else
+                 ("效期紧" if m["expiry_days"] <= 30 else "正常"), 706)]
+        for t, x in vals:
+            s.text("p", t, x, y, 17, INK, font=MONO if x >= 356 else SANS)
+        y += 38
+    s.line(48, y, w - 48, y, INK, 1.2)
+    y += 20
+    s.text("p", "近 7 天服药记录（√=已确认，×=漏服，—=当日无安排）", 48, y, 19, INK,
+           bold=True)
+    y += 36
+    s.text("p", "日期", 224, y, 14, INK3)
+    s.text("p", "依从率", 616, y, 14, INK3)
+    for j, d in enumerate(D["week_days"]):
+        s.text("p", d[5:], 268 + j * 44, y, 14, INK3, font=MONO)
+    y += 28
+    for mid in ("M1", "M2", "M3", "M5"):
+        m = MEDS[mid]
+        s.text("p", m["name"][:10], 48, y, 17, INK)
+        for j, row in enumerate(D["week_grid"][mid]):
+            mark = "√" if all(c == "取" for c in row) else (
+                "×" if any(c == "漏" for c in row) else "—")
+            s.text("p", mark, 268 + j * 44, y, 18, INK, font=MONO)
+        s.text("p", f"{m['adherence_14']:.0f}%", 616, y, 17, INK, font=MONO)
+        y += 32
+    y += 14
+    s.line(48, y, w - 48, y, "#DDD8CC", 1.0)
+    y += 22
+    s.text("p", "需要药师确认的事项", 48, y, 19, INK, bold=True)
+    y += 36
+    for t in ["阿托伐他汀钙片：效期 7 天且仅剩 3 片，是否续方？",
+              "二甲双胍缓释片：效期 20 天，按当前用量会用不完，是否更换包装规格？",
+              "布地奈德福莫特罗吸入剂：按需使用，剩余吸数由家属手工记数，请核对方法。",
+              "维生素 D 滴剂：开封 2026-10-08，开封后 90 天内用完（2027-01-06）。"]:
+        s.text("p", "· " + t, 48, y, 17, INK2)
+        y += 30
+    s.line(48, y + 10, w - 48, y + 10, "#DDD8CC", 1.0)
+    s.text("p", "本页不替代医嘱；用法用量以处方原件为准。黑白打印即可，"
+                "状态列全部使用文字而非颜色。", 48, y + 28, 16, INK3)
+    s.line(48, 1026, 296, 1026, INK, 1.0)
+    s.line(w - 296, 1026, w - 48, 1026, INK, 1.0)
+    s.text("p", "家属签名 / 日期", 48, 1000, 16, INK3)
+    s.text("p", "药师签名 / 日期", w - 296, 1000, 16, INK3)
+    s.text("p", "第 1 页 / 共 1 页 · 药盒 v0.9 导出", w - 48, 1064, 16, INK3,
+           align="right", font=MONO)
+    save(s, "case09-print", min_font=14)

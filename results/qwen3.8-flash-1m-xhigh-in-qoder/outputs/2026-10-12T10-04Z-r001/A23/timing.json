@@ -1,0 +1,88 @@
+{
+ "schema_version": 1,
+ "task_id": "A23",
+ "path_base": "output_dir",
+ "intent": "6 帧透明 PNG 关键帧 + 时间数据；本题不交付 GIF（服务不支持，见 limitations.md）",
+ "frames": [
+  {
+   "order": 1,
+   "id": "frame-01",
+   "file": "frame-01.png",
+   "dsl": "frame-01.snapshot",
+   "t_ms": 0,
+   "duration_ms": 250
+  },
+  {
+   "order": 2,
+   "id": "frame-02",
+   "file": "frame-02.png",
+   "dsl": "frame-02.snapshot",
+   "t_ms": 250,
+   "duration_ms": 250
+  },
+  {
+   "order": 3,
+   "id": "frame-03",
+   "file": "frame-03.png",
+   "dsl": "frame-03.snapshot",
+   "t_ms": 500,
+   "duration_ms": 250
+  },
+  {
+   "order": 4,
+   "id": "frame-04",
+   "file": "frame-04.png",
+   "dsl": "frame-04.snapshot",
+   "t_ms": 750,
+   "duration_ms": 250
+  },
+  {
+   "order": 5,
+   "id": "frame-05",
+   "file": "frame-05.png",
+   "dsl": "frame-05.snapshot",
+   "t_ms": 1000,
+   "duration_ms": 250
+  },
+  {
+   "order": 6,
+   "id": "frame-06",
+   "file": "frame-06.png",
+   "dsl": "frame-06.snapshot",
+   "t_ms": 1250,
+   "duration_ms": 250
+  }
+ ],
+ "frame_duration_ms": 250,
+ "loop": true,
+ "period_ms": 1500,
+ "frame_count": 6,
+ "transparent": true,
+ "seamless": false,
+ "seam_evidence": {
+  "where": "frame-06 (t=1250ms) 之后回到 frame-01 (t=1500ms ≡ 0ms)",
+  "effect": "12 个单元瞬间从画面位置退回各自散布起点，画面消失",
+  "measured": {
+   "seam_displacement_px_median": 285.63,
+   "in_sequence_displacement_px_median": 49.67,
+   "ratio": 5.75,
+   "seam_rotation_delta_deg_median": 57.6
+  },
+  "per_unit_reference": "frame-data.json → seam.per_unit",
+  "viewed": {
+   "path_base": "suite_root",
+   "path": "tmp/2026-10-12T10-04Z-r001/A23/contact-sheet.png",
+   "note": "接触表按 1→6 顺序逐格查看，末格为首尾相接的样子"
+  },
+  "why_not_closed": "轨迹是单向汇聚：匀速闭合轨道会让第 1 帧的离散度低于第 3 帧（必须先散后聚），与“由分散逐步汇聚”冲突，因此保留跳变并如实记录",
+  "workaround_for_playback": "需要无跳变播放时按 1→6→5→…→2 往返（ping-pong）播放，或把第 6 帧作为定格终点单次播放"
+ },
+ "easing": {
+  "kind": "closed-form spiral with smoothstep",
+  "position": "r(τ)=r0+(r_slot-r0)·e(τ), θ(τ)=θ0+(θ_slot-θ0)·e(τ)",
+  "rotation": "rot(τ)=rot0+(rot_slot-rot0)·e(τ)",
+  "easing": "e(τ)=τ²(3-2τ)",
+  "tau": "τ=(frame-1)/5",
+  "note": "插值只描述设计轨迹；中间帧未渲染，交付的就是这 6 帧"
+ }
+}

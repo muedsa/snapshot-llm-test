@@ -1,0 +1,63 @@
+# WidgetSpan
+
+`WidgetSpan` 是 `PlaceholderSpan` 的实现。它把一个 Widget 插入 RichText，参与段落测量、基线对齐与绘制。
+
+## DSL 签名
+
+Section titled “DSL 签名”
+
+```
+`
+
+fun TextSpan.WidgetSpan(
+
+    alignment: PlaceholderAlignment = PlaceholderAlignment.BOTTOM,
+
+    baseline: BaselineMode? = null,
+
+    style: TextStyle? = null,
+
+    content: ChildSlot.() -> Unit,
+
+)
+
+`
+```
+
+## 参数
+
+Section titled “参数”
+
+参数 | 默认值 | 说明
+````alignment | BOTTOM | 占位盒与文字行的对齐方式
+````baseline | null | 使用基线类 alignment 时的基线类型
+````style | null | 占位 Span 的可继承文本样式
+``content | 必填 | 构建一个行内 Widget
+
+```
+`
+
+RichText {
+
+    TextSpan(text = "状态：", style = TextStyle(fontSize = 20f))
+
+    WidgetSpan(alignment = PlaceholderAlignment.MIDDLE) {
+
+        Container(width = 12f, height = 12f, color = 0xFF22C55E.toInt())
+
+    }
+
+    TextSpan(text = " 正常", style = TextStyle(fontSize = 20f))
+
+}
+
+`
+```
+
+`BASELINE`、`ABOVE_BASELINE`、`BELOW_BASELINE` 通常需要提供 baseline；`TOP`、`BOTTOM`、`MIDDLE` 按行盒对齐。
+
+WidgetSpan 会增加段落布局复杂度。简单图标优先使用固定尺寸，避免无限或不稳定约束。
+
+上一页
+RichText下一页
+ImageEmojiSpan

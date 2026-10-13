@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B05",
+  "run_id": "2026-10-12T10-04Z-r001",
+  "product": "药盒",
+  "one_liner": "给多药家庭一个「谁、什么时候、吃什么、还剩多少、什么时候到期」的统一记录，并把同一份数据投影到手机、手表、冰箱卡、平板、桌面与 A4 纸上。",
+  "problem": [
+    "余量看不见：阿托伐他汀钙片剩 3 片（可服 3 天），而社区医院开同药需 7 天",
+    "效期有两种：盒上日期与开封后期限，取更紧的那个才是真正能用的日期",
+    "照护者无法回看：子女不知道过去两周母亲是否吃全",
+    "交接没有载体：复诊时说不清每种药的来源、余量与依从情况"
+  ],
+  "data_source": "tmp/<run_id>/B05/data.json（由 b05data.py 推导，含断言）",
+  "actors": [
+    { "id": "gm", "name": "周秀兰", "role": "主要服药者", "age": 78, "constraint": "视力弱，正文需 ≥22px", "devices": ["phone", "watch", "fridge-card"] },
+    { "id": "me", "name": "周成", "role": "管理员", "age": 47, "constraint": "负责录入、补货与复诊交接", "devices": ["phone", "tablet", "desktop", "print"] },
+    { "id": "da", "name": "周雨桐", "role": "按需用药者", "age": 12, "constraint": "由家长代管，不计依从率", "devices": ["phone"] },
+    { "id": "pharmacist", "name": "社区药师", "role": "交接对象", "constraint": "只读家庭数据，需签字确认", "devices": ["desktop", "print"] }
+  ],
+  "devices": [
+    { "id": "phone", "canvas": [390, 844], "min_font": 16, "cases": ["case-01", "case-02", "case-03", "case-04", "case-10"] },
+    { "id": "watch", "canvas": [200, 240], "min_font": 14, "cases": ["case-05"] },
+    { "id": "fridge-card", "canvas": [680, 320], "min_font": 18, "note": "离线打印，1 米外可读", "cases": ["case-06"] },
+    { "id": "tablet", "canvas": [834, 1112], "min_font": 16, "cases": ["case-07"] },
+    { "id": "desktop", "canvas": [1440, 900], "min_font": 16, "cases": ["case-08"] },
+    { "id": "print", "canvas": [794, 1123], "min_font": 14, "note": "A4 竖版 96dpi，黑白可印", "cases": ["case-09"] }
+  ],
+  "rules": [
+    { "id": "days-supply", "text": "可服天数 = 剩余量 ÷ 每日时点数；无固定时点则不估算", "shown_in": ["case-01", "case-02", "case-06", "case-09"] },
+    { "id": "effective-expiry", "text": "有效效期 = min(盒上效期, 开封日 + 90 天)，全部界面共用该数值与颜色分级", "shown_in": ["case-02", "case-06", "case-08", "case-09", "case-10"] },
+    { "id": "refill-trigger", "text": "可服天数 ≤ 补货提前量 + 3 天 即提示补货（本样本命中 M1/M2/M3）", "shown_in": ["case-02", "case-07"] },
+    { "id": "adherence", "text": "依从率 = 已确认时点数 ÷ 应服时点数（14 天窗口），按需药不计入分母", "shown_in": ["case-07", "case-09"] },
+    { "id": "missed", "text": "超过时点 60 分钟未确认记为漏服（设计假设，未验证）", "shown_in": ["case-01", "case-07"] },
+    { "id": "no-advice", "text": "产品不生成用药建议；涉及用法、漏服处理、处置的文案一律指向说明书或药师", "shown_in": ["case-03", "case-06", "case-08", "case-09", "case-10"] }
+  ],
+  "steps": [
+    {
+      "id": "S1", "screen": "case-04", "actor": "me", "trigger": "第一次打开药盒，药箱为空",
+      "sees": "三条录入路径按代价排序，并先说明数据存放位置与不给用药建议",
+      "does": "选择「手动录入」",
+      "leads_to": "S2",
+      "state_after": "药箱仍为空，但用户知道接下来会发生什么"
+    },
+    {
+      "id": "S2", "screen": "case-03", "actor": "me", "trigger": "把母亲的阿托伐他汀钙片加进药箱",
+      "sees": "9 个字段已填 7 个；两处校验同时报错：效期早于今天、每日次数与已填时间数不符",
+      "does": "修正效期与次数后保存",
+      "leads_to": "S3",
+      "state_after": "今日时间线出现该时点；错误未修正时保存按钮保持禁用"
+    },
+    {
+      "id": "S3", "screen": "case-01", "actor": "gm", "trigger": "21:40 打开 App",
+      "sees": "4/5 已完成、漏服 0，唯一待服的是 22:00 降脂药；数据截止时刻单独成行",
+      "does": "查看，或点右上角红点进入警报",
+      "leads_to": "S4",
+      "state_after": "知道今天还差什么"
+    },
+    {
+      "id": "S4", "screen": "case-05", "actor": "gm", "trigger": "22:00 手表震动",
+      "sees": "22:00 / 降脂药 / 1 片 · 母亲 / 仅剩 3 片",
+      "does": "长按确认",
+      "leads_to": "S5",
+      "state_after": "该时点写回日志，次日 01 与 07 的统计随之更新"
+    },
+    {
+      "id": "S5", "screen": "case-02", "actor": "me", "trigger": "今日页出现红点",
+      "sees": "5 种药按剩余有效天数升序：7 / 20 / 85 / 94 / 199 天，并给出可服天数与耗尽日期",
+      "does": "对「效期紧」的阿托伐他汀钙片点入处置页",
+      "leads_to": "S8",
+      "state_after": "形成两条待办：补货、清效期"
+    },
+    {
+      "id": "S6", "screen": "case-06", "actor": "family", "trigger": "老人不掏手机时，家人看一眼冰箱",
+      "sees": "三行医嘱定时药与时间、效期天数；离线显示上次同步时间",
+      "does": "按卡提示服药，确认仍走手表或手机",
+      "leads_to": "S7",
+      "state_after": "离线场景下信息仍然正确（但不会更新）"
+    },
+    {
+      "id": "S7", "screen": "case-07", "actor": "me", "trigger": "周末回看两周记录",
+      "sees": "14 天服药格（含 4 次漏服）、按人聚合的依从率、4 条自动生成待办",
+      "does": "完成待办或导出给药师",
+      "leads_to": "S9",
+      "state_after": "待办关闭；导出生成药师视图"
+    },
+    {
+      "id": "S8", "screen": "case-10", "actor": "me", "trigger": "点入「效期紧」的药品",
+      "sees": "只剩 1 项待处置；三步通用做法，每步都写明未查证权威清单",
+      "does": "先确认是否续方，再决定处置并登记",
+      "leads_to": "S7",
+      "state_after": "处置记录写回药箱，复诊时可说明"
+    },
+    {
+      "id": "S9", "screen": "case-08", "actor": "pharmacist", "trigger": "复诊前家属发来交接清单",
+      "sees": "5 项清单含服用者、处方来源、有效效期、剩余与状态；未采集字段显式列出",
+      "does": "核对后打印",
+      "leads_to": "S10",
+      "state_after": "打印设置确定：A4 单面、不含空白字段、黑白"
+    },
+    {
+      "id": "S10", "screen": "case-09", "actor": "pharmacist", "trigger": "打印动作",
+      "sees": "A4 单页：清单 + 近 7 天记录 + 需确认事项 + 双方签字栏",
+      "does": "签字留档",
+      "leads_to": "S3",
+      "state_after": "纸质留档完成；家庭侧继续每日循环"
+    }
+  ],
+  "loops": [
+    { "id": "daily", "screens": ["case-01", "case-05"], "cadence": "每天 4 个时点" },
+    { "id": "weekly", "screens": ["case-07", "case-02"], "cadence": "每周回看" },
+    { "id": "visit", "screens": ["case-08", "case-09"], "cadence": "复诊时" },
+    { "id": "setup", "screens": ["case-04", "case-03"], "cadence": "一次性" }
+  ],
+  "states_covered": [
+    "空状态（case-04）", "录入校验失败（case-03）", "正常每日（case-01）",
+    "到点提醒（case-05）", "离线（case-06）", "积压警报（case-02）",
+    "历史回看（case-07）", "跨角色交接（case-08）", "纸质留档（case-09）",
+    "清理与处置（case-10）"
+  ],
+  "consistency_checks": [
+    "同一药在同一时刻在所有屏上的剩余量、有效效期、可服天数一致（同源 data.json）",
+    "case-01 的 22:00 待服与 case-05 的手表提醒是同一条记录",
+    "case-07 的 14 天漏服次数与格内红/黄格数量一致（4 次）",
+    "case-08 的状态计数由清单实时统计，不手写",
+    "case-09 的表格与 case-08 的清单同一批字段，且标注未采集字段"
+  ],
+  "unverified": [
+    "漏服 60 分钟阈值未与真实用药习惯核对",
+    "补货提前量 7/10/14 天为假设，未核实当地开药周期",
+    "条码库覆盖范围未核实",
+    "老人能否自行修正录入错误：未做真实用户验证",
+    "手表 14–16px 真机可读性未实测",
+    "过期药回收点位与政策未查证任何权威来源",
+    "A4 在真实激光打印机上的灰度表现未实测"
+  ],
+  "not_claimed": [
+    "没有真实用户参与，因此不声称做过可用性测试、访谈或对照实验",
+    "界面中的医院、药房、地址与人名均为虚构演示数据"
+  ]
+}

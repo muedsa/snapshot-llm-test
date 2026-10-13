@@ -1,0 +1,214 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "scene_source": {
+  "path_base": "suite_root",
+  "path": "tmp/2026-10-12T10-04Z-r001/A19/v002-scene.json"
+ },
+ "verification_source": {
+  "path_base": "suite_root",
+  "path": "tmp/2026-10-12T10-04Z-r001/A19/v002-verify.json"
+ },
+ "answers": [
+  {
+   "id": "Q01",
+   "answer": [
+    "G05",
+    "G38",
+    "G43",
+    "G54"
+   ],
+   "method": "遍历 64 个对象，筛选 colour==green 且 shape==ring",
+   "visibility_basis": "图中可见的颜色与形状",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q02",
+   "answer": [
+    "G29",
+    "G35"
+   ],
+   "method": "筛选 colour==orange 且 size_px==80",
+   "visibility_basis": "图中可见的颜色与主体大小",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q03",
+   "answer": [
+    "G38",
+    "G39",
+    "G40"
+   ],
+   "method": "比较第 5 行各对象中心 x 与 893.3 的大小，取严格大于者",
+   "visibility_basis": "图中可见的中心位置",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q04",
+   "answer": [
+    "G38",
+    "G39"
+   ],
+   "method": "第一步按中心 x 过滤，第二步按尺寸过滤",
+   "visibility_basis": "图中可见的位置与主体大小",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q05",
+   "answer": 1967.7,
+   "method": "sqrt((1502.9-102.5)^2+(1495.3-113.0)^2)",
+   "visibility_basis": "图中可见的中心位置",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q06",
+   "answer": {
+    "closer": "G20",
+    "G20_to_G25": 637.4,
+    "G21_to_G25": 824.7
+   },
+   "method": "分别计算 G20-G25 与 G21-G25 的中心欧氏距离并比较",
+   "visibility_basis": "图中可见的中心位置",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q07",
+   "answer": [
+    "G22",
+    "G19",
+    "G21",
+    "G24",
+    "G18",
+    "G20",
+    "G17",
+    "G23"
+   ],
+   "method": "按中心 y 排序，键值并列时按中心 x",
+   "visibility_basis": "图中可见的中心位置",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q08",
+   "answer": [
+    "G01",
+    "G02",
+    "G03"
+   ],
+   "method": "以 size_px² 为面积键降序，并列时按 ID 升序取前三",
+   "visibility_basis": "图中可见的主体大小",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q09",
+   "answer": [
+    498.0,
+    906.9,
+    1093.1,
+    1299.3
+   ],
+   "method": "min/max of violet centres",
+   "visibility_basis": "图中可见的中心位置",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q10",
+   "answer": {
+    "count": 7,
+    "ids": [
+     "G38",
+     "G43",
+     "G44",
+     "G45",
+     "G46",
+     "G52",
+     "G54"
+    ]
+   },
+   "method": "用上题矩形对全部 64 个对象的中心做包含判定",
+   "visibility_basis": "图中可见的中心位置",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q11",
+   "answer": 16,
+   "method": "统计 colour==blue",
+   "visibility_basis": "图中可见的颜色",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q12",
+   "answer": {
+    "rings_total": 16,
+    "rings_size_48": 7
+   },
+   "method": "统计 shape==ring，再按 size_px==48 细分",
+   "visibility_basis": "图中可见的形状与大小",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q13",
+   "answer": {
+    "id": "G43",
+    "distance_px": 185.6
+   },
+   "method": "计算 G42 到其余 63 个中心的欧氏距离取最小",
+   "visibility_basis": "图中可见的中心位置",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q14",
+   "answer": {
+    "id": "G01",
+    "colour": "blue",
+    "shape": "rounded-square"
+   },
+   "method": "按 size_px 取最大，并列按 ID",
+   "visibility_basis": "图中可见的大小、颜色与形状",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q15",
+   "answer": {
+    "id": "V07",
+    "colour": "green",
+    "shape": "circle",
+    "distance_px": 96.0
+   },
+   "method": "先由中心与尺寸得到每个可见主体的矩形，再算到遮挡板矩形的最短距离取最小",
+   "visibility_basis": "仅依据最终可见图：被遮挡的对象不可见，因此不参与比较",
+   "tolerance": "±1 px"
+  },
+  {
+   "id": "Q16",
+   "answer": [
+    296,
+    296,
+    552,
+    552
+   ],
+   "method": "读取图中不透明深色矩形覆盖的像素范围",
+   "visibility_basis": "图中可见的遮挡板边界",
+   "tolerance": "±2 px"
+  },
+  {
+   "id": "Q17",
+   "answer": "无法确定",
+   "method": "遮挡板完全不透明且没有任何虚线、缺口或阴影提示，图中不存在可推断被遮对象数量的信息",
+   "visibility_basis": "两版遮挡图的可见部分逐像素相同，而隐藏内容不同，因此任何数量都不是可从图中读出的唯一答案",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q18",
+   "answer": "无法确定",
+   "method": "遮挡板覆盖了其下的全部内容，可见像素不含任何关于被遮对象颜色的信息",
+   "visibility_basis": "两版可见部分完全相同：A 版遮 3 个对象、B 版遮 5 个对象，绿色有无在两版中不同，但图上无法区分",
+   "tolerance": "无"
+  }
+ ],
+ "uncertain_questions": [
+  "Q17",
+  "Q18"
+ ],
+ "uncertainty_reason": "equivalence.json 证明两版遮挡图的可见像素逐通道完全相同（不同像素数 0、最大通道差 0），而 A 版遮 3 个、B 版遮 5 个且颜色构成不同，因此被遮内容无法从图中判定。"
+}

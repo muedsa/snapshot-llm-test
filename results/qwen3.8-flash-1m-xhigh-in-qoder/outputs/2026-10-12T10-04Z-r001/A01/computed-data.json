@@ -1,0 +1,239 @@
+{
+  "task_id": "A01",
+  "path_base": "output_dir",
+  "source_input": "tasks/A01-operations-dashboard/inputs/monthly.csv",
+  "definitions": {
+    "net_revenue": "gross_revenue - refund_amount",
+    "operating_profit": "net_revenue - operating_cost",
+    "refund_rate_pct": "refund_amount / gross_revenue * 100",
+    "conversion_rate_pct": "orders / sessions * 100",
+    "profit_margin_pct": "operating_profit / net_revenue * 100",
+    "period_conversion_rate_pct": "total orders / total sessions * 100 (weighted, not mean of monthly)",
+    "period_refund_rate_pct": "total refund / total gross revenue * 100",
+    "rounding": "rates rounded to 2 decimals for display; amounts kept as exact integers in 元"
+  },
+  "units": {
+    "amount": "元",
+    "chart_amount_axis": "万元",
+    "orders": "笔",
+    "sessions": "次",
+    "rates": "%"
+  },
+  "monthly": [
+    {
+      "month": "2026-04",
+      "orders": 420,
+      "gross_revenue": 126000,
+      "refund_amount": 6300,
+      "operating_cost": 82000,
+      "sessions": 3500,
+      "net_revenue": 119700,
+      "operating_profit": 37700,
+      "refund_rate": 5.0,
+      "conversion_rate": 12.0,
+      "profit_margin": 31.5
+    },
+    {
+      "month": "2026-05",
+      "orders": 460,
+      "gross_revenue": 142600,
+      "refund_amount": 7130,
+      "operating_cost": 93500,
+      "sessions": 4100,
+      "net_revenue": 135470,
+      "operating_profit": 41970,
+      "refund_rate": 5.0,
+      "conversion_rate": 11.22,
+      "profit_margin": 30.98
+    },
+    {
+      "month": "2026-06",
+      "orders": 445,
+      "gross_revenue": 137950,
+      "refund_amount": 11036,
+      "operating_cost": 99000,
+      "sessions": 4200,
+      "net_revenue": 126914,
+      "operating_profit": 27914,
+      "refund_rate": 8.0,
+      "conversion_rate": 10.6,
+      "profit_margin": 21.99
+    },
+    {
+      "month": "2026-07",
+      "orders": 530,
+      "gross_revenue": 169600,
+      "refund_amount": 8480,
+      "operating_cost": 112000,
+      "sessions": 4700,
+      "net_revenue": 161120,
+      "operating_profit": 49120,
+      "refund_rate": 5.0,
+      "conversion_rate": 11.28,
+      "profit_margin": 30.49
+    },
+    {
+      "month": "2026-08",
+      "orders": 570,
+      "gross_revenue": 188100,
+      "refund_amount": 15048,
+      "operating_cost": 132000,
+      "sessions": 5200,
+      "net_revenue": 173052,
+      "operating_profit": 41052,
+      "refund_rate": 8.0,
+      "conversion_rate": 10.96,
+      "profit_margin": 23.72
+    },
+    {
+      "month": "2026-09",
+      "orders": 620,
+      "gross_revenue": 210800,
+      "refund_amount": 8432,
+      "operating_cost": 138000,
+      "sessions": 5600,
+      "net_revenue": 202368,
+      "operating_profit": 64368,
+      "refund_rate": 4.0,
+      "conversion_rate": 11.07,
+      "profit_margin": 31.81
+    }
+  ],
+  "totals": {
+    "orders": 3045,
+    "gross_revenue": 975050,
+    "refund_amount": 56426,
+    "operating_cost": 656500,
+    "sessions": 27300,
+    "net_revenue": 918624,
+    "operating_profit": 262124,
+    "refund_rate": 5.79,
+    "conversion_rate": 11.15,
+    "profit_margin": 28.53,
+    "avg_orders_per_month": 507.5
+  },
+  "axes": {
+    "grouped_bar_amount": {
+      "unit": "万元",
+      "min": 0,
+      "max": 210000,
+      "step": 30000,
+      "zero_baseline": true,
+      "shared_by": [
+        "net_revenue",
+        "operating_profit"
+      ],
+      "ticks": [
+        0,
+        30000,
+        60000,
+        90000,
+        120000,
+        150000,
+        180000,
+        210000
+      ],
+      "note": "净收入与经营利润共用同一零起点与同一比例；两列均为正值，无负值区间。"
+    },
+    "sessions_bar": {
+      "unit": "次",
+      "min": 0,
+      "max": 7000,
+      "step": 2000,
+      "zero_baseline": true,
+      "ticks": [
+        0,
+        2000,
+        4000,
+        6000
+      ],
+      "labelled_ticks": [
+        0,
+        2000,
+        4000,
+        6000
+      ]
+    },
+    "conversion_bar": {
+      "unit": "%",
+      "min": 0,
+      "max": 15.0,
+      "step": 3.0,
+      "zero_baseline": true,
+      "ticks": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0
+      ],
+      "labelled_ticks": [
+        0,
+        6,
+        12
+      ],
+      "reference_line_pct": 11.15,
+      "note": "百分比使用独立数轴，不与金额共用；参考线为期间总体转化率。"
+    },
+    "month_axis_alignment": "两个小图使用完全相同的左右内边距与等分月份槽位，逐月垂直对齐。"
+  },
+  "conclusion": {
+    "headline": "增长由流量驱动，而非转化效率",
+    "claim": "访问量 +60.0%（3,500→5,600 次）带动净收入 +69.1%，但期间总体转化率仅 11.15%。",
+    "evidence": [
+      "总体转化率 = 3,045 笔 ÷ 27,300 次 = 11.15%，低于 2026-04 的 12.00%。",
+      "2026-06、2026-08 退款率 8.00%，其余月份仅 4.00%–5.00%（期间 5.79%）。",
+      "2026-08 净收入 173,052 元高于 2026-07 的 161,120 元，经营利润却由 49,120 元降至 41,052 元。"
+    ],
+    "recommendation": "优先治理 06、08 的退款成因并复核成本投放，把目标从扩大访问转向守住 11.15% 转化与 28.53% 利润率。",
+    "cited_values": {
+      "sessions_first": 3500,
+      "sessions_last": 5600,
+      "sessions_growth_pct": 60.0,
+      "net_revenue_growth_pct": 69.06,
+      "period_conversion_rate_pct": 11.15,
+      "total_orders": 3045,
+      "total_sessions": 27300,
+      "conversion_first_month_pct": 12.0,
+      "conversion_last_month_pct": 11.07,
+      "conversion_min": {
+        "month": "2026-06",
+        "value_pct": 10.6
+      },
+      "conversion_max": {
+        "month": "2026-04",
+        "value_pct": 12.0
+      },
+      "high_refund_months": [
+        {
+          "month": "2026-06",
+          "refund_rate_pct": 8.0
+        },
+        {
+          "month": "2026-08",
+          "refund_rate_pct": 8.0
+        }
+      ],
+      "other_refund_rate_range_pct": [
+        4.0,
+        5.0
+      ],
+      "period_refund_rate_pct": 5.79,
+      "profit_decline_with_revenue_growth": {
+        "earlier_month": "2026-07",
+        "later_month": "2026-08",
+        "earlier_net_revenue": 161120,
+        "later_net_revenue": 173052,
+        "earlier_operating_profit": 49120,
+        "later_operating_profit": 41052
+      },
+      "lowest_profit_month": {
+        "month": "2026-06",
+        "operating_profit": 27914,
+        "profit_margin_pct": 21.99
+      },
+      "period_profit_margin_pct": 28.53
+    }
+  }
+}

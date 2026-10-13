@@ -1,0 +1,168 @@
+{
+  "task_id": "B03",
+  "run_id": "2026-10-12T10-04Z-r001",
+  "written_at": "2026-10-13T05:05:00+08:00",
+  "written_before_first_artwork_render": true,
+  "brief": "十件作品，每件把一项此前未在本套中使用过的 DSL 能力放进一个真实使用场景；能力必须服务信息而不是装饰。",
+  "service": "https://open-snapshot.muedsa.com",
+  "probing_rounds": [
+    {"id": "B03-probe-*", "round": 1, "found": "BackdropFilter/SWEEP/ColorFiltered/textfx/Transform/tile/ClipPath-stack/elevation 首次试验；blur 与 tile 的测量几何无效，需重做"},
+    {"id": "B03-probe2-*", "round": 2, "found": "checkerboard 上 blur 生效；LINEAR tile 模式在轴向铺满画框时不可见；gradientRotation 在给定 begin/end 时无效；focal 生效；elevation 单调；Stack 全 Positioned 子节点 -> 400 Layout size is infinite；decorationLineStyle DOUBLED 非法"},
+    {"id": "B03-origin*/B03-deco-*", "round": 3, "found": "Transform origin 只接受 \"(x,y)\"；decorationLineStyle 接受 SOLID/DOTTED/DASHED/DOUBLE/WAVY；custom boxShadow 字符串生效；反转子路径成孔"},
+    {"id": "B03-p4-*", "round": 4, "found": "Opacity 生效；height 在强制换行时改变行距；Raw 保留空格；RADIAL 的 REPEAT/MIRROR/DECAL 产生同心环；DOTTED 64段 vs DASHED 28段；smcp 零像素变化（字体不支持）"},
+    {"id": "B03-p5/p6/p7-*", "round": 5, "found": "未加裁剪的 BackdropFilter 会把先前半透明内容重新合成为不透明（p6-bottom-only 复现，p6-clipped-backdrop 修复，p7 小画布未复现）"},
+    {"id": "B03-p8-*", "round": 6, "found": "Raw 不继承 fontSize，需自带样式；Emoji 只能作为 Text 行内节点，dataUri 需完整 data:image 前缀，url 不接受 data: 协议"}
+  ],
+  "shared_rules": {
+    "glass": "所有 BackdropFilter 必须包在 ClipRRect/ClipPath 内（bkit.Sheet.glass 强制）",
+    "border": "border 宽度不得大于 borderRadius（bkit 已加断言）",
+    "stack": "Stack 至少有一个带尺寸的非 Positioned 子节点",
+    "text": "行内 span 不会自动加空格；Raw 需要自己的 fontSize",
+    "features": "只用 tnum 这类实测有效的 OpenType 特性，不用 smcp",
+    "review": "每件渲染后实际看图，必要时用 zoom.py 放大局部，再修改重渲"
+  },
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "门诊叫号屏",
+      "scenario": "医院候诊区 16:9 壁挂屏，护士站每 30 秒刷新；远读诊室号，近读等待人数",
+      "size": [1600, 900],
+      "frontier": ["BackdropFilter 毛玻璃卡片（必须裁剪）", "boxShadow 自定义方向阴影", "fontFeatures=tnum 等宽数字", "foregroundGradient 面板"],
+      "criteria": [
+        "3 米观看：诊室号字高 >= 84px，对比度 >= 4.5:1",
+        "玻璃面板下的彩色底纹必须可辨为模糊，不得糊掉文字",
+        "队列数据自洽：叫号 <= 候诊总数，各科室等待时间与人数比例一致",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-02",
+      "title": "城市用电日轮",
+      "scenario": "电网调度台晨会投影片：一天 24 小时的负荷、光伏与电价同盘读取",
+      "size": [1200, 1200],
+      "frontier": ["gradientType=SWEEP 锥形渐变刻度", "RADIAL + gradientTileMode=REPEAT 同心环场", "donut_segment 角度映射"],
+      "criteria": [
+        "0°=12点顺时针的角度约定与刻度一致，逐点核对 6/12/18 点位置",
+        "环带边界必须落在对应小时的真实负荷值上（由数据计算，不目测）",
+        "REPEAT 环只作为背景场，不得干扰读数（看图确认对比度）",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-03",
+      "title": "双色丝网海报",
+      "scenario": "独立印刷店的工艺样张海报，客户据此选网版与叠色顺序",
+      "size": [1000, 1400],
+      "frontier": ["ColorFiltered 着色 + blendMode", "backgroundBlendMode 叠色", "由亮度场生成的半调点阵"],
+      "criteria": [
+        "只有两种油墨色 + 纸色，任何像素都必须是三者的可解释组合",
+        "半调点直径必须由连续调亮度函数计算，明暗顺序与图形一致",
+        "标题文字不得被网点吞掉（看图检查最小可读字号）",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-04",
+      "title": "弧形山径海报",
+      "scenario": "步道协会季度路线海报：路径即标题，海拔即剖面",
+      "size": [900, 1300],
+      "frontier": ["逐字 Transform matrix 沿曲线排字", "ClipPath 山体剖面", "reversed subpath 挖洞"],
+      "criteria": [
+        "每个字的旋转角必须等于该点切线角（弧长采样，非等角度）",
+        "字与字不得重叠，且沿曲线间距视觉均匀（看图 + 计算双重核对）",
+        "海拔剖面的关键点（起/最高/垭口/终点）与标注数据一致",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-05",
+      "title": "凸版诗句页",
+      "scenario": "小批量凸印社的诗页样张，展示压痕与字距设定",
+      "size": [820, 1160],
+      "frontier": ["textShadow 双向压印", "letterSpacing/wordSpacing", "WidgetSpan 行内规则线", "Raw 保留空格 + 自带字号", "tnum 行号"],
+      "criteria": [
+        "压痕阴影必须像受压而非发光（方向一致、只有一侧）",
+        "行号与诗行必须逐行对齐，tnum 保证个位/十位不跳",
+        "Raw 代码块样例行必须真的保留缩进（看图确认空格）",
+        "正文对比度 >= 7:1（长文阅读）",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-06",
+      "title": "钻孔柱状剖面",
+      "scenario": "地勘报告附图：一孔三段岩芯，深度、层厚、取样点同列",
+      "size": [780, 1900],
+      "frontier": ["嵌套 ClipPath（层内透镜/结核挖洞）", "rich spans 混排深度与岩性", "procedural 纹样填充"],
+      "criteria": [
+        "每层厚度像素值必须等于 深度差 × 比例尺，累计到孔口零误差",
+        "挖洞（含水透镜体）必须真透明，露出下层而不是画成背景色",
+        "取样点编号与深度列一一对应",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-07",
+      "title": "织纹组织卡",
+      "scenario": "高校织造课的组织图卡：四种上机方式对照同一根经纱",
+      "size": [1120, 800],
+      "frontier": ["gradientTileMode REPEAT/MIRROR 生成经纬浮点", "gradientStops 精确控制周期", "DECAL 限定作用范围"],
+      "criteria": [
+        "组织循环数(R/S)与像素周期必须互相印证，误差 < 1px",
+        "四种织物的浮长表与图中可见浮点一致",
+        "tile 模式差异必须在图例中说明（LINEAR 轴向铺满时不可见的实测结论）",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-08",
+      "title": "急救圈覆盖板",
+      "scenario": "急救中心季度复盘：AED 站点泰尔森多边形与 8 分钟可达覆盖",
+      "size": [1600, 1000],
+      "frontier": ["计算几何（半平面交求多边形）", "ClipPath 单元裁切", "contrast 断言 + 图例"],
+      "criteria": [
+        "每个单元的顶点必须由站点两两垂直平分线求交得到，面积和等于画布",
+        "8 分钟可达半径与车速假设一致，且与站点数、覆盖百分比互相印证",
+        "单元内标签不得越界或与相邻标签重叠",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-09",
+      "title": "半调天际线横幅",
+      "scenario": "播客节目页头图（1200×400）：同一数据在窄画幅下的读法",
+      "size": [1200, 400],
+      "frontier": ["程序化构图（高度场 + 网点密度）", "SWEEP 日出光斑", "Opacity 叠层景深"],
+      "criteria": [
+        "楼高必须来自真实数据集的相对高度，排序与轮廓一致",
+        "在 400px 高画幅内保证标题可读（最小字号与对比度实测）",
+        "缩略到 240px 宽后仍能辨认主体（PIL 缩放检查，不改交付图）",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "case-10",
+      "title": "预变形导视贴",
+      "scenario": "地铁站台地贴：从指定俯拍角度看去不变形的方向指引",
+      "size": [1000, 1000],
+      "frontier": ["matrix 剪切/缩放预变形", "round-trip 矩阵校验", "ClipPath 视框"],
+      "criteria": [
+        "预变形矩阵与观察投影矩阵互为逆（数值验证，误差 < 1e-6）",
+        "同一张贴在未变形对照面板上并排显示，差异可见",
+        "文字在预变形后仍不得互相重叠（audit 用变形后的包围盒）",
+        "audit: overlap_n=0, outside_n=0"
+      ],
+      "status": "planned"
+    }
+  ],
+  "notes": "选题按能力互补排布：合成(case-01/03)、渐变(case-02/07)、文字(case-05/06)、变换(case-04/10)、程序化几何(case-08/09)。若某能力在实现中不成立，保留试验记录并改用可行的表达。"
+}

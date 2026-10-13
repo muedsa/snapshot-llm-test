@@ -1,0 +1,188 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "coordinate_space": "canvas top-left origin, x right / y down, pixels; boxes are [left, top, right, bottom]",
+ "grid_scene": {
+  "file": "grid-scene.png",
+  "size": [
+   1600,
+   1600
+  ],
+  "cells": "8x8",
+  "cell_px": 200,
+  "id_mapping": "G01-G64 从左到右、从上到下编号；row = (n-1)//8 + 1, col = (n-1)%8 + 1"
+ },
+ "occlusion_scene": {
+  "file": "occlusion.png",
+  "size": [
+   800,
+   800
+  ]
+ },
+ "answer_policy": "题目只依据最终可见图回答；隐藏对象的数量/颜色不作为标准答案",
+ "questions": [
+  {
+   "id": "Q01",
+   "image": "grid-scene.png",
+   "type": "复合属性检索",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。列出所有颜色为绿色且形状为圆环的对象 ID，按 ID 升序。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q02",
+   "image": "grid-scene.png",
+   "type": "复合属性检索",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。列出所有颜色为橙色且尺寸（圆为直径、方为边长、圆环为外径）为 80 像素的对象 ID，按 ID 升序。",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q03",
+   "image": "grid-scene.png",
+   "type": "严格中心左右关系",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。在第 5 行的 8 个对象中，列出中心 x 严格大于 G37 中心 x 的对象 ID（不含 G37），按 ID 升序。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q04",
+   "image": "grid-scene.png",
+   "type": "严格中心左右关系+属性",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。在第 5 行中，先找出中心位于 G37 右侧（中心 x 严格更大）的对象，再从中列出主体尺寸为 48 像素的 ID，按 ID 升序。",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q05",
+   "image": "grid-scene.png",
+   "type": "距离",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。计算 G01 中心到 G64 中心的欧氏距离，保留 1 位小数。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q06",
+   "image": "grid-scene.png",
+   "type": "距离比较",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。G20 与 G21 谁的中心离 G25 的中心更近？给出两者的距离（各保留 1 位小数）。",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q07",
+   "image": "grid-scene.png",
+   "type": "排序",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。把第 3 行的 8 个对象按中心 y 从小到大排序（y 相同时按中心 x 从小到大），给出 ID 序列。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q08",
+   "image": "grid-scene.png",
+   "type": "排序",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。按主体面积（圆/圆环取直径的平方、方与圆角方取边长的平方，即 size_px²）从大到小排序，面积相同时按 ID 升序，给出前 3 个 ID。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q09",
+   "image": "grid-scene.png",
+   "type": "包围框",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。求覆盖所有“尺寸为 48 像素的绿色圆环”对象**中心**的最小轴对齐矩形，给出 [left, top, right, bottom]（各保留 1 位小数）。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q10",
+   "image": "grid-scene.png",
+   "type": "包围框+计数",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。在第 9 题得到的矩形内（含边界，按对象中心是否落在矩形内判定），一共有多少个对象？给出数量与 ID 列表。",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q11",
+   "image": "grid-scene.png",
+   "type": "颜色计数",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。蓝色对象一共有多少个？",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q12",
+   "image": "grid-scene.png",
+   "type": "形状计数+属性",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。圆环对象共有多少个？其中外径为 48 像素的有几个？",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q13",
+   "image": "grid-scene.png",
+   "type": "距离+两步",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。在全部 64 个对象中（不含 G42 自身），找出中心离 G42 最近的对象 ID，并给出该距离（保留 1 位小数）。",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "±0.5 px"
+  },
+  {
+   "id": "Q14",
+   "image": "grid-scene.png",
+   "type": "列内比较+属性",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。在第 1 列的 8 个对象中，找出主体尺寸最大的一个（并列时取 ID 升序的第一个），给出它的 ID、颜色和形状。",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q15",
+   "image": "occlusion.png",
+   "type": "可见前景+距离",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。把每个**完整可见**对象的主体矩形到深色遮挡板矩形 [{296, 296, 552, 552}] 的最短距离算出来（两矩形不重叠时按水平间隙与垂直间隙的欧氏距离），给出距离最近的那个对象的 ID、颜色、形状和该距离（1 位小数）。",
+   "two_step": true,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "±1 px"
+  },
+  {
+   "id": "Q16",
+   "image": "occlusion.png",
+   "type": "包围框",
+   "text": "坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；“中心”指主体（不含编号文字）的几何中心，“距离”指两中心的欧氏距离。给出深色遮挡板（不透明圆角矩形）的外包框 [left, top, right, bottom]，单位像素。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "±2 px"
+  },
+  {
+   "id": "Q17",
+   "image": "occlusion.png",
+   "type": "遮挡推理",
+   "text": "图中深色遮挡板下面**现在**一共有几个对象？请给出数量；如果仅凭这张图无法确定，请回答“无法确定”并说明原因。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  },
+  {
+   "id": "Q18",
+   "image": "occlusion.png",
+   "type": "遮挡推理",
+   "text": "深色遮挡板下面是否**至少有一个绿色对象**？请回答“是”“否”或“无法确定”，并说明原因。",
+   "two_step": false,
+   "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+   "tolerance": "无"
+  }
+ ]
+}

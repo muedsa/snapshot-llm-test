@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "source_input": "tasks/A04-conversion-paradox/inputs/conversion.csv",
+  "units_note": "输入给出的是访问数与成交数的原始计数，未标注计量单位；图中按“次/笔”作计数单位呈现，比率一律为百分比。",
+  "periods": [
+    "前期",
+    "后期"
+  ],
+  "channels": [
+    "直接访问",
+    "推广访问"
+  ],
+  "raw": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "visits": 8000,
+      "conversions": 2400
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "visits": 2000,
+      "conversions": 200
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "visits": 2000,
+      "conversions": 700
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "visits": 8000,
+      "conversions": 960
+    }
+  ],
+  "exact": {
+    "前期|直接访问": {
+      "visits": 8000,
+      "conversions": 2400,
+      "rate_fraction": "2400/8000",
+      "rate_fraction_reduced": "3/10",
+      "rate_exact_percent": "30",
+      "rate_display_percent": "30.00%",
+      "visit_share_fraction": "4/5",
+      "visit_share_display_percent": "80%"
+    },
+    "前期|推广访问": {
+      "visits": 2000,
+      "conversions": 200,
+      "rate_fraction": "200/2000",
+      "rate_fraction_reduced": "1/10",
+      "rate_exact_percent": "10",
+      "rate_display_percent": "10.00%",
+      "visit_share_fraction": "1/5",
+      "visit_share_display_percent": "20%"
+    },
+    "后期|直接访问": {
+      "visits": 2000,
+      "conversions": 700,
+      "rate_fraction": "700/2000",
+      "rate_fraction_reduced": "7/20",
+      "rate_exact_percent": "35",
+      "rate_display_percent": "35.00%",
+      "visit_share_fraction": "1/5",
+      "visit_share_display_percent": "20%"
+    },
+    "后期|推广访问": {
+      "visits": 8000,
+      "conversions": 960,
+      "rate_fraction": "960/8000",
+      "rate_fraction_reduced": "3/25",
+      "rate_exact_percent": "12",
+      "rate_display_percent": "12.00%",
+      "visit_share_fraction": "4/5",
+      "visit_share_display_percent": "80%"
+    }
+  },
+  "totals": {
+    "前期": {
+      "visits": 10000,
+      "conversions": 2600,
+      "overall_fraction": "2600/10000",
+      "overall_fraction_reduced": "13/50",
+      "overall_exact_percent": "26",
+      "overall_display_percent": "26.00%"
+    },
+    "后期": {
+      "visits": 10000,
+      "conversions": 1660,
+      "overall_fraction": "1660/10000",
+      "overall_fraction_reduced": "83/500",
+      "overall_exact_percent": "83/5",
+      "overall_display_percent": "16.60%"
+    }
+  },
+  "weighted_formula": {
+    "rule": "总体转化率 = 成交总数 ÷ 访问总数；等价于按访问数加权的渠道率之和",
+    "expression": "overall = Σ_c conversions_c / Σ_c visits_c = Σ_c (visits_c / Σ visits) × (conversions_c / visits_c)",
+    "前期": {
+      "as_weighted_sum": "(8000/10000)×(2400/8000) + (2000/10000)×(200/2000) = 6/25 + 1/50 = 13/50",
+      "value_percent": "26.00%"
+    },
+    "后期": {
+      "as_weighted_sum": "(2000/10000)×(700/2000) + (8000/10000)×(960/8000) = 7/100 + 12/125 = 83/500",
+      "value_percent": "16.60%"
+    }
+  },
+  "forbidden_calculations": {
+    "mean_of_channel_rates": {
+      "前期": {
+        "value": "20",
+        "display": "20.00%",
+        "why_wrong": "两渠道访问数分别为 8000 与 2000，分母相差 4 倍，不能等权平均"
+      },
+      "后期": {
+        "value": "47/2",
+        "display": "23.50%",
+        "why_wrong": "同上；且后期高转化渠道权重反而更小"
+      },
+      "would_imply": "上升 +3.50 pp，与总体实际下降 −9.40 pp 相反"
+    },
+    "absolute_conversions_as_rate": {
+      "example": "推广访问成交数 200→960 增长 380%，但其转化率只从 10.00% 升到 12.00%",
+      "why_wrong": "同期访问数从 2000 增至 8000，绝对成交量反映的是流量规模而非转化效率"
+    }
+  },
+  "decomposition": {
+    "base_前期": "26.00%",
+    "mix_only_前期率后期构成": {
+      "value": "14",
+      "display": "14.00%"
+    },
+    "rate_only_后期率前期构成": {
+      "value": "152/5",
+      "display": "30.40%"
+    },
+    "final_后期": "16.60%",
+    "mix_effect_pp": "-12",
+    "rate_effect_pp": "13/5",
+    "identity_check": "base + mix_effect + rate_effect = 16.60%",
+    "note": "顺序分解：先只换构成、再只换率；两种顺序的效应量不同，此处记录的是该顺序下的分解。"
+  },
+  "direction_check": {
+    "直接访问": {
+      "direction": "up",
+      "delta_pp": "5"
+    },
+    "推广访问": {
+      "direction": "up",
+      "delta_pp": "2"
+    },
+    "总体": {
+      "direction": "down",
+      "delta_pp": "-47/5"
+    },
+    "same_direction": false,
+    "verdict": "分组与总体反向（Simpson 悖论）"
+  },
+  "conclusion_basis": {
+    "main": "两个渠道各自的转化率都上升了（直接访问 30.00%→35.00%，推广访问 10.00%→12.00%），但总体转化率从 26.00% 降到 16.60%（−9.40 pp）。分组与总体方向相反。",
+    "mechanism": "因为高转化的直接访问占比从 80% 降到 20%。只换构成、率保持前期不变，总体即值 14.00%（−12.00 pp）；再叠加两渠道的率提升，才回到 16.60%（+2.60 pp）。",
+    "trap": "若把两个渠道的转化率直接平均，前期得 20.00%、后期得 23.50%，会得出“上升 +3.50 pp”的相反结论——两个渠道分母不同，不能等权。",
+    "values_cited": {
+      "rate_前期_直接访问": "30.00%",
+      "rate_后期_直接访问": "35.00%",
+      "rate_前期_推广访问": "10.00%",
+      "rate_后期_推广访问": "12.00%",
+      "overall_前期": "26.00%",
+      "overall_后期": "16.60%",
+      "overall_delta_pp": "-47/5",
+      "share_前期_直接访问": "80%",
+      "share_后期_直接访问": "20%",
+      "mix_only": "14.00%",
+      "mix_effect_pp": "-12",
+      "rate_effect_pp": "13/5"
+    }
+  },
+  "causality_limitation": "以上只是同一总体内“构成”与“率”的算术分解，不能证明因果。数据仅两期、每渠道一个汇总值，没有用户级配对、曝光量、预算或渠道质量记录，无法判断直接访问占比下降是推广投放增加、还是自然流量流失所致，也不能据此推断“加大推广会降低转化”。",
+  "chart_scales": {
+    "rate_axis": {
+      "min": 0,
+      "max": 100,
+      "unit": "%",
+      "shared_by": [
+        "channel_grouped",
+        "overall_compare"
+      ],
+      "note": "两张率图共用同一 0–100% 尺度与同一刻度位置"
+    },
+    "composition_axis": {
+      "kind": "100% stacked",
+      "bar_length_px_equal": true,
+      "segments": "按真实访问占比",
+      "unit": "%"
+    }
+  }
+}

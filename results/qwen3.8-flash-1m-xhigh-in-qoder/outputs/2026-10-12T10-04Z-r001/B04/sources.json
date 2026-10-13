@@ -1,0 +1,559 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "B04",
+  "run_id": "2026-10-12T10-04Z-r001",
+  "topic": "把 XML 变成像素：一个声明式图像渲染服务的实测报告",
+  "access_constraint": "本会话权限分类器拒绝外部 HTTP（WebFetch 两次被拒，时间 2026-10-13 06:26），因此原选题（城市树木的热/水/碳）被放弃；本特辑只引用两类可查证材料：①本套在 A01 阶段真实抓取并缓存的官方文档与服务端点，②本套自身产生的请求日志与像素回读。",
+  "sources": [
+    {
+      "source_id": "S01",
+      "title": "标签与属性参考",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:11:10+08:00",
+      "http_status": 200,
+      "response_bytes": 147041,
+      "request_id": "SHARED-doc-017",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/reference_parser-tags.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/parser-tags.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-03 标签清单、属性格式、WidgetSpan/Transform 约束、textShadow 语法",
+      "note": "抓取于本套开始阶段；正文已转纯文本缓存"
+    },
+    {
+      "source_id": "S02",
+      "title": "服务可用字体清单",
+      "publisher_or_author": "open-snapshot 服务",
+      "url": "https://open-snapshot.muedsa.com/fonts",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:10:44+08:00",
+      "http_status": 200,
+      "response_bytes": 448,
+      "request_id": "SHARED-doc-002",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/fonts.txt",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/fonts.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-08 全部族名与数量",
+      "note": "响应为纯文本换行列表，不是 JSON"
+    },
+    {
+      "source_id": "S03",
+      "title": "服务 OpenAPI 规范",
+      "publisher_or_author": "open-snapshot 服务",
+      "url": "https://open-snapshot.muedsa.com/openapi.yaml",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:10:40+08:00",
+      "http_status": 200,
+      "response_bytes": 19746,
+      "request_id": "SHARED-doc-012",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/openapi.yaml",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/openapi.yaml.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-02 请求/响应契约、case-09 响应头字段",
+      "note": null
+    },
+    {
+      "source_id": "S04",
+      "title": "面向自动化的使用说明",
+      "publisher_or_author": "open-snapshot 服务",
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:10:27+08:00",
+      "http_status": 200,
+      "response_bytes": 3718,
+      "request_id": "SHARED-doc-001",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/ai-guide.md",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/ai-guide.md.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-02 管线阶段、case-05 错误语义",
+      "note": null
+    },
+    {
+      "source_id": "S05",
+      "title": "绘制能力指南",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/guides/painting/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:11:31+08:00",
+      "http_status": 200,
+      "response_bytes": 64654,
+      "request_id": "SHARED-doc-007",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/guides_painting.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/painting.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-07 渐变参数与插值说明、case-03 装饰属性",
+      "note": null
+    },
+    {
+      "source_id": "S06",
+      "title": "WidgetSpan",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/widgets/text/widget-span/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:13:16+08:00",
+      "http_status": 200,
+      "response_bytes": 52317,
+      "request_id": "SHARED-doc-058",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/widget_text_widget-span.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/widget-span.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-03 行内节点必须恰有一个普通子节点",
+      "note": null
+    },
+    {
+      "source_id": "S07",
+      "title": "Transform",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/widgets/layout/transform/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:12:51+08:00",
+      "http_status": 200,
+      "response_bytes": 57595,
+      "request_id": "SHARED-doc-043",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/widget_layout_transform.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/transform.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-03 matrix/alignment 必填、origin 语义",
+      "note": null
+    },
+    {
+      "source_id": "S08",
+      "title": "BackdropFilter",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/widgets/painting/backdrop-filter/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:12:54+08:00",
+      "http_status": 200,
+      "response_bytes": 52948,
+      "request_id": "SHARED-doc-045",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/widget_painting_backdrop-filter.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/backdrop-filter.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-10 未裁剪时的行为；官方建议配合裁剪",
+      "note": null
+    },
+    {
+      "source_id": "S09",
+      "title": "Text",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/widgets/text/text/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:13:14+08:00",
+      "http_status": 200,
+      "response_bytes": 56944,
+      "request_id": "SHARED-doc-057",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/widget_text_text.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/text.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-04 文本样式属性清单（height/letterSpacing/fontFeatures）",
+      "note": null
+    },
+    {
+      "source_id": "S10",
+      "title": "枚举取值",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/reference/enums/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:11:59+08:00",
+      "http_status": 200,
+      "response_bytes": 48797,
+      "request_id": "SHARED-doc-014",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/reference_enums.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/enums.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-03 clipBehavior / BoxShape / TileMode 取值",
+      "note": null
+    },
+    {
+      "source_id": "S11",
+      "title": "布局指南",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/guides/layout/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:11:18+08:00",
+      "http_status": 200,
+      "response_bytes": 68251,
+      "request_id": "SHARED-doc-005",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/guides_layout.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/layout.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-02 布局阶段、case-05 无界尺寸错误",
+      "note": null
+    },
+    {
+      "source_id": "S12",
+      "title": "解析错误对照",
+      "publisher_or_author": "Snapshot 文档",
+      "url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "published_or_updated": null,
+      "accessed_at": "2026-10-12T10:12:02+08:00",
+      "http_status": 200,
+      "response_bytes": 77185,
+      "request_id": "SHARED-doc-016",
+      "local_cache": "tmp/2026-10-12T10-04Z-r001/_suite/docs/reference_parser-errors.html",
+      "text_extraction": "D:/mine/workspace/qwen3.8-flash-1m-xhigh-in-qoder/tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/parser-errors.txt",
+      "access_evidence": "requests.jsonl 中的 document 记录（含时间、状态、字节、本地缓存路径）",
+      "used_for": "case-05 错误码语义",
+      "note": null
+    }
+  ],
+  "unread_sources": [
+    {
+      "title": "任何外部网页（EPA / USDA Forest Service / Berkeley Lab 等）",
+      "why_not": "会话权限分类器拒绝了外部 HTTP（记录见 editorial-note.md 与 research-notes.md），因此原选题放弃，未读材料不列为依据"
+    },
+    {
+      "title": "Skia 官方文档（关于渐变插值色彩空间）",
+      "why_not": "同样无法访问；case-07 的线性光插值因此标注为推断而非引用"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "C001",
+      "case_id": "case-01",
+      "where_in_image": "四个大数字",
+      "assertion": "共 550 次 /snapshot 请求、457 次成功、58 页文档、89 种画布尺寸",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "b04data.py"
+      ],
+      "method": "解析 tmp/…/<task>/requests.jsonl 全部 request_type=render 行；B04 自身请求不计入",
+      "uncertainty": "统计窗口内计数，不含未记录的调用"
+    },
+    {
+      "claim_id": "C002",
+      "case_id": "case-01",
+      "where_in_image": "样本窗口",
+      "assertion": "2026-10-12T10:15:06.426+08:00 → 2026-10-13T06:18:07.152+08:00",
+      "kind": "事实",
+      "source_ids": [],
+      "evidence_requests": [
+        "requests.jsonl 时间戳"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C003",
+      "case_id": "case-02",
+      "where_in_image": "条形图 6 项",
+      "assertion": "服务端 render p50 462.5ms、p90 1646.2ms、p99 4400.2ms、max 5876.8ms（n=422）",
+      "kind": "测量",
+      "source_ids": [
+        "S03"
+      ],
+      "evidence_requests": [
+        "b04data.py"
+      ],
+      "method": "正则提取响应头 server-timing 的 render;dur 后取分位",
+      "uncertainty": "仅含返回该头的成功响应"
+    },
+    {
+      "claim_id": "C004",
+      "case_id": "case-02",
+      "where_in_image": "阶段卡 01–08",
+      "assertion": "八个阶段是本报告对一次 HTTP 调用的解释性拆分",
+      "kind": "解释",
+      "source_ids": [
+        "S04"
+      ],
+      "evidence_requests": [],
+      "method": null,
+      "uncertainty": "服务未公布内部管线图，只有 render 一段被计时"
+    },
+    {
+      "claim_id": "C005",
+      "case_id": "case-03",
+      "where_in_image": "标签芯片",
+      "assertion": "标签清单逐项取自 parser-tags 页面正文",
+      "kind": "事实",
+      "source_ids": [
+        "S01"
+      ],
+      "evidence_requests": [],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C006",
+      "case_id": "case-03",
+      "where_in_image": "结构约束 6 条",
+      "assertion": "Positioned 只能直接挂在 Stack 下、Stack 全 Positioned 子节点无界、Emoji 不能独立、origin 只接受 (x,y) 等",
+      "kind": "测量",
+      "source_ids": [
+        "S01",
+        "S06",
+        "S07"
+      ],
+      "evidence_requests": [
+        "B03-case03-v1",
+        "B03-misc",
+        "B03-p8-emoji-fix",
+        "B03-origin0",
+        "B03-origin1",
+        "B03-origin2"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C007",
+      "case_id": "case-03",
+      "where_in_image": "属性级结论 8 行",
+      "assertion": "gradientTileMode 对 LINEAR 不可见、对 RADIAL 有效；fillType 被忽略；boxShadow 支持自定义串；decorationLineStyle 五值可用（DOUBLE_SOLID 非法）；tnum 有效、smcp 无效",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "B03-p2-tile2",
+        "B03-p4-radialtileCLAMP",
+        "B03-p4-radialtileREPEAT",
+        "B03-p4-shadowscan",
+        "B03-deco-SOLID",
+        "B03-deco-DOUBLE_SOLID",
+        "B03-p2-textab",
+        "B03-p4-smallcaps"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C008",
+      "case_id": "case-04",
+      "where_in_image": "五条常数",
+      "assertion": "CJK 1.00em、Latin 0.62em、Mono 0.52em、行距 1.46em、粗体余量 ×1.14+10px",
+      "kind": "测量",
+      "source_ids": [
+        "S09"
+      ],
+      "evidence_requests": [
+        "B03-p2-textab",
+        "B03-p4-lineheight"
+      ],
+      "method": "在返回 PNG 上量墨迹范围与行顶间距，反推 em",
+      "uncertainty": "±1px，且不等于服务内部度量"
+    },
+    {
+      "claim_id": "C009",
+      "case_id": "case-04",
+      "where_in_image": "增量条图",
+      "assertion": "letterSpacing=6 → +42px、wordSpacing=14 → +28px、tnum → +10px、smcp → 0px",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "B03-p2-textab",
+        "B03-p4-smallcaps"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C010",
+      "case_id": "case-04",
+      "where_in_image": "精度表 4 行",
+      "assertion": "大写拉丁墨迹 ≈0.667em（模型偏小 7.6%）、小写 ≈0.538em（偏大 13.2%）、数字 ≈0.587em",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "B03-p2-textab"
+      ],
+      "method": null,
+      "uncertainty": "墨迹宽度不含 sidebearing，只能给方向"
+    },
+    {
+      "claim_id": "C011",
+      "case_id": "case-05",
+      "where_in_image": "错误码条图",
+      "assertion": "63 次非 200：PARSE 25、RENDER 19、INTERNAL 16、IMAGE_LOAD 1",
+      "kind": "测量",
+      "source_ids": [
+        "S12"
+      ],
+      "evidence_requests": [
+        "各任务 requests.jsonl"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C012",
+      "case_id": "case-05",
+      "where_in_image": "摘要卡",
+      "assertion": "五条摘要为响应原文截断，未改写",
+      "kind": "事实",
+      "source_ids": [],
+      "evidence_requests": [
+        "A01-render-001",
+        "A01-render-002",
+        "B03-probe-nodes4000",
+        "A03-render-v002",
+        "B01-case09-render-a1"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C013",
+      "case_id": "case-06",
+      "where_in_image": "顶部黑条",
+      "assertion": "上限来自响应原文 Document contains more than 4096 elements",
+      "kind": "事实",
+      "source_ids": [],
+      "evidence_requests": [
+        "B03-probe-nodes4000"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C014",
+      "case_id": "case-06",
+      "where_in_image": "十条比例条",
+      "assertion": "十件作品的元素数、DSL KB、PNG KB 由脚本从 final.snapshot 统计",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "b04data.py → budget"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C015",
+      "case_id": "case-07",
+      "where_in_image": "色带",
+      "assertion": "11 个颜色是从 B03 case-02 成品上按角度回读的像素",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "B03-case02-v4",
+        "b04pages.py p07"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C016",
+      "case_id": "case-07",
+      "where_in_image": "成对表 8 行",
+      "assertion": "色标处 Δ=0，色标之间 Δ 最大 69（系统性偏亮）",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "B03-case02-v4"
+      ],
+      "method": "按小时角度采样并与 sRGB 线性插值预测比较",
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C017",
+      "case_id": "case-07",
+      "where_in_image": "解释卡",
+      "assertion": "线性光空间插值的说法是本报告推断",
+      "kind": "解释",
+      "source_ids": [],
+      "evidence_requests": [],
+      "method": null,
+      "uncertainty": "未访问 Skia 文档，无法引用官方说明"
+    },
+    {
+      "claim_id": "C018",
+      "case_id": "case-08",
+      "where_in_image": "族名芯片",
+      "assertion": "20 个族名 / 28 行原始条目，全部来自 GET /fonts 响应",
+      "kind": "事实",
+      "source_ids": [
+        "S02"
+      ],
+      "evidence_requests": [
+        "SHARED-doc-002"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C019",
+      "case_id": "case-08",
+      "where_in_image": "四族同句样张",
+      "assertion": "对照文字用真实族名渲染，等宽族明显更宽",
+      "kind": "演示",
+      "source_ids": [
+        "S02"
+      ],
+      "evidence_requests": [],
+      "method": null,
+      "uncertainty": "排版宽度差异未做像素量化"
+    },
+    {
+      "claim_id": "C020",
+      "case_id": "case-09",
+      "where_in_image": "直方图",
+      "assertion": "n=422，中位 462ms、最大 5877ms",
+      "kind": "测量",
+      "source_ids": [
+        "S03"
+      ],
+      "evidence_requests": [
+        "b04data.py → hist_counts"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C021",
+      "case_id": "case-09",
+      "where_in_image": "缓存卡",
+      "assertion": "命中 13 / 457 = 2.8%",
+      "kind": "事实",
+      "source_ids": [
+        "S03"
+      ],
+      "evidence_requests": [],
+      "method": null,
+      "uncertainty": "本套未做去重设计，不能据此评价缓存能力"
+    },
+    {
+      "claim_id": "C022",
+      "case_id": "case-09",
+      "where_in_image": "长尾卡",
+      "assertion": "5 个最慢客户端等待中 4 个带 TimeoutError 或 curl (28)，其服务端 render 均 ≤2.2s",
+      "kind": "测量",
+      "source_ids": [],
+      "evidence_requests": [
+        "A04-render-v004",
+        "A04-render-v004b",
+        "A04-render-v004-retry",
+        "A10-render-v001"
+      ],
+      "method": null,
+      "uncertainty": null
+    },
+    {
+      "claim_id": "C023",
+      "case_id": "case-10",
+      "where_in_image": "全页清单",
+      "assertion": "每条结论标注证据等级；三条明确写未确认",
+      "kind": "解释",
+      "source_ids": [],
+      "evidence_requests": [
+        "technique/各 case 报告"
+      ],
+      "method": null,
+      "uncertainty": "样本仅一个服务、约 20 小时窗口"
+    }
+  ],
+  "reproduce": {
+    "data_layer": "tmp/2026-10-12T10-04Z-r001/B04/b04data.py",
+    "pages": "tmp/2026-10-12T10-04Z-r001/B04/b04pages.py",
+    "raw_logs": [
+      "tmp/2026-10-12T10-04Z-r001/<task>/requests.jsonl",
+      "tmp/2026-10-12T10-04Z-r001/_suite/requests.jsonl"
+    ],
+    "doc_cache": [
+      "tmp/2026-10-12T10-04Z-r001/_suite/docs/",
+      "tmp/2026-10-12T10-04Z-r001/_suite/docs-txt/"
+    ]
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "input_file": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+  "verbatim_first_submission": {
+    "dsl": "tmp/2026-10-12T10-04Z-r001/A03/orig-as-submitted.snapshot",
+    "request_id": "A03-render-v000-orig",
+    "http_status": 400,
+    "error_code": "PARSE_ERROR",
+    "error_message": "Attr [padding] value format error at position 92",
+    "x_request_id": "6a80ac12-52e7-4cac-af4a-c8d055a4c23f",
+    "raw_response": "tmp/2026-10-12T10-04Z-r001/A03/A03-render-v000-orig.resp",
+    "byte_identical_to_input": true,
+    "verification": "cp 后以 cmp 校验副本与 inputs/broken.snapshot 完全一致"
+  },
+  "error_chain": [
+    {
+      "request_id": "A03-render-v000-orig",
+      "status": 400,
+      "code": "PARSE_ERROR",
+      "message": "Attr [padding] value format error at position 92"
+    },
+    {
+      "request_id": "A03-render-v001",
+      "status": 400,
+      "code": "PARSE_ERROR",
+      "message": "Attr [matrix] must not be null at position 475"
+    },
+    {
+      "request_id": "A03-render-v002",
+      "status": 400,
+      "code": "RENDER_ERROR",
+      "message": "renderBox.parentData must be StackParentData"
+    },
+    {
+      "request_id": "A03-render-v003",
+      "status": 400,
+      "code": "RENDER_ERROR",
+      "message": "Layout size is infinite"
+    },
+    {
+      "request_id": "A03-render-v004",
+      "status": 200,
+      "code": null,
+      "message": "可出图，但暴露 11 项静默/视觉/缺失问题"
+    }
+  ],
+  "classification_counts": {
+    "真实报错": 4,
+    "静默忽略": 3,
+    "只在视觉上暴露": 6,
+    "需求缺失（原稿未实现）": 2
+  },
+  "repairs": [
+    {
+      "id": "R01",
+      "symptom_class": "真实报错",
+      "original_location": "第 2 行 Container padding=\"24 32\"",
+      "observed": "HTTP 400 PARSE_ERROR: Attr [padding] value format error at position 92",
+      "evidence_request": "A03-render-v000-orig",
+      "basis": "/reference/parser-tags/ EdgeInsets：\"12\" / \"(8,16)\" / \"(8,12,16,20)\"，括号与逗号是语法的一部分",
+      "fix": "padding=\"32\"（题面安全边距 32，四边一致）",
+      "verified_by": "A03-render-v001 不再报该错"
+    },
+    {
+      "id": "R02",
+      "symptom_class": "真实报错",
+      "original_location": "第 10 行 Transform rotate=\"-8\"",
+      "observed": "HTTP 400 PARSE_ERROR: Attr [matrix] must not be null at position 475",
+      "evidence_request": "A03-render-v001",
+      "basis": "标签参考 Transform：matrix 必填，Parser 无 rotate 便捷属性",
+      "fix": "改列主序 4×4 矩阵；y 向下时负角度才是视觉逆时针，θ=-8° → cos=0.990268, sin=-0.139173，并加 alignment=CENTER",
+      "verified_by": "A03-render-v002 通过该错；最终图 REVIEW 向左上倾斜"
+    },
+    {
+      "id": "R03",
+      "symptom_class": "真实报错",
+      "original_location": "第 7 行 Row 内 Positioned right=\"20\"",
+      "observed": "HTTP 400 RENDER_ERROR: renderBox.parentData must be StackParentData",
+      "evidence_request": "A03-render-v002",
+      "basis": "标签参考 Positioned：必须是 Stack / IndexedStack 的直接子节点",
+      "fix": "标题与 LIVE 改由 Stack 并置，LIVE 用 Positioned(left,top) 定位到右上",
+      "verified_by": "A03-render-v003 通过该错"
+    },
+    {
+      "id": "R04",
+      "symptom_class": "真实报错",
+      "original_location": "第 1 行 Snapshot width/height + 第 2 行 Container 无尺寸",
+      "observed": "HTTP 400 RENDER_ERROR: Layout size is infinite",
+      "evidence_request": "A03-render-v003",
+      "basis": "/guides/rendering/：Snapshot 不接受独立画布宽高，Surface 尺寸来自根布局",
+      "fix": "尺寸移到根 Container：width=1280 height=800",
+      "verified_by": "A03-render-v004 返回 200，实测图片 1280×800"
+    },
+    {
+      "id": "R05",
+      "symptom_class": "静默忽略",
+      "original_location": "第 4 行 Text font-size=\"44\"",
+      "observed": "v004 图中标题按默认字号渲染，明显小于 44，服务不报错",
+      "evidence_request": "A03-render-v004 + v004.png 实际看图",
+      "basis": "/reference/faq/：未知属性静默忽略；属性名 camelCase，字号属性为 fontSize",
+      "fix": "改为 fontSize=\"44\"",
+      "verified_by": "最终图标题字高与 44 号一致"
+    },
+    {
+      "id": "R06",
+      "symptom_class": "静默忽略",
+      "original_location": "第 1 行 Snapshot@width / @height",
+      "observed": "两属性被丢弃且不报错，是 R04 无限尺寸的根因之一",
+      "evidence_request": "A03-render-v003 / v004",
+      "basis": "标签参考 Snapshot 只有 background / debug / type",
+      "fix": "从 Snapshot 上移除 width/height，不保留无效属性冒充已实现",
+      "verified_by": "最终 DSL 的 Snapshot 仅带 background 与 type"
+    },
+    {
+      "id": "R07",
+      "symptom_class": "只在视觉上暴露",
+      "original_location": "第 10 行 color=\"#33FFFFFF\"",
+      "observed": "v004 中 REVIEW 底为实心青色，而非 20% 不透明度白",
+      "evidence_request": "A03-render-v004 + v004.png",
+      "basis": "/reference/parser-tags/ “八位十六进制颜色的迁移”：现按 CSS #RRGGBBAA，透明度在末两位",
+      "fix": "改 #FFFFFF33（0x33/255≈20%），文字另用 #FFFFFF 保持不透明",
+      "verified_by": "最终图 REVIEW 底透出背景、文字边缘清晰"
+    },
+    {
+      "id": "R08",
+      "symptom_class": "只在视觉上暴露",
+      "original_location": "第 11 行 ImageFiltered 包裹含 Text 的 Container",
+      "observed": "v004 中 “Background-only blur” 文字本身被模糊到不可读",
+      "evidence_request": "A03-render-v004 + v004.png",
+      "basis": "/guides/painting/：ImageFiltered 作用于整棵子树；BackdropFilter 才读取已绘制背景，且建议配合 ClipRRect 限定区域",
+      "fix": "改为 ClipRRect(borderRadius=24) + BackdropFilter(sigmaX=sigmaY=9) 只糊卡内背景，文字移到滤镜子树之外叠在上层",
+      "verified_by": "最终图卡内细条糊、卡外细条锐、文字清晰"
+    },
+    {
+      "id": "R09",
+      "symptom_class": "只在视觉上暴露",
+      "original_location": "第 6 行 Expanded 内 Container width=\"360\"",
+      "observed": "v004 中指标卡横贯整行且只有一个，等宽三卡不成立",
+      "evidence_request": "A03-render-v004 + v004.png",
+      "basis": "/guides/layout/：Expanded 以紧约束占用 Flex 剩余空间，子节点主轴宽度被覆盖",
+      "fix": "三个 Expanded flex=1 各包一卡，卡宽 (1216-2×24)/3=389.33 由等分得到，不再写死宽度",
+      "verified_by": "最终图三卡宽度一致"
+    },
+    {
+      "id": "R10",
+      "symptom_class": "需求缺失（原稿未实现）",
+      "original_location": "第 5-8 行 Row 内只有 USAGE",
+      "observed": "LATENCY 148 ms 与 SUCCESS 99.2% 两卡在原稿中不存在",
+      "evidence_request": "A03-render-v004 + v004.png",
+      "basis": "题面要求第一行三个等宽指标卡",
+      "fix": "补齐三卡，文案严格为 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%，字号 28",
+      "verified_by": "最终图三项齐全"
+    },
+    {
+      "id": "R11",
+      "symptom_class": "需求缺失（原稿未实现）",
+      "original_location": "第 11 行滤镜之外无任何背景元素",
+      "observed": "没有“同时穿过说明卡两侧边界的彩色细条”，模糊语义无从判断",
+      "evidence_request": "A03-render-v004",
+      "basis": "题面要求背景有穿过卡两侧的彩色细条",
+      "fix": "卡后绘制 8 条 x 从 32 到 1248 的细条，卡左右边界 390 与 890 均被穿过",
+      "verified_by": "最终图细条在卡外锐利、卡内模糊"
+    },
+    {
+      "id": "R12",
+      "symptom_class": "只在视觉上暴露",
+      "original_location": "第 7 行 Positioned right=\"20\"",
+      "observed": "LIVE 为无底板纯文字，20px 越过 32 安全边距，且与标题同基线",
+      "evidence_request": "A03-render-v004 + v004.png",
+      "basis": "题面要求 LIVE 标签 96×36 且不盖住标题",
+      "fix": "改为 96×36 圆角底板，盒 [1152,44,1248,80]；标题盒 [32,32,约332,91]，二者不相交",
+      "verified_by": "最终图二者无重叠"
+    },
+    {
+      "id": "R13",
+      "symptom_class": "只在视觉上暴露",
+      "original_location": "第 10 行 Transform 直接作为 Column 子节点",
+      "observed": "v004 中 REVIEW 水平居中并压在说明卡上，不在右下",
+      "evidence_request": "A03-render-v004 + v004.png",
+      "basis": "题面要求右下；/guides/painting/：Transform 只改绘制坐标，不改布局尺寸",
+      "fix": "放入 Stack，布局盒 [1072,640,1232,696]，旋转后包围盒 [1076.9, 629.1, 1243.1, 706.9] 仍在画布内",
+      "verified_by": "最终图 REVIEW 位于右下且为逆时针倾斜"
+    },
+    {
+      "id": "R14",
+      "symptom_class": "静默忽略",
+      "original_location": "第 2 行 Container 只有 borderRadius 无背景装饰",
+      "observed": "根容器圆角无任何可见效果",
+      "evidence_request": "A03-render-v004",
+      "basis": "/guides/layout/ Container 组合顺序：子节点→对齐→padding→颜色/裁剪/装饰→约束→margin→transform；裁剪需要可生成路径的装饰",
+      "fix": "根 Container 显式 color=#0B1220 且 padding=32，圆角落到各卡片上",
+      "verified_by": "最终图背景与各卡圆角均生效"
+    },
+    {
+      "id": "R15",
+      "symptom_class": "只在视觉上暴露",
+      "original_location": "第 6 行 Text fontSize=\"28\" 无 color",
+      "observed": "v004 中指标文字为默认深色，落在深色卡面上几乎不可读",
+      "evidence_request": "A03-render-v004 + v004.png",
+      "basis": "Text 的 color 默认未设置，不从父容器继承颜色",
+      "fix": "指标名 #94A3B8、数值用各自强调色，均 28 号",
+      "verified_by": "最终图三项文字清晰可读"
+    }
+  ],
+  "blocks_preserved": {
+    "title": "System Pulse 文本（原第 4 行）保留并修好 fontSize",
+    "metric_row": "Row + Expanded + Container + Text（原第 5-8 行）保留，改为三个 Expanded 等分",
+    "live_label": "Positioned + Text LIVE（原第 7 行）保留，移入 Stack 并加 96×36 底板",
+    "spacer": "Spacer flex=1（原第 9 行）保留，现用于指标卡内部把数值推到底部",
+    "review_label": "Transform + 160×56 Container + REVIEW 文字（原第 10 行）全部保留",
+    "blur_card": "滤镜 + 500×150 卡 + Background-only blur 文字（原第 11 行）保留，换用 BackdropFilter 语义",
+    "deleted_blocks": "无；出错区块全部保留并修复"
+  },
+  "no_unknown_attributes_left": {
+    "checked": true,
+    "method": "最终 DSL 每个属性都对照 /reference/parser-tags/ 的属性表；Snapshot 仅 background/type，Text 仅 fontSize/color/fontStyle/fontFamily/textAlign，Transform 仅 matrix/alignment，Container 仅文档列出的属性",
+    "removed_from_original": [
+      "Snapshot@width",
+      "Snapshot@height",
+      "Text@font-size",
+      "Transform@rotate"
+    ]
+  },
+  "geometry": {
+    "canvas": [
+      1280,
+      800
+    ],
+    "safe_margin": 32,
+    "content_box": [
+      32,
+      32,
+      1248,
+      768
+    ],
+    "coordinate_space": "画布左上原点，x 向右 y 向下，单位像素",
+    "metric_cards": {
+      "count": 3,
+      "width_each": 389.33,
+      "height": 168,
+      "gap": 24,
+      "equal_width": true,
+      "boxes": [
+        [
+          32.0,
+          120,
+          421.3,
+          288
+        ],
+        [
+          445.3,
+          120,
+          834.7,
+          288
+        ],
+        [
+          858.7,
+          120,
+          1248.0,
+          288
+        ]
+      ]
+    },
+    "live_badge": {
+      "w": 96,
+      "h": 36,
+      "box": [
+        1152,
+        44,
+        1248,
+        80
+      ],
+      "title_box": [
+        32,
+        32,
+        332,
+        91
+      ],
+      "covers_title": false
+    },
+    "review_badge": {
+      "w": 160,
+      "h": 56,
+      "rotation_deg_ccw": 8.0,
+      "background": "#FFFFFF33",
+      "background_alpha": 0.2,
+      "text": "#FFFFFF",
+      "text_font_size": 24,
+      "layout_box": [
+        1080,
+        640,
+        1240,
+        696
+      ],
+      "rotated_bbox": [
+        1076.9,
+        629.1,
+        1243.1,
+        706.9
+      ],
+      "inside_canvas": true
+    },
+    "description_card": {
+      "w": 500,
+      "h": 150,
+      "border_radius": 24,
+      "box": [
+        390.0,
+        400,
+        890.0,
+        550
+      ],
+      "font_size": 28
+    },
+    "stripes": {
+      "count": 8,
+      "x_span": [
+        32,
+        1248
+      ],
+      "crosses_card_left_boundary": true,
+      "crosses_card_right_boundary": true
+    },
+    "blur": {
+      "mechanism": "ClipRRect + BackdropFilter",
+      "sigmaX": 9.0,
+      "sigmaY": 9.0,
+      "applies_to": "卡内已绘制的背景",
+      "text_inside_filter_subtree": false
+    }
+  }
+}

@@ -1,0 +1,139 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "source_file": "tasks/A24-release-plan-capstone/inputs/release.json",
+ "timezone": "Asia/Shanghai (+08:00)",
+ "window": {
+  "start": "2026-11-07T09:00:00+08:00",
+  "deadline": "2026-11-07T16:00:00+08:00",
+  "minutes": 420,
+  "rules": "09:00 为第 0 分钟；连续 420 分钟，不扣午休、不跨天；占用用 [start,end)；同团队上一任务结束即可开始下一任务；团队切换无额外耗时"
+ },
+ "checks": [
+  {
+   "name": "全部 12 项任务都排入且只排一次",
+   "passed": true,
+   "evidence": "12 行，ID 集合与输入一致"
+  },
+  {
+   "name": "每项时长严格等于输入 minutes",
+   "passed": true,
+   "evidence": "R01=25、R02=20、R03=40、R04=60、R05=30、R06=45、R07=70、R08=65、R09=45、R10=35、R11=30、R12=20"
+  },
+  {
+   "name": "所有任务落在 0-420 窗口内",
+   "passed": true,
+   "evidence": "最早 start=0，最晚 end=260"
+  },
+  {
+   "name": "同团队占用区间 [start,end) 互不重叠、无抢占",
+   "passed": true,
+   "evidence": "design: R01[0,25) R04[25,85) R07[90,160) R09[160,205) R10[205,240) R12[240,260)；engineering: R02[0,20) R03[20,60) R05[60,90) R06[90,135) R08[135,200) R11[205,235)"
+  },
+  {
+   "name": "每条依赖的 end ≤ 后继 start（允许同点衔接）",
+   "passed": true,
+   "evidence": "12 项共 16 条依赖边全部满足"
+  },
+  {
+   "name": "执行团队在 tasks.teams 允许范围内",
+   "passed": true,
+   "evidence": "R05→engineering(可选 ['design', 'engineering'])、R09→design(可选 ['design', 'engineering'])、R12→design(可选 ['design', 'engineering'])"
+  },
+  {
+   "name": "未删减任何检查环节（R10/R11/R12 全部保留）",
+   "passed": true,
+   "evidence": "R10[205,240) R11[205,235) R12[240,260)"
+  },
+  {
+   "name": "完工不晚于 16:00",
+   "passed": true,
+   "evidence": "260 分钟 = 2026-11-07T13:20:00+08:00，剩余缓冲 160 分钟"
+  }
+ ],
+ "all_passed": true,
+ "lower_bounds": {
+  "critical_path_minutes": 255,
+  "critical_path_chain": [
+   "R01",
+   "R04",
+   "R07",
+   "R09",
+   "R10",
+   "R12"
+  ],
+  "critical_path_sum": 255,
+  "critical_path_note": "只用依赖关系与时长，完全忽略团队数量",
+  "total_work_minutes": 485,
+  "teams": 2,
+  "work_div_teams_minutes": 242.5,
+  "work_note": "12 项 minutes 之和 ÷ 2，未提前取整",
+  "max_of_bounds_minutes": 255
+ },
+ "finish": {
+  "finish_minute": 260,
+  "finish_clock": "2026-11-07T13:20:00+08:00",
+  "deadline_minute": 420,
+  "buffer_minutes": 160,
+  "buffer_readable": "2 小时 40 分",
+  "formula": "buffer = 420 − max(end_minute)"
+ },
+ "team_load_minutes": {
+  "design": 255,
+  "engineering": 230
+ },
+ "gap_to_critical_path": {
+  "minutes": 5,
+  "cause": "关键路径 255 分钟要求 R07 在第 85 分开工，也就是 R05 必须在 85 分前结束。design 在 25-85 分被 R04 占满，所以 R05 只能给 engineering；而 R05 依赖 R01（25 分才结束），engineering 做完 R02 后必须在 20-25 分空等 5 分钟，R03/R06/R08 依次顺延，R08 结束于 200 分；同时 R05 结束于 90 分把 R07 推到 [90,160)，R09→R10→R12 顺延，最终 260 分。把 R05 改给 design 会让 R07 最早 115 分开工，完工变成 285 分，更差。"
+ },
+ "optimality": {
+  "feasible": true,
+  "claimed_optimal": true,
+  "basis": "穷举全部活跃排程未发现更优，且已按两条下界剪枝",
+  "search": {
+   "best_finish_minute": 260,
+   "states_explored": 2184,
+   "branches_pruned": 983,
+   "enumeration": "全部优先序 × 团队指派的活跃排程枚举"
+  },
+  "proof_sketch": "① 下界：任何满足依赖的排程完工 ≥ 关键路径 255 分钟；② 上界：给出 260 分钟的可行排程；③ 穷举：solver.py 枚举全部串行活跃排程（优先级序 × 团队指派，每个任务取其团队与依赖允许的最早开始），探索 2184 个状态，按 maxend / 依赖最早完成 / (两团队已占用+剩余工时)÷2 三条可行下界剪掉 983 个分支，未找到 ≤259 的排程 → 260 是该模型下的最小完工时间；④ 复核方式：把初始上界改成 259 重跑 solver.py，搜索应在根节点就被下界剪掉，或核对 solver.json 的状态数与剪枝数",
+  "not_claimed": "没有给出与 255 相等的排程，因此不宣称达到关键路径下界"
+ },
+ "alternatives_rejected": [
+  {
+   "option": "R05 交给 design",
+   "forced": {
+    "R05": "design"
+   },
+   "best_finish_minute": 285,
+   "states_explored": 2174,
+   "reason": "R04 与 R05 争用 design 的 25-85 分，R07 只能推迟开工",
+   "measured_by": "solver.py 同一穷举搜索，只加一条团队指派约束"
+  },
+  {
+   "option": "R09 交给 engineering",
+   "forced": {
+    "R09": "engineering"
+   },
+   "best_finish_minute": 285,
+   "states_explored": 1824,
+   "reason": "engineering 已被 R02/R05/R03/R06/R08 排到 200 分，R09 只能排在 R08 之后",
+   "measured_by": "solver.py 同一穷举搜索，只加一条团队指派约束"
+  },
+  {
+   "option": "R12 交给 engineering",
+   "forced": {
+    "R12": "engineering"
+   },
+   "best_finish_minute": 260,
+   "states_explored": 2183,
+   "reason": "收尾任务换团队：完工时间不变，说明 R12 的二选一不影响目标函数",
+   "measured_by": "solver.py 同一穷举搜索，只加一条团队指派约束"
+  }
+ ],
+ "verification_evidence": {
+  "path_base": "suite_root",
+  "path": "tmp/2026-10-12T10-04Z-r001/A24/solver.json"
+ }
+}

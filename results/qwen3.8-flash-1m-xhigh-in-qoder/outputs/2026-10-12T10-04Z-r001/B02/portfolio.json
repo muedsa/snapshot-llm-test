@@ -1,0 +1,956 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "B02",
+  "run_id": "2026-10-12T10-04Z-r001",
+  "project": {
+    "name": "水位线 · 社区内涝预警与互助网络",
+    "kind": "自拟的社区项目（虚构，不宣称真实部署）",
+    "who_it_serves": "沿江老城区 6 个社区、约 1.2 万户居民、38 家沿街商户、42 名注册志愿者与街道防汛值班员",
+    "how_it_operates": "沿河 6 处水位/雨量站 + 居民上报构成输入；街道值班员发布四级行动；志愿者按任务板认领沙袋、转移、值守、上报核查四类任务；商户承担门口篦子与避雨点义务；每季度向社区公开一次数据报告",
+    "what_people_need": "在雨夜、强光、5 米外、手机小屏、打印 A4 等完全不同的条件下，快速知道自己现在该做什么，并且能核对数字来自哪里",
+    "brand_decision": "同一套标记、色板、字阶与组件在 10 个触点复用；但每个触点按观看距离与密度重新排版，不做同一海报换色"
+  },
+  "works_count": 10,
+  "works": [
+    {
+      "id": "case-01",
+      "title": "水位线 品牌与视觉系统规范",
+      "status": "completed",
+      "touchpoint": "品牌规范页（内部对齐用，A4/屏幕）",
+      "size_px": [
+        1200,
+        1680
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-01/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-01/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-01/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-01/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case01_system.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "志愿者宣传组与新加入的设计/开发",
+        "goal": "不改系统的前提下做出其余 9 个触点",
+        "viewing": "会议室投屏与打印对照",
+        "min_font_px": 20
+      },
+      "dsl_capabilities": [
+        "标记构造网格",
+        "色板与对比度实测",
+        "字阶/栅格样张",
+        "组件样张"
+      ],
+      "layout_audit": {
+        "texts": 121,
+        "shapes": 217,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 20,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 4,
+        "failed": 0,
+        "window": [
+          "2026-10-13T03:46:21.231+08:00",
+          "2026-10-13T03:48:38.867+08:00"
+        ],
+        "request_seconds": 20.7
+      },
+      "visual_iterations": 4,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "标记由可复绘的几何步骤给出（网格、圆角、线宽），不是贴图",
+          "method": "tide.mark() 只用 ClipPath/Container 构造",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-01/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case01-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "色板每格给出 HEX 与实际算出的对比度",
+          "method": "脚本对每色×每底色计算 WCAG 比值并断言",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-01/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case01-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "字阶 6 级与 8pt 栅格在示例中可量出",
+          "method": "字号常量与行高倍数打印核对",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-01/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case01-data.json"
+          ]
+        },
+        {
+          "id": "C4",
+          "criterion": "组件（状态条/图例块/站点卡/箭头）在后续触点中真实复用",
+          "method": "grep 其余生成脚本对 tide.py 的调用",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-01/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case01-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "汛期四级行动 · 社区公告",
+      "status": "completed",
+      "touchpoint": "社区公告栏汛期海报",
+      "size_px": [
+        900,
+        1350
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-02/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-02/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-02/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-02/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case02_poster.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "路过公告栏的居民（含老人）",
+        "goal": "3 秒内知道当前等级、集合点、电话",
+        "viewing": "室外公告栏，1–2 m 阅读，无手机",
+        "min_font_px": 26
+      },
+      "dsl_capabilities": [
+        "四级行动阶梯",
+        "状态条组件",
+        "集合点表格",
+        "大字海报排版"
+      ],
+      "layout_audit": {
+        "texts": 60,
+        "shapes": 23,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 26,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 5,
+        "failed": 0,
+        "window": [
+          "2026-10-13T03:54:50.345+08:00",
+          "2026-10-13T03:57:55.973+08:00"
+        ],
+        "request_seconds": 14.9
+      },
+      "visual_iterations": 5,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "当前等级与 data.py 的站点阈值判定一致",
+          "method": "level() 单一函数",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-02/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case02-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "最小字号 ≥26px 且正文对比度 ≥4.5:1",
+          "method": "构建期审计 + 对比度断言",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-02/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case02-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "集合点与地图上的点位、容量数字与 case-04 风险图一致",
+          "method": "同一 shelters 数组",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-02/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case02-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "潮水位 · 实时预警页",
+      "status": "completed",
+      "touchpoint": "手机 App 实时预警页",
+      "size_px": [
+        390,
+        844
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-03/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-03/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-03/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-03/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case03_app.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "已安装小程序的居民，夜里在家看手机",
+        "goal": "知道自家门口现在多深、会不会涨、现在该做什么",
+        "viewing": "手机竖屏，暗光，30 cm",
+        "min_font_px": 11
+      },
+      "dsl_capabilities": [
+        "手机 UI 密度",
+        "sparkline + 阈值带",
+        "卡片层级",
+        "标签栏与图标"
+      ],
+      "layout_audit": {
+        "texts": 42,
+        "shapes": 66,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 11,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 4,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:00:04.205+08:00",
+          "2026-10-13T04:04:14.698+08:00"
+        ],
+        "request_seconds": 15.6
+      },
+      "visual_iterations": 4,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "24 小时水位曲线与站点数组逐点一致，阈值线位置正确",
+          "method": "同一 series 绘制，阈值 y 线性映射断言",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-03/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case03-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "小屏下最小字号 11px 但按 390 宽设计，缩放后可读",
+          "method": "以 390×844 逻辑像素绘制并看图核对",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-03/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case03-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "行动建议文案与当前等级严格对应（四级各一版，图为当前版）",
+          "method": "action(level) 查表",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-03/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case03-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "沿江街区内涝风险与避难可达性",
+      "status": "completed",
+      "touchpoint": "街道内涝风险制图板",
+      "size_px": [
+        1600,
+        1000
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-04/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-04/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-04/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-04/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case04_map.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "街道与公共卫生人员做设施选址",
+        "goal": "找出风险最连片的街区与覆盖盲区",
+        "viewing": "会议室大屏与 A3 打印",
+        "min_font_px": 20
+      },
+      "dsl_capabilities": [
+        "run-length 栅格合并",
+        "marching squares 等值线",
+        "等时圈裁切",
+        "断面面积图"
+      ],
+      "layout_audit": {
+        "texts": 102,
+        "shapes": 879,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 20,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 6,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:09:41.798+08:00",
+          "2026-10-13T04:13:59.843+08:00"
+        ],
+        "request_seconds": 27.9
+      },
+      "visual_iterations": 6,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "风险指数＝f(低洼度, 雨量, 管网余量)，网格值可复算",
+          "method": "risk() 单函数 + data-snapshot.json",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-04/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case04-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "等值线/分级与图例阈值一一对应",
+          "method": "共用同一 levels 数组",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-04/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case04-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "避难 5 分钟步行覆盖圈与海报集合点同源",
+          "method": "同一 shelters 数组 + 半径换算",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-04/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case04-data.json"
+          ]
+        },
+        {
+          "id": "C4",
+          "criterion": "断面沿线的低洼读数与主图一致",
+          "method": "沿 A–B 采样同一 field()",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-04/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case04-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "夜间调度板 · 任务与志愿者状态",
+      "status": "completed",
+      "touchpoint": "街道值班室调度大屏",
+      "size_px": [
+        1920,
+        1080
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-05/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-05/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-05/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-05/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case05_wall.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "值班员与现场组长",
+        "goal": "在 10 m 外看清谁在做什么、哪里还没人接",
+        "viewing": "值班室 65 寸屏，10 m 常驻显示",
+        "min_font_px": 24
+      },
+      "dsl_capabilities": [
+        "任务卡栅格",
+        "名单表",
+        "6 站水位条",
+        "10 m 大字"
+      ],
+      "layout_audit": {
+        "texts": 154,
+        "shapes": 92,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 24,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 1,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:16:48.464+08:00",
+          "2026-10-13T04:16:48.464+08:00"
+        ],
+        "request_seconds": 6.1
+      },
+      "visual_iterations": 1,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "任务卡状态计数守恒（待接/进行/完成）＝任务总数",
+          "method": "构建期断言",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-05/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case05-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "志愿者在线数与任务分配数不矛盾",
+          "method": "同一 roster 数组",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-05/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case05-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "10 m 可读：最小字号 ≥24px 且等级色块 ≥3:1",
+          "method": "审计 + 对比度断言",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-05/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case05-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "入汛提醒 · 服务入口卡",
+      "status": "completed",
+      "touchpoint": "微信服务卡片／推文头图",
+      "size_px": [
+        900,
+        600
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-06/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-06/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-06/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-06/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case06_card.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "公众号读者（转发到群里）",
+        "goal": "一眼看到当前等级并进入三个入口",
+        "viewing": "手机聊天列表缩略图 + 点开大图",
+        "min_font_px": 20
+      },
+      "dsl_capabilities": [
+        "缩略可读性",
+        "入口卡",
+        "等级横幅",
+        "距离列表"
+      ],
+      "layout_audit": {
+        "texts": 20,
+        "shapes": 16,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 20,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 1,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:20:17.320+08:00",
+          "2026-10-13T04:20:17.320+08:00"
+        ],
+        "request_seconds": 3.3
+      },
+      "visual_iterations": 1,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "缩略到 220 px 宽时标记与等级色仍可辨",
+          "method": "PIL 缩放后实际查看",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-06/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case06-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "三个入口文案与 App 页面元素一致",
+          "method": "同一 entries 常量",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-06/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case06-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "暴雨天上下学 · 安全课讲义",
+      "status": "completed",
+      "touchpoint": "学校安全教育讲义",
+      "size_px": [
+        1080,
+        1528
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-07/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-07/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-07/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-07/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case07_school.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "小学四年级学生与班主任",
+        "goal": "课后能独立完成出门前 6 项检查",
+        "viewing": "A4 打印，30 cm，纸质",
+        "min_font_px": 20
+      },
+      "dsl_capabilities": [
+        "水深色条分段",
+        "检查卡栅格",
+        "问答线",
+        "签字带"
+      ],
+      "layout_audit": {
+        "texts": 61,
+        "shapes": 32,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 20,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 1,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:20:20.753+08:00",
+          "2026-10-13T04:20:20.753+08:00"
+        ],
+        "request_seconds": 5.5
+      },
+      "visual_iterations": 1,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "水深—风险对照与 case-03 的阈值表同源",
+          "method": "同一 thresholds",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-07/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case07-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "清单编号与插图一一对应，无空号",
+          "method": "构建期计数",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-07/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case07-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "文字量适合单页 A4，未溢出页脚",
+          "method": "版心断言",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-07/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case07-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "社区物资柜 · 封条清单",
+      "status": "completed",
+      "touchpoint": "物资柜清单标签（100×67 mm 印刷）",
+      "size_px": [
+        600,
+        400
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-08/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-08/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-08/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-08/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case08_label.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "开柜取用的志愿者与仓管",
+        "goal": "30 cm 内核对品名、数量、检查日期",
+        "viewing": "柜门贴纸，30 cm，弱光",
+        "min_font_px": 18
+      },
+      "dsl_capabilities": [
+        "密排清单",
+        "状态色块",
+        "封条登记行",
+        "毫米级字号换算"
+      ],
+      "layout_audit": {
+        "texts": 28,
+        "shapes": 29,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 18,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 2,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:24:53.912+08:00",
+          "2026-10-13T04:25:40.587+08:00"
+        ],
+        "request_seconds": 4.9
+      },
+      "visual_iterations": 2,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "每项数量与调度板物资台账数组一致",
+          "method": "同一 supplies 数组",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-08/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case08-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "小尺寸下最小字号 18px（≈2.5 mm 字高）",
+          "method": "按 600 px＝100 mm 换算并核对",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-08/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case08-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "2026 第三季度公开数据报告",
+      "status": "completed",
+      "touchpoint": "季度透明报告长图（社区公开）",
+      "size_px": [
+        1000,
+        2000
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-09/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-09/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-09/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-09/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case09_report.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "社区居民与资助方",
+        "goal": "核对这季度做了多少、响应多快、钱花在哪",
+        "viewing": "手机长图滚动 + 打印张贴",
+        "min_font_px": 20
+      },
+      "dsl_capabilities": [
+        "KPI 大字",
+        "分组柱状",
+        "分位数柱",
+        "堆叠支出条",
+        "长图分节"
+      ],
+      "layout_audit": {
+        "texts": 60,
+        "shapes": 31,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 20,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 2,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:24:56.819+08:00",
+          "2026-10-13T04:26:29.456+08:00"
+        ],
+        "request_seconds": 8.2
+      },
+      "visual_iterations": 2,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "月度柱状、响应时长分位数、任务构成全部由同一份季度日志算出",
+          "method": "aggregate() 单函数",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-09/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case09-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "报告总数与调度板/海报中的累计数一致",
+          "method": "同一 log 数组",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-09/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case09-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "分位数由排序后取值，非估算",
+          "method": "p50/p90 计算打印",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-09/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case09-data.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "集合点 L-03 地贴",
+      "status": "completed",
+      "touchpoint": "地面集合点导视贴",
+      "size_px": [
+        800,
+        800
+      ],
+      "outputs": {
+        "png": "outputs/2026-10-12T10-04Z-r001/B02/case-10/final.png",
+        "snapshot": "outputs/2026-10-12T10-04Z-r001/B02/case-10/final.snapshot",
+        "case_md": "outputs/2026-10-12T10-04Z-r001/B02/case-10/case.md",
+        "data": "outputs/2026-10-12T10-04Z-r001/B02/case-10/computed-data.json"
+      },
+      "path_base": "suite_root",
+      "generator": "tmp/2026-10-12T10-04Z-r001/B02/case10_decal.py",
+      "shared_modules": [
+        "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+        "tmp/2026-10-12T10-04Z-r001/B02/data.py"
+      ],
+      "scenario": {
+        "audience": "雨夜里在广场上找集合点的居民",
+        "goal": "5–8 m 外认出编号并确认方向",
+        "viewing": "湿地面，5–8 m，夜间反光",
+        "min_font_px": 44
+      },
+      "dsl_capabilities": [
+        "圆环与弧带",
+        "超大编号",
+        "导视箭头",
+        "反光配色"
+      ],
+      "layout_audit": {
+        "texts": 8,
+        "shapes": 39,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "below_min_font_n": 0,
+        "min_font_px": 44,
+        "checked_at": "构建期由生成脚本打印"
+      },
+      "renders": {
+        "ok": 4,
+        "failed": 0,
+        "window": [
+          "2026-10-13T04:25:00.729+08:00",
+          "2026-10-13T04:28:54.511+08:00"
+        ],
+        "request_seconds": 8.7
+      },
+      "visual_iterations": 4,
+      "final_png_is_raw_service_response": true,
+      "asset_policy": "dsl_primary_with_supporting_assets",
+      "external_assets_used": [],
+      "fictional_content": true,
+      "criteria_plan_version": "v1",
+      "criteria_results": [
+        {
+          "id": "C1",
+          "criterion": "编号字高对应 5 m 视认（≥44 px）",
+          "method": "按 800 px＝600 mm 换算核对",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-10/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case10-data.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "criterion": "箭头方向与集合点相对位置在 case-02/04 中一致",
+          "method": "同一 shelter 记录",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-10/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case10-data.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "criterion": "夜间高对比：深底 + 白/黄，≥7:1",
+          "method": "对比度断言",
+          "result": "pass",
+          "evidence": [
+            "outputs/2026-10-12T10-04Z-r001/B02/case-10/final.png",
+            "tmp/2026-10-12T10-04Z-r001/B02/case10-data.json"
+          ]
+        }
+      ]
+    }
+  ],
+  "shared": {
+    "brand_kit": "tmp/2026-10-12T10-04Z-r001/B02/tide.py",
+    "data_model": "tmp/2026-10-12T10-04Z-r001/B02/data.py",
+    "data_snapshot": "tmp/2026-10-12T10-04Z-r001/B02/data-snapshot.json",
+    "kit_proof_renders": 4,
+    "plan": "tmp/2026-10-12T10-04Z-r001/B02/work-plan.json",
+    "change_log": [
+      {
+        "at": "2026-10-13T03:55+08:00",
+        "case_id": "case-01",
+        "old": "size 1200x1680；最小字号 20px",
+        "new": "size 1200x2520；最小字号 18px，micro 14px 样本改为「放大示意」文字说明",
+        "reason": "六个章节在 18–20px 下实际需要 2455px 高；规格表属文档类触点，18px 元信息在 30–50cm 阅读距离可读",
+        "evidence": [
+          "tmp/<run>/B02/case01-v1.png（1680 高时内容被截断的 used_height 断言）",
+          "tmp/<run>/B02/case01-v3.png",
+          "case01_system.py 的 used_height 断言输出"
+        ]
+      },
+      {
+        "at": "2026-10-13T03:55+08:00",
+        "case_id": "case-01",
+        "old": "文案中写 tmp/<run_id>/…",
+        "new": "改写为 tmp/[run_id]/…",
+        "reason": "服务会把文本里的 < > 原样渲染成 &lt; &gt;（B01 case-08 已踩，本次复现）",
+        "evidence": [
+          "tmp/<run>/B02/case01-v3.png 页脚",
+          "tmp/<run>/B02/case01-v4.png 页脚"
+        ]
+      }
+    ]
+  },
+  "cross_check": [
+    "case-02/03/05/06 的等级与最高站读数一致（classify + TOP_STATION）",
+    "case-02/04/06/10 的集合点距离与容量一致（shelter_reach）",
+    "case-05 任务计数与 case-03 待接任务、case-09 季度完成任务同一数组",
+    "case-08 待处理项与 case-09 下季度计划第一条同一台账"
+  ]
+}

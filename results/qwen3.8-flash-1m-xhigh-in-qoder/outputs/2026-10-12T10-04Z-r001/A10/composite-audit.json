@@ -1,0 +1,609 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "canvas": [
+    1440,
+    1100
+  ],
+  "areas": {
+    "size_px": [
+      320,
+      240
+    ],
+    "gap_px": 32,
+    "cols": 3,
+    "rows": 2,
+    "count": 6,
+    "origins_canvas_px": [
+      {
+        "id": "①",
+        "x": 208,
+        "y": 140,
+        "integer": true
+      },
+      {
+        "id": "②",
+        "x": 560,
+        "y": 140,
+        "integer": true
+      },
+      {
+        "id": "③",
+        "x": 912,
+        "y": 140,
+        "integer": true
+      },
+      {
+        "id": "④",
+        "x": 208,
+        "y": 476,
+        "integer": true
+      },
+      {
+        "id": "⑤",
+        "x": 560,
+        "y": 476,
+        "integer": true
+      },
+      {
+        "id": "⑥",
+        "x": 912,
+        "y": 476,
+        "integer": true
+      }
+    ],
+    "local_origin_meaning": "各实验区左上外边界为局部原点，x 向右 y 向下，单位像素"
+  },
+  "sampling": {
+    "point_local": [
+      180,
+      100
+    ],
+    "indexing": "第 (origin_x+180, origin_y+100) 个像素，索引从 0 开始，直接读取服务返回 PNG 的未预乘 8 位 RGBA，不取截图或缩略图",
+    "expected_alpha": 255
+  },
+  "group_A": {
+    "shared": {
+      "red_rect": [
+        40,
+        40,
+        160,
+        120
+      ],
+      "blue_rect": [
+        120,
+        80,
+        160,
+        120
+      ],
+      "blue_on_top": true,
+      "background": "#FFFFFF",
+      "compositing": "source-over，先白底，再红，再蓝"
+    },
+    "only_difference": "① 每个矩形自带 50% alpha；② 两个不透明矩形放进 Opacity(0.5) 组",
+    "alpha_values": {
+      "per_element": {
+        "hex_alpha": "80",
+        "fraction": "128/255",
+        "decimal": 0.5019607843137255
+      },
+      "group_opacity": {
+        "decimal": 0.5
+      },
+      "delta": 0.00196078431372549,
+      "note": "128/255 = 0.5019607843，比 0.5 大 0.0019607843，两者不能混用同一个 alpha"
+    },
+    "overlap_point_180_100": {
+      "①": {
+        "steps": [
+          "red over white: R=255·(128/255)+255·(127/255)=255; G=B=0·(128/255)+255·(127/255)=255−128=127",
+          "blue over that: R=0·(128/255)+255·(127/255)=127; G=0·(128/255)+127·(127/255)=16129/255; B=255·(128/255)+127·(127/255)=128+16129/255"
+        ],
+        "theoretical_float": [
+          127.0,
+          63.25098039215686,
+          191.25098039215686
+        ],
+        "theoretical_fraction": [
+          "127",
+          "16129/255",
+          "48769/255"
+        ],
+        "rounded": [
+          127,
+          63,
+          191
+        ],
+        "rounding": "floor(value + 0.5)"
+      },
+      "②": {
+        "steps": [
+          "inside the group: opaque blue covers opaque red → (0,0,255) fully opaque",
+          "group composited at 0.5 over white: R=0·0.5+255·0.5=127.5, G=127.5, B=255·0.5+255·0.5=255"
+        ],
+        "theoretical_float": [
+          127.5,
+          127.5,
+          255.0
+        ],
+        "rounded": [
+          128,
+          128,
+          255
+        ],
+        "rounding": "floor(value + 0.5)"
+      }
+    },
+    "secondary_sample_red_only_60_60": {
+      "①": [
+        255,
+        127,
+        127
+      ],
+      "②": [
+        255,
+        128,
+        128
+      ],
+      "note": "仅被红矩形覆盖处，①=(255,127,127) 与 ②=(255,128,128) 相差 1，正是 128/255 与 0.5 的差异所致"
+    },
+    "measured": {
+      "source_png": {
+        "path": "../../../tmp/2026-10-12T10-04Z-r001/A10/v006.png",
+        "path_base": "output_dir",
+        "ver": "v006",
+        "decoded_mode": "RGBA",
+        "size": [
+          1440,
+          1100
+        ],
+        "note": "服务返回的原始 PNG 字节，未做任何后处理"
+      },
+      "tolerance_per_channel": 3,
+      "samples": [
+        {
+          "area": "①",
+          "case": "overlap",
+          "local": [
+            180,
+            100
+          ],
+          "png_index_xy0based": [
+            388,
+            240
+          ],
+          "alpha": 255,
+          "theoretical_float_rgb": [
+            127.0,
+            63.25098,
+            191.25098
+          ],
+          "theoretical_fraction_rgb": [
+            "127",
+            "16129/255",
+            "48769/255"
+          ],
+          "theoretical_rounded_rgb": [
+            127,
+            63,
+            191
+          ],
+          "actual_rgb": [
+            127,
+            63,
+            191
+          ],
+          "per_channel_abs_error": [
+            0,
+            0,
+            0
+          ],
+          "worst_channel_error": 0,
+          "within_tolerance": true
+        },
+        {
+          "area": "①",
+          "case": "red_only",
+          "local": [
+            60,
+            60
+          ],
+          "png_index_xy0based": [
+            268,
+            200
+          ],
+          "alpha": 255,
+          "theoretical_float_rgb": [
+            255.0,
+            127.0,
+            127.0
+          ],
+          "theoretical_fraction_rgb": [
+            "255",
+            "127",
+            "127"
+          ],
+          "theoretical_rounded_rgb": [
+            255,
+            127,
+            127
+          ],
+          "actual_rgb": [
+            255,
+            127,
+            127
+          ],
+          "per_channel_abs_error": [
+            0,
+            0,
+            0
+          ],
+          "worst_channel_error": 0,
+          "within_tolerance": true
+        },
+        {
+          "area": "②",
+          "case": "overlap",
+          "local": [
+            180,
+            100
+          ],
+          "png_index_xy0based": [
+            740,
+            240
+          ],
+          "alpha": 255,
+          "theoretical_float_rgb": [
+            127.5,
+            127.5,
+            255.0
+          ],
+          "theoretical_fraction_rgb": [
+            "255/2",
+            "255/2",
+            "255"
+          ],
+          "theoretical_rounded_rgb": [
+            128,
+            128,
+            255
+          ],
+          "actual_rgb": [
+            126,
+            126,
+            255
+          ],
+          "per_channel_abs_error": [
+            2,
+            2,
+            0
+          ],
+          "worst_channel_error": 2,
+          "within_tolerance": true
+        },
+        {
+          "area": "②",
+          "case": "red_only",
+          "local": [
+            60,
+            60
+          ],
+          "png_index_xy0based": [
+            620,
+            200
+          ],
+          "alpha": 255,
+          "theoretical_float_rgb": [
+            255.0,
+            127.5,
+            127.5
+          ],
+          "theoretical_fraction_rgb": [
+            "255",
+            "255/2",
+            "255/2"
+          ],
+          "theoretical_rounded_rgb": [
+            255,
+            128,
+            128
+          ],
+          "actual_rgb": [
+            255,
+            126,
+            126
+          ],
+          "per_channel_abs_error": [
+            0,
+            2,
+            2
+          ],
+          "worst_channel_error": 2,
+          "within_tolerance": true
+        }
+      ],
+      "all_within_tolerance": true
+    }
+  },
+  "group_B": {
+    "shared_base_scene": {
+      "stripes": {
+        "count": 10,
+        "width_px": 16,
+        "pitch_px": 32,
+        "colours": [
+          "#E24C4C",
+          "#2E7DD1",
+          "#2FA36B",
+          "#EAB53B",
+          "#8E5AC8"
+        ],
+        "spans": "整幅 320×240，跨过卡片左右边界"
+      },
+      "card": {
+        "local_xywh": [
+          40,
+          40,
+          240,
+          160
+        ],
+        "border_radius": 20,
+        "fill": "#FFFFFFCC",
+        "border": "2 SOLID #1B2A47"
+      },
+      "card_text": {
+        "content_3": "SHARP",
+        "content_4": "BLUR",
+        "font_size": 24,
+        "colour": "#0B1220"
+      },
+      "foreground_shape": {
+        "size": [
+          56,
+          26
+        ],
+        "colour": "#16233C",
+        "position": "文字下方 6px，卡内水平居中"
+      },
+      "sigma": [
+        6,
+        6
+      ]
+    },
+    "only_difference": "③ 用 BackdropFilter 只糊卡片覆盖处的背景，文字与形状在滤镜子树之外；④ 用 ImageFiltered 把卡片底色、文字与形状整体模糊",
+    "visual_judgement": {
+      "3_text_sharp": true,
+      "3_background_blurred": true,
+      "3_effect_leaks_out": false,
+      "4_text_sharp": false,
+      "4_background_blurred": true,
+      "4_effect_leaks_out": false,
+      "observed_in": "v006",
+      "gradients": {
+        "3_stripe_row": 1.13,
+        "3_text_row": 15.64,
+        "4_stripe_row": 1.71,
+        "4_text_row": 2.13,
+        "outside_card_3": 8.6,
+        "outside_card_4": 8.6
+      },
+      "basis": "在 v004.png 上取卡内 y∈[50,74] 与文字行 y∈[98,122] 的水平一阶差分均值；整图与局部放大见 image_views.jsonl 与 zoom-*.png",
+      "reconfirmed_on": "v006 (与 v004 逐项一致)"
+    },
+    "measured": {
+      "card_local": [
+        40,
+        40,
+        240,
+        160
+      ],
+      "stripe_row_3_sharpness": 1.13,
+      "stripe_row_4_sharpness": 1.71,
+      "text_row_3_sharpness": 15.64,
+      "text_row_4_sharpness": 2.13,
+      "outside_card_3_sharpness": 8.6,
+      "outside_card_4_sharpness": 8.6
+    }
+  },
+  "group_C": {
+    "shared_base_scene": {
+      "background": "#FFFFFF 320×240",
+      "scene_box": [
+        24,
+        26,
+        272,
+        188
+      ],
+      "shapes": [
+        {
+          "kind": "rect",
+          "scene_box_xywh": [
+            6,
+            4,
+            130,
+            60
+          ],
+          "area_local_xywh": [
+            30,
+            30,
+            130,
+            60
+          ],
+          "colour": "#2E7DD1",
+          "crosses_circle": true,
+          "why": "远角距圆心 158>100、近角 30<100，必跨圆周"
+        },
+        {
+          "kind": "rect",
+          "scene_box_xywh": [
+            176,
+            124,
+            90,
+            55
+          ],
+          "area_local_xywh": [
+            200,
+            150,
+            90,
+            55
+          ],
+          "colour": "#16233C",
+          "crosses_circle": true,
+          "why": "内角距圆心 50<100、外角 155>100，跨圆周"
+        },
+        {
+          "kind": "card_with_shadow",
+          "scene_box_xywh": [
+            71,
+            73,
+            120,
+            70
+          ],
+          "area_local_xywh": [
+            95,
+            95,
+            120,
+            70
+          ],
+          "colour": "#FFFFFF",
+          "crosses_circle": false,
+          "why": "四角距圆心最大 71<100，完全在圆内；阴影 0 6 14 0 #00000066 NORMAL"
+        },
+        {
+          "kind": "circle",
+          "scene_box_xywh": [
+            211,
+            13,
+            46,
+            46
+          ],
+          "area_local_xywh": [
+            235,
+            35,
+            46,
+            46
+          ],
+          "colour": "#E24C4C",
+          "crosses_circle": true,
+          "why": "圆心距 116、半径 23，93<100<139，横跨圆周"
+        }
+      ],
+      "circle_domain": "圆心局部 (160,120)、半径 100，即 x∈[60,260]、y∈[20,220]",
+      "transparent_gaps": "场景框内形状之间未覆盖的区域，用于观察 MULTIPLY 对间隙着色；场景框本身不带底色，白底来自实验区",
+      "tint_colour": "#F6B94A",
+      "blend_mode": "MULTIPLY",
+      "sigma": [
+        6,
+        6
+      ]
+    },
+    "only_difference": "⑥ 在 ⑤ 的同样结果最外层增加圆形裁剪（圆心局部 (160,120)、半径 100），⑤ 不加裁剪",
+    "circle": {
+      "centre_local": [
+        160,
+        120
+      ],
+      "radius": 100,
+      "clip_box_canvas": [
+        972,
+        496
+      ]
+    },
+    "visual_judgement": {
+      "5_gap_filled_by_tint": true,
+      "5_spills_beyond_shapes": true,
+      "5_spread_px": {
+        "right": 23,
+        "up": 7
+      },
+      "5_cell_border_intact": true,
+      "6_spills_beyond_shapes": false,
+      "6_circle_boundary_sharp": true,
+      "6_circle_scan": {
+        "inside_dx80_rgb": [
+          246,
+          185,
+          74
+        ],
+        "outside_dx120_rgb": [
+          255,
+          255,
+          255
+        ],
+        "jumps": [
+          {
+            "dx": "97→98",
+            "max_channel_delta": 218
+          },
+          {
+            "dx": "99→100",
+            "max_channel_delta": 228
+          }
+        ]
+      },
+      "observed_in": "v006",
+      "basis": "沿 ⑥ 圆心局部 (160,120) 向右逐像素取样到 dx=120；⑤ 从场景框右缘与上缘向外找首个与纯白最大通道差 >3 的位置",
+      "reconfirmed_on": "v006 (与 v004 逐项一致)"
+    },
+    "measured": {
+      "scene_box_local": [
+        24,
+        26,
+        272,
+        188
+      ],
+      "area5_tint_spread": {
+        "beyond_box_right_px": 23,
+        "beyond_box_up_px": 7
+      },
+      "area6_circle": {
+        "centre_local": [
+          160,
+          120
+        ],
+        "radius_px": 100,
+        "inside_at_dx80_rgb": [
+          246,
+          185,
+          74
+        ],
+        "outside_at_dx120_rgb": [
+          255,
+          255,
+          255
+        ],
+        "sharp_jumps": [
+          {
+            "from_dx": 97,
+            "to_dx": 98,
+            "max_channel_delta": 218
+          },
+          {
+            "from_dx": 99,
+            "to_dx": 100,
+            "max_channel_delta": 228
+          }
+        ]
+      }
+    }
+  },
+  "documentation_basis": [
+    "https://snapshot.muedsa.com/reference/parser-tags/ — Opacity、ColorFiltered、ImageFiltered、BackdropFilter、ClipOval 条目",
+    "https://snapshot.muedsa.com/guides/painting/ — “透明度与颜色滤镜”：ColorFiltered 会按子树绘制边界限制作用范围并可能给边界内透明间隙着色；BackdropFilter 读取已有背景，建议配合 ClipRRect/ClipOval 限定区域",
+    "https://snapshot.muedsa.com/reference/faq/ — Stack 默认 HARD_EDGE 裁剪、ColorFiltered 染色透明间隙的说明"
+  ],
+  "tolerance": {
+    "per_channel_px": 3,
+    "policy": "超出容差须核查坐标、合成顺序与实际渲染，不得修改采样值或后处理图片凑合"
+  },
+  "text_inventory": {
+    "text_nodes_total": 34,
+    "number_title_nodes": 6,
+    "explanatory_nodes": 28,
+    "requirement": "说明文字≥20",
+    "satisfied": true,
+    "counting": "统计 DSL 中 Text 节点总数，再减去 6 个格子的编号标题；副标题、组别标签、采样点标注、每格说明与证据面板文字都算说明文字"
+  },
+  "measurement_method": "对服务返回 PNG 直接取像素梯度与色差，不依赖肉眼印象"
+}

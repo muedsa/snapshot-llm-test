@@ -1,0 +1,229 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "claim": "两份最终 PNG 的可见内容逐像素相同，隐藏内容不同",
+ "versions": [
+  {
+   "id": "A",
+   "png": "occlusion.png",
+   "dsl": "occlusion.snapshot",
+   "temp_response": {
+    "path_base": "suite_root",
+    "path": "tmp/2026-10-12T10-04Z-r001/A19/v002-occlusion.png"
+   },
+   "file_sha256": "290a888eb7146c4b77c8151a09b3723dba1e30fd2e617f05f40ae194bbea30af",
+   "hidden_objects": [
+    {
+     "id": "H_A1",
+     "colour": "blue",
+     "shape": "square",
+     "size_px": 64,
+     "centre": [
+      360,
+      360
+     ]
+    },
+    {
+     "id": "H_A2",
+     "colour": "green",
+     "shape": "circle",
+     "size_px": 64,
+     "centre": [
+      480,
+      420
+     ]
+    },
+    {
+     "id": "H_A3",
+     "colour": "orange",
+     "shape": "ring",
+     "size_px": 64,
+     "centre": [
+      360,
+      480
+     ]
+    }
+   ],
+   "hidden_count": 3,
+   "hidden_insets_px": {
+    "H_A1": [
+     32.0,
+     32.0,
+     160.0,
+     160.0
+    ],
+    "H_A2": [
+     152.0,
+     92.0,
+     40.0,
+     100.0
+    ],
+    "H_A3": [
+     32.0,
+     152.0,
+     160.0,
+     40.0
+    ]
+   },
+   "request_id": "A19-render-v002-occlusion-a1"
+  },
+  {
+   "id": "B",
+   "png": "occlusion-alternative.png",
+   "dsl": "occlusion-alternative.snapshot",
+   "temp_response": {
+    "path_base": "suite_root",
+    "path": "tmp/2026-10-12T10-04Z-r001/A19/v002-occlusion-alternative.png"
+   },
+   "file_sha256": "290a888eb7146c4b77c8151a09b3723dba1e30fd2e617f05f40ae194bbea30af",
+   "hidden_objects": [
+    {
+     "id": "H_B1",
+     "colour": "violet",
+     "shape": "circle",
+     "size_px": 64,
+     "centre": [
+      352,
+      352
+     ]
+    },
+    {
+     "id": "H_B2",
+     "colour": "orange",
+     "shape": "rounded-square",
+     "size_px": 64,
+     "centre": [
+      456,
+      352
+     ]
+    },
+    {
+     "id": "H_B3",
+     "colour": "blue",
+     "shape": "ring",
+     "size_px": 64,
+     "centre": [
+      352,
+      456
+     ]
+    },
+    {
+     "id": "H_B4",
+     "colour": "green",
+     "shape": "square",
+     "size_px": 64,
+     "centre": [
+      456,
+      456
+     ]
+    },
+    {
+     "id": "H_B5",
+     "colour": "violet",
+     "shape": "circle",
+     "size_px": 48,
+     "centre": [
+      404,
+      404
+     ]
+    }
+   ],
+   "hidden_count": 5,
+   "hidden_insets_px": {
+    "H_B1": [
+     24.0,
+     24.0,
+     168.0,
+     168.0
+    ],
+    "H_B2": [
+     128.0,
+     24.0,
+     64.0,
+     168.0
+    ],
+    "H_B3": [
+     24.0,
+     128.0,
+     168.0,
+     64.0
+    ],
+    "H_B4": [
+     128.0,
+     128.0,
+     64.0,
+     64.0
+    ],
+    "H_B5": [
+     84.0,
+     84.0,
+     124.0,
+     124.0
+    ]
+   },
+   "request_id": "A19-render-v002-occlusion-alternative-a1"
+  }
+ ],
+ "identical_by_construction": {
+  "canvas": [
+   800,
+   800
+  ],
+  "background": "#FFFFFF",
+  "panel": "#EDF1F7",
+  "visible_objects": [
+   "V01",
+   "V02",
+   "V03",
+   "V04",
+   "V05",
+   "V06",
+   "V07",
+   "V08"
+  ],
+  "occluder_box": [
+   296,
+   296,
+   552,
+   552
+  ],
+  "occluder_colour": "#16233A",
+  "label_text": "OCCLUDED REGION",
+  "note": "两份 DSL 由 gen_occlusion.build(hidden) 同一个函数生成，只有传入的隐藏层节点列表不同；可见前景、遮挡板、背景与渲染参数完全一致。"
+ },
+ "no_leakage": {
+  "dashed_or_outline_hints": "无：遮挡板是不透明实心圆角矩形，隐藏对象全部画在它下面",
+  "shadows_or_filters_on_hidden": "无：隐藏层只用 Container 纯色填充，不产生任何外溢绘制",
+  "min_inset_px_A": 32.0,
+  "min_inset_px_B": 24.0,
+  "hidden_footprints_measured_as_occluder_colour": true,
+  "leak_detail": []
+ },
+ "comparison": {
+  "decoder": "Pillow (PIL) Image.open().convert('RGBA')，8 位未预乘 RGBA 四通道",
+  "same_pixel_dimensions": true,
+  "size_A": [
+   800,
+   800
+  ],
+  "size_B": [
+   800,
+   800
+  ],
+  "compositing": "未合成到白底、未缩放、未忽略 alpha 或透明像素的 RGB",
+  "differing_pixels": 0,
+  "max_channel_difference": 0,
+  "pixel_array_sha256": {
+   "v002-occlusion.png": "7e6752fd01acdf64f0beae5a70fb4b25a66fac1654030beaab3e8eab46cfc834",
+   "v002-occlusion-alternative.png": "7e6752fd01acdf64f0beae5a70fb4b25a66fac1654030beaab3e8eab46cfc834"
+  },
+  "file_bytes_identical": true,
+  "verdict": "两份原始响应的像素数组逐通道完全一致（不同像素数 0、最大通道差 0）；本次服务返回的文件字节也恰好相同，因此文件哈希同样一致。"
+ },
+ "difference_stated_in_dsl": {
+  "A_hidden_layer": "3 个对象：blue square 64 @(360,360)、green circle 64 @(480,420)、orange ring 64 @(360,480)",
+  "B_hidden_layer": "5 个对象：violet circle 64 @(352,352)、orange rounded-square 64 @(456,352)、blue ring 64 @(352,456)、green square 64 @(456,456)、violet circle 48 @(404,404)",
+  "consequence": "两版可见像素相同，因此“被遮对象的数量/颜色”不可能从图中读出，对应 Q17、Q18 的标准答案为“无法确定”。"
+ }
+}

@@ -1,0 +1,487 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B05",
+  "run_id": "2026-10-12T10-04Z-r001",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets（实际未使用外部素材，全部为 DSL 构造）",
+  "product_name": "药盒",
+  "curatorial_statement": "十屏不是十个界面稿，而是同一份家庭药箱数据在六种设备上的投影：手机负责日常，手表负责到点，冰箱卡负责离线，平板负责回看，桌面与 A4 负责把药箱交给药师。所有余量、效期、可服天数与依从率由 b05data.py 一次算出并带断言，任何一屏改数都会同步到其它九屏；产品边界写进界面本身——不给用药建议、未采集字段显式列出、过期药处置明确声明未查证当地政策。",
+  "audience": "多药家庭的服药者与远程照护者（78 岁母亲 + 47 岁儿子 + 社区药师）",
+  "problem": [
+    "余量看不见：阿托伐他汀钙片剩 3 片（可服 3 天），而社区医院开同药需 7 天",
+    "效期有两种：盒上日期与开封后期限，取更紧的那个才是真正能用的日期",
+    "照护者无法回看：子女不知道过去两周母亲是否吃全",
+    "交接没有载体：复诊时说不清每种药的来源、余量与依从情况"
+  ],
+  "mechanics": [
+    "可服天数 = 剩余量 ÷ 每日时点数；无固定时点则不估算",
+    "有效效期 = min(盒上效期, 开封日 + 90 天)，全部界面共用该数值与颜色分级",
+    "可服天数 ≤ 补货提前量 + 3 天 即提示补货（本样本命中 M1/M2/M3）",
+    "依从率 = 已确认时点数 ÷ 应服时点数（14 天窗口），按需药不计入分母",
+    "超过时点 60 分钟未确认记为漏服（设计假设，未验证）",
+    "产品不生成用药建议；涉及用法、漏服处理、处置的文案一律指向说明书或药师"
+  ],
+  "devices": [
+    {
+      "id": "phone",
+      "canvas": [
+        390,
+        844
+      ],
+      "min_font": 16,
+      "cases": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-10"
+      ]
+    },
+    {
+      "id": "watch",
+      "canvas": [
+        200,
+        240
+      ],
+      "min_font": 14,
+      "cases": [
+        "case-05"
+      ]
+    },
+    {
+      "id": "fridge-card",
+      "canvas": [
+        680,
+        320
+      ],
+      "min_font": 18,
+      "note": "离线打印，1 米外可读",
+      "cases": [
+        "case-06"
+      ]
+    },
+    {
+      "id": "tablet",
+      "canvas": [
+        834,
+        1112
+      ],
+      "min_font": 16,
+      "cases": [
+        "case-07"
+      ]
+    },
+    {
+      "id": "desktop",
+      "canvas": [
+        1440,
+        900
+      ],
+      "min_font": 16,
+      "cases": [
+        "case-08"
+      ]
+    },
+    {
+      "id": "print",
+      "canvas": [
+        794,
+        1123
+      ],
+      "min_font": 14,
+      "note": "A4 竖版 96dpi，黑白可印",
+      "cases": [
+        "case-09"
+      ]
+    }
+  ],
+  "journey": "case-04 → 03 → 01 → 05 → 02 → 10 → 07 → 08 → 09（含每日/每周/复诊三条循环）",
+  "consistency": [
+    "同一药在同一时刻在所有屏上的剩余量、有效效期、可服天数一致（同源 data.json）",
+    "case-01 的 22:00 待服与 case-05 的手表提醒是同一条记录",
+    "case-07 的 14 天漏服次数与格内红/黄格数量一致（4 次）",
+    "case-08 的状态计数由清单实时统计，不手写",
+    "case-09 的表格与 case-08 的清单同一批字段，且标注未采集字段"
+  ],
+  "unverified": [
+    "漏服 60 分钟阈值未与真实用药习惯核对",
+    "补货提前量 7/10/14 天为假设，未核实当地开药周期",
+    "条码库覆盖范围未核实",
+    "老人能否自行修正录入错误：未做真实用户验证",
+    "手表 14–16px 真机可读性未实测",
+    "过期药回收点位与政策未查证任何权威来源",
+    "A4 在真实激光打印机上的灰度表现未实测"
+  ],
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "今日时间线",
+      "status": "completed",
+      "device": "iPhone 13 · 390×844",
+      "journey_step": "S3",
+      "trigger": "21:40 打开 App",
+      "actor": "gm",
+      "purpose": "4/5 已完成、漏服 0，唯一待服的是 22:00 降脂药；数据截止时刻单独成行",
+      "next": "S4",
+      "dimensions": [
+        390,
+        844
+      ],
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "report": "case-01/case.md",
+      "request_id": "B05-case01-today-v7",
+      "response_bytes": 65417,
+      "renders": 6,
+      "audit": {
+        "texts": 31,
+        "shapes": 26,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "Stack/Positioned 绝对布局",
+        "Container 圆角与 boxShadow",
+        "Text 等宽数字",
+        "行分隔线（Transform 旋转细条）"
+      ],
+      "iteration_note": "v1:改; final:改; v7:定稿"
+    },
+    {
+      "id": "case-02",
+      "title": "药箱警报",
+      "status": "completed",
+      "device": "iPhone 13 · 390×844",
+      "journey_step": "S5",
+      "trigger": "今日页出现红点",
+      "actor": "me",
+      "purpose": "5 种药按剩余有效天数升序：7 / 20 / 85 / 94 / 199 天，并给出可服天数与耗尽日期",
+      "next": "S8",
+      "dimensions": [
+        390,
+        844
+      ],
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "report": "case-02/case.md",
+      "request_id": "B05-case02-alerts-v7",
+      "response_bytes": 125717,
+      "renders": 6,
+      "audit": {
+        "texts": 33,
+        "shapes": 19,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "Container 圆角卡 + 阴影",
+        "三级颜色分级",
+        "chip 描边胶囊（border 1 SOLID）"
+      ],
+      "iteration_note": "v1:改; final:改; v7:定稿"
+    },
+    {
+      "id": "case-03",
+      "title": "录入药品（校验态）",
+      "status": "completed",
+      "device": "iPhone 13 · 390×844",
+      "journey_step": "S2",
+      "trigger": "把母亲的阿托伐他汀钙片加进药箱",
+      "actor": "me",
+      "purpose": "9 个字段已填 7 个；两处校验同时报错：效期早于今天、每日次数与已填时间数不符",
+      "next": "S3",
+      "dimensions": [
+        390,
+        844
+      ],
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "report": "case-03/case.md",
+      "request_id": "B05-case03-entry-v7",
+      "response_bytes": 80137,
+      "renders": 6,
+      "audit": {
+        "texts": 29,
+        "shapes": 19,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "按 wrap() 行数计算卡高",
+        "错误态底色与 18px 圆形徽标",
+        "禁用按钮态"
+      ],
+      "iteration_note": "v1:改; v2:改; v7:定稿"
+    },
+    {
+      "id": "case-04",
+      "title": "药箱空状态",
+      "status": "completed",
+      "device": "iPhone 13 · 390×844",
+      "journey_step": "S1",
+      "trigger": "第一次打开药盒，药箱为空",
+      "actor": "me",
+      "purpose": "三条录入路径按代价排序，并先说明数据存放位置与不给用药建议",
+      "next": "S2",
+      "dimensions": [
+        390,
+        844
+      ],
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "report": "case-04/case.md",
+      "request_id": "B05-case04-empty-v7",
+      "response_bytes": 90202,
+      "renders": 9,
+      "audit": {
+        "texts": 22,
+        "shapes": 19,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "空状态插画（描边方框 + 十字两条线）",
+        "tab 栏与内容区分层",
+        "面板夹取（不越 tab 栏）"
+      ],
+      "iteration_note": "v1:改; v2:改; v5:改; v7:定稿"
+    },
+    {
+      "id": "case-05",
+      "title": "手表提醒",
+      "status": "completed",
+      "device": "200×240 圆角表盘",
+      "journey_step": "S4",
+      "trigger": "22:00 手表震动",
+      "actor": "gm",
+      "purpose": "22:00 / 降脂药 / 1 片 · 母亲 / 仅剩 3 片",
+      "next": "S5",
+      "dimensions": [
+        200,
+        240
+      ],
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "report": "case-05/case.md",
+      "request_id": "B05-case05-watch-v7",
+      "response_bytes": 11085,
+      "renders": 6,
+      "audit": {
+        "texts": 5,
+        "shapes": 3,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "200×240 小画布",
+        "圆角 40 的深色表盘底",
+        "最小 14px 文字"
+      ],
+      "iteration_note": "v1:改; v7:定稿"
+    },
+    {
+      "id": "case-06",
+      "title": "冰箱卡（离线打印）",
+      "status": "completed",
+      "device": "680×320 打印卡",
+      "journey_step": "S6",
+      "trigger": "老人不掏手机时，家人看一眼冰箱",
+      "actor": "family",
+      "purpose": "三行医嘱定时药与时间、效期天数；离线显示上次同步时间",
+      "next": "S7",
+      "dimensions": [
+        680,
+        320
+      ],
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "report": "case-06/case.md",
+      "request_id": "B05-case06-fridge-v7",
+      "response_bytes": 72510,
+      "renders": 7,
+      "audit": {
+        "texts": 17,
+        "shapes": 6,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "680×320 打印卡",
+        "描边徽章三级颜色",
+        "离线时间戳"
+      ],
+      "iteration_note": "v1:改; v1:改; final:改; v7:定稿"
+    },
+    {
+      "id": "case-07",
+      "title": "照护者视图",
+      "status": "completed",
+      "device": "iPad · 834×1112",
+      "journey_step": "S7",
+      "trigger": "周末回看两周记录",
+      "actor": "me",
+      "purpose": "14 天服药格（含 4 次漏服）、按人聚合的依从率、4 条自动生成待办",
+      "next": "S9",
+      "dimensions": [
+        834,
+        1112
+      ],
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "report": "case-07/case.md",
+      "request_id": "B05-case07-caregiver-v7",
+      "response_bytes": 184485,
+      "renders": 7,
+      "audit": {
+        "texts": 89,
+        "shapes": 62,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "14×3 网格（每格 Container + 居中文字）",
+        "周分隔线",
+        "成员切换标签",
+        "chip 待办分类"
+      ],
+      "iteration_note": "v1:改; v2:改; v3:定; v4:定稿"
+    },
+    {
+      "id": "case-08",
+      "title": "药师交接端",
+      "status": "completed",
+      "device": "桌面 1440×900",
+      "journey_step": "S9",
+      "trigger": "复诊前家属发来交接清单",
+      "actor": "pharmacist",
+      "purpose": "5 项清单含服用者、处方来源、有效效期、剩余与状态；未采集字段显式列出",
+      "next": "S10",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "report": "case-08/case.md",
+      "request_id": "B05-case08-pharmacist-v7",
+      "response_bytes": 227116,
+      "renders": 9,
+      "audit": {
+        "texts": 65,
+        "shapes": 30,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "1440×900 双栏工作台",
+        "表格列 + 表头分隔线",
+        "A4 缩略预览（12–15px 缩小示意）",
+        "筛选胶囊计数实时统计"
+      ],
+      "iteration_note": "v1:改; v4:改; v5:改; v7:定稿"
+    },
+    {
+      "id": "case-09",
+      "title": "A4 随访摘要",
+      "status": "completed",
+      "device": "794×1123（96dpi A4）",
+      "journey_step": "S10",
+      "trigger": "打印动作",
+      "actor": "pharmacist",
+      "purpose": "A4 单页：清单 + 近 7 天记录 + 需确认事项 + 双方签字栏",
+      "next": "S3",
+      "dimensions": [
+        794,
+        1123
+      ],
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "report": "case-09/case.md",
+      "request_id": "B05-case09-print-v7",
+      "response_bytes": 192619,
+      "renders": 7,
+      "audit": {
+        "texts": 107,
+        "shapes": 13,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "794×1123 A4 竖版",
+        "8 列表格与行分隔线",
+        "√/×/— 记录矩阵",
+        "签字横线"
+      ],
+      "iteration_note": "v1:改; v2:改; v7:定稿"
+    },
+    {
+      "id": "case-10",
+      "title": "过期药处置",
+      "status": "completed",
+      "device": "iPhone 13 · 390×844",
+      "journey_step": "S8",
+      "trigger": "点入「效期紧」的药品",
+      "actor": "me",
+      "purpose": "只剩 1 项待处置；三步通用做法，每步都写明未查证权威清单",
+      "next": "S7",
+      "dimensions": [
+        390,
+        844
+      ],
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "report": "case-10/case.md",
+      "request_id": "B05-case10-disposal-v7",
+      "response_bytes": 120247,
+      "renders": 8,
+      "audit": {
+        "texts": 27,
+        "shapes": 17,
+        "overlap_n": 0,
+        "outside_n": 0,
+        "spill_n": 0,
+        "truncated_n": 0,
+        "below_min_font_n": 0
+      },
+      "dsl_capabilities": [
+        "编号圆形徽标",
+        "按行数计算的步骤卡",
+        "边界声明面板"
+      ],
+      "iteration_note": "v1:改; final:改; v7:定稿"
+    }
+  ],
+  "data_source": "tmp/2026-10-12T10-04Z-r001/B05/data.json",
+  "builder": "tmp/2026-10-12T10-04Z-r001/B05/b05data.py",
+  "page_generator": "tmp/2026-10-12T10-04Z-r001/B05/b05pages.py",
+  "brief": "product-brief.md",
+  "journey_json": "journey.json"
+}

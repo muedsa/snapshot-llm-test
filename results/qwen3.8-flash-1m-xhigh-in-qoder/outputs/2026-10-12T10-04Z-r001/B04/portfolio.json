@@ -1,0 +1,1319 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B04",
+  "run_id": "2026-10-12T10-04Z-r001",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets（实际未使用外部素材）",
+  "curatorial_statement": "十页特辑研究一个具体对象：把 XML 变成 PNG 的声明式渲染服务。选题不是官方功能的复述，而是围绕工程师真正会踩的问题编排——文本度量谁负责、失败长什么样、构图预算有多少、时间花在哪一段。每页形式随内容变化（管线图、芯片矩阵、增量条、成对色表、直方图、样张、清单），所有数字来自本套真实日志与像素回读，可复算；不能证实的部分被明确标为推断或未确认，而不是删掉或美化。",
+  "topic": "把 XML 变成像素：一个声明式图像渲染服务的实测报告",
+  "audience": "要用或要自建声明式图像/图表渲染服务的工程师与技术编辑",
+  "core_question": "这类服务的能力边界与代价在哪里：文本度量谁负责、失败长什么样、构图预算有多少、时间花在哪一段",
+  "narrative": "封面 → 管线 → 词汇表 → 文本度量 → 失败分类 → 元素预算 → 色彩插值 → 字体清单 → 时间与缓存 → 边界与不确定",
+  "evidence_grades": [
+    "事实（文档原文/响应内容）",
+    "测量（日志与像素回读，可复算）",
+    "解释（本报告推断）",
+    "演示（示意，非事实）"
+  ],
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "把 XML 变成像素（封面）",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "报告标题、四个规模数字（550 请求 / 457 成图 / 58 文档页 / 89 种画布）、方法一句话",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "封面：管线剪影 + 四个规模数字",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        1000,
+        1400
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-01-c1",
+          "condition": "四个规模数字与 data.json 完全一致（由脚本注入，不手打）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-01-c2",
+          "condition": "封面即声明样本窗口与不可外推",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-01-c3",
+          "condition": "3 米/1 米两级可读：主标题 ≥ 88px，注释 ≥ 18px",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-01-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-01-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case01-cover-final",
+            "case-01/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-01-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case01-cover-final",
+            "case-01/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-01-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case01-cover-final",
+            "case-01/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-01-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case01-cover-final",
+            "case-01/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-01-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case01-cover-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case01-cover-v2"
+        ],
+        "final_request": "B04-case01-cover-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case01-cover-final"
+      ],
+      "iteration_ids": [
+        "B04-case01-cover-v2"
+      ],
+      "claim_ids": [
+        "C001",
+        "C002"
+      ],
+      "source_ids": [],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-02",
+      "title": "一次请求的八段旅程",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "POST → 解析 → 布局 → 度量 → 绘制 → 合成 → 编码 → 响应；server-timing 只有 render 段被公开，其余为不可分（须写明）",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "流程卡带 + 横向条形图",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-02-c1",
+          "condition": "耗时分位（p50 462.5ms / p90 1646.2 / p99 4400.2 / max 5876.8，n=422）来自日志正则提取，脚本可复算",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-02-c2",
+          "condition": "客户端 p50 3.41s 与服务端 p50 0.46s 并列，明确差值含网络与排队，不得声称是精确分解",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-02-c3",
+          "condition": "未公开的管线阶段必须标为『不可分』而不是编造数字",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-02-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-02-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case02-pipeline-final",
+            "case-02/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-02-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case02-pipeline-final",
+            "case-02/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-02-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case02-pipeline-final",
+            "case-02/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-02-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case02-pipeline-final",
+            "case-02/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-02-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case02-pipeline-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case02-pipeline-v2"
+        ],
+        "final_request": "B04-case02-pipeline-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case02-pipeline-final"
+      ],
+      "iteration_ids": [
+        "B04-case02-pipeline-v2"
+      ],
+      "claim_ids": [
+        "C003",
+        "C004"
+      ],
+      "source_ids": [
+        "S03",
+        "S04"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-03",
+      "title": "标签词汇表与它的真实边界",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "官方标签白名单（Snapshot/Stack/Positioned/Container/Text/Raw/Emoji/WidgetSpan/Transform/Clip*/Opacity/BackdropFilter/ColorFiltered/ImageFiltered）与实测可用性",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "标签芯片矩阵 + 结构约束清单 + 属性结论表",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        1200,
+        1740
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-03-c1",
+          "condition": "标签清单逐项可在 docs 的 reference_parser-tags 中找到（source_id + 片段）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-03-c2",
+          "condition": "『被静默忽略』的属性只列实测过的（fillType、border>radius 的 500）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-03-c3",
+          "condition": "分类必须区分：文档列出且实测可用 / 文档列出但实测受限 / 未实测",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-03-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-03-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case03-vocabulary-final",
+            "case-03/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-03-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case03-vocabulary-final",
+            "case-03/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-03-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case03-vocabulary-final",
+            "case-03/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-03-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case03-vocabulary-final",
+            "case-03/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-03-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case03-vocabulary-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case03-vocabulary-v2",
+          "B04-case03-vocabulary-v2b"
+        ],
+        "final_request": "B04-case03-vocabulary-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case03-vocabulary-final"
+      ],
+      "iteration_ids": [
+        "B04-case03-vocabulary-v2",
+        "B04-case03-vocabulary-v2b"
+      ],
+      "claim_ids": [
+        "C005",
+        "C006",
+        "C007"
+      ],
+      "source_ids": [
+        "S01",
+        "S06",
+        "S07"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-04",
+      "title": "文本度量：谁在决定一个字占多宽",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "CJK 1.0em、Latin 0.62em、Mono 0.52em、行距 1.46em、粗体余量 1.14 的来路；letterSpacing/wordSpacing/tnum/smcp/height 的实测增量",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "常数条 + 属性增量条图 + em 精度表",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1400,
+        1480
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-04-c1",
+          "condition": "每个增量数字给出请求 ID 与像素回读方法（42/28/10/0/22→53）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-04-c2",
+          "condition": "em 常数标注为『在返回 PNG 上回读的近似』，不声称是内部实现",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-04-c3",
+          "condition": "smcp=0 像素变化必须与 tnum 的正增量并置，避免只讲成功",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-04-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-04-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case04-metrics-final",
+            "case-04/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-04-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case04-metrics-final",
+            "case-04/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-04-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case04-metrics-final",
+            "case-04/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-04-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case04-metrics-final",
+            "case-04/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-04-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case04-metrics-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case04-metrics-v2",
+          "B04-case04-metrics-v2b"
+        ],
+        "final_request": "B04-case04-metrics-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case04-metrics-final"
+      ],
+      "iteration_ids": [
+        "B04-case04-metrics-v2",
+        "B04-case04-metrics-v2b"
+      ],
+      "claim_ids": [
+        "C008",
+        "C009",
+        "C010"
+      ],
+      "source_ids": [
+        "S09"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-05",
+      "title": "失败分类学",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "63 次非 200 的错误码分布（PARSE 25 / RENDER 19 / INTERNAL 16 / IMAGE_LOAD 1 / null 2）与按语义归类的 10 类，每类一条真实摘要",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "错误码条图 + 语义归类 + 响应摘要卡 + 守卫清单",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        1600,
+        1280
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-05-c1",
+          "condition": "每类样例给 request_id 与原话摘要（截断须标省略）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-05-c2",
+          "condition": "INTERNAL_ERROR 明确写为『不可诊断』而不是猜测原因",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-05-c3",
+          "condition": "可诊断比例（PARSE 占失败 40%）计算式写在页面上",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-05-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-05-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case05-failures-final",
+            "case-05/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-05-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case05-failures-final",
+            "case-05/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-05-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case05-failures-final",
+            "case-05/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-05-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case05-failures-final",
+            "case-05/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-05-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case05-failures-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case05-failures-v2",
+          "B04-case05-failures-v3"
+        ],
+        "final_request": "B04-case05-failures-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case05-failures-final"
+      ],
+      "iteration_ids": [
+        "B04-case05-failures-v2",
+        "B04-case05-failures-v3"
+      ],
+      "claim_ids": [
+        "C011",
+        "C012"
+      ],
+      "source_ids": [
+        "S12"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-06",
+      "title": "构图预算：4096 个元素",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "4096 元素上限（请求证据）下，B03 十件的元素数与 DSL/PNG 字节；单路径多子形状如何把 2 498 个圆盘压成 1 个元素",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "上限黑条 + 十件预算比例条 + 两张解释卡",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        1400,
+        1040
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-06-c1",
+          "condition": "budget 表 10 行由脚本从 final.snapshot 正则计数得出",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-06-c2",
+          "condition": "上限数字给请求 ID B03-probe-nodes4000 与原话",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-06-c3",
+          "condition": "『1 元素 vs N 元素』对比用同一批圆盘数量级说明，不夸大",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-06-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-06-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case06-budget-final",
+            "case-06/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-06-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case06-budget-final",
+            "case-06/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-06-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case06-budget-final",
+            "case-06/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-06-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case06-budget-final",
+            "case-06/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-06-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case06-budget-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case06-budget-v2"
+        ],
+        "final_request": "B04-case06-budget-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case06-budget-final"
+      ],
+      "iteration_ids": [
+        "B04-case06-budget-v2"
+      ],
+      "claim_ids": [
+        "C013",
+        "C014"
+      ],
+      "source_ids": [],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-07",
+      "title": "色标之间发生了什么",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "渐变色标处精确、色标之间偏亮的实测证据（日轮 8 点回读：00 时 0 误差，06/21 时 55–69），结论：色标间按线性光插值",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "实测色带 + 期望/实测成对表 + 三条可操作结论",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1200,
+        1420
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-07-c1",
+          "condition": "8 个采样点的期望/实测值成对列出，来自 case02 的校验脚本输出",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-07-c2",
+          "condition": "『线性光插值』标为解释（推断），不是文档原文",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-07-c3",
+          "condition": "给出可操作建议：只在色标位置给硬色彩承诺",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-07-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-07-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case07-colour-final",
+            "case-07/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-07-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case07-colour-final",
+            "case-07/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-07-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case07-colour-final",
+            "case-07/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-07-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case07-colour-final",
+            "case-07/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-07-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case07-colour-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case07-colour-v2",
+          "B04-case07-colour-v2b",
+          "B04-case07-colour-v3"
+        ],
+        "final_request": "B04-case07-colour-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case07-colour-final"
+      ],
+      "iteration_ids": [
+        "B04-case07-colour-v2",
+        "B04-case07-colour-v2b",
+        "B04-case07-colour-v3"
+      ],
+      "claim_ids": [
+        "C015",
+        "C016",
+        "C017"
+      ],
+      "source_ids": [],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-08",
+      "title": "字体清单：能用什么字",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "GET /fonts 真实响应里的 28 个族/字重、归并后 20 个族；CJK/Latin/Mono/Emoji 分组与在渲染中的实际用途",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "字体芯片分组 + 四族同句样张 + 影响清单",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1100,
+        1500
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-08-c1",
+          "condition": "族名逐条来自 fonts.txt（记录请求 ID SHARED-doc-002 与访问时间）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-08-c2",
+          "condition": "分组是『本报告归类』，须标为解释",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-08-c3",
+          "condition": "不得声称字体度量数据来自服务（度量是回读近似）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-08-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-08-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case08-fonts-final",
+            "case-08/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-08-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case08-fonts-final",
+            "case-08/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-08-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case08-fonts-final",
+            "case-08/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-08-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case08-fonts-final",
+            "case-08/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-08-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case08-fonts-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case08-fonts-v2"
+        ],
+        "final_request": "B04-case08-fonts-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case08-fonts-final"
+      ],
+      "iteration_ids": [
+        "B04-case08-fonts-v2"
+      ],
+      "claim_ids": [
+        "C018",
+        "C019"
+      ],
+      "source_ids": [
+        "S02"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-09",
+      "title": "时间花在哪，缓存有没有用",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "服务端渲染耗时分布、缓存命中 2.8%（13/457）、x-snapshot-image-count 观察、一个 249.22s 的离群请求（原因未知，不推测）",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "render 直方图 + 缓存卡 + 命中口径卡 + 长尾卡",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        1600,
+        1120
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-09-c1",
+          "condition": "直方图分箱由脚本产出并写出计数",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-09-c2",
+          "condition": "命中率给出分子分母",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-09-c3",
+          "condition": "离群值只登记事实，不写原因；明确标注『未复现』",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-09-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-09-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case09-timing-final",
+            "case-09/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-09-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case09-timing-final",
+            "case-09/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-09-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case09-timing-final",
+            "case-09/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-09-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case09-timing-final",
+            "case-09/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-09-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case09-timing-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case09-timing-v2",
+          "B04-case09-timing-v3",
+          "B04-case09-timing-v4",
+          "B04-case09-timing-v5"
+        ],
+        "final_request": "B04-case09-timing-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case09-timing-final"
+      ],
+      "iteration_ids": [
+        "B04-case09-timing-v2",
+        "B04-case09-timing-v3",
+        "B04-case09-timing-v4",
+        "B04-case09-timing-v5"
+      ],
+      "claim_ids": [
+        "C020",
+        "C021",
+        "C022"
+      ],
+      "source_ids": [
+        "S03"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    },
+    {
+      "id": "case-10",
+      "title": "边界、不知道、以及怎么复核",
+      "status": "completed",
+      "audience": "要用或要自建声明式图像渲染服务的工程师与技术编辑",
+      "use_context": "技术特辑阅读物：会议手册、内部技术周报或团队 onboarding 材料",
+      "user_goal": "只在特定条件下成立的结论、未复现现象（460×180 小画布未复现 BackdropFilter 压平）、无法验证的部分（内部实现、其它服务、其它时间窗）",
+      "content_basis": "本套真实请求日志（550 条渲染 + 58 页文档抓取）与服务端点响应；数字全部由 b04data.py 计算，见 sources.json → claims",
+      "visual_intent": "证据分级清单 + 复核步骤",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1100,
+        1580
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "Stack/Positioned 栅格",
+        "Container 渐变与圆角",
+        "Text/Raw 混排",
+        "ClipPath（色块遮罩）",
+        "MONO/SERIF/SANS 三族对照",
+        "boxShadow 卡片阴影"
+      ],
+      "completion_criteria": [
+        {
+          "id": "case-10-c1",
+          "condition": "每条给证据等级（事实/测量/解释/未确认）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-10-c2",
+          "condition": "至少 3 条明确写『不知道』",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-10-c3",
+          "condition": "复算路径写清楚（哪些脚本、哪些 JSONL）",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        },
+        {
+          "id": "case-10-c4",
+          "condition": "audit overlap=0 outside=0",
+          "check": "b04kit.save() 的布局审计 + 实际看图 + 数字与 data.json 比对",
+          "established": "work-plan.json 写于首次渲染之前"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "case-10-c1",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case10-limits-final",
+            "case-10/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-10-c2",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case10-limits-final",
+            "case-10/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-10-c3",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case10-limits-final",
+            "case-10/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        },
+        {
+          "id": "case-10-c4",
+          "result": "passed",
+          "method": "生成器审计（overlap/outside/min-font 全 0）+ 逐页看图 + 数值由脚本注入",
+          "evidence": [
+            "B04-case10-limits-final",
+            "case-10/case.md",
+            "tmp/2026-10-12T10-04Z-r001/B04/data.json"
+          ]
+        }
+      ],
+      "criteria_history": [
+        {
+          "id": "case-10-hist-1",
+          "change": "版式与内容随证据修正（详见 case.md 的看图记录）",
+          "reason": "看图发现文字溢出、标签遮挡或口径不一致",
+          "effective_version": "B04-case10-limits-final"
+        }
+      ],
+      "visual_review": {
+        "renders_seen": [
+          "B04-case10-limits-v1",
+          "B04-case10-limits-v2"
+        ],
+        "final_request": "B04-case10-limits-final",
+        "contact_sheet": "tmp/2026-10-12T10-04Z-r001/B04/contact-sheet.png",
+        "conclusion": "十页统一身份但形式各异，逐页看图后定稿"
+      },
+      "request_ids": [
+        "B04-case10-limits-final"
+      ],
+      "iteration_ids": [
+        "B04-case10-limits-v1",
+        "B04-case10-limits-v2"
+      ],
+      "claim_ids": [
+        "C023"
+      ],
+      "source_ids": [],
+      "unresolved_issues": [],
+      "plan_version": "work-plan.json（written_before_first_render=true）"
+    }
+  ],
+  "work_plan": {
+    "path": "tmp/2026-10-12T10-04Z-r001/B04/work-plan.json",
+    "written_before_first_render": true,
+    "change_log": [
+      {
+        "case": "全部",
+        "change": "主题由『城市树木的热/水/碳』改为『渲染服务实测报告』",
+        "reason": "外部网页访问被会话权限分类器拒绝，原主题无法真实引用",
+        "evidence": "tmp/2026-10-12T10-04Z-r001/B04/research-notes.md"
+      },
+      {
+        "case": "case-09",
+        "change": "离群值由『成因未知』改述为『客户端读超时』",
+        "reason": "回查日志发现该行 error_summary 与 curl 超时码，且服务端 render 仅 1.5 s",
+        "evidence": "A04-render-v004-retry 等 4 条"
+      }
+    ]
+  },
+  "final_collection_review": {
+    "reviewed_at": "2026-10-13T06:58:49.997+08:00",
+    "method": "逐页看图（10 页）+ 缩略对照 contact-sheet.png + 每页生成器审计 + 数字与 data.json 逐项比对",
+    "byte_identity": {
+      "case-01": true,
+      "case-02": true,
+      "case-03": true,
+      "case-04": true,
+      "case-05": true,
+      "case-06": true,
+      "case-07": true,
+      "case-08": true,
+      "case-09": true,
+      "case-10": true
+    },
+    "all_final_png_are_raw_service_responses": true,
+    "claims_total": 23,
+    "sources_total": 12,
+    "known_gaps": [
+      "无外部对照来源（会话禁止外部 HTTP），因此与其它渲染服务的差异未做比较",
+      "文本度量与色环采样都是像素回读近似，不是服务内部实现"
+    ]
+  },
+  "unresolved_issues": []
+}

@@ -1,0 +1,45 @@
+# IndexedStack
+
+```
+`
+
+fun ChildSlot.IndexedStack(
+
+    index: Int? = 0,
+
+    alignment: AlignmentGeometry = AlignmentDirectional.TOP_START,
+
+    textDirection: Direction = Direction.LTR,
+
+    fit: StackFit = StackFit.LOOSE,
+
+    clipBehavior: ClipBehavior = ClipBehavior.HARD_EDGE,
+
+    content: IndexedStack.() -> Unit = {},
+
+)
+
+`
+```
+
+`index` 从 0 开始，默认绘制第一个子节点；`null` 不绘制任何子节点。所有子节点仍参与布局和尺寸计算。非空栈索引越界会在布局时出错。`Positioned` 可用于定位子节点，其余参数与 Stack 相同。
+
+```
+`
+
+IndexedStack(index = 1) {
+
+    Container(width = 200f, height = 120f, color = 0xFFFF0000.toInt())
+
+    Container(width = 100f, height = 80f, color = 0xFF0000FF.toInt())
+
+}
+
+`
+```
+
+Parser 默认 `alignment="TOP_LEFT"`，与 Kotlin DSL 的 `TOP_START` 不同；可写 `<IndexedStack index="1" fit="EXPAND">…</IndexedStack>`。裸写 `index` 表示 `null`。
+
+上一页
+FractionallySizedBox下一页
+Spacer

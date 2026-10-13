@@ -1,0 +1,279 @@
+# 快速开始
+
+## 你将得到什么
+
+Section titled “你将得到什么”
+
+Snapshot 把一棵 Widget 树先布局，再交给 Skia 绘制，最后返回图片字节。最小的出图流程只有一个根节点：
+
+```
+`
+
+import com.muedsa.snapshot.SnapshotPNG
+
+import com.muedsa.snapshot.widget.Container
+
+import org.jetbrains.skia.Color
+
+import java.io.File
+
+File("out.png").writeBytes(
+
+    SnapshotPNG {
+
+        Container(width = 320f, height = 180f, color = Color.RED)
+
+    }
+
+)
+
+`
+```
+
+## 添加依赖
+
+Section titled “添加依赖”
+
+项目当前通过 GitHub Packages 发布快照版本。先在用户级 `~/.gradle/gradle.properties` 配置凭据：
+
+```
+`
+
+gpr.user=YOUR_GITHUB_USERNAME
+
+gpr.key=YOUR_CLASSIC_PAT
+
+`
+```
+
+然后在 `build.gradle.kts` 中添加仓库和依赖。以下以 Windows x64 为例；其他平台请在安装与构建中选择对应的 Skiko runtime：
+
+```
+`
+
+repositories {
+
+    mavenCentral()
+
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+
+    maven {
+
+        url = uri("https://maven.pkg.github.com/muedsa/snapshot")
+
+        credentials {
+
+            username = providers.gradleProperty("gpr.user").orNull
+
+            password = providers.gradleProperty("gpr.key").orNull
+
+        }
+
+    }
+
+}
+
+dependencies {
+
+    implementation("com.muedsa.snapshot:snapshot-core:0.0.0-SNAPSHOT")
+
+    implementation("org.jetbrains.skiko:skiko-awt-runtime-windows-x64:0.0.0-SNAPSHOT")
+
+}
+
+`
+```
+
+如果要使用类 DOM 解析器，把依赖换为 `snapshot-parser`；它会传递 `core`，但仍需保留平台 runtime。Linux、macOS 或 ARM64 不能直接照抄上述 Windows x64 坐标。
+
+## 常见输出格式
+
+Section titled “常见输出格式”
+
+```
+`
+
+SnapshotPNG { /* Widget tree */ }
+
+SnapshotJPEG { /* Widget tree */ }
+
+SnapshotWEBP { /* Widget tree */ }
+
+`
+```
+
+根节点必须有有限尺寸
+
+无子节点、无约束的 `Container()` 与空的 `Row {}` 都会得到空尺寸，无法创建有效 Surface。请使用 `width`、`height` 或 `SizedBox` 为根布局建立非零尺寸。
+
+## 构建一张完整卡片
+
+Section titled “构建一张完整卡片”
+
+下面的示例同时使用固定画布、内边距、圆角、Flex 布局与文本样式：
+
+```
+`
+
+import com.muedsa.geometry.BoxAlignment
+
+import com.muedsa.geometry.EdgeInsets
+
+import com.muedsa.snapshot.SnapshotPNG
+
+import com.muedsa.snapshot.paint.decoration.BorderRadius
+
+import com.muedsa.snapshot.paint.decoration.BoxDecoration
+
+import com.muedsa.snapshot.paint.text.TextStyle
+
+import com.muedsa.snapshot.rendering.flex.CrossAxisAlignment
+
+import com.muedsa.snapshot.widget.*
+
+import com.muedsa.snapshot.widget.text.Text
+
+import org.jetbrains.skia.FontStyle
+
+import java.io.File
+
+val image = SnapshotPNG(background = 0xFF020617.toInt()) {
+
+    Container(
+
+        width = 720f,
+
+        height = 360f,
+
+        padding = EdgeInsets.all(36f),
+
+        alignment = BoxAlignment.CENTER_LEFT,
+
+        decoration = BoxDecoration(
+
+            color = 0xFF0F172A.toInt(),
+
+            borderRadius = BorderRadius.circular(28f),
+
+        ),
+
+    ) {
+
+        Column(crossAxisAlignment = CrossAxisAlignment.START) {
+
+            Text(
+
+                "SNAPSHOT",
+
+                style = TextStyle(
+
+                    color = 0xFF38BDF8.toInt(),
+
+                    fontSize = 18f,
+
+                    fontStyle = FontStyle.BOLD,
+
+                ),
+
+            )
+
+            SizedBox(height = 18f)
+
+            Text(
+
+                "Layout first. Paint second.",
+
+                style = TextStyle(
+
+                    color = 0xFFF8FAFC.toInt(),
+
+                    fontSize = 42f,
+
+                    fontStyle = FontStyle.BOLD,
+
+                ),
+
+            )
+
+            SizedBox(height = 12f)
+
+            Text(
+
+                "用 Kotlin Widget 树生成确定性的图片。",
+
+                style = TextStyle(color = 0xFF94A3B8.toInt(), fontSize = 22f),
+
+            )
+
+        }
+
+    }
+
+}
+
+File("snapshot-card.png").writeBytes(image)
+
+`
+```
+
+这里的根 Container 明确给出 `720 × 360`，所以输出图片就是该尺寸。背景先被填充为深色，Container 再绘制圆角卡片。
+
+## 使用类 DOM 输入
+
+Section titled “使用类 DOM 输入”
+
+如果图片结构来自配置、模板或 HTTP 请求，可以使用 parser 模块：
+
+```
+`
+
+import com.muedsa.snapshot.parser.Parser
+
+import java.io.StringReader
+
+val source = """
+
+<Snapshot background="#020617" type="png">
+
+  <Container width="720" height="360" padding="36" color="#0F172A" borderRadius="28">
+
+    <Column crossAxisAlignment="START">
+
+      <Text color="#38BDF8" fontSize="18" fontStyle="BOLD">SNAPSHOT</Text>
+
+      <Text color="#F8FAFC" fontSize="42" fontStyle="BOLD">Layout first. Paint second.</Text>
+
+    </Column>
+
+  </Container>
+
+</Snapshot>
+
+""".trimIndent()
+
+val image = Parser().parse(StringReader(source)).snapshot()
+
+`
+```
+
+Parser 是受控子集
+
+Parser 已内置 Flex、比例布局、基础滤镜、富文本行内 Widget、Data URI 图片等共 38 个标签，但仍少于完整 Kotlin DSL。请以标签与属性参考为准，未覆盖的能力可以注册自定义标签。
+
+## 选择下一篇
+
+Section titled “选择下一篇”
+
+渲染入口与输出了解 PNG、JPEG、WebP、Surface 与画布尺寸。
+
+约束、布局与调试排查宽高、Flex、Stack、溢出与裁剪问题。
+
+类 DOM 解析器用文本模板构建 Widget 树并生成图片。
+
+测试与 Golden用布局、像素和 Golden 测试防止视觉回归。
+
+下一步：阅读核心概念了解约束布局，或直接查看Widget 与布局。
+
+上一页
+安装与构建下一页
+渲染入口与输出
