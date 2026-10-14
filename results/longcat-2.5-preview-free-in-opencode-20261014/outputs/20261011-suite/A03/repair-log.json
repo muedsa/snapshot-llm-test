@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "issues": [
+    {
+      "type": "syntax",
+      "location": "line 2",
+      "original": "padding=\"24 32\"",
+      "problem": "EdgeInsets格式错误，应使用括号格式",
+      "fix": "padding=\"(24,32)\"",
+      "evidence": "DSL文档EdgeInsets格式要求"
+    },
+    {
+      "type": "syntax",
+      "location": "line 4",
+      "original": "font-size=\"44\"",
+      "problem": "属性名错误，应使用驼峰命名",
+      "fix": "fontSize=\"44\"",
+      "evidence": "DSL文档Text属性表"
+    },
+    {
+      "type": "semantic",
+      "location": "line 7",
+      "original": "<Positioned right=\"20\">",
+      "problem": "Positioned只能在Stack中使用，不能在Row中",
+      "fix": "移除Positioned，改用Row布局",
+      "evidence": "DSL文档Positioned标签说明"
+    },
+    {
+      "type": "semantic",
+      "location": "line 10",
+      "original": "<Transform rotate=\"-8\">",
+      "problem": "Transform不支持rotate属性，需要matrix",
+      "fix": "使用matrix属性或移除Transform",
+      "evidence": "DSL文档Transform标签说明"
+    },
+    {
+      "type": "semantic",
+      "location": "line 11",
+      "original": "<ImageFiltered sigmaX=\"10\" sigmaY=\"10\">",
+      "problem": "ImageFiltered没有边界约束，导致无限布局",
+      "fix": "添加ClipRect或设置明确边界",
+      "evidence": "DSL文档ImageFiltered标签说明"
+    },
+    {
+      "type": "syntax",
+      "location": "line 10",
+      "original": "#33FFFFFF",
+      "problem": "8位颜色格式错误，应为#RRGGBBAA",
+      "fix": "#FFFFFF33",
+      "evidence": "DSL文档颜色格式说明"
+    },
+    {
+      "type": "syntax",
+      "location": "line 11",
+      "original": "#FFFFFF44",
+      "problem": "8位颜色格式错误，应为#RRGGBBAA",
+      "fix": "#FFFFFF44",
+      "evidence": "DSL文档颜色格式说明"
+    }
+  ],
+  "verification": {
+    "render_success": true,
+    "output_file": "system-pulse.png",
+    "output_size": "1280x800"
+  }
+}

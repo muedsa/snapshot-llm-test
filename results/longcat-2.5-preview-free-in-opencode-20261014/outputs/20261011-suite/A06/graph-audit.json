@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "task_id": "A06",
+  "path_base": "output_dir",
+  "topology": {
+    "layers": [
+      {"layer": 1, "nodes": ["N01"]},
+      {"layer": 2, "nodes": ["N02", "N03"]},
+      {"layer": 3, "nodes": ["N04", "N05", "N06"]},
+      {"layer": 4, "nodes": ["N07", "N08"]},
+      {"layer": 5, "nodes": ["N09"]},
+      {"layer": 6, "nodes": ["N10"]},
+      {"layer": 7, "nodes": ["N11"]},
+      {"layer": 8, "nodes": ["N12"]},
+      {"layer": 9, "nodes": ["N13"]},
+      {"layer": 10, "nodes": ["N14"]}
+    ]
+  },
+  "adjacency": {
+    "N01": {"in": [], "out": ["N02", "N03"]},
+    "N02": {"in": ["N01"], "out": ["N04", "N05"]},
+    "N03": {"in": ["N01"], "out": ["N06"]},
+    "N04": {"in": ["N02"], "out": ["N07", "N13"]},
+    "N05": {"in": ["N02"], "out": ["N06"]},
+    "N06": {"in": ["N03", "N05"], "out": ["N08"]},
+    "N07": {"in": ["N04"], "out": ["N08"]},
+    "N08": {"in": ["N06", "N07", "N09", "N10"], "out": ["N09"]},
+    "N09": {"in": ["N08"], "out": ["N10", "N08"]},
+    "N10": {"in": ["N09"], "out": ["N11", "N08"]},
+    "N11": {"in": ["N10"], "out": ["N12"]},
+    "N12": {"in": ["N11"], "out": ["N13"]},
+    "N13": {"in": ["N12", "N04"], "out": ["N14"]},
+    "N14": {"in": ["N13"], "out": []}
+  },
+  "longest_path": {
+    "nodes": ["N01", "N02", "N04", "N07", "N08", "N09", "N10", "N11", "N12", "N13", "N14"],
+    "length": 11
+  },
+  "feedback_edges": [
+    {"from": "N09", "to": "N08", "representation": "虚线", "label": "失败后回到构建"},
+    {"from": "N10", "to": "N08", "representation": "虚线", "label": "检查发现问题后修复"}
+  ]
+}

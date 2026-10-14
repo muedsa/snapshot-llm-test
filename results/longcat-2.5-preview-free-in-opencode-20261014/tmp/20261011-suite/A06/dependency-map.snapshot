@@ -1,0 +1,39 @@
+<Snapshot type="png" background="#F8FAFC">
+  <Column mainAxisSize="MAX" height="1000" width="1600">
+    <Container height="60" padding="(0,24)">
+      <Column crossAxisAlignment="START">
+        <Text text="从需求到可复现交付 · 依赖解释图" color="#1E293B" fontSize="24" fontStyle="BOLD"/>
+        <Text text="solid_edges=有向先决依赖 | feedback_edges=反馈关系(虚线)" color="#64748B" fontSize="14"/>
+      </Column>
+    </Container>
+    <SizedBox height="12"/>
+    <Container height="600" color="#FFFFFF" border="1 SOLID #E2E8F0" borderRadius="12" padding="(16,16)">
+      <Column crossAxisAlignment="START">
+        <Text text="第1层：N01 需求冻结" color="#1E293B" fontSize="22" fontStyle="BOLD"/>
+        <Text text="第2层：N02 输入检查 → N03 字体查询" color="#1E293B" fontSize="22"/>
+        <Text text="第3层：N04 数据计算 → N05 内容规划 → N06 版式系统" color="#1E293B" fontSize="22"/>
+        <Text text="第4层：N07 图表生成 → N08 DSL构建" color="#1E293B" fontSize="22"/>
+        <Text text="第5层：N09 首轮渲染" color="#1E293B" fontSize="22"/>
+        <Text text="第6层：N10 视觉检查" color="#1E293B" fontSize="22"/>
+        <Text text="第7层：N11 问题修复" color="#1E293B" fontSize="22"/>
+        <Text text="第8层：N12 回归渲染" color="#1E293B" fontSize="22"/>
+        <Text text="第9层：N13 产物校验" color="#1E293B" fontSize="22"/>
+        <Text text="第10层：N14 交付归档" color="#1E293B" fontSize="22"/>
+        <Text text="反馈边(虚线)：N09→N08 失败后回到构建 | N10→N08 检查发现问题后修复" color="#EF4444" fontSize="18"/>
+        <Text text="先决边(实线)：N01→N02,N01→N03,N02→N04,N02→N05,N03→N06,N05→N06,N04→N07,N06→N08,N07→N08,N08→N09,N09→N10,N10→N11,N11→N12,N12→N13,N13→N14,N04→N13" color="#3B82F6" fontSize="16"/>
+      </Column>
+    </Container>
+    <SizedBox height="16"/>
+    <Container height="300" color="#FFFFFF" border="1 SOLID #E2E8F0" borderRadius="12" padding="(16,16)">
+      <Column crossAxisAlignment="START">
+        <Text text="节点邻接表" color="#1E293B" fontSize="18" fontStyle="BOLD"/>
+        <Text text="N01: 出→N02,N03 | N02: 入←N01 出→N04,N05 | N03: 入←N01 出→N06" color="#1E293B" fontSize="16"/>
+        <Text text="N04: 入←N02 出→N07,N13 | N05: 入←N02 出→N06 | N06: 入←N03,N05 出→N08" color="#1E293B" fontSize="16"/>
+        <Text text="N07: 入←N04 出→N08 | N08: 入←N06,N07,N09,N10 出→N09 | N09: 入←N08 出→N10,N08" color="#1E293B" fontSize="16"/>
+        <Text text="N10: 入←N09 出→N11,N08 | N11: 入←N10 出→N12 | N12: 入←N11 出→N13" color="#1E293B" fontSize="16"/>
+        <Text text="N13: 入←N12,N04 出→N14 | N14: 入←N13" color="#1E293B" fontSize="16"/>
+        <Text text="最长先决路径：N01→N02→N04→N07→N08→N09→N10→N11→N12→N13→N14 (10节点)" color="#3B82F6" fontSize="16"/>
+      </Column>
+    </Container>
+  </Column>
+</Snapshot>

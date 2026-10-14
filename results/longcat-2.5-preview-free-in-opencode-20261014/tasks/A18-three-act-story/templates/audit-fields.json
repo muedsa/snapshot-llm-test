@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "purpose": "专用审计JSON最小字段说明；不是已完成记录",
+  "common_rules": {
+    "required": "artifacts中各对象的required_fields为最小必需字段，允许扩展；数组项字段由该字段说明规定。模板说明不是执行数据，不复制说明为答案。",
+    "identity": "每份最终JSON另含schema_version:1、task_id和path_base:output_dir；多轮文件的round须与目录一致。",
+    "paths": "PNG/DSL和其他交付路径相对本题输出根。临时证据用对象{path_base:suite_root,path:tmp/<run_id>/<task_id>/...}明确基准；不写机器路径。",
+    "coordinates": "有几何时默认画布左上原点、x向右/y向下、像素单位，框为[left,top,right,bottom]；题面另定义的网格/逻辑坐标须单列并记录映射。",
+    "numbers": "单位与精度以题面为准，未指定数值容差的精确数据保持原值，不自行发明合格阈值；几何检查记录未舍入值及方法。",
+    "evidence": "结果由实际计算/图片/响应支持；passed类字段附方法与证据。无法取得值时用null并写原因，不预填成功。",
+    "rounds": "artifacts以文件基本名索引，各轮复用同一字段约定；实际交付位置以task.json完整路径为准。"
+  },
+  "artifacts": {
+    "story-audit.json": {
+      "required_fields": {
+        "units": "array；U01–U15稳定颜色/36px直径",
+        "nodes": "array；N01–N03稳定身份/基准几何",
+        "acts": "array；逐幕15单元中心/接收节点与3节点几何/框/方向/负载；有限形变参数",
+        "narrative_evidence": "array；逐幕至少2条实际线索、图中位置/量值、对应的集中/过载/再分配判断",
+        "checks": "array；守恒/不重叠/第三幕5单元且至少两色/整图与400px缩略证据"
+      }
+    }
+  }
+}
