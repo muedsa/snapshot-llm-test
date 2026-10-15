@@ -1,0 +1,2180 @@
+{
+  "schema_version": 1,
+  "task_id": "A07",
+  "path_base": "output_dir",
+  "round": "round-01",
+  "coordinate_system": {
+    "origin": "canvas top-left",
+    "x": "right",
+    "y": "down",
+    "unit": "pixel",
+    "frame": "[left, top, right, bottom]"
+  },
+  "inputs": {
+    "source": "inputs/network.json",
+    "stations": 16,
+    "lines": 3,
+    "queries": 3,
+    "modified": false,
+    "note": "输入文件未修改；未因无障碍约束删除任何线路或站点"
+  },
+  "network": {
+    "edges": [
+      {
+        "a": "S01",
+        "b": "S02",
+        "line": "R"
+      },
+      {
+        "a": "S02",
+        "b": "S03",
+        "line": "R"
+      },
+      {
+        "a": "S03",
+        "b": "S04",
+        "line": "R"
+      },
+      {
+        "a": "S04",
+        "b": "S05",
+        "line": "R"
+      },
+      {
+        "a": "S05",
+        "b": "S06",
+        "line": "R"
+      },
+      {
+        "a": "S06",
+        "b": "S12",
+        "line": "R"
+      },
+      {
+        "a": "S07",
+        "b": "S08",
+        "line": "B"
+      },
+      {
+        "a": "S08",
+        "b": "S04",
+        "line": "B"
+      },
+      {
+        "a": "S04",
+        "b": "S09",
+        "line": "B"
+      },
+      {
+        "a": "S09",
+        "b": "S10",
+        "line": "B"
+      },
+      {
+        "a": "S10",
+        "b": "S11",
+        "line": "B"
+      },
+      {
+        "a": "S13",
+        "b": "S14",
+        "line": "G"
+      },
+      {
+        "a": "S14",
+        "b": "S08",
+        "line": "G"
+      },
+      {
+        "a": "S08",
+        "b": "S15",
+        "line": "G"
+      },
+      {
+        "a": "S15",
+        "b": "S05",
+        "line": "G"
+      },
+      {
+        "a": "S05",
+        "b": "S16",
+        "line": "G"
+      }
+    ],
+    "edge_count": 16,
+    "bidirectional": true,
+    "adjacent_segment_duration": "题面规定所有相邻站间耗时相同，故最小化站间边数即最小化总耗时",
+    "interchanges": [
+      "S04",
+      "S05",
+      "S08"
+    ],
+    "interchange_detail": {
+      "S04": [
+        "R",
+        "B"
+      ],
+      "S05": [
+        "R",
+        "G"
+      ],
+      "S08": [
+        "B",
+        "G"
+      ]
+    },
+    "plain_crossings": [
+      {
+        "at_px": [
+          970,
+          380
+        ],
+        "edges": [
+          [
+            "S10",
+            "S11"
+          ],
+          [
+            "S05",
+            "S16"
+          ]
+        ],
+        "lines": [
+          "B",
+          "G"
+        ],
+        "note": "两条轨道线相交但没有换乘标记，按约定不构成换乘"
+      }
+    ],
+    "line_station_counts": {
+      "R": 7,
+      "B": 6,
+      "G": 6
+    },
+    "shared_route_edges": [
+      {
+        "query": 2,
+        "from": "S08",
+        "to": "S15",
+        "line": "G",
+        "shared_by": [
+          2,
+          3
+        ],
+        "offset_px": -3.2
+      },
+      {
+        "query": 3,
+        "from": "S08",
+        "to": "S15",
+        "line": "G",
+        "shared_by": [
+          2,
+          3
+        ],
+        "offset_px": 3.2
+      },
+      {
+        "query": 2,
+        "from": "S15",
+        "to": "S05",
+        "line": "G",
+        "shared_by": [
+          2,
+          3
+        ],
+        "offset_px": -3.2
+      },
+      {
+        "query": 3,
+        "from": "S15",
+        "to": "S05",
+        "line": "G",
+        "shared_by": [
+          2,
+          3
+        ],
+        "offset_px": 3.2
+      }
+    ]
+  },
+  "accessibility": [
+    {
+      "id": "S01",
+      "name": "松林",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": true,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S02",
+      "name": "北门",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S03",
+      "name": "书院",
+      "accessible": false,
+      "lines": [
+        "R"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S04",
+      "name": "中心",
+      "accessible": true,
+      "lines": [
+        "R",
+        "B"
+      ],
+      "role": "换乘站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": true,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S05",
+      "name": "东桥",
+      "accessible": false,
+      "lines": [
+        "R",
+        "G"
+      ],
+      "role": "换乘站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": true,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S06",
+      "name": "江湾",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S07",
+      "name": "西港",
+      "accessible": true,
+      "lines": [
+        "B"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": true,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S08",
+      "name": "工坊",
+      "accessible": true,
+      "lines": [
+        "B",
+        "G"
+      ],
+      "role": "换乘站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": true,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S09",
+      "name": "花园",
+      "accessible": false,
+      "lines": [
+        "B"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S10",
+      "name": "南门",
+      "accessible": true,
+      "lines": [
+        "B"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S11",
+      "name": "会展",
+      "accessible": true,
+      "lines": [
+        "B"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": true,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S12",
+      "name": "机场",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": true,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S13",
+      "name": "石溪",
+      "accessible": true,
+      "lines": [
+        "G"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": true,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S14",
+      "name": "公园",
+      "accessible": false,
+      "lines": [
+        "G"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S15",
+      "name": "剧院",
+      "accessible": true,
+      "lines": [
+        "G"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": false,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    },
+    {
+      "id": "S16",
+      "name": "研究所",
+      "accessible": true,
+      "lines": [
+        "G"
+      ],
+      "role": "普通站",
+      "is_query_endpoint": true,
+      "is_transfer_in_queries": false,
+      "may_be_pass_through": true
+    }
+  ],
+  "map_geometry": {
+    "schematic": true,
+    "non_geographic_notice": "页眉右侧与面板均标注「非地理示意图」",
+    "angle_rule": "所有相邻站区段均为 45° 或 90°（水平/垂直）",
+    "all_segments_45_or_90": true,
+    "angle_histogram": {
+      "45°": 7,
+      "90°": 9
+    },
+    "segments": [
+      {
+        "line": "R",
+        "from": "S01",
+        "to": "S02",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            150,
+            220
+          ],
+          [
+            330,
+            220
+          ]
+        ],
+        "length_px": 180.0
+      },
+      {
+        "line": "R",
+        "from": "S02",
+        "to": "S03",
+        "angle_class": "45°",
+        "angle_deg": 45.0,
+        "points_px": [
+          [
+            330,
+            220
+          ],
+          [
+            450,
+            340
+          ]
+        ],
+        "length_px": 169.7056
+      },
+      {
+        "line": "R",
+        "from": "S03",
+        "to": "S04",
+        "angle_class": "45°",
+        "angle_deg": 45.0,
+        "points_px": [
+          [
+            450,
+            340
+          ],
+          [
+            570,
+            460
+          ]
+        ],
+        "length_px": 169.7056
+      },
+      {
+        "line": "R",
+        "from": "S04",
+        "to": "S05",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            570,
+            460
+          ],
+          [
+            890,
+            460
+          ]
+        ],
+        "length_px": 320.0
+      },
+      {
+        "line": "R",
+        "from": "S05",
+        "to": "S06",
+        "angle_class": "45°",
+        "angle_deg": 45.0,
+        "points_px": [
+          [
+            890,
+            460
+          ],
+          [
+            1080,
+            650
+          ]
+        ],
+        "length_px": 268.7006
+      },
+      {
+        "line": "R",
+        "from": "S06",
+        "to": "S12",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            1080,
+            650
+          ],
+          [
+            1080,
+            850
+          ]
+        ],
+        "length_px": 200.0
+      },
+      {
+        "line": "B",
+        "from": "S07",
+        "to": "S08",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            330,
+            760
+          ],
+          [
+            570,
+            760
+          ]
+        ],
+        "length_px": 240.0
+      },
+      {
+        "line": "B",
+        "from": "S08",
+        "to": "S04",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            570,
+            760
+          ],
+          [
+            570,
+            460
+          ]
+        ],
+        "length_px": 300.0
+      },
+      {
+        "line": "B",
+        "from": "S04",
+        "to": "S09",
+        "angle_class": "45°",
+        "angle_deg": 45.0,
+        "points_px": [
+          [
+            570,
+            460
+          ],
+          [
+            770,
+            260
+          ]
+        ],
+        "length_px": 282.8427
+      },
+      {
+        "line": "B",
+        "from": "S09",
+        "to": "S10",
+        "angle_class": "45°",
+        "angle_deg": 45.0,
+        "points_px": [
+          [
+            770,
+            260
+          ],
+          [
+            890,
+            380
+          ]
+        ],
+        "length_px": 169.7056
+      },
+      {
+        "line": "B",
+        "from": "S10",
+        "to": "S11",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            890,
+            380
+          ],
+          [
+            1070,
+            380
+          ]
+        ],
+        "length_px": 180.0
+      },
+      {
+        "line": "G",
+        "from": "S13",
+        "to": "S14",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            330,
+            640
+          ],
+          [
+            450,
+            640
+          ]
+        ],
+        "length_px": 120.0
+      },
+      {
+        "line": "G",
+        "from": "S14",
+        "to": "S08",
+        "angle_class": "45°",
+        "angle_deg": 45.0,
+        "points_px": [
+          [
+            450,
+            640
+          ],
+          [
+            570,
+            760
+          ]
+        ],
+        "length_px": 169.7056
+      },
+      {
+        "line": "G",
+        "from": "S08",
+        "to": "S15",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            570,
+            760
+          ],
+          [
+            890,
+            760
+          ]
+        ],
+        "length_px": 320.0
+      },
+      {
+        "line": "G",
+        "from": "S15",
+        "to": "S05",
+        "angle_class": "90°",
+        "angle_deg": 90.0,
+        "points_px": [
+          [
+            890,
+            760
+          ],
+          [
+            890,
+            460
+          ]
+        ],
+        "length_px": 300.0
+      },
+      {
+        "line": "G",
+        "from": "S05",
+        "to": "S16",
+        "angle_class": "45°",
+        "angle_deg": 45.0,
+        "points_px": [
+          [
+            890,
+            460
+          ],
+          [
+            1070,
+            280
+          ]
+        ],
+        "length_px": 254.5584
+      }
+    ],
+    "station_positions": [
+      {
+        "id": "S01",
+        "name": "松林",
+        "pos_px": [
+          150,
+          220
+        ],
+        "label_mode": "above",
+        "label_box_px": [
+          71.0,
+          169,
+          229.0,
+          199
+        ],
+        "lines": [
+          "R"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S02",
+        "name": "北门",
+        "pos_px": [
+          330,
+          220
+        ],
+        "label_mode": "above",
+        "label_box_px": [
+          251.0,
+          169,
+          409.0,
+          199
+        ],
+        "lines": [
+          "R"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S03",
+        "name": "书院",
+        "pos_px": [
+          450,
+          340
+        ],
+        "label_mode": "above_right",
+        "label_box_px": [
+          471,
+          289,
+          629,
+          319
+        ],
+        "lines": [
+          "R"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S04",
+        "name": "中心",
+        "pos_px": [
+          570,
+          460
+        ],
+        "label_mode": "left",
+        "label_box_px": [
+          369,
+          445.0,
+          541,
+          475.0
+        ],
+        "lines": [
+          "R",
+          "B"
+        ],
+        "interchange": true
+      },
+      {
+        "id": "S05",
+        "name": "东桥",
+        "pos_px": [
+          890,
+          460
+        ],
+        "label_mode": "right",
+        "label_box_px": [
+          919,
+          445.0,
+          1091,
+          475.0
+        ],
+        "lines": [
+          "R",
+          "G"
+        ],
+        "interchange": true
+      },
+      {
+        "id": "S06",
+        "name": "江湾",
+        "pos_px": [
+          1080,
+          650
+        ],
+        "label_mode": "below_left",
+        "label_box_px": [
+          901,
+          671,
+          1059,
+          701
+        ],
+        "lines": [
+          "R"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S07",
+        "name": "西港",
+        "pos_px": [
+          330,
+          760
+        ],
+        "label_mode": "above",
+        "label_box_px": [
+          251.0,
+          709,
+          409.0,
+          739
+        ],
+        "lines": [
+          "B"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S08",
+        "name": "工坊",
+        "pos_px": [
+          570,
+          760
+        ],
+        "label_mode": "below",
+        "label_box_px": [
+          484.0,
+          789,
+          656.0,
+          819
+        ],
+        "lines": [
+          "B",
+          "G"
+        ],
+        "interchange": true
+      },
+      {
+        "id": "S09",
+        "name": "花园",
+        "pos_px": [
+          770,
+          260
+        ],
+        "label_mode": "above",
+        "label_box_px": [
+          691.0,
+          209,
+          849.0,
+          239
+        ],
+        "lines": [
+          "B"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S10",
+        "name": "南门",
+        "pos_px": [
+          890,
+          380
+        ],
+        "label_mode": "below_left",
+        "label_box_px": [
+          711,
+          401,
+          869,
+          431
+        ],
+        "lines": [
+          "B"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S11",
+        "name": "会展",
+        "pos_px": [
+          1070,
+          380
+        ],
+        "label_mode": "below",
+        "label_box_px": [
+          991.0,
+          401,
+          1149.0,
+          431
+        ],
+        "lines": [
+          "B"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S12",
+        "name": "机场",
+        "pos_px": [
+          1080,
+          850
+        ],
+        "label_mode": "below",
+        "label_box_px": [
+          1001.0,
+          871,
+          1159.0,
+          901
+        ],
+        "lines": [
+          "R"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S13",
+        "name": "石溪",
+        "pos_px": [
+          330,
+          640
+        ],
+        "label_mode": "above",
+        "label_box_px": [
+          251.0,
+          589,
+          409.0,
+          619
+        ],
+        "lines": [
+          "G"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S14",
+        "name": "公园",
+        "pos_px": [
+          450,
+          640
+        ],
+        "label_mode": "below_left",
+        "label_box_px": [
+          271,
+          661,
+          429,
+          691
+        ],
+        "lines": [
+          "G"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S15",
+        "name": "剧院",
+        "pos_px": [
+          890,
+          760
+        ],
+        "label_mode": "below",
+        "label_box_px": [
+          811.0,
+          781,
+          969.0,
+          811
+        ],
+        "lines": [
+          "G"
+        ],
+        "interchange": false
+      },
+      {
+        "id": "S16",
+        "name": "研究所",
+        "pos_px": [
+          1070,
+          280
+        ],
+        "label_mode": "above",
+        "label_box_px": [
+          991.0,
+          229,
+          1149.0,
+          259
+        ],
+        "lines": [
+          "G"
+        ],
+        "interchange": false
+      }
+    ],
+    "label_overlap_free": true,
+    "label_min_font_px": 20,
+    "line_letter_encoding": "每条线路在页眉图例、轨道中点字母徽标、站名标签中都用颜色加字母双重编码",
+    "panel_bottom_px": 953
+  },
+  "queries": [
+    {
+      "index": 1,
+      "from": "S01",
+      "from_name": "松林",
+      "to": "S11",
+      "to_name": "会展",
+      "normal": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "station_names": [
+          "松林",
+          "北门",
+          "书院",
+          "中心",
+          "花园",
+          "南门",
+          "会展"
+        ],
+        "station_count": 7,
+        "intervals": 6,
+        "interval_count_note": "站间边数 = 站数 − 1；站数不可当作区间数",
+        "edge_lines": [
+          [
+            "S01",
+            "S02",
+            "R"
+          ],
+          [
+            "S02",
+            "S03",
+            "R"
+          ],
+          [
+            "S03",
+            "S04",
+            "R"
+          ],
+          [
+            "S04",
+            "S09",
+            "B"
+          ],
+          [
+            "S09",
+            "S10",
+            "B"
+          ],
+          [
+            "S10",
+            "S11",
+            "B"
+          ]
+        ],
+        "line_segments": [
+          {
+            "line": "R",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "station_names": [
+              "松林",
+              "北门",
+              "书院",
+              "中心"
+            ],
+            "intervals": 3
+          },
+          {
+            "line": "B",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "station_names": [
+              "中心",
+              "花园",
+              "南门",
+              "会展"
+            ],
+            "intervals": 3
+          }
+        ],
+        "transfers": 1,
+        "transfer_stations": [
+          "S04"
+        ],
+        "transfer_definition": "改变乘坐线路的次数；第一次上车不计",
+        "inaccessible_stations_passed_through": [
+          "S03",
+          "S09"
+        ]
+      },
+      "accessible": {
+        "possible": true,
+        "criterion": "起点、终点与每个换乘站的 accessible 必须为 true；途经的非无障碍站允许乘车通过",
+        "checked_points": [
+          "S01",
+          "S11",
+          "S04"
+        ],
+        "violations": [],
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "station_names": [
+          "松林",
+          "北门",
+          "书院",
+          "中心",
+          "花园",
+          "南门",
+          "会展"
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "edge_lines": [
+          [
+            "S01",
+            "S02",
+            "R"
+          ],
+          [
+            "S02",
+            "S03",
+            "R"
+          ],
+          [
+            "S03",
+            "S04",
+            "R"
+          ],
+          [
+            "S04",
+            "S09",
+            "B"
+          ],
+          [
+            "S09",
+            "S10",
+            "B"
+          ],
+          [
+            "S10",
+            "S11",
+            "B"
+          ]
+        ],
+        "transfer_stations": [
+          "S04"
+        ],
+        "line_segments": [
+          {
+            "line": "R",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "station_names": [
+              "松林",
+              "北门",
+              "书院",
+              "中心"
+            ],
+            "intervals": 3
+          },
+          {
+            "line": "B",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "station_names": [
+              "中心",
+              "花园",
+              "南门",
+              "会展"
+            ],
+            "intervals": 3
+          }
+        ],
+        "shortest_under_constraint": {
+          "stations": [
+            "S01",
+            "S02",
+            "S03",
+            "S04",
+            "S09",
+            "S10",
+            "S11"
+          ],
+          "intervals": 6,
+          "transfers": 1,
+          "reason": "最短普通路线已满足约束"
+        },
+        "strict_all_stations_accessible": {
+          "possible": false,
+          "violations": [
+            "S03",
+            "S09"
+          ],
+          "note": "更严格的补充口径（全部途经站都须无障碍），非题面要求"
+        }
+      },
+      "optimality": {
+        "method": "① BFS 求最少站间边数 E；② 枚举全部恰为 E 条边的简单路径；③ 按 (换乘次数, 路径字典序) 取最小；④ 再按无障碍端点/换乘站约束核对",
+        "min_intervals": 6,
+        "candidate_paths_at_min_intervals": 1,
+        "min_transfers_at_min_intervals": 1,
+        "alternative_min_transfer_paths": [],
+        "evidence": "穷举计数与 BFS 距离一致；每段区段在图上均按线路站序相邻，可逐段复核"
+      },
+      "content_map": [
+        {
+          "figure": "network-map.png",
+          "region": "绘图区轨道叠加细线 + 左下角查询小结",
+          "shown": "该查询命中的站间区段以专属强调色叠加在轨道上，并与小结中的编号对应"
+        },
+        {
+          "figure": "travel-card.png",
+          "region": "第 1 张路线卡",
+          "shown": "站序、分线乘坐、换乘站、站间边数/换乘次数/乘坐线路数、无障碍结论与理由"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "from": "S13",
+      "from_name": "石溪",
+      "to": "S12",
+      "to_name": "机场",
+      "normal": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "station_names": [
+          "石溪",
+          "公园",
+          "工坊",
+          "剧院",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "station_count": 7,
+        "intervals": 6,
+        "interval_count_note": "站间边数 = 站数 − 1；站数不可当作区间数",
+        "edge_lines": [
+          [
+            "S13",
+            "S14",
+            "G"
+          ],
+          [
+            "S14",
+            "S08",
+            "G"
+          ],
+          [
+            "S08",
+            "S15",
+            "G"
+          ],
+          [
+            "S15",
+            "S05",
+            "G"
+          ],
+          [
+            "S05",
+            "S06",
+            "R"
+          ],
+          [
+            "S06",
+            "S12",
+            "R"
+          ]
+        ],
+        "line_segments": [
+          {
+            "line": "G",
+            "stations": [
+              "S13",
+              "S14",
+              "S08",
+              "S15",
+              "S05"
+            ],
+            "station_names": [
+              "石溪",
+              "公园",
+              "工坊",
+              "剧院",
+              "东桥"
+            ],
+            "intervals": 4
+          },
+          {
+            "line": "R",
+            "stations": [
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "station_names": [
+              "东桥",
+              "江湾",
+              "机场"
+            ],
+            "intervals": 2
+          }
+        ],
+        "transfers": 1,
+        "transfer_stations": [
+          "S05"
+        ],
+        "transfer_definition": "改变乘坐线路的次数；第一次上车不计",
+        "inaccessible_stations_passed_through": [
+          "S05",
+          "S14"
+        ]
+      },
+      "accessible": {
+        "possible": false,
+        "criterion": "起点、终点与每个换乘站的 accessible 必须为 true；途经的非无障碍站允许乘车通过",
+        "checked_points": [
+          "S13",
+          "S12",
+          "S05"
+        ],
+        "violations": [
+          "S05"
+        ],
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "station_names": [
+          "石溪",
+          "公园",
+          "工坊",
+          "中心",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "intervals": 6,
+        "transfers": 2,
+        "edge_lines": [
+          [
+            "S13",
+            "S14",
+            "G"
+          ],
+          [
+            "S14",
+            "S08",
+            "G"
+          ],
+          [
+            "S08",
+            "S04",
+            "B"
+          ],
+          [
+            "S04",
+            "S05",
+            "R"
+          ],
+          [
+            "S05",
+            "S06",
+            "R"
+          ],
+          [
+            "S06",
+            "S12",
+            "R"
+          ]
+        ],
+        "transfer_stations": [
+          "S08",
+          "S04"
+        ],
+        "line_segments": [
+          {
+            "line": "G",
+            "stations": [
+              "S13",
+              "S14",
+              "S08"
+            ],
+            "station_names": [
+              "石溪",
+              "公园",
+              "工坊"
+            ],
+            "intervals": 2
+          },
+          {
+            "line": "B",
+            "stations": [
+              "S08",
+              "S04"
+            ],
+            "station_names": [
+              "工坊",
+              "中心"
+            ],
+            "intervals": 1
+          },
+          {
+            "line": "R",
+            "stations": [
+              "S04",
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "station_names": [
+              "中心",
+              "东桥",
+              "江湾",
+              "机场"
+            ],
+            "intervals": 3
+          }
+        ],
+        "shortest_under_constraint": {
+          "stations": [
+            "S13",
+            "S14",
+            "S08",
+            "S04",
+            "S05",
+            "S06",
+            "S12"
+          ],
+          "intervals": 6,
+          "transfers": 2,
+          "reason": "已另求最短无障碍旅程"
+        },
+        "strict_all_stations_accessible": {
+          "possible": false,
+          "violations": [
+            "S14",
+            "S05"
+          ],
+          "note": "更严格的补充口径（全部途经站都须无障碍），非题面要求"
+        }
+      },
+      "optimality": {
+        "method": "① BFS 求最少站间边数 E；② 枚举全部恰为 E 条边的简单路径；③ 按 (换乘次数, 路径字典序) 取最小；④ 再按无障碍端点/换乘站约束核对",
+        "min_intervals": 6,
+        "candidate_paths_at_min_intervals": 2,
+        "min_transfers_at_min_intervals": 1,
+        "alternative_min_transfer_paths": [],
+        "evidence": "穷举计数与 BFS 距离一致；每段区段在图上均按线路站序相邻，可逐段复核"
+      },
+      "content_map": [
+        {
+          "figure": "network-map.png",
+          "region": "绘图区轨道叠加细线 + 左下角查询小结",
+          "shown": "该查询命中的站间区段以专属强调色叠加在轨道上，并与小结中的编号对应"
+        },
+        {
+          "figure": "travel-card.png",
+          "region": "第 2 张路线卡",
+          "shown": "站序、分线乘坐、换乘站、站间边数/换乘次数/乘坐线路数、无障碍结论与理由"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "from": "S07",
+      "from_name": "西港",
+      "to": "S16",
+      "to_name": "研究所",
+      "normal": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "station_names": [
+          "西港",
+          "工坊",
+          "剧院",
+          "东桥",
+          "研究所"
+        ],
+        "station_count": 5,
+        "intervals": 4,
+        "interval_count_note": "站间边数 = 站数 − 1；站数不可当作区间数",
+        "edge_lines": [
+          [
+            "S07",
+            "S08",
+            "B"
+          ],
+          [
+            "S08",
+            "S15",
+            "G"
+          ],
+          [
+            "S15",
+            "S05",
+            "G"
+          ],
+          [
+            "S05",
+            "S16",
+            "G"
+          ]
+        ],
+        "line_segments": [
+          {
+            "line": "B",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "station_names": [
+              "西港",
+              "工坊"
+            ],
+            "intervals": 1
+          },
+          {
+            "line": "G",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "station_names": [
+              "工坊",
+              "剧院",
+              "东桥",
+              "研究所"
+            ],
+            "intervals": 3
+          }
+        ],
+        "transfers": 1,
+        "transfer_stations": [
+          "S08"
+        ],
+        "transfer_definition": "改变乘坐线路的次数；第一次上车不计",
+        "inaccessible_stations_passed_through": [
+          "S05"
+        ]
+      },
+      "accessible": {
+        "possible": true,
+        "criterion": "起点、终点与每个换乘站的 accessible 必须为 true；途经的非无障碍站允许乘车通过",
+        "checked_points": [
+          "S07",
+          "S16",
+          "S08"
+        ],
+        "violations": [],
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "station_names": [
+          "西港",
+          "工坊",
+          "剧院",
+          "东桥",
+          "研究所"
+        ],
+        "intervals": 4,
+        "transfers": 1,
+        "edge_lines": [
+          [
+            "S07",
+            "S08",
+            "B"
+          ],
+          [
+            "S08",
+            "S15",
+            "G"
+          ],
+          [
+            "S15",
+            "S05",
+            "G"
+          ],
+          [
+            "S05",
+            "S16",
+            "G"
+          ]
+        ],
+        "transfer_stations": [
+          "S08"
+        ],
+        "line_segments": [
+          {
+            "line": "B",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "station_names": [
+              "西港",
+              "工坊"
+            ],
+            "intervals": 1
+          },
+          {
+            "line": "G",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "station_names": [
+              "工坊",
+              "剧院",
+              "东桥",
+              "研究所"
+            ],
+            "intervals": 3
+          }
+        ],
+        "shortest_under_constraint": {
+          "stations": [
+            "S07",
+            "S08",
+            "S15",
+            "S05",
+            "S16"
+          ],
+          "intervals": 4,
+          "transfers": 1,
+          "reason": "最短普通路线已满足约束"
+        },
+        "strict_all_stations_accessible": {
+          "possible": false,
+          "violations": [
+            "S05"
+          ],
+          "note": "更严格的补充口径（全部途经站都须无障碍），非题面要求"
+        }
+      },
+      "optimality": {
+        "method": "① BFS 求最少站间边数 E；② 枚举全部恰为 E 条边的简单路径；③ 按 (换乘次数, 路径字典序) 取最小；④ 再按无障碍端点/换乘站约束核对",
+        "min_intervals": 4,
+        "candidate_paths_at_min_intervals": 2,
+        "min_transfers_at_min_intervals": 1,
+        "alternative_min_transfer_paths": [],
+        "evidence": "穷举计数与 BFS 距离一致；每段区段在图上均按线路站序相邻，可逐段复核"
+      },
+      "content_map": [
+        {
+          "figure": "network-map.png",
+          "region": "绘图区轨道叠加细线 + 左下角查询小结",
+          "shown": "该查询命中的站间区段以专属强调色叠加在轨道上，并与小结中的编号对应"
+        },
+        {
+          "figure": "travel-card.png",
+          "region": "第 3 张路线卡",
+          "shown": "站序、分线乘坐、换乘站、站间边数/换乘次数/乘坐线路数、无障碍结论与理由"
+        }
+      ]
+    }
+  ],
+  "optimality": [
+    {
+      "query": 1,
+      "mode": "normal",
+      "sort_key": "(站间区段数, 换乘次数)",
+      "method": "① BFS 求起终点最少站间区段数 E；② 枚举全部恰为 E 条边的简单路径；③ 按 (换乘次数, 路径字典序) 取最小；④ 再按无障碍端点/换乘站约束核对",
+      "min_intervals": 6,
+      "candidate_paths_at_min_intervals": 1,
+      "min_transfers_at_min_intervals": 1,
+      "other_min_transfer_paths": [],
+      "result": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S04"
+        ]
+      },
+      "evidence": "枚举计数与 BFS 距离一致；每段区段在图上均按线路站序相邻，可逐段复核"
+    },
+    {
+      "query": 2,
+      "mode": "normal",
+      "sort_key": "(站间区段数, 换乘次数)",
+      "method": "① BFS 求起终点最少站间区段数 E；② 枚举全部恰为 E 条边的简单路径；③ 按 (换乘次数, 路径字典序) 取最小；④ 再按无障碍端点/换乘站约束核对",
+      "min_intervals": 6,
+      "candidate_paths_at_min_intervals": 2,
+      "min_transfers_at_min_intervals": 1,
+      "other_min_transfer_paths": [],
+      "result": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S05"
+        ]
+      },
+      "evidence": "枚举计数与 BFS 距离一致；每段区段在图上均按线路站序相邻，可逐段复核"
+    },
+    {
+      "query": 3,
+      "mode": "normal",
+      "sort_key": "(站间区段数, 换乘次数)",
+      "method": "① BFS 求起终点最少站间区段数 E；② 枚举全部恰为 E 条边的简单路径；③ 按 (换乘次数, 路径字典序) 取最小；④ 再按无障碍端点/换乘站约束核对",
+      "min_intervals": 4,
+      "candidate_paths_at_min_intervals": 2,
+      "min_transfers_at_min_intervals": 1,
+      "other_min_transfer_paths": [],
+      "result": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "intervals": 4,
+        "transfers": 1,
+        "transfer_stations": [
+          "S08"
+        ]
+      },
+      "evidence": "枚举计数与 BFS 距离一致；每段区段在图上均按线路站序相邻，可逐段复核"
+    },
+    {
+      "query": 1,
+      "mode": "accessible",
+      "sort_key": "(站间区段数, 换乘次数)，并要求起点/终点/换乘站 accessible=true",
+      "method": "从 E 起逐个区间数枚举简单路径，筛出端点与换乘站全部无障碍者，再按 (换乘次数, 路径字典序) 取最小",
+      "satisfied_by_normal_route": true,
+      "result": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S04"
+        ]
+      },
+      "reason": "最短普通路线已满足约束，无需另求",
+      "evidence": "换乘站由线路切换处直接读出，逐个与 accessible 属性表比对"
+    },
+    {
+      "query": 2,
+      "mode": "accessible",
+      "sort_key": "(站间区段数, 换乘次数)，并要求起点/终点/换乘站 accessible=true",
+      "method": "从 E 起逐个区间数枚举简单路径，筛出端点与换乘站全部无障碍者，再按 (换乘次数, 路径字典序) 取最小",
+      "satisfied_by_normal_route": false,
+      "result": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "intervals": 6,
+        "transfers": 2,
+        "transfer_stations": [
+          "S08",
+          "S04"
+        ],
+        "candidate_paths_at_min_intervals": 1
+      },
+      "reason": "最短普通路线的换乘站不合规，已另求同区间数下换乘最少的合规路线",
+      "evidence": "换乘站由线路切换处直接读出，逐个与 accessible 属性表比对"
+    },
+    {
+      "query": 3,
+      "mode": "accessible",
+      "sort_key": "(站间区段数, 换乘次数)，并要求起点/终点/换乘站 accessible=true",
+      "method": "从 E 起逐个区间数枚举简单路径，筛出端点与换乘站全部无障碍者，再按 (换乘次数, 路径字典序) 取最小",
+      "satisfied_by_normal_route": true,
+      "result": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "intervals": 4,
+        "transfers": 1,
+        "transfer_stations": [
+          "S08"
+        ]
+      },
+      "reason": "最短普通路线已满足约束，无需另求",
+      "evidence": "换乘站由线路切换处直接读出，逐个与 accessible 属性表比对"
+    }
+  ],
+  "content_map": [
+    {
+      "query": 1,
+      "route": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "intervals": 6,
+        "transfers": 1
+      },
+      "network_map": {
+        "region": "绘图区轨道上叠加的查询色细线 + 左下角「三条查询的最少站间边数路线」小结",
+        "content": "查询 1 的 6 个站间区段全部以 琥珀色细线标出；编号 1 的圆点标与左下角小结、与旅行卡配色一致"
+      },
+      "travel_card": {
+        "region": "第 1 张路线卡",
+        "content": "站序链、分线乘坐行、换乘站标注、区段/换乘/线路数摘要与无障碍结论"
+      },
+      "cross_check": "图中 6 段着色区段与旅行卡站序的 6 个箭头一一对应；换乘站 ['S04'] 与卡片中的换乘标注一致"
+    },
+    {
+      "query": 2,
+      "route": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "intervals": 6,
+        "transfers": 1
+      },
+      "network_map": {
+        "region": "绘图区轨道上叠加的查询色细线 + 左下角「三条查询的最少站间边数路线」小结",
+        "content": "查询 2 的 6 个站间区段全部以 紫色细线标出；编号 2 的圆点标与左下角小结、与旅行卡配色一致"
+      },
+      "travel_card": {
+        "region": "第 2 张路线卡",
+        "content": "站序链、分线乘坐行、换乘站标注、区段/换乘/线路数摘要与无障碍结论"
+      },
+      "cross_check": "图中 6 段着色区段与旅行卡站序的 6 个箭头一一对应；换乘站 ['S05'] 与卡片中的换乘标注一致"
+    },
+    {
+      "query": 3,
+      "route": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "intervals": 4,
+        "transfers": 1
+      },
+      "network_map": {
+        "region": "绘图区轨道上叠加的查询色细线 + 左下角「三条查询的最少站间边数路线」小结",
+        "content": "查询 3 的 4 个站间区段全部以 青色细线标出；编号 3 的圆点标与左下角小结、与旅行卡配色一致"
+      },
+      "travel_card": {
+        "region": "第 3 张路线卡",
+        "content": "站序链、分线乘坐行、换乘站标注、区段/换乘/线路数摘要与无障碍结论"
+      },
+      "cross_check": "图中 4 段着色区段与旅行卡站序的 4 个箭头一一对应；换乘站 ['S08'] 与卡片中的换乘标注一致"
+    }
+  ],
+  "route_edges_highlighted": [
+    {
+      "query": 1,
+      "from": "S01",
+      "to": "S02",
+      "line": "R",
+      "shared_by": [
+        1
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 1,
+      "from": "S02",
+      "to": "S03",
+      "line": "R",
+      "shared_by": [
+        1
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 1,
+      "from": "S03",
+      "to": "S04",
+      "line": "R",
+      "shared_by": [
+        1
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 1,
+      "from": "S04",
+      "to": "S09",
+      "line": "B",
+      "shared_by": [
+        1
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 1,
+      "from": "S09",
+      "to": "S10",
+      "line": "B",
+      "shared_by": [
+        1
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 1,
+      "from": "S10",
+      "to": "S11",
+      "line": "B",
+      "shared_by": [
+        1
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 2,
+      "from": "S13",
+      "to": "S14",
+      "line": "G",
+      "shared_by": [
+        2
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 2,
+      "from": "S14",
+      "to": "S08",
+      "line": "G",
+      "shared_by": [
+        2
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 2,
+      "from": "S08",
+      "to": "S15",
+      "line": "G",
+      "shared_by": [
+        2,
+        3
+      ],
+      "offset_px": -3.2
+    },
+    {
+      "query": 3,
+      "from": "S08",
+      "to": "S15",
+      "line": "G",
+      "shared_by": [
+        2,
+        3
+      ],
+      "offset_px": 3.2
+    },
+    {
+      "query": 2,
+      "from": "S15",
+      "to": "S05",
+      "line": "G",
+      "shared_by": [
+        2,
+        3
+      ],
+      "offset_px": -3.2
+    },
+    {
+      "query": 3,
+      "from": "S15",
+      "to": "S05",
+      "line": "G",
+      "shared_by": [
+        2,
+        3
+      ],
+      "offset_px": 3.2
+    },
+    {
+      "query": 2,
+      "from": "S05",
+      "to": "S06",
+      "line": "R",
+      "shared_by": [
+        2
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 2,
+      "from": "S06",
+      "to": "S12",
+      "line": "R",
+      "shared_by": [
+        2
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 3,
+      "from": "S07",
+      "to": "S08",
+      "line": "B",
+      "shared_by": [
+        3
+      ],
+      "offset_px": 0.0
+    },
+    {
+      "query": 3,
+      "from": "S05",
+      "to": "S16",
+      "line": "G",
+      "shared_by": [
+        3
+      ],
+      "offset_px": 0.0
+    }
+  ],
+  "layout": {
+    "map_panel_bottom_px": 953,
+    "map_bottom_px": 984,
+    "card_used_px": 1280.0,
+    "card_free_px": 0.0
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "filename": "network-map.png",
+      "dsl": "network-map.snapshot",
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "kind": "png",
+      "filename": "travel-card.png",
+      "dsl": "travel-card.snapshot",
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "kind": "json",
+      "filename": "routes.json"
+    }
+  ],
+  "artifacts": {
+    "network-map.png": {
+      "width": 1600,
+      "height": 1000,
+      "format": "PNG",
+      "mode": "RGBA",
+      "dsl": "network-map.snapshot",
+      "image_info": {
+        "format": "PNG",
+        "width": 1600,
+        "height": 1000,
+        "mode": "RGBA"
+      }
+    },
+    "travel-card.png": {
+      "width": 720,
+      "height": 1280,
+      "format": "PNG",
+      "mode": "RGBA",
+      "dsl": "travel-card.snapshot",
+      "image_info": {
+        "format": "PNG",
+        "width": 720,
+        "height": 1280,
+        "mode": "RGBA"
+      }
+    },
+    "routes.json": {
+      "schema_version": 1,
+      "task_id": "A07",
+      "path_base": "output_dir"
+    }
+  }
+}

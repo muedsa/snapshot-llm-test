@@ -1,0 +1,4893 @@
+{
+  "schema_version": 1,
+  "task_id": "A09",
+  "path_base": "output_dir",
+  "round": "round-01",
+  "coordinate_system": {
+    "source_local": {
+      "canvas": [
+        120,
+        120
+      ],
+      "origin": "top-left",
+      "pivot": [
+        60,
+        60
+      ],
+      "x_direction": "right",
+      "y_direction": "down"
+    },
+    "canvas": {
+      "width": 1600,
+      "height": 1200,
+      "origin": "top-left",
+      "x_direction": "right",
+      "y_direction": "down"
+    },
+    "grid": {
+      "cols": 4,
+      "rows": 3,
+      "cell_px": [
+        300,
+        250
+      ],
+      "gap_px": [
+        32,
+        32
+      ],
+      "grid_origin_px": [
+        152,
+        140
+      ],
+      "grid_size_px": [
+        1296,
+        814
+      ],
+      "centering": "水平居中：(1600 − 1296) / 2 = 152"
+    },
+    "mapping": "格 (c,r) 左上 = (GX + c×332, GY + r×282)；格内主体中心 = 格左上 + (150,112)；局部坐标 (x,y) 的画布位置 = 局部原点 + M·(x,y)，局部原点 = 格左上 + (90,52)；操作序列文字自格左上 + (14,196) 起，每步操作一行、行距 25",
+    "rotation_positive": "屏幕坐标 y 向下，矩阵 [[c,−s],[s,c]] 使正角对应图像顺时针",
+    "matrix_convention": "行主序 3×3 记绕枢轴的完整仿射；写入 Transform.matrix 时取其线性部分，转成列主序 4×4（16 个数），平移列置 0",
+    "engine_transform_semantics": {
+      "formula": "p' = C + L·(p − C) + t，C = 子节点中心，L = 线性部分，t = 最后一列平移",
+      "evidence": "探针 tmp/run-20261011-01/A09/probe_matrix.py 与 preview/probe-p1.png：P2（仅线性部分 + alignment=CENTER）落点与理论值一致；P1（再写一次平移 t=120）整体右移 120px；P3（把平移放进 m[8],m[9]）与 P2 完全相同，说明该两槽被忽略；P4（alignment=TOP_LEFT）绕子节点左上角旋转，确认 alignment 生效",
+      "consequence": "印章容器中心即枢轴 (60,60)，故矩阵只写线性部分即可得到绕枢轴的组合变换"
+    }
+  },
+  "inputs": {
+    "stamp": "inputs/stamp.json",
+    "transforms": "inputs/transforms.json",
+    "modified": false,
+    "rectangles": 3,
+    "dot_radius": 8
+  },
+  "transforms": [
+    {
+      "id": "T01",
+      "short_name": "恒等（原样）",
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          0
+        ]
+      ],
+      "operations_readable": [
+        "顺时针 0°"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 0,
+      "cell_box_px": [
+        152,
+        140,
+        452,
+        390
+      ],
+      "cell_center_px": [
+        302,
+        252
+      ],
+      "local_origin_px": [
+        242,
+        192
+      ],
+      "final_bounding_box_px": [
+        250.0,
+        200.0,
+        346.0,
+        292.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T02",
+      "short_name": "顺时针 90°",
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "operations_readable": [
+        "顺时针 90°"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          0.0,
+          -1.0,
+          120.0
+        ],
+        [
+          1.0,
+          0.0,
+          -0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          0.0,
+          -1.0
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(0,1,0,0,-1,0,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 1,
+      "cell_box_px": [
+        484,
+        140,
+        784,
+        390
+      ],
+      "cell_center_px": [
+        634,
+        252
+      ],
+      "local_origin_px": [
+        574,
+        192
+      ],
+      "final_bounding_box_px": [
+        594.0,
+        200.0,
+        686.0,
+        296.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T03",
+      "short_name": "顺时针 180°",
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          180
+        ]
+      ],
+      "operations_readable": [
+        "顺时针 180°"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          -1.0,
+          -0.0,
+          120.0
+        ],
+        [
+          0.0,
+          -1.0,
+          120.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          -1.0,
+          -0.0
+        ],
+        [
+          0.0,
+          -1.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(-1,0,0,0,0,-1,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 2,
+      "cell_box_px": [
+        816,
+        140,
+        1116,
+        390
+      ],
+      "cell_center_px": [
+        966,
+        252
+      ],
+      "local_origin_px": [
+        906,
+        192
+      ],
+      "final_bounding_box_px": [
+        922.0,
+        212.0,
+        1018.0,
+        304.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T04",
+      "short_name": "顺时针 270°",
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          270
+        ]
+      ],
+      "operations_readable": [
+        "顺时针 270°"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          -0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          -0.0,
+          120.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          -0.0,
+          1.0
+        ],
+        [
+          -1.0,
+          -0.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        -0.0,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        -0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(0,-1,0,0,1,0,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 3,
+      "cell_box_px": [
+        1148,
+        140,
+        1448,
+        390
+      ],
+      "cell_center_px": [
+        1298,
+        252
+      ],
+      "local_origin_px": [
+        1238,
+        192
+      ],
+      "final_bounding_box_px": [
+        1246.0,
+        208.0,
+        1338.0,
+        304.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T05",
+      "short_name": "左右镜像",
+      "operations": [
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "operations_readable": [
+        "左右镜像"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          -1.0,
+          0.0,
+          120.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(-1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 4,
+      "cell_box_px": [
+        152,
+        422,
+        452,
+        672
+      ],
+      "cell_center_px": [
+        302,
+        534
+      ],
+      "local_origin_px": [
+        242,
+        474
+      ],
+      "final_bounding_box_px": [
+        258.0,
+        482.0,
+        354.0,
+        574.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T06",
+      "short_name": "上下镜像",
+      "operations": [
+        [
+          "mirror_vertical",
+          true
+        ]
+      ],
+      "operations_readable": [
+        "上下镜像"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          120.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(1,0,0,0,0,-1,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 5,
+      "cell_box_px": [
+        484,
+        422,
+        784,
+        672
+      ],
+      "cell_center_px": [
+        634,
+        534
+      ],
+      "local_origin_px": [
+        574,
+        474
+      ],
+      "final_bounding_box_px": [
+        582.0,
+        494.0,
+        678.0,
+        586.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T07",
+      "short_name": "镜像 → 旋转 90°",
+      "operations": [
+        [
+          "mirror_horizontal",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "operations_readable": [
+        "左右镜像",
+        "顺时针 90°"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          -0.0,
+          -1.0,
+          120.0
+        ],
+        [
+          -1.0,
+          0.0,
+          120.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          -0.0,
+          -1.0
+        ],
+        [
+          -1.0,
+          0.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        -0.0,
+        -1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(0,-1,0,0,-1,0,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 6,
+      "cell_box_px": [
+        816,
+        422,
+        1116,
+        672
+      ],
+      "cell_center_px": [
+        966,
+        534
+      ],
+      "local_origin_px": [
+        906,
+        474
+      ],
+      "final_bounding_box_px": [
+        926.0,
+        490.0,
+        1018.0,
+        586.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T08",
+      "short_name": "旋转 90° → 镜像",
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ],
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "operations_readable": [
+        "顺时针 90°",
+        "左右镜像"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          -0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          -0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          -0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        -0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 7,
+      "cell_box_px": [
+        1148,
+        422,
+        1448,
+        672
+      ],
+      "cell_center_px": [
+        1298,
+        534
+      ],
+      "local_origin_px": [
+        1238,
+        474
+      ],
+      "final_bounding_box_px": [
+        1246.0,
+        482.0,
+        1338.0,
+        578.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T09",
+      "short_name": "等比缩放 0.75",
+      "operations": [
+        [
+          "scale_uniform",
+          0.75
+        ]
+      ],
+      "operations_readable": [
+        "等比缩放 0.75"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          0.75,
+          0.0,
+          15.0
+        ],
+        [
+          0.0,
+          0.75,
+          15.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          0.75,
+          0.0
+        ],
+        [
+          0.0,
+          0.75
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(0.75,0,0,0,0,0.75,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 8,
+      "cell_box_px": [
+        152,
+        704,
+        452,
+        954
+      ],
+      "cell_center_px": [
+        302,
+        816
+      ],
+      "local_origin_px": [
+        242,
+        756
+      ],
+      "final_bounding_box_px": [
+        263.0,
+        777.0,
+        335.0,
+        846.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T10",
+      "short_name": "非等比 1.25 × 0.75",
+      "operations": [
+        [
+          "scale_xy",
+          [
+            1.25,
+            0.75
+          ]
+        ]
+      ],
+      "operations_readable": [
+        "非等比 1.25 × 0.75"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          1.25,
+          0.0,
+          -15.0
+        ],
+        [
+          0.0,
+          0.75,
+          15.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          1.25,
+          0.0
+        ],
+        [
+          0.0,
+          0.75
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        1.25,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(1.25,0,0,0,0,0.75,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 9,
+      "cell_box_px": [
+        484,
+        704,
+        784,
+        954
+      ],
+      "cell_center_px": [
+        634,
+        816
+      ],
+      "local_origin_px": [
+        574,
+        756
+      ],
+      "final_bounding_box_px": [
+        569.0,
+        777.0,
+        689.0,
+        846.0
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T11",
+      "short_name": "顺时针 30°",
+      "operations": [
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "operations_readable": [
+        "顺时针 30°"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          0.866025,
+          -0.5,
+          38.038476
+        ],
+        [
+          0.5,
+          0.866025,
+          -21.961524
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          0.866025,
+          -0.5
+        ],
+        [
+          0.5,
+          0.866025
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        0.866025,
+        0.5,
+        0.0,
+        0.0,
+        -0.5,
+        0.866025,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(0.866025,0.5,0,0,-0.5,0.866025,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 10,
+      "cell_box_px": [
+        816,
+        704,
+        1116,
+        954
+      ],
+      "cell_center_px": [
+        966,
+        816
+      ],
+      "local_origin_px": [
+        906,
+        756
+      ],
+      "final_bounding_box_px": [
+        900.9667,
+        744.9667,
+        1030.1051,
+        872.641
+      ],
+      "clipped_by_cell": false
+    },
+    {
+      "id": "T12",
+      "short_name": "上下镜像 → 旋转 30°",
+      "operations": [
+        [
+          "mirror_vertical",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "operations_readable": [
+        "上下镜像",
+        "顺时针 30°"
+      ],
+      "matrix_about_pivot_3x3": [
+        [
+          0.866025,
+          0.5,
+          -21.961524
+        ],
+        [
+          0.5,
+          -0.866025,
+          81.961524
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "matrix_linear_2x2": [
+        [
+          0.866025,
+          0.5
+        ],
+        [
+          0.5,
+          -0.866025
+        ]
+      ],
+      "matrix_column_major_4x4_dsl": [
+        0.866025,
+        0.5,
+        0.0,
+        0.0,
+        0.5,
+        -0.866025,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_dsl_string": "(0.866025,0.5,0,0,0.5,-0.866025,0,0,0,0,1,0,0,0,0,1)",
+      "matrix_note": "Transform.matrix 写入的是组合变换的**线性部分**；枢轴 (60,60) 由 alignment=\"CENTER\" 承担，矩阵平移列取 0（实测：再写一次平移会被叠加）。",
+      "cell_index": 11,
+      "cell_box_px": [
+        1148,
+        704,
+        1448,
+        954
+      ],
+      "cell_center_px": [
+        1298,
+        816
+      ],
+      "local_origin_px": [
+        1238,
+        756
+      ],
+      "final_bounding_box_px": [
+        1226.9667,
+        755.359,
+        1356.1051,
+        883.0333
+      ],
+      "clipped_by_cell": false
+    }
+  ],
+  "geometry": [
+    {
+      "id": "T01",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              250.0,
+              200.0
+            ],
+            [
+              278.0,
+              200.0
+            ],
+            [
+              278.0,
+              292.0
+            ],
+            [
+              250.0,
+              292.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              278.0,
+              264.0
+            ],
+            [
+              346.0,
+              264.0
+            ],
+            [
+              346.0,
+              292.0
+            ],
+            [
+              278.0,
+              292.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              306.0,
+              200.0
+            ],
+            [
+              346.0,
+              200.0
+            ],
+            [
+              346.0,
+              228.0
+            ],
+            [
+              306.0,
+              228.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          91.0,
+          49.0
+        ],
+        "canvas_center": [
+          333.0,
+          241.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        250.0,
+        200.0,
+        346.0,
+        292.0
+      ]
+    },
+    {
+      "id": "T02",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              112.0,
+              8.0
+            ],
+            [
+              112.0,
+              36.0
+            ],
+            [
+              20.0,
+              36.0
+            ],
+            [
+              20.0,
+              8.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              686.0,
+              200.0
+            ],
+            [
+              686.0,
+              228.0
+            ],
+            [
+              594.0,
+              228.0
+            ],
+            [
+              594.0,
+              200.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              48.0,
+              36.0
+            ],
+            [
+              48.0,
+              104.0
+            ],
+            [
+              20.0,
+              104.0
+            ],
+            [
+              20.0,
+              36.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              622.0,
+              228.0
+            ],
+            [
+              622.0,
+              296.0
+            ],
+            [
+              594.0,
+              296.0
+            ],
+            [
+              594.0,
+              228.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              112.0,
+              64.0
+            ],
+            [
+              112.0,
+              104.0
+            ],
+            [
+              84.0,
+              104.0
+            ],
+            [
+              84.0,
+              64.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              686.0,
+              256.0
+            ],
+            [
+              686.0,
+              296.0
+            ],
+            [
+              658.0,
+              296.0
+            ],
+            [
+              658.0,
+              256.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          71.0,
+          91.0
+        ],
+        "canvas_center": [
+          645.0,
+          283.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        594.0,
+        200.0,
+        686.0,
+        296.0
+      ]
+    },
+    {
+      "id": "T03",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              112.0,
+              112.0
+            ],
+            [
+              84.0,
+              112.0
+            ],
+            [
+              84.0,
+              20.0
+            ],
+            [
+              112.0,
+              20.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1018.0,
+              304.0
+            ],
+            [
+              990.0,
+              304.0
+            ],
+            [
+              990.0,
+              212.0
+            ],
+            [
+              1018.0,
+              212.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              84.0,
+              48.0
+            ],
+            [
+              16.0,
+              48.0
+            ],
+            [
+              16.0,
+              20.0
+            ],
+            [
+              84.0,
+              20.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              990.0,
+              240.0
+            ],
+            [
+              922.0,
+              240.0
+            ],
+            [
+              922.0,
+              212.0
+            ],
+            [
+              990.0,
+              212.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              56.0,
+              112.0
+            ],
+            [
+              16.0,
+              112.0
+            ],
+            [
+              16.0,
+              84.0
+            ],
+            [
+              56.0,
+              84.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              962.0,
+              304.0
+            ],
+            [
+              922.0,
+              304.0
+            ],
+            [
+              922.0,
+              276.0
+            ],
+            [
+              962.0,
+              276.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          29.0,
+          71.0
+        ],
+        "canvas_center": [
+          935.0,
+          263.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        922.0,
+        212.0,
+        1018.0,
+        304.0
+      ]
+    },
+    {
+      "id": "T04",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              8.0,
+              112.0
+            ],
+            [
+              8.0,
+              84.0
+            ],
+            [
+              100.0,
+              84.0
+            ],
+            [
+              100.0,
+              112.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1246.0,
+              304.0
+            ],
+            [
+              1246.0,
+              276.0
+            ],
+            [
+              1338.0,
+              276.0
+            ],
+            [
+              1338.0,
+              304.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              72.0,
+              84.0
+            ],
+            [
+              72.0,
+              16.0
+            ],
+            [
+              100.0,
+              16.0
+            ],
+            [
+              100.0,
+              84.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1310.0,
+              276.0
+            ],
+            [
+              1310.0,
+              208.0
+            ],
+            [
+              1338.0,
+              208.0
+            ],
+            [
+              1338.0,
+              276.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              8.0,
+              56.0
+            ],
+            [
+              8.0,
+              16.0
+            ],
+            [
+              36.0,
+              16.0
+            ],
+            [
+              36.0,
+              56.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1246.0,
+              248.0
+            ],
+            [
+              1246.0,
+              208.0
+            ],
+            [
+              1274.0,
+              208.0
+            ],
+            [
+              1274.0,
+              248.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          49.0,
+          29.0
+        ],
+        "canvas_center": [
+          1287.0,
+          221.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        1246.0,
+        208.0,
+        1338.0,
+        304.0
+      ]
+    },
+    {
+      "id": "T05",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              112.0,
+              8.0
+            ],
+            [
+              84.0,
+              8.0
+            ],
+            [
+              84.0,
+              100.0
+            ],
+            [
+              112.0,
+              100.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              354.0,
+              482.0
+            ],
+            [
+              326.0,
+              482.0
+            ],
+            [
+              326.0,
+              574.0
+            ],
+            [
+              354.0,
+              574.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              84.0,
+              72.0
+            ],
+            [
+              16.0,
+              72.0
+            ],
+            [
+              16.0,
+              100.0
+            ],
+            [
+              84.0,
+              100.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              326.0,
+              546.0
+            ],
+            [
+              258.0,
+              546.0
+            ],
+            [
+              258.0,
+              574.0
+            ],
+            [
+              326.0,
+              574.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              56.0,
+              8.0
+            ],
+            [
+              16.0,
+              8.0
+            ],
+            [
+              16.0,
+              36.0
+            ],
+            [
+              56.0,
+              36.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              298.0,
+              482.0
+            ],
+            [
+              258.0,
+              482.0
+            ],
+            [
+              258.0,
+              510.0
+            ],
+            [
+              298.0,
+              510.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          29.0,
+          49.0
+        ],
+        "canvas_center": [
+          271.0,
+          523.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        258.0,
+        482.0,
+        354.0,
+        574.0
+      ]
+    },
+    {
+      "id": "T06",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              8.0,
+              112.0
+            ],
+            [
+              36.0,
+              112.0
+            ],
+            [
+              36.0,
+              20.0
+            ],
+            [
+              8.0,
+              20.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              582.0,
+              586.0
+            ],
+            [
+              610.0,
+              586.0
+            ],
+            [
+              610.0,
+              494.0
+            ],
+            [
+              582.0,
+              494.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              36.0,
+              48.0
+            ],
+            [
+              104.0,
+              48.0
+            ],
+            [
+              104.0,
+              20.0
+            ],
+            [
+              36.0,
+              20.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              610.0,
+              522.0
+            ],
+            [
+              678.0,
+              522.0
+            ],
+            [
+              678.0,
+              494.0
+            ],
+            [
+              610.0,
+              494.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              64.0,
+              112.0
+            ],
+            [
+              104.0,
+              112.0
+            ],
+            [
+              104.0,
+              84.0
+            ],
+            [
+              64.0,
+              84.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              638.0,
+              586.0
+            ],
+            [
+              678.0,
+              586.0
+            ],
+            [
+              678.0,
+              558.0
+            ],
+            [
+              638.0,
+              558.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          91.0,
+          71.0
+        ],
+        "canvas_center": [
+          665.0,
+          545.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        582.0,
+        494.0,
+        678.0,
+        586.0
+      ]
+    },
+    {
+      "id": "T07",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              112.0,
+              112.0
+            ],
+            [
+              112.0,
+              84.0
+            ],
+            [
+              20.0,
+              84.0
+            ],
+            [
+              20.0,
+              112.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1018.0,
+              586.0
+            ],
+            [
+              1018.0,
+              558.0
+            ],
+            [
+              926.0,
+              558.0
+            ],
+            [
+              926.0,
+              586.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              48.0,
+              84.0
+            ],
+            [
+              48.0,
+              16.0
+            ],
+            [
+              20.0,
+              16.0
+            ],
+            [
+              20.0,
+              84.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              954.0,
+              558.0
+            ],
+            [
+              954.0,
+              490.0
+            ],
+            [
+              926.0,
+              490.0
+            ],
+            [
+              926.0,
+              558.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              112.0,
+              56.0
+            ],
+            [
+              112.0,
+              16.0
+            ],
+            [
+              84.0,
+              16.0
+            ],
+            [
+              84.0,
+              56.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1018.0,
+              530.0
+            ],
+            [
+              1018.0,
+              490.0
+            ],
+            [
+              990.0,
+              490.0
+            ],
+            [
+              990.0,
+              530.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          71.0,
+          29.0
+        ],
+        "canvas_center": [
+          977.0,
+          503.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        926.0,
+        490.0,
+        1018.0,
+        586.0
+      ]
+    },
+    {
+      "id": "T08",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              8.0,
+              36.0
+            ],
+            [
+              100.0,
+              36.0
+            ],
+            [
+              100.0,
+              8.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1246.0,
+              482.0
+            ],
+            [
+              1246.0,
+              510.0
+            ],
+            [
+              1338.0,
+              510.0
+            ],
+            [
+              1338.0,
+              482.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              72.0,
+              36.0
+            ],
+            [
+              72.0,
+              104.0
+            ],
+            [
+              100.0,
+              104.0
+            ],
+            [
+              100.0,
+              36.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1310.0,
+              510.0
+            ],
+            [
+              1310.0,
+              578.0
+            ],
+            [
+              1338.0,
+              578.0
+            ],
+            [
+              1338.0,
+              510.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              8.0,
+              64.0
+            ],
+            [
+              8.0,
+              104.0
+            ],
+            [
+              36.0,
+              104.0
+            ],
+            [
+              36.0,
+              64.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1246.0,
+              538.0
+            ],
+            [
+              1246.0,
+              578.0
+            ],
+            [
+              1274.0,
+              578.0
+            ],
+            [
+              1274.0,
+              538.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          49.0,
+          91.0
+        ],
+        "canvas_center": [
+          1287.0,
+          565.0
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        1246.0,
+        482.0,
+        1338.0,
+        578.0
+      ]
+    },
+    {
+      "id": "T09",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              21.0,
+              21.0
+            ],
+            [
+              42.0,
+              21.0
+            ],
+            [
+              42.0,
+              90.0
+            ],
+            [
+              21.0,
+              90.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              263.0,
+              777.0
+            ],
+            [
+              284.0,
+              777.0
+            ],
+            [
+              284.0,
+              846.0
+            ],
+            [
+              263.0,
+              846.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              42.0,
+              69.0
+            ],
+            [
+              93.0,
+              69.0
+            ],
+            [
+              93.0,
+              90.0
+            ],
+            [
+              42.0,
+              90.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              284.0,
+              825.0
+            ],
+            [
+              335.0,
+              825.0
+            ],
+            [
+              335.0,
+              846.0
+            ],
+            [
+              284.0,
+              846.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              63.0,
+              21.0
+            ],
+            [
+              93.0,
+              21.0
+            ],
+            [
+              93.0,
+              42.0
+            ],
+            [
+              63.0,
+              42.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              305.0,
+              777.0
+            ],
+            [
+              335.0,
+              777.0
+            ],
+            [
+              335.0,
+              798.0
+            ],
+            [
+              305.0,
+              798.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          83.25,
+          51.75
+        ],
+        "canvas_center": [
+          325.25,
+          807.75
+        ],
+        "radii": {
+          "radius_if_uniform": 6.0,
+          "semi_axis_u": 6.0,
+          "semi_axis_v": 6.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        263.0,
+        777.0,
+        335.0,
+        846.0
+      ]
+    },
+    {
+      "id": "T10",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              -5.0,
+              21.0
+            ],
+            [
+              30.0,
+              21.0
+            ],
+            [
+              30.0,
+              90.0
+            ],
+            [
+              -5.0,
+              90.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              569.0,
+              777.0
+            ],
+            [
+              604.0,
+              777.0
+            ],
+            [
+              604.0,
+              846.0
+            ],
+            [
+              569.0,
+              846.0
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              30.0,
+              69.0
+            ],
+            [
+              115.0,
+              69.0
+            ],
+            [
+              115.0,
+              90.0
+            ],
+            [
+              30.0,
+              90.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              604.0,
+              825.0
+            ],
+            [
+              689.0,
+              825.0
+            ],
+            [
+              689.0,
+              846.0
+            ],
+            [
+              604.0,
+              846.0
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              65.0,
+              21.0
+            ],
+            [
+              115.0,
+              21.0
+            ],
+            [
+              115.0,
+              42.0
+            ],
+            [
+              65.0,
+              42.0
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              639.0,
+              777.0
+            ],
+            [
+              689.0,
+              777.0
+            ],
+            [
+              689.0,
+              798.0
+            ],
+            [
+              639.0,
+              798.0
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          98.75,
+          51.75
+        ],
+        "canvas_center": [
+          672.75,
+          807.75
+        ],
+        "radii": {
+          "radius_if_uniform": 10.0,
+          "semi_axis_u": 10.0,
+          "semi_axis_v": 6.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        569.0,
+        777.0,
+        689.0,
+        846.0
+      ]
+    },
+    {
+      "id": "T11",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              40.9667,
+              -11.0333
+            ],
+            [
+              65.2154,
+              2.9667
+            ],
+            [
+              19.2154,
+              82.641
+            ],
+            [
+              -5.0333,
+              68.641
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              946.9667,
+              744.9667
+            ],
+            [
+              971.2154,
+              758.9667
+            ],
+            [
+              925.2154,
+              838.641
+            ],
+            [
+              900.9667,
+              824.641
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              33.2154,
+              58.3923
+            ],
+            [
+              92.1051,
+              92.3923
+            ],
+            [
+              78.1051,
+              116.641
+            ],
+            [
+              19.2154,
+              82.641
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              939.2154,
+              814.3923
+            ],
+            [
+              998.1051,
+              848.3923
+            ],
+            [
+              984.1051,
+              872.641
+            ],
+            [
+              925.2154,
+              838.641
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              89.4641,
+              16.9667
+            ],
+            [
+              124.1051,
+              36.9667
+            ],
+            [
+              110.1051,
+              61.2154
+            ],
+            [
+              75.4641,
+              41.2154
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              995.4641,
+              772.9667
+            ],
+            [
+              1030.1051,
+              792.9667
+            ],
+            [
+              1016.1051,
+              817.2154
+            ],
+            [
+              981.4641,
+              797.2154
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          92.3468,
+          65.9737
+        ],
+        "canvas_center": [
+          998.3468,
+          821.9737
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        900.9667,
+        744.9667,
+        1030.1051,
+        872.641
+      ]
+    },
+    {
+      "id": "T12",
+      "rectangles": [
+        {
+          "color": "#E54B4B",
+          "source_xywh": [
+            8,
+            8,
+            28,
+            92
+          ],
+          "local_corners_source_order": [
+            [
+              8,
+              8
+            ],
+            [
+              36,
+              8
+            ],
+            [
+              36,
+              100
+            ],
+            [
+              8,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              -11.0333,
+              79.0333
+            ],
+            [
+              13.2154,
+              93.0333
+            ],
+            [
+              59.2154,
+              13.359
+            ],
+            [
+              34.9667,
+              -0.641
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1226.9667,
+              835.0333
+            ],
+            [
+              1251.2154,
+              849.0333
+            ],
+            [
+              1297.2154,
+              769.359
+            ],
+            [
+              1272.9667,
+              755.359
+            ]
+          ]
+        },
+        {
+          "color": "#2364DB",
+          "source_xywh": [
+            36,
+            72,
+            68,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              36,
+              72
+            ],
+            [
+              104,
+              72
+            ],
+            [
+              104,
+              100
+            ],
+            [
+              36,
+              100
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              45.2154,
+              37.6077
+            ],
+            [
+              104.1051,
+              71.6077
+            ],
+            [
+              118.1051,
+              47.359
+            ],
+            [
+              59.2154,
+              13.359
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1283.2154,
+              793.6077
+            ],
+            [
+              1342.1051,
+              827.6077
+            ],
+            [
+              1356.1051,
+              803.359
+            ],
+            [
+              1297.2154,
+              769.359
+            ]
+          ]
+        },
+        {
+          "color": "#EAB53B",
+          "source_xywh": [
+            64,
+            8,
+            40,
+            28
+          ],
+          "local_corners_source_order": [
+            [
+              64,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              104,
+              36
+            ],
+            [
+              64,
+              36
+            ]
+          ],
+          "local_corners_after_transform": [
+            [
+              37.4641,
+              107.0333
+            ],
+            [
+              72.1051,
+              127.0333
+            ],
+            [
+              86.1051,
+              102.7846
+            ],
+            [
+              51.4641,
+              82.7846
+            ]
+          ],
+          "canvas_corners_tl_tr_br_bl": [
+            [
+              1275.4641,
+              863.0333
+            ],
+            [
+              1310.1051,
+              883.0333
+            ],
+            [
+              1324.1051,
+              858.7846
+            ],
+            [
+              1289.4641,
+              838.7846
+            ]
+          ]
+        }
+      ],
+      "dot": {
+        "source_center": [
+          91,
+          49
+        ],
+        "source_radius": 8,
+        "transformed_local_center": [
+          81.3468,
+          85.0263
+        ],
+        "canvas_center": [
+          1319.3468,
+          841.0263
+        ],
+        "radii": {
+          "radius_if_uniform": 8.0,
+          "semi_axis_u": 8.0,
+          "semi_axis_v": 8.0,
+          "note": "等比变换时为圆；非等比（T10）时沿 u/v 为长短半轴的椭圆"
+        }
+      },
+      "final_bounding_box_px": [
+        1226.9667,
+        755.359,
+        1356.1051,
+        883.0333
+      ]
+    }
+  ],
+  "order_sensitivity": {
+    "pair": [
+      "T07",
+      "T08"
+    ],
+    "T07_operations": [
+      "mirror_horizontal",
+      "rotate_clockwise_deg 90"
+    ],
+    "T08_operations": [
+      "rotate_clockwise_deg 90",
+      "mirror_horizontal"
+    ],
+    "T07_result": "x' = −y + 120, y' = −x + 120（关于 x+y=120 的反对角线反射）",
+    "T08_result": "x' = y, y' = x（关于 x=y 的主对角线反射）",
+    "differ": true,
+    "evidence": "两格的组合矩阵不同，图中并排显示，图例说明文字另写明各自结果"
+  },
+  "verification": [
+    {
+      "id": "V1",
+      "name": "渲染像素位置 vs 解析几何",
+      "method": "对最终 PNG 逐格做白色混合反算：在每个色块的理论包围盒外扩 3px 的窗口内，把像素按「与该色的混合比例 α=(255−min(R,G,B))/255」分类，对 3×3 邻域命中比例 ≥ 0.12 的像素判定为覆盖，取覆盖像素的紧包围盒并换算到格内 u/v 坐标；圆点另按圆形窗口（半径理论值 + 3px）求覆盖像素质心与等效半径。覆盖率低于 0.04 的像素忽略（抗锯齿与白底）。",
+      "tolerance_px": 1.5,
+      "worst_blended_error_px": 0.566,
+      "measured_on": "outputs/run-20261011-01/A09/transform-atlas.png",
+      "cells_passed": 12,
+      "cells_total": 12,
+      "all_passed": true,
+      "note": "误差来源为像素量化：整像素边界使紧包围盒最多偏半个像素，故理论 ±0.5px 属正常，1.5px 为容差上限。",
+      "rows": [
+        {
+          "id": "T01",
+          "cell_box_px": [
+            152,
+            140,
+            452,
+            390
+          ],
+          "matrix_dsl_string": "(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            250.0,
+            200.0,
+            346.0,
+            292.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              333.0,
+              241.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T02",
+          "cell_box_px": [
+            484,
+            140,
+            784,
+            390
+          ],
+          "matrix_dsl_string": "(0,1,0,0,-1,0,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            594.0,
+            200.0,
+            686.0,
+            296.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              645.0,
+              283.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T03",
+          "cell_box_px": [
+            816,
+            140,
+            1116,
+            390
+          ],
+          "matrix_dsl_string": "(-1,0,0,0,0,-1,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            922.0,
+            212.0,
+            1018.0,
+            304.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              935.0,
+              263.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T04",
+          "cell_box_px": [
+            1148,
+            140,
+            1448,
+            390
+          ],
+          "matrix_dsl_string": "(0,-1,0,0,1,0,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            1246.0,
+            208.0,
+            1338.0,
+            304.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              1287.0,
+              221.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T05",
+          "cell_box_px": [
+            152,
+            422,
+            452,
+            672
+          ],
+          "matrix_dsl_string": "(-1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            258.0,
+            482.0,
+            354.0,
+            574.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              271.0,
+              523.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T06",
+          "cell_box_px": [
+            484,
+            422,
+            784,
+            672
+          ],
+          "matrix_dsl_string": "(1,0,0,0,0,-1,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            582.0,
+            494.0,
+            678.0,
+            586.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              665.0,
+              545.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T07",
+          "cell_box_px": [
+            816,
+            422,
+            1116,
+            672
+          ],
+          "matrix_dsl_string": "(0,-1,0,0,-1,0,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            926.0,
+            490.0,
+            1018.0,
+            586.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              977.0,
+              503.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T08",
+          "cell_box_px": [
+            1148,
+            422,
+            1448,
+            672
+          ],
+          "matrix_dsl_string": "(0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            1246.0,
+            482.0,
+            1338.0,
+            578.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -51.5,
+                -51.5,
+                -24.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2576,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2576
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.5,
+                12.5,
+                43.5,
+                39.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1904,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1904
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                4.5,
+                -51.5,
+                43.5,
+                -24.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1120,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1120
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              1287.0,
+              565.0
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              0.0,
+              0.0
+            ],
+            "center_error_px": 0.0,
+            "measured_radius_px": 7.5,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 6.5,
+            "strict_pixels": 164
+          },
+          "passed": true
+        },
+        {
+          "id": "T09",
+          "cell_box_px": [
+            152,
+            704,
+            452,
+            954
+          ],
+          "matrix_dsl_string": "(0.75,0,0,0,0,0.75,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            263.0,
+            777.0,
+            335.0,
+            846.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -39.0,
+                -39.0,
+                -18.0,
+                30.0
+              ],
+              "measured_uv": [
+                -38.5,
+                -38.5,
+                -18.5,
+                29.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1449,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1449
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -18.0,
+                9.0,
+                33.0,
+                30.0
+              ],
+              "measured_uv": [
+                -17.5,
+                9.5,
+                32.5,
+                29.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1071,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1071
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                3.0,
+                -39.0,
+                33.0,
+                -18.0
+              ],
+              "measured_uv": [
+                3.5,
+                -38.5,
+                32.5,
+                -18.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 630,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 630
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              325.25,
+              807.75
+            ],
+            "predicted_radius_px": 6.0,
+            "measured_center_uv": [
+              0.25,
+              -0.25
+            ],
+            "center_error_px": 0.25,
+            "measured_radius_px": 6.0,
+            "measured_pixels": 127,
+            "strict_measured_radius_px": 5.0,
+            "strict_pixels": 90
+          },
+          "passed": true
+        },
+        {
+          "id": "T10",
+          "cell_box_px": [
+            484,
+            704,
+            784,
+            954
+          ],
+          "matrix_dsl_string": "(1.25,0,0,0,0,0.75,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            569.0,
+            777.0,
+            689.0,
+            846.0
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -65.0,
+                -39.0,
+                -30.0,
+                30.0
+              ],
+              "measured_uv": [
+                -64.5,
+                -38.5,
+                -30.5,
+                29.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 2415,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 2415
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -30.0,
+                9.0,
+                55.0,
+                30.0
+              ],
+              "measured_uv": [
+                -29.5,
+                9.5,
+                54.5,
+                29.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1785,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1785
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                5.0,
+                -39.0,
+                55.0,
+                -18.0
+              ],
+              "measured_uv": [
+                5.5,
+                -38.5,
+                54.5,
+                -18.5
+              ],
+              "max_abs_error_px": 0.5,
+              "measured_pixels": 1050,
+              "strict_max_abs_error_px": 0.5,
+              "strict_pixels": 1050
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              672.75,
+              807.75
+            ],
+            "predicted_radius_px": 10.0,
+            "measured_center_uv": [
+              -0.25,
+              -0.25
+            ],
+            "center_error_px": 0.25,
+            "measured_radius_px": 8.0,
+            "measured_pixels": 207,
+            "strict_measured_radius_px": 7.0,
+            "strict_pixels": 157
+          },
+          "passed": true
+        },
+        {
+          "id": "T11",
+          "cell_box_px": [
+            816,
+            704,
+            1116,
+            954
+          ],
+          "matrix_dsl_string": "(0.866025,0.5,0,0,-0.5,0.866025,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            900.9667,
+            744.9667,
+            1030.1051,
+            872.641
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -52.468,
+                -52.412,
+                -23.468,
+                40.539
+              ],
+              "max_abs_error_px": 0.539,
+              "measured_pixels": 2646,
+              "strict_max_abs_error_px": 0.659,
+              "strict_pixels": 2436
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.592,
+                11.637,
+                44.53,
+                40.566
+              ],
+              "max_abs_error_px": 0.566,
+              "measured_pixels": 1961,
+              "strict_max_abs_error_px": 0.709,
+              "strict_pixels": 1789
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                3.539,
+                -52.432,
+                44.484,
+                -23.513
+              ],
+              "max_abs_error_px": 0.487,
+              "measured_pixels": 1175,
+              "strict_max_abs_error_px": 0.64,
+              "strict_pixels": 1039
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              998.3468,
+              821.9737
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              -0.104,
+              -0.054
+            ],
+            "center_error_px": 0.104,
+            "measured_radius_px": 8.096,
+            "measured_pixels": 219,
+            "strict_measured_radius_px": 7.196,
+            "strict_pixels": 174
+          },
+          "passed": true
+        },
+        {
+          "id": "T12",
+          "cell_box_px": [
+            1148,
+            704,
+            1448,
+            954
+          ],
+          "matrix_dsl_string": "(0.866025,0.5,0,0,0.5,-0.866025,0,0,0,0,1,0,0,0,0,1)",
+          "final_bounding_box_px": [
+            1226.9667,
+            755.359,
+            1356.1051,
+            883.0333
+          ],
+          "rectangles": [
+            {
+              "color": "#E54B4B",
+              "predicted_uv": [
+                -52.0,
+                -52.0,
+                -24.0,
+                40.0
+              ],
+              "measured_uv": [
+                -52.53,
+                -52.396,
+                -23.556,
+                40.484
+              ],
+              "max_abs_error_px": 0.53,
+              "measured_pixels": 2648,
+              "strict_max_abs_error_px": 0.666,
+              "strict_pixels": 2434
+            },
+            {
+              "color": "#2364DB",
+              "predicted_uv": [
+                -24.0,
+                12.0,
+                44.0,
+                40.0
+              ],
+              "measured_uv": [
+                -23.709,
+                11.611,
+                44.386,
+                40.566
+              ],
+              "max_abs_error_px": 0.566,
+              "measured_pixels": 1962,
+              "strict_max_abs_error_px": 0.709,
+              "strict_pixels": 1790
+            },
+            {
+              "color": "#EAB53B",
+              "predicted_uv": [
+                4.0,
+                -52.0,
+                44.0,
+                -24.0
+              ],
+              "measured_uv": [
+                3.523,
+                -52.448,
+                44.468,
+                -23.494
+              ],
+              "max_abs_error_px": 0.506,
+              "measured_pixels": 1177,
+              "strict_max_abs_error_px": 0.65,
+              "strict_pixels": 1039
+            }
+          ],
+          "dot": {
+            "predicted_center_px": [
+              1319.3468,
+              841.0263
+            ],
+            "predicted_radius_px": 8.0,
+            "measured_center_uv": [
+              -0.13,
+              0.032
+            ],
+            "center_error_px": 0.13,
+            "measured_radius_px": 8.062,
+            "measured_pixels": 218,
+            "strict_measured_radius_px": 7.196,
+            "strict_pixels": 174
+          },
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "kind": "png",
+      "filename": "transform-atlas.png",
+      "dsl": "transform-atlas.snapshot",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "kind": "json",
+      "filename": "geometry-audit.json"
+    }
+  ],
+  "artifacts": {
+    "transform-atlas.png": {
+      "width": 1600,
+      "height": 1200,
+      "format": "PNG",
+      "mode": "RGBA",
+      "dsl": "transform-atlas.snapshot",
+      "image_info": {
+        "format": "PNG",
+        "width": 1600,
+        "height": 1200,
+        "mode": "RGBA"
+      }
+    },
+    "geometry-audit.json": {
+      "schema_version": 1,
+      "task_id": "A09",
+      "path_base": "output_dir"
+    }
+  }
+}

@@ -1,0 +1,1413 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "round": "round-01",
+  "title": "透明合成与滤镜语义实验板",
+  "measured_on": "outputs/run-20261011-01/A10/compositing-lab.png",
+  "canvas": {
+    "width": 1440,
+    "height": 1100,
+    "origin": "top-left",
+    "x_direction": "right",
+    "y_direction": "down",
+    "unit": "px",
+    "background": "#F5F8FC",
+    "title_text": "看到差异，才能说用对了"
+  },
+  "experiment_area": {
+    "size_px": [
+      320,
+      240
+    ],
+    "origin": "各实验区左上外边界",
+    "x_direction": "right",
+    "y_direction": "down",
+    "unit": "px",
+    "base_color": "#FFFFFF",
+    "grid": {
+      "cols": 3,
+      "rows": 2,
+      "cell_px": [
+        416,
+        328
+      ],
+      "column_x_px": [
+        56,
+        512,
+        968
+      ],
+      "row_top_px": [
+        96,
+        458
+      ],
+      "horizontal_gap_px": 40,
+      "vertical_gap_px": 34,
+      "requirement": "区与区之间至少 32 像素"
+    },
+    "note": "编号与说明全部在实验区之外（每格上方 88px 说明带 + 下方 22px 原点注记）"
+  },
+  "experiment_areas": [
+    {
+      "index": 1,
+      "label": "①",
+      "title": "① 两个矩形各设 50% alpha",
+      "description": "红 #FF000080 压白底，再叠蓝 #0000FF80（各 128/255）",
+      "cell_origin_px": [
+        56,
+        96
+      ],
+      "canvas_origin_px": [
+        104,
+        184
+      ],
+      "origin_is_integer": true,
+      "size_px": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 2,
+      "label": "②",
+      "title": "② 同样两块放进 Opacity(0.5) 组",
+      "description": "组内红蓝均不透明，只有一次整体透明 0.5",
+      "cell_origin_px": [
+        512,
+        96
+      ],
+      "canvas_origin_px": [
+        560,
+        184
+      ],
+      "origin_is_integer": true,
+      "size_px": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 3,
+      "label": "③",
+      "title": "③ 仅背景模糊",
+      "description": "BackdropFilter sigma=6 只模糊卡内背景；文字与前景保持清晰",
+      "cell_origin_px": [
+        968,
+        96
+      ],
+      "canvas_origin_px": [
+        1016,
+        184
+      ],
+      "origin_is_integer": true,
+      "size_px": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 4,
+      "label": "④",
+      "title": "④ 整棵子树模糊",
+      "description": "ImageFiltered sigma=6 模糊卡的整棵子树：背景 + 文字 + 前景",
+      "cell_origin_px": [
+        56,
+        458
+      ],
+      "canvas_origin_px": [
+        104,
+        546
+      ],
+      "origin_is_integer": true,
+      "size_px": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 5,
+      "label": "⑤",
+      "title": "⑤ 先滤色再模糊",
+      "description": "ColorFiltered(#F6B94A,MULTIPLY) → 子树高斯模糊 sigma=6",
+      "cell_origin_px": [
+        512,
+        458
+      ],
+      "canvas_origin_px": [
+        560,
+        546
+      ],
+      "origin_is_integer": true,
+      "size_px": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 6,
+      "label": "⑥",
+      "title": "⑥ 同样效果 + 圆形裁剪",
+      "description": "同一内容再加 ClipOval：圆心 (160,120)、半径 100，圆外不绘制",
+      "cell_origin_px": [
+        968,
+        458
+      ],
+      "canvas_origin_px": [
+        1016,
+        546
+      ],
+      "origin_is_integer": true,
+      "size_px": [
+        320,
+        240
+      ]
+    }
+  ],
+  "compositing_12": {
+    "rectangles": {
+      "red": {
+        "xywh": [
+          40,
+          40,
+          160,
+          120
+        ],
+        "layer": "下"
+      },
+      "blue": {
+        "xywh": [
+          120,
+          80,
+          160,
+          120
+        ],
+        "layer": "上"
+      }
+    },
+    "①": {
+      "method": "逐层 50% alpha",
+      "colors": [
+        "#FF000080",
+        "#0000FF80"
+      ],
+      "alpha": "128/255 = 0.501961",
+      "dsl": "Container(#FFFFFF) > Stack > [Positioned(40,40,160,120) #FF000080, Positioned(120,80,160,120) #0000FF80, 采样虚线圆]"
+    },
+    "②": {
+      "method": "整组 Opacity(0.5)",
+      "colors": [
+        "#FF0000",
+        "#0000FF"
+      ],
+      "group_opacity": 0.5,
+      "dsl": "Container(#FFFFFF) > Opacity(0.5) > Container > Stack > [Positioned(40,40,160,120) #FF0000, Positioned(120,80,160,120) #0000FF, 采样虚线圆]"
+    },
+    "sample_marker": {
+      "center_local_px": [
+        180,
+        100
+      ],
+      "radius_px": 17,
+      "style": "虚线圆（由短胶囊拼出）",
+      "why": "标记的所有笔画都在半径 ≥16 处，被采样的 (180,100) 本像素始终保持纯合成结果；首版曾用带内孔的实心圆标记，结果把该像素覆盖成 (15,23,42)，已改为虚线圆"
+    },
+    "sampling": [
+      {
+        "experiment": "①",
+        "index": 1,
+        "experiment_origin_px": [
+          104,
+          184
+        ],
+        "sample_local_px": [
+          180,
+          100
+        ],
+        "sample_pixel_index_zero_based": [
+          284,
+          284
+        ],
+        "png_index_rule": "第 (origin_x+180, origin_y+100) 个像素，索引从 0 开始",
+        "png_color_mode": "RGBA 未预乘 8 位/sRGB",
+        "measured_rgba": [
+          127,
+          63,
+          191,
+          255
+        ],
+        "measured_alpha_must_be": 255,
+        "theoretical_float_rgb": [
+          127.0,
+          63.25098,
+          191.25098
+        ],
+        "theoretical_formula": "① 红 #FF0000 @ a=128/255 压白底 → (255, 255(1−a), 255(1−a))；再蓝 #0000FF @ a=128/255 压其上 → (255(1−a), 255(1−a)², 255a+255(1−a)²)",
+        "rounded_rgb_floor_v_plus_half": [
+          127,
+          63,
+          191
+        ],
+        "measured_rgb": [
+          127,
+          63,
+          191
+        ],
+        "per_channel_abs_error": [
+          0,
+          0,
+          0
+        ],
+        "tolerance_per_channel": 3,
+        "verdict": "PASS"
+      },
+      {
+        "experiment": "②",
+        "index": 2,
+        "experiment_origin_px": [
+          560,
+          184
+        ],
+        "sample_local_px": [
+          180,
+          100
+        ],
+        "sample_pixel_index_zero_based": [
+          740,
+          284
+        ],
+        "png_index_rule": "第 (origin_x+180, origin_y+100) 个像素，索引从 0 开始",
+        "png_color_mode": "RGBA 未预乘 8 位/sRGB",
+        "measured_rgba": [
+          126,
+          126,
+          255,
+          255
+        ],
+        "measured_alpha_must_be": 255,
+        "theoretical_float_rgb": [
+          127.5,
+          127.5,
+          255.0
+        ],
+        "theoretical_formula": "② 组内红蓝均不透明，重叠处只剩纯蓝 (0,0,255,α=1)；再由 Opacity(0.5) 整组压白底 → (255×0.5, 255×0.5, 255)",
+        "rounded_rgb_floor_v_plus_half": [
+          128,
+          128,
+          255
+        ],
+        "measured_rgb": [
+          126,
+          126,
+          255
+        ],
+        "per_channel_abs_error": [
+          2,
+          2,
+          0
+        ],
+        "tolerance_per_channel": 3,
+        "verdict": "PASS"
+      }
+    ],
+    "alpha_128_255_vs_0_5": {
+      "alpha_128_over_255": 0.5019607843137255,
+      "alpha_0_5": 0.5,
+      "difference": 0.0019607843137254832,
+      "single_layer_difference_is_negligible": "128/255 与 0.5 只差 0.00196，单看一层几乎不可分辨",
+      "but_structure_differs": "① 半透明被应用了两次：红层透出的 (255,127,127) 还要再被蓝层按 128/255 压一次，红通道只剩 255×(1−128/255)=127、绿/蓝只剩 255×(1−128/255)²=63.25；② 只在整组外乘一次 0.5，组内是不透明纯蓝，因此红通道 255×0.5=127.5、蓝通道 255。两者 R 通道几乎相同（127 vs 127.5），但 G/B 相差一倍以上——这正是「不能把 128/255 与 0.5 当成同一个 alpha」的实测依据。",
+      "source_over_order": "蓝覆盖红、最后合成白底；中间值不取整，最终 RGB 以 floor(value+0.5) 取最近整数"
+    }
+  },
+  "pairs": [
+    {
+      "pair": [
+        "③",
+        "④"
+      ],
+      "shared_base_scene": {
+        "experiment_area_base_color": "#FFFFFF",
+        "stripe_panel_local_px": [
+          0,
+          20,
+          320,
+          200
+        ],
+        "stripe_width_px": 16,
+        "stripe_gap_px": 0,
+        "stripe_colors": [
+          "#1E293B",
+          "#F1F5F9"
+        ],
+        "stripe_phase_local_x": 0,
+        "card_local_px": [
+          40,
+          40,
+          240,
+          160
+        ],
+        "card_border_radius": 20,
+        "card_tint": "#FFFFFF33",
+        "card_text": "SHARP / BLUR",
+        "card_text_font_size": 24,
+        "card_text_local_px": [
+          24,
+          22
+        ],
+        "foreground_shapes": [
+          {
+            "kind": "rounded-rect",
+            "local_px": [
+              24,
+              96,
+              96,
+              46
+            ],
+            "radius": 8,
+            "color": "#0F172A"
+          },
+          {
+            "kind": "rounded-rect",
+            "local_px": [
+              136,
+              96,
+              80,
+              46
+            ],
+            "radius": 8,
+            "color": "#DC2626"
+          }
+        ],
+        "layer_order": [
+          "条纹面板",
+          "卡片底色 + 内容",
+          "文字",
+          "前景形状"
+        ],
+        "sigma_x": 6,
+        "sigma_y": 6,
+        "note": "③④ 用同一份基础场景函数 stripes_scene() + card_foreground() 生成，颜色、宽度、间距、相位、卡片底色/位置/圆角、文字内容与位置、前景形状与层次全部相同"
+      },
+      "unique_change": {
+        "③": "滤镜只作用在卡片背景：ClipRRect(20) > [BackdropFilter(6,6) > 半透明白] + 清晰文字/前景",
+        "④": "滤镜作用在卡片整棵子树：ClipRRect(20) > ImageFiltered(6,6) > [半透明白 + 文字 + 前景]",
+        "backdrop_involved": {
+          "③": true,
+          "④": false
+        }
+      },
+      "measurements": {
+        "stripe_edge_strength_horizontal": {
+          "scan_line_local_y": 110,
+          "inside_card_x": [
+            44,
+            276
+          ],
+          "outside_card_left_x": [
+            2,
+            38
+          ],
+          "outside_card_right_x": [
+            282,
+            316
+          ],
+          "③_inside": 12,
+          "③_outside_left": 211,
+          "③_outside_right": 211,
+          "④_inside": 172,
+          "④_outside_left": 211,
+          "④_outside_right": 211,
+          "metric": "沿扫描线相邻像素 8 位 sRGB 三通道最大绝对落差；条纹是竖条，故水平落差即条纹边缘锐度"
+        },
+        "text_band": {
+          "③": {
+            "min_luminance": 22.7,
+            "p2_luminance": 22.7,
+            "median_luminance": 147.5,
+            "dark_adjacent_drop_max": 81.8,
+            "dark_adjacent_drop_mean": 18.1,
+            "dark_pixel_count": 935,
+            "window_local_px": {
+              "x": [
+                64,
+                256
+              ],
+              "y": [
+                62,
+                96
+              ],
+              "desc": "卡内文字带"
+            }
+          },
+          "④": {
+            "min_luminance": 58.5,
+            "p2_luminance": 61.5,
+            "median_luminance": 83.2,
+            "dark_adjacent_drop_max": 2.1,
+            "dark_adjacent_drop_mean": 0.4,
+            "dark_pixel_count": 3150,
+            "window_local_px": {
+              "x": [
+                64,
+                256
+              ],
+              "y": [
+                62,
+                96
+              ],
+              "desc": "卡内文字带"
+            }
+          }
+        }
+      }
+    },
+    {
+      "pair": [
+        "⑤",
+        "⑥"
+      ],
+      "shared_base_scene": {
+        "scene_box_local_px": [
+          60,
+          20,
+          200,
+          200
+        ],
+        "scene_box_note": "200×200 的内接圆即圆心 (160,120)、半径 100",
+        "shapes": [
+          {
+            "kind": "rect",
+            "scene_local_px": [
+              0,
+              0,
+              56,
+              200
+            ],
+            "color": "#0EA5E9",
+            "note": "左竖条，跨过圆周左上与左下"
+          },
+          {
+            "kind": "rect+shadow",
+            "scene_local_px": [
+              96,
+              0,
+              104,
+              74
+            ],
+            "color": "#1F2937",
+            "boxShadow": "0 6 14 2 #00000059 NORMAL",
+            "note": "深色矩形 + 阴影"
+          },
+          {
+            "kind": "rect",
+            "scene_local_px": [
+              96,
+              118,
+              104,
+              82
+            ],
+            "color": "#F59E0B",
+            "note": "琥珀块，跨过圆周右下"
+          },
+          {
+            "kind": "circle",
+            "scene_local_px": [
+              84,
+              114,
+              88,
+              88
+            ],
+            "color": "#DC2626",
+            "note": "圆心 (128,158) r=44，右下部分跨出圆周"
+          }
+        ],
+        "transparent_gaps": [
+          "竖隙：场景局部 x 56–96 全高",
+          "横隙：场景局部 y 74–118、x 96–200"
+        ],
+        "color_filter": {
+          "color": "#F6B94A",
+          "blendMode": "MULTIPLY",
+          "applied": "内层，作用于内容"
+        },
+        "blur": {
+          "sigmaX": 6,
+          "sigmaY": 6,
+          "applied": "外层，作用于 ColorFiltered 的结果"
+        },
+        "guides": "两格都画同一套虚线参考线（200×200 场景框 + 圆心 (160,120) 半径 100 的圆），参考线在滤镜子树之外、两格完全一致，不构成第二处差异"
+      },
+      "unique_change": {
+        "⑤": "无最外层裁剪",
+        "⑥": "最外层增加 <ClipOval clipBehavior=\"ANTI_ALIAS\">，其余节点、顺序与参数逐字相同",
+        "clip": {
+          "center_local_px": [
+            160,
+            120
+          ],
+          "radius_px": 100,
+          "expected_bounds_local_px": [
+            60,
+            20,
+            260,
+            220
+          ]
+        }
+      },
+      "measurements": {
+        "color_filter_multiply": [
+          {
+            "shape": "青色竖条",
+            "source_rgb": [
+              14,
+              165,
+              233
+            ],
+            "probe_local_px": [
+              88,
+              120
+            ],
+            "probe_inside_circle": true,
+            "multiply_predicted_rgb": [
+              14,
+              120,
+              68
+            ],
+            "measured_⑤": [
+              14,
+              120,
+              68,
+              255
+            ],
+            "measured_⑥": [
+              14,
+              120,
+              68,
+              255
+            ],
+            "abs_error_vs_prediction_⑤": [
+              0,
+              0,
+              0
+            ],
+            "identical_in_both_cells": true,
+            "note": "选点均在大面积平色区且距任何边缘 >3σ，模糊不改变该处颜色，因此可直接与逐通道相乘的理论值比较"
+          },
+          {
+            "shape": "深色矩形",
+            "source_rgb": [
+              31,
+              41,
+              55
+            ],
+            "probe_local_px": [
+              208,
+              57
+            ],
+            "probe_inside_circle": true,
+            "multiply_predicted_rgb": [
+              30,
+              30,
+              16
+            ],
+            "measured_⑤": [
+              30,
+              30,
+              16,
+              255
+            ],
+            "measured_⑥": [
+              30,
+              30,
+              16,
+              255
+            ],
+            "abs_error_vs_prediction_⑤": [
+              0,
+              0,
+              0
+            ],
+            "identical_in_both_cells": true,
+            "note": "选点均在大面积平色区且距任何边缘 >3σ，模糊不改变该处颜色，因此可直接与逐通道相乘的理论值比较"
+          },
+          {
+            "shape": "琥珀块",
+            "source_rgb": [
+              245,
+              158,
+              11
+            ],
+            "probe_local_px": [
+              240,
+              155
+            ],
+            "probe_inside_circle": true,
+            "multiply_predicted_rgb": [
+              236,
+              115,
+              3
+            ],
+            "measured_⑤": [
+              236,
+              115,
+              4,
+              255
+            ],
+            "measured_⑥": [
+              236,
+              115,
+              4,
+              255
+            ],
+            "abs_error_vs_prediction_⑤": [
+              0,
+              0,
+              1
+            ],
+            "identical_in_both_cells": true,
+            "note": "选点均在大面积平色区且距任何边缘 >3σ，模糊不改变该处颜色，因此可直接与逐通道相乘的理论值比较"
+          },
+          {
+            "shape": "红圆",
+            "source_rgb": [
+              220,
+              38,
+              38
+            ],
+            "probe_local_px": [
+              188,
+              178
+            ],
+            "probe_inside_circle": true,
+            "multiply_predicted_rgb": [
+              212,
+              28,
+              11
+            ],
+            "measured_⑤": [
+              212,
+              28,
+              11,
+              255
+            ],
+            "measured_⑥": [
+              212,
+              28,
+              11,
+              255
+            ],
+            "abs_error_vs_prediction_⑤": [
+              0,
+              0,
+              0
+            ],
+            "identical_in_both_cells": true,
+            "note": "选点均在大面积平色区且距任何边缘 >3σ，模糊不改变该处颜色，因此可直接与逐通道相乘的理论值比较"
+          }
+        ],
+        "clip_boundary": {
+          "method": "沿实验区局部 y=120 与 x=160 扫描，找出内容终止、恢复纯白的位置；虚线参考线在 x=60/260 与 y=20/220 处占 2px，读数时跳过",
+          "⑥_row_y120_content_ends_local_x": 258,
+          "⑥_row_y120_white_resumes_local_x": 261,
+          "⑥_col_x160_white_above_local_y": 14,
+          "⑥_col_x160_content_starts_local_y": 21,
+          "expected_right_edge_local_x": 260,
+          "expected_top_edge_local_y": 20,
+          "⑥_conclusion": "内容在 x=258 结束、x=261 起为纯白（x=259–260 是参考线），上边缘同理 14 为白、21 起为内容 → 裁剪边界 = 圆心 (160,120) 半径 100，误差 ≤2px（抗锯齿与参考线）",
+          "outside_probe_local_px": [
+            250,
+            170
+          ],
+          "distance_to_circle_center": 102.96,
+          "⑤_measured": [
+            237,
+            121,
+            15,
+            255
+          ],
+          "⑥_measured": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "⑥_conclusion_probe": "该点距圆心 103.0 > 100，⑥ 被硬切为纯白 (255,255,255)，⑤ 同位置仍有内容 → 外溢在⑥被裁掉"
+        },
+        "blur_bleed_in_⑤": {
+          "method": "在 x=160 处从实验区上边缘（局部 y=0）向下扫描，找出内容开始出现的位置；扫描区 y<20 在场景框与参考线之外，读数不受参考线影响",
+          "first_nonwhite_local_y": 0,
+          "rgb_at_that_pixel": [
+            201,
+            209,
+            219,
+            255
+          ],
+          "ramp": {
+            "6": [
+              254,
+              254,
+              254,
+              255
+            ],
+            "7": [
+              254,
+              253,
+              253,
+              255
+            ],
+            "8": [
+              252,
+              252,
+              251,
+              255
+            ],
+            "9": [
+              250,
+              250,
+              249,
+              255
+            ],
+            "10": [
+              247,
+              247,
+              245,
+              255
+            ],
+            "11": [
+              244,
+              243,
+              241,
+              255
+            ],
+            "12": [
+              239,
+              237,
+              234,
+              255
+            ],
+            "13": [
+              232,
+              231,
+              226,
+              255
+            ],
+            "14": [
+              225,
+              223,
+              218,
+              255
+            ],
+            "15": [
+              216,
+              213,
+              206,
+              255
+            ],
+            "16": [
+              206,
+              202,
+              193,
+              255
+            ],
+            "17": [
+              194,
+              190,
+              179,
+              255
+            ],
+            "18": [
+              182,
+              177,
+              164,
+              255
+            ]
+          },
+          "⑤_bleed_above_scene_box_px": 20,
+          "⑥_same_column_above": {
+            "6": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "7": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "8": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "9": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "10": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "11": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "12": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "13": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "14": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "15": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "16": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "17": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "18": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          "conclusion": "⑤ 的模糊越出 200×200 场景框上边界约 20px（阈值：任一通道与纯白差 ≥1）；⑥ 同一列 y=6–18 全为 (255,255,255)，外溢被圆形裁剪切掉",
+          "doc_reference": "https://snapshot.muedsa.com/widgets/painting/image-filtered/ —— blurImageFilterBounds 按 ceil(3×sigma) 向两侧扩张输入矩形；Parser 的 <ImageFiltered> 按 sigmaX/sigmaY 自动提供该边界"
+        },
+        "content_identity": {
+          "method": "在 ⑥ 圆内取与 ⑤ 相同的若干点，逐点比较 RGB",
+          "probe_local_px": [
+            [
+              88,
+              120
+            ],
+            [
+              208,
+              57
+            ],
+            [
+              240,
+              155
+            ],
+            [
+              188,
+              178
+            ]
+          ],
+          "identical": true,
+          "conclusion": "圆内取样点 ⑤⑥ 逐点完全相同 → 两格内容与滤镜参数一致，唯一变化项确为 ClipOval"
+        }
+      }
+    }
+  ],
+  "visual_judgments": [
+    {
+      "experiment": "③",
+      "text_crisp": true,
+      "text_evidence": "3× 放大局部逐字可读；文字带最暗亮度 22.7，暗区相邻像素落差均值 18.1、最大 81.8",
+      "background_blurred": true,
+      "background_evidence": "卡内条纹边缘落差 12，卡外 211/211",
+      "spill": "无：模糊止于 ClipRRect 的圆角边界，圆角缺口内与卡外条纹保持锐利",
+      "dsl_node": "ClipRRect(borderRadius=20) > Container > Stack > [BackdropFilter(6,6) > Container(#FFFFFF33), Positioned Text, Positioned Container×2]",
+      "doc_reference": "https://snapshot.muedsa.com/widgets/painting/backdrop-filter/ —— BackdropFilter 读取当前区域背后已绘制内容，应用 ImageFilter 后再按 BlendMode（默认 SRC_OVER）合成；需配合 ClipRect/ClipRRect 限定区域。https://snapshot.muedsa.com/reference/parser-tags/ §Opacity 与 Transform"
+    },
+    {
+      "experiment": "④",
+      "text_crisp": false,
+      "text_evidence": "3× 放大局部只见一片灰影，字形不可辨；文字带最暗亮度升到 58.5，暗区相邻像素落差均值仅 0.4、最大 2.1",
+      "background_blurred": false,
+      "background_evidence": "卡内条纹边缘落差仍有 172（③ 同位置只有 12）——透过半透明卡片看到的仍是锐利条纹",
+      "spill": "无：ImageFiltered 的模糊同样被 ClipRRect 限制在圆角区域内",
+      "dsl_node": "ClipRRect(borderRadius=20) > ImageFiltered(6,6) > Container > Stack > [Container(#FFFFFF33), Positioned Text, Positioned Container×2]",
+      "doc_reference": "https://snapshot.muedsa.com/widgets/painting/image-filtered/ —— ImageFiltered 把**自身子树**作为输入图像应用 ImageFilter；要处理已经绘制在后方已有的内容须用 BackdropFilter。模糊会扩展可见像素范围，祖先裁剪可能截掉模糊边缘"
+    },
+    {
+      "experiment": "⑤",
+      "text_crisp": null,
+      "text_evidence": "本实验不含文字（题面未要求）",
+      "background_blurred": true,
+      "background_evidence": "四个色块边界全部糊开；MULTIPLY 实测与逐通道相乘理论值一致：青色竖条 理论 [14, 120, 68] 实测 [14, 120, 68, 255]；深色矩形 理论 [30, 30, 16] 实测 [30, 30, 16, 255]；琥珀块 理论 [236, 115, 3] 实测 [236, 115, 4, 255]；红圆 理论 [212, 28, 11] 实测 [212, 28, 11, 255]",
+      "spill": "有：模糊越出 200×200 场景框上边界约 20px，虚线框外仍可见连续的内容与渐变，画面内没有硬边界",
+      "dsl_node": "Positioned(60,20,200,200) > ImageFiltered(6,6) > ColorFiltered(#F6B94A,MULTIPLY) > Container > Stack > 四个 Positioned",
+      "doc_reference": "https://snapshot.muedsa.com/widgets/painting/color-filtered/ —— ColorFiltered 在合成阶段对子树像素应用 Skia ColorFilter；MULTIPLY 逐通道相乘，「应采样确定性区域，不要只依赖肉眼判断」；SRC/MULTIPLY 等模式还会给边界内原本透明的间隙着色。https://snapshot.muedsa.com/reference/parser-tags/ §Opacity 与 Transform"
+    },
+    {
+      "experiment": "⑥",
+      "text_crisp": null,
+      "text_evidence": "本实验不含文字（题面未要求）",
+      "background_blurred": true,
+      "background_evidence": "圆内色调与模糊程度与⑤逐点相同（取样点 ⑤⑥ 完全一致）；裁剪边界实测为圆心 (160,120) 半径 100（局部 y=120 上内容止于 x=258、x=261 起纯白）",
+      "spill": "外溢被裁掉：局部 (250,170) 距圆心 103.0 > 100，⑥ 为纯白 (255,255,255)，⑤ 同点仍有内容",
+      "dsl_node": "Positioned(60,20,200,200) > ClipOval(ANTI_ALIAS) > ImageFiltered(6,6) > ColorFiltered(#F6B94A,MULTIPLY) > Container > Stack > 四个 Positioned",
+      "doc_reference": "https://snapshot.muedsa.com/reference/parser-tags/ §ClipRect、ClipOval 与 ClipRRect —— ClipOval 默认 clipBehavior=ANTI_ALIAS，裁剪到自身尺寸的内接椭圆；https://snapshot.muedsa.com/widgets/painting/image-filtered/ —— 祖先裁剪可能截掉模糊边缘"
+    }
+  ],
+  "visual_judgment_lines_in_image": [
+    "③ 文字逐字锐利可读（文字带最暗亮度 22.7、暗区相邻落差均值 18.1）；卡内条纹糊成灰阶（卡内落差 12 / 卡外 211）；模糊止于圆角卡边，未外溢。",
+    "④ 文字糊成灰影、字形不可辨（最暗亮度升到 58.5、暗区落差均值 0.4）；卡内条纹仍锐利（落差 172）——被糊的是卡子树，背景没糊。",
+    "⑤ 四色块实测 = 逐通道相乘（青条 14/120/68、深矩形 30/30/16、红圆 212/28/11）；子树叶化越过场景框约 14px，无硬边界。",
+    "⑥ 与⑤内容逐点相同（同为 236/115/4），只多一层 ClipOval：局部 (250,170) 距圆心 103>100，⑥为纯白、⑤仍有内容。"
+  ],
+  "verification": [
+    {
+      "id": "V1",
+      "name": "①② 重叠内部像素核对",
+      "method": "按题面规定取解码 PNG 的第 (origin_x+180, origin_y+100) 个像素（索引从 0 起），读取未预乘 8 位 RGBA；理论值按蓝覆盖红、最后合成白底的 source-over 顺序，用 0–255 的 sRGB 通道值计算，中间值不取整，最终以 floor(value+0.5) 取最近整数",
+      "tolerance_per_channel": 3,
+      "results": [
+        {
+          "experiment": "①",
+          "measured": [
+            127,
+            63,
+            191
+          ],
+          "rounded": [
+            127,
+            63,
+            191
+          ],
+          "abs_error": [
+            0,
+            0,
+            0
+          ],
+          "verdict": "PASS"
+        },
+        {
+          "experiment": "②",
+          "measured": [
+            126,
+            126,
+            255
+          ],
+          "rounded": [
+            128,
+            128,
+            255
+          ],
+          "abs_error": [
+            2,
+            2,
+            0
+          ],
+          "verdict": "PASS"
+        }
+      ],
+      "max_abs_error": 2,
+      "all_passed": true,
+      "alpha_note": {
+        "alpha_128_over_255": 0.5019607843137255,
+        "alpha_0_5": 0.5,
+        "difference": 0.0019607843137254832,
+        "single_layer_difference_is_negligible": "128/255 与 0.5 只差 0.00196，单看一层几乎不可分辨",
+        "but_structure_differs": "① 半透明被应用了两次：红层透出的 (255,127,127) 还要再被蓝层按 128/255 压一次，红通道只剩 255×(1−128/255)=127、绿/蓝只剩 255×(1−128/255)²=63.25；② 只在整组外乘一次 0.5，组内是不透明纯蓝，因此红通道 255×0.5=127.5、蓝通道 255。两者 R 通道几乎相同（127 vs 127.5），但 G/B 相差一倍以上——这正是「不能把 128/255 与 0.5 当成同一个 alpha」的实测依据。",
+        "source_over_order": "蓝覆盖红、最后合成白底；中间值不取整，最终 RGB 以 floor(value+0.5) 取最近整数"
+      }
+    },
+    {
+      "id": "V2",
+      "name": "③④ 唯一变化项核验",
+      "method": "两格共用同一份基础场景（条纹、卡片、文字、前景形状、层次、位置全部相同），只有模糊作用层不同；用条纹边缘的相邻像素落差与文字带最暗亮度做定量对照",
+      "results": {
+        "stripe_edge_strength_horizontal": {
+          "scan_line_local_y": 110,
+          "inside_card_x": [
+            44,
+            276
+          ],
+          "outside_card_left_x": [
+            2,
+            38
+          ],
+          "outside_card_right_x": [
+            282,
+            316
+          ],
+          "③_inside": 12,
+          "③_outside_left": 211,
+          "③_outside_right": 211,
+          "④_inside": 172,
+          "④_outside_left": 211,
+          "④_outside_right": 211,
+          "metric": "沿扫描线相邻像素 8 位 sRGB 三通道最大绝对落差；条纹是竖条，故水平落差即条纹边缘锐度"
+        },
+        "text_band": {
+          "③": {
+            "min_luminance": 22.7,
+            "p2_luminance": 22.7,
+            "median_luminance": 147.5,
+            "dark_adjacent_drop_max": 81.8,
+            "dark_adjacent_drop_mean": 18.1,
+            "dark_pixel_count": 935,
+            "window_local_px": {
+              "x": [
+                64,
+                256
+              ],
+              "y": [
+                62,
+                96
+              ],
+              "desc": "卡内文字带"
+            }
+          },
+          "④": {
+            "min_luminance": 58.5,
+            "p2_luminance": 61.5,
+            "median_luminance": 83.2,
+            "dark_adjacent_drop_max": 2.1,
+            "dark_adjacent_drop_mean": 0.4,
+            "dark_pixel_count": 3150,
+            "window_local_px": {
+              "x": [
+                64,
+                256
+              ],
+              "y": [
+                62,
+                96
+              ],
+              "desc": "卡内文字带"
+            }
+          }
+        }
+      },
+      "conclusion": "③ 卡内条纹落差 12 / 卡外 211（背景被糊、文字清晰）；④ 卡内条纹落差 172（背景没糊、文字被糊）——两个方向正好相反，证明 BackdropFilter 与 ImageFiltered 的作用对象确实不同",
+      "all_passed": true
+    },
+    {
+      "id": "V3",
+      "name": "⑤⑥ 唯一变化项核验",
+      "method": "两格内容与滤镜参数逐字相同，仅最外层是否加 ClipOval 不同；圆内取样点逐点比对 + 沿中心线扫描裁剪边界 + 用圆外探针点验证硬切",
+      "results": {
+        "content_identity": {
+          "method": "在 ⑥ 圆内取与 ⑤ 相同的若干点，逐点比较 RGB",
+          "probe_local_px": [
+            [
+              88,
+              120
+            ],
+            [
+              208,
+              57
+            ],
+            [
+              240,
+              155
+            ],
+            [
+              188,
+              178
+            ]
+          ],
+          "identical": true,
+          "conclusion": "圆内取样点 ⑤⑥ 逐点完全相同 → 两格内容与滤镜参数一致，唯一变化项确为 ClipOval"
+        },
+        "clip_boundary": {
+          "method": "沿实验区局部 y=120 与 x=160 扫描，找出内容终止、恢复纯白的位置；虚线参考线在 x=60/260 与 y=20/220 处占 2px，读数时跳过",
+          "⑥_row_y120_content_ends_local_x": 258,
+          "⑥_row_y120_white_resumes_local_x": 261,
+          "⑥_col_x160_white_above_local_y": 14,
+          "⑥_col_x160_content_starts_local_y": 21,
+          "expected_right_edge_local_x": 260,
+          "expected_top_edge_local_y": 20,
+          "⑥_conclusion": "内容在 x=258 结束、x=261 起为纯白（x=259–260 是参考线），上边缘同理 14 为白、21 起为内容 → 裁剪边界 = 圆心 (160,120) 半径 100，误差 ≤2px（抗锯齿与参考线）",
+          "outside_probe_local_px": [
+            250,
+            170
+          ],
+          "distance_to_circle_center": 102.96,
+          "⑤_measured": [
+            237,
+            121,
+            15,
+            255
+          ],
+          "⑥_measured": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "⑥_conclusion_probe": "该点距圆心 103.0 > 100，⑥ 被硬切为纯白 (255,255,255)，⑤ 同位置仍有内容 → 外溢在⑥被裁掉"
+        },
+        "bleed": {
+          "method": "在 x=160 处从实验区上边缘（局部 y=0）向下扫描，找出内容开始出现的位置；扫描区 y<20 在场景框与参考线之外，读数不受参考线影响",
+          "first_nonwhite_local_y": 0,
+          "rgb_at_that_pixel": [
+            201,
+            209,
+            219,
+            255
+          ],
+          "ramp": {
+            "6": [
+              254,
+              254,
+              254,
+              255
+            ],
+            "7": [
+              254,
+              253,
+              253,
+              255
+            ],
+            "8": [
+              252,
+              252,
+              251,
+              255
+            ],
+            "9": [
+              250,
+              250,
+              249,
+              255
+            ],
+            "10": [
+              247,
+              247,
+              245,
+              255
+            ],
+            "11": [
+              244,
+              243,
+              241,
+              255
+            ],
+            "12": [
+              239,
+              237,
+              234,
+              255
+            ],
+            "13": [
+              232,
+              231,
+              226,
+              255
+            ],
+            "14": [
+              225,
+              223,
+              218,
+              255
+            ],
+            "15": [
+              216,
+              213,
+              206,
+              255
+            ],
+            "16": [
+              206,
+              202,
+              193,
+              255
+            ],
+            "17": [
+              194,
+              190,
+              179,
+              255
+            ],
+            "18": [
+              182,
+              177,
+              164,
+              255
+            ]
+          },
+          "⑤_bleed_above_scene_box_px": 20,
+          "⑥_same_column_above": {
+            "6": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "7": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "8": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "9": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "10": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "11": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "12": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "13": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "14": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "15": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "16": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "17": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "18": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          "conclusion": "⑤ 的模糊越出 200×200 场景框上边界约 20px（阈值：任一通道与纯白差 ≥1）；⑥ 同一列 y=6–18 全为 (255,255,255)，外溢被圆形裁剪切掉",
+          "doc_reference": "https://snapshot.muedsa.com/widgets/painting/image-filtered/ —— blurImageFilterBounds 按 ceil(3×sigma) 向两侧扩张输入矩形；Parser 的 <ImageFiltered> 按 sigmaX/sigmaY 自动提供该边界"
+        }
+      },
+      "conclusion": "圆内取样点 ⑤⑥ 逐点相同；⑥ 的裁剪边界与题面 (160,120)/r=100 相差 ≤2px；⑤ 的模糊外溢约 14px，⑥ 同位置为纯白",
+      "all_passed": true
+    },
+    {
+      "id": "V4",
+      "name": "⑥ 不裁切变换后主体 / 版面自检",
+      "method": "整屏 + 6 处放大局部（①、③④、⑤⑥、页脚）实际打开查看；核对 6 个实验区尺寸、格距、说明位置、字号与遮挡",
+      "results": {
+        "grid": "3 列 × 2 行，实验区 320×240，格距 40 ≥ 32",
+        "experiment_area_origins_px": [
+          [
+            104,
+            184
+          ],
+          [
+            560,
+            184
+          ],
+          [
+            1016,
+            184
+          ],
+          [
+            104,
+            546
+          ],
+          [
+            560,
+            546
+          ],
+          [
+            1016,
+            546
+          ]
+        ],
+        "all_origins_integer": true,
+        "labels_min_px": 20,
+        "text_overlap": "无：说明带、实验区、原点注记、页脚四段互不重叠（见 iterations 记录）"
+      },
+      "all_passed": true
+    }
+  ],
+  "docs_consulted": [
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "used": "Opacity/Transform、ColorFiltered/ImageFiltered/BackdropFilter、ClipOval/ClipRRect、#RRGGBBAA 颜色写法的属性表"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/widgets/painting/backdrop-filter/",
+      "used": "BackdropFilter 读取背后已绘制内容、按 BlendMode 合成、需配裁剪限定区域"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/widgets/painting/image-filtered/",
+      "used": "ImageFiltered 处理自身子树；blurImageFilterBounds 按 ceil(3σ) 扩张输出边界；Parser 自动提供该边界；祖先裁剪可能截掉模糊边缘"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/widgets/painting/color-filtered/",
+      "used": "ColorFiltered 在合成阶段对子树像素应用 Skia ColorFilter；MULTIPLY 逐通道相乘；应采样确定性区域；MULTIPLY 等会给边界内透明间隙着色"
+    }
+  ],
+  "outputs": [
+    {
+      "kind": "png",
+      "filename": "compositing-lab.png",
+      "dsl": "compositing-lab.snapshot",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "kind": "json",
+      "filename": "composite-audit.json"
+    }
+  ]
+}

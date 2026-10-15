@@ -1,0 +1,2293 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "round": "round-01",
+  "path_base": "output_dir",
+  "coordinate_convention": {
+    "origin": "画布左上角 (0,0)",
+    "x": "向右为正",
+    "y": "向下为正",
+    "unit": "px",
+    "grid": {
+      "canvas": [
+        1600,
+        1600
+      ],
+      "rows": 8,
+      "cols": 8,
+      "cell": 200,
+      "cell_origin": "第 r 行第 c 列的格子左上角为 (c*200, r*200)"
+    },
+    "occlusion": {
+      "canvas": [
+        800,
+        800
+      ],
+      "panel_rect": [
+        120,
+        200,
+        680,
+        600
+      ]
+    }
+  },
+  "construction": {
+    "seed": 20261107,
+    "seed_kind": "constructive",
+    "note": "不是随机数黑箱：属性由 color=c mod 4、shape=LAT[r mod 4][(c+2*(c//4)) mod 4]、size=组内轮转 三条确定性规则推出；换任何实现都能复算出同一张图。每条约束在 build_cells 后由 assert_constraints 强制校验。",
+    "rules": {
+      "color": "color_index(r,c) = c mod 4",
+      "shape": "shape_index(r,c) = LAT[r mod 4][(c + 2*(c//4)) mod 4]",
+      "latin_square_LAT": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          2,
+          3,
+          0
+        ],
+        [
+          2,
+          3,
+          0,
+          1
+        ],
+        [
+          3,
+          0,
+          1,
+          2
+        ]
+      ],
+      "size": "每个 (颜色,形状) 组（4 个格）内按组序号 g 轮转 size_index = (g + i) mod 3"
+    },
+    "latin_square_note": "4×4 拉丁方保证每行每列形状不重复；两个列块错开 2 位，因此每种颜色都能遇到全部 4 种形状"
+  },
+  "attributes": {
+    "colors": [
+      {
+        "index": 0,
+        "hex": "#2563EB",
+        "cn": "蓝",
+        "en": "blue"
+      },
+      {
+        "index": 1,
+        "hex": "#EA7C2D",
+        "cn": "橙",
+        "en": "orange"
+      },
+      {
+        "index": 2,
+        "hex": "#16A34A",
+        "cn": "绿",
+        "en": "green"
+      },
+      {
+        "index": 3,
+        "hex": "#7C3AED",
+        "cn": "紫",
+        "en": "purple"
+      }
+    ],
+    "shapes": [
+      {
+        "index": 0,
+        "key": "circle",
+        "cn": "圆"
+      },
+      {
+        "index": 1,
+        "key": "square",
+        "cn": "方"
+      },
+      {
+        "index": 2,
+        "key": "ring",
+        "cn": "圆环"
+      },
+      {
+        "index": 3,
+        "key": "roundsquare",
+        "cn": "圆角方"
+      }
+    ],
+    "sizes": [
+      {
+        "index": 0,
+        "px": 48
+      },
+      {
+        "index": 1,
+        "px": 64
+      },
+      {
+        "index": 2,
+        "px": 80
+      }
+    ]
+  },
+  "distribution": {
+    "by_color": {
+      "蓝": 16,
+      "橙": 16,
+      "绿": 16,
+      "紫": 16
+    },
+    "by_shape": {
+      "圆": 16,
+      "方": 16,
+      "圆环": 16,
+      "圆角方": 16
+    },
+    "by_size": {
+      "48": 22,
+      "64": 21,
+      "80": 21
+    },
+    "by_color_and_shape": {
+      "蓝×圆": 4,
+      "蓝×方": 4,
+      "蓝×圆环": 4,
+      "蓝×圆角方": 4,
+      "橙×圆": 4,
+      "橙×方": 4,
+      "橙×圆环": 4,
+      "橙×圆角方": 4,
+      "绿×圆": 4,
+      "绿×方": 4,
+      "绿×圆环": 4,
+      "绿×圆角方": 4,
+      "紫×圆": 4,
+      "紫×方": 4,
+      "紫×圆环": 4,
+      "紫×圆角方": 4
+    },
+    "size_by_color": {
+      "蓝": {
+        "48": 6,
+        "64": 5,
+        "80": 5
+      },
+      "橙": {
+        "48": 5,
+        "64": 6,
+        "80": 5
+      },
+      "绿": {
+        "48": 5,
+        "64": 5,
+        "80": 6
+      },
+      "紫": {
+        "48": 6,
+        "64": 5,
+        "80": 5
+      }
+    },
+    "size_by_shape": {
+      "圆": {
+        "48": 6,
+        "64": 5,
+        "80": 5
+      },
+      "方": {
+        "48": 5,
+        "64": 6,
+        "80": 5
+      },
+      "圆环": {
+        "48": 5,
+        "64": 5,
+        "80": 6
+      },
+      "圆角方": {
+        "48": 6,
+        "64": 5,
+        "80": 5
+      }
+    }
+  },
+  "per_row": [
+    {
+      "row": 1,
+      "cells": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    },
+    {
+      "row": 2,
+      "cells": [
+        "G09",
+        "G10",
+        "G11",
+        "G12",
+        "G13",
+        "G14",
+        "G15",
+        "G16"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    },
+    {
+      "row": 3,
+      "cells": [
+        "G17",
+        "G18",
+        "G19",
+        "G20",
+        "G21",
+        "G22",
+        "G23",
+        "G24"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    },
+    {
+      "row": 4,
+      "cells": [
+        "G25",
+        "G26",
+        "G27",
+        "G28",
+        "G29",
+        "G30",
+        "G31",
+        "G32"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    },
+    {
+      "row": 5,
+      "cells": [
+        "G33",
+        "G34",
+        "G35",
+        "G36",
+        "G37",
+        "G38",
+        "G39",
+        "G40"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    },
+    {
+      "row": 6,
+      "cells": [
+        "G41",
+        "G42",
+        "G43",
+        "G44",
+        "G45",
+        "G46",
+        "G47",
+        "G48"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    },
+    {
+      "row": 7,
+      "cells": [
+        "G49",
+        "G50",
+        "G51",
+        "G52",
+        "G53",
+        "G54",
+        "G55",
+        "G56"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    },
+    {
+      "row": 8,
+      "cells": [
+        "G57",
+        "G58",
+        "G59",
+        "G60",
+        "G61",
+        "G62",
+        "G63",
+        "G64"
+      ],
+      "colors": [
+        "橙",
+        "紫",
+        "绿",
+        "蓝"
+      ],
+      "shapes": [
+        "圆",
+        "圆环",
+        "圆角方",
+        "方"
+      ],
+      "color_count": 4,
+      "shape_count": 4
+    }
+  ],
+  "seed": 20261107,
+  "seed_kind": "constructive",
+  "seed_note": "不是随机数黑箱：属性由 color=c mod 4、shape=LAT[r mod 4][(c+2*(c//4)) mod 4]、size=组内轮转 三条确定性规则推出；换任何实现都能复算出同一张图。每条约束在 build_cells 后由 assert_constraints 强制校验。",
+  "objects": [
+    {
+      "id": "G01",
+      "row": 1,
+      "col": 1,
+      "center": [
+        100.0,
+        100.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 48,
+      "bbox": [
+        76.0,
+        76.0,
+        124.0,
+        124.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        14,
+        10,
+        104,
+        36
+      ]
+    },
+    {
+      "id": "G02",
+      "row": 1,
+      "col": 2,
+      "center": [
+        300.0,
+        100.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 80,
+      "bbox": [
+        260.0,
+        60.0,
+        340.0,
+        140.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        214,
+        10,
+        304,
+        36
+      ]
+    },
+    {
+      "id": "G03",
+      "row": 1,
+      "col": 3,
+      "center": [
+        500.0,
+        100.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 64,
+      "bbox": [
+        468.0,
+        68.0,
+        532.0,
+        132.0
+      ],
+      "inner_diameter_px": 32.0,
+      "id_label_box": [
+        414,
+        10,
+        504,
+        36
+      ]
+    },
+    {
+      "id": "G04",
+      "row": 1,
+      "col": 4,
+      "center": [
+        700.0,
+        100.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 48,
+      "bbox": [
+        676.0,
+        76.0,
+        724.0,
+        124.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        614,
+        10,
+        704,
+        36
+      ]
+    },
+    {
+      "id": "G05",
+      "row": 1,
+      "col": 5,
+      "center": [
+        900.0,
+        100.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 80,
+      "bbox": [
+        860.0,
+        60.0,
+        940.0,
+        140.0
+      ],
+      "inner_diameter_px": 40.0,
+      "id_label_box": [
+        814,
+        10,
+        904,
+        36
+      ]
+    },
+    {
+      "id": "G06",
+      "row": 1,
+      "col": 6,
+      "center": [
+        1100.0,
+        100.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 64,
+      "bbox": [
+        1068.0,
+        68.0,
+        1132.0,
+        132.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1014,
+        10,
+        1104,
+        36
+      ]
+    },
+    {
+      "id": "G07",
+      "row": 1,
+      "col": 7,
+      "center": [
+        1300.0,
+        100.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 80,
+      "bbox": [
+        1260.0,
+        60.0,
+        1340.0,
+        140.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1214,
+        10,
+        1304,
+        36
+      ]
+    },
+    {
+      "id": "G08",
+      "row": 1,
+      "col": 8,
+      "center": [
+        1500.0,
+        100.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 64,
+      "bbox": [
+        1468.0,
+        68.0,
+        1532.0,
+        132.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1414,
+        10,
+        1504,
+        36
+      ]
+    },
+    {
+      "id": "G09",
+      "row": 2,
+      "col": 1,
+      "center": [
+        100.0,
+        300.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 64,
+      "bbox": [
+        68.0,
+        268.0,
+        132.0,
+        332.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        14,
+        210,
+        104,
+        236
+      ]
+    },
+    {
+      "id": "G10",
+      "row": 2,
+      "col": 2,
+      "center": [
+        300.0,
+        300.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 48,
+      "bbox": [
+        276.0,
+        276.0,
+        324.0,
+        324.0
+      ],
+      "inner_diameter_px": 24.0,
+      "id_label_box": [
+        214,
+        210,
+        304,
+        236
+      ]
+    },
+    {
+      "id": "G11",
+      "row": 2,
+      "col": 3,
+      "center": [
+        500.0,
+        300.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 80,
+      "bbox": [
+        460.0,
+        260.0,
+        540.0,
+        340.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        414,
+        210,
+        504,
+        236
+      ]
+    },
+    {
+      "id": "G12",
+      "row": 2,
+      "col": 4,
+      "center": [
+        700.0,
+        300.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 48,
+      "bbox": [
+        676.0,
+        276.0,
+        724.0,
+        324.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        614,
+        210,
+        704,
+        236
+      ]
+    },
+    {
+      "id": "G13",
+      "row": 2,
+      "col": 5,
+      "center": [
+        900.0,
+        300.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 48,
+      "bbox": [
+        876.0,
+        276.0,
+        924.0,
+        324.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        814,
+        210,
+        904,
+        236
+      ]
+    },
+    {
+      "id": "G14",
+      "row": 2,
+      "col": 6,
+      "center": [
+        1100.0,
+        300.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 64,
+      "bbox": [
+        1068.0,
+        268.0,
+        1132.0,
+        332.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1014,
+        210,
+        1104,
+        236
+      ]
+    },
+    {
+      "id": "G15",
+      "row": 2,
+      "col": 7,
+      "center": [
+        1300.0,
+        300.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 48,
+      "bbox": [
+        1276.0,
+        276.0,
+        1324.0,
+        324.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1214,
+        210,
+        1304,
+        236
+      ]
+    },
+    {
+      "id": "G16",
+      "row": 2,
+      "col": 8,
+      "center": [
+        1500.0,
+        300.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 80,
+      "bbox": [
+        1460.0,
+        260.0,
+        1540.0,
+        340.0
+      ],
+      "inner_diameter_px": 40.0,
+      "id_label_box": [
+        1414,
+        210,
+        1504,
+        236
+      ]
+    },
+    {
+      "id": "G17",
+      "row": 3,
+      "col": 1,
+      "center": [
+        100.0,
+        500.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 48,
+      "bbox": [
+        76.0,
+        476.0,
+        124.0,
+        524.0
+      ],
+      "inner_diameter_px": 24.0,
+      "id_label_box": [
+        14,
+        410,
+        104,
+        436
+      ]
+    },
+    {
+      "id": "G18",
+      "row": 3,
+      "col": 2,
+      "center": [
+        300.0,
+        500.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 80,
+      "bbox": [
+        260.0,
+        460.0,
+        340.0,
+        540.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        214,
+        410,
+        304,
+        436
+      ]
+    },
+    {
+      "id": "G19",
+      "row": 3,
+      "col": 3,
+      "center": [
+        500.0,
+        500.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 48,
+      "bbox": [
+        476.0,
+        476.0,
+        524.0,
+        524.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        414,
+        410,
+        504,
+        436
+      ]
+    },
+    {
+      "id": "G20",
+      "row": 3,
+      "col": 4,
+      "center": [
+        700.0,
+        500.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 80,
+      "bbox": [
+        660.0,
+        460.0,
+        740.0,
+        540.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        614,
+        410,
+        704,
+        436
+      ]
+    },
+    {
+      "id": "G21",
+      "row": 3,
+      "col": 5,
+      "center": [
+        900.0,
+        500.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 64,
+      "bbox": [
+        868.0,
+        468.0,
+        932.0,
+        532.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        814,
+        410,
+        904,
+        436
+      ]
+    },
+    {
+      "id": "G22",
+      "row": 3,
+      "col": 6,
+      "center": [
+        1100.0,
+        500.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 48,
+      "bbox": [
+        1076.0,
+        476.0,
+        1124.0,
+        524.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1014,
+        410,
+        1104,
+        436
+      ]
+    },
+    {
+      "id": "G23",
+      "row": 3,
+      "col": 7,
+      "center": [
+        1300.0,
+        500.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 80,
+      "bbox": [
+        1260.0,
+        460.0,
+        1340.0,
+        540.0
+      ],
+      "inner_diameter_px": 40.0,
+      "id_label_box": [
+        1214,
+        410,
+        1304,
+        436
+      ]
+    },
+    {
+      "id": "G24",
+      "row": 3,
+      "col": 8,
+      "center": [
+        1500.0,
+        500.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 64,
+      "bbox": [
+        1468.0,
+        468.0,
+        1532.0,
+        532.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1414,
+        410,
+        1504,
+        436
+      ]
+    },
+    {
+      "id": "G25",
+      "row": 4,
+      "col": 1,
+      "center": [
+        100.0,
+        700.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 64,
+      "bbox": [
+        68.0,
+        668.0,
+        132.0,
+        732.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        14,
+        610,
+        104,
+        636
+      ]
+    },
+    {
+      "id": "G26",
+      "row": 4,
+      "col": 2,
+      "center": [
+        300.0,
+        700.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 80,
+      "bbox": [
+        260.0,
+        660.0,
+        340.0,
+        740.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        214,
+        610,
+        304,
+        636
+      ]
+    },
+    {
+      "id": "G27",
+      "row": 4,
+      "col": 3,
+      "center": [
+        500.0,
+        700.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 64,
+      "bbox": [
+        468.0,
+        668.0,
+        532.0,
+        732.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        414,
+        610,
+        504,
+        636
+      ]
+    },
+    {
+      "id": "G28",
+      "row": 4,
+      "col": 4,
+      "center": [
+        700.0,
+        700.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 48,
+      "bbox": [
+        676.0,
+        676.0,
+        724.0,
+        724.0
+      ],
+      "inner_diameter_px": 24.0,
+      "id_label_box": [
+        614,
+        610,
+        704,
+        636
+      ]
+    },
+    {
+      "id": "G29",
+      "row": 4,
+      "col": 5,
+      "center": [
+        900.0,
+        700.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 80,
+      "bbox": [
+        860.0,
+        660.0,
+        940.0,
+        740.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        814,
+        610,
+        904,
+        636
+      ]
+    },
+    {
+      "id": "G30",
+      "row": 4,
+      "col": 6,
+      "center": [
+        1100.0,
+        700.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 64,
+      "bbox": [
+        1068.0,
+        668.0,
+        1132.0,
+        732.0
+      ],
+      "inner_diameter_px": 32.0,
+      "id_label_box": [
+        1014,
+        610,
+        1104,
+        636
+      ]
+    },
+    {
+      "id": "G31",
+      "row": 4,
+      "col": 7,
+      "center": [
+        1300.0,
+        700.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 48,
+      "bbox": [
+        1276.0,
+        676.0,
+        1324.0,
+        724.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1214,
+        610,
+        1304,
+        636
+      ]
+    },
+    {
+      "id": "G32",
+      "row": 4,
+      "col": 8,
+      "center": [
+        1500.0,
+        700.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 64,
+      "bbox": [
+        1468.0,
+        668.0,
+        1532.0,
+        732.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1414,
+        610,
+        1504,
+        636
+      ]
+    },
+    {
+      "id": "G33",
+      "row": 5,
+      "col": 1,
+      "center": [
+        100.0,
+        900.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 80,
+      "bbox": [
+        60.0,
+        860.0,
+        140.0,
+        940.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        14,
+        810,
+        104,
+        836
+      ]
+    },
+    {
+      "id": "G34",
+      "row": 5,
+      "col": 2,
+      "center": [
+        300.0,
+        900.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 64,
+      "bbox": [
+        268.0,
+        868.0,
+        332.0,
+        932.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        214,
+        810,
+        304,
+        836
+      ]
+    },
+    {
+      "id": "G35",
+      "row": 5,
+      "col": 3,
+      "center": [
+        500.0,
+        900.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 48,
+      "bbox": [
+        476.0,
+        876.0,
+        524.0,
+        924.0
+      ],
+      "inner_diameter_px": 24.0,
+      "id_label_box": [
+        414,
+        810,
+        504,
+        836
+      ]
+    },
+    {
+      "id": "G36",
+      "row": 5,
+      "col": 4,
+      "center": [
+        700.0,
+        900.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 80,
+      "bbox": [
+        660.0,
+        860.0,
+        740.0,
+        940.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        614,
+        810,
+        704,
+        836
+      ]
+    },
+    {
+      "id": "G37",
+      "row": 5,
+      "col": 5,
+      "center": [
+        900.0,
+        900.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 64,
+      "bbox": [
+        868.0,
+        868.0,
+        932.0,
+        932.0
+      ],
+      "inner_diameter_px": 32.0,
+      "id_label_box": [
+        814,
+        810,
+        904,
+        836
+      ]
+    },
+    {
+      "id": "G38",
+      "row": 5,
+      "col": 6,
+      "center": [
+        1100.0,
+        900.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 48,
+      "bbox": [
+        1076.0,
+        876.0,
+        1124.0,
+        924.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1014,
+        810,
+        1104,
+        836
+      ]
+    },
+    {
+      "id": "G39",
+      "row": 5,
+      "col": 7,
+      "center": [
+        1300.0,
+        900.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 64,
+      "bbox": [
+        1268.0,
+        868.0,
+        1332.0,
+        932.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1214,
+        810,
+        1304,
+        836
+      ]
+    },
+    {
+      "id": "G40",
+      "row": 5,
+      "col": 8,
+      "center": [
+        1500.0,
+        900.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 48,
+      "bbox": [
+        1476.0,
+        876.0,
+        1524.0,
+        924.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1414,
+        810,
+        1504,
+        836
+      ]
+    },
+    {
+      "id": "G41",
+      "row": 6,
+      "col": 1,
+      "center": [
+        100.0,
+        1100.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 48,
+      "bbox": [
+        76.0,
+        1076.0,
+        124.0,
+        1124.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        14,
+        1010,
+        104,
+        1036
+      ]
+    },
+    {
+      "id": "G42",
+      "row": 6,
+      "col": 2,
+      "center": [
+        300.0,
+        1100.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 80,
+      "bbox": [
+        260.0,
+        1060.0,
+        340.0,
+        1140.0
+      ],
+      "inner_diameter_px": 40.0,
+      "id_label_box": [
+        214,
+        1010,
+        304,
+        1036
+      ]
+    },
+    {
+      "id": "G43",
+      "row": 6,
+      "col": 3,
+      "center": [
+        500.0,
+        1100.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 64,
+      "bbox": [
+        468.0,
+        1068.0,
+        532.0,
+        1132.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        414,
+        1010,
+        504,
+        1036
+      ]
+    },
+    {
+      "id": "G44",
+      "row": 6,
+      "col": 4,
+      "center": [
+        700.0,
+        1100.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 80,
+      "bbox": [
+        660.0,
+        1060.0,
+        740.0,
+        1140.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        614,
+        1010,
+        704,
+        1036
+      ]
+    },
+    {
+      "id": "G45",
+      "row": 6,
+      "col": 5,
+      "center": [
+        900.0,
+        1100.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 80,
+      "bbox": [
+        860.0,
+        1060.0,
+        940.0,
+        1140.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        814,
+        1010,
+        904,
+        1036
+      ]
+    },
+    {
+      "id": "G46",
+      "row": 6,
+      "col": 6,
+      "center": [
+        1100.0,
+        1100.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 48,
+      "bbox": [
+        1076.0,
+        1076.0,
+        1124.0,
+        1124.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1014,
+        1010,
+        1104,
+        1036
+      ]
+    },
+    {
+      "id": "G47",
+      "row": 6,
+      "col": 7,
+      "center": [
+        1300.0,
+        1100.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 80,
+      "bbox": [
+        1260.0,
+        1060.0,
+        1340.0,
+        1140.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1214,
+        1010,
+        1304,
+        1036
+      ]
+    },
+    {
+      "id": "G48",
+      "row": 6,
+      "col": 8,
+      "center": [
+        1500.0,
+        1100.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 64,
+      "bbox": [
+        1468.0,
+        1068.0,
+        1532.0,
+        1132.0
+      ],
+      "inner_diameter_px": 32.0,
+      "id_label_box": [
+        1414,
+        1010,
+        1504,
+        1036
+      ]
+    },
+    {
+      "id": "G49",
+      "row": 7,
+      "col": 1,
+      "center": [
+        100.0,
+        1300.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 80,
+      "bbox": [
+        60.0,
+        1260.0,
+        140.0,
+        1340.0
+      ],
+      "inner_diameter_px": 40.0,
+      "id_label_box": [
+        14,
+        1210,
+        104,
+        1236
+      ]
+    },
+    {
+      "id": "G50",
+      "row": 7,
+      "col": 2,
+      "center": [
+        300.0,
+        1300.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 64,
+      "bbox": [
+        268.0,
+        1268.0,
+        332.0,
+        1332.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        214,
+        1210,
+        304,
+        1236
+      ]
+    },
+    {
+      "id": "G51",
+      "row": 7,
+      "col": 3,
+      "center": [
+        500.0,
+        1300.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 80,
+      "bbox": [
+        460.0,
+        1260.0,
+        540.0,
+        1340.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        414,
+        1210,
+        504,
+        1236
+      ]
+    },
+    {
+      "id": "G52",
+      "row": 7,
+      "col": 4,
+      "center": [
+        700.0,
+        1300.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 64,
+      "bbox": [
+        668.0,
+        1268.0,
+        732.0,
+        1332.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        614,
+        1210,
+        704,
+        1236
+      ]
+    },
+    {
+      "id": "G53",
+      "row": 7,
+      "col": 5,
+      "center": [
+        900.0,
+        1300.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 48,
+      "bbox": [
+        876.0,
+        1276.0,
+        924.0,
+        1324.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        814,
+        1210,
+        904,
+        1236
+      ]
+    },
+    {
+      "id": "G54",
+      "row": 7,
+      "col": 6,
+      "center": [
+        1100.0,
+        1300.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 80,
+      "bbox": [
+        1060.0,
+        1260.0,
+        1140.0,
+        1340.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1014,
+        1210,
+        1104,
+        1236
+      ]
+    },
+    {
+      "id": "G55",
+      "row": 7,
+      "col": 7,
+      "center": [
+        1300.0,
+        1300.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 64,
+      "bbox": [
+        1268.0,
+        1268.0,
+        1332.0,
+        1332.0
+      ],
+      "inner_diameter_px": 32.0,
+      "id_label_box": [
+        1214,
+        1210,
+        1304,
+        1236
+      ]
+    },
+    {
+      "id": "G56",
+      "row": 7,
+      "col": 8,
+      "center": [
+        1500.0,
+        1300.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 48,
+      "bbox": [
+        1476.0,
+        1276.0,
+        1524.0,
+        1324.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1414,
+        1210,
+        1504,
+        1236
+      ]
+    },
+    {
+      "id": "G57",
+      "row": 8,
+      "col": 1,
+      "center": [
+        100.0,
+        1500.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 48,
+      "bbox": [
+        76.0,
+        1476.0,
+        124.0,
+        1524.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        14,
+        1410,
+        104,
+        1436
+      ]
+    },
+    {
+      "id": "G58",
+      "row": 8,
+      "col": 2,
+      "center": [
+        300.0,
+        1500.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 64,
+      "bbox": [
+        268.0,
+        1468.0,
+        332.0,
+        1532.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        214,
+        1410,
+        304,
+        1436
+      ]
+    },
+    {
+      "id": "G59",
+      "row": 8,
+      "col": 3,
+      "center": [
+        500.0,
+        1500.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 48,
+      "bbox": [
+        476.0,
+        1476.0,
+        524.0,
+        1524.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        414,
+        1410,
+        504,
+        1436
+      ]
+    },
+    {
+      "id": "G60",
+      "row": 8,
+      "col": 4,
+      "center": [
+        700.0,
+        1500.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 80,
+      "bbox": [
+        660.0,
+        1460.0,
+        740.0,
+        1540.0
+      ],
+      "inner_diameter_px": 40.0,
+      "id_label_box": [
+        614,
+        1410,
+        704,
+        1436
+      ]
+    },
+    {
+      "id": "G61",
+      "row": 8,
+      "col": 5,
+      "center": [
+        900.0,
+        1500.0
+      ],
+      "color": "蓝",
+      "color_hex": "#2563EB",
+      "shape": "方",
+      "shape_key": "square",
+      "size_px": 64,
+      "bbox": [
+        868.0,
+        1468.0,
+        932.0,
+        1532.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        814,
+        1410,
+        904,
+        1436
+      ]
+    },
+    {
+      "id": "G62",
+      "row": 8,
+      "col": 6,
+      "center": [
+        1100.0,
+        1500.0
+      ],
+      "color": "橙",
+      "color_hex": "#EA7C2D",
+      "shape": "圆环",
+      "shape_key": "ring",
+      "size_px": 48,
+      "bbox": [
+        1076.0,
+        1476.0,
+        1124.0,
+        1524.0
+      ],
+      "inner_diameter_px": 24.0,
+      "id_label_box": [
+        1014,
+        1410,
+        1104,
+        1436
+      ]
+    },
+    {
+      "id": "G63",
+      "row": 8,
+      "col": 7,
+      "center": [
+        1300.0,
+        1500.0
+      ],
+      "color": "绿",
+      "color_hex": "#16A34A",
+      "shape": "圆角方",
+      "shape_key": "roundsquare",
+      "size_px": 80,
+      "bbox": [
+        1260.0,
+        1460.0,
+        1340.0,
+        1540.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1214,
+        1410,
+        1304,
+        1436
+      ]
+    },
+    {
+      "id": "G64",
+      "row": 8,
+      "col": 8,
+      "center": [
+        1500.0,
+        1500.0
+      ],
+      "color": "紫",
+      "color_hex": "#7C3AED",
+      "shape": "圆",
+      "shape_key": "circle",
+      "size_px": 48,
+      "bbox": [
+        1476.0,
+        1476.0,
+        1524.0,
+        1524.0
+      ],
+      "inner_diameter_px": null,
+      "id_label_box": [
+        1414,
+        1410,
+        1504,
+        1436
+      ]
+    }
+  ],
+  "occlusion_scenes": {
+    "note": "两版只有遮挡物之后那一层不同；背景、可见前景、遮挡物与渲染参数完全一致。",
+    "panel": {
+      "rect": [
+        120,
+        200,
+        560,
+        400
+      ],
+      "fill": "#0F172A",
+      "opaque": true,
+      "border_radius": 0,
+      "effects_used": "无 boxShadow / 无 BackdropFilter / 无透明度，因此隐藏层不会对可见像素产生任何影响"
+    },
+    "version_A_hidden": [
+      {
+        "id": "H1",
+        "shape": "圆",
+        "shape_key": "circle",
+        "color": "#2563EB",
+        "size_px": 56
+      },
+      {
+        "id": "H2",
+        "shape": "方",
+        "shape_key": "square",
+        "color": "#EA7C2D",
+        "size_px": 64
+      },
+      {
+        "id": "H3",
+        "shape": "圆角方",
+        "shape_key": "roundsquare",
+        "color": "#16A34A",
+        "size_px": 48
+      },
+      {
+        "id": "H4",
+        "shape": "圆",
+        "shape_key": "circle",
+        "color": "#7C3AED",
+        "size_px": 80
+      },
+      {
+        "id": "H5",
+        "shape": "圆环",
+        "shape_key": "ring",
+        "color": "#0EA5E9",
+        "size_px": 64
+      }
+    ],
+    "version_B_hidden": [
+      {
+        "id": "K1",
+        "shape": "方",
+        "shape_key": "square",
+        "color": "#7C3AED",
+        "size_px": 56
+      },
+      {
+        "id": "K2",
+        "shape": "圆角方",
+        "shape_key": "roundsquare",
+        "color": "#EA7C2D",
+        "size_px": 48
+      },
+      {
+        "id": "K3",
+        "shape": "圆",
+        "shape_key": "circle",
+        "color": "#16A34A",
+        "size_px": 64
+      },
+      {
+        "id": "K4",
+        "shape": "圆环",
+        "shape_key": "ring",
+        "color": "#2563EB",
+        "size_px": 80
+      },
+      {
+        "id": "K5",
+        "shape": "方",
+        "shape_key": "square",
+        "color": "#0EA5E9",
+        "size_px": 56
+      }
+    ],
+    "hidden_layer_extent": [
+      160,
+      240,
+      640,
+      560
+    ],
+    "hidden_layer_margin_inside_panel_px": 40,
+    "visible_ids": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6"
+    ]
+  },
+  "distribution_check_basis": {
+    "method": "assert_constraints() 在每次生成后立即运行；verify_a19.py 再从最终 PNG 逐像素反测颜色、主体半径、圆环内外径与圆角方四角，64/64 通过。",
+    "by_color_rule": "color_index(r,c) = c mod 4 ⇒ 每行 4 色、每色 8 行 × 2 列 = 16",
+    "by_shape_rule": "shape_index(r,c) = LAT[r mod 4][(c + 2*(c//4)) mod 4]，4×4 拉丁方 ⇒ 每行 4 形、每形 16",
+    "combo_rule": "同一列的两个列块相差 2 位下标，因此每种颜色都能遇到全部 4 种形状 ⇒ 16 种「颜色×形状」组合全覆盖，每组恰好 4 个格",
+    "size_rule": "每个组合组（4 格）内 size_index = (g + i) mod 3，g 为组序号 ⇒ 每组覆盖 48/64/80；全局 22/21/21，不要求相等",
+    "row_rule": "每行 4 色 4 形，均 ≥3，满足题面下限",
+    "verified_from_pixels": "outputs/run-20261011-01/A19/grid-scene.png 的 64 个主体全部逐像素反测通过，最大通道差 0"
+  },
+  "constraints_satisfied": {
+    "cells_64": true,
+    "one_subject_per_cell": true,
+    "each_color_16": true,
+    "each_shape_16": true,
+    "all_16_color_shape_combos": true,
+    "each_color_all_3_sizes": true,
+    "each_shape_all_3_sizes": true,
+    "each_row_at_least_3_colors_and_3_shapes": true,
+    "ring_outer_equals_size_inner_half": true,
+    "id_outside_subject": true,
+    "external_images": false
+  }
+}

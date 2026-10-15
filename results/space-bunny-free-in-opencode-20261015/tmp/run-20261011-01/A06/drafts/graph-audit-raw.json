@@ -1,0 +1,1065 @@
+{
+  "schema_version": 1,
+  "task_id": "A06",
+  "path_base": "output_dir",
+  "round": "round-01",
+  "coordinate_system": {
+    "origin": "canvas top-left",
+    "x": "right",
+    "y": "down",
+    "unit": "pixel"
+  },
+  "canvas": {
+    "width": 1600,
+    "height": 1000
+  },
+  "inputs": {
+    "source": "inputs/graph.json",
+    "nodes": 14,
+    "solid_edges": 16,
+    "feedback_edges": 2,
+    "note": "输入未修改；反馈边不参与 DAG 排序"
+  },
+  "topological_layers": {
+    "method": "Kahn 分层：layer(n) = 1 + max(layer(所有前驱))，无前驱者为 L0；仅使用 solid_edges",
+    "max_layer": 10,
+    "layers": [
+      {
+        "layer": 0,
+        "nodes": [
+          "N01"
+        ],
+        "labels": [
+          "需求冻结"
+        ],
+        "parallel": false
+      },
+      {
+        "layer": 1,
+        "nodes": [
+          "N02",
+          "N03"
+        ],
+        "labels": [
+          "输入检查",
+          "字体查询"
+        ],
+        "parallel": true
+      },
+      {
+        "layer": 2,
+        "nodes": [
+          "N04",
+          "N05"
+        ],
+        "labels": [
+          "数据计算",
+          "内容规划"
+        ],
+        "parallel": true
+      },
+      {
+        "layer": 3,
+        "nodes": [
+          "N06",
+          "N07"
+        ],
+        "labels": [
+          "版式系统",
+          "图表生成"
+        ],
+        "parallel": true
+      },
+      {
+        "layer": 4,
+        "nodes": [
+          "N08"
+        ],
+        "labels": [
+          "DSL构建"
+        ],
+        "parallel": false
+      },
+      {
+        "layer": 5,
+        "nodes": [
+          "N09"
+        ],
+        "labels": [
+          "首轮渲染"
+        ],
+        "parallel": false
+      },
+      {
+        "layer": 6,
+        "nodes": [
+          "N10"
+        ],
+        "labels": [
+          "视觉检查"
+        ],
+        "parallel": false
+      },
+      {
+        "layer": 7,
+        "nodes": [
+          "N11"
+        ],
+        "labels": [
+          "问题修复"
+        ],
+        "parallel": false
+      },
+      {
+        "layer": 8,
+        "nodes": [
+          "N12"
+        ],
+        "labels": [
+          "回归渲染"
+        ],
+        "parallel": false
+      },
+      {
+        "layer": 9,
+        "nodes": [
+          "N13"
+        ],
+        "labels": [
+          "产物校验"
+        ],
+        "parallel": false
+      },
+      {
+        "layer": 10,
+        "nodes": [
+          "N14"
+        ],
+        "labels": [
+          "交付归档"
+        ],
+        "parallel": false
+      }
+    ],
+    "node_layer": {
+      "N01": 0,
+      "N02": 1,
+      "N03": 1,
+      "N04": 2,
+      "N05": 2,
+      "N06": 3,
+      "N07": 3,
+      "N08": 4,
+      "N09": 5,
+      "N10": 6,
+      "N11": 7,
+      "N12": 8,
+      "N13": 9,
+      "N14": 10
+    }
+  },
+  "nodes": [
+    {
+      "id": "N01",
+      "label": "需求冻结",
+      "layer": 0,
+      "layer_index": 0,
+      "in_neighbors": [],
+      "out_neighbors": [
+        "N02",
+        "N03"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 0,
+      "out_degree": 2,
+      "node_box_px": [
+        473.0,
+        116,
+        683.0,
+        166
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N02",
+      "label": "输入检查",
+      "layer": 1,
+      "layer_index": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N04",
+        "N05"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 2,
+      "node_box_px": [
+        346.0,
+        186,
+        556.0,
+        236
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N03",
+      "label": "字体查询",
+      "layer": 1,
+      "layer_index": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 1,
+      "node_box_px": [
+        600.0,
+        186,
+        810.0,
+        236
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N04",
+      "label": "数据计算",
+      "layer": 2,
+      "layer_index": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N07",
+        "N13"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 2,
+      "node_box_px": [
+        346.0,
+        256,
+        556.0,
+        306
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N05",
+      "label": "内容规划",
+      "layer": 2,
+      "layer_index": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 1,
+      "node_box_px": [
+        600.0,
+        256,
+        810.0,
+        306
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N06",
+      "label": "版式系统",
+      "layer": 3,
+      "layer_index": 3,
+      "in_neighbors": [
+        "N03",
+        "N05"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 2,
+      "out_degree": 1,
+      "node_box_px": [
+        346.0,
+        326,
+        556.0,
+        376
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N07",
+      "label": "图表生成",
+      "layer": 3,
+      "layer_index": 3,
+      "in_neighbors": [
+        "N04"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 1,
+      "node_box_px": [
+        600.0,
+        326,
+        810.0,
+        376
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N08",
+      "label": "DSL构建",
+      "layer": 4,
+      "layer_index": 4,
+      "in_neighbors": [
+        "N06",
+        "N07"
+      ],
+      "out_neighbors": [
+        "N09"
+      ],
+      "feedback_in": [
+        "N09",
+        "N10"
+      ],
+      "feedback_out": [],
+      "in_degree": 2,
+      "out_degree": 1,
+      "node_box_px": [
+        473.0,
+        396,
+        683.0,
+        446
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N09",
+      "label": "首轮渲染",
+      "layer": 5,
+      "layer_index": 5,
+      "in_neighbors": [
+        "N08"
+      ],
+      "out_neighbors": [
+        "N10"
+      ],
+      "feedback_in": [],
+      "feedback_out": [
+        "N08"
+      ],
+      "in_degree": 1,
+      "out_degree": 1,
+      "node_box_px": [
+        473.0,
+        466,
+        683.0,
+        516
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N10",
+      "label": "视觉检查",
+      "layer": 6,
+      "layer_index": 6,
+      "in_neighbors": [
+        "N09"
+      ],
+      "out_neighbors": [
+        "N11"
+      ],
+      "feedback_in": [],
+      "feedback_out": [
+        "N08"
+      ],
+      "in_degree": 1,
+      "out_degree": 1,
+      "node_box_px": [
+        473.0,
+        536,
+        683.0,
+        586
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N11",
+      "label": "问题修复",
+      "layer": 7,
+      "layer_index": 7,
+      "in_neighbors": [
+        "N10"
+      ],
+      "out_neighbors": [
+        "N12"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 1,
+      "node_box_px": [
+        473.0,
+        606,
+        683.0,
+        656
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N12",
+      "label": "回归渲染",
+      "layer": 8,
+      "layer_index": 8,
+      "in_neighbors": [
+        "N11"
+      ],
+      "out_neighbors": [
+        "N13"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 1,
+      "node_box_px": [
+        473.0,
+        676,
+        683.0,
+        726
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N13",
+      "label": "产物校验",
+      "layer": 9,
+      "layer_index": 9,
+      "in_neighbors": [
+        "N12",
+        "N04"
+      ],
+      "out_neighbors": [
+        "N14"
+      ],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 2,
+      "out_degree": 1,
+      "node_box_px": [
+        473.0,
+        746,
+        683.0,
+        796
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    },
+    {
+      "id": "N14",
+      "label": "交付归档",
+      "layer": 10,
+      "layer_index": 10,
+      "in_neighbors": [
+        "N13"
+      ],
+      "out_neighbors": [],
+      "feedback_in": [],
+      "feedback_out": [],
+      "in_degree": 1,
+      "out_degree": 0,
+      "node_box_px": [
+        473.0,
+        816,
+        683.0,
+        866
+      ],
+      "font_px": {
+        "label": 22,
+        "id": 18
+      }
+    }
+  ],
+  "edges": {
+    "solid_prerequisite": [
+      {
+        "from": "N01",
+        "to": "N02",
+        "from_layer": 0,
+        "to_layer": 1,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            166
+          ],
+          [
+            578.0,
+            176.0
+          ],
+          [
+            451.0,
+            176.0
+          ],
+          [
+            451.0,
+            186
+          ]
+        ]
+      },
+      {
+        "from": "N01",
+        "to": "N03",
+        "from_layer": 0,
+        "to_layer": 1,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            166
+          ],
+          [
+            578.0,
+            176.0
+          ],
+          [
+            705.0,
+            176.0
+          ],
+          [
+            705.0,
+            186
+          ]
+        ]
+      },
+      {
+        "from": "N02",
+        "to": "N04",
+        "from_layer": 1,
+        "to_layer": 2,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            451.0,
+            236
+          ],
+          [
+            451.0,
+            256
+          ]
+        ]
+      },
+      {
+        "from": "N02",
+        "to": "N05",
+        "from_layer": 1,
+        "to_layer": 2,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            451.0,
+            236
+          ],
+          [
+            451.0,
+            246.0
+          ],
+          [
+            705.0,
+            246.0
+          ],
+          [
+            705.0,
+            256
+          ]
+        ]
+      },
+      {
+        "from": "N03",
+        "to": "N06",
+        "from_layer": 1,
+        "to_layer": 3,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            705.0,
+            236
+          ],
+          [
+            705.0,
+            281.0
+          ],
+          [
+            451.0,
+            281.0
+          ],
+          [
+            451.0,
+            326
+          ]
+        ]
+      },
+      {
+        "from": "N05",
+        "to": "N06",
+        "from_layer": 2,
+        "to_layer": 3,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            705.0,
+            306
+          ],
+          [
+            705.0,
+            316.0
+          ],
+          [
+            451.0,
+            316.0
+          ],
+          [
+            451.0,
+            326
+          ]
+        ]
+      },
+      {
+        "from": "N04",
+        "to": "N07",
+        "from_layer": 2,
+        "to_layer": 3,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            451.0,
+            306
+          ],
+          [
+            451.0,
+            316.0
+          ],
+          [
+            705.0,
+            316.0
+          ],
+          [
+            705.0,
+            326
+          ]
+        ]
+      },
+      {
+        "from": "N06",
+        "to": "N08",
+        "from_layer": 3,
+        "to_layer": 4,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            451.0,
+            376
+          ],
+          [
+            451.0,
+            386.0
+          ],
+          [
+            578.0,
+            386.0
+          ],
+          [
+            578.0,
+            396
+          ]
+        ]
+      },
+      {
+        "from": "N07",
+        "to": "N08",
+        "from_layer": 3,
+        "to_layer": 4,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            705.0,
+            376
+          ],
+          [
+            705.0,
+            386.0
+          ],
+          [
+            578.0,
+            386.0
+          ],
+          [
+            578.0,
+            396
+          ]
+        ]
+      },
+      {
+        "from": "N08",
+        "to": "N09",
+        "from_layer": 4,
+        "to_layer": 5,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            446
+          ],
+          [
+            578.0,
+            466
+          ]
+        ]
+      },
+      {
+        "from": "N09",
+        "to": "N10",
+        "from_layer": 5,
+        "to_layer": 6,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            516
+          ],
+          [
+            578.0,
+            536
+          ]
+        ]
+      },
+      {
+        "from": "N10",
+        "to": "N11",
+        "from_layer": 6,
+        "to_layer": 7,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            586
+          ],
+          [
+            578.0,
+            606
+          ]
+        ]
+      },
+      {
+        "from": "N11",
+        "to": "N12",
+        "from_layer": 7,
+        "to_layer": 8,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            656
+          ],
+          [
+            578.0,
+            676
+          ]
+        ]
+      },
+      {
+        "from": "N12",
+        "to": "N13",
+        "from_layer": 8,
+        "to_layer": 9,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            726
+          ],
+          [
+            578.0,
+            746
+          ]
+        ]
+      },
+      {
+        "from": "N13",
+        "to": "N14",
+        "from_layer": 9,
+        "to_layer": 10,
+        "direction": "downward",
+        "drawn_as": "vertical/elbow polyline",
+        "points_px": [
+          [
+            578.0,
+            796
+          ],
+          [
+            578.0,
+            816
+          ]
+        ]
+      },
+      {
+        "from": "N04",
+        "to": "N13",
+        "from_layer": 2,
+        "to_layer": 9,
+        "direction": "downward",
+        "drawn_as": "left bypass polyline",
+        "points_px": [
+          [
+            346.0,
+            281.0
+          ],
+          [
+            144,
+            281.0
+          ],
+          [
+            144,
+            771.0
+          ],
+          [
+            473.0,
+            771.0
+          ]
+        ]
+      }
+    ],
+    "feedback": [
+      {
+        "from": "N09",
+        "to": "N08",
+        "kind": "feedback",
+        "label": "首轮渲染失败 → 回到 DSL 构建",
+        "line_style": "dashed",
+        "color": "#DB2777",
+        "routed_via": "right channel",
+        "points_px": [
+          [
+            683.0,
+            491.0
+          ],
+          [
+            1074,
+            491.0
+          ],
+          [
+            1074,
+            421.0
+          ],
+          [
+            683.0,
+            421.0
+          ]
+        ]
+      },
+      {
+        "from": "N10",
+        "to": "N08",
+        "kind": "feedback",
+        "label": "视觉检查发现问题 → 回到 DSL 构建",
+        "line_style": "dashed",
+        "color": "#DB2777",
+        "routed_via": "right channel",
+        "points_px": [
+          [
+            683.0,
+            561.0
+          ],
+          [
+            1094,
+            561.0
+          ],
+          [
+            1094,
+            421.0
+          ],
+          [
+            683.0,
+            421.0
+          ]
+        ]
+      }
+    ],
+    "crossing_without_junction_note": "线段交叉处没有任何连接点标记，因此不构成新的依赖关系",
+    "counts": {
+      "solid": 16,
+      "feedback": 2,
+      "drawn_total": 16
+    }
+  },
+  "longest_prerequisite_path": {
+    "metric": "节点数",
+    "value": 11,
+    "multi_solution_allowed": true,
+    "one_solution": [
+      "N01",
+      "N02",
+      "N05",
+      "N06",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ],
+    "one_solution_labels": [
+      "需求冻结",
+      "输入检查",
+      "内容规划",
+      "版式系统",
+      "DSL构建",
+      "首轮渲染",
+      "视觉检查",
+      "问题修复",
+      "回归渲染",
+      "产物校验",
+      "交付归档"
+    ],
+    "edges_used": [
+      [
+        "N01",
+        "N02"
+      ],
+      [
+        "N02",
+        "N05"
+      ],
+      [
+        "N05",
+        "N06"
+      ],
+      [
+        "N06",
+        "N08"
+      ],
+      [
+        "N08",
+        "N09"
+      ],
+      [
+        "N09",
+        "N10"
+      ],
+      [
+        "N10",
+        "N11"
+      ],
+      [
+        "N11",
+        "N12"
+      ],
+      [
+        "N12",
+        "N13"
+      ],
+      [
+        "N13",
+        "N14"
+      ]
+    ],
+    "all_edges_are_solid": false,
+    "algorithm": "按拓扑层序做最长路 DP：best(n) = 1 + max(best(前驱))"
+  },
+  "layout": {
+    "node_size_px": [
+      210,
+      50
+    ],
+    "row_pitch_px": 70,
+    "graph_origin_px": [
+      34,
+      102
+    ],
+    "feedback_channel_x_px": 1074,
+    "bypass_channel_x_px": 78,
+    "layer_label_column_width_px": 62,
+    "direction_ambiguity": "无：所有先决边均自高编号层指向低编号层（自上而下），反馈边单独走右侧通道并使用虚线与专用图例"
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "filename": "dependency-map.png",
+      "dsl": "dependency-map.snapshot",
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "kind": "json",
+      "filename": "graph-audit.json"
+    }
+  ]
+}

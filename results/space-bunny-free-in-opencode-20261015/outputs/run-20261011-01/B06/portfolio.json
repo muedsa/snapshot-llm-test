@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "task_id": "B06",
+  "path_base": "output_dir",
+  "generated_at": "2026-10-15T09:20:26+08:00",
+  "disclaimer": "十件全部为自拟示例，非真实记录；原版结构为中性抽象示意；纯 DSL，无 <Image> 与外部素材。",
+  "case_count": 10,
+  "problem_evidence": "outputs/run-20261011-01/B06/problem-evidence.json",
+  "design_review": "outputs/run-20261011-01/B06/design-review.md",
+  "cases": [
+    {
+      "id": "case-01",
+      "carrier": "超市购物小票（热敏纸）",
+      "core_question": "我花了多少，花在哪，哪些能报销",
+      "what_the_gap_was": "41 行等权信息，合计压在第 41 行；品类与促销混排在同一列，没有任何分组",
+      "what_is_actually_needed": "三个数：总额、差���、可报销；以及「钱花在哪」",
+      "new_first_layer": "结论行 + 品类归因条 + 三个动作",
+      "target_viewing": "收银台后 20 秒，正对 35–45cm，竖持",
+      "png": "outputs/run-20261011-01/B06/case-01/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-01/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-01/case.md"
+    },
+    {
+      "id": "case-02",
+      "carrier": "居民燃气缴费通知",
+      "core_question": "这期为什么涨了",
+      "what_the_gap_was": "只给用量、金额、账期三个有效数字，阶梯价的那一行在原账单上根本不显示",
+      "what_is_actually_needed": "把金额差额拆成可核对的价格效应与用量效应",
+      "new_first_layer": "差额归因一句话 + 3 期用量对照 + 阶梯明细",
+      "target_viewing": "餐桌，横向细看",
+      "png": "outputs/run-20261011-01/B06/case-02/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-02/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-02/case.md"
+    },
+    {
+      "id": "case-03",
+      "carrier": "健康体检报告",
+      "core_question": "我现在该先做哪一件事",
+      "what_the_gap_was": "28 项按科室平铺，每项只有「标 ↑↓」，没有排序也没有动作",
+      "what_is_actually_needed": "把二值标签换成「下一步做什么」，并说清参考区间不等于异常",
+      "new_first_layer": "三档分层 + 每项一步动作 + 为什么不能只标红箭头",
+      "target_viewing": "手机与打印件，横竖皆可",
+      "png": "outputs/run-20261011-01/B06/case-03/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-03/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-03/case.md"
+    },
+    {
+      "id": "case-04",
+      "carrier": "航空行程单 / 值机确认页",
+      "core_question": "下一段该做什么",
+      "what_the_gap_was": "5 段行程等权平铺，没有当前时刻，没有倒计时",
+      "what_is_actually_needed": "把「现在」钉在时间轴上，其余一切围绕这一段排",
+      "new_first_layer": "当前游标 + 距下一段倒计时 + 按截止时间排序的三件事",
+      "target_viewing": "手机，走动中快速扫读",
+      "png": "outputs/run-20261011-01/B06/case-04/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-04/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-04/case.md"
+    },
+    {
+      "id": "case-05",
+      "carrier": "门诊收费票据（一式多张）",
+      "core_question": "这次到底花了多少",
+      "what_the_gap_was": "5 张独立票据，金额不跨票相加，退费信息分散在各张的末尾",
+      "what_is_actually_needed": "合成一笔账，并说清还能反悔哪一笔",
+      "new_first_layer": "三个总数 + 按发生时间排的 5 项 + 可退项与截止时限",
+      "target_viewing": "诊室门口，站立扫读",
+      "png": "outputs/run-20261011-01/B06/case-05/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-05/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-05/case.md"
+    },
+    {
+      "id": "case-06",
+      "carrier": "快递电子面单 / 隐私面单",
+      "core_question": "寄件人只问三句，收件人只问一件",
+      "what_the_gap_was": "22 个等权字段，收寄同屏，无隐私状态",
+      "what_is_actually_needed": "寄件人核对「电话、门牌、隐藏」，收件人只看「谁的、什么时候到、带什么」",
+      "new_first_layer": "正反两面 + 隐私状态 + 已折叠的 18 项清单",
+      "target_viewing": "手持，柜台光线，横向",
+      "png": "outputs/run-20261011-01/B06/case-06/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-06/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-06/case.md"
+    },
+    {
+      "id": "case-07",
+      "carrier": "餐厅菜单（堂食单页）",
+      "core_question": "几个人、忌不忌口、多久要上",
+      "what_the_gap_was": "40 道菜纵向平铺，无分类、无维度标注",
+      "what_is_actually_needed": "先给条件，再看菜",
+      "new_first_layer": "4 个决策入口（人数/辣度/素食/上菜时限）+ 每道菜 4 个维度",
+      "target_viewing": "桌面上斜放 45°，横向视线",
+      "png": "outputs/run-20261011-01/B06/case-07/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-07/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-07/case.md"
+    },
+    {
+      "id": "case-08",
+      "carrier": "药品说明书 / 药盒侧面",
+      "core_question": "我现在能不能吃这一片",
+      "what_the_gap_was": "23 个法定章节，术语密集，动作埋在末段",
+      "what_is_actually_needed": "三个问题放到第一屏，并给出今天的服药时刻",
+      "new_first_layer": "能不能吃 / 一次几片 / 和别的药冲不冲 + 24h 时刻表 + 3 条警示",
+      "target_viewing": "药盒旁，手边，夜里",
+      "png": "outputs/run-20261011-01/B06/case-08/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-08/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-08/case.md"
+    },
+    {
+      "id": "case-09",
+      "carrier": "预包装食品包装（正标 + 标签）",
+      "core_question": "盐油糖到底占多少",
+      "what_the_gap_was": "一张 3 列小表 + 一行配料，字号最小、位置最边",
+      "what_is_actually_needed": "法定标示一字不动，另加一层标准允许的补充说明",
+      "new_first_layer": "前三位配料大字 + 法定 1+6 原样 + 每包换算",
+      "target_viewing": "货架上，1 米距离",
+      "png": "outputs/run-20261011-01/B06/case-09/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-09/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-09/case.md"
+    },
+    {
+      "id": "case-10",
+      "carrier": "家用电器说明书（空气净化器）",
+      "core_question": "换滤芯、尘垢、清洁各在哪一章",
+      "what_the_gap_was": "9 章 34 节按功能组织，任务要自己找",
+      "what_is_actually_needed": "把说明书首页改成「你现在能做的 6 件事」",
+      "new_first_layer": "6 张任务卡 + 滤芯寿命进度 + 保养周期日历",
+      "target_viewing": "家电旁，手机或纸质卡",
+      "png": "outputs/run-20261011-01/B06/case-10/final.png",
+      "dsl": "outputs/run-20261011-01/B06/case-10/final.snapshot",
+      "case_note": "outputs/run-20261011-01/B06/case-10/case.md"
+    }
+  ]
+}

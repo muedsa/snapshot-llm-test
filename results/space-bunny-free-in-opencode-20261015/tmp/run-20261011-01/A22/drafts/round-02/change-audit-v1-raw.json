@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "task_id": "A22",
+  "round": 2,
+  "path_base": "output_dir",
+  "baseline": {
+    "round": "round-01",
+    "dashboard_png": "round-01/dashboard.png",
+    "dashboard_dsl": "round-01/dashboard.snapshot",
+    "computed_data": "round-01/computed-data.json"
+  },
+  "changes": [
+    {
+      "field": "2026-08.refund_amount",
+      "old_value": 15048,
+      "new_value": 25048,
+      "source": "round-02.md 财务更正：2026-08 退款额应为 25048",
+      "propagated_to": [
+        {
+          "target": "净收入/利润",
+          "what": {
+            "net_revenue": {
+              "from": 173052,
+              "to": 163052,
+              "delta": -10000
+            },
+            "operating_profit": {
+              "from": 41052,
+              "to": 31052,
+              "delta": -10000
+            }
+          }
+        },
+        {
+          "target": "退款率/转化率",
+          "what": {
+            "refund_rate": "13.32%",
+            "conversion_rate": "未变"
+          }
+        },
+        {
+          "target": "图表",
+          "what": "对应月份的柱高按未舍入值重算"
+        },
+        {
+          "target": "KPI",
+          "what": {
+            "总净收入": 908624,
+            "总经营利润": 182124
+          }
+        },
+        {
+          "target": "轴",
+          "what": "范围由 [0,240000] 变为 [-40000,240000]"
+        },
+        {
+          "target": "结论",
+          "what": "逐条按新值重算（亏损月份等）"
+        }
+      ]
+    },
+    {
+      "field": "2026-09.operating_cost",
+      "old_value": 138000,
+      "new_value": 208000,
+      "source": "round-02.md 财务更正：2026-09 经营成本应为 208000",
+      "propagated_to": [
+        {
+          "target": "净收入/利润",
+          "what": {
+            "net_revenue": {
+              "from": 202368,
+              "to": 202368,
+              "delta": 0
+            },
+            "operating_profit": {
+              "from": 64368,
+              "to": -5632,
+              "delta": -70000
+            }
+          }
+        },
+        {
+          "target": "退款率/转化率",
+          "what": {
+            "refund_rate": "未变",
+            "conversion_rate": "未变"
+          }
+        },
+        {
+          "target": "图表",
+          "what": "对应月份的柱高按未舍入值重算"
+        },
+        {
+          "target": "KPI",
+          "what": {
+            "总净收入": 908624,
+            "总经营利润": 182124
+          }
+        },
+        {
+          "target": "轴",
+          "what": "范围由 [0,240000] 变为 [-40000,240000]"
+        },
+        {
+          "target": "结论",
+          "what": "逐条按新值重算（亏损月份等）"
+        }
+      ]
+    }
+  ],
+  "preserved": [
+    {
+      "what": "原始 CSV",
+      "evidence": "inputs/monthly.csv 未被写入；更正在 applied_changes 中以旧新值记录"
+    },
+    {
+      "what": "计算口径",
+      "evidence": "净收入/利润/退款率/转化率公式与汇总方式三轮逐字相同"
+    },
+    {
+      "what": "主区域边界",
+      "evidence": "layout-map.comparison 各区域分量差 0px"
+    },
+    {
+      "what": "字体与视觉系统",
+      "evidence": "字号 34/24/22/22，Inter + Noto Sans CJK SC，配色未变"
+    },
+    {
+      "what": "沿用的上轮更正",
+      "evidence": "无"
+    }
+  ],
+  "regression": []
+}

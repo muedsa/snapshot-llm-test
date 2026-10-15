@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "timings": {
+    "first_request_started_at": "2026-10-13T09:34:07.004+08:00",
+    "last_request_ended_at": "2026-10-13T09:36:03.696+08:00",
+    "request_duration_sum_seconds": 32.494
+  },
+  "counts": {
+    "requests": 12,
+    "requests_ok": 12,
+    "requests_failed": 0,
+    "renders": 3,
+    "image_views": 3,
+    "solver_runs": 1
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A24/execution-board.png",
+      "dsl": "outputs/run-20261011-01/A24/execution-board.snapshot",
+      "size": {
+        "width": 1920,
+        "height": 1080,
+        "format": "PNG",
+        "mode": "RGBA"
+      }
+    },
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A24/decision-brief.png",
+      "dsl": "outputs/run-20261011-01/A24/decision-brief.snapshot",
+      "size": {
+        "width": 1200,
+        "height": 1600,
+        "format": "PNG",
+        "mode": "RGBA"
+      }
+    },
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A24/action-card.png",
+      "dsl": "outputs/run-20261011-01/A24/action-card.snapshot",
+      "size": {
+        "width": 720,
+        "height": 1280,
+        "format": "PNG",
+        "mode": "RGBA"
+      }
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A24/schedule.json"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A24/schedule-audit.json"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A24/content-map.json"
+    },
+    {
+      "kind": "md",
+      "path": "outputs/run-20261011-01/A24/snapshot-usage.md"
+    }
+  ],
+  "solver": {
+    "finish_minute": 260.0,
+    "buffer_minutes": 160.0,
+    "dependency_bound": 255,
+    "workload_bound": 242.5,
+    "proven_globally_optimal": true,
+    "search": {
+      "search_nodes": 78,
+      "distinct_states": 40,
+      "exhaustive": true,
+      "pruning_bound": "LB = max_t(est(t)+tail(t))，可采纳下界",
+      "dedup_key": "逐任务 (start,end,team) + 两队空闲时刻"
+    }
+  },
+  "verification": {
+    "render_retries": [],
+    "content_map_checks": [
+      "执行图色块宽度与真实时长成正比",
+      "执行图起点落在真实时间位置",
+      "完工线与截止线画在正确的分钟位置",
+      "三图使用的完工时刻一致",
+      "手机卡按时间序排列",
+      "简报依赖列与输入依赖一致",
+      "三图起止时刻一致",
+      "风险标注挂在正确的任务上"
+    ],
+    "schedule_checks": [
+      "时长完整执行",
+      "工作窗口 0–420",
+      "同团队不可并行",
+      "依赖先后",
+      "双选任务只占一个团队",
+      "未擅自改依赖/缩时/删环节",
+      "未把风险说明加进时长"
+    ]
+  },
+  "unresolved_issues": []
+}

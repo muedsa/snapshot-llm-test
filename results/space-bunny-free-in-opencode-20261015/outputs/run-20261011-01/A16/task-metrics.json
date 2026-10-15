@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A16",
+  "run_id": "run-20261011-01",
+  "task_round": "round-01",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐图视觉自检",
+  "output_dir": "outputs/run-20261011-01/A16",
+  "temp_dir": "tmp/run-20261011-01/A16",
+  "timings": {
+    "started_at": "2026-10-12T10:51:15.092+08:00",
+    "ended_at": "2026-10-12T11:00:46.565+08:00",
+    "elapsed_seconds": 571.473,
+    "first_usable_image_seconds": 2.28,
+    "user_feedback_wait_seconds": 0.0,
+    "rate_limit_wait_seconds": 0.0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 7.127,
+    "server_timing_source": "requests.jsonl 中的 Server-Timing 响应头（服务未提供时为 null）",
+    "started_at_raw": "2026-10-12T13:52:00.000+08:00",
+    "timing_note": "started_at 取 A16 首个渲染请求之前；ended_at 为定稿渲染与指标写盘完成时刻。墙钟总耗时含两轮原图勘察脚本、findings 撰写、3 次渲染、15 次看图与逐柱反测，不等于请求耗时之和（7.127s）。"
+  },
+  "counts": {
+    "snapshot_requests": 3,
+    "successful_snapshot_requests": 3,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 3,
+    "image_views": 15,
+    "completed_visual_iterations": 2,
+    "incomplete_visual_iterations": 0,
+    "image_views_raw": 15,
+    "image_views_detail": [
+      {
+        "stage": "input",
+        "image": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+        "zoom": "原尺寸",
+        "observed": "原图整屏：标题、副标题、图表、利润明细、重点观察卡、页脚全部看清"
+      },
+      {
+        "stage": "input-crop",
+        "image": "preview/flawed-axis-2x.png",
+        "zoom": "2× 最近邻",
+        "observed": "坐标轴：刻度 200/180/160/140/120/100，最低为 100；Q1 蓝柱标签 120 但柱顶在轴上读出约 155.6"
+      },
+      {
+        "stage": "input-crop",
+        "image": "preview/flawed-bars-q1q2-2x.png",
+        "zoom": "2× 最近邻",
+        "observed": "Q1/Q2 柱组：蓝柱标签 120/135、橙柱标签 90/108，与轴上柱顶位置对不上"
+      },
+      {
+        "stage": "input-crop",
+        "image": "preview/flawed-profit-callout-2x.png",
+        "zoom": "2× 最近邻",
+        "observed": "利润卡 30/27/42/54 与标注卡「重点观察 · Q3」「它的利润超过其他季度。」"
+      },
+      {
+        "stage": "input-crop",
+        "image": "preview/flawed-header-2x.png",
+        "zoom": "2× 最近邻",
+        "observed": "页眉：标题「季度复盘：Q3利润最高」与副标题「收入持续上升，全年保持增长」"
+      },
+      {
+        "stage": "v1",
+        "image": "preview/corrected-report-v1.png",
+        "zoom": "原尺寸",
+        "observed": "首版整屏：版式与数据成立；自检判定正文类文字 20px 低于 ≥22 的门槛"
+      },
+      {
+        "stage": "v2",
+        "image": "preview/corrected-report-v2.png",
+        "zoom": "原尺寸",
+        "observed": "正文类文字提到 22px 后整屏复查"
+      },
+      {
+        "stage": "v2-crop",
+        "image": "preview/fixed-q4-tops-3x.png",
+        "zoom": "3× 最近邻",
+        "observed": "Q4 柱顶：180 标签在 200 网格线下方约 3px，不压线；126 同理"
+      },
+      {
+        "stage": "v2-crop",
+        "image": "preview/fixed-axis-zero-3x.png",
+        "zoom": "3× 最近邻",
+        "observed": "坐标轴 0 线与柱底对齐；Q1 收入 120、成本 90 的柱顶与刻度一致"
+      },
+      {
+        "stage": "v2-crop",
+        "image": "preview/fixed-profit-table-2x.png",
+        "zoom": "2× 最近邻",
+        "observed": "利润表五行五列齐全，Q3 利润 32、Q4 行高亮，无截断"
+      },
+      {
+        "stage": "v2-crop",
+        "image": "preview/fixed-callout-2x.png",
+        "zoom": "2× 最近邻",
+        "observed": "标注卡四行完整显示：收入 180 · 成本 126 / 利润 54 · 利润率 30.0% / 三项均为全年最高 / 四季利润 30/27/32/54"
+      },
+      {
+        "stage": "v2-crop",
+        "image": "preview/fixed-header-2x.png",
+        "zoom": "2× 最近邻",
+        "observed": "标题与副标题完整、无截断，结论为 Q4"
+      },
+      {
+        "stage": "final",
+        "image": "outputs/run-20261011-01/A16/corrected-report.png",
+        "zoom": "原尺寸",
+        "observed": "交付原图整屏复查"
+      },
+      {
+        "stage": "final",
+        "image": "outputs/run-20261011-01/A16/corrected-report.png",
+        "zoom": "像素反测",
+        "observed": "对交付 PNG 反测 8 根柱高度/x/柱底、5 条网格线 y 与全部字号门槛"
+      },
+      {
+        "stage": "ref-check",
+        "image": "tmp/run-20261011-01/A16/drafts/flawed-geometry-2.json",
+        "zoom": "数值判读",
+        "observed": "原图柱体/图例/利润卡/标注卡的像素测量结果（与 6 张放大图交叉核对）"
+      }
+    ],
+    "image_views_note": "15 次实际打开/判读：原图整屏 1 + 原图 2× 放大勘察 4 + 定稿整屏 2 + 定稿局部放大 5 + 交付原图像素反测 1 + 原始测量文件判读 1。其中 11 张图被实际打开查看，其余为对同一批像素测量结果的判读。",
+    "dsl_versions_note": "dsl_versions 按 requests.jsonl 的版本标签去重计数；保留成文件的 DSL 草稿为 1 个（a16-corrected-report-v1.snapshot），三轮渲染都基于这一份，改动的是构建脚本。"
+  },
+  "iteration_breakdown": {
+    "baseline": 1,
+    "syntax_fix": 0,
+    "retry": 0,
+    "alternative": 0,
+    "requirement_change": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A16/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A16/iterations.jsonl"
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A16/corrected-report.png",
+      "dsl": "outputs/run-20261011-01/A16/corrected-report.snapshot",
+      "required_by": "task.json required_outputs",
+      "width": 1280,
+      "height": 900,
+      "format": "PNG",
+      "mode": "RGBA"
+    },
+    {
+      "kind": "dsl",
+      "path": "outputs/run-20261011-01/A16/corrected-report.snapshot"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A16/findings.json"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A16/corrected-data.json"
+    },
+    {
+      "kind": "report",
+      "path": "outputs/run-20261011-01/A16/snapshot-usage.md"
+    },
+    {
+      "kind": "metrics",
+      "path": "outputs/run-20261011-01/A16/task-metrics.json"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+      "status": "input",
+      "note": "同事初稿 1280×900，仅用于观察与像素测量；未嵌入 DSL、未裁块、未作为输出资产"
+    },
+    {
+      "path": "tmp/run-20261011-01/A16/preview/corrected-report-v1.png",
+      "status": "superseded",
+      "note": "首版整屏打开：版式成立，但自检脚本判定字号门槛不过——利润表单元格 20px、图例 20px、季度标签 20px，低于题面「正文 ≥22」"
+    },
+    {
+      "path": "tmp/run-20261011-01/A16/preview/flawed-axis-2x.png",
+      "status": "diagnostic",
+      "note": "原图坐标轴 2× 放大：确认刻度 200/180/160/140/120/100、最低为 100 而非 0，且 Q1 蓝柱标签写 120 而柱顶在轴上读出约 155.6——F01/F03 的直接证据"
+    },
+    {
+      "path": "tmp/run-20261011-01/A16/drafts/flawed-geometry-2.json",
+      "status": "diagnostic",
+      "note": "排除图例色块干扰后重测 8 根柱的 x/y/高度与轴上读数，是 findings.json 全部「原图位置」字段的数据来源"
+    }
+  ],
+  "rounds": [],
+  "unresolved_issues": [],
+  "verification": {
+    "bar_height_matches_value": true,
+    "bar_height_error_px_range": [
+      -0.8,
+      0.04
+    ],
+    "bar_x_error_px_max": 0.75,
+    "all_bars_on_zero_baseline": true,
+    "gridline_max_error_px": 0.0,
+    "value_label_gap_px_range": [
+      14,
+      15
+    ],
+    "min_body_px": 22,
+    "min_annotation_px": 18,
+    "font_gate_passed": true,
+    "image_tag_used": false,
+    "findings_count": 7,
+    "uncertainties_count": 4,
+    "checked_but_not_errors_count": 3,
+    "axis_definition": "y = 512.0 − value × 1.32",
+    "px_per_unit": 1.32,
+    "emphasis_quarter": "Q4",
+    "verify_all_passed": true
+  }
+}

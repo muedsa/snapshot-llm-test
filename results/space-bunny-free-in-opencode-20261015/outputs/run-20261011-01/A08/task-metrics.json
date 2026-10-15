@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A08",
+  "run_id": "run-20261011-01",
+  "task_round": "round-01",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐图视觉自检",
+  "output_dir": "outputs/run-20261011-01/A08",
+  "temp_dir": "tmp/run-20261011-01/A08",
+  "timings": {
+    "started_at": "2026-10-11T15:35:00.000+08:00",
+    "ended_at": "2026-10-11T15:58:58.199+08:00",
+    "elapsed_seconds": 1438.199,
+    "first_usable_image_seconds": 27.745,
+    "user_feedback_wait_seconds": 0.0,
+    "rate_limit_wait_seconds": 0.0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 240.375,
+    "server_timing_source": "requests.jsonl 中的 Server-Timing 响应头（服务未提供时为 null）"
+  },
+  "counts": {
+    "snapshot_requests": 11,
+    "successful_snapshot_requests": 6,
+    "failed_snapshot_requests": 5,
+    "retry_requests": 1,
+    "other_service_requests": 0,
+    "dsl_versions": 5,
+    "image_views": 10,
+    "completed_visual_iterations": 3,
+    "incomplete_visual_iterations": 0,
+    "image_views_from_iterations_log": 10,
+    "image_views_basis": "整屏打开 5 次：v1 首版、v2 修正版、v3 版面收敛版、v4 箭头增强版、定稿 outputs/A08/wayfinding.png；3× 放大局部 5 次：入馆共享段（v3、v4 各 1）、离馆共享段（v3）、分岔点 (6,10)（v3）、E 门洞（v4）。另按要求覆盖了合流点 (20,10)、S 门洞与六个地标标签所在区域。",
+    "image_views_artifacts": {
+      "full_screen": [
+        "tmp/run-20261011-01/A08/preview/a08-v1.png",
+        "tmp/run-20261011-01/A08/preview/a08-v2.png",
+        "tmp/run-20261011-01/A08/preview/a08-v3.png",
+        "tmp/run-20261011-01/A08/preview/a08-v4.png",
+        "outputs/run-20261011-01/A08/wayfinding.png"
+      ],
+      "zoomed_local": [
+        "tmp/run-20261011-01/A08/preview/a08-v3-z1-entry.png",
+        "tmp/run-20261011-01/A08/preview/a08-v3-z3-exit.png",
+        "tmp/run-20261011-01/A08/preview/a08-v3-z2-branch-merge.png",
+        "tmp/run-20261011-01/A08/preview/a08-v4-z1-entry.png",
+        "tmp/run-20261011-01/A08/preview/a08-v4-z5-doorE.png"
+      ]
+    },
+    "retry_requests_from_flag": 0,
+    "retry_requests_basis": "A08-v3-84839d94 返回 HTTP 200 但响应体 0 字节后，对同一份 DSL（responses/*.request.txt 字节一致）重新提交一次并成功，确为一次重试。框架的 retry 计数依赖请求记录中的 is_retry 标记，本次手工重试未打该标记，故同时保留 retry_requests_from_flag 作为对照。"
+  },
+  "iteration_breakdown": {
+    "baseline": 1,
+    "syntax_fix": 1,
+    "retry": 0,
+    "alternative": 0,
+    "requirement_change": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A08/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A08/iterations.jsonl"
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A08/wayfinding.png",
+      "dsl": "outputs/run-20261011-01/A08/wayfinding.snapshot",
+      "required_by": "task.json required_outputs",
+      "width": 1560,
+      "height": 1080,
+      "format": "PNG",
+      "mode": "RGBA"
+    },
+    {
+      "kind": "dsl",
+      "path": "outputs/run-20261011-01/A08/wayfinding.snapshot"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A08/paths.json"
+    },
+    {
+      "kind": "report",
+      "path": "outputs/run-20261011-01/A08/snapshot-usage.md"
+    },
+    {
+      "kind": "metrics",
+      "path": "outputs/run-20261011-01/A08/task-metrics.json"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "tmp/run-20261011-01/A08/kept/A08-v1-667fded2.png",
+      "status": "superseded",
+      "note": "首版出图，页眉与侧栏多处重叠"
+    },
+    {
+      "path": "tmp/run-20261011-01/A08/kept/A08-v2-1e2ec777.png",
+      "status": "superseded",
+      "note": "修正页眉/轴标/比例尺后仍有多处裁切"
+    },
+    {
+      "path": "tmp/run-20261011-01/A08/kept/A08-v3-045755ba.png",
+      "status": "superseded",
+      "note": "版面收敛，箭头方向提示偏弱"
+    },
+    {
+      "path": "tmp/run-20261011-01/A08/responses/A08-v3-84839d94.error.png",
+      "status": "failed",
+      "note": "HTTP 200 但响应体为 0 字节（服务端空响应），已重试成功"
+    }
+  ],
+  "rounds": [],
+  "unresolved_issues": [],
+  "notes": [
+    "本文件由 _suite/scripts/deliver.py 生成后，用 tmp/run-20261011-01/A08/fix_metrics_a08.py 按实际查看与重试记录校正 image_views 与 retry_requests；其余字段未改动，原值分别保留在 image_views_from_iterations_log 与 retry_requests_from_flag。",
+    "5 次失败请求为 4 次 DSL 语法 400（各带不同错误信息，均已修正）与 1 次服务端空响应；空响应重试成功，未产生额外失败。"
+  ]
+}

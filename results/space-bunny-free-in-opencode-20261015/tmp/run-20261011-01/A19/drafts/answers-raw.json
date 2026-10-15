@@ -1,0 +1,367 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "round": "round-01",
+  "path_base": "output_dir",
+  "answers": [
+    {
+      "id": "Q18",
+      "image": "grid-scene.png",
+      "type": "复合属性检索",
+      "answer": 4,
+      "subject": [
+        "G05",
+        "G17",
+        "G37",
+        "G49"
+      ],
+      "computation": "蓝×圆环的物体为 G05(蓝圆环80)、G17(蓝圆环48)、G37(蓝圆环64)、G49(蓝圆环80)，共 4 个。",
+      "referenced_objects": [
+        "G05",
+        "G17",
+        "G37",
+        "G49"
+      ],
+      "steps": "蓝×圆环的物体为 G05(蓝圆环80)、G17(蓝圆环48)、G37(蓝圆环64)、G49(蓝圆环80)，共 4 个。",
+      "relation_and_distance_definition": "本题为属性检索/计数题，不涉及几何关系或距离的度量定义；属性判定标准写在 questions.json 的 criteria 中。",
+      "method": "按 scene-data.json 的 64 条真实几何逐条筛选 color=='蓝' 且 shape=='圆环'。圆环的判定已由 verify_a19.py 从最终 PNG 逐像素反测（中心为背景、0.35·size 处为主体色）。",
+      "uniqueness": "两个属性各自唯一确定，取交集后结果唯一，不存在并列。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "颜色与形状都在最终 PNG 的可见像素上，筛选不需要任何隐藏信息。",
+      "final_visible_information_basis": "颜色与形状都在最终 PNG 的可见像素上，筛选不需要任何隐藏信息。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q19",
+      "image": "grid-scene.png",
+      "type": "复合属性检索",
+      "answer": [
+        "G15",
+        "G59"
+      ],
+      "subject": [
+        "G15",
+        "G59"
+      ],
+      "computation": "第一步 绿×方：G15(绿方48)、G27(绿方64)、G47(绿方80)、G59(绿方48)；第二步其中尺寸=48 的：G15(绿方48)、G59(绿方48)。",
+      "referenced_objects": [
+        "G15",
+        "G59"
+      ],
+      "steps": "第一步 绿×方：G15(绿方48)、G27(绿方64)、G47(绿方80)、G59(绿方48)；第二步其中尺寸=48 的：G15(绿方48)、G59(绿方48)。",
+      "relation_and_distance_definition": "本题为属性检索/计数题，不涉及几何关系或距离的度量定义；属性判定标准写在 questions.json 的 criteria 中。",
+      "method": "先取 color=='绿' 且 shape=='方'，再筛 size_px==48。两步的尺寸取值 48/64/80 互不相等，因此第二步不会把同一步的结果切分成多解。",
+      "uniqueness": "三属性互斥且完备，满足条件的主体唯一确定。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "三种属性都直接体现在最终 PNG 上；已由 verify_a19.py 从 PNG 反测确认每个物体的颜色与实际边长。",
+      "final_visible_information_basis": "三种属性都直接体现在最终 PNG 上；已由 verify_a19.py 从 PNG 反测确认每个物体的颜色与实际边长。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q20",
+      "image": "grid-scene.png",
+      "type": "严格中心左右关系",
+      "answer": "圆角方",
+      "subject": "G36",
+      "computation": "第 5 行中心 x>100 的为 G34(橙方64)、G35(绿圆环48)、G36(紫圆角方80)、G37(蓝圆环64)、G38(橙圆角方48)、G39(绿圆64)、G40(紫方48)；其中尺寸最大者 = G36（80 像素），形状 = 圆角方。",
+      "referenced_objects": [
+        "G36"
+      ],
+      "steps": "第 5 行中心 x>100 的为 G34(橙方64)、G35(绿圆环48)、G36(紫圆角方80)、G37(蓝圆环64)、G38(橙圆角方48)、G39(绿圆64)、G40(紫方48)；其中尺寸最大者 = G36（80 像素），形状 = 圆角方。",
+      "relation_and_distance_definition": "关系为「中心 x 的严格不等式」。同列物体中心 x 完全相同，因此所有左右比较都在不同列之间进行，不产生并列；不按主体边缘比较，只按主体中心比较。",
+      "method": "第 5 行中心 x>100 的物体是第 2–8 列；逐个比较边长/直径取最大值。",
+      "uniqueness": "候选集中只有一个物体的尺寸达到最大值，其余均更小，不存在并列。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "行号、中心 x 与尺寸都能从最终 PNG 直接读出。",
+      "final_visible_information_basis": "行号、中心 x 与尺寸都能从最终 PNG 直接读出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q21",
+      "image": "grid-scene.png",
+      "type": "距离",
+      "answer": 5,
+      "subject": [
+        "G05",
+        "G12",
+        "G13",
+        "G14",
+        "G21"
+      ],
+      "computation": "G13 中心 (900,300)。距离 <250px 的为 G05、G12、G13、G14、G21，共 5 个；距离恰为 250px 的物体数为 0。",
+      "referenced_objects": [
+        "G05",
+        "G12",
+        "G13",
+        "G14",
+        "G21"
+      ],
+      "steps": "G13 中心 (900,300)。距离 <250px 的为 G05、G12、G13、G14、G21，共 5 个；距离恰为 250px 的物体数为 0。",
+      "relation_and_distance_definition": "距离定义为两物体**中心**的欧氏距离 √((x₁−x₂)²+(y₁−y₂)²)，单位像素。不使用包围框之间的距离，也不使用主体边缘之间的间隙。格心间距恒为 200 像素，同格 0、对角相邻 200√2≈282.84。",
+      "method": "格心间距为 200 像素：同格距离 0，上下左右相邻格心距离 200，四个对角格心距离 200√2≈282.84。",
+      "uniqueness": "距离恰好等于 250 像素的物体个数为 0，所以「含不含边界」两种读法答案相同，题目不存在歧义解。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "所有格心都可由最终 PNG 上的主体中心读出。",
+      "final_visible_information_basis": "所有格心都可由最终 PNG 上的主体中心读出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q22",
+      "image": "grid-scene.png",
+      "type": "距离",
+      "answer": [
+        "G21"
+      ],
+      "subject": [
+        "G21"
+      ],
+      "computation": "距 G13 中心 200px 的为 G05、G12、G14、G21；其中中心 y>300 的只有 G21。",
+      "referenced_objects": [
+        "G21"
+      ],
+      "steps": "距 G13 中心 200px 的为 G05、G12、G14、G21；其中中心 y>300 的只有 G21。",
+      "relation_and_distance_definition": "距离定义为两物体**中心**的欧氏距离 √((x₁−x₂)²+(y₁−y₂)²)，单位像素。不使用包围框之间的距离，也不使用主体边缘之间的间隙。格心间距恒为 200 像素，同格 0、对角相邻 200√2≈282.84。",
+      "method": "距 G13 中心 200px 的有 4 个：G05(900,100)、G12(700,300)、G14(1100,300)、G21(900,500)。再按 y>300 过滤。",
+      "uniqueness": "第二步筛选后只剩 1 个，答案唯一。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "中心坐标可从最终 PNG 的主体中心读出。",
+      "final_visible_information_basis": "中心坐标可从最终 PNG 的主体中心读出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q23",
+      "image": "grid-scene.png",
+      "type": "排序",
+      "answer": "圆",
+      "subject": "G19",
+      "computation": "第 3 行按中心 x 升序为 G17(圆环)、G18(圆角方)、G19(圆)、G20(方)、G21(圆)、G22(方)、G23(圆环)、G24(圆角方)；第 3 位 = G19，形状 = 圆。",
+      "referenced_objects": [
+        "G19"
+      ],
+      "steps": "第 3 行按中心 x 升序为 G17(圆环)、G18(圆角方)、G19(圆)、G20(方)、G21(圆)、G22(方)、G23(圆环)、G24(圆角方)；第 3 位 = G19，形状 = 圆。",
+      "relation_and_distance_definition": "排序键为主键中心 y（Q24）或中心 x（Q23）升序；并列时以中心 x 升序作为唯一确定的次级次序键，因此排序为全序。",
+      "method": "第 3 行即 G17…G24，按中心 x 升序即编号顺序。",
+      "uniqueness": "行内 8 个中心 x 互不相同，排序为全序、无并列。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "行号与中心 x 可从最终 PNG 读出。",
+      "final_visible_information_basis": "行号与中心 x 可从最终 PNG 读出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q24",
+      "image": "grid-scene.png",
+      "type": "排序",
+      "answer": "紫",
+      "subject": "G08",
+      "computation": "x>1100 即第 7–8 列共 16 个（x=1100 不满足严格大于）。按 (y, x) 升序前三名为 G07(y=100)、G08(y=100)、G15(y=300)；第 2 位 = G08，颜色 = 紫。",
+      "referenced_objects": [
+        "G08"
+      ],
+      "steps": "x>1100 即第 7–8 列共 16 个（x=1100 不满足严格大于）。按 (y, x) 升序前三名为 G07(y=100)、G08(y=100)、G15(y=300)；第 2 位 = G08，颜色 = 紫。",
+      "relation_and_distance_definition": "排序键为主键中心 y（Q24）或中心 x（Q23）升序；并列时以中心 x 升序作为唯一确定的次级次序键，因此排序为全序。",
+      "method": "先把中心 x 严格大于 1100 的物体挑出来，再按 (中心 y, 中心 x) 升序排序。",
+      "uniqueness": "y 并列时已声明次级次序键 x，因此排序为全序、不存在并列。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "中心坐标与填充色都可从最终 PNG 读出。",
+      "final_visible_information_basis": "中心坐标与填充色都可从最终 PNG 读出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q25",
+      "image": "grid-scene.png",
+      "type": "包围框",
+      "answer": 6400,
+      "subject": "G33",
+      "computation": "G33 尺寸 80、形状 圆，包围框 [60,860,140,940]，面积 = 80×80 = 6400。",
+      "referenced_objects": [
+        "G33"
+      ],
+      "steps": "G33 尺寸 80、形状 圆，包围框 [60,860,140,940]，面积 = 80×80 = 6400。",
+      "relation_and_distance_definition": "包围框 = 中心 ± 尺寸/2 的最小轴对齐外接矩形，记作 [left, top, right, bottom]；圆与圆环同样按外接矩形计，不按面积公式计。并集取四边的 min/max 外接矩形。",
+      "method": "G33 的尺寸与形状在 scene-data.json 中给出，且边长已由 verify_a19.py 从最终 PNG 的边缘反测核实。",
+      "uniqueness": "面积由尺寸唯一确定，无歧义。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "边长可由最终 PNG 的主体边缘反测得到。",
+      "final_visible_information_basis": "边长可由最终 PNG 的主体边缘反测得到。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q26",
+      "image": "grid-scene.png",
+      "type": "包围框",
+      "answer": 69120,
+      "subject": [
+        "G12",
+        "G16"
+      ],
+      "computation": "G12 包围框 [676, 276, 724, 324]，G16 包围框 [1460, 260, 1540, 340]；并集 [676, 260, 1540, 340]，面积 = 864×80 = 69120。",
+      "referenced_objects": [
+        "G12",
+        "G16"
+      ],
+      "steps": "G12 包围框 [676, 276, 724, 324]，G16 包围框 [1460, 260, 1540, 340]；并集 [676, 260, 1540, 340]，面积 = 864×80 = 69120。",
+      "relation_and_distance_definition": "包围框 = 中心 ± 尺寸/2 的最小轴对齐外接矩形，记作 [left, top, right, bottom]；圆与圆环同样按外接矩形计，不按面积公式计。并集取四边的 min/max 外接矩形。",
+      "method": "两物体的尺寸与中心来自 scene-data.json，均已由 PNG 反测核实。",
+      "uniqueness": "并集运算是确定性运算；且两框互不重叠，不涉及「相交部分如何计入」的选择。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "两个物体的尺寸与中心都可从最终 PNG 读出。",
+      "final_visible_information_basis": "两个物体的尺寸与中心都可从最终 PNG 读出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q27",
+      "image": "grid-scene.png",
+      "type": "颜色计数",
+      "answer": 4,
+      "subject": [
+        "G12",
+        "G32",
+        "G44",
+        "G64"
+      ],
+      "computation": "紫色物体共 16 个；其中实心圆为 G12(紫圆48)、G32(紫圆64)、G44(紫圆80)、G64(紫圆48)，共 4 个。",
+      "referenced_objects": [
+        "G12",
+        "G32",
+        "G44",
+        "G64"
+      ],
+      "steps": "紫色物体共 16 个；其中实心圆为 G12(紫圆48)、G32(紫圆64)、G44(紫圆80)、G64(紫圆48)，共 4 个。",
+      "relation_and_distance_definition": "本题为属性检索/计数题，不涉及几何关系或距离的度量定义；属性判定标准写在 questions.json 的 criteria 中。",
+      "method": "先取 color=='紫' 的 16 个，再在其中筛 shape=='圆'。",
+      "uniqueness": "圆与圆环在最终 PNG 上可直接区分（圆环中心是背景像素），两类互斥且完备。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "颜色与是否有镂空都能从最终 PNG 直接看出。",
+      "final_visible_information_basis": "颜色与是否有镂空都能从最终 PNG 直接看出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q28",
+      "image": "grid-scene.png",
+      "type": "形状计数",
+      "answer": 6,
+      "subject": [
+        "G05",
+        "G16",
+        "G23",
+        "G42",
+        "G49",
+        "G60"
+      ],
+      "computation": "圆环共 16 个；其中外径 = 80 的为 G05(蓝圆环80)、G16(紫圆环80)、G23(绿圆环80)、G42(橙圆环80)、G49(蓝圆环80)、G60(紫圆环80)，共 6 个。",
+      "referenced_objects": [
+        "G05",
+        "G16",
+        "G23",
+        "G42",
+        "G49",
+        "G60"
+      ],
+      "steps": "圆环共 16 个；其中外径 = 80 的为 G05(蓝圆环80)、G16(紫圆环80)、G23(绿圆环80)、G42(橙圆环80)、G49(蓝圆环80)、G60(紫圆环80)，共 6 个。",
+      "relation_and_distance_definition": "本题为属性检索/计数题，不涉及几何关系或距离的度量定义；属性判定标准写在 questions.json 的 criteria 中。",
+      "method": "先取 shape=='圆环' 的 16 个，再筛 size_px==80。",
+      "uniqueness": "外径 80 与 64、48 互不相等，不存在并列。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "圆环外径可由最终 PNG 直接量出。",
+      "final_visible_information_basis": "圆环外径可由最终 PNG 直接量出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q29",
+      "image": "grid-scene.png",
+      "type": "严格中心左右关系",
+      "answer": 1,
+      "subject": [
+        "G46"
+      ],
+      "computation": "第 6 行中心 x>500 的为 G44(紫圆80)、G45(蓝圆角方80)、G46(橙圆48)、G47(绿方80)、G48(紫圆环64)；其中尺寸 <64 的为 G46(橙圆48)，共 1 个。",
+      "referenced_objects": [
+        "G46"
+      ],
+      "steps": "第 6 行中心 x>500 的为 G44(紫圆80)、G45(蓝圆角方80)、G46(橙圆48)、G47(绿方80)、G48(紫圆环64)；其中尺寸 <64 的为 G46(橙圆48)，共 1 个。",
+      "relation_and_distance_definition": "关系为「中心 x 的严格不等式」。同列物体中心 x 完全相同，因此所有左右比较都在不同列之间进行，不产生并列；不按主体边缘比较，只按主体中心比较。",
+      "method": "先按行号与严格 x 不等式筛选，再筛尺寸。",
+      "uniqueness": "尺寸只有 48/64/80 三档，「<64」等价于「=48」，不存在并列。",
+      "coordinate_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "required_tolerance": "坐标与尺寸按整数像素精确比较，容差 0；需要四则运算的答案按精确整数计算，不做取整或近似。",
+      "visibility_basis": "行号、中心 x 与尺寸都可从最终 PNG 读出。",
+      "final_visible_information_basis": "行号、中心 x 与尺寸都可从最终 PNG 读出。",
+      "source_of_truth": "outputs/run-20261011-01/A19/scene-data.json 的 objects 数组；其中每个对象的颜色、形状、尺寸与中心均已由 verify_a19.py 从最终 PNG 逐像素反测核对。"
+    },
+    {
+      "id": "Q30",
+      "image": "occlusion.png",
+      "type": "遮挡下的可判定性",
+      "answer": "无法确定",
+      "subject": null,
+      "relation_and_distance_definition": "不涉及几何关系或距离；判据是「可见信息充分性」。",
+      "method": "两版遮挡场景的可见像素逐像素完全一致（0 处不同、最大通道差 0，见 equivalence.json），因此任何只依赖可见像素的问题，其答案在 A、B 两版中必然相同。而 A 版隐藏层是 H1–H5、B 版是 K1–K5，编号、形状与颜色均不同。面板矩形内的像素完全相同，图像里没有任何可用于区分这两套隐藏内容的特征。",
+      "computation": "A 版隐藏层 5 个：H1 蓝圆56 / H2 橙方64 / H3 绿圆角方48 / H4 紫圆80 / H5 青圆环64；B 版隐藏层 5 个：K1 紫方56 / K2 橙圆角方48 / K3 绿圆64 / K4 蓝圆环80 / K5 青方56。",
+      "why_not_5": "两版恰好都是 5 个，但这个数字只能从 DSL 知道、不能从图上读出。凡是要求「根据最终可见图回答」的问题，都不能拿隐藏物体的数量当答案，因此正确答案是「无法确定」。",
+      "uniqueness": "「无法确定」是唯一正确解：面板内不存在任何可见差异可供推断。",
+      "coordinate_tolerance": "不适用",
+      "visibility_basis": "面板矩形内 320000 像素与另一版逐字节相同。",
+      "source_of_truth": "outputs/run-20261011-01/A19/equivalence.json 的 comparison 段与 scene-data.json 的 occlusion_scenes 段。"
+    },
+    {
+      "id": "Q31",
+      "image": "occlusion.png",
+      "type": "可见计数",
+      "answer": 6,
+      "subject": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "relation_and_distance_definition": "不涉及距离度量；「面板之外」按主体中心是否落在面板矩形内判定。",
+      "method": "面板上方一行 3 个（B1 蓝圆 / B2 橙圆 / B3 绿圆），面板下方 3 张卡片各 1 个（B4 紫方 / B5 青圆角方 / B6 黄圆环）。",
+      "computation": "3 + 3 = 6。",
+      "uniqueness": "编号 B1–B6 在图上唯一可数，无并列；标题与装饰线不带编号，已排除。",
+      "coordinate_tolerance": "不适用",
+      "visibility_basis": "6 个主体中心分别为 (86,168)/(316,168)/(546,168) 与 (104,682)/(334,682)/(564,682)，全部落在面板矩形之外。",
+      "source_of_truth": "build_a19.py 的可见前景段落；已由实际渲染确认。"
+    }
+  ],
+  "coverage": {
+    "grid_questions": 12,
+    "occlusion_questions": 2,
+    "total": 14,
+    "two_step_questions": 8,
+    "categories": [
+      "严格中心左右关系",
+      "包围框",
+      "可见计数",
+      "复合属性检索",
+      "形状计数",
+      "排序",
+      "距离",
+      "遮挡下的可判定性",
+      "颜色计数"
+    ],
+    "undeterminable_answers": [
+      "Q30"
+    ]
+  },
+  "anti_ambiguity_checks": [
+    "每道取极值的单值题都在代码里断言并列数为 1（uniq_extreme）",
+    "Q21 额外核实「距离恰为 250px 的物体数为 0」，因此边界含否不影响答案",
+    "Q24 在中心 y 并列时已声明次级次序键中心 x，排序为全序",
+    "所有左右关系都用「严格大于/小于」，且比较对象必在不同列，避免同列并列",
+    "圆与圆环在像素层可区分（圆环中心为背景像素），分类互斥且完备",
+    "Q30 的「无法确定」另有像素等价性证据支撑，而非主观判断"
+  ]
+}

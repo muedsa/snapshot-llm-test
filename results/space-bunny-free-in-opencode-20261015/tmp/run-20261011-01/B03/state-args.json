@@ -1,0 +1,69 @@
+{
+  "artifacts": {
+    "artifacts": [
+      "outputs/run-20261011-01/B03/gallery.md",
+      "outputs/run-20261011-01/B03/portfolio.json",
+      "outputs/run-20261011-01/B03/portfolio.md",
+      "outputs/run-20261011-01/B03/snapshot-usage.md",
+      "outputs/run-20261011-01/B03/technique-notes.md",
+      "outputs/run-20261011-01/B03/task-metrics.json",
+      "outputs/run-20261011-01/B03/case-01/final.png",
+      "outputs/run-20261011-01/B03/case-01/final.snapshot",
+      "outputs/run-20261011-01/B03/case-02/final.png",
+      "outputs/run-20261011-01/B03/case-02/final.snapshot",
+      "outputs/run-20261011-01/B03/case-03/final.png",
+      "outputs/run-20261011-01/B03/case-03/final.snapshot",
+      "outputs/run-20261011-01/B03/case-04/final.png",
+      "outputs/run-20261011-01/B03/case-04/final.snapshot",
+      "outputs/run-20261011-01/B03/case-05/final.png",
+      "outputs/run-20261011-01/B03/case-05/final.snapshot",
+      "outputs/run-20261011-01/B03/case-06/final.png",
+      "outputs/run-20261011-01/B03/case-06/final.snapshot",
+      "outputs/run-20261011-01/B03/case-07/final.png",
+      "outputs/run-20261011-01/B03/case-07/final.snapshot",
+      "outputs/run-20261011-01/B03/case-08/final.png",
+      "outputs/run-20261011-01/B03/case-08/final.snapshot",
+      "outputs/run-20261011-01/B03/case-09/final.png",
+      "outputs/run-20261011-01/B03/case-09/final.snapshot",
+      "outputs/run-20261011-01/B03/case-10/final.png",
+      "outputs/run-20261011-01/B03/case-10/final.snapshot"
+    ],
+    "cases": [
+      "case-01", "case-02", "case-03", "case-04", "case-05",
+      "case-06", "case-07", "case-08", "case-09", "case-10"
+    ],
+    "evidence": [
+      "tmp/run-20261011-01/B03/plan-v1.md（作品计划 + 3 条首渲后的标准变更与依据）",
+      "tmp/run-20261011-01/B03/capability-findings.md（70 次探针的能力边界实测记录）",
+      "tmp/run-20261011-01/B03/requests.jsonl（183 次渲染请求逐条留痕）",
+      "tmp/run-20261011-01/B03/iterations.jsonl（38 次看图记录，其中 28 次完整视觉迭代）",
+      "tmp/run-20261011-01/B03/tool-usage.jsonl（21 条非渲染工具使用记录）",
+      "tmp/run-20261011-01/B03/probe/ probe2/ probe3/ probe4/（探针 DSL 与真实响应）",
+      "tmp/run-20261011-01/B03/responses/（失败响应原样保留）",
+      "tmp/run-20261011-01/B03/drafts/（38 份历史 DSL 草稿，不覆盖）",
+      "tmp/run-20261011-01/B03/pieces/c01..c10.py（十件生成脚本）",
+      "tmp/run-20261011-01/B03/b03kit.py（本次沉淀的构件库）",
+      "tmp/run-20261011-01/B03/audit-report.txt（交付前自动审查 176 项全部通过）",
+      "tmp/run-20261011-01/B03/zoom-c01.png zoom-c02.png zoom-c04.png zoom-c05.png zoom-c05b.png（局部放大检查证据）"
+    ],
+    "images": 10,
+    "notes": "十件均为 open-snapshot 服务真实响应（status=200、response_bytes>0），"
+             "每件有同名完整 final.snapshot，DSL 内 <Image 计数为 0，无外部素材。"
+             "全部场景与数据为自拟，图内页脚已逐件注明。"
+  },
+  "evidence": [
+    "逐件实际打开 38 次看图记录：tmp/run-20261011-01/B03/iterations.jsonl",
+    "局部放大检查：tmp/run-20261011-01/B03/zoom-c01.png（ClipPath 本地坐标缺陷）、"
+    "zoom-c02.png（WidgetSpan 偏差条方向）、zoom-c05.png（月相几何）、"
+    "zoom-c05b.png（跨零点时间轴）、zoom-c04.png（大数字截断修复）",
+    "交付前自动审查：tmp/run-20261011-01/B03/audit.py → audit-report.txt，176 项通过、0 失败",
+    "十件最终 PNG：outputs/run-20261011-01/B03/case-01..case-10/final.png"
+  ],
+  "unresolved": [
+    "文字精确度量仍靠系数估算：ASCII 小写与斜体在不同字体下差异较大，已用 1.18 余量系数与生成期断言缓解，但不是根治。",
+    "letterSpacing 逐行齐尾只对完全自己排版的行有效；要让服务端断行的段落既齐尾又可控，仍缺实测断行位置。",
+    "BackdropFilter 在子树带阴影溢出时的实际作用范围未验证（本次卡片均无溢出，标记为未验证）。",
+    "10 件全部为纯 DSL，未使用 run-config 允许的辅助素材；理由是十个主题都不依赖照片，未为用满能力而塞入无关素材。"
+  ],
+  "note": "B03 探索 Snapshot DSL 创意边界：10 件独立完整作品各占一条主导手法（ClipPath 阈值带/弧线剖面与开窗放大/WidgetSpan 行内偏差条/真模糊+毛玻璃/ClipOval+旋转扇区+算出来的月相/仿射等轴测/两端对齐+首字下沉+微调字距/去色把彩色留给数据/EVEN_ODD 镂空/三层描边叠印+斜切条），两两不共用同一主导手法。"
+}

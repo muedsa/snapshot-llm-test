@@ -1,0 +1,276 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A18",
+  "run_id": "run-20261011-01",
+  "task_round": "round-01",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐图视觉自检",
+  "output_dir": "outputs/run-20261011-01/A18",
+  "temp_dir": "tmp/run-20261011-01/A18",
+  "timings": {
+    "started_at": "2026-10-12T11:41:57.122+08:00",
+    "ended_at": "2026-10-12T11:55:48.360+08:00",
+    "elapsed_seconds": 831.238,
+    "first_usable_image_seconds": 8.508,
+    "user_feedback_wait_seconds": 0.0,
+    "rate_limit_wait_seconds": 0.0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 22.823,
+    "server_timing_source": "requests.jsonl 中的 Server-Timing 响应头（服务未提供时为 null）",
+    "started_at_raw": "2026-10-12T13:22:00.000+08:00",
+    "timing_note": "started_at 取 A18 首个请求之前；ended_at 为定稿渲染与指标写盘完成时刻。墙钟总耗时含 5 次能力探针、构图 A/B 两案、A 的三版迭代、9 次看图与全部几何断言，不等于请求耗时之和（22.823s）。"
+  },
+  "counts": {
+    "snapshot_requests": 11,
+    "successful_snapshot_requests": 6,
+    "failed_snapshot_requests": 5,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 11,
+    "image_views": 9,
+    "completed_visual_iterations": 3,
+    "incomplete_visual_iterations": 0,
+    "image_views_raw": 9,
+    "image_views_detail": [
+      {
+        "stage": "probe",
+        "image": "preview/p-f-chip.png",
+        "zoom": "400×240 整屏",
+        "observed": "芯片节点探针：嵌套圆角方块 + 深色内方块 + 浅蓝描边，与 36px 圆形明显区分，连线正常"
+      },
+      {
+        "stage": "layoutA-v1",
+        "image": "preview/layoutA-v1.png",
+        "zoom": "1600×1000 整屏",
+        "observed": "构图 A 首版：每环恰好同色（内蓝/中橙/外灰），外环连线从内层圆身上穿过"
+      },
+      {
+        "stage": "layoutB-v1",
+        "image": "preview/layoutB-v1.png",
+        "zoom": "1600×1000 整屏",
+        "observed": "构图 B 首版：三列五行的队列，每列同色、连线指向右侧节点；幕一幕二结构雷同"
+      },
+      {
+        "stage": "layoutA-v2",
+        "image": "preview/layoutA-v2.png",
+        "zoom": "1600×1000 整屏",
+        "observed": "构图 A 第二版：每环三色混排且环间错位 24°；但幕二内环 8 个圆看不到任何连线"
+      },
+      {
+        "stage": "thumb-400",
+        "image": "preview/thumb-400.png",
+        "zoom": "400×250",
+        "observed": "400px 缩略（第二版）：三幕密度差已成立，但幕二连线全无、节点形变不够明显"
+      },
+      {
+        "stage": "thumb-200",
+        "image": "preview/thumb-200.png",
+        "zoom": "200×125",
+        "observed": "200px 极限缩略（第二版）：三幕结构仍可读，颜色开始不可辨"
+      },
+      {
+        "stage": "act2-2x",
+        "image": "preview/act2-2x.png",
+        "zoom": "2× LANCZOS",
+        "observed": "幕二第二版放大：内环 8 圆贴住形变节点，却没有任何连线，看不出归属"
+      },
+      {
+        "stage": "layoutA-v3",
+        "image": "preview/layoutA-v3.png",
+        "zoom": "1600×1000 整屏",
+        "observed": "构图 A 定稿预览：按矩形边界裁短连线后，45 条连线全部可见，挤压感成立"
+      },
+      {
+        "stage": "final",
+        "image": "outputs/run-20261011-01/A18/three-act-story.png",
+        "zoom": "1600×1000 整屏",
+        "observed": "交付原图整屏复查：三幕结构、非重叠、仅总标题与幕名三项均符合"
+      }
+    ],
+    "image_views_note": "9 次实际打开：能力探针 1 张 + 构图 A/B 两版实图 + A 的第二版 + 400px 与 200px 缩略 + 幕二 2× 放大 + A 定稿预览 + 交付原图。"
+  },
+  "iteration_breakdown": {
+    "baseline": 0,
+    "syntax_fix": 0,
+    "retry": 0,
+    "alternative": 2,
+    "requirement_change": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A18/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A18/iterations.jsonl"
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A18/three-act-story.png",
+      "dsl": "outputs/run-20261011-01/A18/three-act-story.snapshot",
+      "required_by": "task.json required_outputs",
+      "width": 1600,
+      "height": 1000,
+      "format": "PNG",
+      "mode": "RGBA"
+    },
+    {
+      "kind": "dsl",
+      "path": "outputs/run-20261011-01/A18/three-act-story.snapshot"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A18/story-audit.json"
+    },
+    {
+      "kind": "report",
+      "path": "outputs/run-20261011-01/A18/snapshot-usage.md"
+    },
+    {
+      "kind": "metrics",
+      "path": "outputs/run-20261011-01/A18/task-metrics.json"
+    },
+    {
+      "kind": "md",
+      "path": "outputs/run-20261011-01/A18/rationale.md",
+      "required_by": "TASK.md rationale.md ≤300 字"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "tmp/run-20261011-01/A18/responses/A18-p-a-hex-97ed3fc8.error.json",
+      "status": "failed",
+      "note": "六边形节点探针 400：ClipPath 不是本服务的合法标签"
+    },
+    {
+      "path": "tmp/run-20261011-01/A18/responses/A18-p-d-path-7e822502.error.json",
+      "status": "failed",
+      "note": "Path/Polygon 探针 400：Path 与 Polygon 同样不是合法标签"
+    },
+    {
+      "path": "tmp/run-20261011-01/A18/responses/A18-p-e-chip-30c51c71.error.json",
+      "status": "failed",
+      "note": "芯片节点探针首版 400：Positioned 误放在 Container 下，应包在 Stack 里"
+    },
+    {
+      "path": "tmp/run-20261011-01/A18/preview/p-f-chip.png",
+      "status": "diagnostic",
+      "note": "芯片节点可用：圆角方块 + 深色内方块 + 3px 描边，与 36px 圆形明显区分；连线与圆均正常"
+    },
+    {
+      "path": "tmp/run-20261011-01/A18/preview/layoutB-v1.png",
+      "status": "alternative",
+      "note": "构图 B「流向」实图：三列五行的队列汇入右侧节点。落选原因是每列恰好同色、颜色与列号一一相关，且幕一与幕二结构雷同"
+    },
+    {
+      "path": "tmp/run-20261011-01/A18/preview/layoutA-v1.png",
+      "status": "superseded",
+      "note": "构图 A 首版：每环恰好同色（内环全蓝/中环全橙/外环全灰），颜色与半径一一对应，读者会改用颜色定位；外环连线从内层圆上穿过"
+    },
+    {
+      "path": "tmp/run-20261011-01/A18/preview/layoutA-v2.png",
+      "status": "superseded",
+      "note": "A 第二版：环间错开 24°、每环三色混排，但幕二内环 8 个圆到形变节点的距离扣掉固定内缩量后连线长度为负，8 条连线整条消失——那些圆看上去没有接收节点"
+    },
+    {
+      "path": "tmp/run-20261011-01/A18/preview/layoutA-v3.png",
+      "status": "baseline",
+      "note": "A 第三版（定稿）：连线内缩改按节点矩形真实边界计算，45 条连线全部可见"
+    }
+  ],
+  "rounds": [],
+  "unresolved_issues": [],
+  "verification": {
+    "canvas": [
+      1600,
+      1000
+    ],
+    "units_per_act": {
+      "act_1": 15,
+      "act_2": 15,
+      "act_3": 15
+    },
+    "unit_diameter_constant": true,
+    "unit_color_constant": true,
+    "min_unit_unit_distance_px": [
+      67.4,
+      60.33,
+      39.01
+    ],
+    "min_unit_node_distance_px": [
+      46.19,
+      22.33,
+      33.25
+    ],
+    "min_link_length_px": [
+      25.67,
+      3.0,
+      11.23
+    ],
+    "load_sizes": [
+      {
+        "N01": 15
+      },
+      {
+        "N01": 15
+      },
+      {
+        "N01": 5,
+        "N02": 5,
+        "N03": 5
+      }
+    ],
+    "no_overlap_units": true,
+    "no_overlap_with_nodes": true,
+    "every_unit_has_a_drawn_link": true,
+    "act3_five_per_node": true,
+    "act3_at_least_two_colors_per_node": true,
+    "links_never_cover_units": "所有连线先于圆与节点绘制，且两端按 单元半径+5 与节点矩形边界+4 裁短；圆始终画在连线之上，线不可能压住圆",
+    "node_deformation_act2": [
+      1.1667,
+      0.875
+    ],
+    "text_elements_in_image": 4,
+    "text_elements_expected": "1 总标题 + 3 幕名",
+    "image_tag_used": false,
+    "composition_selected": "A",
+    "composition_options_rendered": 2,
+    "probe_failures": [
+      {
+        "request_id": "A18-p-a-hex-97ed3fc8",
+        "version": "p-a-hex",
+        "status": 400,
+        "response_bytes": 206,
+        "response_file": "tmp/run-20261011-01/A18/responses/A18-p-a-hex-97ed3fc8.error.json"
+      },
+      {
+        "request_id": "A18-p-b-deform-221a1c98",
+        "version": "p-b-deform",
+        "status": 400,
+        "response_bytes": 206,
+        "response_file": "tmp/run-20261011-01/A18/responses/A18-p-b-deform-221a1c98.error.json"
+      },
+      {
+        "request_id": "A18-p-c-trim-f712e5f9",
+        "version": "p-c-trim",
+        "status": 400,
+        "response_bytes": 205,
+        "response_file": "tmp/run-20261011-01/A18/responses/A18-p-c-trim-f712e5f9.error.json"
+      },
+      {
+        "request_id": "A18-p-d-path-7e822502",
+        "version": "p-d-path",
+        "status": 400,
+        "response_bytes": 203,
+        "response_file": "tmp/run-20261011-01/A18/responses/A18-p-d-path-7e822502.error.json"
+      },
+      {
+        "request_id": "A18-p-e-chip-30c51c71",
+        "version": "p-e-chip",
+        "status": 400,
+        "response_bytes": 239,
+        "response_file": "tmp/run-20261011-01/A18/responses/A18-p-e-chip-30c51c71.error.json"
+      }
+    ],
+    "probe_failure_note": "4 次 400 全部是能力探针：ClipPath / Path / Polygon 不是合法标签（3 次），以及 Positioned 误放在 Container 下（1 次）。另有 1 次负例探针（p-e-opacity-alpha 属 A17）与本题无关。响应体全部保留在 responses/ 下。",
+    "rationale_chars_non_whitespace": 299
+  }
+}

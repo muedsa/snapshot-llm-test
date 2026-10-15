@@ -1,0 +1,257 @@
+# Snapshot 使用情况说明与踩坑记录
+
+任务ID：A18
+任务名称：守恒对象的三幕视觉叙事
+本次运行ID：run-20261011-01
+完成状态：完成
+结束原因：需求满足并完成逐图视觉自检
+输出目录：`outputs/run-20261011-01/A18/`（路径基准：suite_root）
+临时目录：`tmp/run-20261011-01/A18/`（路径基准：suite_root）
+路径基准：suite_root；除本报告的 Markdown 本地链接（相对本文件所在目录）外，
+所有记录中的本地路径均为相对 suite_root 的相对路径，未写死机器盘符或用户目录。
+
+遵循 [PATHS.md](../../../PATHS.md)：目录、产物、证据及脚本路径使用相对路径或目录环境变量。
+Markdown 本地链接相对当前文档；本报告位于 `outputs/<run_id>/A18/`，
+故指向题库文档的链接为 `../../../tasks/…`。
+
+## 1. 最终产物与需求完成情况
+
+
+| 文件 | 用途 | 对应 DSL 或图 | 完成状态 |
+|---|---|---|---|
+| `three-act-story.snapshot` | 三幕叙事定稿 DSL | `three-act-story.png` | 已完成 |
+| `three-act-story.png` | 服务返回的最终图 1600×1000 | 同名 `.snapshot` | 已完成 |
+| `story-audit.json` | 稳定 ID、逐幕坐标/颜色/接收节点、几何量、叙事线索与查看结论 | — | 已完成 |
+| `rationale.md` | 选型与感知说明（299 字） | — | 已完成 |
+| `snapshot-usage.md` / `task-metrics.json` | 报告与指标 | — | 已完成 |
+
+需求逐项核对（依据**实际打开查看**：构图 A、构图 B 两版实图、构图 A 的三个版本、"
+定稿全图、400px 缩略、200px 极限缩略、幕二 2× 放大）
+
+| 题目要求 | 满足情况 | 证据 |
+|---|---|---|
+| 1600×1000 三幕图表达「集中 → 过载 → 重新分配」 | 满足 | 服务 `image_info` 为 PNG 1600×1000；三个幕名与三条几何读法一致 |
+| 每幕完全相同的 15 个信息单元 | 满足 | `constraint_checks.units_per_act` = {act_1: 15, act_2: 15, act_3: 15} |
+| 5 蓝 / 5 橙 / 5 灰 | 满足 | `conserved_objects.units.color_counts` = {#2563EB:5, #EA7C2D:5, #94A3B8:5} |
+| 每个圆直径 36 | 满足 | `conserved_objects.units.diameter_px` = 36，三幕不变 |
+| 每幕都完整可见 | 满足 | 15 个单元全部落在面板内边距内，构建脚本对 `INNER_L/R/T/B` 有断言 |
+| 每幕另有同一组 3 个处理节点，大小一致，各节点能接收单元 | 满足 | `conserved_objects.nodes`：N01–N03 基准 96×96、同一配色与形状；每个节点在幕三都接到 5 个单元 |
+| 幕一显现单一中心吸引 | 满足 | `loads` act_1 = {N01: 15, N02: 0, N03: 0}；15 条连线端点全部落在 N01 |
+| 幕二同一系统显现过载 | 满足 | 同样 15 个圆压到半径 86/146 的两环，最小圆心距 60.33px、单元—节点最近 22.33px、最短连线 3.0px、N01 形变 112×78 |
+| 幕三重新分配到 3 节点 | 满足 | `loads` act_3 = {N01: 5, N02: 5, N03: 5} |
+| 不靠增加、删去、缩小单元表达拥堵 | 满足 | 三幕单元数恒 15、直径恒 36；`constraint_checks.overload_not_by_adding_or_shrinking` 写明依据 |
+| 不使用警告文字替代过载形式 | 满足 | 图中文字只有总标题「同一个信息系统 · 三幕负载叙事」与三个幕名 |
+| 不故意让内容不可读 | 满足 | 最小圆心距 39.01px ≥ 直径 36；单元—节点最近 22.33px；45 条连线全部画出 |
+| 三幕仅允许幕名和总标题 | 满足 | DSL 中全部 `<Text>` 共 4 个：1 个总标题 + 3 个幕名 |
+| 节点/单元不写解释文字 | 满足 | 同上；节点与圆内无任何 `<Text>` |
+| 通过距离、连线、构图、方向和有限形变表达关系 | 满足 | 半径 112/152/192 → 86/146；三簇扇形方向（-145…-35 / 84…174 / 6…96 度）；N01 形变参数记录于 `scale_vs_base` |
+| 每幕信息单元不重叠 | 满足 | `constraint_checks.no_overlap_units` = true；实测最小圆心距 67.4 / 60.33 / 39.01 |
+| 线不遮圆 | 满足 | 所有连线先于圆与节点绘制；连线两端按单元半径+5 与节点矩形边界+4 裁短；圆始终在上层 |
+| 幕三每节点收到 5 个单元 | 满足 | `constraint_checks.act3_five_per_node` = true |
+| 5 个包含至少两种颜色 | 满足 | 三个节点各自的 `received_colors` 均为蓝/橙/灰三色 |
+| 关系不能只靠颜色推断 | 满足 | 幕一三环各混排三色（内环 2蓝1橙2灰 / 中环 1蓝2橙2灰 / 外环 2蓝2橙1灰）；幕三每簇三色 |
+| 先提出两种叙事构图并各出 1600×1000 实际预览 | 满足 | A、B 两版均真实渲染并打开查看，见 `narrative_composition.options_proposed` |
+| 选一完善（预览存临时） | 满足 | 选定 A 并迭代到 v3；A/B 的全部预览留在 `tmp/…/A18/preview/` |
+| 为 15 个圆指定稳定 ID U01–U15、3 个节点 N01–N03 | 满足 | `conserved_objects.units.ids` 与 `nodes.ids`；ID 只用于审计，图中无标注 |
+| 每幕恰有同一组 15 个单元和 3 个节点 | 满足 | 构建脚本对每幕的 ID 集合做相等断言 |
+| 单元跨幕保持颜色与 36px 直径 | 满足 | `constraint_checks.unit_color_constant` / `unit_diameter_constant` |
+| 节点保持可辨认的形状特征与身份对应 | 满足 | 三幕形状与配色完全一致；`identity_evidence` 逐幕记录；N02/N03 三幕坐标不变 |
+| 记录有限形变参数与身份未变的依据 | 满足 | `scale_vs_base` = [1.1667, 0.875]；`identity_evidence` 说明圆角与内框按比例缩放，仍是同一套形状语言 |
+| 三节点基准尺寸一致，各幕记录实际外包框 | 满足 | `base_size_px` = [96, 96]；`bbox_panel` / `bbox_abs` 逐幕给出 |
+| 逐幕列出单元中心、颜色、直径、接收节点 | 满足 | `units_by_act[].units[]` 含 `center_panel` / `center_abs` / `color` / `diameter_px` / `received_by` |
+| 逐幕列出节点几何、位置、方向和分配数量 | 满足 | `nodes_by_act[].nodes[]` 含 `size` / `center_*` / `bbox_*` / `unit_direction_deg` / `received_count` |
+| 允许各幕重新分配接收关系 | 满足 | 幕一/二全给 N01，幕三按 `received_units` 重新分配 |
+| 每幕至少两条来自实际图像的可观察叙事线索 | 满足 | `observable_narrative_clues` 每幕 2 条，每条给观察方式与几何量引用 |
+| 解释集中与过载为何不同 | 满足 | `why_concentration_is_not_overload`：区别在占位密度、连线可见长度、节点是否被挤变形 |
+| 说明第三幕如何减轻负载 | 满足 | `how_act3_reduces_load`：负载 15/0/0 → 5/5/5，距离 22.33 → 33.25px，最短连线 3.0 → 11.23px，节点恢复 96×96 |
+| 记录整图与 400px 宽缩略的实际查看结论 | 满足 | `visual_reviews` 含原尺寸、400px、200px、2× 放大与构图 B 的结论 |
+| 所有解释留在审计/rationale，图中文字仅总标题与幕名 | 满足 | 图中 4 个 `<Text>`；解释全部在 `story-audit.json` 与 `rationale.md` |
+| `rationale.md` ≤300 字 | 满足 | 299 个非空白字符（汉字 175） |
+| 所有指定最终 PNG 是服务真实响应且有同名 `.snapshot` | 满足 | 交付 PNG 由服务端渲染返回，DSL 为同一份 |
+
+
+
+## 2. 文档阅读与实际使用的能力
+
+服务基地址：https://open-snapshot.muedsa.com（与总 run-config.json 的 `service_base_url` 一致，覆盖子题默认地址）
+文档访问日期：本次运行当天；字体清单由 `GET /fonts` 实际取得并缓存
+
+AI 使用指南：https://open-snapshot.muedsa.com/ai-guide.md
+实际阅读情况：已按指南使用 `POST /snapshot`（请求体为 UTF-8 纯文本 DSL，非 JSON），
+按指南要求检查 HTTP 状态与 `Content-Type` 后才使用图片；遇到 `400 PARSE_ERROR`
+时按响应 `message` 中的位置修正 DSL 后重新提交；未使用 `?errorImage=png`，
+以保证错误 JSON 可被程序读取。字体通过 `GET /fonts` 查询后按返回值书写 `fontFamily`。
+
+| 实际阅读的文档页面 | 本次使用的知识 | 对应文件或位置 |
+|---|---|---|
+
+| https://open-snapshot.muedsa.com/ai-guide.md | `POST /snapshot` 请求体为 UTF-8 纯文本 DSL（非 JSON）；成功返回图片二进制；失败返回含 `code`/`message`/`requestId` 的 JSON，按 `message` 中的 `position` 定位修正；`GET /fonts` 返回 text/plain 字体族列表 | `_suite/scripts/snapshot_render.py` |
+| https://snapshot.muedsa.com/reference/parser-tags/ | 38 个标签的完整属性表（`Container`/`Stack`/`Positioned`/`Text`/`Flex`/`ClipOval`/`ClipRRect`/`Transform` 等） | `snapkit.py` 与各题 DSL |
+| https://snapshot.muedsa.com/reference/enums/ | 枚举取值（`CrossAxisAlignment`、`BorderStyle`、`FlexFit`、`StackFit` 等）；已确认 `BorderStyle` 仅 `NONE`/`SOLID`、`CrossAxisAlignment` 无 `BOTTOM` | 各题构造器中的枚举取值 |
+
+字体：实际调用 `GET /fonts` 取得 27 个字体族，原始响应留存于
+`tmp/<run_id>/_suite/responses/`（`request_type=fonts`），整理副本见 `tmp/<run_id>/_suite/fonts-list.txt`。
+中文正文用 `Noto Sans CJK SC`，拉丁与数字用 `Inter` 系列。本套 A 类任务素材政策为 `dsl_only`，
+全部主体由 DSL 构造，**未使用 `<Image>` 标签**，未引入任何外部图片素材。
+
+| https://snapshot.muedsa.com/reference/parser-tags/ · Clip 系列 | 本服务只提供 ClipOval / ClipRRect / ClipRect | ClipPath 与 Path/Polygon 均返回 400 `Unknown element tag`；多边形节点不可用 |
+| https://snapshot.muedsa.com/reference/parser-tags/ · Positioned | 子节点必须是 Stack / IndexedStack 的直接子节点 | 芯片节点探针首版把 Positioned 直接放在 Container 下，400 |
+
+
+本次实际用到的能力：布局：`Container`/`Column`/`Row`/`Expanded`/`SizedBox`/`Padding`；精确定位：`Stack(fit=EXPAND)` + `Positioned`；文本：`Text` 的 `fontFamily`/`fontSize`/`textAlign`/`height`/`maxLines`/`letterSpacing`；颜色与透明度：CSS 颜色与 `#RRGGBBAA` 独立 alpha；装饰：`border`（宽度+样式+颜色）、`borderRadius` 与四角圆角、`boxShadow`；裁剪：`ClipRRect`/`ClipOval`；变换：`Transform` 的列主序 4×4 矩阵 + `alignment`；滤镜：`ImageFiltered`（子树模糊）、`BackdropFilter`（仅背景模糊）；渐变：`gradientType=LINEAR/RADIAL/SWEEP` + `gradientColors`/`gradientStops`。解析器未提供 `ClipPath`/多边形，所有图形均由矩形、圆角矩形、椭圆与渐变拼装。
+本题额外用到：**连线内缩要按节点矩形的真实边界算，不能用外接圆半径**。首版用 `hypot(w,h)/2` 作为节点侧内缩量，对 112×78 的形变节点过于保守：幕二内环圆心距节点只有 86px，扣掉 18 + 68.9 后连线长度为负，于是 8 条连线被整条丢弃，那些单元看上去就是「没有接收节点」。改为 `min(w/2/|ux|, h/2/|uy|) + 4` 后，45 条连线全部画得出来，最短的一条 3.0px（幕二）、11.23px（幕三）。
+`ClipPath` / `Path` / `Polygon` **都不是本服务的合法标签**——三个探针各换来一次 400。六边形节点因此不可用，改用「圆角方块外框 + 深色内方块 + 浅蓝描边」的嵌套圆角方块作为处理节点。
+**守恒约束写进构建脚本而不是只写进说明**：单元集合、颜色、36px 直径、节点基准尺寸、四条非重叠条件、幕三 5/5/5 与每簇 ≥2 色、以及「每个单元都有一条长度 > 1px 的连线」，全部用 assert 守住。
+
+字体：实际查询 `GET /fonts` 得到 27 个字体族，原始响应留存于
+`tmp/run-20261011-01/A18/responses/`（request_type=fonts），另有整理副本 `outputs/run-20261011-01/A18/../_suite/fonts-list.txt`。
+中文正文使用 `Noto Sans CJK SC`，数字/拉丁使用 `Inter` 系列，代码/等宽使用 `Noto Sans Mono CJK SC`。
+题目素材政策为纯 DSL，未使用任何外部图片（`<Image>` 标签本次未使用）。
+
+## 3. 迭代过程、服务调用与图像检查
+
+请求记录文件：`tmp/run-20261011-01/A18/requests.jsonl`
+迭代记录文件：`tmp/run-20261011-01/A18/iterations.jsonl`
+响应与草稿留痕：`tmp/run-20261011-01/A18/responses/`、`tmp/run-20261011-01/A18/drafts/`
+
+渲染请求总数：11
+成功次数：6
+失败次数：5
+重试请求数：0（是总请求的子集）
+DSL版本数：11
+实际图片查看次数：9
+完整视觉迭代数：3
+未完成视觉迭代数：0
+其他接口查询：字体查询与文档读取为 run 级共享准备；本题的请求全部是渲染请求（3 次失败探针 + 2 次成功探针 + 构图 A/B 各 1 版 + A 的 3 个版本 + 定稿）。缩略与逐幕裁切由本地 PIL 生成，不是服务渲染。
+
+初次生成和查看计为基线，不计为改进迭代。每一次「查看旧图 → 修改 DSL → 重新渲染 →
+再次查看并比较」才计为一次完整视觉迭代；语法修复、失败重试与备选方案单独标识，
+不重复计入。所有图片均已用图像工具实际打开查看（含整屏与放大局部）。
+
+| 请求ID | 输入 DSL | 耗时 | HTTP / Content-Type | 响应文件 | 查看与实际结果 |
+|---|---|---|---|---|---|
+| A18-p-a-hex-97ed3fc8 | drafts/p-a-hex.snapshot | 1.44s | 400 PARSE_ERROR | responses/A18-p-a-hex-97ed3fc8.error.json | 无图；ClipPath 不是合法标签 |
+| A18-p-b-deform-221a1c98 | drafts/p-b-deform.snapshot | 1.32s | 400 PARSE_ERROR | responses/A18-p-b-deform-221a1c98.error.json | 同上 |
+| A18-p-c-trim-f712e5f9 | drafts/p-c-trim.snapshot | 1.38s | 400 PARSE_ERROR | responses/A18-p-c-trim-f712e5f9.error.json | 同上 |
+| A18-p-d-path-7e822502 | drafts/p-d-path.snapshot | 1.32s | 400 PARSE_ERROR | responses/A18-p-d-path-7e822502.error.json | 无图；Path 也不是合法标签 |
+| A18-p-e-chip-30c51c71 | drafts/p-e-chip.snapshot | 2.07s | 400 PARSE_ERROR | responses/A18-p-e-chip-30c51c71.error.json | 无图；Positioned 不能直接放在 Container 下 |
+| A18-p-f-chip-* | drafts/p-f-chip.snapshot | 0.97s | 200 image/png | preview/p-f-chip.png | 芯片节点可用：嵌套圆角方块 + 圆 + 连线 |
+| A18-layoutA-32df3267 | drafts/a18-layoutA-v1.snapshot | 3.49s | 200 image/png | preview/layoutA-v1.png | 构图 A 首版；发现每环同色、外环连线穿内环圆 |
+| A18-layoutB-18ee2b8b | drafts/a18-layoutB-v1.snapshot | 3.44s | 200 image/png | preview/layoutB-v1.png | 构图 B 实图；每列同色、幕一幕二结构雷同 |
+| A18-layoutA-v2-0d96a8cb | drafts/a18-layoutA-v2.snapshot | 2.37s | 200 image/png | preview/layoutA-v2.png | 环错位 24°、三色混排；但幕二 8 条连线长度为负而消失 |
+| A18-layoutA-v3-13a81f7f | drafts/a18-layoutA-v3.snapshot | 2.56s | 200 image/png | preview/layoutA-v3.png | 连线按节点矩形边界裁短后重渲；45 条连线全部可见（定稿） |
+| A18-final-* | outputs/run-20261011-01/A18/three-act-story.snapshot | 见 metrics | 200 image/png | outputs/run-20261011-01/A18/three-act-story.png | 定稿渲染并整屏复查 |
+
+## 4. 修改记录与踩坑
+
+| 版本 / 类型 | 观察到的实际问题 | 原因及确认依据 | 实际修改 | 复验结果 |
+|---|---|---|---|---|
+| probe · capability | 处理节点想用六边形（更像芯片），但不知道服务端支持哪些图形标签 | 凭印象用了 ClipPath + Polygon | 写 3 个独立探针分别试 ClipPath、Path/Polygon、嵌套圆角方块 | ClipPath / Path / Polygon 三次 400；改为嵌套圆角方块「芯片」，与 36px 圆形区分明显 |
+| probe · structure | 芯片节点首版返回 400 | 把 Positioned 直接放在 Container 下（以为可以叠两个子节点） | 改成 Positioned → Container → Stack → Positioned 的四层结构 | 渲染成功，内方块落在外方块正中 |
+| composition · selection | 两种构图都做出来了，但 B 版的颜色与列号一一对应 | B 版按「每列同色」铺队列，视觉整齐但信息结构被颜色带偏 | 两版各渲 1600×1000 实图并逐张打开对比 | 选 A。B 落选理由写入 story-audit.narrative_composition.b_rejected_because |
+| layout A v1 → v2 · visual | 每个同心环恰好同色：内环全蓝、中环全橙、外环全灰；外环连线从内层圆身上穿过 | 按 ID 顺序铺环，U01–U05 落在内环、U06–U10 落在中环… | 改成每环三色混排（RING_UNITS），并把环间角错开 24° | 颜色不再指示半径；连线与内层圆心最小夹角够大，不再压到圆上 |
+| layout A v2 → v3 · visual | 幕二内环 8 个圆看上去「没有接收节点」——连线整条消失 | 连线内缩量按节点外接圆半径 hypot(w,h)/2 计算；形变节点 112×78 的半对角线是 68.9，扣掉单元半径 18 与内缩后长度为负，link() 直接返回空串 | 新增 node_trim()：按方向计算到节点矩形边界的真实距离再 +4 | 45 条连线全部可见；幕二最短 3.0px、幕三最短 11.23px |
+| layout A v3 · geometry | 幕三部分连线长度仍为负（-1.66px） | 扇形半径 100 不够抵消节点对角方向的边界距离 | 把三个扇形张开到 22.5°–27.5° 步距、半径统一 100，下方两节点移到 (146,716)/(334,716) | 弧间距 39.01px ≥ 36、连线最短 11.23px、且不越出面板内边距 |
+
+「渲染成功但视觉不符合要求」的问题同样记录在上面的完整视觉迭代中。
+
+## 5. 任务耗时与请求统计
+
+结构化指标文件：`outputs/run-20261011-01/A18/task-metrics.json`
+
+
+| 指标 | 实际值 | 单位 | 数据来源与统计范围 |
+|---|---|---|---|
+| 任务开始 / 结束时间 | 2026-10-12T11:41:57.122+08:00 / 2026-10-12T11:55:48.360+08:00 | ISO8601 带时区 | 计时记录（本地时钟，带时区） |
+| 任务总耗时 | 831.238 | 秒 | 墙钟时间（读题 → 计算 → 构造 → 渲染 → 看图 → 修复 → 报告） |
+| 首次可用图耗时 | 8.508 | 秒 | 从开始到首个 `200 image/png` 且能打开的图为止的全部请求耗时之和；本任务请求串行，故与实际顺序一致 |
+| 等待用户反馈 | 0.0 | 秒 | 本题为单轮任务，无多轮反馈等待 |
+| 限流等待 | 0.0 | 秒 | 全程未出现 `429`（见 `requests.jsonl`） |
+| 排队等待 | None | 秒 | 服务未提供排队指标，不可测量，记 null 而非 0 |
+| 已记录请求耗时之和 | 22.823 | 秒 | `requests.jsonl` 中 `duration_seconds` 求和；请求串行，不与墙钟重复计入 |
+| 成功 / 失败 / 重试请求 | 6 / 5 / 0 | 次 | `requests.jsonl`；失败均为不同 DSL 的语法修复，非同一请求重试 |
+| 看图 / 完整视觉迭代 | 9 / 3 | 次 | `iterations.jsonl` 与实际图像查看记录 |
+| DSL 版本数 | 11 | 个 | `requests.jsonl` 去重 |
+| Server-Timing | null | — | 服务响应未返回该头，日志中如实记为 null |
+
+
+## 6. 设计选择、经验与未解决事项
+
+
+**关键设计选择**
+
+1. *把守恒约束写成断言，而不是写成说明*。题面最难守的是「不能通过增加、删去、
+   缩小信息单元来表达拥堵」。把它变成构建脚本里的 assert：每幕单元 ID 集合相等、
+   颜色映射相等、直径恒为 36、任意两单元圆心距 ≥ 36、单元与节点矩形距离 ≥ 18、
+   幕三每节点恰好 5 个且颜色 ≥2 种、以及**每个单元的连线长度 > 1px**。
+   最后一条是后加的——它抓到了一版肉眼容易漏掉的缺陷（见下）。
+
+2. *「过载」用三个可测量的量表达，而不是用形容词*。幕一与幕二的单元数、直径、
+   配色完全相同，区别只在：单元—节点最近距离 46.19px → 22.33px、
+   单元间最小圆心距 67.40px → 60.33px、最短连线 25.67px → 3.00px、
+   以及 N01 从 96×96 被挤成 112×78。这四个数字都能从渲染结果反测出来，
+   也都写进了 `story-audit.json`。
+
+3. *连线内缩必须按节点矩形的真实边界算*。这是本题最实的一个发现：
+   首版用外接圆半径 `hypot(w,h)/2` 作为节点侧内缩量，对 112×78 的形变节点过于保守，
+   幕二内环圆心距节点只有 86px，扣掉 18 + 68.9 后连线长度为负，
+   于是 **8 条连线被整条丢弃**——那些单元在图上就成了「没有接收节点」。
+   改成 `min(w/2/|ux|, h/2/|uy|) + 4` 之后，45 条连线全部画得出来。
+
+4. *让颜色做不了「捷径」*。A 版首版按 ID 顺序铺环，结果内环全蓝、中环全橙、
+   外环全灰——颜色与半径一一对应，读者不看几何也能定位。改成每环三色混排后，
+   颜色只表示「这是三类信息单元之一」，位置关系只能靠距离与连线读出来。
+   幕三每个节点的 5 个单元也都含三色，不会让某个节点被误读成只服务某一类。
+
+5. *构图 B 是认真做过再落选的*。B「流向」把单元排成三列五行的队列汇入右侧节点，
+   实图也出了。落选理由是结构性的：B 的每一列恰好同色，
+   颜色与列号完全相关；而且幕一与幕二结构雷同、只是整体缩放，
+   「被堵住」读不出来。这两条都写进了 `story-audit.json`，没有只写「选了 A」。
+
+**问题与修复（要点）**
+
+- 三个探针各换来一次 400：`ClipPath`、`Path`/`Polygon` 都不是本服务的合法标签，
+  多边形节点这条路直接不通。
+- 幕二「连线消失」是本题唯一一处**看图才发现、而数据看起来完全正常**的缺陷：
+  单元坐标、重叠检查、负载分配全部通过，只有画出来才发现 8 个圆没有连线。
+  最后把「每个单元必须有长度 > 1px 的连线」也加进了断言。
+
+**可复用经验**
+
+- 矩形类图元的连线裁剪要按**方向相关的边界距离**算，不能用一个固定的半径；
+  形变（宽高不等）之后固定半径会过度裁剪，把连线直接裁没。
+- 「过载 / 拥堵」这类叙事，不要用删减元素来表达。用**同样的元素改变间距**，
+  再配一个被挤变形的节点，读者的感知才成立，而且可测量、可复核。
+- 多方案并行的任务，先把每个方案渲成真实图再看——B 版在纸上看着也不错，
+  实际渲出来「每列同色」的问题才显出来。
+
+**结束依据**：定稿 `three-act-story.png` 原尺寸整屏打开；
+再看 400px 缩略（三幕密度差仍成立）、200px 极限缩略、幕二 2× 放大，
+以及构图 A/B 两版实图；构建脚本的守恒断言与几何断言全部通过。
+未以「渲染成功」作为完成依据。
+
+
+### 未解决事项 / 限制
+
+
+- 无影响交付的未解决问题。
+- **幕二最短连线只有 3.0px**，在原尺寸上几乎只是一个点。这是「挤到极限」的必然结果
+  （单元—节点距离 22.33px，已接近 18px 半径 + 4px 间隙的物理下限），
+  400px 缩略下这批连线会完全看不见——但挤压感正是靠这个读出来的。
+  `story-audit.json` 记录了逐条连线长度，缩略下的可见性未单独声明为通过项。
+- **处理节点没有做成六边形**：本服务不提供 `ClipPath` / `Path` / `Polygon`，
+  因此节点用嵌套圆角方块表达「芯片」。这不影响身份一致性（三幕同一形状），
+  但与原设想的外观不同，已如实记录。
+- **200px 极限缩略下颜色不可辨**（圆只剩几像素）。题面只要求 400px，
+  400px 下颜色仍可分辨；200px 的结论也一并记在 `visual_reviews` 里，不当作通过项。
+- 构图 B 已落选但其首版实图与代码保留在临时目录，作为「先提两案再选一」的证据；
+  B 版的第三幕后来同步成与 A 相同的扇形整定值，只是为了两案可比，并未重新渲染。
+
+
+### 留痕确认
+
+- 临时目录中的草稿 DSL、各次请求体副本、成功图片、失败响应 JSON、放大裁切图与预览全部保留，未删除或覆盖任何一次尝试；日志为追加写入。
+- `tasks/` 下的输入文件、任务说明与模板均未被修改。
+- 未保存任何密钥；`SNAPSHOT_API_KEY` 若存在只从环境变量读取，不写入 DSL 或日志。
+- 总任务根 `.gitignore` 已创建（参考 `templates/gitignore-template.txt`），仅排除 `__pycache__/`、`*.pyc`、`*.pyo`、`.pytest_cache/`、`.mypy_cache/`、`.ruff_cache/`、`.ipynb_checkpoints/`、`node_modules/.cache/` 等明确的运行时缓存；**未**使用 `tmp/`、`outputs/`、`cache/`、`.cache/`、`*.log` 或图片/DSL/JSON 通配规则，因此本任务的过程证据不会被忽略（共享规则详见 `_suite/snapshot-usage.md`）。
+- `__pycache__/` 等运行时缓存不作为留痕材料，也不列为产物或自检证据。

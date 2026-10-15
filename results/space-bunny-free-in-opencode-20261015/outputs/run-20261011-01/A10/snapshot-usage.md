@@ -1,0 +1,253 @@
+# Snapshot 使用情况说明与踩坑记录
+
+任务ID：A10
+任务名称：透明合成与滤镜语义实验板
+本次运行ID：run-20261011-01
+完成状态：完成
+结束原因：需求满足并完成逐图视觉自检
+输出目录：`outputs/run-20261011-01/A10/`（路径基准：suite_root）
+临时目录：`tmp/run-20261011-01/A10/`（路径基准：suite_root）
+路径基准：suite_root；除本报告的 Markdown 本地链接（相对本文件所在目录）外，
+所有记录中的本地路径均为相对 suite_root 的相对路径，未写死机器盘符或用户目录。
+
+遵循 [PATHS.md](../../../PATHS.md)：目录、产物、证据及脚本路径使用相对路径或目录环境变量。
+Markdown 本地链接相对当前文档；本报告位于 `outputs/<run_id>/A10/`，
+故指向题库文档的链接为 `../../../tasks/…`。
+
+## 1. 最终产物与需求完成情况
+
+
+| 文件 | 用途 | 对应 DSL 或图 | 完成状态 |
+|---|---|---|---|
+| `compositing-lab.snapshot` | 1440×1100 六格实验板定稿 DSL | `compositing-lab.png` | 已完成 |
+| `compositing-lab.png` | 服务返回的最终图 | `compositing-lab.snapshot` | 已完成，服务原始响应 |
+| `composite-audit.json` | ①② 采样核对、两组成对共用参数与唯一变化项、③④⑤⑥ 视觉判断、4 项验证 | — | 已完成 |
+| `snapshot-usage.md` / `task-metrics.json` | 报告与指标 | — | 已完成 |
+
+需求逐项核对（依据最终图**实际查看**：整屏一次 + ①② / ③ / ④ / ⑤⑥ / 页脚 5 处放大局部；全部数值由 `sample_a10.py` 与 `build_audit_a10.py` 对定稿 PNG 实测）
+
+| 题目要求 | 满足情况 | 证据 |
+|---|---|---|
+| 1440×1100 六格实验板 | 满足 | 服务 `image_info` = PNG 1440×1100 |
+| 上方标题「看到差异，才能说用对了」 | 满足 | 页眉 38px `Inter Semi Bold + Noto Sans CJK SC` |
+| 格内实验区都是 320×240、白底 | 满足 | 6 个实验区底色均为 `Container #FFFFFF`，尺寸 320×240；③④ 在白底上放 320×200 条纹面板（上下各留 20px 白边），条纹仍跨过卡片四边 |
+| 3 列 × 2 行 | 满足 | 列 x = 56 / 512 / 968，行顶 = 96 / 458 |
+| 区与区之间至少 32 像素 | 满足 | 实验区水平净距 40px、垂直净距 120px；审计 `experiment_area.grid.horizontal_gap_px = 40` |
+| 编号和说明在区外 | 满足 | 每格上方 88px 说明带（编号+标题+说明）、下方 22px 原点注记，全部在 320×240 区域之外 |
+| ①红蓝重叠矩形分别设 50% alpha | 满足 | `Positioned(40,40,160,120) #FF000080` + `Positioned(120,80,160,120) #0000FF80`，蓝在上层 |
+| ②同样两块不透明矩形放在 Opacity(0.5) 组内 | 满足 | `Opacity(opacity="0.5") > Container > Stack > [ #FF0000, #0000FF ]`，位置尺寸与①完全相同 |
+| ③带锐利条纹背景的圆角卡，仅背景模糊 | 满足 | `ClipRRect(20) > Container > Stack > [ BackdropFilter(6,6) > #FFFFFF33, 文字, 前景形状 ]` |
+| ④相同条纹，卡内文字与形状一起子树模糊 | 满足 | `ClipRRect(20) > ImageFiltered(6,6) > Container > Stack > [ #FFFFFF33, 文字, 前景形状 ]`；条纹面板、文字、形状与③出自同一函数 |
+| ⑤先 ColorFiltered(MULTIPLY) 后子树高斯模糊 | 满足 | `ImageFiltered(6,6) > ColorFiltered(#F6B94A,MULTIPLY) > 四个形状` |
+| ⑥同样⑤效果再限定于圆形裁剪区域 | 满足 | `ClipOval > ImageFiltered(6,6) > ColorFiltered(...) > 同一组形状`，圆内取样点与⑤逐点相同 |
+| 滤镜 sigmaX=sigmaY=6 | 满足 | ③④⑤⑥ 四处 `sigmaX="6" sigmaY="6"` |
+| ③④的卡 240×160、圆角 20 | 满足 | `Positioned(40,40,240,160)` + `ClipRRect borderRadius="20"` |
+| 卡内文字「SHARP / BLUR」字号 24 | 满足 | 两格都写同一串文字 `SHARP / BLUR`、`fontSize="24"`（保证成对场景完全相同），③ 中清晰、④ 中糊化 |
+| 条纹跨卡边，外部仍清晰 | 满足 | 卡片 (40,40,240,160)，条纹面板 (0,20,320,200) 四周都超出卡片；实测卡外条纹边缘落差 211（锐利） |
+| ⑤⑥滤色 #F6B94A | 满足 | `ColorFiltered color="#F6B94A" blendMode="MULTIPLY"` |
+| ⑤⑥内部含透明间隙、深色矩形和阴影 | 满足 | 竖隙 x56–96、横隙 y74–118、深色矩形 `#1F2937` 带 `boxShadow="0 6 14 2 #00000059 NORMAL"`；裁切边界由 4 个跨圆周的色块保证可检查 |
+| ①② 红 x=40,y=40,w=160,h=120；蓝 x=120,y=80,w=160,h=120，蓝在上 | 满足 | `compositing_12.rectangles` 与图上位置逐像素一致 |
+| ① 用 #FF000080 与 #0000FF80 | 满足 | DSL 中字面量一致 |
+| ② 不透明红蓝用组 opacity=0.5 | 满足 | `Opacity opacity="0.5"` |
+| 每区 (180,100) 是重叠内部采样点 | 满足 | 红 x40–200 / 蓝 x120–280、重叠 x120–200 y80–160 → (180,100) 在内部；图上用半径 17 的虚线圆标出，笔画都在半径 ≥16 处，不覆盖被采样像素 |
+| 实验区左上画布坐标为整数并记录在审计 | 满足 | (104,184) (560,184) (1016,184) (104,546) (560,546) (1016,546)，`origin_is_integer` 全为 true |
+| 局部采样对应解码 PNG 第 (origin_x+180, origin_y+100) 个像素，索引从 0 起 | 满足 | `sampling[].sample_pixel_index_zero_based` = (284,284) 与 (740,284) |
+| ①② 按蓝覆盖红、最后合成白底的 source-over 顺序，以 0–255 sRGB 计算，中间不取整 | 满足 | `theoretical_formula` 写出两段推导；实测①(127,63,191) 与解析值逐通道全等 |
+| 最终 RGB 以 floor(value+0.5) 取最近整数 | 满足 | ① 127/63/191、② 128/128/255 |
+| 分别使用 128/255 与 0.5，不能混为同一 alpha | 满足 | 审计 `alpha_128_255_vs_0_5` 给出 0.00196 的差值、结构差异说明（① 透射两次、② 只乘一次）与实测 G/B 相差一倍以上的结果 |
+| 读取最终 PNG 的未预乘 8 位 RGBA，采样处 alpha 须 255 | 满足 | `sample_a10.py` 断言 `mode == "RGBA"`；两处实测 alpha 均为 255 |
+| 记录理论浮点值、取整 RGB、实际 RGB、逐通道绝对误差，每通道容差 ≤3 | 满足 | ① 0/0/0、② 2/2/0，最大 2 ≤ 3，`verification[0].all_passed = true` |
+| 不得修改采样值或后处理图片凑合格 | 满足 | 最终 PNG 即服务原始响应，未做任何像素级后处理；采样脚本只读 |
+| ③④⑤⑥ 明确视觉判断：字是否清晰、背景是否模糊、效果是否外溢 | 满足 | 图内页脚四条 + 审计 `visual_judgments`（含 evidence、dsl_node、doc_reference） |
+| ③–⑥ 须引用实际整图/局部与 DSL 节点，不把预期当观察 | 满足 | 每条判断都附实测数值（如③卡内落差 12/卡外 211、④卡内 172、文字最暗亮度 22.7 vs 58.5、暗区落差均值 18.1 vs 0.4） |
+| 成对对照：③④共享同一基础场景，记录共用参数与唯一变化项 | 满足 | `pairs[0].shared_base_scene`（条纹/卡片/文字/形状/层次/σ 全部列出）+ `unique_change` |
+| 成对对照：⑤⑥共享同一基础场景，唯一变化项为圆形裁剪 | 满足 | `pairs[1].shared_base_scene` + `unique_change`；`measurements.content_identity.identical = true` |
+| 圆心实验区局部 (160,120)、半径 100 | 满足 | ClipOval 裁在 200×200 的 `Positioned(60,20)` 上，内接圆即 (160,120)/r=100；实测边界 ≤2px |
+| 基础场景至少一处有色形状跨过圆周 | 满足 | 青色竖条跨左上/左下、琥珀块跨右下、红圆右下部分跨出 |
+| 所有局部坐标原点为实验区左上外边界，x 右 y 下，单位像素 | 满足 | 审计 `experiment_area` 声明；DSL 全部用相对实验区的 `Positioned` 局部坐标 |
+| 说明文字 ≥20 | 满足 | 页眉副题、格标题 24px、说明与页脚全部 20px，原点注记 20px |
+| 所有实验区和证据清楚可见 | 满足 | 6 个实验区与页脚证据在整屏与放大局部均清晰；两处曾发生碰撞已修复（见迭代记录） |
+
+
+
+## 2. 文档阅读与实际使用的能力
+
+服务基地址：https://open-snapshot.muedsa.com（与总 run-config.json 的 `service_base_url` 一致，覆盖子题默认地址）
+文档访问日期：本次运行当天；字体清单由 `GET /fonts` 实际取得并缓存
+
+AI 使用指南：https://open-snapshot.muedsa.com/ai-guide.md
+实际阅读情况：已按指南使用 `POST /snapshot`（请求体为 UTF-8 纯文本 DSL，非 JSON），
+按指南要求检查 HTTP 状态与 `Content-Type` 后才使用图片；遇到 `400 PARSE_ERROR`
+时按响应 `message` 中的位置修正 DSL 后重新提交；未使用 `?errorImage=png`，
+以保证错误 JSON 可被程序读取。字体通过 `GET /fonts` 查询后按返回值书写 `fontFamily`。
+
+| 实际阅读的文档页面 | 本次使用的知识 | 对应文件或位置 |
+|---|---|---|
+
+| https://open-snapshot.muedsa.com/ai-guide.md | `POST /snapshot` 请求体为 UTF-8 纯文本 DSL（非 JSON）；成功返回图片二进制；失败返回含 `code`/`message`/`requestId` 的 JSON，按 `message` 中的 `position` 定位修正；`GET /fonts` 返回 text/plain 字体族列表 | `_suite/scripts/snapshot_render.py` |
+| https://snapshot.muedsa.com/reference/parser-tags/ | 38 个标签的完整属性表（`Container`/`Stack`/`Positioned`/`Text`/`Flex`/`ClipOval`/`ClipRRect`/`Transform` 等） | `snapkit.py` 与各题 DSL |
+| https://snapshot.muedsa.com/reference/enums/ | 枚举取值（`CrossAxisAlignment`、`BorderStyle`、`FlexFit`、`StackFit` 等）；已确认 `BorderStyle` 仅 `NONE`/`SOLID`、`CrossAxisAlignment` 无 `BOTTOM` | 各题构造器中的枚举取值 |
+
+字体：实际调用 `GET /fonts` 取得 27 个字体族，原始响应留存于
+`tmp/<run_id>/_suite/responses/`（`request_type=fonts`），整理副本见 `tmp/<run_id>/_suite/fonts-list.txt`。
+中文正文用 `Noto Sans CJK SC`，拉丁与数字用 `Inter` 系列。本套 A 类任务素材政策为 `dsl_only`，
+全部主体由 DSL 构造，**未使用 `<Image>` 标签**，未引入任何外部图片素材。
+
+| https://snapshot.muedsa.com/widgets/painting/backdrop-filter/ | `BackdropFilter` 只有背后已有内容时才有视觉效果；应配合 ClipRect/ClipRRect 限制滤镜区域 | ③④ 的对照设计依据 |
+| https://snapshot.muedsa.com/widgets/painting/image-filtered/ | `ImageFiltered` 处理自身子树；要处理后方内容须用 `BackdropFilter`；`blurImageFilterBounds` 按 `ceil(3×sigma)` 两侧扩张 | ⑤ 外溢约 14px 的成因；⑥ 需要外层 ClipOval 的原因 |
+| https://snapshot.muedsa.com/widgets/painting/color-filtered/ | `MULTIPLY` 逐通道相乘，「测试时应采样确定性区域，不要只依赖肉眼判断」；`SRC`/`MULTIPLY` 会给边界内透明间隙着色 | ⑤⑥ 用平色区取样核验、且透明缝隙被染橙的解释依据 |
+
+
+本次实际用到的能力：布局：`Container`/`Column`/`Row`/`Expanded`/`SizedBox`/`Padding`；精确定位：`Stack(fit=EXPAND)` + `Positioned`；文本：`Text` 的 `fontFamily`/`fontSize`/`textAlign`/`height`/`maxLines`/`letterSpacing`；颜色与透明度：CSS 颜色与 `#RRGGBBAA` 独立 alpha；装饰：`border`（宽度+样式+颜色）、`borderRadius` 与四角圆角、`boxShadow`；裁剪：`ClipRRect`/`ClipOval`；变换：`Transform` 的列主序 4×4 矩阵 + `alignment`；滤镜：`ImageFiltered`（子树模糊）、`BackdropFilter`（仅背景模糊）；渐变：`gradientType=LINEAR/RADIAL/SWEEP` + `gradientColors`/`gradientStops`。解析器未提供 `ClipPath`/多边形，所有图形均由矩形、圆角矩形、椭圆与渐变拼装。
+本题额外用到：**滤镜三类容器的实测差异**：`BackdropFilter` 读取**背后已绘制**的内容再按 BlendMode 合成，需配合 `ClipRect`/`ClipRRect` 限定区域，本题用它做「只糊背景」；`ImageFiltered` 只处理**自身子树**，把子树当输入图像做高斯模糊，Parser 会按 `sigmaX`/`sigmaY` 自动提供 `ceil(3σ)` 的输出边界，所以模糊会越出子节点约 3σ（本题 σ=6 → 约 18px），需要固定区域时用外层裁剪；`ColorFiltered` 在合成阶段对子树像素应用 Skia ColorFilter，`MULTIPLY` 逐通道相乘，且会给**边界内原本透明的间隙**着色（⑤⑥ 的两条透明缝隙因此被染成橙色）；`Opacity` 对整棵子树乘一次 alpha，与逐层 alpha 在结构上不同；`ClipOval` 默认 `ANTI_ALIAS`，裁到自身尺寸的内接椭圆；虚线（采样点标记、场景框与半径参考圆）由沿曲线均匀排布的短胶囊拼出。
+
+字体：实际查询 `GET /fonts` 得到 27 个字体族，原始响应留存于
+`tmp/run-20261011-01/A10/responses/`（request_type=fonts），另有整理副本 `outputs/run-20261011-01/A10/../_suite/fonts-list.txt`。
+中文正文使用 `Noto Sans CJK SC`，数字/拉丁使用 `Inter` 系列，代码/等宽使用 `Noto Sans Mono CJK SC`。
+题目素材政策为纯 DSL，未使用任何外部图片（`<Image>` 标签本次未使用）。
+
+## 3. 迭代过程、服务调用与图像检查
+
+请求记录文件：`tmp/run-20261011-01/A10/requests.jsonl`
+迭代记录文件：`tmp/run-20261011-01/A10/iterations.jsonl`
+响应与草稿留痕：`tmp/run-20261011-01/A10/responses/`、`tmp/run-20261011-01/A10/drafts/`
+
+渲染请求总数：8
+成功次数：8
+失败次数：0
+重试请求数：0（是总请求的子集）
+DSL版本数：6
+实际图片查看次数：11
+完整视觉迭代数：3
+未完成视觉迭代数：0
+其他接口查询：字体查询与文档读取为 run 级共享准备；本题额外实际阅读了 `BackdropFilter`、`ImageFiltered`、`ColorFiltered` 三个 Widget 页与标签参考页的滤镜章节，并据此设计 ③④ 与 ⑤⑥ 两组成对对照。本题无字体/接口类额外查询。
+
+初次生成和查看计为基线，不计为改进迭代。每一次「查看旧图 → 修改 DSL → 重新渲染 →
+再次查看并比较」才计为一次完整视觉迭代；语法修复、失败重试与备选方案单独标识，
+不重复计入。所有图片均已用图像工具实际打开查看（含整屏与放大局部）。
+
+| 请求ID | 输入 DSL | 耗时 | HTTP / Content-Type | 响应文件 | 查看与实际结果 |
+|---|---|---|---|---|---|
+| A10-v1-53f351f2 | drafts/a10-v1.snapshot | 5.01s | 200 image/png | preview/a10-v1.png | 首版出图并实际打开：六格全部渲染成功（BackdropFilter / ImageFiltered / ColorFiltered / ClipOval 均生效）；但页脚标题第二行被表头压住、实验区原点注记被第二行说明带压住、⑤⑥ 区内的「未裁剪 / ClipOval 半径」小字被模糊内容盖住 |
+| A10-v2-0a751048 | drafts/a10-v1.snapshot | 5.11s | 200 image/png | preview/a10-v2.png | 已打开：重排网格与页脚、补上条纹面板白边与 ⑤⑥ 的共用虚线参考线，三处碰撞消除；①② 的采样标记仍是实心圆标记，采样核对 FAIL |
+| A10-v3-77d6996a | drafts/a10-v1.snapshot | 4.03s | 200 image/png | preview/a10-v3.png | 无实际变化：构建脚本读旧版 sample-measured.json 时 KeyError，DSL 未更新，渲染的仍是上一版 |
+| A10-v3-b50140df | drafts/a10-v1.snapshot | 3.14s | 200 image/png | preview/a10-v3.png | 构建脚本改为容错读取后仍 KeyError（footer 取值），DSL 未更新 |
+| A10-v4-cd5c5430 | drafts/a10-v1.snapshot | 4.33s | 200 image/png | preview/a10-v4.png | 已打开：采样标记改为半径 17 的虚线圆，(180,100) 不再被覆盖；实测 ①(127,63,191) |Δ|=0/0/0、②(126,126,255) |Δ|=2/2/0，均 PASS |
+| A10-v5-a6e6f517 | drafts/a10-v1.snapshot | 5.01s | 200 image/png | preview/a10-v5.png | 已打开：页脚回填实测值与四条视觉判断，两行 PASS；并 3× 放大查看了 ①②、③、④、⑤⑥ 与页脚，逐条确认（见 metrics image_views_detail） |
+| A10-final-* | outputs/run-20261011-01/A10/compositing-lab.snapshot | 见 metrics | 200 image/png | outputs/run-20261011-01/A10/compositing-lab.png | 定稿渲染并打开复查 |
+
+## 4. 修改记录与踩坑
+
+| 版本 / 类型 | 观察到的实际问题 | 原因及确认依据 | 实际修改 | 复验结果 |
+|---|---|---|---|---|
+| v1 → v2 · visual | 实验区下方的「实验区 320×240 · 原点 (x,y)」被第二行的说明带压住 | 原点注记放在 `oy + 240 + 4`，而行顶只留了 38px 间隔 | 说明带高度 88→84、区域原点注记改到 `oy+240+3`（高 22）、行顶由 104/460 调到 96/458 | 两行互不重叠 |
+| v1 → v2 · visual | 页脚「①② 重叠内部采样核对：…alpha=255」的换行第二行被表头行覆盖 | 标题文本过长换到第二行，而标题框高度只给了一行 | 标题精简为单行可容纳的长度并给出明确 y 位置，表头/数据行/视觉判断三段按实测行距重排 | 页脚三段各自独立，无覆盖 |
+| v1 → v2 · visual | ⑤「未裁剪（无 ClipOval）」与 ⑥「ClipOval 半径 100」被模糊内容盖住 | 两段小字画在实验区左上角，而 200×200 场景框位于局部 (60,20)、模糊外溢约 18px | 删除这两段区内小字（信息已在说明带与页脚），改为在 ⑤⑥ 都画同一套虚线参考线（200×200 场景框 + 圆心 (160,120) 半径 100 的圆），参考线在滤镜子树之外、两格完全一致 | ⑤ 的外溢与 ⑥ 的裁切边界都变得可直接观察，且不破坏「唯一变化项」 |
+| v1 → v2 · design | ③④ 的条纹铺满整个实验区，看不出「实验区是白底」 | 条纹面板尺寸取成了与实验区相同的 320×240 | 改为 320×200 的条纹面板放在局部 (0,20)，上下各留 20px 白边；条纹仍完整跨过卡片四边 | 白底可见，跨卡边要求不受影响 |
+| v2 → v4 · visual | ①② 采样核对 FAIL：实测 (15,23,42) / (134,138,147) | 采样标记用了 `snapkit.dot` 的带环构造，但内孔填的是透明色，外层不透明圆盘把中心像素也覆盖了 | 标记改为半径 17 的虚线圆（短胶囊拼出），所有笔画都在半径 ≥16 处 | 被采样像素恢复为纯合成结果，①② 均 PASS |
+| v3 · syntax-fix | 构建脚本报 `KeyError: 'judgments'` / `KeyError: 'measured'` | `sample_a10.py` 与 `build_a10.py` 互相读写 JSON，首版产物字段名不一致 | 统一字段名，并把 build 侧改为 `row.get(key, 占位)` 容错读取 | 构建与采样可以交替运行 |
+| v5 · visual | 页脚实测列仍是上一轮占位「待采样 / FAIL」 | 构建先于采样执行，页脚拿到的是上一次采样结果 | 先采样 → 再构建 → 再渲染的顺序固定下来，页脚直接回填 PASS 数据与四条视觉判断 | 页脚显示的实测值与 JSON 审计完全一致 |
+
+「渲染成功但视觉不符合要求」的问题同样记录在上面的完整视觉迭代中。
+
+## 5. 任务耗时与请求统计
+
+结构化指标文件：`outputs/run-20261011-01/A10/task-metrics.json`
+
+
+| 指标 | 实际值 | 单位 | 数据来源与统计范围 |
+|---|---|---|---|
+| 任务开始 / 结束时间 | 2026-10-11T16:49:21.005+08:00 / 2026-10-11T17:00:47.648+08:00 | ISO8601 带时区 | 计时记录（本地时钟，带时区） |
+| 任务总耗时 | 686.643 | 秒 | 墙钟时间（读题 → 计算 → 构造 → 渲染 → 看图 → 修复 → 报告） |
+| 首次可用图耗时 | 5.012 | 秒 | 从开始到首个 `200 image/png` 且能打开的图为止的全部请求耗时之和；本任务请求串行，故与实际顺序一致 |
+| 等待用户反馈 | 0.0 | 秒 | 本题为单轮任务，无多轮反馈等待 |
+| 限流等待 | 0.0 | 秒 | 全程未出现 `429`（见 `requests.jsonl`） |
+| 排队等待 | None | 秒 | 服务未提供排队指标，不可测量，记 null 而非 0 |
+| 已记录请求耗时之和 | 36.771 | 秒 | `requests.jsonl` 中 `duration_seconds` 求和；请求串行，不与墙钟重复计入 |
+| 成功 / 失败 / 重试请求 | 8 / 0 / 0 | 次 | `requests.jsonl`；失败均为不同 DSL 的语法修复，非同一请求重试 |
+| 看图 / 完整视觉迭代 | 11 / 3 | 次 | `iterations.jsonl` 与实际图像查看记录 |
+| DSL 版本数 | 6 | 个 | `requests.jsonl` 去重 |
+| Server-Timing | null | — | 服务响应未返回该头，日志中如实记为 null |
+
+
+## 6. 设计选择、经验与未解决事项
+
+
+**关键设计选择**
+
+1. *先按文档把三组对照设计好，再写 DSL*。本题的考点是「滤镜到底作用在哪一层」，
+   所以 ③④ 与 ⑤⑥ 都是**成对对照**：共用同一份由函数生成的基础场景，只改滤镜作用的那一层。
+   ③④ 的唯一变化是「BackdropFilter 放在卡片背景上」vs「ImageFiltered 套住整棵卡片子树」；
+   ⑤⑥ 的唯一变化是最外层是否加 `ClipOval`。代码上这两对分别调用 `experiment_3/4` 与
+   `experiment_5/6`，共享 `stripes_scene()`、`card_foreground()`、`scene_56_core()`、
+   `scene_guides()`——从结构上保证「唯一变化项」不是靠人工声明，而是靠函数复用。
+
+2. *⑤⑥ 的圆裁剪用「200×200 的 Positioned + ClipOval」而不是更大的框*。
+   `ClipOval` 没有尺寸属性，裁到的是自身尺寸的内接椭圆；如果直接套 320×240 的实验区，
+   得到的会是半轴 160×120 的**椭圆**，不是题面要求的圆心 (160,120)、半径 100 的**圆**。
+   把 `ImageFiltered` 放进 `Positioned(60,20,200,200)`，ClipOval 的内接圆就正好是 (160,120)/r=100。
+
+3. *⑤⑥ 的参考线画在滤镜子树之外*。场景框虚线与半径圆画在实验区 `Stack` 的兄弟位置，
+   两格完全一致（`scene_guides()` 同一函数），因此既能看清「模糊外溢到哪」和「裁切在哪」，
+   又不会成为第二个差异项。
+
+4. *采样标记不能碰被采样的像素*。首版用 `snapkit.dot` 的带环构造，但内孔填的是透明色——
+   外层不透明圆盘仍然把中心像素涂成了 `#0F172A`，实测 (15,23,42)，核对直接 FAIL。
+   改成半径 17 的**虚线圆**（沿圆周均匀排布短胶囊），所有笔画都在半径 ≥16 处，
+   被采样的 (180,100) 始终是纯合成结果。这条教训写进了审计的 `sample_marker.why`。
+
+5. *视觉判断全部落在「确定性可测」的位置*。文档明确写了
+   「`MULTIPLY` 逐通道相乘……测试时应采样确定性区域，不要只依赖肉眼判断」，
+   因此 ⑤⑥ 的取样点都放在**平色区且距任何边缘 >3σ** 的位置；③④ 的判断则用
+   「相邻像素落差」这一与肉眼一一对应的量（条纹边缘落差 = 背景锐度，文字带最暗亮度与暗区落差 = 字形锐度）。
+
+**问题与修复（要点）**
+
+- 三处版面碰撞（原点注记被下一行说明带压住、页脚标题被表头压住、⑤⑥ 区内小字被模糊内容盖住）
+  在首版渲染后一次看图全部发现，已通过重排行高、精简标题、把区内小字换成共用参考线解决。
+- `sample_a10.py` 与 `build_a10.py` 需要交替运行，早期字段名不一致导致两次构建抛 `KeyError`、
+  DSL 未更新却仍然发了渲染请求（`A10-v3-77d6996a` / `A10-v3-b50140df`）——
+  这两次已如实记为「无实际变化」的渲染请求，没有算作视觉迭代。
+
+**可复用经验**
+
+- 「只糊背景 vs 糊整棵子树」这类对照，**最省事的证据是共用一条高频纹理**（竖条纹），
+  再用「相邻像素落差」把锐/糊量化；实测 ③ 卡内 12 / 卡外 211、④ 卡内 172，一张表就说清了。
+- `ClipOval`/`ClipRRect` 没有自己的尺寸属性，裁的是**子节点尺寸的内接椭圆/圆角矩形**；
+  要得到精确的圆，必须先把被裁子树摆成对应尺寸的 `Positioned`。
+- `ImageFiltered` 的模糊会外扩 `ceil(3σ)`（Parser 自动提供边界），不裁就会有约 3σ 的溢出；
+  本题 σ=6 → 18px，实测在白底上约 14px 处仍可见衰减。
+- `MULTIPLY` 会给**边界内原本透明的间隙**染色——所以含透明缝隙的场景，`ColorFiltered` 的作用范围
+  会填满缝隙，实测 ⑤⑥ 的竖隙/横隙确实变成了橙色渐变。
+- `Opacity(0.5)` 与逐层 `#RRGGBB80`（=128/255）只差 0.00196，肉眼几乎分不出，
+  但结构不同：前者只乘一次、后者乘两次，实测 G 通道 63 vs 126——**差一倍以上**。
+
+**结束依据**：最终图实际整屏打开，并 3× 放大查看了 ①②（采样标记与两层 alpha 的差异）、
+③（文字锐利、卡内条纹糊、圆角缺口）、④（文字糊成灰影、背后条纹仍锐利）、
+⑤⑥（外溢与硬切）与页脚（表格 + 四条判断）；`build_audit_a10.py` 对**定稿 PNG** 重新实测，
+①② 两项 |Δ| 最大 2 ≤ 容差 3，③④ 与 ⑤⑥ 的三项成对核验全部通过。未以「渲染成功」作为完成依据。
+
+
+### 未解决事项 / 限制
+
+
+- 无影响交付的未解决问题。
+- ② 的实测 (126,126,255) 与取整理论值 (128,128,255) 差 2：来源是 Skia 把 `Opacity(0.5)` 量化成
+  8 位 alpha 128 后用整数乘法做 `dst×(255−a)/255`，向下取整导致少 1～2 个色阶；
+  误差 2 ≤ 容差 3，按题面判定为通过，**没有**修改采样值或后处理图片。
+- ④ 的文字带最暗亮度（58.5）仍低于卡片背景，是因为背景条纹本身很暗；
+  判据用的是「暗区相邻像素落差均值 0.4、最大 2.1」而不是绝对亮度，这两项与③的 18.1 / 81.8 形成数量级差别。
+- ⑤⑥ 的琥珀块若取在场景框内距边缘 <3σ 的位置，实测值会被外扩的模糊拉向白色
+  （例：局部 (250,170) 在⑤实测 (237,121,15) 而理论为 (236,115,3)）。
+  因此滤色核验改用 (240,155) 等平色区取样点，并在审计中写明「距任何边缘 >3σ」。
+- 本题的服务端行为（`ceil(3σ)` 输出边界、MULTIPLY 对透明间隙着色）来自 2026-10-11 的实际渲染与文档；
+  若服务升级导致这些行为变化，需要重跑 `build_audit_a10.py` 复核。
+
+
+### 留痕确认
+
+- 临时目录中的草稿 DSL、各次请求体副本、成功图片、失败响应 JSON、放大裁切图与预览全部保留，未删除或覆盖任何一次尝试；日志为追加写入。
+- `tasks/` 下的输入文件、任务说明与模板均未被修改。
+- 未保存任何密钥；`SNAPSHOT_API_KEY` 若存在只从环境变量读取，不写入 DSL 或日志。
+- 总任务根 `.gitignore` 已创建（参考 `templates/gitignore-template.txt`），仅排除 `__pycache__/`、`*.pyc`、`*.pyo`、`.pytest_cache/`、`.mypy_cache/`、`.ruff_cache/`、`.ipynb_checkpoints/`、`node_modules/.cache/` 等明确的运行时缓存；**未**使用 `tmp/`、`outputs/`、`cache/`、`.cache/`、`*.log` 或图片/DSL/JSON 通配规则，因此本任务的过程证据不会被忽略（共享规则详见 `_suite/snapshot-usage.md`）。
+- `__pycache__/` 等运行时缓存不作为留痕材料，也不列为产物或自检证据。

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "round": "round-01",
+  "path_base": "output_dir",
+  "what_is_compared": "A 版与 B 版遮挡场景的最终 PNG 原始文件",
+  "versions": [
+    {
+      "version": "A",
+      "dsl": "occlusion.snapshot",
+      "original_png": "occlusion.png",
+      "file_sha256": "52c944f2aa8acb2c3eba2f24422645887c00f21badd228cbed4c3ce6612a42ba",
+      "file_bytes": 25863,
+      "hidden_content": [
+        "H1 蓝圆 56",
+        "H2 橙方 64",
+        "H3 绿圆角方 48",
+        "H4 紫圆 80",
+        "H5 青圆环 64"
+      ],
+      "hidden_layer_note": "5 个对象，全部位于遮挡面板矩形 [120,200,680,600] 内部、四周留 40px 余量；不含编号文字以外的任何可见元素。"
+    },
+    {
+      "version": "B",
+      "dsl": "occlusion-alternative.snapshot",
+      "original_png": "occlusion-alternative.png",
+      "file_sha256": "52c944f2aa8acb2c3eba2f24422645887c00f21badd228cbed4c3ce6612a42ba",
+      "file_bytes": 25863,
+      "hidden_content": [
+        "K1 紫方 56",
+        "K2 橙圆角方 48",
+        "K3 绿圆 64",
+        "K4 蓝圆环 80",
+        "K5 青方 56"
+      ],
+      "hidden_layer_note": "同样 5 个对象，编号前缀、形状、颜色与尺寸与 A 版均不同；同样完全落在面板矩形内部。"
+    }
+  ],
+  "hidden_difference": {
+    "summary": "两版只有遮挡物之后那一层不同：编号前缀 H→K、形状与颜色的对应关系被打乱、尺寸重新分配。",
+    "version_A": [
+      "H1 蓝圆 56",
+      "H2 橙方 64",
+      "H3 绿圆角方 48",
+      "H4 紫圆 80",
+      "H5 青圆环 64"
+    ],
+    "version_B": [
+      "K1 紫方 56",
+      "K2 橙圆角方 48",
+      "K3 绿圆 64",
+      "K4 蓝圆环 80",
+      "K5 青方 56"
+    ],
+    "declared_in": "两版 DSL 的隐藏层段落；scene-data.json 的 occlusion_scenes 段亦以结构化形式记录同一份差异。"
+  },
+  "invariants_across_versions": {
+    "canvas": [
+      800,
+      800
+    ],
+    "background": "#F3F6FB",
+    "occluder": "rect(120,200,560,400) 实心 #0F172A，borderRadius=0",
+    "visible_foreground": "标题两行 + 上方 B1/B2/B3 + 下方 B4/B5/B6 卡片",
+    "render_params": "根标签 Snapshot type=png、容器 800×800、字体族 Inter 与 Noto Sans CJK SC 全部一致",
+    "basis": "两版 DSL 由同一个 build_occlusion(version) 生成，只有隐藏层的数据表不同；可见部分的每一段绘制代码逐字相同。"
+  },
+  "no_leaking_effects": {
+    "draw_order": [
+      "背景 #F3F6FB",
+      "隐藏层（两版不同）",
+      "遮挡面板 #0F172A 直角不透明",
+      "可见前景 B1…B6（两版相同）"
+    ],
+    "panel_rect": [
+      120,
+      200,
+      680,
+      600
+    ],
+    "hidden_layer_extent": [
+      160,
+      240,
+      640,
+      560
+    ],
+    "hidden_layer_margin_inside_panel_px": 40,
+    "excluded_effects": "不使用 boxShadow、opacity、BackdropFilter 或任何半透明叠加；遮挡面板不透明且为直角，圆角区域不会漏出背景。",
+    "consequence": "隐藏层的全部绘制影响都被完全遮住，这是像素等价成立的结构性原因。"
+  },
+  "comparison": {
+    "decoder": "Pillow",
+    "decoder_version": "10.0.0",
+    "same_size": true,
+    "size": [
+      800,
+      800
+    ],
+    "pixel_format": "8 位未预乘 RGBA（解码后逐字节比较，不合成到白底、不缩放、不忽略透明通道或透明像素的 RGB）",
+    "comparison_rule": "逐像素四通道数组完全相等",
+    "decoded_pixel_array_sha256": {
+      "occlusion.png": "b1a65fc437925860c3d3ca963af677359bba7b4cb758138ef7d826b8d6623183",
+      "occlusion-alternative.png": "b1a65fc437925860c3d3ca963af677359bba7b4cb758138ef7d826b8d6623183"
+    },
+    "differing_pixel_count": 0,
+    "max_channel_delta": 0,
+    "first_difference": null,
+    "total_pixels": 640000,
+    "verdict": "等价",
+    "conclusion": "两版解码后逐像素四通道完全一致：640000 个像素、不同像素数 0、最大通道差 0。隐藏层内容不同，但对可见像素没有任何影响。"
+  },
+  "file_provenance": {
+    "occlusion.png": {
+      "sha256": "52c944f2aa8acb2c3eba2f24422645887c00f21badd228cbed4c3ce6612a42ba",
+      "bytes": 25863
+    },
+    "occlusion-alternative.png": {
+      "sha256": "52c944f2aa8acb2c3eba2f24422645887c00f21badd228cbed4c3ce6612a42ba",
+      "bytes": 25863
+    },
+    "file_sha256_equal": true,
+    "observed": "两份最终 PNG 的文件级 SHA-256 完全相同",
+    "note": "题面明确「不同压缩或元数据导致文件哈希不同，不据此判像素不等价」，因此判定依据必须是解码后的像素比较——这一点没有变。本次实际结果是两层都相等：两版 DSL 不同、隐藏层不同，但服务端对完全相同的像素与相同参数产生了逐字节相同的 PNG，所以文件哈希也相同。即便日后服务端在 PNG 里写入时间戳之类的元数据导致文件哈希不同，comparison 段的解码像素判定仍然成立。"
+  },
+  "environment": {
+    "python": "3.11.5",
+    "platform": "Windows",
+    "pil": "10.0.0"
+  }
+}

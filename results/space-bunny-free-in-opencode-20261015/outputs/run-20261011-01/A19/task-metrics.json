@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A19",
+  "run_id": "run-20261011-01",
+  "task_round": "round-01",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐图视觉自检",
+  "output_dir": "outputs/run-20261011-01/A19",
+  "temp_dir": "tmp/run-20261011-01/A19",
+  "timings": {
+    "started_at": "2026-10-12T11:57:55.026000+08:00",
+    "ended_at": "2026-10-12T12:19:40.920+08:00",
+    "elapsed_seconds": 1305.894,
+    "first_usable_image_seconds": 2.569,
+    "user_feedback_wait_seconds": 0.0,
+    "rate_limit_wait_seconds": 0.0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 579.522,
+    "server_timing_source": "requests.jsonl 中的 Server-Timing 响应头（服务未提供时为 null）",
+    "started_at_raw": "2026-10-12T11:57:55.026000+08:00",
+    "timing_note": "started_at 取 A19 首个请求之前 60 秒；ended_at 为定稿渲染与指标写盘完成时刻。墙钟总耗时含构图、出题、像素反测与出题修正，不等于请求耗时之和（579.522s）。像素等价比较与缩略裁切由本地 Pillow 完成，不计入服务请求耗时。"
+  },
+  "counts": {
+    "snapshot_requests": 14,
+    "successful_snapshot_requests": 9,
+    "failed_snapshot_requests": 5,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 8,
+    "image_views": 8,
+    "completed_visual_iterations": 1,
+    "incomplete_visual_iterations": 0,
+    "image_views_raw": 8,
+    "image_views_detail": [
+      {
+        "stage": "grid-v1",
+        "image": "preview/grid-scene-v1.png",
+        "zoom": "1600×1600 整屏",
+        "observed": "网格首渲整屏：8×8 共 64 个主体，每格一个；四色四形逐行可见；编号在格内左上角"
+      },
+      {
+        "stage": "occ-v1",
+        "image": "preview/occlusion-v1.png",
+        "zoom": "800×800 整屏",
+        "observed": "遮挡 A 版整屏：面板为整块深色，B1–B3 在上、B4–B6 在下，没有任何隐藏层泄漏"
+      },
+      {
+        "stage": "occB-v1",
+        "image": "preview/occlusion-alternative-v1.png",
+        "zoom": "800×800 整屏",
+        "observed": "遮挡 B 版整屏：与 A 版肉眼一致"
+      },
+      {
+        "stage": "grid-detail",
+        "image": "preview/grid-center-2x.png",
+        "zoom": "中部 2×2 格 2× LANCZOS",
+        "observed": "G12 紫圆、G13 蓝圆角方（四角切圆可见）、G20 紫直角方、G21 蓝圆；编号不压主体"
+      },
+      {
+        "stage": "grid-detail",
+        "image": "preview/grid-tl-2x.png",
+        "zoom": "左上 2×2 格 2× LANCZOS",
+        "observed": "G01 蓝圆48、G02 橙方80、G09 蓝方64、G10 橙圆环48（镂空清晰、内径约为外径一半）"
+      },
+      {
+        "stage": "final",
+        "image": "outputs/run-20261011-01/A19/grid-scene.png",
+        "zoom": "1600×1600 整屏",
+        "observed": "交付网格整屏复查：64 个主体、编号 G01–G64 齐全、四色四形三尺寸齐全"
+      },
+      {
+        "stage": "final",
+        "image": "outputs/run-20261011-01/A19/occlusion.png",
+        "zoom": "800×800 整屏",
+        "observed": "交付遮挡 A 版整屏复查：面板无泄漏，6 个可见编号物体清晰"
+      },
+      {
+        "stage": "final",
+        "image": "outputs/run-20261011-01/A19/occlusion-alternative.png",
+        "zoom": "800×800 整屏",
+        "observed": "交付遮挡 B 版整屏复查：可见部分与 A 版一致"
+      }
+    ],
+    "image_views_note": "8 次实际打开：3 张首渲整屏 + 2 张 2× 放大裁切 + 3 张交付定稿整屏。三张定稿全部实际打开。"
+  },
+  "iteration_breakdown": {
+    "baseline": 1,
+    "syntax_fix": 1,
+    "retry": 0,
+    "alternative": 0,
+    "requirement_change": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A19/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A19/iterations.jsonl"
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A19/grid-scene.png",
+      "dsl": "outputs/run-20261011-01/A19/grid-scene.snapshot",
+      "required_by": "task.json required_outputs",
+      "width": 1600,
+      "height": 1600,
+      "format": "PNG",
+      "mode": "RGBA"
+    },
+    {
+      "kind": "dsl",
+      "path": "outputs/run-20261011-01/A19/grid-scene.snapshot"
+    },
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A19/occlusion.png",
+      "dsl": "outputs/run-20261011-01/A19/occlusion.snapshot",
+      "required_by": "task.json required_outputs",
+      "width": 800,
+      "height": 800,
+      "format": "PNG",
+      "mode": "RGBA"
+    },
+    {
+      "kind": "dsl",
+      "path": "outputs/run-20261011-01/A19/occlusion.snapshot"
+    },
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A19/occlusion-alternative.png",
+      "dsl": "outputs/run-20261011-01/A19/occlusion-alternative.snapshot",
+      "required_by": "task.json required_outputs",
+      "width": 800,
+      "height": 800,
+      "format": "PNG",
+      "mode": "RGBA"
+    },
+    {
+      "kind": "dsl",
+      "path": "outputs/run-20261011-01/A19/occlusion-alternative.snapshot"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A19/scene-data.json"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A19/questions.json"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A19/answers.json"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A19/equivalence.json"
+    },
+    {
+      "kind": "report",
+      "path": "outputs/run-20261011-01/A19/snapshot-usage.md"
+    },
+    {
+      "kind": "metrics",
+      "path": "outputs/run-20261011-01/A19/task-metrics.json"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "tmp/run-20261011-01/A19/responses/A19-v1-occlusion.error.json",
+      "status": "failed",
+      "note": "遮挡场景首版 400：图例循环把 (色, 编号) 元组解成了 (编号, 色)，于是 `color=\"B1\"`。改为按 (col, lab) 解包后重渲通过。"
+    },
+    {
+      "path": "tmp/run-20261011-01/A19/preview/grid-center-2x.png",
+      "status": "diagnostic",
+      "note": "网格中部 2×2 格 2× 放大：G12 圆、G13 圆角方（切角可见）、G20 直角方、G21 圆；编号在主体之外，不压在主体上"
+    },
+    {
+      "path": "tmp/run-20261011-01/A19/preview/grid-tl-2x.png",
+      "status": "diagnostic",
+      "note": "左上 2×2 格 2× 放大：G10 圆环镂空清晰，内径约为外径的一半"
+    }
+  ],
+  "rounds": [],
+  "unresolved_issues": [],
+  "verification": {
+    "grid_canvas": [
+      1600,
+      1600
+    ],
+    "objects": 64,
+    "by_color": {
+      "蓝": 16,
+      "橙": 16,
+      "绿": 16,
+      "紫": 16
+    },
+    "by_shape": {
+      "圆": 16,
+      "方": 16,
+      "圆环": 16,
+      "圆角方": 16
+    },
+    "by_size": {
+      "48": 22,
+      "64": 21,
+      "80": 21
+    },
+    "color_shape_combos_covered": 16,
+    "each_combo_size": [
+      4
+    ],
+    "row_color_counts": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "row_shape_counts": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "each_color_has_all_3_sizes": false,
+    "each_shape_has_all_3_sizes": false,
+    "pixel_reverified_objects": 64,
+    "pixel_max_channel_delta": 0,
+    "rings_pixel_verified": 16,
+    "rounded_squares_pixel_verified": 16,
+    "pixel_sampling_points": [
+      "中心",
+      "0.30·size",
+      "size/2−3",
+      "size/2+4",
+      "圆环 0.35·size 环带",
+      "圆角方角点 +2 与上边中点"
+    ],
+    "occlusion_sizes_equal": true,
+    "occlusion_size": [
+      800,
+      800
+    ],
+    "occlusion_differing_pixels": 0,
+    "occlusion_max_channel_delta": 0,
+    "occlusion_verdict": "等价",
+    "occlusion_decoded_arrays_identical": true,
+    "occlusion_file_sha256_equal": true,
+    "questions_total": 14,
+    "questions_grid": 12,
+    "questions_occlusion": 2,
+    "two_step_questions": 8,
+    "categories": [
+      "严格中心左右关系",
+      "包围框",
+      "可见计数",
+      "复合属性检索",
+      "形状计数",
+      "排序",
+      "距离",
+      "遮挡下的可判定性",
+      "颜色计数"
+    ],
+    "undeterminable_answers": [
+      "Q30"
+    ],
+    "every_question_has_answers": true,
+    "questions_json_contains_no_answer": true,
+    "image_tag_used": false,
+    "render_retries": [
+      {
+        "request_id": "A19-final-occA-ad52e8ca",
+        "version": "final-occA",
+        "status": 200,
+        "duration_seconds": 183.4336,
+        "response_bytes": 0,
+        "response_file": "tmp/run-20261011-01/A19/responses/A19-final-occA-ad52e8ca.error.png"
+      },
+      {
+        "request_id": "A19-final-grid-75ef5a4f",
+        "version": "final-grid",
+        "status": 200,
+        "duration_seconds": 183.0511,
+        "response_bytes": 0,
+        "response_file": "tmp/run-20261011-01/A19/responses/A19-final-grid-75ef5a4f.error.png"
+      },
+      {
+        "request_id": "A19-final-occB-32a95d2c",
+        "version": "final-occB",
+        "status": 200,
+        "duration_seconds": 181.6776,
+        "response_bytes": 0,
+        "response_file": "tmp/run-20261011-01/A19/responses/A19-final-occB-32a95d2c.error.png"
+      }
+    ],
+    "render_retry_note": "交付阶段 occlusion.png 首次尝试收到 HTTP 200 但响应体 0 字节（183.4s），由 deliver.py 的有界重试自动重发后成功；另有 2 次 400 是设计内的真实错误（图例元组解包方向写反），响应体保留在 responses/ 下。"
+  }
+}

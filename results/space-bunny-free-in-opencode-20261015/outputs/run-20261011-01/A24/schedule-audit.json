@@ -1,0 +1,461 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "checks": [
+    {
+      "check": "时长完整执行",
+      "method": "逐任务比较 end−start 与输入 minutes（未舍入）",
+      "result": "12 个任务全部精确相等",
+      "passed": true,
+      "evidence": "schedule.json.tasks[].duration_check_exact 全部 true"
+    },
+    {
+      "check": "工作窗口 0–420",
+      "method": "检查所有 start_minute ≥ 0 且 end_minute ≤ 420",
+      "result": "最早开始 0.0 分钟，最晚结束 260.0 分钟（= 13:20），截止 420 分钟",
+      "passed": true,
+      "evidence": "schedule.json.tasks[].start_minute/end_minute"
+    },
+    {
+      "check": "同团队不可并行",
+      "method": "按团队把任务按 start 排序，逐对比较前一项 end 与后一项 start",
+      "result": "0 处重叠",
+      "passed": true,
+      "evidence": "本文件 resource_conflicts 为空数组；下方逐对明细"
+    },
+    {
+      "check": "依赖先后",
+      "method": "逐条比较 dep.end_minute ≤ task.start_minute",
+      "result": "16 条依赖全部满足",
+      "passed": true,
+      "evidence": "本文件 dependency_checks 逐条明细"
+    },
+    {
+      "check": "双选任务只占一个团队",
+      "method": "检查每个 len(teams)>1 的任务的 assigned_team ∈ teams 且只记一条占用",
+      "result": "R05→engineering，R09→design，R12→design，各占一个团队",
+      "passed": true,
+      "evidence": "schedule.json.tasks[] 的 assigned_team/eligible_teams"
+    },
+    {
+      "check": "未擅自改依赖/缩时/删环节",
+      "method": "把解的依赖集合与时长逐项对回 inputs/release.json",
+      "result": "12 个任务、16 条依赖、485 分钟总量与输入完全一致",
+      "passed": true,
+      "evidence": "本文件 input_fidelity 段"
+    },
+    {
+      "check": "未把风险说明加进时长",
+      "method": "risks 只用于解释缓冲来源，未计入任何 minutes",
+      "passed": true,
+      "result": "3 条风险均未改变任务时长；缓冲 165 分钟在执行图上单独标注",
+      "evidence": "schedule.json.total_work_minutes 与输入 minutes 之和相等"
+    }
+  ],
+  "resource_conflicts": [],
+  "dependency_checks": [
+    {
+      "task": "R03",
+      "dep": "R02",
+      "dep_end": 20.0,
+      "start": 20.0,
+      "ok": true
+    },
+    {
+      "task": "R04",
+      "dep": "R01",
+      "dep_end": 25.0,
+      "start": 25.0,
+      "ok": true
+    },
+    {
+      "task": "R05",
+      "dep": "R01",
+      "dep_end": 25.0,
+      "start": 60.0,
+      "ok": true
+    },
+    {
+      "task": "R06",
+      "dep": "R03",
+      "dep_end": 60.0,
+      "start": 90.0,
+      "ok": true
+    },
+    {
+      "task": "R07",
+      "dep": "R04",
+      "dep_end": 85.0,
+      "start": 90.0,
+      "ok": true
+    },
+    {
+      "task": "R07",
+      "dep": "R05",
+      "dep_end": 90.0,
+      "start": 90.0,
+      "ok": true
+    },
+    {
+      "task": "R08",
+      "dep": "R04",
+      "dep_end": 85.0,
+      "start": 135.0,
+      "ok": true
+    },
+    {
+      "task": "R08",
+      "dep": "R06",
+      "dep_end": 135.0,
+      "start": 135.0,
+      "ok": true
+    },
+    {
+      "task": "R09",
+      "dep": "R07",
+      "dep_end": 160.0,
+      "start": 160.0,
+      "ok": true
+    },
+    {
+      "task": "R10",
+      "dep": "R07",
+      "dep_end": 160.0,
+      "start": 205.0,
+      "ok": true
+    },
+    {
+      "task": "R10",
+      "dep": "R08",
+      "dep_end": 200.0,
+      "start": 205.0,
+      "ok": true
+    },
+    {
+      "task": "R10",
+      "dep": "R09",
+      "dep_end": 205.0,
+      "start": 205.0,
+      "ok": true
+    },
+    {
+      "task": "R11",
+      "dep": "R08",
+      "dep_end": 200.0,
+      "start": 205.0,
+      "ok": true
+    },
+    {
+      "task": "R11",
+      "dep": "R09",
+      "dep_end": 205.0,
+      "start": 205.0,
+      "ok": true
+    },
+    {
+      "task": "R12",
+      "dep": "R10",
+      "dep_end": 240.0,
+      "start": 240.0,
+      "ok": true
+    },
+    {
+      "task": "R12",
+      "dep": "R11",
+      "dep_end": 235.0,
+      "start": 240.0,
+      "ok": true
+    }
+  ],
+  "team_timelines": {
+    "design": [
+      {
+        "id": "R01",
+        "label": "需求核对",
+        "start_minute": 0.0,
+        "end_minute": 25.0,
+        "start_hhmm": "09:00",
+        "end_hhmm": "09:25"
+      },
+      {
+        "id": "R04",
+        "label": "视觉系统",
+        "start_minute": 25.0,
+        "end_minute": 85.0,
+        "start_hhmm": "09:25",
+        "end_hhmm": "10:25"
+      },
+      {
+        "id": "R07",
+        "label": "主海报构建",
+        "start_minute": 90.0,
+        "end_minute": 160.0,
+        "start_hhmm": "10:30",
+        "end_hhmm": "11:40"
+      },
+      {
+        "id": "R09",
+        "label": "手机适配",
+        "start_minute": 160.0,
+        "end_minute": 205.0,
+        "start_hhmm": "11:40",
+        "end_hhmm": "12:25"
+      },
+      {
+        "id": "R10",
+        "label": "视觉回归检查",
+        "start_minute": 205.0,
+        "end_minute": 240.0,
+        "start_hhmm": "12:25",
+        "end_hhmm": "13:00"
+      },
+      {
+        "id": "R12",
+        "label": "交付归档",
+        "start_minute": 240.0,
+        "end_minute": 260.0,
+        "start_hhmm": "13:00",
+        "end_hhmm": "13:20"
+      }
+    ],
+    "engineering": [
+      {
+        "id": "R02",
+        "label": "服务与字体探测",
+        "start_minute": 0.0,
+        "end_minute": 20.0,
+        "start_hhmm": "09:00",
+        "end_hhmm": "09:20"
+      },
+      {
+        "id": "R03",
+        "label": "数据清洗",
+        "start_minute": 20.0,
+        "end_minute": 60.0,
+        "start_hhmm": "09:20",
+        "end_hhmm": "10:00"
+      },
+      {
+        "id": "R05",
+        "label": "文案审校",
+        "start_minute": 60.0,
+        "end_minute": 90.0,
+        "start_hhmm": "10:00",
+        "end_hhmm": "10:30"
+      },
+      {
+        "id": "R06",
+        "label": "图表计算",
+        "start_minute": 90.0,
+        "end_minute": 135.0,
+        "start_hhmm": "10:30",
+        "end_hhmm": "11:15"
+      },
+      {
+        "id": "R08",
+        "label": "驾驶舱构建",
+        "start_minute": 135.0,
+        "end_minute": 200.0,
+        "start_hhmm": "11:15",
+        "end_hhmm": "12:20"
+      },
+      {
+        "id": "R11",
+        "label": "产物与数据核验",
+        "start_minute": 205.0,
+        "end_minute": 235.0,
+        "start_hhmm": "12:25",
+        "end_hhmm": "12:55"
+      }
+    ]
+  },
+  "idle_windows": [
+    {
+      "team": "design",
+      "from_minute": 85.0,
+      "to_minute": 90.0,
+      "minutes": 5.0
+    },
+    {
+      "team": "design",
+      "from_minute": 260.0,
+      "to_minute": 420.0,
+      "minutes": 160.0,
+      "tail": true
+    },
+    {
+      "team": "engineering",
+      "from_minute": 200.0,
+      "to_minute": 205.0,
+      "minutes": 5.0
+    },
+    {
+      "team": "engineering",
+      "from_minute": 235.0,
+      "to_minute": 420.0,
+      "minutes": 185.0,
+      "tail": true
+    }
+  ],
+  "lower_bounds": {
+    "dependency_critical_path_minutes": 255,
+    "dependency_critical_path": [
+      "R01",
+      "R04",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "dependency_critical_path_note": "只由依赖与时长决定，与资源无关；该链上不存在可并行分支，故任何可行排程都有 max(end) ≥ 255 分钟。",
+    "chain_lengths_by_task": {
+      "R01": 25,
+      "R02": 20,
+      "R03": 60,
+      "R04": 85,
+      "R05": 55,
+      "R06": 105,
+      "R07": 155,
+      "R08": 170,
+      "R09": 200,
+      "R10": 235,
+      "R11": 230,
+      "R12": 255
+    },
+    "total_work_minutes": 485,
+    "resource_workload_lower_bound_minutes": 242.5,
+    "resource_workload_bound_formula": "Σminutes / 2（两个团队、单一执行人）",
+    "binding_lower_bound": 255,
+    "binding_reason": "依赖下界 255 > 资源工作量下界 242.5，所以约束来自依赖链而非团队产能。",
+    "note": "两个下界均为分钟数、未提前取整。"
+  },
+  "finish": {
+    "finish_minute": 260.0,
+    "finish_time": "2026-11-07T13:20:00+08:00",
+    "finish_hhmm": "13:20",
+    "buffer_minutes": 160.0,
+    "buffer_formula": "420 − max(end_minute)",
+    "buffer_share_of_window": 0.38095238095238093
+  },
+  "optimality": {
+    "claim": "**可证明全局最优：260.0 分钟。**",
+    "is_proven_globally_optimal": true,
+    "upper_bound": {
+      "value_minutes": 260.0,
+      "witness": "本解 schedule.json 本身",
+      "meaning": "存在一个完工于 260.0 分钟的可行排程。"
+    },
+    "lower_bound_proof": {
+      "conclusion": "不存在完工早于 260.0 分钟的可行排程。",
+      "argument": [
+        "1) 双选任务只有 R05/R09/R12，各自只有 design/engineering 两个合法归属，所以所有可行排程按这三个归属分成恰好 8 类，没有遗漏。",
+        "2) 对每一类，在「下一个就绪任务 × 它可选的团队」上做完备深度优先搜索，剪枝用可采纳下界 LB = max_t(est(t) + tail(t))，去重键含每个已排任务的 (start, end, team)。该下界恒不超过真实最优剩余完工，所以剪枝与去重都不会丢掉更优解。",
+        "3) 8 类的最优完工分别为 260/260/285/285/285/285/300/300 分钟，最小值 260。",
+        "4) 因此全局最优 = min(8 类最优) = 260.0 分钟。"
+      ],
+      "per_assignment_optima": {
+        "R05=engineering/R09=design/R12=design": 260.0,
+        "R05=engineering/R09=design/R12=engineering": 260.0,
+        "R05=design/R09=design/R12=design": 285.0,
+        "R05=design/R09=design/R12=engineering": 285.0,
+        "R05=design/R09=engineering/R12=design": 285.0,
+        "R05=design/R09=engineering/R12=engineering": 285.0,
+        "R05=engineering/R09=engineering/R12=design": 300.0,
+        "R05=engineering/R09=engineering/R12=engineering": 300.0
+      },
+      "intuition": "依赖关键链 R01→R04→R07→R09→R10→R12 长 255 分钟，要让 R07 在第 85 分钟开工（从而达到 255），R05 必须在 85 分钟前做完。R05 依赖 R01（design，第 25 分钟结束），而 design 在 25–85 已被 R04 占满，所以 R05 只能交给 engineering。engineering 于是必须依次做 R02(20) → R05(30) → R03(40) → R06(45) → R08(65)；R05 不能早于第 25 分钟开始，所以 R08 最早在第 205 分钟结束，R10 最早第 205 分钟开工、第 240 分钟结束，R12 最早第 260 分钟结束。资源与依赖把完工推到 260.0 分钟，比依赖下界多 5 分钟。"
+    },
+    "gap_to_dependency_bound_minutes": 5.0,
+    "gap_explanation": "R05 既依赖 R01 又与 R02→R03→R06→R08 抢同一个 engineering 团队，这 5 分钟正是两段链在第 20–25 分钟的交接造成的。",
+    "improvement_evidence": {
+      "method": "枚举 3 个双选任务（R05/R09/R12）的团队归属共 8 种；每种用分支定界在「下一个就绪任务 × 可选团队」上深度优先搜索最短完工，状态 (已排任务集合, design 空闲, engineering 空闲) 去重 + 全局最优剪枝；取 8 种里完工最早的可行解，再与两个下界比较判定最优性。",
+      "search": {
+        "search_nodes": 78,
+        "distinct_states": 40,
+        "exhaustive": true,
+        "pruning_bound": "LB = max_t(est(t)+tail(t))，可采纳下界",
+        "dedup_key": "逐任务 (start,end,team) + 两队空闲时刻"
+      },
+      "trials": [
+        {
+          "assign": {
+            "R05": "engineering",
+            "R09": "design",
+            "R12": "design"
+          },
+          "finish": 260.0
+        },
+        {
+          "assign": {
+            "R05": "engineering",
+            "R09": "design",
+            "R12": "engineering"
+          },
+          "finish": 260.0
+        },
+        {
+          "assign": {
+            "R05": "design",
+            "R09": "design",
+            "R12": "design"
+          },
+          "finish": 285.0
+        },
+        {
+          "assign": {
+            "R05": "design",
+            "R09": "design",
+            "R12": "engineering"
+          },
+          "finish": 285.0
+        },
+        {
+          "assign": {
+            "R05": "design",
+            "R09": "engineering",
+            "R12": "design"
+          },
+          "finish": 285.0
+        },
+        {
+          "assign": {
+            "R05": "design",
+            "R09": "engineering",
+            "R12": "engineering"
+          },
+          "finish": 285.0
+        },
+        {
+          "assign": {
+            "R05": "engineering",
+            "R09": "engineering",
+            "R12": "design"
+          },
+          "finish": 300.0
+        },
+        {
+          "assign": {
+            "R05": "engineering",
+            "R09": "engineering",
+            "R12": "engineering"
+          },
+          "finish": 300.0
+        }
+      ],
+      "best_finish": 260.0,
+      "best_assign": {
+        "R05": "engineering",
+        "R09": "design",
+        "R12": "design"
+      }
+    },
+    "risk_impact_note": "风险 K1/K2/K3 用于解释 165 分钟缓冲可能被消耗到什么程度，但按题面要求没有加进任何任务时长。"
+  },
+  "input_fidelity": {
+    "task_count_matches": true,
+    "dependency_count_matches": true,
+    "minutes_sum_matches": true,
+    "input_total_minutes": 485
+  }
+}

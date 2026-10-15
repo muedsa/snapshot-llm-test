@@ -1,0 +1,1322 @@
+{
+  "schema_version": 1,
+  "task_id": "A21",
+  "round": 3,
+  "path_base": "output_dir",
+  "formula": {
+    "normalize": "c = channel / 255",
+    "linearize": "c ≤ 0.04045 → c_linear = c/12.92；否则 c_linear = ((c+0.055)/1.055)^2.4",
+    "luminance": "L = 0.2126R_lin + 0.7152G_lin + 0.0722B_lin",
+    "contrast": "(max(L_fg,L_bg)+0.05) / (min(L_fg,L_bg)+0.05)",
+    "rounding": "全部用未舍入中间值，仅在写入 JSON 时保留 4–8 位小数；阈值比较用未舍入结果",
+    "threshold": 4.5,
+    "coverage_rule": "对每段文字，先在交付图里定位**字形核心像素**（与文字本色相差 ≤12/通道，抗锯齿边缘因是与底色混合的中间色而被自然排除），再到「保留全部图层、去掉所有 <Text>」的辅助图的**同一坐标**取背景，逐个字形核心像素算对比度并取最差值。不在整个覆盖盒里统计背景色：徽标描边等几何元素虽在盒内，却不在任何字形之下，混进来会得出假的最差值。"
+  },
+  "images": [
+    {
+      "image": "round-03/launch-portrait.png",
+      "size": [
+        1080,
+        1350
+      ],
+      "background_note": "本图所有正文均落在纯底色上，无半透明层、无渐变、无纹理，因此覆盖盒内的背景像素唯一；这不是假设，由辅助图逐像素取样确认。",
+      "text_runs": [
+        {
+          "text_id": "brand",
+          "text": "叠光 Layerlight",
+          "coverage_box_px": [
+            244,
+            196,
+            996,
+            234
+          ],
+          "font_size_px": 32,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1314,
+            "antialiased_edge_pixels_excluded": 27262,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "title-1",
+          "text": "当所有信息都想成为标题：",
+          "coverage_box_px": [
+            84,
+            556,
+            996,
+            625
+          ],
+          "font_size_px": 52,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 6828,
+            "antialiased_edge_pixels_excluded": 56100,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "title-2",
+          "text": "让复杂信息变得清晰的结构化方法",
+          "coverage_box_px": [
+            84,
+            625,
+            996,
+            695
+          ],
+          "font_size_px": 52,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 8583,
+            "antialiased_edge_pixels_excluded": 55257,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "date",
+          "text": "2026.11.07 19:30",
+          "coverage_box_px": [
+            84,
+            729,
+            996,
+            773
+          ],
+          "font_size_px": 36,
+          "foreground": {
+            "hex": "#B45309",
+            "rgb": [
+              180,
+              83,
+              9
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 2211,
+            "antialiased_edge_pixels_excluded": 37917,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 4.7995,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "badge",
+          "text": "ONLINE LAUNCH",
+          "coverage_box_px": [
+            360,
+            813,
+            720,
+            853
+          ],
+          "font_size_px": 30,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1600,
+            "antialiased_edge_pixels_excluded": 12800,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "coverage_box_px": [
+            84,
+            899,
+            996,
+            939
+          ],
+          "font_size_px": 30,
+          "foreground": {
+            "hex": "#3730A3",
+            "rgb": [
+              55,
+              48,
+              163
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1011,
+            "antialiased_edge_pixels_excluded": 35469,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 9.494,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "coverage_box_px": [
+            84,
+            951,
+            996,
+            987
+          ],
+          "font_size_px": 26,
+          "foreground": {
+            "hex": "#3730A3",
+            "rgb": [
+              55,
+              48,
+              163
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1373,
+            "antialiased_edge_pixels_excluded": 31459,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 9.494,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "attend",
+          "text": "免费参加 · 无需报名",
+          "coverage_box_px": [
+            84,
+            995,
+            996,
+            1031
+          ],
+          "font_size_px": 26,
+          "foreground": {
+            "hex": "#B45309",
+            "rgb": [
+              180,
+              83,
+              9
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 898,
+            "antialiased_edge_pixels_excluded": 31934,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 4.7995,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "english",
+          "text": "Clarity through structure",
+          "coverage_box_px": [
+            84,
+            1039,
+            996,
+            1075
+          ],
+          "font_size_px": 26,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1438,
+            "antialiased_edge_pixels_excluded": 31394,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "url",
+          "text": "layerlight.example.org",
+          "coverage_box_px": [
+            84,
+            1083,
+            996,
+            1121
+          ],
+          "font_size_px": 28,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 295,
+            "antialiased_edge_pixels_excluded": 15209,
+            "source": "辅助图 nobg-portrait 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        }
+      ],
+      "text_run_count": 10,
+      "min_contrast": 4.7995,
+      "all_runs_pass": true,
+      "detailed_samples": [
+        {
+          "text_id": "date",
+          "text": "2026.11.07 19:30",
+          "at_box_px": [
+            84,
+            729,
+            996,
+            773
+          ],
+          "foreground_rgb": [
+            180,
+            83,
+            9
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.45641102,
+            0.08650046,
+            0.00273174
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.15909535,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.15909535+0.05)",
+          "contrast": 4.7995,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "attend",
+          "text": "免费参加 · 无需报名",
+          "at_box_px": [
+            84,
+            995,
+            996,
+            1031
+          ],
+          "foreground_rgb": [
+            180,
+            83,
+            9
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.45641102,
+            0.08650046,
+            0.00273174
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.15909535,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.15909535+0.05)",
+          "contrast": 4.7995,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "at_box_px": [
+            84,
+            899,
+            996,
+            939
+          ],
+          "foreground_rgb": [
+            55,
+            48,
+            163
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.03820437,
+            0.02955683,
+            0.3662526
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.05570473,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.05570473+0.05)",
+          "contrast": 9.494,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "at_box_px": [
+            84,
+            951,
+            996,
+            987
+          ],
+          "foreground_rgb": [
+            55,
+            48,
+            163
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.03820437,
+            0.02955683,
+            0.3662526
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.05570473,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.05570473+0.05)",
+          "contrast": 9.494,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "brand",
+          "text": "叠光 Layerlight",
+          "at_box_px": [
+            244,
+            196,
+            996,
+            234
+          ],
+          "foreground_rgb": [
+            30,
+            27,
+            75
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.01298303,
+            0.01096009,
+            0.0703601
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.01567885,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.01567885+0.05)",
+          "contrast": 15.2798,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "title-1",
+          "text": "当所有信息都想成为标题：",
+          "at_box_px": [
+            84,
+            556,
+            996,
+            625
+          ],
+          "foreground_rgb": [
+            30,
+            27,
+            75
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.01298303,
+            0.01096009,
+            0.0703601
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.01567885,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.01567885+0.05)",
+          "contrast": 15.2798,
+          "is_worst_in_image": true
+        }
+      ],
+      "samples_include_worst": true
+    },
+    {
+      "image": "round-03/launch-wide.png",
+      "size": [
+        1440,
+        810
+      ],
+      "background_note": "本图所有正文均落在纯底色上，无半透明层、无渐变、无纹理，因此覆盖盒内的背景像素唯一；这不是假设，由辅助图逐像素取样确认。",
+      "text_runs": [
+        {
+          "text_id": "brand",
+          "text": "叠光 Layerlight",
+          "coverage_box_px": [
+            220,
+            122,
+            880,
+            158
+          ],
+          "font_size_px": 30,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1115,
+            "antialiased_edge_pixels_excluded": 22645,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "title-1",
+          "text": "当所有信息都想成为标题：",
+          "coverage_box_px": [
+            80,
+            200,
+            880,
+            269
+          ],
+          "font_size_px": 52,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 6828,
+            "antialiased_edge_pixels_excluded": 48372,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "title-2",
+          "text": "让复杂信息变得清晰的结构化方法",
+          "coverage_box_px": [
+            80,
+            269,
+            880,
+            339
+          ],
+          "font_size_px": 52,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 8583,
+            "antialiased_edge_pixels_excluded": 47417,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "date",
+          "text": "2026.11.07 19:30",
+          "coverage_box_px": [
+            80,
+            349,
+            880,
+            395
+          ],
+          "font_size_px": 32,
+          "foreground": {
+            "hex": "#B45309",
+            "rgb": [
+              180,
+              83,
+              9
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1705,
+            "antialiased_edge_pixels_excluded": 35095,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 4.7995,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "coverage_box_px": [
+            80,
+            402,
+            880,
+            440
+          ],
+          "font_size_px": 26,
+          "foreground": {
+            "hex": "#3730A3",
+            "rgb": [
+              55,
+              48,
+              163
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 607,
+            "antialiased_edge_pixels_excluded": 29793,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 9.494,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "coverage_box_px": [
+            80,
+            447,
+            880,
+            482
+          ],
+          "font_size_px": 24,
+          "foreground": {
+            "hex": "#3730A3",
+            "rgb": [
+              55,
+              48,
+              163
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1132,
+            "antialiased_edge_pixels_excluded": 26868,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 9.494,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "attend",
+          "text": "免费参加 · 无需报名",
+          "coverage_box_px": [
+            80,
+            489,
+            880,
+            524
+          ],
+          "font_size_px": 24,
+          "foreground": {
+            "hex": "#B45309",
+            "rgb": [
+              180,
+              83,
+              9
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 728,
+            "antialiased_edge_pixels_excluded": 27272,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 4.7995,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "english",
+          "text": "Clarity through structure",
+          "coverage_box_px": [
+            80,
+            531,
+            880,
+            568
+          ],
+          "font_size_px": 26,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1438,
+            "antialiased_edge_pixels_excluded": 28162,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "url",
+          "text": "layerlight.example.org",
+          "coverage_box_px": [
+            80,
+            575,
+            880,
+            613
+          ],
+          "font_size_px": 26,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 796,
+            "antialiased_edge_pixels_excluded": 29604,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "text_id": "badge",
+          "text": "ONLINE LAUNCH",
+          "coverage_box_px": [
+            80,
+            631,
+            410,
+            667
+          ],
+          "font_size_px": 28,
+          "foreground": {
+            "hex": "#1E1B4B",
+            "rgb": [
+              30,
+              27,
+              75
+            ],
+            "source": "design-tokens.json 的 colors 令牌，实际渲染色与之逐字一致"
+          },
+          "background": {
+            "distinct_colors_under_glyphs": 1,
+            "dominant": [
+              248,
+              250,
+              252
+            ],
+            "dominant_ratio": 1.0,
+            "worst_for_this_run": [
+              248,
+              250,
+              252
+            ],
+            "glyph_core_pixels": 1446,
+            "antialiased_edge_pixels_excluded": 10434,
+            "source": "辅助图 nobg-wide 的**同一字形核心坐标**实际像素（保留全部图层、去掉所有 <Text>）"
+          },
+          "worst_contrast": 15.2798,
+          "threshold": 4.5,
+          "passed": true
+        }
+      ],
+      "text_run_count": 10,
+      "min_contrast": 4.7995,
+      "all_runs_pass": true,
+      "detailed_samples": [
+        {
+          "text_id": "date",
+          "text": "2026.11.07 19:30",
+          "at_box_px": [
+            80,
+            349,
+            880,
+            395
+          ],
+          "foreground_rgb": [
+            180,
+            83,
+            9
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.45641102,
+            0.08650046,
+            0.00273174
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.15909535,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.15909535+0.05)",
+          "contrast": 4.7995,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "attend",
+          "text": "免费参加 · 无需报名",
+          "at_box_px": [
+            80,
+            489,
+            880,
+            524
+          ],
+          "foreground_rgb": [
+            180,
+            83,
+            9
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.45641102,
+            0.08650046,
+            0.00273174
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.15909535,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.15909535+0.05)",
+          "contrast": 4.7995,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "at_box_px": [
+            80,
+            402,
+            880,
+            440
+          ],
+          "foreground_rgb": [
+            55,
+            48,
+            163
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.03820437,
+            0.02955683,
+            0.3662526
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.05570473,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.05570473+0.05)",
+          "contrast": 9.494,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "at_box_px": [
+            80,
+            447,
+            880,
+            482
+          ],
+          "foreground_rgb": [
+            55,
+            48,
+            163
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.03820437,
+            0.02955683,
+            0.3662526
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.05570473,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.05570473+0.05)",
+          "contrast": 9.494,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "brand",
+          "text": "叠光 Layerlight",
+          "at_box_px": [
+            220,
+            122,
+            880,
+            158
+          ],
+          "foreground_rgb": [
+            30,
+            27,
+            75
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.01298303,
+            0.01096009,
+            0.0703601
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.01567885,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.01567885+0.05)",
+          "contrast": 15.2798,
+          "is_worst_in_image": true
+        },
+        {
+          "text_id": "title-1",
+          "text": "当所有信息都想成为标题：",
+          "at_box_px": [
+            80,
+            200,
+            880,
+            269
+          ],
+          "foreground_rgb": [
+            30,
+            27,
+            75
+          ],
+          "background_rgb": [
+            248,
+            250,
+            252
+          ],
+          "linear_foreground": [
+            0.01298303,
+            0.01096009,
+            0.0703601
+          ],
+          "linear_background": [
+            0.93868573,
+            0.95597335,
+            0.97344529
+          ],
+          "L_text": 0.01567885,
+          "L_bg": 0.95355948,
+          "formula": "(Lmax+0.05)/(Lmin+0.05)",
+          "calculation": "(0.95355948+0.05)/(0.01567885+0.05)",
+          "contrast": 15.2798,
+          "is_worst_in_image": true
+        }
+      ],
+      "samples_include_worst": true
+    }
+  ],
+  "evidence": [
+    {
+      "what": "辅助图（保留全部图层、去掉所有 <Text>）",
+      "files": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A21/drafts/round-03/nobg/nobg-portrait.snapshot"
+        },
+        {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A21/drafts/round-03/nobg/nobg-wide.snapshot"
+        },
+        {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A21/preview/nobg-portrait.png"
+        },
+        {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A21/preview/nobg-wide.png"
+        }
+      ],
+      "why": "交付图上的文字像素会把抗锯齿边缘混进样本，无法区分「本色」与「边缘」；辅助图去掉文字后，同一坐标处就是纯粹的背景。逐段取样结果与令牌值一致，说明该图不存在需要更复杂合成的叠压。"
+    },
+    {
+      "what": "交付图原图",
+      "files": [
+        {
+          "path_base": "suite_root",
+          "path": "outputs/run-20261011-01/A21/round-03/launch-portrait.png"
+        },
+        {
+          "path_base": "suite_root",
+          "path": "outputs/run-20261011-01/A21/round-03/launch-wide.png"
+        }
+      ],
+      "why": "前景色取自令牌，且与实际渲染用的 color 属性逐字一致。"
+    }
+  ],
+  "scope": "「普通文字」= 两图全部承担阅读信息的文字：主标题两行、日期、讲者、ONLINE LAUNCH 徽标、网址、赞助方、参加方式、新增英语句。纯几何品牌装饰（B1–B4）不计入文字，但也未被归类为文字来规避检查——它们不承载任何阅读信息。",
+  "not_checked": "本轮两图不存在文字压在半透明层或渐变上的情形，因此「按字形覆盖区取最差对比度」的抗锯齿边缘检查不适用；若后续把正文移到构件上方或加半透明蒙版，必须改用逐像素合成法。",
+  "all_pass": true
+}

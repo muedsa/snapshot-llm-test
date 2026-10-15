@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "task_id": "B04",
+  "path_base": "output_dir",
+  "retrieval_channel": "webfetch 工具（运行环境对本机直连 github/大���站点存在 TLS 与超时限制，PowerShell Invoke-WebRequest 与 python urllib 均超时，故统一走 webfetch）",
+  "retrieved_at": "2026-10-14",
+  "sources": [
+    {
+      "source_id": "S1",
+      "title": "NASA GISS Surface Temperature Analysis (GISTEMP v4), Global Land-Ocean Temperature Anomalies",
+      "publisher": "NASA Goddard Institute for Space Studies",
+      "url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv",
+      "retrieved_at": "2026-10-14",
+      "status": "ok",
+      "raw_summary": "表头第一行为 'Land-Ocean: Global Means'，随后是 Year,Jan..Dec,J-D,D-N,DJF,MAM,JJA,SON。",
+      "fields": [
+        "Year",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+        "J-D",
+        "D-N",
+        "DJF",
+        "MAM",
+        "JJA",
+        "SON"
+      ],
+      "unit": "°C",
+      "baseline": "1951–1980 年均",
+      "coverage": {
+        "first_year": 1880,
+        "last_complete_year": 2025,
+        "complete_years": 146,
+        "note": "抓取时 2026 年已有 1–9 月月值，但 J-D 与 10–12 月为 ***，本专题未使用 2026 的任何年均值，也未做补值。"
+      },
+      "local_mirror": "tmp/run-20261011-01/B04/data_b04.py（内嵌 URL、字段说明与数值）",
+      "transcription": "四季序列另见 seasons_b04.py，按一年一行录入并校验；其 J-D 列与 data_b04.JDN 逐位一致（已断言）。"
+    },
+    {
+      "source_id": "S2",
+      "title": "Trends in Atmospheric Carbon Dioxide, global monthly mean (co2_mm_gl.txt)",
+      "publisher": "NOAA Global Monitoring Laboratory",
+      "url": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_gl.txt",
+      "retrieved_at": "2026-10-14",
+      "status": "ok",
+      "raw_summary": "文件头自述 'File Creation: Fri Oct  9 13:08:02 2026'；数据列为 year, month, decimal, average, average_unc, trend, trend_unc。",
+      "fields": [
+        "year",
+        "month",
+        "decimal",
+        "average",
+        "average_unc",
+        "trend",
+        "trend_unc"
+      ],
+      "unit": "ppm（干空气摩尔分数）",
+      "coverage": {
+        "first": "1979-01",
+        "last": "2026-07",
+        "months": 571
+      },
+      "source_page": "https://gml.noaa.gov/ccgg/trends/global.html",
+      "source_page_note": "该页显示 July 2026 = 426.10 ppm、July 2025 = 424.09 ppm，与数据文件中对应月份一致，互为印证。",
+      "citation": "Lan, X., Tans, P. and K.W. Thoning: Trends in globally-averaged CO2 determined from NOAA Global Monitoring Laboratory measurements. https://doi.org/10.15138/9N0H-ZH07",
+      "local_mirror": "tmp/run-20261011-01/B04/data_b04.py",
+      "known_limits": "来源自述：最后一年数据可能因参考气重新标定与质控而变动，个别早年也可能被小幅修订。"
+    }
+  ],
+  "unread_sources": [
+    {
+      "url": "https://data.giss.nasa.gov/gistemp/",
+      "title": "GISTEMP 首页 / 方法说明",
+      "status": "failed",
+      "reason": "webfetch 返回 Transport error；本机直连 TLS 握手失败。因此方法学描述只依据 CSV 自身的表头与 NOAA 文件头，**未**引用 GISS 官方方法学文字。",
+      "impact": "case-10 的「基准期 1951–1980」来自本专题采用的通用基准，在数据层面可由 J-D 列核对；但 GISS 对不确定度的官方说明未能引用。"
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series",
+      "title": "NOAA NCEI Climate at a Glance",
+      "status": "failed",
+      "reason": "页面为前端应用，HTML 中不含任何数据表。",
+      "impact": "未用于任何图。未以记忆或推测代替其数值。"
+    },
+    {
+      "url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/ZonAnnual.Ts+dSST.csv",
+      "title": "GISTEMP 分带年均值",
+      "status": "failed",
+      "reason": "连接超时。",
+      "impact": "因此未做分纬度带（如北极/南极）的对比图；相关结论一律未出现在任何一张图上。"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "cl-01",
+      "case_id": "case-01",
+      "field": "J-D（年均气温距平）",
+      "statement": "1880–2025 年均距平逐年的走势；全序列最低 1909 年 −0.48 °C，最高 2024 年 +1.28 °C",
+      "source_ids": [
+        "S1"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-02",
+      "case_id": "case-02",
+      "field": "J-D",
+      "statement": "15 个十年均值的序列；1880–1889 为 −0.212 °C，2020–2025 为 +1.063 °C，相差 +1.275 °C",
+      "source_ids": [
+        "S1"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-03",
+      "case_id": "case-03",
+      "field": "DJF / MAM / JJA / SON",
+      "statement": "四季均值的长期变化相互同步；最近十年四季均值介于 +0.936 与 +1.034 °C 之间",
+      "source_ids": [
+        "S1"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-04",
+      "case_id": "case-04",
+      "field": "J-D / DJF / MAM / JJA / SON",
+      "statement": "把 730 个数值按年份铺开；1990 年代前后整行转暖，此后未回到基准期附近",
+      "source_ids": [
+        "S1"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-05",
+      "case_id": "case-05",
+      "field": "CO₂ 12 月 trend；同期 J-D",
+      "statement": "1979–2025 年 CO₂ 由 337.66 升至 426.56 ppm（+88.9），同期气温距平由 +0.16 升至 +1.18 °C",
+      "source_ids": [
+        "S1",
+        "S2"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-06",
+      "case_id": "case-06",
+      "field": "J-D",
+      "statement": "146 年中只有 5 个年份的年均距平 ≥ +1.0 °C：2016、2020、2023、2024、2025",
+      "source_ids": [
+        "S1"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-07",
+      "case_id": "case-07",
+      "field": "CO₂ average 与 trend（2024-07 至 2026-07）",
+      "statement": "2026 年 7 月全球月均 426.10 ppm，trend 427.55 ppm；与 2025 年 7 月同月相比高 2.01 ppm",
+      "source_ids": [
+        "S2"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-08",
+      "case_id": "case-08",
+      "field": "J-D / DJF / MAM / JJA / SON（2014–2025）",
+      "statement": "2014–2025 五列原值；12 年均值为年均 +0.981、四季 +0.970/+1.008/+0.936/+1.001 °C",
+      "source_ids": [
+        "S1"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-09",
+      "case_id": "case-09",
+      "field": "J-D（8 个分段）",
+      "statement": "各分段年均距平对年份做最小二乘回归的斜率；2015–2025 为 +0.296 °C/十年，1960–1980 为 +0.086",
+      "source_ids": [
+        "S1"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    },
+    {
+      "claim_id": "cl-10",
+      "case_id": "case-10",
+      "field": "两处来源的字段、覆盖范围与已知局限",
+      "statement": "两个数据集的出处、字段、基准期与三条必须同时说明的限制；未做归因、未补 2026 残缺年",
+      "source_ids": [
+        "S1",
+        "S2"
+      ],
+      "disclosed_value": null,
+      "confidence": "high",
+      "note": "数值由 data_b04.py 内的真实数组直接计算，未手工誊写。"
+    }
+  ],
+  "no_fabrication_statement": "本专题未使用任何示例或杜撰数字；未做归因分析；未把 2026 年的残缺年补成完整年；失败的来源如上如实列出，未用推测填充。"
+}

@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "task_id": "B06",
+  "path_base": "output_dir",
+  "curatorial_premise": "删掉无用信息之后，日常信息载体长什么样。十件不是把原版做丑再修正，而是重新定义这件物品要回答的问题，再让版式只服务那个问题。",
+  "general_completion_criteria": [
+    {
+      "id": "G1",
+      "condition": "画布内无图元越界，正文区留白 ≥ 48px",
+      "check": "check_layout.py 解析每个 Positioned 的 left/top/width/height"
+    },
+    {
+      "id": "G2",
+      "condition": "每个 Text 估算字宽 ≤ 盒宽 × 1.0",
+      "check": "check_layout.py 用 bsnap.em_width 逐条计算并列出最紧十项"
+    },
+    {
+      "id": "G3",
+      "condition": "每个 Text 盒高 ≥ 字号 × 1.40",
+      "check": "同上"
+    },
+    {
+      "id": "G4",
+      "condition": "字号层级 ≥ 5 级，最大/正文最小 ≥ 4.0",
+      "check": "脚本统计去重 fontSize 集合与比值"
+    },
+    {
+      "id": "G5",
+      "condition": "正文最小字号 ≥ 20px（页脚可到 16px）",
+      "check": "脚本统计"
+    },
+    {
+      "id": "G6",
+      "condition": "页脚含「自拟示例，非真实记录」声明",
+      "check": "脚本匹配 + 看图"
+    },
+    {
+      "id": "G7",
+      "condition": "每张实际打开查看并记录发现的问题",
+      "check": "逐张 Read PNG"
+    },
+    {
+      "id": "G8",
+      "condition": "画面内无被实心图元遮挡的文字",
+      "check": "看图逐区核对"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "case-01",
+      "carrier": "超市购物小票（热敏纸）",
+      "scenario": "超市购物小票（热敏纸）；收银台后 20 秒，正对 35–45cm，竖持",
+      "pain_point": "41 行等权信息，合计压在第 41 行；品类与促销混排在同一列，没有任何分组",
+      "decision_theory": "三个数：总额、差���、可报销；以及「钱花在哪」",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "结论行 + 品类归因条 + 三个动作",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-02",
+      "carrier": "居民燃气缴费通知",
+      "scenario": "居民燃气缴费通知；餐桌，横向细看",
+      "pain_point": "只给用量、金额、账期三个有效数字，阶梯价的那一行在原账单上根本不显示",
+      "decision_theory": "把金额差额拆成可核对的价格效应与用量效应",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "差额归因一句话 + 3 期用量对照 + 阶梯明细",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-03",
+      "carrier": "健康体检报告",
+      "scenario": "健康体检报告；手机与打印件，横竖皆可",
+      "pain_point": "28 项按科室平铺，每项只有「标 ↑↓」，没有排序也没有动作",
+      "decision_theory": "把二值标签换成「下一步做什么」，并说清参考区间不等于异常",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "三档分层 + 每项一步动作 + 为什么不能只标红箭头",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-04",
+      "carrier": "航空行程单 / 值机确认页",
+      "scenario": "航空行程单 / 值机确认页；手机，走动中快速扫读",
+      "pain_point": "5 段行程等权平铺，没有当前时刻，没有倒计时",
+      "decision_theory": "把「现在」钉在时间轴上，其余一切围绕这一段排",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "当前游标 + 距下一段倒计时 + 按截止时间排序的三件事",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-05",
+      "carrier": "门诊收费票据（一式多张）",
+      "scenario": "门诊收费票据（一式多张）；诊室门口，站立扫读",
+      "pain_point": "5 张独立票据，金额不跨票相加，退费信息分散在各张的末尾",
+      "decision_theory": "合成一笔账，并说清还能反悔哪一笔",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "三个总数 + 按发生时间排的 5 项 + 可退项与截止时限",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-06",
+      "carrier": "快递电子面单 / 隐私面单",
+      "scenario": "快递电子面单 / 隐私面单；手持，柜台光线，横向",
+      "pain_point": "22 个等权字段，收寄同屏，无隐私状态",
+      "decision_theory": "寄件人核对「电话、门牌、隐藏」，收件人只看「谁的、什么时候到、带什么」",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "正反两面 + 隐私状态 + 已折叠的 18 项清单",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-07",
+      "carrier": "餐厅菜单（堂食单页）",
+      "scenario": "餐厅菜单（堂食单页）；桌面上斜放 45°，横向视线",
+      "pain_point": "40 道菜纵向平铺，无分类、无维度标注",
+      "decision_theory": "先给条件，再看菜",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "4 个决策入口（人数/辣度/素食/上菜时限）+ 每道菜 4 个维度",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-08",
+      "carrier": "药品说明书 / 药盒侧面",
+      "scenario": "药品说明书 / 药盒侧面；药盒旁，手边，夜里",
+      "pain_point": "23 个法定章节，术语密集，动作埋在末段",
+      "decision_theory": "三个问题放到第一屏，并给出今天的服药时刻",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "能不能吃 / 一次几片 / 和别的药冲不冲 + 24h 时刻表 + 3 条警示",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-09",
+      "carrier": "预包装食品包装（正标 + 标签）",
+      "scenario": "预包装食品包装（正标 + 标签）；货架上，1 米距离",
+      "pain_point": "一张 3 列小表 + 一行配料，字号最小、位置最边",
+      "decision_theory": "法定标示一字不动，另加一层标准允许的补充说明",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "前三位配料大字 + 法定 1+6 原样 + 每包换算",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    },
+    {
+      "case_id": "case-10",
+      "carrier": "家用电器说明书（空气净化器）",
+      "scenario": "家用电器说明书（空气净化器）；家电旁，手机或纸质卡",
+      "pain_point": "9 章 34 节按功能组织，任务要自己找",
+      "decision_theory": "把说明书首页改成「你现在能做的 6 件事」",
+      "what_same_category_solutions_do": "同类方案普遍按法定/行业章节顺序平铺，用等权字号呈现，把判断动作留给读者；本件改为先给结论或条件，再按决策维度分组。",
+      "evidence_in_image": "6 张任务卡 + 滤芯寿命进度 + 保养周期日历",
+      "field": "见 problem-evidence.json 的 cases[].png 与同目录 final.snapshot",
+      "unit": "见各图内标注（元 / m³ / mmol/L / mg / ppm 等）",
+      "position": "画布左上（编号 01–10 与标题）",
+      "time_range": "见各图内标注的计费区间、时刻或有效期",
+      "disclosed_value": "自拟示例，非真实记录",
+      "confidence": "版式判断为 high；数值为自拟示例，不具备事实置信度"
+    }
+  ],
+  "unverified_or_null": [
+    {
+      "field": "各品牌的真实版式细节",
+      "status": null,
+      "reason": "本轮未抓取任何真实品牌的版式照片或设计规范；每张图里的「原结构」是中性抽象示意条（等权小方块），不是伪造的具体版式。字段数量（如小票 41 行、面单 22 字段）为自拟示例的典型量级，未标注来源。"
+    },
+    {
+      "field": "标准与行业数据的具体数值",
+      "status": null,
+      "reason": "case-03 的参考区间、case-08 的服药间隔、case-09 的 1+6 标示项目与《中国居民膳食指南》阈值，均按公开常识量级自拟。case-09 的 NRV% 一列在图中**留空并说明**：2025 版已按 2023 版《中国居民膳食营养素参考摄入量》更新部分 NRV，本轮未逐项核实，故不臆造数字。"
+    }
+  ],
+  "no_fabrication_statement": "未抓取任何真实品牌版式或官方规范；图内「原结构」为中性抽象示意条。未核实的标准数值（case-09 的 NRV%）在图上留空并写明原因，没有臆造数字。"
+}

@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A20",
+  "run_id": "run-20261011-01",
+  "task_round": "round-01",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐图视觉自检",
+  "output_dir": "outputs/run-20261011-01/A20",
+  "temp_dir": "tmp/run-20261011-01/A20",
+  "timings": {
+    "started_at": "2026-10-12T12:32:42.352000+08:00",
+    "ended_at": "2026-10-12T12:43:07.168+08:00",
+    "elapsed_seconds": 624.816,
+    "first_usable_image_seconds": 353.189,
+    "user_feedback_wait_seconds": 0.0,
+    "rate_limit_wait_seconds": 0.0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 363.824,
+    "server_timing_source": "requests.jsonl 中的 Server-Timing 响应头（服务未提供时为 null）",
+    "started_at_raw": "2026-10-12T12:50:00.000+08:00",
+    "timing_note": "started_at 取 A20 首个请求之前 60 秒；ended_at 为定稿渲染与指标写盘完成时刻。墙钟总耗时含布局求解、几何断言、三轮修复与 6 次看图，不等于请求耗时之和（363.824s）。裁切与放大观察由本地 Pillow 完成，不计入服务请求耗时。"
+  },
+  "counts": {
+    "snapshot_requests": 4,
+    "successful_snapshot_requests": 3,
+    "failed_snapshot_requests": 1,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 4,
+    "image_views": 6,
+    "completed_visual_iterations": 5,
+    "incomplete_visual_iterations": 0,
+    "image_views_raw": 1,
+    "image_views_detail": [
+      {
+        "stage": "v1",
+        "image": "preview/annotated-map-v1.png",
+        "zoom": "1600×1100 原尺寸整屏",
+        "observed": "首版整屏：轴标题与刻度数字「20」重叠；y 轴「80」「40」「20」被三条引导线横穿"
+      },
+      {
+        "stage": "v2",
+        "image": "preview/annotated-map-v2.png",
+        "zoom": "1600×1100 原尺寸整屏",
+        "observed": "第二版整屏：轴标题与两端 0/100 刻度清晰；24 点全在主图内；24 标签分列两侧无重叠；最高 3 点橙圈橙字"
+      },
+      {
+        "stage": "v2-detail",
+        "image": "preview/center6-tight.png",
+        "zoom": "裁切 (696,404)-(904,624) 后 4×",
+        "observed": "中心 6 点 4× 放大：M06/M08/M09/M10/M11/M12 六个 12px 圆盘互不接触；每条引导线精确终止在各自圆周边缘；橙圈放大后仍清晰"
+      },
+      {
+        "stage": "v2-detail",
+        "image": "preview/m12-m14.png",
+        "zoom": "裁切 (140,520)-(800,700) 后 2×",
+        "observed": "同 y 的 M12/M14：两条末段分别在 y=578 与 y=572，相隔 6px 平行不重合，两条竖直段 x 相差 3px 不相交"
+      },
+      {
+        "stage": "v2-detail",
+        "image": "preview/left-column.png",
+        "zoom": "裁切 (0,250)-(300,920) 原尺寸",
+        "observed": "左侧 15 个标签：文字完整无截断、间距均匀、M08 橙色高亮可辨"
+      },
+      {
+        "stage": "final",
+        "image": "outputs/run-20261011-01/A20/annotated-map.png",
+        "zoom": "1600×1100 原尺寸整屏",
+        "observed": "交付定稿整屏复查：结构、坐标轴、范围、单位、最高 3 点标注、24 点 24 标签均符合"
+      }
+    ],
+    "image_views_note": "6 次实际打开：2 张整屏（首版与第二版）+ 3 张局部放大（中心 6 点 4×、M12/M14 破平处 2×、左侧标签列）+ 1 张交付定稿整屏。题面要求的「放大查看中心 6 点及引导线、再看整体」已按此顺序执行。"
+  },
+  "iteration_breakdown": {
+    "baseline": 1,
+    "syntax_fix": 0,
+    "retry": 0,
+    "alternative": 0,
+    "requirement_change": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A20/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A20/iterations.jsonl"
+  },
+  "outputs": [
+    {
+      "kind": "png",
+      "path": "outputs/run-20261011-01/A20/annotated-map.png",
+      "dsl": "outputs/run-20261011-01/A20/annotated-map.snapshot",
+      "required_by": "task.json required_outputs",
+      "width": 1600,
+      "height": 1100,
+      "format": "PNG",
+      "mode": "RGBA"
+    },
+    {
+      "kind": "dsl",
+      "path": "outputs/run-20261011-01/A20/annotated-map.snapshot"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A20/label-layout.json"
+    },
+    {
+      "kind": "json",
+      "path": "outputs/run-20261011-01/A20/layout-audit.json"
+    },
+    {
+      "kind": "report",
+      "path": "outputs/run-20261011-01/A20/snapshot-usage.md"
+    },
+    {
+      "kind": "metrics",
+      "path": "outputs/run-20261011-01/A20/task-metrics.json"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "tmp/run-20261011-01/A20/responses/A20-v1-24057d89.error.png",
+      "status": "failed",
+      "note": "首渲 HTTP 200 但响应体 0 字节（353.2s），传输层故障；同一份 DSL 重发即成功，空响应体保留在 responses/ 下"
+    },
+    {
+      "path": "tmp/run-20261011-01/A20/preview/annotated-map-v1.png",
+      "status": "superseded",
+      "note": "首版：x 轴标题与刻度数字「20」重叠；M03/M15/M24 的引导线水平段正好穿过 y 轴「80」「40」「20」三处刻度数字"
+    }
+  ],
+  "rounds": [],
+  "unresolved_issues": [],
+  "verification": {
+    "canvas": [
+      1600,
+      1100
+    ],
+    "points": 24,
+    "all_points_inside_map": true,
+    "map_rect_fixed": [
+      280.0,
+      160.0,
+      1320.0,
+      920.0
+    ],
+    "mapping": "pixel = (280 + 10.4*x, 920 - 7.6*y)",
+    "point_diameter_px": 12.0,
+    "points_shrunk_to_8px": [],
+    "min_center_separation_px": 30.8623,
+    "font_size_px": 20,
+    "label_box_size_px": [
+      148,
+      37.0
+    ],
+    "label_gap_min_px": 7.0,
+    "label_gap_threshold_px": 4.0,
+    "label_gap_ok": true,
+    "label_vs_foreign_disk_violations": 0,
+    "leader_count": 24,
+    "leader_pierces_other_label": 0,
+    "leader_enters_own_label": 0,
+    "leader_self_intersection": 0,
+    "collinear_overlap": 0,
+    "crossing_count": 0,
+    "crossing_limit": 3,
+    "axis_text_pierced_by_leader": 0,
+    "leader_checks_ok": true,
+    "bounds_ok": true,
+    "label_boxes_outside_map": true,
+    "top3_ids": [
+      "M08",
+      "M10",
+      "M23"
+    ],
+    "top3_rule": "按 value 降序取前三；同值时按 ID 升序定序（本题无同值）。value 前三为 M10、M08、M23。",
+    "tolerance_px": 1e-06,
+    "image_views_detail_count": 6,
+    "render_retries": [
+      {
+        "request_id": "A20-v1-24057d89",
+        "version": "v1",
+        "status": 200,
+        "duration_seconds": 353.1888,
+        "response_bytes": 0,
+        "response_file": "tmp/run-20261011-01/A20/responses/A20-v1-24057d89.error.png"
+      }
+    ],
+    "render_retry_note": "首渲收到 HTTP 200 但响应体 0 字节（353.2s），属传输层故障；同一份 DSL 重发 4.89s 成功。空响应体保留在 responses/ 下。",
+    "image_tag_used": false
+  }
+}

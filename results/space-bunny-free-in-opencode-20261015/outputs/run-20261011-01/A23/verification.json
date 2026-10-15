@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "task_id": "A23",
+  "path_base": "output_dir",
+  "checks": [
+    {
+      "check": "背景真实透明",
+      "method": "每 3px 采样统计 alpha==0 的比例",
+      "result": "6 帧透明比例均在 94.7%–95.1%"
+    },
+    {
+      "check": "12 个单元始终在场",
+      "method": "按颜色统计非透明像素面积，每个单元颜色都必须成块出现",
+      "result": "6 帧各出现 6 种单元颜色，最小色块 2096px"
+    },
+    {
+      "check": "主体数量/颜色/尺度一致",
+      "method": "逐帧颜色集合与 6 种单元颜色比较；同色**可见面积**取各帧最大值为基准，要求每帧 ≥50%（中途帧互相遮挡只会让可见面积变小，不会变大）",
+      "result": "6 帧颜色集合完全相同；各色最大/最小可见面积 #0891B2:2142/2097px, #16A34A:3360/2911px, #2563EB:3360/3261px, #7C3AED:3356/2503px, #DB2777:2145/2096px, #EA7C2D:3359/3299px"
+    },
+    {
+      "check": "单元不越界",
+      "method": "非透明像素的轴对齐包围盒",
+      "result": "全部落在 600×600 内"
+    },
+    {
+      "check": "未嵌入预渲染帧",
+      "method": "扫描 8 个交付 DSL 的 <Image>/base64",
+      "result": "8 个 DSL 均无 <Image> 与 base64；接触表由同一份参数重绘"
+    }
+  ],
+  "per_frame": [
+    {
+      "frame": 1,
+      "t_ms": 0,
+      "transparent_sample_ratio": 0.9473,
+      "color_area_px": {
+        "#0891B2": 2121,
+        "#16A34A": 3290,
+        "#2563EB": 3315,
+        "#7C3AED": 3330,
+        "#DB2777": 2125,
+        "#EA7C2D": 3311
+      },
+      "antialiased_edge_px": 0,
+      "unit_bbox": [
+        39,
+        45,
+        540,
+        583
+      ]
+    },
+    {
+      "frame": 2,
+      "t_ms": 250,
+      "transparent_sample_ratio": 0.9468,
+      "color_area_px": {
+        "#0891B2": 2135,
+        "#16A34A": 3334,
+        "#2563EB": 3299,
+        "#7C3AED": 3337,
+        "#DB2777": 2145,
+        "#EA7C2D": 3318
+      },
+      "antialiased_edge_px": 0,
+      "unit_bbox": [
+        69,
+        66,
+        533,
+        566
+      ]
+    },
+    {
+      "frame": 3,
+      "t_ms": 500,
+      "transparent_sample_ratio": 0.9478,
+      "color_area_px": {
+        "#0891B2": 2130,
+        "#16A34A": 3274,
+        "#2563EB": 3300,
+        "#7C3AED": 2972,
+        "#DB2777": 2139,
+        "#EA7C2D": 3306
+      },
+      "antialiased_edge_px": 4,
+      "unit_bbox": [
+        123,
+        92,
+        515,
+        523
+      ]
+    },
+    {
+      "frame": 4,
+      "t_ms": 750,
+      "transparent_sample_ratio": 0.951,
+      "color_area_px": {
+        "#0891B2": 2142,
+        "#16A34A": 2911,
+        "#2563EB": 3261,
+        "#7C3AED": 2503,
+        "#DB2777": 2133,
+        "#EA7C2D": 3299
+      },
+      "antialiased_edge_px": 20,
+      "unit_bbox": [
+        157,
+        94,
+        494,
+        472
+      ]
+    },
+    {
+      "frame": 5,
+      "t_ms": 1000,
+      "transparent_sample_ratio": 0.9466,
+      "color_area_px": {
+        "#0891B2": 2128,
+        "#16A34A": 3283,
+        "#2563EB": 3309,
+        "#7C3AED": 3332,
+        "#DB2777": 2135,
+        "#EA7C2D": 3301
+      },
+      "antialiased_edge_px": 0,
+      "unit_bbox": [
+        158,
+        116,
+        476,
+        470
+      ]
+    },
+    {
+      "frame": 6,
+      "t_ms": 1250,
+      "transparent_sample_ratio": 0.9479,
+      "color_area_px": {
+        "#0891B2": 2097,
+        "#16A34A": 3360,
+        "#2563EB": 3360,
+        "#7C3AED": 3356,
+        "#DB2777": 2096,
+        "#EA7C2D": 3359
+      },
+      "antialiased_edge_px": 0,
+      "unit_bbox": [
+        130,
+        130,
+        469,
+        469
+      ]
+    }
+  ]
+}

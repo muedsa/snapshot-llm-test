@@ -1,0 +1,74 @@
+<Snapshot type="png" background="#FFFFFF">
+  <Container width="1240" height="700" padding="(20,24)" color="#F1F5F9">
+
+    <!-- 探针1: SizedBox 包裹 Stack 的分组柱图 -->
+    <Column crossAxisAlignment="START">
+      <Text fontFamily="Inter Semi Bold" fontSize="20" color="#0F172A">P1 · SizedBox &gt; Stack(fit=EXPAND) &gt; Positioned 分组柱图</Text>
+      <SizedBox height="10" />
+      <Container width="520" height="250" color="#FFFFFF" border="1 SOLID #E2E8F0" borderRadius="8">
+        <Stack fit="EXPAND">
+          <!-- 网格线 y=20/65/110/155/200, 零线在底部 y=210 -->
+          <Positioned left="60" right="10" top="20" height="1"><Container color="#F1F5F9" /></Positioned>
+          <Positioned left="60" right="10" top="65" height="1"><Container color="#F1F5F9" /></Positioned>
+          <Positioned left="60" right="10" top="110" height="1"><Container color="#F1F5F9" /></Positioned>
+          <Positioned left="60" right="10" top="155" height="1"><Container color="#F1F5F9" /></Positioned>
+          <Positioned left="60" right="10" top="200" height="1.5"><Container color="#94A3B8" /></Positioned>
+          <Positioned left="18" top="14" width="36" height="14"><Text fontFamily="Inter" fontSize="13" color="#94A3B8">200</Text></Positioned>
+          <Positioned left="18" top="59" width="36" height="14"><Text fontFamily="Inter" fontSize="13" color="#94A3B8">150</Text></Positioned>
+          <Positioned left="24" top="104" width="30" height="14"><Text fontFamily="Inter" fontSize="13" color="#94A3B8">100</Text></Positioned>
+          <Positioned left="24" top="149" width="30" height="14"><Text fontFamily="Inter" fontSize="13" color="#94A3B8">50</Text></Positioned>
+          <Positioned left="30" top="194" width="24" height="14"><Text fontFamily="Inter" fontSize="13" color="#94A3B8">0</Text></Positioned>
+
+          <!-- 第1组 x=70  净收入120 / 利润70 -->
+          <Positioned left="70" bottom="49" width="26" height="161"><Container color="#2563EB" /></Positioned>
+          <Positioned left="100" bottom="49" width="26" height="111"><Container color="#F59E0B" /></Positioned>
+          <Positioned left="76" bottom="26" width="34" height="18"><Text fontFamily="Inter" fontSize="13" color="#1E293B">120</Text></Positioned>
+          <!-- 第2组 -->
+          <Positioned left="160" bottom="49" width="26" height="131"><Container color="#2563EB" /></Positioned>
+          <Positioned left="190" bottom="49" width="26" height="31"><Container color="#EF4444" /></Positioned>
+          <Positioned left="166" bottom="26" width="34" height="18"><Text fontFamily="Inter" fontSize="13" color="#1E293B">150</Text></Positioned>
+          <!-- 第3组 负值：利润 -40 向下 -->
+          <Positioned left="250" bottom="49" width="26" height="181"><Container color="#2563EB" /></Positioned>
+          <Positioned left="280" top="211" width="26" height="40"><Container color="#EF4444" /></Positioned>
+          <Positioned left="256" bottom="26" width="34" height="18"><Text fontFamily="Inter" fontSize="13" color="#1E293B">190</Text></Positioned>
+          <Positioned left="330" bottom="49" width="26" height="140"><Container color="#2563EB" /></Positioned>
+          <Positioned left="360" bottom="49" width="26" height="80"><Container color="#F59E0B" /></Positioned>
+          <Positioned left="400" bottom="49" width="26" height="101"><Container color="#2563EB" /></Positioned>
+          <Positioned left="430" bottom="49" width="26" height="61"><Container color="#F59E0B" /></Positioned>
+
+          <!-- 月份标签 -->
+          <Positioned left="66" top="216" width="70" height="18"><Text fontFamily="Inter" fontSize="13" color="#475569" textAlign="CENTER">2026-04</Text></Positioned>
+          <Positioned left="156" top="216" width="70" height="18"><Text fontFamily="Inter" fontSize="13" color="#475569" textAlign="CENTER">2026-05</Text></Positioned>
+          <Positioned left="246" top="216" width="70" height="18"><Text fontFamily="Inter" fontSize="13" color="#475569" textAlign="CENTER">2026-06</Text></Positioned>
+          <Positioned left="336" top="216" width="70" height="18"><Text fontFamily="Inter" fontSize="13" color="#475569" textAlign="CENTER">2026-07</Text></Positioned>
+        </Stack>
+      </Container>
+
+      <SizedBox height="18" />
+
+      <!-- 探针2: 表格右对齐 / textAlign / 固定宽 -->
+      <Text fontFamily="Inter Semi Bold" fontSize="20" color="#0F172A">P2 · 文本对齐与固定宽（SizedBox 内 textAlign）</Text>
+      <SizedBox height="10" />
+      <Row>
+        <SizedBox width="120" height="22"><Text fontFamily="Inter" fontSize="16" color="#111827" textAlign="LEFT">左对齐</Text></SizedBox>
+        <SizedBox width="120" height="22"><Text fontFamily="Inter" fontSize="16" color="#111827" textAlign="CENTER">居中对齐</Text></SizedBox>
+        <SizedBox width="120" height="22"><Text fontFamily="Inter Semi Bold" fontSize="16" color="#111827" textAlign="RIGHT">右对齐 1,234</Text></SizedBox>
+        <SizedBox width="200" height="22"><Text fontFamily="Noto Sans CJK SC" fontSize="16" color="#111827" textAlign="RIGHT">中文右对齐 净收入</Text></SizedBox>
+        <Container width="120" height="24" color="#DBEAFE" alignment="CENTER_RIGHT" padding="(0,8)"><Text fontFamily="Inter" fontSize="16" color="#1E3A8A" textAlign="RIGHT">8,482</Text></Container>
+      </Row>
+
+      <SizedBox height="14" />
+      <!-- 探针3: Stack 默认 fit=LOOSE 与 Stack 作为Row子项 + Expanded -->
+      <Text fontFamily="Inter Semi Bold" fontSize="20" color="#0F172A">P3 · Stack 作为 Row 子项 / Expanded / 分割线</Text>
+      <SizedBox height="10" />
+      <SizedBox width="1100" height="90">
+        <Row mainAxisAlignment="SPACE_BETWEEN" crossAxisAlignment="STRETCH">
+          <Container width="200" height="90" color="#DCFCE7" alignment="CENTER"><Text fontFamily="Noto Sans CJK SC" fontSize="16" color="#14532D">固定宽 200</Text></Container>
+          <Expanded flex="2"><Container color="#FEF3C7" alignment="CENTER"><Text fontFamily="Noto Sans CJK SC" fontSize="16" color="#78350F">Expanded flex=2</Text></Container></Expanded>
+          <Expanded flex="1"><Container color="#FEE2E2" alignment="CENTER"><Text fontFamily="Noto Sans CJK SC" fontSize="16" color="#7F1D1D">flex=1</Text></Container></Expanded>
+          <Flexible flex="1" fit="LOOSE"><Container width="150" height="60" color="#E0E7FF" alignment="CENTER"><Text fontFamily="Noto Sans CJK SC" fontSize="15" color="#312E81">LOOSE 150</Text></Container></Flexible>
+        </Row>
+      </SizedBox>
+    </Column>
+  </Container>
+</Snapshot>

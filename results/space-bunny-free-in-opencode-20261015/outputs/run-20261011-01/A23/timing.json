@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "task_id": "A23",
+  "path_base": "output_dir",
+  "frame_count": 6,
+  "frame_duration_ms": 250,
+  "frame_times_ms": [
+    0,
+    250,
+    500,
+    750,
+    1000,
+    1250
+  ],
+  "loop": {
+    "enabled": true,
+    "period_ms": 1500,
+    "wrap_from_frame": 6,
+    "wrap_to_frame": 1
+  },
+  "frame_order": [
+    "frame-01.png",
+    "frame-02.png",
+    "frame-03.png",
+    "frame-04.png",
+    "frame-05.png",
+    "frame-06.png"
+  ],
+  "playback": "逐帧播放 frames/ 下的 6 张透明 PNG，按本文件的时间戳与循环设置；open-snapshot 本身不接受任何动画参数。",
+  "interpolation": {
+    "parameter": "e = smoothstep(s) = s^2(3-2s)，s = (k-1)/(6-1)",
+    "position": "center = scattered + (figure - scattered) * e",
+    "rotation": "rot = rot_scattered + (rot_figure - rot_scattered) * e，结果对 360 取模",
+    "easing_values": [
+      0.0,
+      0.104,
+      0.352,
+      0.648,
+      0.896,
+      1.0
+    ],
+    "reason": "smoothstep 在两端一阶导为 0，所以第 1 帧起步与第 6 帧收尾都没有速度突变，收敛过程本身连续。",
+    "cross_frame_naming": "DSL 里**没有**关键帧动画语法；每一帧都是独立的完整 DSL，上述公式由 build_a23.py 在生成每帧时求值。"
+  },
+  "per_step_motion": [
+    {
+      "step": "1->2",
+      "displacement_px": {
+        "min": 7.615,
+        "max": 36.572,
+        "mean": 22.429
+      },
+      "rotation_delta_deg": {
+        "min": 0.0,
+        "max": 31.408,
+        "mean": 13.988
+      }
+    },
+    {
+      "step": "2->3",
+      "displacement_px": {
+        "min": 18.158,
+        "max": 87.211,
+        "mean": 53.484
+      },
+      "rotation_delta_deg": {
+        "min": 0.0,
+        "max": 74.896,
+        "mean": 33.356
+      }
+    },
+    {
+      "step": "3->4",
+      "displacement_px": {
+        "min": 21.673,
+        "max": 104.091,
+        "mean": 63.836
+      },
+      "rotation_delta_deg": {
+        "min": 0.0,
+        "max": 89.392,
+        "mean": 39.812
+      }
+    },
+    {
+      "step": "4->5",
+      "displacement_px": {
+        "min": 18.158,
+        "max": 87.211,
+        "mean": 53.484
+      },
+      "rotation_delta_deg": {
+        "min": 0.0,
+        "max": 74.896,
+        "mean": 33.356
+      }
+    },
+    {
+      "step": "5->6",
+      "displacement_px": {
+        "min": 7.615,
+        "max": 36.572,
+        "mean": 22.429
+      },
+      "rotation_delta_deg": {
+        "min": 0.0,
+        "max": 31.408,
+        "mean": 13.988
+      }
+    }
+  ],
+  "loop_seam_check": {
+    "definition": "末帧 f6（t=1250 ms）→ 首帧 f1（t=0 ms，即 t=1500 ms）这一步。",
+    "per_unit": [
+      {
+        "unit_id": "U01",
+        "displacement_px": 129.744,
+        "rotation_delta_deg": -116.0
+      },
+      {
+        "unit_id": "U02",
+        "displacement_px": 96.479,
+        "rotation_delta_deg": -58.0
+      },
+      {
+        "unit_id": "U03",
+        "displacement_px": 73.219,
+        "rotation_delta_deg": 0.0
+      },
+      {
+        "unit_id": "U04",
+        "displacement_px": 264.174,
+        "rotation_delta_deg": 58.0
+      },
+      {
+        "unit_id": "U05",
+        "displacement_px": 206.756,
+        "rotation_delta_deg": 116.0
+      },
+      {
+        "unit_id": "U06",
+        "displacement_px": 165.296,
+        "rotation_delta_deg": -116.0
+      },
+      {
+        "unit_id": "U07",
+        "displacement_px": 351.659,
+        "rotation_delta_deg": -58.0
+      },
+      {
+        "unit_id": "U08",
+        "displacement_px": 309.185,
+        "rotation_delta_deg": 0.0
+      },
+      {
+        "unit_id": "U09",
+        "displacement_px": 300.61,
+        "rotation_delta_deg": 58.0
+      },
+      {
+        "unit_id": "U10",
+        "displacement_px": 259.436,
+        "rotation_delta_deg": 116.0
+      },
+      {
+        "unit_id": "U11",
+        "displacement_px": 238.178,
+        "rotation_delta_deg": -116.0
+      },
+      {
+        "unit_id": "U12",
+        "displacement_px": 193.192,
+        "rotation_delta_deg": -58.0
+      }
+    ],
+    "displacement_px": {
+      "min": 73.219,
+      "max": 351.659,
+      "mean": 215.661
+    },
+    "rotation_delta_deg": {
+      "min": 0.0,
+      "max": 116.0,
+      "mean": 72.5
+    },
+    "mean_step_displacement_px": 43.132,
+    "seam_to_mean_step_ratio": 5.0,
+    "is_seamless": false,
+    "declared_behaviour": "循环在 t=1500 ms 处**会跳变**，不宣称无缝。",
+    "why": "收敛轨迹在 f1→f6 上是单调的：12 个单元从散布位置走向末帧的光圈位置。若同时要求「单调汇聚」+「每步位移等长」+「首尾闭合」，几何上不可能——闭合要求第 6 步（f6→f1）跨完剩余全程，其平均位移必然是其余步的数倍。",
+    "viewing_conclusion": "已整屏打开 6 帧与接触表逐帧确认：f1→f6 单调汇聚、无单元突然消失；循环回跳时单元整体回到散布布局，视觉上是一次明确的「重置」而非抖动。若必须无缝，需要外部播放器改用非单调闭合轨迹（例如让单元沿闭合曲线绕行），那会牺牲「逐步汇聚」的读感。"
+  }
+}

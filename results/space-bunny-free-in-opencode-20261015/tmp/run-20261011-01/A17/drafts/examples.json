@@ -1,0 +1,604 @@
+{
+  "schema_version": 1,
+  "task_id": "A17",
+  "round": "round-01",
+  "path_base": "output_dir",
+  "consistency_policy": "每页的核心示例子树在教学页与 400×240 独立示例中逐字相同；差异只有外层包装。构建脚本 build_a17.py 用同一个 CORE 字符串生成两者，生成 examples.json 时再以断言复核（逐字子串、行号区间、行数上下限、XML 转义还原、真实响应尺寸）。",
+  "examples": [
+    {
+      "example_id": "example-01",
+      "page_id": "01",
+      "page_png": "handbook-01.png",
+      "page_dsl": "handbook-01.snapshot",
+      "example_png": "example-01.png",
+      "example_dsl": "example-01.snapshot",
+      "size": [
+        400,
+        240
+      ],
+      "purpose": "演示一次调用的输入与输出：请求路径、200 图片响应、400 PARSE_ERROR 响应，以及「根标签 type 决定编码」这条契约。",
+      "complete_example": {
+        "path_base": "output_dir",
+        "path": "example-01.snapshot",
+        "total_lines": 24,
+        "source_draft": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/drafts/a17-example-01-v1.snapshot"
+        }
+      },
+      "core_subtree": {
+        "in_complete_example": {
+          "line_range_1based": [
+            4,
+            21
+          ],
+          "line_count": 18
+        },
+        "in_handbook_page": {
+          "found_verbatim": true,
+          "char_offset_in_page_dsl": 3473,
+          "region": "教学插图的 400×240 有界容器内，未缩放"
+        }
+      },
+      "allowed_wrapper_difference": {
+        "complete_example_adds": [
+          "<Snapshot type=\"png\">",
+          "<Container width=\"400\" height=\"240\" color=\"#F8FAFC\">",
+          "<Stack fit=\"EXPAND\">",
+          "</Stack>",
+          "</Container>",
+          "</Snapshot>"
+        ],
+        "handbook_page_adds": [
+          "<Positioned left=96 top=… width=400 height=240>",
+          "<Container width=400 height=240 color=#F8FAFC>",
+          "<Stack fit=EXPAND>",
+          "插图外框与说明文字（不裁掉内容）"
+        ],
+        "core_is_identical": true,
+        "note": "差异只在外层包装；核心子树的文字、属性值、子节点顺序与相对坐标逐字相同。"
+      },
+      "printed_fragment": {
+        "line_range_in_complete_dsl_1based": [
+          4,
+          21
+        ],
+        "printed_code_line_count": 18,
+        "printed_code_line_count_limit": [
+          8,
+          18
+        ],
+        "omission_marker_lines": 2,
+        "omission_marker_text": "……省略外层包装……",
+        "omission_marker_note": "首尾两行是「省略外层包装」提示，不是可执行源码，不计入 8–18 行的印刷行数",
+        "printed_text_verbatim": "……省略外层包装……\n<Positioned left=\"24\" top=\"22\" width=\"352\" height=\"196\">\n<Container width=\"352\" height=\"196\" color=\"#FFFFFF\" borderRadius=\"12\"/>\n</Positioned>\n<Positioned left=\"44\" top=\"40\" width=\"200\" height=\"26\">\n<Text fontSize=\"17\" color=\"#0F172A\" fontFamily=\"Inter Semi Bold\" text=\"请求\"/>\n</Positioned>\n<Positioned left=\"44\" top=\"70\" width=\"240\" height=\"22\">\n<Text fontSize=\"15\" color=\"#475569\" text=\"POST /render\"/>\n</Positioned>\n<Positioned left=\"44\" top=\"106\" width=\"240\" height=\"22\">\n<Text fontSize=\"15\" color=\"#15803D\" text=\"200  image/png\"/>\n</Positioned>\n<Positioned left=\"44\" top=\"142\" width=\"240\" height=\"22\">\n<Text fontSize=\"15\" color=\"#B91C1C\" text=\"400  PARSE_ERROR\"/>\n</Positioned>\n<Positioned left=\"44\" top=\"178\" width=\"290\" height=\"22\">\n<Text fontSize=\"14\" color=\"#64748B\" text=\"根标签 type 决定编码\"/>\n</Positioned>\n……省略外层包装……",
+        "printed_text_xml_escaped": "……省略外层包装……\n&lt;Positioned left=\"24\" top=\"22\" width=\"352\" height=\"196\"&gt;\n&lt;Container width=\"352\" height=\"196\" color=\"#FFFFFF\" borderRadius=\"12\"/&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"40\" width=\"200\" height=\"26\"&gt;\n&lt;Text fontSize=\"17\" color=\"#0F172A\" fontFamily=\"Inter Semi Bold\" text=\"请求\"/&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"70\" width=\"240\" height=\"22\"&gt;\n&lt;Text fontSize=\"15\" color=\"#475569\" text=\"POST /render\"/&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"106\" width=\"240\" height=\"22\"&gt;\n&lt;Text fontSize=\"15\" color=\"#15803D\" text=\"200  image/png\"/&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"142\" width=\"240\" height=\"22\"&gt;\n&lt;Text fontSize=\"15\" color=\"#B91C1C\" text=\"400  PARSE_ERROR\"/&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"178\" width=\"290\" height=\"22\"&gt;\n&lt;Text fontSize=\"14\" color=\"#64748B\" text=\"根标签 type 决定编码\"/&gt;\n&lt;/Positioned&gt;\n……省略外层包装……",
+        "xml_unescape_restores_original": true
+      },
+      "real_response": {
+        "request_id": "A17-v1-example-01-2fecf583",
+        "status": 200,
+        "content_type": "image/png",
+        "width": 400,
+        "height": 240,
+        "mode": "RGBA",
+        "duration_seconds": 1.701,
+        "started_at": "2026-10-12T11:09:58.444+08:00",
+        "response_file": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-01-v1.png"
+        }
+      },
+      "view_evidence": {
+        "viewed": true,
+        "image": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-01-v1.png"
+        },
+        "observed": "整屏查看：请求 / POST /render / 200 image/png / 400 PARSE_ERROR / 根标签 type 决定编码 六行齐全，无重叠无截断"
+      },
+      "consistency_checks": {
+        "core_lines_verbatim_in_complete_dsl": true,
+        "core_lines_verbatim_in_handbook_dsl": true,
+        "printed_equals_core": true,
+        "xml_escape_roundtrip": true,
+        "printed_code_line_count_within_8_18": true,
+        "example_rendered_by_service": true
+      }
+    },
+    {
+      "example_id": "example-02",
+      "page_id": "02",
+      "page_png": "handbook-02.png",
+      "page_dsl": "handbook-02.snapshot",
+      "example_png": "example-02.png",
+      "example_dsl": "example-02.snapshot",
+      "size": [
+        400,
+        240
+      ],
+      "purpose": "演示根尺寸来自布局：同一块 400×240 画布上，上半块由 Row + Expanded 按 flex 份额分配，下半块由 Stack + Positioned 直接落坐标。",
+      "complete_example": {
+        "path_base": "output_dir",
+        "path": "example-02.snapshot",
+        "total_lines": 23,
+        "source_draft": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/drafts/a17-example-02-v1.snapshot"
+        }
+      },
+      "core_subtree": {
+        "in_complete_example": {
+          "line_range_1based": [
+            4,
+            20
+          ],
+          "line_count": 17
+        },
+        "in_handbook_page": {
+          "found_verbatim": true,
+          "char_offset_in_page_dsl": 3890,
+          "region": "教学插图的 400×240 有界容器内，未缩放"
+        }
+      },
+      "allowed_wrapper_difference": {
+        "complete_example_adds": [
+          "<Snapshot type=\"png\">",
+          "<Container width=\"400\" height=\"240\" color=\"#F8FAFC\">",
+          "<Stack fit=\"EXPAND\">",
+          "</Stack>",
+          "</Container>",
+          "</Snapshot>"
+        ],
+        "handbook_page_adds": [
+          "<Positioned left=96 top=… width=400 height=240>",
+          "<Container width=400 height=240 color=#F8FAFC>",
+          "<Stack fit=EXPAND>",
+          "插图外框与说明文字（不裁掉内容）"
+        ],
+        "core_is_identical": true,
+        "note": "差异只在外层包装；核心子树的文字、属性值、子节点顺序与相对坐标逐字相同。"
+      },
+      "printed_fragment": {
+        "line_range_in_complete_dsl_1based": [
+          4,
+          20
+        ],
+        "printed_code_line_count": 17,
+        "printed_code_line_count_limit": [
+          8,
+          18
+        ],
+        "omission_marker_lines": 2,
+        "omission_marker_text": "……省略外层包装……",
+        "omission_marker_note": "首尾两行是「省略外层包装」提示，不是可执行源码，不计入 8–18 行的印刷行数",
+        "printed_text_verbatim": "……省略外层包装……\n<Positioned left=\"24\" top=\"24\" width=\"352\" height=\"80\">\n<Row crossAxisAlignment=\"CENTER\">\n<Expanded flex=\"2\">\n<Container width=\"213\" height=\"48\" color=\"#1D4ED8\" borderRadius=\"10\"/>\n</Expanded>\n<Expanded flex=\"1\">\n<Container width=\"107\" height=\"48\" color=\"#93C5FD\" borderRadius=\"10\"/>\n</Expanded>\n</Row>\n</Positioned>\n<Positioned left=\"24\" top=\"122\" width=\"352\" height=\"80\">\n<Stack fit=\"EXPAND\">\n<Positioned left=\"16\" top=\"24\" width=\"320\" height=\"32\">\n<Container width=\"320\" height=\"32\" color=\"#0F172A\" borderRadius=\"8\"/>\n</Positioned>\n</Stack>\n</Positioned>\n……省略外层包装……",
+        "printed_text_xml_escaped": "……省略外层包装……\n&lt;Positioned left=\"24\" top=\"24\" width=\"352\" height=\"80\"&gt;\n&lt;Row crossAxisAlignment=\"CENTER\"&gt;\n&lt;Expanded flex=\"2\"&gt;\n&lt;Container width=\"213\" height=\"48\" color=\"#1D4ED8\" borderRadius=\"10\"/&gt;\n&lt;/Expanded&gt;\n&lt;Expanded flex=\"1\"&gt;\n&lt;Container width=\"107\" height=\"48\" color=\"#93C5FD\" borderRadius=\"10\"/&gt;\n&lt;/Expanded&gt;\n&lt;/Row&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"24\" top=\"122\" width=\"352\" height=\"80\"&gt;\n&lt;Stack fit=\"EXPAND\"&gt;\n&lt;Positioned left=\"16\" top=\"24\" width=\"320\" height=\"32\"&gt;\n&lt;Container width=\"320\" height=\"32\" color=\"#0F172A\" borderRadius=\"8\"/&gt;\n&lt;/Positioned&gt;\n&lt;/Stack&gt;\n&lt;/Positioned&gt;\n……省略外层包装……",
+        "xml_unescape_restores_original": true
+      },
+      "real_response": {
+        "request_id": "A17-v1-example-02-f259dedb",
+        "status": 200,
+        "content_type": "image/png",
+        "width": 400,
+        "height": 240,
+        "mode": "RGBA",
+        "duration_seconds": 1.3473,
+        "started_at": "2026-10-12T11:10:00.454+08:00",
+        "response_file": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-02-v1.png"
+        }
+      },
+      "view_evidence": {
+        "viewed": true,
+        "image": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-02-v1.png"
+        },
+        "observed": "整屏查看：上半块 Row+Expanded 按 2:1 切成 213/107，下半块 Stack+Positioned 落一条 320×32 深色条，两者互不干扰"
+      },
+      "consistency_checks": {
+        "core_lines_verbatim_in_complete_dsl": true,
+        "core_lines_verbatim_in_handbook_dsl": true,
+        "printed_equals_core": true,
+        "xml_escape_roundtrip": true,
+        "printed_code_line_count_within_8_18": true,
+        "example_rendered_by_service": true
+      }
+    },
+    {
+      "example_id": "example-03",
+      "page_id": "03",
+      "page_png": "handbook-03.png",
+      "page_dsl": "handbook-03.snapshot",
+      "example_png": "example-03.png",
+      "example_dsl": "example-03.snapshot",
+      "size": [
+        400,
+        240
+      ],
+      "purpose": "演示文本与颜色的三处陷阱：<Raw> 保住空格、CDATA 保住 < 与 &、#RRGGBBAA 的 alpha 在尾部。",
+      "complete_example": {
+        "path_base": "output_dir",
+        "path": "example-03.snapshot",
+        "total_lines": 23,
+        "source_draft": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/drafts/a17-example-03-v1.snapshot"
+        }
+      },
+      "core_subtree": {
+        "in_complete_example": {
+          "line_range_1based": [
+            4,
+            20
+          ],
+          "line_count": 17
+        },
+        "in_handbook_page": {
+          "found_verbatim": true,
+          "char_offset_in_page_dsl": 3758,
+          "region": "教学插图的 400×240 有界容器内，未缩放"
+        }
+      },
+      "allowed_wrapper_difference": {
+        "complete_example_adds": [
+          "<Snapshot type=\"png\">",
+          "<Container width=\"400\" height=\"240\" color=\"#F8FAFC\">",
+          "<Stack fit=\"EXPAND\">",
+          "</Stack>",
+          "</Container>",
+          "</Snapshot>"
+        ],
+        "handbook_page_adds": [
+          "<Positioned left=96 top=… width=400 height=240>",
+          "<Container width=400 height=240 color=#F8FAFC>",
+          "<Stack fit=EXPAND>",
+          "插图外框与说明文字（不裁掉内容）"
+        ],
+        "core_is_identical": true,
+        "note": "差异只在外层包装；核心子树的文字、属性值、子节点顺序与相对坐标逐字相同。"
+      },
+      "printed_fragment": {
+        "line_range_in_complete_dsl_1based": [
+          4,
+          20
+        ],
+        "printed_code_line_count": 17,
+        "printed_code_line_count_limit": [
+          8,
+          18
+        ],
+        "omission_marker_lines": 2,
+        "omission_marker_text": "……省略外层包装……",
+        "omission_marker_note": "首尾两行是「省略外层包装」提示，不是可执行源码，不计入 8–18 行的印刷行数",
+        "printed_text_verbatim": "……省略外层包装……\n<Positioned left=\"24\" top=\"20\" width=\"352\" height=\"156\">\n<Container width=\"352\" height=\"156\" color=\"#FFFFFF\" borderRadius=\"12\"/>\n</Positioned>\n<Positioned left=\"44\" top=\"36\" width=\"320\" height=\"26\">\n<Text fontSize=\"17\" color=\"#0F172A\" fontFamily=\"Inter Semi Bold\">\n<Text color=\"#15803D\">PAID</Text><Raw> </Raw><Text color=\"#94A3B8\">/</Text>\n<Raw> </Raw><Text color=\"#0F172A\">已结算</Text>\n</Text>\n</Positioned>\n<Positioned left=\"44\" top=\"84\" width=\"320\" height=\"26\">\n<Text fontSize=\"17\" color=\"#0F172A\" fontFamily=\"Inter Semi Bold\">\n<Raw><![CDATA[A < B & C > D]]></Raw>\n</Text>\n</Positioned>\n<Positioned left=\"44\" top=\"128\" width=\"40\" height=\"28\">\n<Container width=\"40\" height=\"28\" color=\"#0F172A80\" borderRadius=\"6\"/>\n</Positioned>\n……省略外层包装……",
+        "printed_text_xml_escaped": "……省略外层包装……\n&lt;Positioned left=\"24\" top=\"20\" width=\"352\" height=\"156\"&gt;\n&lt;Container width=\"352\" height=\"156\" color=\"#FFFFFF\" borderRadius=\"12\"/&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"36\" width=\"320\" height=\"26\"&gt;\n&lt;Text fontSize=\"17\" color=\"#0F172A\" fontFamily=\"Inter Semi Bold\"&gt;\n&lt;Text color=\"#15803D\"&gt;PAID&lt;/Text&gt;&lt;Raw&gt; &lt;/Raw&gt;&lt;Text color=\"#94A3B8\"&gt;/&lt;/Text&gt;\n&lt;Raw&gt; &lt;/Raw&gt;&lt;Text color=\"#0F172A\"&gt;已结算&lt;/Text&gt;\n&lt;/Text&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"84\" width=\"320\" height=\"26\"&gt;\n&lt;Text fontSize=\"17\" color=\"#0F172A\" fontFamily=\"Inter Semi Bold\"&gt;\n&lt;Raw&gt;&lt;![CDATA[A &lt; B &amp; C &gt; D]]&gt;&lt;/Raw&gt;\n&lt;/Text&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"128\" width=\"40\" height=\"28\"&gt;\n&lt;Container width=\"40\" height=\"28\" color=\"#0F172A80\" borderRadius=\"6\"/&gt;\n&lt;/Positioned&gt;\n……省略外层包装……",
+        "xml_unescape_restores_original": true
+      },
+      "real_response": {
+        "request_id": "A17-v1-example-03-f6db6a61",
+        "status": 200,
+        "content_type": "image/png",
+        "width": 400,
+        "height": 240,
+        "mode": "RGBA",
+        "duration_seconds": 1.5269,
+        "started_at": "2026-10-12T11:10:02.063+08:00",
+        "response_file": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-03-v1.png"
+        }
+      },
+      "view_evidence": {
+        "viewed": true,
+        "image": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-03-v1.png"
+        },
+        "observed": "整屏查看：PAID / 已结算 的空格被 Raw 保住；A < B & C > D 由 CDATA 原样显示；尾部 alpha 色块为半透明深灰"
+      },
+      "consistency_checks": {
+        "core_lines_verbatim_in_complete_dsl": true,
+        "core_lines_verbatim_in_handbook_dsl": true,
+        "printed_equals_core": true,
+        "xml_escape_roundtrip": true,
+        "printed_code_line_count_within_8_18": true,
+        "example_rendered_by_service": true
+      }
+    },
+    {
+      "example_id": "example-04",
+      "page_id": "04",
+      "page_png": "handbook-04.png",
+      "page_dsl": "handbook-04.snapshot",
+      "example_png": "example-04.png",
+      "example_dsl": "example-04.snapshot",
+      "size": [
+        400,
+        240
+      ],
+      "purpose": "演示滤镜的作用范围：ColorFiltered 给子树着色、ImageFiltered 给子树高斯模糊，最右侧同色块作为未经过滤的对照。",
+      "complete_example": {
+        "path_base": "output_dir",
+        "path": "example-04.snapshot",
+        "total_lines": 22,
+        "source_draft": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/drafts/a17-example-04-v1.snapshot"
+        }
+      },
+      "core_subtree": {
+        "in_complete_example": {
+          "line_range_1based": [
+            4,
+            19
+          ],
+          "line_count": 16
+        },
+        "in_handbook_page": {
+          "found_verbatim": true,
+          "char_offset_in_page_dsl": 4134,
+          "region": "教学插图的 400×240 有界容器内，未缩放"
+        }
+      },
+      "allowed_wrapper_difference": {
+        "complete_example_adds": [
+          "<Snapshot type=\"png\">",
+          "<Container width=\"400\" height=\"240\" color=\"#F8FAFC\">",
+          "<Stack fit=\"EXPAND\">",
+          "</Stack>",
+          "</Container>",
+          "</Snapshot>"
+        ],
+        "handbook_page_adds": [
+          "<Positioned left=96 top=… width=400 height=240>",
+          "<Container width=400 height=240 color=#F8FAFC>",
+          "<Stack fit=EXPAND>",
+          "插图外框与说明文字（不裁掉内容）"
+        ],
+        "core_is_identical": true,
+        "note": "差异只在外层包装；核心子树的文字、属性值、子节点顺序与相对坐标逐字相同。"
+      },
+      "printed_fragment": {
+        "line_range_in_complete_dsl_1based": [
+          4,
+          19
+        ],
+        "printed_code_line_count": 16,
+        "printed_code_line_count_limit": [
+          8,
+          18
+        ],
+        "omission_marker_lines": 2,
+        "omission_marker_text": "……省略外层包装……",
+        "omission_marker_note": "首尾两行是「省略外层包装」提示，不是可执行源码，不计入 8–18 行的印刷行数",
+        "printed_text_verbatim": "……省略外层包装……\n<Positioned left=\"24\" top=\"20\" width=\"352\" height=\"160\">\n<Container width=\"352\" height=\"160\" color=\"#FFFFFF\" borderRadius=\"12\"/>\n</Positioned>\n<Positioned left=\"44\" top=\"40\" width=\"120\" height=\"120\">\n<ColorFiltered color=\"#1D4ED8\" blendMode=\"MULTIPLY\">\n<Container width=\"120\" height=\"120\" color=\"#F97316\" borderRadius=\"14\"/>\n</ColorFiltered>\n</Positioned>\n<Positioned left=\"184\" top=\"40\" width=\"120\" height=\"120\">\n<ImageFiltered sigmaX=\"5\" sigmaY=\"5\" tileMode=\"CLAMP\">\n<Container width=\"120\" height=\"120\" color=\"#22C55E\" borderRadius=\"14\"/>\n</ImageFiltered>\n</Positioned>\n<Positioned left=\"324\" top=\"40\" width=\"40\" height=\"120\">\n<Container width=\"40\" height=\"120\" color=\"#1D4ED8\" borderRadius=\"14\"/>\n</Positioned>\n……省略外层包装……",
+        "printed_text_xml_escaped": "……省略外层包装……\n&lt;Positioned left=\"24\" top=\"20\" width=\"352\" height=\"160\"&gt;\n&lt;Container width=\"352\" height=\"160\" color=\"#FFFFFF\" borderRadius=\"12\"/&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"44\" top=\"40\" width=\"120\" height=\"120\"&gt;\n&lt;ColorFiltered color=\"#1D4ED8\" blendMode=\"MULTIPLY\"&gt;\n&lt;Container width=\"120\" height=\"120\" color=\"#F97316\" borderRadius=\"14\"/&gt;\n&lt;/ColorFiltered&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"184\" top=\"40\" width=\"120\" height=\"120\"&gt;\n&lt;ImageFiltered sigmaX=\"5\" sigmaY=\"5\" tileMode=\"CLAMP\"&gt;\n&lt;Container width=\"120\" height=\"120\" color=\"#22C55E\" borderRadius=\"14\"/&gt;\n&lt;/ImageFiltered&gt;\n&lt;/Positioned&gt;\n&lt;Positioned left=\"324\" top=\"40\" width=\"40\" height=\"120\"&gt;\n&lt;Container width=\"40\" height=\"120\" color=\"#1D4ED8\" borderRadius=\"14\"/&gt;\n&lt;/Positioned&gt;\n……省略外层包装……",
+        "xml_unescape_restores_original": true
+      },
+      "real_response": {
+        "request_id": "A17-v1-example-04-9bb46155",
+        "status": 200,
+        "content_type": "image/png",
+        "width": 400,
+        "height": 240,
+        "mode": "RGBA",
+        "duration_seconds": 0.8873,
+        "started_at": "2026-10-12T11:10:03.813+08:00",
+        "response_file": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-04-v1.png"
+        }
+      },
+      "view_evidence": {
+        "viewed": true,
+        "image": {
+          "path_base": "suite_root",
+          "path": "tmp/run-20261011-01/A17/preview/example-04-v1.png"
+        },
+        "observed": "整屏查看：左块被 MULTIPLY 着色成近黑、中块被高斯模糊、右块同色但未过滤，三者并排对照"
+      },
+      "consistency_checks": {
+        "core_lines_verbatim_in_complete_dsl": true,
+        "core_lines_verbatim_in_handbook_dsl": true,
+        "printed_equals_core": true,
+        "xml_escape_roundtrip": true,
+        "printed_code_line_count_within_8_18": true,
+        "example_rendered_by_service": true
+      }
+    }
+  ],
+  "technical_claims": [
+    {
+      "claim_id": "C01",
+      "page_id": "01",
+      "claim": "根标签是 Snapshot，它带 type 属性决定输出编码，并且只能有一个根 Widget 子节点。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Snapshot · 属性：background / debug / type；子节点：一个根 Widget",
+      "example_id": "example-01",
+      "example_evidence": "示例第 1 行 <Snapshot type=\"png\">；示例底部一行标注「根标签 type 决定编码」；example-01.png 由服务端返回，image_info 为 PNG。"
+    },
+    {
+      "claim_id": "C02",
+      "page_id": "01",
+      "claim": "响应是二选一：要么是按 type 编码的图片字节，要么是说明失败原因的 JSON。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "source_section": "HTTP 映射建议表；错误响应含 code / message / requestId",
+      "example_id": "example-01",
+      "example_evidence": "示例内并列印出「200  image/png」与「400  PARSE_ERROR」两条；本 run 的 requests.jsonl 里 200 与 400 两种响应各有多条真实记录。"
+    },
+    {
+      "claim_id": "C03",
+      "page_id": "01",
+      "claim": "结构或属性错误抛 ParseException 并映射为 400；消息里带 Pos[行:列]~偏移。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "source_section": "解析阶段错误表；「解析错误包含 Pos[line:col]~offset 与 message」",
+      "example_id": "example-01",
+      "example_evidence": "示例印出 400 PARSE_ERROR 一行；本 run 的 A14/A15/A16 探针（如缩放正则生成非法属性名 left\"0.0\"）真实拿到过 400 与偏移信息。"
+    },
+    {
+      "claim_id": "C04",
+      "page_id": "02",
+      "claim": "输出画布尺寸来自根 Widget 的 width / height，没有视口或百分比的概念。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Container · width / height；「根节点的尺寸即渲染结果的尺寸」",
+      "example_id": "example-02",
+      "example_evidence": "示例第 2 行 <Container width=\"400\" height=\"240\">，服务端返回的 image_info 正是 400×240。"
+    },
+    {
+      "claim_id": "C05",
+      "page_id": "02",
+      "claim": "Expanded / Flexible / Spacer 必须是 Flex、Row 或 Column 的直接子节点；Expanded 固定 TIGHT 且不接受 fit，Flexible 才有 fit。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Expanded · 子节点：Flex / Row / Column 的直接子节点；Expanded（flex TIGHT）不提供 fit 属性；Flexible（flex, fit）",
+      "example_id": "example-02",
+      "example_evidence": "示例第 3–8 行把两个 <Expanded flex=\"…\"> 直接挂在 <Row> 下，服务端真实解析并按 2:1 分配了 213px / 107px。"
+    },
+    {
+      "claim_id": "C06",
+      "page_id": "02",
+      "claim": "Positioned 只能作为 Stack / IndexedStack 的直接子节点，且每个轴最多设置「left/right」与「width」中的两项。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Positioned · 子节点：Stack / IndexedStack 的直接子节点；「每个轴最多设置三项中的两项」",
+      "example_id": "example-02",
+      "example_evidence": "示例第 11–17 行的 <Positioned> 全部直接挂在 <Stack> 下；本 run 多题里把 Positioned 放进非 Stack 容器时真实收到过 400。"
+    },
+    {
+      "claim_id": "C07",
+      "page_id": "02",
+      "claim": "Stack 的 fit 默认 LOOSE，clipBehavior 默认 HARD_EDGE。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Stack · fit 默认 LOOSE；clipBehavior 默认 HARD_EDGE",
+      "example_id": "example-02",
+      "example_evidence": "示例第 12 行显式写 <Stack fit=\"EXPAND\">，与默认值不同，便于对照两种 fit 的差别。"
+    },
+    {
+      "claim_id": "C08",
+      "page_id": "03",
+      "claim": "<Text> 里的普通文本节点会被 trim；<Raw> 原样保留首尾空格与换行。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "source_section": "「Text 的普通文本会被 trim；Raw 不做 trim，保留空格与换行」",
+      "example_id": "example-03",
+      "example_evidence": "示例第 6–7 行用两个 <Raw> </Raw> 把「PAID」与「已结算」之间的空格保住，example-03.png 上可见「PAID / 已结算」中间的空格确实存在。"
+    },
+    {
+      "claim_id": "C09",
+      "page_id": "03",
+      "claim": "解析器不做 HTML 实体解码，&amp; 会被原样显示成「&amp;」这几个字符。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "source_section": "「& 不做 HTML 实体解码；&amp; 保留为字面量」",
+      "example_id": "example-03",
+      "example_evidence": "示例第 12 行 <Raw><![CDATA[A < B & C > D]]></Raw> 在 example-03.png 上原样显示尖括号与 &，没有任何实体被解码。"
+    },
+    {
+      "claim_id": "C10",
+      "page_id": "03",
+      "claim": "文本中需要 < 或 > 时使用 CDATA。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-errors/",
+      "source_section": "「文本中需要 < 或 > 时使用 CDATA」；CDATA 内的注释标记按普通文本处理",
+      "example_id": "example-03",
+      "example_evidence": "示例第 12 行的 CDATA 区段；example-03.png 上第二行显示 A < B & C > D。"
+    },
+    {
+      "claim_id": "C11",
+      "page_id": "03",
+      "claim": "多字体字符串不会逐项 trim，因此 \"A, B\" 会保留前导空格，应写成 \"A,B\"。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Text · 「多字体字符串不会逐项 trim」",
+      "example_id": "example-03",
+      "example_evidence": "示例第 5–8 行的富文本使用 Inter Semi Bold + Noto Sans CJK SC 两种字体，属于「多字体字符串」这条规则的适用场景。"
+    },
+    {
+      "claim_id": "C12",
+      "page_id": "03",
+      "claim": "八位十六进制颜色按 CSS 的 #RRGGBBAA 解析，alpha 写在尾部。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Color · 「8 位十六进制按 CSS 的 #RRGGBBAA 解析（alpha 在尾部）；旧版解析器按 #AARRGGBB 解析」",
+      "example_id": "example-03",
+      "example_evidence": "示例第 17 行 <Container ... color=\"#0F172A80\">，在 example-03.png 上是一块半透明深灰而不是不透明的近黑。"
+    },
+    {
+      "claim_id": "C13",
+      "page_id": "04",
+      "claim": "ColorFiltered 需要 color 与 blendMode，并把着色限制在子树的绘制边界内。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "ColorFiltered · color 必填；blendMode 必填；「把颜色效果限制在子树的绘制边界内，并允许合法的溢出」",
+      "example_id": "example-04",
+      "example_evidence": "示例第 5 行 <ColorFiltered color=\"#1D4ED8\" blendMode=\"MULTIPLY\">；example-04.png 上橙色方块变成近黑，证明着色只作用在子树内。"
+    },
+    {
+      "claim_id": "C14",
+      "page_id": "04",
+      "claim": "ImageFiltered / BackdropFilter 需要非负且有限的 sigmaX / sigmaY，解析器只提供高斯模糊。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "ImageFiltered / BackdropFilter · sigmaX、sigmaY 必须有限且非负；「通过 Parser 提供的模糊只有高斯模糊」",
+      "example_id": "example-04",
+      "example_evidence": "示例第 10 行 <ImageFiltered sigmaX=\"5\" sigmaY=\"5\" tileMode=\"CLAMP\">；example-04.png 上绿色方块的圆角被明显糊开。"
+    },
+    {
+      "claim_id": "C15",
+      "page_id": "04",
+      "claim": "BackdropFilter 读取已绘制的背景，建议配合 ClipRect / ClipOval / ClipRRect 限定范围。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "BackdropFilter · 「对已经绘制到当前位置的背景应用滤镜」；「建议与 ClipRect / ClipOval / ClipRRect 搭配使用」",
+      "example_id": "example-04",
+      "example_evidence": "本题正文引用该条；例 4 未演示 BackdropFilter，因为本服务探针 （p-d-filters）在透明背景上实测 BackdropFilter 不可见，强行放进示例会与正文冲突。已在 uncertainties 记录。"
+    },
+    {
+      "claim_id": "C16",
+      "page_id": "04",
+      "claim": "Opacity 取值 0 到 1，作用在整棵子树上。",
+      "source_kind": "official_doc",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Opacity · opacity 必填，范围 0 到 1",
+      "example_id": "example-04",
+      "example_evidence": "本页正文引用该条；例 4 用颜色尾部 alpha 对照说明「整棵子树」的含义，Opacity 本身在本 run 探针 p-e-opacity-alpha 中真实渲染成功。"
+    },
+    {
+      "claim_id": "C17",
+      "page_id": "01",
+      "claim": "服务端会按 Text 框宽度静默裁掉溢出文字，HTTP 状态仍为 200。",
+      "source_kind": "own_measurement",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Text · 属性说明未提及溢出行为；由本 run 实测补齐",
+      "example_id": "example-01",
+      "example_evidence": "本 run A14 的 K05：按估算字宽判定 663.7px 放得下 700px 的框，实际右端被服务端裁掉、「Contrast 」整段消失而 HTTP 仍 200。"
+    },
+    {
+      "claim_id": "C18",
+      "page_id": "01",
+      "claim": "text= 属性可用单引号包裹，此时裸 \" < > & 甚至 ]]> 都能原样渲染。",
+      "source_kind": "own_measurement",
+      "source_url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "source_section": "Text · text 属性；XML 允许属性值用单引号",
+      "example_id": "example-03",
+      "example_evidence": "本 run A17 探针 p-f / p-g：text='<Positioned left=\"24\"/>' 与 text='A < B & C > D' 均 200 且原样显示；印刷代码行正是靠这一点才能逐字呈现双引号与尖括号。"
+    }
+  ],
+  "claims_source_summary": {
+    "official_doc": 16,
+    "own_measurement": 2,
+    "urls": [
+      "https://snapshot.muedsa.com/reference/parser-errors/",
+      "https://snapshot.muedsa.com/reference/parser-tags/"
+    ]
+  },
+  "not_claimed": "CDATA 的写法与错误映射按官方文档给出；`text=` 单引号属性值、Text 溢出静默裁切这两条官方文档未写明，标注为 own_measurement。"
+}

@@ -1,0 +1,110 @@
+{
+  "tool": {
+    "name": "Pillow",
+    "version": "10.0.0",
+    "resample": "PIL.Image.LANCZOS",
+    "method": "先把 RGB 乘 alpha 做整数预乘（ImageChops.multiply），再对预乘图与 alpha 图各做一次 32×32 Lanczos 重采样，最后逐像素 RGB = min(255, round(pm·255/a)) 恢复未预乘，a=0 处 RGB 记 0",
+    "parameters": {
+      "target": [
+        32,
+        32
+      ],
+      "keep_alpha": true,
+      "square": true,
+      "post_process": "无额外描边、无锐化、无对比度拉伸"
+    },
+    "purpose": "仅作小尺寸可识别性检查，不覆盖最终服务原始 PNG"
+  },
+  "thumbnails": {
+    "symbol-color": {
+      "alpha_zero_pixels": 340,
+      "alpha_nonzero_pixels": 684,
+      "alpha_min": 1,
+      "alpha_max": 255,
+      "thumbnail_rgba": "tmp/run-20261011-01/A13/preview/thumb-symbol-color-32.png",
+      "at_size_view_32px": "tmp/run-20261011-01/A13/preview/thumb-symbol-color-32-onlight.png",
+      "at_size_view_note": "文件本身就是 32×32，合成在统一浅色底 #F4F7FB 上，用途是按实际像素尺寸目视轮廓与关键负空间",
+      "zoom_view_8x_nearest": "tmp/run-20261011-01/A13/preview/thumb-symbol-color-32-zoom8x.png",
+      "zoom_note": "最近邻 8×，仅用于观察 32px 下的边缘台阶与负空间，不替代上面的实际尺寸检查",
+      "source": "outputs/run-20261011-01/A13/symbol-color.png"
+    },
+    "symbol-black": {
+      "alpha_zero_pixels": 340,
+      "alpha_nonzero_pixels": 684,
+      "alpha_min": 1,
+      "alpha_max": 255,
+      "thumbnail_rgba": "tmp/run-20261011-01/A13/preview/thumb-symbol-black-32.png",
+      "at_size_view_32px": "tmp/run-20261011-01/A13/preview/thumb-symbol-black-32-onlight.png",
+      "at_size_view_note": "文件本身就是 32×32，合成在统一浅色底 #F4F7FB 上，用途是按实际像素尺寸目视轮廓与关键负空间",
+      "zoom_view_8x_nearest": "tmp/run-20261011-01/A13/preview/thumb-symbol-black-32-zoom8x.png",
+      "zoom_note": "最近邻 8×，仅用于观察 32px 下的边缘台阶与负空间，不替代上面的实际尺寸检查",
+      "source": "outputs/run-20261011-01/A13/symbol-black.png"
+    }
+  },
+  "black_check": {
+    "image": "outputs/run-20261011-01/A13/symbol-black.png",
+    "size": [
+      512,
+      512
+    ],
+    "alpha_positive_pixels": 108967,
+    "violating_pixels": 0,
+    "violating_samples": [],
+    "alpha_range": [
+      1,
+      255
+    ],
+    "rule": "未预乘 8 位 RGBA；所有 alpha>0 的像素（含半透明抗锯齿边缘）须 R=G=B=0；alpha=0 的 RGB 不参与判断",
+    "passed": true
+  },
+  "geometry_identity": {
+    "size": [
+      512,
+      512
+    ],
+    "alpha_mismatched_pixels": 455,
+    "alpha_mismatch_ratio": 0.00173569,
+    "max_abs_alpha_delta": 1,
+    "mismatch_samples": [
+      {
+        "x": 98,
+        "y": 68,
+        "alpha_color": 46,
+        "alpha_black": 47
+      },
+      {
+        "x": 413,
+        "y": 68,
+        "alpha_color": 42,
+        "alpha_black": 43
+      },
+      {
+        "x": 93,
+        "y": 71,
+        "alpha_color": 28,
+        "alpha_black": 29
+      },
+      {
+        "x": 418,
+        "y": 71,
+        "alpha_color": 28,
+        "alpha_black": 29
+      },
+      {
+        "x": 92,
+        "y": 72,
+        "alpha_color": 74,
+        "alpha_black": 75
+      },
+      {
+        "x": 419,
+        "y": 72,
+        "alpha_color": 74,
+        "alpha_black": 75
+      }
+    ],
+    "dsl_identical_after_color_normalization": true,
+    "note": "彩色版与纯黑版由同一个 symbol() 生成、只换调色板。alpha 通道逐像素比对后，差异 455/262144 像素（0.1736%），最大差 1 级，且全部落在抗锯齿外缘——原因是 8 位预乘/反预乘在不同 RGB 下取整路径不同（黑版预乘 RGB 恒为 0）。题面允许抗锯齿 alpha；几何（各构件的坐标、尺寸、旋转、圆角）完全一致，并由 DSL 结构核验独立佐证。",
+    "passed": true
+  }
+}

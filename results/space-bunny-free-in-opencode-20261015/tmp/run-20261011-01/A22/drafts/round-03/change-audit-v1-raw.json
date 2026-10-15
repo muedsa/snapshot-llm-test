@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "task_id": "A22",
+  "round": 3,
+  "path_base": "output_dir",
+  "baseline": {
+    "round": "round-02",
+    "dashboard_png": "round-02/dashboard.png",
+    "dashboard_dsl": "round-02/dashboard.snapshot",
+    "computed_data": "round-02/computed-data.json"
+  },
+  "changes": [
+    {
+      "field": "2026-10.NEW",
+      "old_value": null,
+      "new_value": {
+        "orders": 640,
+        "gross_revenue": 224000,
+        "refund_amount": 11200,
+        "operating_cost": 142000,
+        "sessions": 5900
+      },
+      "source": "round-03.md 新增月份：2026-10",
+      "propagated_to": [
+        {
+          "target": "月度表",
+          "what": "2026-10 行全部五列"
+        },
+        {
+          "target": "图表",
+          "what": "2026-10 的净收入与经营利润柱"
+        },
+        {
+          "target": "KPI",
+          "what": "总净收入 / 总经营利润 / 总订单 / 总体转化率"
+        },
+        {
+          "target": "轴",
+          "what": "nice 范围由未舍入值重算"
+        },
+        {
+          "target": "结论",
+          "what": "最高/最低月份与期间合计重算"
+        },
+        {
+          "target": "实际值",
+          "what": {
+            "net_revenue": 212800,
+            "operating_profit": 70800,
+            "refund_rate": "5.00%",
+            "conversion_rate": "10.85%"
+          }
+        }
+      ]
+    }
+  ],
+  "preserved": [
+    {
+      "what": "原始 CSV",
+      "evidence": "inputs/monthly.csv 未被写入；更正在 applied_changes 中以旧新值记录"
+    },
+    {
+      "what": "计算口径",
+      "evidence": "净收入/利润/退款率/转化率公式与汇总方式三轮逐字相同"
+    },
+    {
+      "what": "主区域边界",
+      "evidence": "layout-map.comparison 各区域分量差 0px"
+    },
+    {
+      "what": "字体与视觉系统",
+      "evidence": "字号 34/24/22/22，Inter + Noto Sans CJK SC，配色未变"
+    },
+    {
+      "what": "沿用的上轮更正",
+      "evidence": "2026-08.refund_amount=25048；2026-09.operating_cost=208000"
+    }
+  ],
+  "regression": []
+}
