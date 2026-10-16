@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "title": "System Pulse 监控卡修复日志",
+  "source": "inputs/broken.snapshot",
+  "original_submission": {
+    "file": "tmp/run-20261016/A03/broken-original.response",
+    "http_status": 400,
+    "content_type": "application/json",
+    "note": "原样提交 true 服务，收到 PARSE_ERROR，已保存原始响应；未将错误体当作最终图片"
+  },
+  "problems": [
+    {
+      "id": "P01",
+      "category": "真实报错",
+      "location": "broken.snapshot 第2行：<Container padding=\"24 32\" borderRadius=\"24\">",
+      "basis": "服务返回 400 PARSE_ERROR：\"Attr [padding] value format error at position 92 near: padding=\\\"24 32\\\"\"，requestId 70a01604-2421-4f1f-8d97-b6ac87ba1dc2；EdgeInsets 仅支持 \"12\" / \"(8,16)\" / \"(8,12,16,20)\" 三种格式",
+      "modification": "移除 Container 上非法的 padding=\"24 32\"；安全边距 32 由各 Positioned 元素的 left/top/right/bottom 显式给出",
+      "verification": "修复后渲染返回 HTTP 200，PNG 1280×800，不再出现 padding 解析错误"
+    },
+    {
+      "id": "P02",
+      "category": "静默忽略",
+      "location": "broken.snapshot 第4行：<Text font-size=\"44\" ...>System Pulse</Text>",
+      "basis": "文档 parser-text：字号属性为 fontSize（驼峰）；font-size 不在受支持属性表中，解析器不报错但会忽略，标题将回退默认字号（14），与要求的 44 字号不符",
+      "modification": "font-size=\"44\" → fontSize=\"44\"",
+      "verification": "DSL 中统一使用 fontSize；标题按 44px 绘制"
+    },
+    {
+      "id": "P03",
+      "category": "静默忽略",
+      "location": "broken.snapshot 第1行：<Snapshot width=\"1280\" height=\"800\" ...>",
+      "basis": "文档 Snapshot 标签仅支持 background/debug/type；width/height 不是受支持属性，会被忽略，画布尺寸由内容布局决定，不能保证 1280×800",
+      "modification": "根下嵌套 <SizedBox width=\"1280\" height=\"800\"> 将画布固定为 1280×800",
+      "verification": "PNG 头部尺寸校验为 1280×800"
+    },
+    {
+      "id": "P04",
+      "category": "视觉暴露（布局语义）",
+      "location": "broken.snapshot 第6行：<Expanded flex=\"1\"><Container width=\"360\" ...>，且只出现 1 张指标卡",
+      "basis": "Expanded 子节点的 width 会被紧约束覆盖；且原稿只给了一张卡片，不满足“第一行三个等宽指标卡（USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%）”",
+      "modification": "Row 下放 3 个 Expanded flex=\"1\" 等宽卡片，不再指定 width，文案分别为 USAGE 72%、LATENCY 148 ms、SUCCESS 99.2%，字号 28",
+      "verification": "三卡等宽并列，文案与字号与 computed 要求一致"
+    },
+    {
+      "id": "P05",
+      "category": "真实报错/结构错误（原稿因 P01 提前中止，此为静态分析发现）",
+      "location": "broken.snapshot 第7行：<Row> 内直接嵌套 <Positioned right=\"20\"><Text>LIVE</Text></Positioned>",
+      "basis": "文档：Positioned 必须是 Stack/IndexedStack 的直接子节点；放在 Row 内是无效结构，LIVE 标签无法正确布局",
+      "modification": "将 LIVE 移出 Row，作为 Stack 直接子节点，Positioned right=\"32\" top=\"32\" width=\"96\" height=\"36\"，与左上标题不重叠",
+      "verification": "HTTP 200 渲染成功；LIVE 位于右上 96×36，不盖住标题"
+    },
+    {
+      "id": "P06",
+      "category": "静默忽略",
+      "location": "broken.snapshot 第10行：<Transform rotate=\"-8\">",
+      "basis": "文档 Transform 必填属性为 matrix（列主序 16 个 Float）；rotate 不是受支持属性，会被忽略，REVIEW 标签不会旋转",
+      "modification": "使用 matrix=\"(0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1)\" 并 origin=\"(80,28)\" 以标签中心为轴逆时针 8°",
+      "verification": "DSL 中使用 matrix 旋转；角度约 8° 逆时针（像素级方向需人工复查）"
+    },
+    {
+      "id": "P07",
+      "category": "静默忽略（颜色语义错误）",
+      "location": "broken.snapshot 第10行：color=\"#33FFFFFF\"",
+      "basis": "文档颜色按 #RRGGBBAA 解析；#33FFFFFF = 深色(0x33) 且不透明，并非“白底 20% 不透明度”",
+      "modification": "color=\"#FFFFFF33\"（白色，alpha 0x33≈20%）；文字保持 #FFFFFF 不透明",
+      "verification": "REVIEW 背景为白 20% 透明，文字 24px 不透明白色"
+    },
+    {
+      "id": "P08",
+      "category": "视觉暴露",
+      "location": "broken.snapshot 第11行：<ImageFiltered ...> 包裹 <Container ...><Text ...>Background-only blur</Text></Container>",
+      "basis": "ImageFiltered 对整个子树做高斯模糊，文字会一起变模糊，与“文字保持清晰”冲突；且“只模糊卡内背景”需要模糊层限定在卡内背景",
+      "modification": "拆分为：卡外左右锐利彩色细条 + 卡内宽度段经 ImageFiltered sigmaX=8 sigmaY=8 模糊后置于卡层之下；卡片本身半透明白底 + 文字不模糊",
+      "verification": "文字 \"Background-only blur\" 清晰可读，彩色细条穿过卡两侧边界，卡内背景呈模糊色彩"
+    }
+  ],
+  "unchanged_from_original": [
+    "深底 #0B1220（Snapshot background，保留）",
+    "标题文案 \"System Pulse\"（保留，仅修正字号属性名）",
+    "三指标文案 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%（保留）",
+    "REVIEW 文案（保留）"
+  ],
+  "verification_summary": "修复后稿 system-pulse.v1.snapshot 渲染返回 HTTP 200，PNG 1280×800，46635 字节，通过 browser.preview 打开；尺寸、字号（44/28/24）、标签尺寸（LIVE 96×36、REVIEW 160×56）、逆时针旋转、白底 20% 透明度、模糊-锐利细条均已在 DSL 层按要求实现；未删除出错区块（P01 的非法 padding 已修正而非删除整块）。"
+}

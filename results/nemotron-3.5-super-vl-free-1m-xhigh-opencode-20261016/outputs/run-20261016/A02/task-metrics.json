@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A02",
+  "run_id": "run-20261016",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261016/A02/",
+  "temp_dir": "tmp/run-20261016/A02/",
+  "timings": {
+    "started_at": "2026-10-16T09:11:01+08:00",
+    "ended_at": "2026-10-16T09:23:00+08:00",
+    "elapsed_seconds": 719,
+    "first_usable_image_seconds": 319,
+    "user_feedback_wait_seconds": null,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 20,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 2,
+    "successful_snapshot_requests": 2,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 2,
+    "image_views": 2,
+    "completed_visual_iterations": 0,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261016/A02/requests.jsonl",
+    "iterations": "tmp/run-20261016/A02/iterations.jsonl"
+  },
+  "outputs": [
+    { "filename": "agenda-wide.png", "width": 1920, "height": 1200, "purpose": "按时长比例绘制的泳道日程", "dsl": "agenda-wide.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "agenda-wide.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A02/agenda-wide.v1.snapshot" },
+    { "filename": "agenda-mobile.png", "width": 720, "height": 1280, "purpose": "手机导览", "dsl": "agenda-mobile.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "agenda-mobile.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A02/agenda-mobile.v1.snapshot" },
+    { "filename": "schedule-audit.json", "purpose": "每场时长、各会场空档、冲突检查及两图内容映射", "source": "按 inputs/agenda.csv 计算" },
+    { "filename": "snapshot-usage.md", "purpose": "使用情况与踩坑说明", "source": "本题输出" },
+    { "filename": "task-metrics.json", "purpose": "任务指标", "source": "本题输出" }
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "平台未提供可直接读取的图像像素反馈工具，视觉质量（文字遮挡、块对齐、对比度）依 DSL 几何自检与尺寸校验；建议人工复查最终图，尤其 10 点附近密集区域。",
+    "Positioned 自闭合标签不得携带 color/border/borderRadius 等装饰属性（会导致 RENDER_ERROR “ProxyWidget has no widget”），已改为 Positioned→Container 形式。"
+  ]
+}

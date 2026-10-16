@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "task_id": "A13",
+  "path_base": "output_dir",
+  "brand": {
+    "name": "叠光 / Layerlight",
+    "concept": "信息叠加后仍然清晰",
+    "source": "无现成标志、无文字整体当图标、无外部图片；全部由DSL原生几何构造"
+  },
+  "colors": {
+    "primary": "#1E3A8A",
+    "secondary": "#3B82F6",
+    "surface": "#FFFFFF",
+    "accent": "#F59E0B",
+    "dark": "#0F172A"
+  },
+  "icon": {
+    "canvas": [512, 512],
+    "pivot": [256, 256],
+    "min_clearspace_ratio": 0.06,
+    "components": [
+      {
+        "id": "C1",
+        "mother_shape": "圆角正方形",
+        "instance": "外框",
+        "count": 1,
+        "geometry": { "x": 46, "y": 46, "w": 420, "h": 420, "radius": 36 },
+        "color": "#1E3A8A",
+        "role": "承载轮廓，形成L形负空间",
+        "dsl_location": "symbol-color.snapshot / symbol-black.snapshot 第1个Positioned"
+      },
+      {
+        "id": "C2",
+        "mother_shape": "圆角正方形",
+        "instance": "左上层",
+        "count": 1,
+        "geometry": { "x": 60, "y": 60, "w": 260, "h": 260, "radius": 24 },
+        "color": "#3B82F6",
+        "role": "第一层叠信息，向左上偏移",
+        "dsl_location": "第2个Positioned"
+      },
+      {
+        "id": "C3",
+        "mother_shape": "圆角正方形",
+        "instance": "右下层",
+        "count": 1,
+        "geometry": { "x": 186, "y": 186, "w": 260, "h": 260, "radius": 24 },
+        "color": "#FFFFFF",
+        "role": "第二层叠信息，向右下偏移，与C2重叠产生叠层感",
+        "dsl_location": "第3个Positioned"
+      },
+      {
+        "id": "C4",
+        "mother_shape": "圆形",
+        "instance": "中心点",
+        "count": 1,
+        "geometry": { "cx": 256, "cy": 256, "r": 20 },
+        "color": "#F59E0B",
+        "role": "聚焦点，标识两层重叠中心",
+        "dsl_location": "第4个Positioned"
+      }
+    ],
+    "total_components": 4,
+    "total_components_note": "4个可见构件，未超过6个上限；位置/尺寸/变换/分组不另计；圆环内孔与负空间不额外计数",
+    "negative_space": "C2与C3重叠区域及C1外框在四角剩余区域构成关键负空间，32x32下仍可辨认“叠层”轮廓"
+  },
+  "applications": {
+    "symbol-color.png": { "size": [512, 512], "use": "彩色图标，透明背景，用于彩色场景" },
+    "symbol-black.png": { "size": [512, 512], "use": "纯黑图标，透明背景，所有alpha>0像素R=G=B=0，用于单色/深色场景" },
+    "brand-banner.png": { "size": [1200, 400], "use": "品牌横幅，左图标右文字，图标同一DSL几何重绘" },
+    "launch-poster.png": { "size": [1080, 1350], "use": "发布海报，独立构图，图标同一DSL几何重绘，非横幅缩放" }
+  },
+  "note": "两图标几何相同，仅颜色/alpha差异；各应用中的图标均未嵌入渲染PNG，均由同一DSL几何规则生成"
+}

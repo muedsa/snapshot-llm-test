@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "title": "转化变化，为什么不能只看平均？— 分组与总体解释分析",
+  "source": "inputs/conversion.csv",
+  "units": { "visits": "访问次数", "conversions": "成交数", "rate": "百分比，两位小数" },
+  "formula": {
+    "channel_rate": "成交 ÷ 访问（该渠道该期）",
+    "period_overall": "期内所有渠道成交总和 ÷ 期内所有渠道访问总和（加权，非渠道比例的简单平均）",
+    "grand_overall": "全部成交总和 ÷ 全部访问总和"
+  },
+  "groups": [
+    { "period": "前期", "channel": "直接访问", "conversions": 2400, "visits": 8000, "fraction": "2400/8000", "percent": 0.30, "percentDisplay": "30.00%" },
+    { "period": "前期", "channel": "推广访问", "conversions": 200, "visits": 2000, "fraction": "200/2000", "percent": 0.10, "percentDisplay": "10.00%" },
+    { "period": "后期", "channel": "直接访问", "conversions": 700, "visits": 2000, "fraction": "700/2000", "percent": 0.35, "percentDisplay": "35.00%" },
+    { "period": "后期", "channel": "推广访问", "conversions": 960, "visits": 8000, "fraction": "960/8000", "percent": 0.12, "percentDisplay": "12.00%" }
+  ],
+  "periods": [
+    { "period": "前期", "totalVisits": 10000, "totalConversions": 2600, "overallRate": 0.26, "overallDisplay": "26.00%", "composition": { "直接访问": { "visits": 8000, "share": 0.80 }, "推广访问": { "visits": 2000, "share": 0.20 } }, "overallFormula": "(2400 + 200) / (8000 + 2000) = 2600 / 10000" },
+    { "period": "后期", "totalVisits": 10000, "totalConversions": 1660, "overallRate": 0.166, "overallDisplay": "16.60%", "composition": { "直接访问": { "visits": 2000, "share": 0.20 }, "推广访问": { "visits": 8000, "share": 0.80 } }, "overallFormula": "(700 + 960) / (2000 + 8000) = 1660 / 10000" },
+    { "period": "总体（全部汇总）", "totalVisits": 20000, "totalConversions": 4260, "overallRate": 0.213, "overallDisplay": "21.30%", "composition": { "直接访问": { "visits": 10000, "share": 0.50 }, "推广访问": { "visits": 10000, "share": 0.50 } }, "overallFormula": "(2400 + 200 + 700 + 960) / (8000 + 2000 + 2000 + 8000) = 4260 / 20000" }
+  ],
+  "axes": [
+    { "chart": "渠道分组转化率图", "unit": "%", "min": 0, "max": 100, "note": "两渠道两期共用同一 0–100% 尺度，不与百分比以外的轴混用" },
+    { "chart": "两期访问构成堆叠图", "unit": "%", "min": 0, "max": 100, "note": "每期条等长，分段长度按该期渠道访问占比（前期直接 80%/推广 20%；后期直接 20%/推广 80%）" },
+    { "chart": "总体转化率对照", "unit": "%", "min": 0, "max": 40, "note": "独立小图，前期 26.00%、后期 16.60%，总体 21.30% 为全部汇总" }
+  ],
+  "conclusions": [
+    {
+      "claim": "分组与总体不同向：两渠道转化率均提升，总体却下降（辛普森悖论）",
+      "supportingValues": [
+        "直接访问：30.00% → 35.00%（上升）",
+        "推广访问：10.00% → 12.00%（上升）",
+        "前期总体：26.00%（2600/10000）",
+        "后期总体：16.60%（1660/10000，下降 9.4 个百分点）",
+        "访问构成偏移：前期直接访问占 80%，后期推广访问占 80%"
+      ],
+      "reason": "后期访问量大幅转向基数大、转化率低的推广渠道，拉低了按总成交÷总访问计算的总体转化率；不能用渠道比例的简单平均代替总体，也不能把绝对成交量当成转化率。"
+    },
+    {
+      "claim": "因果限制",
+      "supportingValues": [ "数据为期/渠道聚合观察数据" ],
+      "caveat": "本数据只能说明转化率与访问构成的统计关联，不能由该数据证明渠道变更导致转化率上升或下降的因果关系。"
+    }
+  ],
+  "evidence": "所有分数与百分比直接由 inputs/conversion.csv 计算；图中率图、构成图、总体对照、小表数值与 analysis.json 一一对应，原始分母/分子均可从小表核对。"
+}

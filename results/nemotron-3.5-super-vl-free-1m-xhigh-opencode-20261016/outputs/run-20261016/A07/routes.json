@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "task_id": "A07",
+  "source": "inputs/network.json",
+  "rule": "最少站间边数优先，边数相同则换乘最少；换乘＝改变乘坐线路，第一次上车不算；accessible=false 站可通过但不可作为起点、终点、换乘站",
+  "queries": [
+    {
+      "query_index": 1,
+      "from": "S01",
+      "to": "S11",
+      "from_name": "松林",
+      "to_name": "会展",
+      "route": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S09",
+        "S10",
+        "S11"
+      ],
+      "route_names": [
+        "松林",
+        "北门",
+        "书院",
+        "中心",
+        "花园",
+        "南门",
+        "会展"
+      ],
+      "segments": [
+        {
+          "line": "R",
+          "line_name": "R 红线",
+          "from": "S01",
+          "to": "S04"
+        },
+        {
+          "line": "B",
+          "line_name": "B 蓝线",
+          "from": "S04",
+          "to": "S11"
+        }
+      ],
+      "edges": 6,
+      "transfers": 1,
+      "transfer_stations": [
+        "S04"
+      ],
+      "accessible": true,
+      "accessible_reason": null,
+      "note": "起点 S01、终点 S11、换乘站 S04 均具备无障碍设施"
+    },
+    {
+      "query_index": 2,
+      "from": "S13",
+      "to": "S12",
+      "from_name": "石溪",
+      "to_name": "机场",
+      "ordinary": {
+        "route": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "route_names": [
+          "石溪",
+          "公园",
+          "工坊",
+          "剧院",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "segments": [
+          {
+            "line": "G",
+            "line_name": "G 绿线",
+            "from": "S13",
+            "to": "S05"
+          },
+          {
+            "line": "R",
+            "line_name": "R 红线",
+            "from": "S05",
+            "to": "S12"
+          }
+        ],
+        "edges": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S05"
+        ],
+        "accessible": false,
+        "reason": "换乘站 S05 东桥 无障碍设施不可用（accessible=false），不符合无障碍旅程"
+      },
+      "accessible": {
+        "route": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "route_names": [
+          "石溪",
+          "公园",
+          "工坊",
+          "中心",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "segments": [
+          {
+            "line": "G",
+            "line_name": "G 绿线",
+            "from": "S13",
+            "to": "S08"
+          },
+          {
+            "line": "B",
+            "line_name": "B 蓝线",
+            "from": "S08",
+            "to": "S04"
+          },
+          {
+            "line": "R",
+            "line_name": "R 红线",
+            "from": "S04",
+            "to": "S12"
+          }
+        ],
+        "edges": 6,
+        "transfers": 2,
+        "transfer_stations": [
+          "S08",
+          "S04"
+        ],
+        "accessible": true,
+        "reason": "换乘站 S08 工坊、S04 中心均具备无障碍设施"
+      },
+      "accessible_final": true
+    },
+    {
+      "query_index": 3,
+      "from": "S07",
+      "to": "S16",
+      "from_name": "西港",
+      "to_name": "研究所",
+      "route": [
+        "S07",
+        "S08",
+        "S15",
+        "S05",
+        "S16"
+      ],
+      "route_names": [
+        "西港",
+        "工坊",
+        "剧院",
+        "东桥",
+        "研究所"
+      ],
+      "segments": [
+        {
+          "line": "B",
+          "line_name": "B 蓝线",
+          "from": "S07",
+          "to": "S08"
+        },
+        {
+          "line": "G",
+          "line_name": "G 绿线",
+          "from": "S08",
+          "to": "S16"
+        }
+      ],
+      "edges": 4,
+      "transfers": 1,
+      "transfer_stations": [
+        "S08"
+      ],
+      "accessible": true,
+      "accessible_reason": null,
+      "note": "起点 S07、终点 S16、换乘站 S08 均具备无障碍设施；中间经过 S05 东桥仅为乘车通过，不影响无障碍判定"
+    }
+  ]
+}

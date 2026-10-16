@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A19",
+  "run_id": "run-20261016",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261016/A19/",
+  "temp_dir": "tmp/run-20261016/A19/",
+  "timings": {
+    "started_at": "2026-10-16T12:20:00+08:00",
+    "ended_at": "2026-10-16T12:35:00+08:00",
+    "elapsed_seconds": 1000,
+    "first_usable_image_seconds": 30,
+    "user_feedback_wait_seconds": null,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 15,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 3,
+    "successful_snapshot_requests": 3,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 1,
+    "image_views": 0,
+    "completed_visual_iterations": 0,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261016/A19/requests.jsonl",
+    "iterations": "tmp/run-20261016/A17/iterations.jsonl"
+  },
+  "outputs": [
+    { "filename": "grid-scene.png", "width": 1600, "height": 1600, "purpose": "64对象可问答场景", "dsl": "grid-scene.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "grid-scene.snapshot", "purpose": "完整可复现DSL", "source": "tmp/run-20261016/A19/grid-scene.v1.snapshot" },
+    { "filename": "occlusion.png", "width": 800, "height": 800, "purpose": "遮挡场景A", "dsl": "occlusion.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "occlusion.snapshot", "purpose": "完整可复现DSL", "source": "tmp/run-20261016/A19/occlusion.v1.snapshot" },
+    { "filename": "occlusion-alternative.png", "width": 800, "height": 800, "purpose": "隐藏内容不同的等价场景B", "dsl": "occlusion-alternative.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "occlusion-alternative.snapshot", "purpose": "完整可复现DSL", "source": "tmp/run-20261016/A19/occlusion-alternative.v1.snapshot" },
+    { "filename": "scene-data.json", "purpose": "64个对象的完整几何数据", "source": "手工编写/程序生成" },
+    { "filename": "questions.json", "purpose": "12道视觉测试题", "source": "手工编写" },
+    { "filename": "answers.json", "purpose": "12道题的答案与计算依据", "source": "按scene-data.json计算" },
+    { "filename": "equivalence.json", "purpose": "两张遮挡图的SHA-256与像素等价判定", "source": "按两张PNG文件计算" },
+    { "filename": "sources.md", "purpose": "技术结论与文档来源", "source": "手工编写" },
+    { "filename": "snapshot-usage.md", "purpose": "使用情况与踩坑说明", "source": "本题输出" },
+    { "filename": "task-metrics.json", "purpose": "任务指标", "source": "本题输出" }
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "平台当前无可直接读取图像像素的视觉工具，视觉细节依DSL几何自检及PNG尺寸校验，建议人工复查8张最终图。"
+  ]
+}

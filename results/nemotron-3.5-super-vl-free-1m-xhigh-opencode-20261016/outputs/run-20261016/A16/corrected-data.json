@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "task_id": "A16",
+  "path_base": "output_dir",
+  "source": "inputs/source.csv",
+  "source_image": "inputs/flawed-report.png",
+  "reconstructed_image": "corrected-report.png",
+  "canvas": {"width": 1280, "height": 900},
+  "units": "万元",
+  "quarters": [
+    {"quarter": "Q1", "revenue": 120, "cost": 90, "profit": 30, "profit_rate": 0.25},
+    {"quarter": "Q2", "revenue": 135, "cost": 108, "profit": 27, "profit_rate": 0.20},
+    {"quarter": "Q3", "revenue": 128, "cost": 96, "profit": 32, "profit_rate": 0.25},
+    {"quarter": "Q4", "revenue": 180, "cost": 126, "profit": 54, "profit_rate": 0.30}
+  ],
+  "totals": {"revenue": 563, "cost": 420, "profit": 143},
+  "axes": {
+    "chart_type": "grouped_bar",
+    "unit": "万元",
+    "zero_line_y": 720,
+    "baseline_y": 720,
+    "min": 0,
+    "max": 180,
+    "mapping": "y = 720 - value * (560/180)",
+    "x_categories": ["Q1", "Q2", "Q3", "Q4"],
+    "series": ["收入", "成本"],
+    "bar_width_px": 36,
+    "bar_group_positions": [286, 373, 488, 603],
+    "bar_positions": {
+      "revenue": [286, 373, 488, 603],
+      "cost": [322, 409, 524, 639]
+    },
+    "note": "两系列共用零起点与比例（0-180 万元），柱高对应数值，不与百分比数轴混用"
+  },
+  "conclusion": {
+    "text": "Q4 收入 180 万元、利润 54 万元，均为四季度最高；Q4 利润率 30.0% 亦为全年最高（Q1 25.0%、Q2 20.0%、Q3 25.0%）。Q2 成本 108 万元全年最高，拉低利润至 27 万元；Q3 收入虽环比下滑至 128 万元，但利润保持 32 万元，成本控制有效。",
+    "highlight_quarter": "Q4",
+    "highlight_reason": "收入 180 万元及利润 54 万元均为四季度最高，利润率 30.0% 亦为最高",
+    "fields": ["revenue", "cost", "profit", "profit_rate"],
+    "values": {
+      "q4_revenue": 180,
+      "q4_profit": 54,
+      "q4_profit_rate": 0.30,
+      "q1_refund_rate_equivalent": 0.25,
+      "q2_refund_rate_equivalent": 0.20,
+      "q3_refund_rate_equivalent": 0.25
+    },
+    "evidence": "所有数值源自 inputs/source.csv，按 profit = revenue - cost，profit_rate = profit / revenue 计算，与 corrected-report.png 中 KPI、柱图、明细表一致。"
+  }
+}

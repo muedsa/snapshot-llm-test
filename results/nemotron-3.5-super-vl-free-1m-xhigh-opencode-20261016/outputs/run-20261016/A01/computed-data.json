@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "task_id": "A01",
+  "path_base": "output_dir",
+  "title": "Northstar 六个月经营诊断（2026-04 至 2026-09）",
+  "source": "inputs/monthly.csv",
+  "units": {
+    "amount": "元（金额整数展示；KPI 亦可折算万元）",
+    "orders": "笔",
+    "sessions": "访问次数",
+    "rate": "百分比，两位小数"
+  },
+  "formulas": {
+    "net_revenue": "gross_revenue - refund_amount",
+    "profit": "net_revenue - operating_cost",
+    "refund_rate": "refund_amount / gross_revenue",
+    "conversion_rate": "orders / sessions",
+    "overall_conversion_rate": "total_orders / total_sessions",
+    "overall_refund_rate": "total_refund / total_gross_revenue"
+  },
+  "months": [
+    { "month": "2026-04", "orders": 420, "gross_revenue": 126000, "refund_amount": 6300, "net_revenue": 119700, "operating_cost": 82000, "profit": 37700, "sessions": 3500, "refund_rate": 0.05, "conversion_rate": 0.12 },
+    { "month": "2026-05", "orders": 460, "gross_revenue": 142600, "refund_amount": 7130, "net_revenue": 135470, "operating_cost": 93500, "profit": 41970, "sessions": 4100, "refund_rate": 0.05, "conversion_rate": 0.1121951219512195 },
+    { "month": "2026-06", "orders": 445, "gross_revenue": 137950, "refund_amount": 11036, "net_revenue": 126914, "operating_cost": 99000, "profit": 27914, "sessions": 4200, "refund_rate": 0.08, "conversion_rate": 0.10595238095238095 },
+    { "month": "2026-07", "orders": 530, "gross_revenue": 169600, "refund_amount": 8480, "net_revenue": 161120, "operating_cost": 112000, "profit": 49120, "sessions": 4700, "refund_rate": 0.05, "conversion_rate": 0.1127659574468085 },
+    { "month": "2026-08", "orders": 570, "gross_revenue": 188100, "refund_amount": 15048, "net_revenue": 173052, "operating_cost": 132000, "profit": 41052, "sessions": 5200, "refund_rate": 0.08, "conversion_rate": 0.10961538461538461 },
+    { "month": "2026-09", "orders": 620, "gross_revenue": 210800, "refund_amount": 8432, "net_revenue": 202368, "operating_cost": 138000, "profit": 64368, "sessions": 5600, "refund_rate": 0.04, "conversion_rate": 0.11071428571428571 }
+  ],
+  "totals": {
+    "gross_revenue": 975050,
+    "refund_amount": 56426,
+    "net_revenue": 918624,
+    "operating_cost": 656500,
+    "profit": 262124,
+    "orders": 3045,
+    "sessions": 27300,
+    "overall_conversion_rate": 0.11153846153846154,
+    "overall_refund_rate": 0.05786957298854469
+  },
+  "axes": [
+    {
+      "chart": "柱图-净收入与经营利润",
+      "unit": "元",
+      "min": 0,
+      "max": 250000,
+      "zero_line_y": 585,
+      "baseline_y": 585,
+      "mapping": "y = 585 - value * (295/250000)",
+      "x_categories": [ "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09" ],
+      "series": [ "净收入", "经营利润" ],
+      "note": "两系列共用零起点与比例，不与百分比数轴混用"
+    },
+    {
+      "chart": "小图-访问量",
+      "unit": "次",
+      "min": 0,
+      "max": 5600,
+      "zero_line_y": 415,
+      "baseline_y": 415,
+      "mapping": "y = 415 - value * (120/5600)",
+      "x_categories": [ "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09" ]
+    },
+    {
+      "chart": "小图-转化率",
+      "unit": "%",
+      "min": 10.0,
+      "max": 12.5,
+      "baseline_y": 583,
+      "mapping": "y = 583 - (value - 10) * (120/2.5)",
+      "x_categories": [ "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09" ],
+      "note": "百分比采用独立数轴，与柱图金额数轴分离"
+    }
+  ],
+  "conclusion": {
+    "text": "9 月净收入 ¥202,368、经营利润 ¥64,368 均为全期最高；期间总体转化率 11.15%（3,045 ÷ 27,300）。6 月与 8 月退款率升至 8.0%，拉低当月利润（8 月 ¥41,052 低于 7 月 ¥49,120），建议重点控制退款、保持 9 月获客节奏。",
+    "fields": [ "net_revenue", "profit", "orders", "sessions", "overall_conversion_rate", "refund_rate" ],
+    "values": {
+      "september_net_revenue": 202368,
+      "september_profit": 64368,
+      "total_orders": 3045,
+      "total_sessions": 27300,
+      "overall_conversion_rate": 0.11153846153846154,
+      "june_refund_rate": 0.08,
+      "august_refund_rate": 0.08,
+      "july_profit": 49120,
+      "august_profit": 41052
+    },
+    "evidence": "数值均源自 inputs/monthly.csv 并按 formulas 计算，与最终图 operations.png 中 KPI、柱图、明细表一致。"
+  }
+}

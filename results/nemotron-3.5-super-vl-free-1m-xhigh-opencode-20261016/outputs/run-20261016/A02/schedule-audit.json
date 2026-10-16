@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "task_id": "A02",
+  "path_base": "output_dir",
+  "title": "Structure / Vision 2026 日程审计",
+  "date": "2026-11-07",
+  "timezone": "Asia/Shanghai",
+  "location": "云构中心 · A / B / C 会场",
+  "day_range": "09:00–16:00",
+  "lunch": { "start": "12:00", "end": "13:00", "note": "公共午休，跨三会场，不与任何会议合并" },
+  "venues": {
+    "A": { "capacity": 320 },
+    "B": { "capacity": 80 },
+    "C": { "capacity": 160 }
+  },
+  "categories": {
+    "keynote": "主旨",
+    "workshop": "工作坊",
+    "talk": "分享",
+    "demo": "演示",
+    "panel": "圆桌"
+  },
+  "events": [
+    { "id": "S01", "venue": "A", "start": "09:00", "end": "09:40", "duration_min": 40, "title": "开场：结构如何成为画面", "speaker": "林川", "category": "keynote" },
+    { "id": "S02", "venue": "B", "start": "09:00", "end": "09:55", "duration_min": 55, "title": "从零阅读DSL文档", "speaker": "周禾", "category": "workshop" },
+    { "id": "S03", "venue": "C", "start": "09:15", "end": "10:00", "duration_min": 45, "title": "视觉评测的证据链", "speaker": "顾行", "category": "talk" },
+    { "id": "S04", "venue": "A", "start": "10:00", "end": "10:45", "duration_min": 45, "title": "复杂布局与约束排查", "speaker": "许宁", "category": "talk" },
+    { "id": "S05", "venue": "B", "start": "10:10", "end": "11:10", "duration_min": 60, "title": "一起搭建数据驾驶舱", "speaker": "周禾", "category": "workshop" },
+    { "id": "S06", "venue": "C", "start": "10:15", "end": "10:50", "duration_min": 35, "title": "滤镜与裁剪现场实验", "speaker": "孟澄", "category": "demo" },
+    { "id": "S07", "venue": "A", "start": "11:00", "end": "11:50", "duration_min": 50, "title": "圆桌：让模型完成工作", "speaker": "林川 / 顾行", "category": "panel" },
+    { "id": "S08", "venue": "C", "start": "11:05", "end": "11:45", "duration_min": 40, "title": "中文字体与混合排版", "speaker": "苏言", "category": "talk" },
+    { "id": "S09", "venue": "A", "start": "13:00", "end": "13:50", "duration_min": 50, "title": "自检迭代如何留痕", "speaker": "顾行", "category": "talk" },
+    { "id": "S10", "venue": "B", "start": "13:00", "end": "14:15", "duration_min": 75, "title": "重建一张复杂参考图", "speaker": "许宁", "category": "workshop" },
+    { "id": "S11", "venue": "C", "start": "13:20", "end": "14:00", "duration_min": 40, "title": "模型评测中的数据陷阱", "speaker": "苏言", "category": "talk" },
+    { "id": "S12", "venue": "A", "start": "14:10", "end": "15:00", "duration_min": 50, "title": "从单图到视觉系统", "speaker": "孟澄", "category": "talk" },
+    { "id": "S13", "venue": "C", "start": "14:20", "end": "15:10", "duration_min": 50, "title": "开放问题的评分分歧", "speaker": "顾行", "category": "panel" },
+    { "id": "S14", "venue": "B", "start": "14:35", "end": "15:30", "duration_min": 55, "title": "真实服务调试与恢复", "speaker": "周禾", "category": "workshop" },
+    { "id": "S15", "venue": "A", "start": "15:30", "end": "16:00", "duration_min": 30, "title": "闭幕与作品巡览", "speaker": "林川", "category": "keynote" }
+  ],
+  "venue_gaps": {
+    "A": [
+      { "start": "09:40", "end": "10:00", "duration_min": 20 },
+      { "start": "10:45", "end": "11:00", "duration_min": 15 },
+      { "start": "11:50", "end": "13:00", "duration_min": 70 },
+      { "start": "13:50", "end": "14:10", "duration_min": 20 },
+      { "start": "15:00", "end": "15:30", "duration_min": 30 }
+    ],
+    "B": [
+      { "start": "09:55", "end": "10:10", "duration_min": 15 },
+      { "start": "11:10", "end": "13:00", "duration_min": 110 },
+      { "start": "14:15", "end": "14:35", "duration_min": 20 },
+      { "start": "15:30", "end": "16:00", "duration_min": 30 }
+    ],
+    "C": [
+      { "start": "09:00", "end": "09:15", "duration_min": 15 },
+      { "start": "10:00", "end": "10:15", "duration_min": 15 },
+      { "start": "10:50", "end": "11:05", "duration_min": 15 },
+      { "start": "11:45", "end": "13:20", "duration_min": 95 },
+      { "start": "14:00", "end": "14:20", "duration_min": 20 },
+      { "start": "15:10", "end": "16:00", "duration_min": 50 }
+    ]
+  },
+  "conflict_check": {
+    "any_conflict": false,
+    "conflicts": [],
+    "method": "按会场独立按起止时间排序后检查相邻区间重叠；跨会场同时间不视为冲突；未调整输入时间，未捏造冲突",
+    "note": "各会场内无时间重叠；10 点附近密集区域（S03 10:00 结束、S04 10:00 开始于不同会场，S05/S06 10:10/10:15 开始）各会场内部亦无重叠。"
+  },
+  "image_mapping": {
+    "agenda-wide.png": "全部 15 项以彩色块绘制于三泳道（块长度＝实际时长，位置＝起止时间），另有跨泳道公共午休块 12:00–13:00；底部索引列出全部 15 项的编号、标题、会场、时间、类别、讲者",
+    "agenda-mobile.png": "全部 15 项按开始时间排序为卡片列表，每项保留编号、标题、会场（含容量）、起止时间、类别；插入公共午休项；底部注明全部数据来自 inputs/agenda.csv"
+  },
+  "evidence": "所有时长与空档直接由 inputs/agenda.csv 计算，未捏造、未调整；两图内容与 agenda.csv 一一对应。"
+}

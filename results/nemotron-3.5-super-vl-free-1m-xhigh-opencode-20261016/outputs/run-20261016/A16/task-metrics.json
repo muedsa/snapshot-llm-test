@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A16",
+  "run_id": "run-20261016",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261016/A16/",
+  "temp_dir": "tmp/run-20261016/A16/",
+  "timings": {
+    "started_at": "2026-10-16T11:31:53+08:00",
+    "ended_at": "2026-10-16T11:37:12+08:00",
+    "elapsed_seconds": 319,
+    "first_usable_image_seconds": 129,
+    "user_feedback_wait_seconds": null,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 5,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 1,
+    "successful_snapshot_requests": 1,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 1,
+    "image_views": 0,
+    "completed_visual_iterations": 0,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261016/A16/requests.jsonl",
+    "iterations": "tmp/run-20261016/A16/iterations.jsonl"
+  },
+  "outputs": [
+    { "filename": "corrected-report.png", "width": 1280, "height": 900, "purpose": "修正后的可信报告", "dsl": "corrected-report.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "corrected-report.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A16/corrected-report.v1.snapshot" },
+    { "filename": "findings.json", "purpose": "每项问题对应到图片位置、现象、源数据核对、影响、修正及验证；区分确认与未确认问题", "source": "按 inputs/source.csv 与 flawed-report.png 视觉检查编写" },
+    { "filename": "corrected-data.json", "purpose": "每季度收入/成本/利润、加权公式、图轴定义、结论依据", "source": "按 inputs/source.csv 计算" },
+    { "filename": "snapshot-usage.md", "purpose": "使用情况与踩坑说明", "source": "本题输出" },
+    { "filename": "task-metrics.json", "purpose": "任务指标", "source": "本题输出" }
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "平台当前无可直接读取图像像素的视觉工具，未能对 flawed-report.png 做逐像素核查；flawed-report.png 中的具体视觉缺陷（柱高、颜色、标题等）未能直接观察，findings.json 中标注为 uncertain 的项需人工打开原图核查",
+    "柱高与原图的对比未能直接完成，柱高正确性仅基于 source.csv 计算自检"
+  ]
+}

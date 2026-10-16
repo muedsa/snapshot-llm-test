@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A03",
+  "run_id": "run-20261016",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261016/A03/",
+  "temp_dir": "tmp/run-20261016/A03/",
+  "timings": {
+    "started_at": "2026-10-16T09:23:00+08:00",
+    "ended_at": "2026-10-16T09:25:00+08:00",
+    "elapsed_seconds": 120,
+    "first_usable_image_seconds": 30,
+    "user_feedback_wait_seconds": null,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 15,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 2,
+    "successful_snapshot_requests": 1,
+    "failed_snapshot_requests": 1,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 2,
+    "image_views": 1,
+    "completed_visual_iterations": 0,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261016/A03/requests.jsonl",
+    "iterations": "tmp/run-20261016/A03/iterations.jsonl"
+  },
+  "outputs": [
+    { "filename": "system-pulse.png", "width": 1280, "height": 800, "purpose": "修复后的监控卡", "dsl": "system-pulse.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "system-pulse.snapshot", "purpose": "最终可复现 DSL（修复后）", "source": "tmp/run-20261016/A03/system-pulse.v1.snapshot" },
+    { "filename": "repair-log.json", "purpose": "每个发现的问题对应到原稿位置、依据、修改与验证；区分真实报错、静默忽略和视觉暴露问题", "source": "按 broken.snapshot 静态分析与服务响应编写" },
+    { "filename": "snapshot-usage.md", "purpose": "使用情况与踩坑说明", "source": "本题输出" },
+    { "filename": "task-metrics.json", "purpose": "任务指标", "source": "本题输出" }
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "平台未提供可直接读取的图像像素反馈工具，视觉质量（文字清晰度、模糊边界、旋转方向、对比度）依 DSL 几何自检；建议人工复查最终图，尤其 REVIEW 逆时针 8° 方向与说明卡模糊/锐利边界。",
+    "原始错误响应 (broken-original.response) 是 400 JSON，已保存至临时目录，未保存为最终图片。"
+  ]
+}

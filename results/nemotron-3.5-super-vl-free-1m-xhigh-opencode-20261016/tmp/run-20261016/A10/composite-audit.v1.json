@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "canvas": {
+    "width": 1440,
+    "height": 1100
+  },
+  "cell": {
+    "width": 320,
+    "height": 240,
+    "gap": 32,
+    "origin_px": [
+      208.0,
+      294.0
+    ]
+  },
+  "sample_point_local": [
+    180,
+    100
+  ],
+  "sample_note": "局部(180,100)对应解码PNG像素索引(origin_x+180, origin_y+100)；读取未预乘8位 RGBA，采样处 alpha 应为 255",
+  "panels": [
+    {
+      "id": 1,
+      "canvas_origin": [
+        208.0,
+        294.0
+      ],
+      "cell_size": [
+        320,
+        240
+      ],
+      "title": "① 透明重叠（各50% alpha）",
+      "scene": "红#FF000080、蓝#0000FF80，蓝在上层；source-over，先红后蓝；不经过组透明度",
+      "effect_nodes": [
+        {
+          "type": "alpha_composite",
+          "sigma": null,
+          "blend": null,
+          "clip_circle": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "canvas_origin": [
+        560.0,
+        294.0
+      ],
+      "cell_size": [
+        320,
+        240
+      ],
+      "title": "② 两块不透明矩形置于Opacity(0.5)组",
+      "scene": "红蓝均不透明，蓝上层；组整体50%不透明度合成白底",
+      "effect_nodes": [
+        {
+          "type": "group_opacity",
+          "sigma": null,
+          "blend": null,
+          "clip_circle": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "canvas_origin": [
+        912.0,
+        294.0
+      ],
+      "cell_size": [
+        320,
+        240
+      ],
+      "title": "③ 仅背景模糊（BackdropFilter）",
+      "scene": "条纹背景仅在卡片覆盖处被模糊；卡内文字/前景保持清晰",
+      "effect_nodes": [
+        {
+          "type": "backdrop_filter",
+          "sigma": 6,
+          "blend": null,
+          "clip_circle": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "canvas_origin": [
+        208.0,
+        566.0
+      ],
+      "cell_size": [
+        320,
+        240
+      ],
+      "title": "④ 子树整体模糊（ImageFiltered）",
+      "scene": "背景、文字、前景一起被sigma=6模糊；与③仅改变模糊作用层",
+      "effect_nodes": [
+        {
+          "type": "image_filtered",
+          "sigma": 6,
+          "blend": null,
+          "clip_circle": null
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "canvas_origin": [
+        560.0,
+        566.0
+      ],
+      "cell_size": [
+        320,
+        240
+      ],
+      "title": "⑤ ColorFiltered(MULTIPLY)后子树模糊",
+      "scene": "滤色#F6B94A（MULTIPLY），再sigma=6子树模糊；无圆形裁剪，效果向外溢出",
+      "effect_nodes": [
+        {
+          "type": "color_filtered_multiply + image_filtered",
+          "sigma": 6,
+          "blend": "MULTIPLY",
+          "clip_circle": null
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "canvas_origin": [
+        912.0,
+        566.0
+      ],
+      "cell_size": [
+        320,
+        240
+      ],
+      "title": "⑥ 同上并加圆形裁剪",
+      "scene": "⑤效果限于圆心(160,120)、半径100的圆形区域内",
+      "effect_nodes": [
+        {
+          "type": "color_filtered_multiply + image_filtered + circular_clip",
+          "sigma": 6,
+          "blend": "MULTIPLY",
+          "clip_circle": {
+            "center_local": [
+              160,
+              120
+            ],
+            "radius": 100
+          }
+        }
+      ]
+    }
+  ],
+  "paired_scenes": [
+    {
+      "pair": "③④",
+      "shared": "条纹颜色/宽度/间距/相位、卡片240×160圆角20、位置(40,40)、文字“SHARP / BLUR”24px、前景形状、绘制层次、背景底色",
+      "difference": "③ BackdropFilter 仅模糊卡片覆盖处的背景，再叠清晰文字/前景；④ ImageFiltered sigma=6 对背景+文字+前景整体子树模糊",
+      "filter": "sigmaX=6, sigmaY=6"
+    },
+    {
+      "pair": "⑤⑥",
+      "shared": "相同基础场景（透明间隙、深色矩形#1F2937、阴影、文字）、位置(40,40)、ColorFiltered MULTIPLY #F6B94A、ImageFiltered sigmaX=sigmaY=6",
+      "difference": "⑥ 在⑤相同结果的最外层增加圆形裁剪；⑤不加裁剪，效果向外溢出",
+      "clip": "圆心实验区局部(160,120)，半径100，ClipPath fillRule NON_ZERO，组件(40,20)大小240×240，圆心组件局部(120,100)"
+    }
+  ],
+  "samples": [
+    {
+      "panel": 1,
+      "local_sample": [
+        180,
+        100
+      ],
+      "canvas_pixel_index": [
+        388.0,
+        394.0
+      ],
+      "canvas_origin": [
+        208.0,
+        294.0
+      ],
+      "composite_steps": [
+        "red #FF000080 over white",
+        "blue #0000FF80 over result (blue on top)"
+      ],
+      "theory_float": [
+        127.5,
+        63.75,
+        191.25
+      ],
+      "theory_rounded": [
+        128,
+        64,
+        191
+      ],
+      "theory_alpha": 255,
+      "actual_rgb": null,
+      "actual_alpha": null,
+      "abs_error_per_channel": null,
+      "passed": null,
+      "note": "实际RGB需解码最终服务PNG于画布像素索引(origin_x+180, origin_y+100)，索引从0开始；容差每通道<=3"
+    },
+    {
+      "panel": 2,
+      "local_sample": [
+        180,
+        100
+      ],
+      "canvas_pixel_index": [
+        740.0,
+        394.0
+      ],
+      "canvas_origin": [
+        560.0,
+        294.0
+      ],
+      "composite_steps": [
+        "opaque red over white",
+        "opaque blue over red",
+        "group opacity 0.5 over white"
+      ],
+      "theory_float": [
+        127.5,
+        127.5,
+        255.0
+      ],
+      "theory_rounded": [
+        128,
+        128,
+        255
+      ],
+      "theory_alpha": 255,
+      "actual_rgb": null,
+      "actual_alpha": null,
+      "abs_error_per_channel": null,
+      "passed": null,
+      "note": "实际RGB需解码最终服务PNG于画布像素索引(origin_x+180, origin_y+100)，索引从0开始；容差每通道<=3"
+    }
+  ],
+  "visual_checks": [
+    {
+      "panel": 3,
+      "observation_text": null,
+      "observation_alpha_clear": null,
+      "observation_background_blurred": null,
+      "observation_overflow": null,
+      "local_region_checked": "实验区(40,40,240,160)及周边条纹",
+      "document_basis": "https://snapshot.muedsa.com/reference/parser-tags/#backdropfilter 和 #imagefiltered：BackdropFilter 读取已有背景，ImageFiltered 对子树高斯模糊",
+      "note": "未能直接读取最终图像像素，需人工放大查看整图/局部并与 DSL 节点对应后填写"
+    },
+    {
+      "panel": 4,
+      "observation_text": null,
+      "observation_alpha_clear": null,
+      "observation_background_blurred": null,
+      "observation_overflow": null,
+      "local_region_checked": "实验区(40,40,240,160)及周边条纹",
+      "document_basis": "https://snapshot.muedsa.com/reference/parser-tags/#backdropfilter 和 #imagefiltered：BackdropFilter 读取已有背景，ImageFiltered 对子树高斯模糊",
+      "note": "未能直接读取最终图像像素，需人工放大查看整图/局部并与 DSL 节点对应后填写"
+    },
+    {
+      "panel": 5,
+      "observation_text": null,
+      "observation_alpha_clear": null,
+      "observation_background_blurred": null,
+      "observation_overflow": null,
+      "local_region_checked": "实验区(40,40,240,160)及周边条纹",
+      "document_basis": "https://snapshot.muedsa.com/reference/parser-tags/#backdropfilter 和 #imagefiltered：BackdropFilter 读取已有背景，ImageFiltered 对子树高斯模糊",
+      "note": "未能直接读取最终图像像素，需人工放大查看整图/局部并与 DSL 节点对应后填写"
+    },
+    {
+      "panel": 6,
+      "observation_text": null,
+      "observation_alpha_clear": null,
+      "observation_background_blurred": null,
+      "observation_overflow": null,
+      "local_region_checked": "实验区(40,40,240,160)及周边条纹",
+      "document_basis": "https://snapshot.muedsa.com/reference/parser-tags/#backdropfilter 和 #imagefiltered：BackdropFilter 读取已有背景，ImageFiltered 对子树高斯模糊",
+      "note": "未能直接读取最终图像像素，需人工放大查看整图/局部并与 DSL 节点对应后填写"
+    }
+  ],
+  "math_note": "①②按蓝覆盖红、最后合成白底的source-over顺序，0-255 sRGB，中间值不取整，最终 floor(value+0.5)。128/255(逐像素alpha) 与 0.5(组透明度) 不是同一个 alpha。"
+}

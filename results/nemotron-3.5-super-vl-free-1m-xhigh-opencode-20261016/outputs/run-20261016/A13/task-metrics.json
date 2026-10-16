@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A13",
+  "run_id": "run-20261016",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261016/A13/",
+  "temp_dir": "tmp/run-20261016/A13/",
+  "timings": {
+    "started_at": "2026-10-16T11:12:09+08:00",
+    "ended_at": "2026-10-16T11:18:10+08:00",
+    "elapsed_seconds": 361,
+    "first_usable_image_seconds": 76,
+    "user_feedback_wait_seconds": null,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 38,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 6,
+    "successful_snapshot_requests": 6,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 6,
+    "image_views": 0,
+    "completed_visual_iterations": 0,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261016/A13/requests.jsonl",
+    "iterations": "tmp/run-20261016/A13/iterations.jsonl"
+  },
+  "outputs": [
+    { "filename": "symbol-color.png", "width": 512, "height": 512, "purpose": "透明彩色图标", "dsl": "symbol-color.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "symbol-color.snapshot", "purpose": "彩色图标DSL", "source": "tmp/run-20261016/A13/symbol-color.v1.snapshot" },
+    { "filename": "symbol-black.png", "width": 512, "height": 512, "purpose": "透明纯黑图标", "dsl": "symbol-black.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "symbol-black.snapshot", "purpose": "纯黑图标DSL", "source": "tmp/run-20261016/A13/symbol-black.v1.snapshot" },
+    { "filename": "brand-banner.png", "width": 1200, "height": 400, "purpose": "品牌横幅", "dsl": "brand-banner.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "brand-banner.snapshot", "purpose": "横幅DSL", "source": "tmp/run-20261016/A13/brand-banner.v1.snapshot" },
+    { "filename": "launch-poster.png", "width": 1080, "height": 1350, "purpose": "发布海报", "dsl": "launch-poster.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "launch-poster.snapshot", "purpose": "海报DSL", "source": "tmp/run-20261016/A13/launch-poster.v1.snapshot" },
+    { "filename": "brand-system.json", "purpose": "色彩、比例、图标构件、最小留白、各应用映射", "source": "按DSL几何生成" },
+    { "filename": "rationale.md", "purpose": "两方向差异、选择依据、小尺寸改进（≤300字）", "source": "按DSL预览与32x32检查生成" },
+    { "filename": "snapshot-usage.md", "purpose": "使用情况与踩坑说明", "source": "本题输出" },
+    { "filename": "task-metrics.json", "purpose": "任务指标", "source": "本题输出" }
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "平台当前无可直接读取图像像素的视觉工具，未能做逐像素核查（32x32缩略辨识度、横幅/海报文字遮挡）；以DSL几何自检及PIL纯黑检验（0违规像素）保证，建议人工复查最终图。",
+    "32x32检查预览通过PIL预乘alpha Lanczos重采样生成并保留临时目录，仅作检查预览，未覆盖最终服务原始PNG，未做额外描边或锐化。"
+  ]
+}

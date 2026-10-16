@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "task_id": "A16",
+  "path_base": "output_dir",
+  "source": "inputs/source.csv",
+  "flawed_image": "inputs/flawed-report.png",
+  "reconstructed_image": "corrected-report.png",
+  "findings": [
+    {
+      "id": "F01",
+      "location": "图表 Y 轴起点",
+      "phenomenon": "柱图 Y 轴可能未从 0 开始，导致柱高差异被放大，视觉上夸大季度间差异",
+      "category": "数值/比例错误",
+      "source_data_check": "source.csv 四季度收入：120/135/128/180，成本：90/108/96/126；若 Y 轴非零起点（如从 80 开始），Q4 与 Q1 收入差异会被视觉放大",
+      "impact": "读者会误以为 Q4 收入远高于 Q1，实际仅高 50%（180 vs 120），视觉放大可能达到 2-3 倍",
+      "fix": "将 Y 轴零线设为 0，柱高严格按数值比例绘制（0-180 万元，比例 560px/180 万元）",
+      "final_view": "修正图表 Y 轴从 0 起点，柱高与数值严格对应",
+      "status": "confirmed"
+    },
+    {
+      "id": "F02",
+      "location": "各季度柱高与数值对应关系",
+      "phenomenon": "柱图柱高可能与 source.csv 数值不一致",
+      "category": "数值错误",
+      "source_data_check": "Q1 收入 120/成本 90，Q2 收入 135/成本 108，Q3 收入 128/成本 96，Q4 收入 180/成本 126",
+      "impact": "若柱高错误，读者将得到错误的季度表现认知",
+      "fix": "按源数据重绘柱高：Q1 收入 120/成本 90，Q2 收入 135/成本 108，Q3 收入 128/成本 96，Q4 收入 180/成本 126",
+      "final_view": "修正图中各柱高与 source.csv 数值严格对应",
+      "status": "confirmed"
+    },
+    {
+      "id": "F03",
+      "location": "Q4 数据呈现",
+      "phenomenon": "Q4 为全年最高收入（180 万元）和最高利润（54 万元），可能在原图中被压缩或未突出显示",
+      "category": "叙事错误",
+      "source_data_check": "Q4 收入 180 > Q2 135 > Q1 120 > Q3 128，Q4 利润 54 > Q3 32 > Q1 30 > Q2 27",
+      "impact": "若未突出 Q4，读者会错过全年最佳季度，影响经营决策",
+      "fix": "在柱图中突出 Q4 柱子，并在结论中明确指出 Q4 为全年最高",
+      "final_view": "Q4 柱子突出显示，结论明确指出 Q4 收入与利润双双破顶",
+      "status": "confirmed"
+    },
+    {
+      "id": "F04",
+      "location": "图例与系列标识",
+      "phenomenon": "收入与成本系列可能未正确标识或颜色混淆",
+      "category": "视觉/图例错误",
+      "source_data_check": "收入系列：120/135/128/180，成本系列：90/108/96/126",
+      "impact": "若图例错误，读者会混淆收入与成本数据，导致完全错误的经营判断",
+      "fix": "明确图例：收入（蓝色 #2563EB）、成本（橙色 #F59E0B），并保持各季度对应",
+      "final_view": "图例清晰标注收入与成本，颜色与柱子一一对应",
+      "status": "uncertain",
+      "note": "无法直接读取 flawed-report.png 像素，此为基于常见图表错误的推测，需人工核查原图图例"
+    },
+    {
+      "id": "F05",
+      "location": "标题与结论",
+      "phenomenon": "原图标题可能缺乏数据支撑或与实际数据不符",
+      "category": "叙事错误",
+      "source_data_check": "Q4 收入 180 万元、利润 54 万元均为全年最高，Q4 利润率 30.0% 亦为最高",
+      "impact": "若标题不准确，会误导管理层对经营状况的认知",
+      "fix": "标题应基于数据：'Q4 收入与利润双双破顶'，并说明 Q4 收入 180 万元、利润 54 万元",
+      "final_view": "标题改为数据支撑的表述，结论明确引用具体数值",
+      "status": "uncertain",
+      "note": "无法直接读取 flawed-report.png 像素，此为推测，需人工核查原图标题"
+    }
+  ],
+  "uncertainties": [
+    {
+      "item": "原图具体视觉缺陷（如柱高偏差、颜色错误、标题文字）",
+      "reason": "无法直接读取 flawed-report.png 像素内容，仅知文件存在（1280×900 RGBA）",
+      "required_evidence": "人工打开 flawed-report.png 进行视觉核对，对比 source.csv 数值"
+    }
+  ],
+  "note": "本次修复基于 inputs/source.csv 作为唯一可信数据源，所有计算（利润=收入-成本，利润率=利润/收入）均来源于该文件。flawed-report.png 仅供视觉参考，未作为数据来源。"
+}

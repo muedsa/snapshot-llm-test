@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A12",
+  "run_id": "run-20261016",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261016/A12/",
+  "temp_dir": "tmp/run-20261016/A12/",
+  "timings": {
+    "started_at": "2026-10-16T11:00:00+08:00",
+    "ended_at": "2026-10-16T11:12:09+08:00",
+    "elapsed_seconds": 729,
+    "first_usable_image_seconds": 390,
+    "user_feedback_wait_seconds": null,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 20,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 4,
+    "successful_snapshot_requests": 4,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 4,
+    "image_views": 0,
+    "completed_visual_iterations": 0,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261016/A12/requests.jsonl",
+    "iterations": "tmp/run-20261016/A12/iterations.jsonl"
+  },
+  "outputs": [
+    { "filename": "mobile.png", "width": 360, "height": 800, "purpose": "窄手机", "dsl": "mobile.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "mobile.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A12/mobile.v1.snapshot" },
+    { "filename": "tablet.png", "width": 768, "height": 1024, "purpose": "平板", "dsl": "tablet.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "tablet.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A12/tablet.v1.snapshot" },
+    { "filename": "desktop.png", "width": 1440, "height": 900, "purpose": "桌面", "dsl": "desktop.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "desktop.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A12/desktop.v1.snapshot" },
+    { "filename": "stage.png", "width": 1920, "height": 1080, "purpose": "大屏", "dsl": "stage.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "stage.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A12/stage.v1.snapshot" },
+    { "filename": "design-tokens.json", "purpose": "颜色/字号/间距/组件规则与四断点布局参数", "source": "按输入 content.json 与统一设计参数生成" },
+    { "filename": "content-map.json", "purpose": "C1–C6 与字段路径关联每张卡，逐画布记录必显字段的原文、实际显示文本、文字盒、字号和是否完整；ID 记录在映射中", "source": "按 DSL 布局位置生成" },
+    { "filename": "snapshot-usage.md", "purpose": "使用情况与踩坑说明", "source": "本题输出" },
+    { "filename": "task-metrics.json", "purpose": "任务指标", "source": "本题输出" }
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "平台当前无可直接读取图像像素的视觉工具，未能做逐像素核查（卡片重叠、文字遮挡、留白安全边距）；以 DSL 坐标自检（每卡独立文本块、独立容器，文字盒不重叠）及 PNG 尺寸校验，建议人工复查最终图，尤其手机单列六张卡是否全部可见、文字是否被截断。"
+  ]
+}

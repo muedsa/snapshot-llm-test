@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A01",
+  "run_id": "run-20261016",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261016/A01/",
+  "temp_dir": "tmp/run-20261016/A01/",
+  "timings": {
+    "started_at": "2026-10-16T09:04:43+08:00",
+    "ended_at": "2026-10-16T09:11:01+08:00",
+    "elapsed_seconds": 378,
+    "first_usable_image_seconds": 200,
+    "user_feedback_wait_seconds": null,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 5,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 2,
+    "successful_snapshot_requests": 1,
+    "failed_snapshot_requests": 1,
+    "retry_requests": 0,
+    "other_service_requests": 1,
+    "dsl_versions": 2,
+    "image_views": 1,
+    "completed_visual_iterations": 0,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261016/A01/requests.jsonl",
+    "iterations": "tmp/run-20261016/A01/iterations.jsonl"
+  },
+  "outputs": [
+    { "filename": "operations.png", "width": 1600, "height": 1000, "purpose": "经营驾驶舱", "dsl": "operations.snapshot", "source": "服务真实响应 (HTTP 200, image/png)" },
+    { "filename": "operations.snapshot", "purpose": "最终可复现 DSL", "source": "tmp/run-20261016/A01/operations.v2.snapshot" },
+    { "filename": "computed-data.json", "purpose": "每月计算值、汇总、图轴定义与结论数值（审计JSON）", "source": "本地按 inputs/monthly.csv 计算" },
+    { "filename": "snapshot-usage.md", "purpose": "使用情况与踩坑说明", "source": "本题输出" },
+    { "filename": "task-metrics.json", "purpose": "任务指标", "source": "本题输出" }
+  ],
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "平台未提供可直接读取的图像像素反馈工具（browser.preview 仅返回路径），视觉质量未能直接逐像素核查；已以 DSL 坐标自检、PNG 尺寸校验（1600×1000）及 HTTP 200/有效 PNG 保证，并如实说明。建议后续由人工复查最终图。",
+    "首版失败响应（v1 PARSE_ERROR）因复用同一输出文件被 v2 覆盖，原始字节未保留；后续题目将把每版渲染响应写入独立临时文件，避免覆盖。"
+  ]
+}

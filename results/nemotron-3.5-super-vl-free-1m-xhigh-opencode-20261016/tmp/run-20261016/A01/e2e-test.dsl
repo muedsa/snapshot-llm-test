@@ -1,0 +1,3 @@
+<Snapshot background="#FFFFFF" type="png">
+  <Container width="200" height="100" color="#FF0000FF"/>
+</Snapshot>

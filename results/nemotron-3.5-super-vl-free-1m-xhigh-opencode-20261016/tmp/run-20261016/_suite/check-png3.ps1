@@ -1,0 +1,6 @@
+$bytes=[System.IO.File]::ReadAllBytes("outputs/run-20261016/A02/agenda-mobile.png")
+[Array]::Reverse($bytes,16,4)
+[Array]::Reverse($bytes,20,4)
+$w=[BitConverter]::ToInt32($bytes,16)
+$h=[BitConverter]::ToInt32($bytes,20)
+Write-Output ("WIDTH={0} HEIGHT={1} BYTES={2}" -f $w,$h,$bytes.Length)
