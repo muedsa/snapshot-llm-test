@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "task_id": "A01",
+  "path_base": "output_dir",
+  "source": "tasks/A01-operations-dashboard/inputs/monthly.csv",
+  "formulas": {
+    "net_revenue": "gross_revenue - refund_amount",
+    "operating_profit": "net_revenue - operating_cost",
+    "refund_rate": "refund_amount / gross_revenue",
+    "conversion_rate": "orders / sessions",
+    "overall_conversion_rate": "sum(orders) / sum(sessions)"
+  },
+  "months": [
+    {
+      "month": "2026-04",
+      "orders": 420,
+      "gross_revenue": 126000.0,
+      "refund_amount": 6300.0,
+      "operating_cost": 82000.0,
+      "sessions": 3500,
+      "net_revenue": 119700.0,
+      "operating_profit": 37700.0,
+      "refund_rate": 0.05,
+      "conversion_rate": 0.12
+    },
+    {
+      "month": "2026-05",
+      "orders": 460,
+      "gross_revenue": 142600.0,
+      "refund_amount": 7130.0,
+      "operating_cost": 93500.0,
+      "sessions": 4100,
+      "net_revenue": 135470.0,
+      "operating_profit": 41970.0,
+      "refund_rate": 0.05,
+      "conversion_rate": 0.112195
+    },
+    {
+      "month": "2026-06",
+      "orders": 445,
+      "gross_revenue": 137950.0,
+      "refund_amount": 11036.0,
+      "operating_cost": 99000.0,
+      "sessions": 4200,
+      "net_revenue": 126914.0,
+      "operating_profit": 27914.0,
+      "refund_rate": 0.08,
+      "conversion_rate": 0.105952
+    },
+    {
+      "month": "2026-07",
+      "orders": 530,
+      "gross_revenue": 169600.0,
+      "refund_amount": 8480.0,
+      "operating_cost": 112000.0,
+      "sessions": 4700,
+      "net_revenue": 161120.0,
+      "operating_profit": 49120.0,
+      "refund_rate": 0.05,
+      "conversion_rate": 0.112766
+    },
+    {
+      "month": "2026-08",
+      "orders": 570,
+      "gross_revenue": 188100.0,
+      "refund_amount": 15048.0,
+      "operating_cost": 132000.0,
+      "sessions": 5200,
+      "net_revenue": 173052.0,
+      "operating_profit": 41052.0,
+      "refund_rate": 0.08,
+      "conversion_rate": 0.109615
+    },
+    {
+      "month": "2026-09",
+      "orders": 620,
+      "gross_revenue": 210800.0,
+      "refund_amount": 8432.0,
+      "operating_cost": 138000.0,
+      "sessions": 5600,
+      "net_revenue": 202368.0,
+      "operating_profit": 64368.0,
+      "refund_rate": 0.04,
+      "conversion_rate": 0.110714
+    }
+  ],
+  "totals": {
+    "gross_revenue": 975050.0,
+    "refund_amount": 56426.0,
+    "operating_cost": 656500.0,
+    "net_revenue": 918624.0,
+    "operating_profit": 262124.0,
+    "orders": 3045,
+    "sessions": 27300,
+    "refund_rate": 0.05787,
+    "conversion_rate": 0.111538,
+    "profit_margin": 0.285344
+  },
+  "axes": [
+    {
+      "chart": "net_revenue_profit_grouped_bars",
+      "unit": "CNY",
+      "zero_baseline": true,
+      "min": 0,
+      "max": 220000,
+      "ticks": [
+        0,
+        50000,
+        100000,
+        150000,
+        200000
+      ],
+      "plot": {
+        "x": 64,
+        "y": 14,
+        "width": 880,
+        "height": 230
+      },
+      "mapping": "y_px = 14 + 230 * (220000 - value) / 220000",
+      "x_mapping": "group_center_x = 64 + (880 / 6) * (index + 0.5)",
+      "zero_pixel_y": 244
+    },
+    {
+      "chart": "sessions_bars",
+      "unit": "sessions",
+      "zero_baseline": true,
+      "min": 0,
+      "max": 6000,
+      "ticks": [
+        0,
+        2000,
+        4000,
+        6000
+      ],
+      "plot": {
+        "x": 44,
+        "y": 10,
+        "width": 404,
+        "height": 94
+      },
+      "mapping": "y_px = 10 + 94 * (6000 - value) / 6000",
+      "x_mapping": "bar_center_x = 44 + (404 / 6) * (index + 0.5)",
+      "zero_pixel_y": 104
+    },
+    {
+      "chart": "conversion_line",
+      "unit": "percent",
+      "zero_baseline": false,
+      "min": 8,
+      "max": 13,
+      "ticks": [
+        8,
+        10,
+        12
+      ],
+      "plot": {
+        "x": 44,
+        "y": 10,
+        "width": 404,
+        "height": 94
+      },
+      "mapping": "y_px = 10 + 94 * (13 - value) / 5",
+      "x_mapping": "point_x = 44 + (404 / 5) * index",
+      "zero_pixel_y": null
+    }
+  ],
+  "conclusion": {
+    "text": "增长真实，退款是唯一逆风：9月净收入与经营利润均为六个月最高，增长主要由订单量驱动；6月与8月 8.00% 的退款率是利润的主要拖累。",
+    "citations": [
+      {
+        "field": "months[5].net_revenue",
+        "value": 202368.0
+      },
+      {
+        "field": "months[0].net_revenue",
+        "value": 119700.0
+      },
+      {
+        "field": "months[5].operating_profit",
+        "value": 64368.0
+      },
+      {
+        "field": "months[0].operating_profit",
+        "value": 37700.0
+      },
+      {
+        "field": "months[5].orders",
+        "value": 620
+      },
+      {
+        "field": "months[0].orders",
+        "value": 420
+      },
+      {
+        "field": "months[2].refund_rate",
+        "value": 0.08
+      },
+      {
+        "field": "months[4].refund_rate",
+        "value": 0.08
+      },
+      {
+        "field": "totals.overall_conversion_rate",
+        "value": 0.111538
+      }
+    ]
+  }
+}

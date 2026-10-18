@@ -1,0 +1,46 @@
+{
+  "task": "A18",
+  "title": "守恒对象的三幕视觉叙事",
+  "started_at": "2026-10-18T13:30:00+08:00",
+  "status": "completed",
+  "dsl_versions": 5,
+  "files": [
+    {"src": "tmp/20261018T1140/A18/renders/three-act-story-v006.png", "dst": "three-act-story.png", "purpose": "1600×1000 三幕图", "pair": "three-act-story.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A18/dsl/three-act-story-v005.snapshot", "dst": "three-act-story.snapshot", "purpose": "最终完整 DSL", "pair": "three-act-story.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A18/story-audit.json", "dst": "story-audit.json", "purpose": "逐幕15单元/3节点/接收关系/叙事证据", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A18/rationale.md", "dst": "rationale.md", "purpose": "281 字方向选择与感知说明", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["three-act-story.png", "three-act-story.snapshot", "story-audit.json", "rationale.md", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "两种 1600×1000 预览 A（三列并置）/B（三条横带）均真实渲染并查看；选 A：三幕在 400px 缩略仍同时可读，B 的第三幕退化为三组单色簇。",
+    "最终图为 1600×1000；三幕各 15 个 36px 圆（蓝/橙/灰各5，U01–U15 固定），三节点 N01 环/N02 方/N03 三角，外框均 72×72。",
+    "第一幕：15 条线全部指向 N01，三环半径 105/160/210，平均接收距离 158.3px，最小单元间距 97.1px，N02/N03 负载 0。",
+    "第二幕：同一 15 单元、同一 N01；三环缩到 60/105/150，平均距离 105.0px，最小间距 66.5px，并加三条同心排队弧；N02/N03 仍 0，体现同一系统过载而非增删单元。",
+    "第三幕：N01/N02/N03 各 5 个单元（5/5/5），颜色分别 3/2/2 种；最小单元间距 96.4px，单元到节点最小 85.99px；连线分 3 束各 5 条。",
+    "所有幕单元直径 36、颜色跨幕稳定；节点形状/基准 72 不变，无有限形变；线先画、圆后画，线不遮圆；单元间/单元节点间均无重叠。",
+    "图中文字仅总标题与三幕幕名；单元/节点无文字；无外部图像。",
+    "整图与 400×250 缩略均实际打开：400px 下三幕、中心聚拢、密集环、三分流仍可辨。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应与 PNG", "7 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Container/Stack/Positioned/Transform/ClipPath", "连线、节点、单元"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定 1600×1000 与有界 Stack", "三面板"]
+  ],
+  "capabilities": "稳定 ID 的 15 单元×3 幕、3 个不同形状节点、旋转连线矩形、同心排队弧、坐标/负载/重叠审计、400px 缩略检查；未使用 Image。",
+  "design": "三列并置保持三幕同时可比较：第一幕单元在宽环上向中心 N01 汇聚；第二幕同一 N01 与同一 15 单元被压到更近的三环，并出现排队弧；第三幕 N01/N02/N03 形成上/左下/右下三角，每节点 5 个单元。连线颜色随单元、但关系由端点与几何决定，不只靠颜色。",
+  "experience": "Transform 连线必须把旋转盒放在线段中点，否则所有线会堆到 Stack 左上；三面板各自都需要非定位 SizedBox，否则全 Positioned 会触发无限布局。过载不能靠删/缩单元，改用同一数量的更近环距+排队弧+更密集线束。",
+  "issues": [],
+  "iterations": [
+    {"id": "A18-IT-001", "type": "alternative", "parent": null, "problem": "需要先比较三列并置与三条横带两种叙事构图。", "change": "A 三列同心环；B 三条横带规则网格。", "result": "A 在缩略仍保留三幕关系；B 第三幕呈三组单色簇，选 A。", "evidence": "tmp/20261018T1140/A18/previews/preview-a-v003.png"},
+    {"id": "A18-IT-002", "type": "visual", "parent": "v002", "problem": "v002 的旋转连线全部堆在每个面板左上角，未连到单元/节点。", "change": "line 返回 Positioned(left=midX-len/2, top=midY-1) 包住 Transform，不再用 Pos(0,0)。", "result": "v003 15 条线正确连到接收节点；预览 A 通过。", "evidence": "tmp/20261018T1140/A18/previews/preview-a-v003.png"},
+    {"id": "A18-IT-003", "type": "retry", "parent": "v004", "problem": "v004 用 PowerShell 替换中文幕名，文件被按错误编码读写，幕名显示为乱码。", "change": "改用 Python UTF-8 读写，生成 v005 DSL。", "result": "v006 幕名“第一幕/第二幕/第三幕”正确；图像其余不变。", "evidence": "tmp/20261018T1140/A18/renders/three-act-story-v006.png"}
+  ],
+  "views": [
+    {"id": "A18-view-preview-a", "version": "A-v003", "image": "tmp/20261018T1140/A18/previews/preview-a-v003.png", "viewed_at": "2026-10-18T13:42:40+08:00", "note": "三列并置：聚拢/拥挤/三分流清楚。"},
+    {"id": "A18-view-preview-b", "version": "B-v003", "image": "tmp/20261018T1140/A18/previews/preview-b-v003.png", "viewed_at": "2026-10-18T13:42:55+08:00", "note": "三条横带：网格化，第三幕单色簇，分配关系弱。"},
+    {"id": "A18-view-v004", "version": "v004", "image": "tmp/20261018T1140/A18/renders/three-act-story-v004.png", "viewed_at": "2026-10-18T13:44:30+08:00", "note": "图形正确，但幕名乱码。"},
+    {"id": "A18-view-final", "version": "v006", "image": "tmp/20261018T1140/A18/renders/three-act-story-v006.png", "viewed_at": "2026-10-18T13:46:20+08:00", "note": "最终全图：中文幕名、三幕、15 单元/节点/连线。"},
+    {"id": "A18-view-thumb400", "version": "400px", "image": "tmp/20261018T1140/A18/previews/thumb-400.png", "viewed_at": "2026-10-18T13:46:40+08:00", "note": "400×250：三幕仍可辨，中心/密集/分流可读。"}
+  ],
+  "closing": "临时目录保留 A/B 预览、7 次真实请求（2 次服务失败）、5 个 DSL 版本、全图与 400px 缩略；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

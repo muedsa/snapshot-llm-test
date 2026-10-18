@@ -1,0 +1,45 @@
+{
+  "task": "A09",
+  "title": "十二个非对称图形变换标本",
+  "started_at": "2026-10-18T12:23:55+08:00",
+  "status": "completed",
+  "dsl_versions": 4,
+  "files": [
+    {"src": "tmp/20261018T1140/A09/renders/v004.png", "dst": "transform-atlas.png", "purpose": "1600×1200 十二变换图谱", "pair": "transform-atlas.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A09/dsl/v004.snapshot", "dst": "transform-atlas.snapshot", "purpose": "最终完整 DSL（每格 Transform.matrix）", "pair": "transform-atlas.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A09/geometry-audit.json", "dst": "geometry-audit.json", "purpose": "局部/画布矩阵、矩形四角、圆心、外接框与像素核对", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["transform-atlas.png", "transform-atlas.snapshot", "geometry-audit.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "1600×1200；4 列×3 行，每格 300×250、格间 32，网格 1296×814 水平居中；标题/图例在格外。",
+    "T01–T12 全部出现，编号 20px、操作短名 20px；十字线、±30/±60 刻度与 120×120 参考框齐全。",
+    "每格主体（3 矩形+黑点）均由 Transform.matrix 应用；矩阵为局部坐标（格内），没有直接改矩形坐标。",
+    "T07 先镜像 H 再 CW90°，T08 先 CW90° 再镜像 H；两格矩阵与最终图形均不同，图中附文字说明。",
+    "T09 0.75× 等比缩放、T10 1.25/0.75 非等比缩放、T11/T12 30° 旋转均保持圆点随同变换（T10 的圆点成为椭圆）。",
+    "最终 PNG 像素核对 12/12 通过：矩形 bbox 最大误差 1.11px（T12，旋转边缘反走样），圆点中心误差 ≤0.35px，均在 ±1.5px 判据内。",
+    "几何审计记录每格局部矩阵与画布矩阵、每矩形四角（左上/右上/右下/左下）、圆点中心与外接框；局部证据图 12 张。",
+    "整图与 T07/T08、T09–T11 局部图实际查看：无裁切、标签不遮挡主体、参考框与图形关系清楚。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、字体与颜色", "全部 4 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Transform.matrix 列主序 4×4、Container 边框、Stack/Positioned、Text 字号", "12 个变换格"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定尺寸 Stack 与绝对定位", "网格与参考框"]
+  ],
+  "capabilities": "局部枢轴仿射矩阵组合（旋转/镜像/缩放）、列主序矩阵序列化、Transform 内绘制原印章、像素级几何核对（PIL 颜色 bbox）；未使用 Image。",
+  "design": "把变换做成一张“标本图谱”：每格保留十字轴与 120×120 参考框，彩色矩形与黑点在参考框内被矩阵搬移/旋转/缩放；编号和操作名放在格的上下边缘，不压主体。T07/T08 相邻摆放，正好对照“同两步不同顺序”的差异。",
+  "experience": "Transform 的矩阵作用于格内坐标，不能把格原点重复加进 translation；局部矩阵与画布矩阵要分开记录；圆形在非等比缩放下会变成椭圆，验证 bbox 必须按仿射后的半径计算；旋转边缘的反走样会产生约 1px 误差，需在报告中如实记录。",
+  "issues": [],
+  "iterations": [
+    {"id": "A09-IT-001", "type": "visual", "parent": "v001", "problem": "v001 所有主体被推到格外/格间，因为矩阵 translation 用了画布绝对中心（cx0+150, cy0+125），而 Transform 在格内坐标。", "change": "矩阵改为格内中心 (150,125)，translation 回到 (90,65) 等局部值。", "result": "v002 主体回到各格中心，T01–T12 关系正确。", "evidence": "tmp/20261018T1140/A09/renders/v002.png"},
+    {"id": "A09-IT-002", "type": "visual", "parent": "v002", "problem": "v002 底部图例文字溢出面板并压到页脚。", "change": "图例 150→184px、下移到 1006；合并数据源到 T07/T08 说明并去掉独立页脚。", "result": "v003 图例完整，无裁切。", "evidence": "tmp/20261018T1140/A09/renders/v003.png"},
+    {"id": "A09-IT-003", "type": "data-fix", "parent": "v003", "problem": "geometry-audit 的 matrix 字段记录的是画布矩阵，而 DSL 实际使用局部矩阵。", "change": "同时记录 matrix_column_major（局部）与 matrix_canvas_column_major；角点继续用画布矩阵计算。", "result": "v004 图像与 v003 相同，审计矩阵与 DSL 一致；像素核对 12/12 通过。", "evidence": "tmp/20261018T1140/A09/geometry-audit.json"}
+  ],
+  "views": [
+    {"id": "A09-view-v001", "version": "v001", "image": "tmp/20261018T1140/A09/renders/v001.png", "viewed_at": "2026-10-18T12:24:24+08:00", "note": "基线：发现主体被画布绝对 translation 推到格外。"},
+    {"id": "A09-view-v002", "version": "v002", "image": "tmp/20261018T1140/A09/renders/v002.png", "viewed_at": "2026-10-18T12:24:55+08:00", "note": "主体归位；发现图例文字溢出。"},
+    {"id": "A09-view-v004", "version": "v004", "image": "tmp/20261018T1140/A09/renders/v004.png", "viewed_at": "2026-10-18T12:25:26+08:00", "note": "最终整图：12 变换、图例、矩阵说明完整。"},
+    {"id": "A09-view-crop-t07t08", "version": "v004-crop", "image": "tmp/20261018T1140/A09/renders/v004_crop_t07t08.png", "viewed_at": "2026-10-18T12:25:32+08:00", "note": "局部：T07/T08 顺序差异可见，标签不压图形。"},
+    {"id": "A09-view-crop-t09t11", "version": "v004-crop", "image": "tmp/20261018T1140/A09/renders/v004_crop_t09t11.png", "viewed_at": "2026-10-18T12:25:36+08:00", "note": "局部：T10 非等比缩放使圆点成椭圆，T11 旋转主体未裁切。"}
+  ],
+  "closing": "临时目录保留 4 次成功请求、4 个 DSL 版本、12 张像素核对裁图与 geometry-audit；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

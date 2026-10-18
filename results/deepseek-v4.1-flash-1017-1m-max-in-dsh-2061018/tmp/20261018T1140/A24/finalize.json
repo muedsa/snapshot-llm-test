@@ -1,0 +1,49 @@
+{
+  "task": "A24",
+  "title": "双团队约束下的发布作战计划",
+  "started_at": "2026-10-18T13:59:00+08:00",
+  "status": "completed",
+  "dsl_versions": 4,
+  "files": [
+    {"src": "tmp/20261018T1140/A24/renders/execution-board-v002.png", "dst": "execution-board.png", "purpose": "1920×1080 双团队泳道执行图", "pair": "execution-board.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/dsl/execution-board-v002.snapshot", "dst": "execution-board.snapshot", "purpose": "执行图完整 DSL", "pair": "execution-board.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/renders/decision-brief-v005.png", "dst": "decision-brief.png", "purpose": "1200×1600 决策简报", "pair": "decision-brief.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/dsl/decision-brief-v004.snapshot", "dst": "decision-brief.snapshot", "purpose": "简报完整 DSL（v005 渲染）", "pair": "decision-brief.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/renders/action-card-v004.png", "dst": "action-card.png", "purpose": "720×1280 手机行动卡", "pair": "action-card.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/dsl/action-card-v004.snapshot", "dst": "action-card.snapshot", "purpose": "行动卡完整 DSL", "pair": "action-card.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/schedule.json", "dst": "schedule.json", "purpose": "12 任务精确起止/团队/依赖", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/schedule-audit.json", "dst": "schedule-audit.json", "purpose": "约束/时长/窗口/下界/缓冲/最优性", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A24/content-map.json", "dst": "content-map.json", "purpose": "三图任务/风险/位置映射", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["execution-board.png", "execution-board.snapshot", "decision-brief.png", "decision-brief.snapshot", "action-card.png", "action-card.snapshot", "schedule.json", "schedule-audit.json", "content-map.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "排程：R01 0–25 D、R02 0–20 E、R03 20–60 E、R04 25–85 D、R05 60–90 E、R06 90–135 E、R07 90–160 D、R08 135–200 E、R09 160–205 D、R10 205–240 D、R11 205–235 E、R12 240–260 D；全部 end≤420，完工 13:20，缓冲 160 min。",
+    "12 任务时长严格等于输入；所有依赖 end≤后继 start；同团队半开区间不重叠；团队切换无耗时；R05/R09/R12 的择一团队选择已记录。",
+    "关键路径 R01→R04→R07→R09→R10→R12 = 25+60+70+45+35+20=255 min；工作量 485 min，两团队下界 242.5；实际完工 260，gap 5，未证明全局最优，只称可行。",
+    "执行图 1920×1080：真实时间同尺度（x=430+minute×1380/420），两条泳道、12 个任务行、时间刻度、13:20 完工线、16:00 截止线、160 min 缓冲段；任务编号/标签/团队/起止可读；依赖用编号而非满屏交叉线。",
+    "决策简报 1200×1600：完工/缓冲/总工时/关键路径 KPI、12 行依赖表、3 风险与对策、排程依据；正文 24（风险对策 24）。",
+    "行动卡 720×1280：按时间序 12 行，团队/起止/风险提醒；R02/R05/R10 标记风险关注；底部截止与缓冲。",
+    "三图由同一 SCHED 数据生成，任务顺序/团队/时间一致；content-map 记录三图位置；实际查看三图并检查短任务 R02、长标签 R07/R10/R12。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应与字体", "10 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Container/Text/Stack", "三图"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定画布与绝对定位", "1920/1200/720"]
+  ],
+  "capabilities": "双资源约束排程、依赖/关键路径/工作量下界、时间尺度甘特/泳道、三尺寸一致性、风险映射；未使用外部图。",
+  "design": "同一发布排程拆成三张工具：横屏作战图用两条泳道+每任务一行真实时间条，短任务仍以编号块+左侧标签可读；竖版简报突出完工/缓冲/下界和依赖清单；手机卡按分钟顺序给出行动与风险提醒。三图共用 R01–R12、同一团队与时间。",
+  "experience": "双团队并行时，关键路径 255 并不自动可达：R05 与 R03 争工程资源，把 R05 排到 60–90，使 R07 从 85 延到 90，完工 260。短任务块不能靠放大破坏时间比例，需把标签放在左侧行；依赖用编号而非连线可避免遮挡。",
+  "issues": [],
+  "iterations": [
+    {"id": "A24-IT-001", "type": "visual", "parent": "v001", "problem": "v001 横屏 16:00 时刻标签重复、任务行元数据 18px 偏小；竖版依赖表两列小字过密。", "change": "去掉重复 16:00 tick；横屏元数据/任务号 20；竖版依赖改为 12 行 24px 单列；风险卡重排。", "result": "v002 横屏清晰；竖版表格可读。", "evidence": "tmp/20261018T1140/A24/renders/decision-brief-v002.png"},
+    {"id": "A24-IT-002", "type": "visual", "parent": "v002", "problem": "竖版底部总结压住 K3 风险卡。", "change": "风险区上移到 1080、间距 118；总结下移到 1450。", "result": "v005 三张风险卡与总结分离，无重叠。", "evidence": "tmp/20261018T1140/A24/renders/decision-brief-v005.png"},
+    {"id": "A24-IT-003", "type": "retry", "parent": "v003", "problem": "action-card v002/v003 与 brief v003 出现 TLS/超时；服务恢复后重试。", "change": "brief v004/v005、action v004 重试。", "result": "200 image/png；最终三图齐全。", "evidence": "tmp/20261018T1140/A24/renders/action-card-v004.png"}
+  ],
+  "views": [
+    {"id": "A24-view-board-v2", "version": "board-v2", "image": "tmp/20261018T1140/A24/renders/execution-board-v002.png", "viewed_at": "2026-10-18T14:01:00+08:00", "note": "两条泳道、12 任务、13:20/16:00/缓冲；短任务 R02 可读。"},
+    {"id": "A24-view-brief-v2", "version": "brief-v2", "image": "tmp/20261018T1140/A24/renders/decision-brief-v002.png", "viewed_at": "2026-10-18T14:01:10+08:00", "note": "KPI/依赖/风险可见；底部总结压 K3。"},
+    {"id": "A24-view-brief-v5", "version": "brief-v5", "image": "tmp/20261018T1140/A24/renders/decision-brief-v005.png", "viewed_at": "2026-10-18T14:09:30+08:00", "note": "最终简报：12 行依赖、3 风险、总结不重叠。"},
+    {"id": "A24-view-action-v4", "version": "action-v4", "image": "tmp/20261018T1140/A24/renders/action-card-v004.png", "viewed_at": "2026-10-18T14:09:40+08:00", "note": "最终行动卡：12 行按时间序，团队/风险。"}
+  ],
+  "closing": "临时目录保留 10 次渲染（2 次服务失败/重试）、4 个 DSL 版本、排程/审计/三图；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

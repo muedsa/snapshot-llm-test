@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "canvas": [
+    1440,
+    1100
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "逐形状 alpha",
+      "origin": [
+        88,
+        228
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "local_rects": {
+        "red": [
+          40,
+          40,
+          160,
+          120
+        ],
+        "blue": [
+          120,
+          80,
+          160,
+          120
+        ]
+      },
+      "colors": {
+        "red": "#FF000080 (alpha 128/255)",
+        "blue": "#0000FF80 (alpha 128/255)"
+      },
+      "effect_nodes": [
+        "两个 Container color 8 位 RGBA"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "组 Opacity 0.5",
+      "origin": [
+        520,
+        228
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "local_rects": {
+        "red": [
+          40,
+          40,
+          160,
+          120
+        ],
+        "blue": [
+          120,
+          80,
+          160,
+          120
+        ]
+      },
+      "colors": {
+        "red": "#FF0000 opaque",
+        "blue": "#0000FF opaque"
+      },
+      "effect_nodes": [
+        "<Opacity opacity=\"0.5\"> 包裹不透明红蓝组"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "仅背景模糊",
+      "origin": [
+        952,
+        228
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "effect_nodes": [
+        "ClipPath 圆角卡",
+        "ImageFiltered 仅包裹条纹副本",
+        "文字/前景在滤镜外"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "子树模糊",
+      "origin": [
+        88,
+        600
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "effect_nodes": [
+        "ClipPath 圆角卡",
+        "ImageFiltered 包裹条纹+卡面+文字+前景"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "滤色 × 模糊",
+      "origin": [
+        520,
+        600
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "effect_nodes": [
+        "每个可见形状先 ColorFiltered MULTIPLY",
+        "整组再 ImageFiltered sigma=6",
+        "无裁剪"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "⑤ + 圆形裁剪",
+      "origin": [
+        952,
+        600
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "effect_nodes": [
+        "与⑤相同的逐形状 ColorFiltered + 整组 ImageFiltered",
+        "外层 ClipPath 圆 r=100"
+      ]
+    }
+  ],
+  "paired_scenes": [
+    {
+      "pair": "③④",
+      "shared": {
+        "stripes": "vertical 16px #0EA5E9 / #E2E8F0, phase 0",
+        "card": [
+          40,
+          40,
+          240,
+          160
+        ],
+        "radius": 20,
+        "card_fill": "#FFFFFF66",
+        "text": "SHARP / BLUR",
+        "text_size": 24,
+        "foreground": [
+          196,
+          140,
+          32,
+          32,
+          "#F59E0B"
+        ],
+        "sigma": 6
+      },
+      "only_change": "ImageFiltered 的作用对象：③仅条纹副本；④条纹+卡面+文字+前景整个子树"
+    },
+    {
+      "pair": "⑤⑥",
+      "shared": {
+        "content": "同一 Stack：深色矩形、两块彩色矩形、透明间隙、白色圆角卡+阴影",
+        "color_filter": {
+          "color": "#F6B94A",
+          "blendMode": "MULTIPLY",
+          "application": "per visible shape"
+        },
+        "sigma": 6,
+        "filter_order": "每个可见形状先 ColorFiltered(MULTIPLY)，再对整组做外层 ImageFiltered(sigma=6)；先滤色后模糊。"
+      },
+      "only_change": "⑥ 在同样结果外增加 ClipPath 圆（中心 160,120，半径 100）；⑤ 无裁剪",
+      "circle": {
+        "center": [
+          160,
+          120
+        ],
+        "radius": 100,
+        "path": "M60 120 A100 100 0 1 0 260 120 A100 100 0 1 0 60 120 Z"
+      }
+    }
+  ],
+  "samples": [
+    {
+      "panel": 1,
+      "local": [
+        180,
+        100
+      ],
+      "canvas": [
+        268,
+        328
+      ],
+      "alpha_model": "per-shape alpha 128/255",
+      "steps": [
+        {
+          "step": "red over white",
+          "rgb_float": [
+            255.0,
+            127.0,
+            127.0
+          ]
+        },
+        {
+          "step": "blue over previous",
+          "rgb_float": [
+            127.0,
+            63.25098,
+            191.25098
+          ]
+        }
+      ],
+      "theoretical_float": [
+        127.0,
+        63.25098,
+        191.25098
+      ],
+      "rounded": [
+        127,
+        63,
+        191
+      ],
+      "expected_rgb": [
+        127,
+        63,
+        191
+      ],
+      "actual_rgb": [
+        127,
+        63,
+        191
+      ],
+      "alpha": 255,
+      "errors": [
+        0,
+        0,
+        0
+      ],
+      "tolerance_per_channel": 3,
+      "passed": true,
+      "evidence": "tmp/20261018T1140/A10/checks/panel1.png",
+      "note_128_vs_05": "128/255=0.5019608，0.5 严格等于 127.5；两模型在 R/G 通道可产生约 1 的差异。"
+    },
+    {
+      "panel": 2,
+      "local": [
+        180,
+        100
+      ],
+      "canvas": [
+        700,
+        328
+      ],
+      "alpha_model": "group opacity 0.5",
+      "steps": [
+        {
+          "step": "opaque blue over opaque red (within group)",
+          "rgb_float": [
+            0.0,
+            0.0,
+            255.0
+          ]
+        },
+        {
+          "step": "group over white at 0.5",
+          "rgb_float": [
+            127.5,
+            127.5,
+            255.0
+          ]
+        }
+      ],
+      "theoretical_float": [
+        127.5,
+        127.5,
+        255.0
+      ],
+      "rounded": [
+        128,
+        128,
+        255
+      ],
+      "expected_rgb": [
+        128,
+        128,
+        255
+      ],
+      "actual_rgb": [
+        126,
+        126,
+        255
+      ],
+      "alpha": 255,
+      "errors": [
+        -2,
+        -2,
+        0
+      ],
+      "tolerance_per_channel": 3,
+      "passed": true,
+      "evidence": "tmp/20261018T1140/A10/checks/panel2.png",
+      "note_128_vs_05": "实测 126/126/255，较理论 128/128/255 低 2；组 Opacity(0.5) 经 8-bit 图层合成/取整产生偏差（原因未单独确认，推测为预乘与取整），仍在每通道 ±3 容差内。"
+    }
+  ],
+  "visual_checks": [
+    {
+      "panel": 3,
+      "text": "SHARP / BLUR 清晰（文字区最大相邻梯度 227.8）",
+      "background": "卡内条纹明显柔化（卡内最大梯度 4.1），卡外条纹锐利（93.5）",
+      "spill": "卡外区域与④逐像素一致，无模糊外溢",
+      "evidence": "tmp/20261018T1140/A10/checks/panel3.png",
+      "doc": "parser-tags · ImageFiltered 只作用于被包裹子树",
+      "text_gradient": 227.8,
+      "stripe_gradient_inside": 4.1,
+      "stripe_gradient_outside": 93.5
+    },
+    {
+      "panel": 4,
+      "text": "SHARP / BLUR 与橙色前景一起模糊（文字区最大相邻梯度仅 8.7，远低于③的 227.8）",
+      "background": "卡内条纹柔化",
+      "spill": "卡外区域与③逐像素一致，无模糊外溢",
+      "evidence": "tmp/20261018T1140/A10/checks/panel4.png",
+      "doc": "同 ImageFiltered 包裹整棵卡片子树",
+      "text_gradient": 8.7
+    },
+    {
+      "panel": 5,
+      "text": "内容整体被 #F6B94A 乘色后模糊，外围可见模糊晕",
+      "background": "白底，无裁剪边界",
+      "spill": "无裁剪，模糊向外扩散；圆周外样本 (40,120) 实际 RGB [30, 30, 16]",
+      "evidence": "tmp/20261018T1140/A10/checks/panel5.png",
+      "doc": "ColorFiltered MULTIPLY + ImageFiltered",
+      "outside_circle_sample": [
+        30,
+        30,
+        16
+      ]
+    },
+    {
+      "panel": 6,
+      "text": "与⑤同样模糊，但被圆形边界截断",
+      "background": "圆外为白，圆内保留模糊结果",
+      "spill": "被 r=100 圆截断；同一圆外样本 (40,120) 为 [255, 255, 255]（白底）",
+      "evidence": "tmp/20261018T1140/A10/checks/panel6.png",
+      "doc": "ClipPath 圆 + 同⑤滤镜",
+      "outside_circle_sample": [
+        255,
+        255,
+        255
+      ]
+    }
+  ],
+  "docs": [
+    "https://snapshot.muedsa.com/reference/parser-tags/ · 颜色 alpha 8 位、Opacity、ImageFiltered、BackdropFilter、ColorFiltered、ClipPath",
+    "https://open-snapshot.muedsa.com/ai-guide.md · 请求/响应与 PNG 检查"
+  ],
+  "pair_checks": [
+    {
+      "pair": "③④",
+      "check": "outside_card_identical",
+      "max_channel_diff": 0,
+      "pixels_compared": 34719,
+      "passed": true,
+      "method": "比较两实验区卡片外区域 (x<36 或 x>284 或 y<36 或 y>204) 的全部像素；同一基础场景应完全一致。"
+    },
+    {
+      "pair": "③④",
+      "check": "text_sharp_vs_blurred",
+      "panel3_max_grad": 227.8,
+      "panel4_max_grad": 8.7,
+      "passed": true,
+      "method": "同一文字框 (65,85)-(255,125) 内灰度的最大相邻差；③应显著高于④。"
+    },
+    {
+      "pair": "⑤⑥",
+      "check": "inside_circle_identical",
+      "max_channel_diff": 0,
+      "pixels_compared": 25445,
+      "passed": true,
+      "method": "比较两实验区圆内 r≤90 的全部像素；同一滤镜与基础场景应一致。"
+    },
+    {
+      "pair": "⑤⑥",
+      "check": "circle_clips_spill",
+      "panel5_outside_sample": [
+        30,
+        30,
+        16
+      ],
+      "panel6_outside_sample": [
+        255,
+        255,
+        255
+      ],
+      "passed": true,
+      "method": "取圆周外局部 (40,120)：⑤无裁剪应保留模糊色，⑥应为白底。"
+    }
+  ],
+  "verification": {
+    "rendered_png": "compositing-lab.png",
+    "source_png": "tmp/20261018T1140/A10/renders/v005.png",
+    "samples_passed": true,
+    "pair_checks_passed": true,
+    "panel_crops": [
+      "tmp/20261018T1140/A10/checks/panel1.png",
+      "tmp/20261018T1140/A10/checks/panel2.png",
+      "tmp/20261018T1140/A10/checks/panel3.png",
+      "tmp/20261018T1140/A10/checks/panel4.png",
+      "tmp/20261018T1140/A10/checks/panel5.png",
+      "tmp/20261018T1140/A10/checks/panel6.png"
+    ]
+  }
+}

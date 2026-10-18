@@ -1,0 +1,57 @@
+{
+  "task": "A12",
+  "title": "四断点完整内容视觉系统",
+  "started_at": "2026-10-18T12:41:30+08:00",
+  "status": "completed",
+  "dsl_versions": 6,
+  "files": [
+    {"src": "tmp/20261018T1140/A12/renders/mobile/v006.png", "dst": "mobile.png", "purpose": "360×800 单列手机版", "pair": "mobile.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/dsl/mobile/v004.snapshot", "dst": "mobile.snapshot", "purpose": "手机版完整 DSL（与 v006 PNG 对应）", "pair": "mobile.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/renders/tablet/v005.png", "dst": "tablet.png", "purpose": "768×1024 两列平板版", "pair": "tablet.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/dsl/tablet/v005.snapshot", "dst": "tablet.snapshot", "purpose": "平板版完整 DSL", "pair": "tablet.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/renders/desktop/v005.png", "dst": "desktop.png", "purpose": "1440×900 三列桌面版", "pair": "desktop.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/dsl/desktop/v005.snapshot", "dst": "desktop.snapshot", "purpose": "桌面版完整 DSL", "pair": "desktop.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/renders/stage/v007.png", "dst": "stage.png", "purpose": "1920×1080 六列大屏版", "pair": "stage.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/dsl/stage/v006.snapshot", "dst": "stage.snapshot", "purpose": "大屏版完整 DSL（与 v007 PNG 对应）", "pair": "stage.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/design-tokens.json", "dst": "design-tokens.json", "purpose": "四断点颜色/字号/间距/组件规则", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A12/content-map.json", "dst": "content-map.json", "purpose": "19 字段×4 画布的原文/实际/文字盒/字号/完整性", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["mobile.png", "mobile.snapshot", "tablet.png", "tablet.snapshot", "desktop.png", "desktop.snapshot", "stage.png", "stage.snapshot", "design-tokens.json", "content-map.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "四张实际输出 360×800、768×1024、1440×900、1920×1080；布局分别为 1 列、2×3、3×2、6×1，统一深底/珊瑚斜杠/青金强调。",
+    "每张 19 个必显字段：title/subtitle/date/time/location/cta/website + 6×(title/detail)；content-map 76 条记录，actual 与输入完全一致，无缩写/省略号。",
+    "字号：手机主标题 40、正文 16、卡标题 18；平板/桌面/大屏正文 20、卡标题 22–26、主标题 64/72/88，均满足下限。",
+    "安全边距：手机 16、其余 32；手机最后一屏 website 底 784 < 784 安全线，卡片与 CTA 不重叠；其余画布文字盒两两无交叠。",
+    "手机六张卡单列，title/detail 全部可见；平板 2×3、桌面 3×2、大屏 6×1 均保留全部卡标题与 detail。",
+    "CTA 为纯文字“免费参加 · 扫码方式详见官网”，无二维码；website 为可读文本；无整图 Image 或裁切拉伸。",
+    "四图统一色彩、序号 01–06、细网格与装饰斜杠/圆环；大屏底部使用低对比巨型字标补足构图，未新增必显字段。",
+    "四图整图实际查看；手机 v006 与 v003 对比确认卡片 detail 不再裁切、标题空格保留；大屏 v007 确认底部字标不裁切。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、字体与颜色", "全部 19 次渲染尝试"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Stack/Positioned、Text 嵌套/Raw、ClipPath 多边形", "标题斜杠、卡片、背景装饰"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定尺寸与绝对定位", "四断点重排"]
+  ],
+  "capabilities": "一套内容生成四份独立 DSL、绝对坐标断点布局、嵌套 Text/Raw 保留标题空格、等宽/无衬线/CJK 字体混排、公共卡片与装饰构件；未使用 Image。",
+  "design": "以“同一视觉系统的四种呼吸方式”为原则：手机把六张卡压成单列，平板两列三行，桌面三列两行，大屏六列一行；珊瑚色斜杠、细网格和圆环作为跨尺寸的共同装饰。手机上标题分两行以保证 40px 主标题与安全边距；大屏用巨型低对比字标填补下部，形成舞台感。",
+  "experience": "Text 嵌套 span 会 trim 边缘空格，标题中的“ / ”需用 Raw 空格；手机单列六卡必须逐项压缩高度且保留 16px 底边距；卡片内容用 Col mainAxisAlignment=CENTER 才能真正垂直居中；多断点内容图必须按字段建 content-map，不能只按视觉相似判断。",
+  "issues": [],
+  "iterations": [
+    {"id": "A12-IT-001", "type": "visual", "parent": "v001", "problem": "v001 手机卡片高度 68px 导致 detail 被裁；标题中“ / ”空格被嵌套 span trim。", "change": "手机卡高 74，标题改为两行并用 Raw 保留空格；平板/桌面/大屏标题同样用 Raw。", "result": "v002 平板/桌面/大屏正常；手机请求网络失败，v003 重试后六卡完整。", "evidence": "tmp/20261018T1140/A12/renders/mobile/v003.png"},
+    {"id": "A12-IT-002", "type": "visual", "parent": "v003", "problem": "卡片内容贴顶、平板/桌面下部留白偏大；大屏底部字标 150px 超出画布被裁。", "change": "卡片 body 改 Col mainAxisAlignment=CENTER；大屏字标降到 118px 并下移。", "result": "v005 三张横版内容居中；v007 大屏字标完整。", "evidence": "tmp/20261018T1140/A12/renders/stage/v007.png"},
+    {"id": "A12-IT-003", "type": "visual", "parent": "v005", "problem": "大屏 150px 字标右侧被裁。", "change": "字标 150→118px、颜色 #0B1627、位置 700；重渲染 v006/v007。", "result": "v007 字标在 1856px 内容区内完整，底部层次平衡。", "evidence": "tmp/20261018T1140/A12/renders/stage/v007.png"}
+  ],
+  "views": [
+    {"id": "A12-view-mobile-v001", "version": "mobile-v001", "image": "tmp/20261018T1140/A12/renders/mobile/v001.png", "viewed_at": "2026-10-18T12:42:03+08:00", "note": "基线：六卡 detail 被裁，标题斜杠空格丢失。"},
+    {"id": "A12-view-tablet-v002", "version": "tablet-v002", "image": "tmp/20261018T1140/A12/renders/tablet/v002.png", "viewed_at": "2026-10-18T12:43:05+08:00", "note": "平板两列三行完整；标题空格已保留。"},
+    {"id": "A12-view-desktop-v002", "version": "desktop-v002", "image": "tmp/20261018T1140/A12/renders/desktop/v002.png", "viewed_at": "2026-10-18T12:43:40+08:00", "note": "桌面 3×2 完整；卡片内容偏上。"},
+    {"id": "A12-view-stage-v002", "version": "stage-v002", "image": "tmp/20261018T1140/A12/renders/stage/v002.png", "viewed_at": "2026-10-18T12:43:45+08:00", "note": "大屏 6×1 完整；底部字标后被加入并出现裁切。"},
+    {"id": "A12-view-mobile-v003", "version": "mobile-v003", "image": "tmp/20261018T1140/A12/renders/mobile/v003.png", "viewed_at": "2026-10-18T12:44:50+08:00", "note": "手机标题两行、六卡完整；底部 website 仍贴边。"},
+    {"id": "A12-view-mobile-v006", "version": "mobile-v006", "image": "tmp/20261018T1140/A12/renders/mobile/v006.png", "viewed_at": "2026-10-18T12:56:15+08:00", "note": "最终手机：六卡 detail 全见，website 进入 16px 安全线内。"},
+    {"id": "A12-view-tablet-v005", "version": "tablet-v005", "image": "tmp/20261018T1140/A12/renders/tablet/v005.png", "viewed_at": "2026-10-18T12:57:00+08:00", "note": "最终平板：卡片内容居中，2×3 无裁切。"},
+    {"id": "A12-view-desktop-v005", "version": "desktop-v005", "image": "tmp/20261018T1140/A12/renders/desktop/v005.png", "viewed_at": "2026-10-18T12:57:12+08:00", "note": "最终桌面：3×2 卡片与装饰环完整。"},
+    {"id": "A12-view-stage-v005", "version": "stage-v005", "image": "tmp/20261018T1140/A12/renders/stage/v005.png", "viewed_at": "2026-10-18T12:57:18+08:00", "note": "大屏 6×1；底部 150px 字标右侧被裁。"},
+    {"id": "A12-view-stage-v007", "version": "stage-v007", "image": "tmp/20261018T1140/A12/renders/stage/v007.png", "viewed_at": "2026-10-18T13:03:10+08:00", "note": "最终大屏：118px 字标完整，六卡与底部说明层次清楚。"}
+  ],
+  "closing": "临时目录保留 19 次渲染尝试（6 次网络失败）、6 个 DSL 版本、四张最终 PNG 与 design-tokens/content-map；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

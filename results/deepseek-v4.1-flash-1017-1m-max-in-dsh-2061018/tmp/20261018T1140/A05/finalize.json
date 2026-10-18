@@ -1,0 +1,45 @@
+{
+  "task": "A05",
+  "title": "不规则采样与缺测的仪表报告（实验舱 08:00–12:30）",
+  "started_at": "2026-10-18T12:10:45+08:00",
+  "status": "completed",
+  "dsl_versions": 3,
+  "files": [
+    {"src": "tmp/20261018T1140/A05/renders/v003.png", "dst": "sensor-report.png", "purpose": "1440×1000 三联趋势与明细", "pair": "sensor-report.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A05/dsl/v003.snapshot", "dst": "sensor-report.snapshot", "purpose": "最终完整 DSL", "pair": "sensor-report.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A05/normalized-data.json", "dst": "normalized-data.json", "purpose": "分钟偏移、null、统计、连接段、负值采样与轴映射", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["sensor-report.png", "sensor-report.snapshot", "normalized-data.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "1440×1000；三张图共用 08:00–12:30 的真实时间横轴：分钟 0–270 映射到像素 x=54..1342，三图同一公式。",
+    "12 个采样时点的纵向参考线贯穿三图并对齐；小时线加深，底部轴标注 08:00/09:00/10:00/11:00/12:00/12:30，并用小刻度保留不规则采样位置。",
+    "温度有效 10/12，缺测 09:15、11:40；折线断为 3 段（08:00–09:00、09:40–11:00、12:10–12:30），未补值。",
+    "湿度有效 11/12，缺测 09:40；折线断为 2 段（08:00–09:15、10:10–12:30），未补值。",
+    "压差 12/12 有效，范围 -0.8–1.3 kPa；零线以红色 1px 线与红色 0 标签突出；09:40–10:50 负值带仅标注 3 个实际采样点（-0.2 / -0.8 / -0.3），未声称连续为负。",
+    "每个真实读数有独立 8px 采样标记；缺测点以红色 × 标出，图例写明“缺测（断线，不补值）”。",
+    "上方三张统计卡给出各指标单位、有效数、缺测数与观察最小/最大值；下方 12 列明细表覆盖全部时点，缺测为“—”，压差负值标红。",
+    "正文/标题 ≥20px，轴与表 ≥18px；整图与压差/温度局部裁图均实际查看，无文字遮挡或面板裁切。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、错误检查、字体", "全部 3 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Stack/Positioned、Text 字号、颜色 alpha、ClipPath 多边形", "三联折线、断线、缺测标记"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定尺寸 Stack 与绝对定位对齐", "共享横轴与面板布局"]
+  ],
+  "capabilities": "真实分钟到像素的比例映射、折线分段绘制（缺测断开）、ClipPath 折线带、独立采样点、零线与负值区间带、12 列明细表；未使用 Image。",
+  "design": "实验舱监控台风格：三张等宽趋势条上下堆叠，温度橙、湿度青、压差紫；同一组纵向参考线贯穿三图，强化“同一时间轴”的读图关系；压差负值带用琥珀底色和“3 点”限定语，避免把采样段误读为连续负压。",
+  "experience": "折线必须在每个缺测处断开，不能用一个完整 polyline 穿过 null；共享横轴要复用同一 x 映射函数并让三图 plot 宽度一致；统计卡的有效数/缺测数要与 JSON 的 segments 校验一致；负值区间标注必须限定为“实际采样点”。",
+  "issues": [],
+  "iterations": [
+    {"id": "A05-IT-001", "type": "visual", "parent": "v001", "problem": "v001 头部副标题与图例行重叠，图例挤在标题下方。", "change": "头部高度 76→88，图例下移到 y=122，统计卡/图表/表格整体下移 10px。", "result": "v002 标题、副标题、图例三层分开，无重叠。", "evidence": "tmp/20261018T1140/A05/renders/v002.png"},
+    {"id": "A05-IT-002", "type": "visual", "parent": "v002", "problem": "v002 纵轴单位 15px 偏小；负值带标注 16px；零线颜色偏淡。", "change": "单位/负值标注提升到 18px；零线改为 #F87171CC；复查压差局部。", "result": "v003 单位清晰、零线与负值带更明确。", "evidence": "tmp/20261018T1140/A05/renders/v003_crop_pressure.png"}
+  ],
+  "views": [
+    {"id": "A05-view-v001", "version": "v001", "image": "tmp/20261018T1140/A05/renders/v001.png", "viewed_at": "2026-10-18T12:11:26+08:00", "note": "基线：三图与表完整；发现副标题与图例重叠。"},
+    {"id": "A05-view-v002", "version": "v002", "image": "tmp/20261018T1140/A05/renders/v002.png", "viewed_at": "2026-10-18T12:11:45+08:00", "note": "头部层次修复；三图断线与缺测标记可见。"},
+    {"id": "A05-view-crop-temp", "version": "v002-crop", "image": "tmp/20261018T1140/A05/renders/v002_crop_temp.png", "viewed_at": "2026-10-18T12:11:55+08:00", "note": "局部：09:15/11:40 两处断线，采样点清晰。"},
+    {"id": "A05-view-crop-pressure", "version": "v002-crop", "image": "tmp/20261018T1140/A05/renders/v002_crop_pressure.png", "viewed_at": "2026-10-18T12:12:00+08:00", "note": "局部：负值带包含 3 个实测点，零线可见但偏淡。"},
+    {"id": "A05-view-v003", "version": "v003", "image": "tmp/20261018T1140/A05/renders/v003.png", "viewed_at": "2026-10-18T12:12:08+08:00", "note": "最终整图：单位、零线、负值标注均清晰。"},
+    {"id": "A05-view-crop-pressure-v003", "version": "v003-crop", "image": "tmp/20261018T1140/A05/renders/v003_crop_pressure.png", "viewed_at": "2026-10-18T12:12:12+08:00", "note": "局部复查：零线、负值带、3 点标注无遮挡。"}
+  ],
+  "closing": "临时目录保留 3 次成功请求、3 个 DSL 版本、全部 PNG 与 3 张局部裁图；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

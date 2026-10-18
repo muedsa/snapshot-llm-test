@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "task_id": "A22",
+  "path_base": "output_dir",
+  "round": 3,
+  "baseline": {
+    "round": 2,
+    "dashboard": "round-02/dashboard.png",
+    "computed": "round-02/computed-data.json"
+  },
+  "changes": [
+    {
+      "field": "2026-08.refund_amount",
+      "old": 15048,
+      "new": 25048,
+      "retained": true
+    },
+    {
+      "field": "2026-09.operating_cost",
+      "old": 138000,
+      "new": 208000,
+      "retained": true
+    },
+    {
+      "field": "2026-10",
+      "old": null,
+      "new": {
+        "orders": 640,
+        "gross_revenue": 224000,
+        "refund_amount": 11200,
+        "operating_cost": 142000,
+        "sessions": 5900
+      },
+      "propagation": [
+        "7th table row",
+        "7th chart group",
+        "totals/KPIs/conclusion"
+      ]
+    }
+  ],
+  "preserved": [
+    "canvas 1600×1000",
+    "main region boundaries",
+    "font hierarchy",
+    "brand/visual system",
+    "monthly raw CSV unchanged",
+    "2026-04 through 2026-09 rows"
+  ],
+  "regression": [
+    {
+      "check": "region_boundaries",
+      "method": "layout-map comparison",
+      "result": "max delta 0px (≤2px)",
+      "passed": true
+    },
+    {
+      "check": "negative_profit",
+      "method": "Sep profit below zero in table and chart; axis min −20,000",
+      "result": "−5,632 元 shown",
+      "passed": true
+    },
+    {
+      "check": "all_months",
+      "method": "table/chart row count",
+      "result": "7 months",
+      "passed": true
+    },
+    {
+      "check": "actual_view",
+      "method": "full PNG visually checked",
+      "result": "read",
+      "passed": true
+    }
+  ],
+  "old_new": {
+    "round1_profit": 262124,
+    "round2_profit": 182124,
+    "round3_profit": 252924,
+    "round1_net": 918624,
+    "round2_net": 908624,
+    "round3_net": 1121424
+  }
+}

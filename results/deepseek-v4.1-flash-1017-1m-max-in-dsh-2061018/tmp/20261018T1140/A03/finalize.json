@@ -1,0 +1,171 @@
+{
+  "task": "A03",
+  "title": "多层语义故障恢复（System Pulse 监控卡）",
+  "started_at": "2026-10-18T12:04:10+08:00",
+  "status": "completed",
+  "dsl_versions": 8,
+  "files": [
+    {
+      "src": "tmp/20261018T1140/A03/renders/system-pulse/v013.png",
+      "dst": "system-pulse.png",
+      "purpose": "1280×800 修复后监控卡",
+      "pair": "system-pulse.snapshot",
+      "status": "通过"
+    },
+    {
+      "src": "tmp/20261018T1140/A03/dsl/system-pulse/v013.snapshot",
+      "dst": "system-pulse.snapshot",
+      "purpose": "最终完整 DSL",
+      "pair": "system-pulse.png",
+      "status": "通过"
+    },
+    {
+      "src": "tmp/20261018T1140/A03/repair-log.json",
+      "dst": "repair-log.json",
+      "purpose": "原稿报错、静默忽略、视觉问题与逐版修复证据",
+      "pair": "—",
+      "status": "通过"
+    }
+  ],
+  "artifacts": [
+    "system-pulse.png",
+    "system-pulse.snapshot",
+    "repair-log.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "checks": [
+    "原稿 broken.snapshot 已原样提交一次：request 7f53ff2c-01d5-40a9-90fc-187c8f801fe3，HTTP 400 PARSE_ERROR，原始响应保存在 tmp/.../responses；失败稿 original/v002/v003/v004 均保留。",
+    "画布实际响应 1280×800；背景 #0B1220；标题左上距边 32px，字号 44；LIVE 96×36 位于 (1152,32)，与标题无重叠。",
+    "第一行三张指标卡等宽 389.333px、高 180px、间距 24px，文案 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2% 均为 28px。",
+    "中央说明卡精确 500×150、圆角 24、位于 (390,390)；彩色细条 x=300..980 同时穿过左右边界；卡内为裁剪+ImageFiltered 的背景副本，文字 Background-only blur 28px 保持清晰。",
+    "REVIEW 标签精确 160×56、位于 (1062,694)、Transform -8°（屏幕逆时针）、背景 #FFFFFF33（20% 白）、文字 #FFFFFF 24px 不透明；旋转后视觉边界在 32px 安全边距内。",
+    "所有元素完整可见；最终整图与说明卡局部裁图均实际打开检查。",
+    "repair-log.json 含 12 条问题：4 条真实报错、3 条静默/契约问题、5 条视觉或布局问题；每条有原稿行号/节点、依据、修改与验证。",
+    "修复过程中未通过删除区块来规避需求：LIVE、REVIEW、三指标卡、模糊说明卡均以等价或更完整的实现保留。"
+  ],
+  "docs": [
+    [
+      "https://open-snapshot.muedsa.com/ai-guide.md",
+      "请求/响应、错误 JSON、字体与颜色",
+      "全部 8 次渲染"
+    ],
+    [
+      "https://snapshot.muedsa.com/reference/parser-tags/",
+      "EdgeInsets、Transform matrix、Positioned 父级、BackdropFilter/ImageFiltered、颜色 alpha、Text fontSize",
+      "原稿修复与最终稿"
+    ],
+    [
+      "https://snapshot.muedsa.com/guides/layout/",
+      "约束、Stack 尺寸与非定位子节点、有界布局",
+      "根 Stack 与 1280×800 画布修复"
+    ]
+  ],
+  "capabilities": "Transform 4×4 矩阵旋转、ImageFiltered 高斯模糊、ClipRRect 裁剪、半透明颜色 alpha、绝对定位 Stack、Row/Column、Progress bar 与 sparkline 由 Container 构造；未使用 Image 或外部素材。",
+  "design": "把修复后的监控卡做成一张“运行中的信号面板”：左上角 44px 标题与右上 LIVE 形成实时状态轴；三张等宽指标卡用青/琥珀/绿编码容量、延迟、可靠性；中央说明卡放在彩色信号轨道上，卡内只保留背景的模糊副本，文字浮在最上层，直观展示“background-only blur”的语义；右下 REVIEW 用 -8° 倾斜、20% 白底写成审阅章。",
+  "experience": "当 BackdropFilter 在当前服务/组合下未产生可见效果时，可以用“同坐标背景副本 + ClipRRect + ImageFiltered”实现只模糊局部背景的等价语义；Transform 必须给 matrix，旋转轴用 alignment=CENTER；Positioned 不能出现在 Row 中；Snapshot 的 width/height 不生效，画布必须由根节点尺寸建立。",
+  "issues": [],
+  "iterations": [
+    {
+      "id": "A03-IT-001",
+      "type": "syntax-fix",
+      "parent": "original",
+      "problem": "padding=\"24 32\" 非法，400 PARSE_ERROR。",
+      "change": "改为 padding=\"(24,32)\"。",
+      "result": "v002 进入下一错误：Transform matrix 缺失。",
+      "evidence": "tmp/20261018T1140/A03/responses/broken-original-A03-initial-broken-9a5c64ccda.json"
+    },
+    {
+      "id": "A03-IT-002",
+      "type": "syntax-fix",
+      "parent": "v002",
+      "problem": "Transform rotate 属性不存在，matrix 必填。",
+      "change": "替换为 -8° 旋转矩阵；font-size 改 fontSize。",
+      "result": "v003 进入渲染，报 Positioned parentData。",
+      "evidence": "tmp/20261018T1140/A03/responses/broken-v002-A03-syntax-fix-26f2e03655.json"
+    },
+    {
+      "id": "A03-IT-003",
+      "type": "syntax-fix",
+      "parent": "v003",
+      "problem": "Positioned 作为 Row 子节点触发 renderBox.parentData must be StackParentData。",
+      "change": "LIVE 移出 Row，最终改为根 Stack 绝对定位。",
+      "result": "v004 暴露 Layout size is infinite。",
+      "evidence": "tmp/20261018T1140/A03/responses/broken-v003-A03-syntax-fix-d2297d75ee.json"
+    },
+    {
+      "id": "A03-IT-004",
+      "type": "syntax-fix",
+      "parent": "v004",
+      "problem": "根 Container 无尺寸、Column+Spacer 无界，Layout size is infinite。",
+      "change": "最终稿改为绝对定位根 Stack + SizedBox(1280,800)。",
+      "result": "v010 成功输出 1280×900。",
+      "evidence": "tmp/20261018T1140/A03/responses/broken-v004-A03-alternative-984bc7a0be.json"
+    },
+    {
+      "id": "A03-IT-005",
+      "type": "visual",
+      "parent": "v010",
+      "problem": "v010 为 1280×900（900×900 非定位渐变撑高）；BackdropFilter 卡内无可见模糊。",
+      "change": "渐变改 Positioned；模糊改为裁剪内的背景副本 ImageFiltered；标题/卡面重排。",
+      "result": "v011 为 1280×800，卡内细条柔化、文字清晰。",
+      "evidence": "tmp/20261018T1140/A03/renders/system-pulse/v011.png"
+    },
+    {
+      "id": "A03-IT-006",
+      "type": "visual",
+      "parent": "v011",
+      "problem": "标题距顶 24px，不满足 32px 安全边距。",
+      "change": "标题与 LIVE 移到 y=32。",
+      "result": "v012 安全边距达标。",
+      "evidence": "tmp/20261018T1140/A03/renders/system-pulse/v012.png"
+    },
+    {
+      "id": "A03-IT-007",
+      "type": "visual",
+      "parent": "v012",
+      "problem": "模糊对比偏弱，卡内细条与卡外差异不够明显。",
+      "change": "sigma 14→18，卡面 fill alpha 0x33→0x22。",
+      "result": "v013 卡内柔化、卡外锐利，局部裁图确认。",
+      "evidence": "tmp/20261018T1140/A03/renders/system-pulse/v013_crop_card.png"
+    }
+  ],
+  "views": [
+    {
+      "id": "A03-view-v010",
+      "version": "v010",
+      "image": "tmp/20261018T1140/A03/renders/system-pulse/v010.png",
+      "viewed_at": "2026-10-18T12:05:40+08:00",
+      "note": "首次成功图：1280×900；BackdropFilter 未模糊卡内；标题距顶 24px。"
+    },
+    {
+      "id": "A03-view-v011",
+      "version": "v011",
+      "image": "tmp/20261018T1140/A03/renders/system-pulse/v011.png",
+      "viewed_at": "2026-10-18T12:06:06+08:00",
+      "note": "1280×800；卡内副本模糊生效，文字清晰；标题仍 24px。"
+    },
+    {
+      "id": "A03-view-v012",
+      "version": "v012",
+      "image": "tmp/20261018T1140/A03/renders/system-pulse/v012.png",
+      "viewed_at": "2026-10-18T12:06:24+08:00",
+      "note": "标题移至 32px，安全边距达标。"
+    },
+    {
+      "id": "A03-view-v013",
+      "version": "v013",
+      "image": "tmp/20261018T1140/A03/renders/system-pulse/v013.png",
+      "viewed_at": "2026-10-18T12:06:38+08:00",
+      "note": "最终整图：三卡/LIVE/REVIEW/说明卡全部完整可见。"
+    },
+    {
+      "id": "A03-view-crop-card",
+      "version": "v013-crop",
+      "image": "tmp/20261018T1140/A03/renders/system-pulse/v013_crop_card.png",
+      "viewed_at": "2026-10-18T12:06:48+08:00",
+      "note": "局部：卡内细条柔化、卡外锐利，标题/副标题清晰。"
+    }
+  ],
+  "closing": "临时目录保留原稿与 4 个失败版本 DSL、4 份错误 JSON、v010–v013 成功 PNG、1 张局部裁图、修复脚本与 repair-log；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

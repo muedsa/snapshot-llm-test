@@ -1,0 +1,39 @@
+{
+  "task": "A20",
+  "title": "二十四密集点的无重叠标注",
+  "started_at": "2026-10-18T13:50:00+08:00",
+  "status": "completed",
+  "dsl_versions": 6,
+  "files": [
+    {"src": "tmp/20261018T1140/A20/renders/annotated-map-v006.png", "dst": "annotated-map.png", "purpose": "1600×1100 密集点地图与引导标注", "pair": "annotated-map.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A20/dsl/annotated-map-v006.snapshot", "dst": "annotated-map.snapshot", "purpose": "完整 DSL", "pair": "annotated-map.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A20/label-layout-v006.json", "dst": "label-layout.json", "purpose": "24 逻辑坐标/像素锚点/标签盒/折线", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A20/layout-audit-v006.json", "dst": "layout-audit.json", "purpose": "标签交集/线穿标签/交叉/边界/中心6点", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["annotated-map.png", "annotated-map.snapshot", "label-layout.json", "layout-audit.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "1600×1100；主图区 [280,160,1320,920]；像素锚点 (280+10.4x, 920−7.6y)；24 点全部按输入映射，点径 12，未缩小、未删除。",
+    "24 个标签全部显示编号/name/value，正文 20px；标签盒两两最小间距 5.0px（≥4）；盒与任一非本点圆盘最小净距 18.2px（≥6）；无重叠/无覆盖。",
+    "5 条引导线；需引导的 M06 已连；线-标签内部 0、线穿圆盘 0、线线交叉 0（上限3）、共线 0、自交 0；线与标签终点正确。",
+    "坐标轴 0–100、单位“指数”、原点左下说明；value 前三 M10(93)、M08(91)、M23(90) 以金色环/标签标记；最高按 value 降序、ID 升序。",
+    "图例、几何审计摘要、24/24 标注与页脚均在图中；主图完整；所有目标/标签实际查看。",
+    "放大查看中心 6 点 M06/M08/M09/M10/M11/M12 及其引导线：标签不压点、线不穿标签、M06 线清晰连回。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应与字体", "6 个 DSL 版本"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Container/Transform/Stack/Text", "点、标签、折线"],
+    ["https://snapshot.muedsa.com/guides/layout/", "绝对定位与固定画布", "1600×1100"]
+  ],
+  "capabilities": "24 点标签非重叠布局、条件引导线、折线交叉几何审计、top3 规则、边界/点覆盖检查；未使用 Image。",
+  "design": "米白地图纸 + 深蓝观测点 + 白底标签，密集中心用左右错位与五条细引导线分流；top3 金色环和标签金色文字作为唯一强调色，保持地图本身不被解释文字压住。",
+  "experience": "标签盒间距与“盒到点圆盘净距”必须分开算；标签靠近点时可免除引导线，但任何 >24px 必须补线。中心 6 点用左右分侧并按 y 排序，才能做到 0 交叉；线必须画在标签与圆盘下层。",
+  "issues": [],
+  "iterations": [
+    {"id": "A20-IT-001", "type": "alternative", "parent": "v001", "problem": "早期版本标签密集、引导线穿过标签/圆盘，交叉超限。", "change": "重排 24 标签盒、限制 5 条引导线、按中心左右分侧；最终 v006 通过。", "result": "24/24 标签，min gap5.0，line crossings0，线穿标签0。", "evidence": "tmp/20261018T1140/A20/renders/annotated-map-v006.png"}
+  ],
+  "views": [
+    {"id": "A20-view-full", "version": "v006", "image": "tmp/20261018T1140/A20/renders/annotated-map-v006.png", "viewed_at": "2026-10-18T14:12:00+08:00", "note": "全图：24 标签、5 引导线、top3、轴/单位。"},
+    {"id": "A20-view-center", "version": "v006-crop", "image": "tmp/20261018T1140/A20/crops/v006-center.png", "viewed_at": "2026-10-18T14:12:20+08:00", "note": "中心 6 点放大：标签不压点，M06 线连回。"}
+  ],
+  "closing": "临时目录保留 6 个 DSL 版本、完整 audit/label-layout、失败尝试与中心裁图；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

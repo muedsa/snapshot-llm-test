@@ -1,0 +1,42 @@
+{
+  "task": "A06",
+  "title": "十四节点依赖图与反馈回路（从需求到可复现交付）",
+  "started_at": "2026-10-18T12:13:20+08:00",
+  "status": "completed",
+  "dsl_versions": 3,
+  "files": [
+    {"src": "tmp/20261018T1140/A06/renders/v003.png", "dst": "dependency-map.png", "purpose": "1600×1000 依赖与反馈解释图", "pair": "dependency-map.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A06/dsl/v003.snapshot", "dst": "dependency-map.snapshot", "purpose": "最终完整 DSL", "pair": "dependency-map.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A06/graph-audit.json", "dst": "graph-audit.json", "purpose": "拓扑层、邻居、最长路径、先决边路径与反馈边路径", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["dependency-map.png", "dependency-map.snapshot", "graph-audit.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "1600×1000；14 个节点全部出现且编号+标签完整，按拓扑层 L0–L10 从左到右排列，并行节点在同一层上下展开。",
+    "16 条先决边全部为实线，箭头指向后继且全部指向右侧更后的层；无实线指向过去层。",
+    "2 条反馈边 N09→N08、N10→N08 以琥珀色虚线、专用图例和独立箭头表示，明确不参与 DAG 排序；图内文字分别解释“失败后回到构建”“检查发现问题后修复”。",
+    "N04→N13 的跨层先决边从上方绕行，N03→N06 从下方绕行；线不穿过节点，未产生额外连接点。",
+    "N06→N08 与 N07→N08 两个入箭头在 N08 左边缘上下错开 8px，方向可辨。",
+    "节点标签 22px、编号/层号/注释 18px；节点框内文字无裁切。",
+    "graph-audit.json 拓扑层、每节点入/出邻居、16 条先决路径、2 条反馈路径、最长先决路径 11 节点均与图一致。",
+    "整图实际查看；三版对比确认底部面板文字不再溢出、跨层边与反馈边无混淆。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、颜色与字体", "全部 3 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Stack/Positioned、Container 边框、Row/Column、Text 字号、ClipPath 三角形箭头", "节点、边、箭头与图例"],
+    ["https://snapshot.muedsa.com/guides/layout/", "绝对定位与固定尺寸 Stack", "分层坐标与绕行路径"]
+  ],
+  "capabilities": "手工图布局、折线/正交边路由、虚线（短段序列）、三角形箭头（ClipPath）、按层着色、绝对定位节点与标签；未使用 Image。",
+  "design": "把交付流程画成一条从左到右的拓扑河：主干 N08–N14 位于中部直线上方分叉，早期 N01–N07 在左侧上下展开；跨层的 N04→N13 从上方绕行，N03→N06 从下方绕行，两条反馈回路分别从上方/下方折回 N08，用琥珀虚线区分“回路”与“先决”。底部解释面板把读图规则与两条反馈的语义写清，避免依赖图变成 14 个孤立标签。",
+  "experience": "多层 DAG 要先算拓扑层再定 x；跨层边必须绕开节点，不能在中列直接竖直穿过；多条边汇入同一节点时箭头要在入边边缘错开；虚线要用短段序列而不是把实线改色；节点编号/层号也属于注释，字号需≥18。",
+  "issues": [],
+  "iterations": [
+    {"id": "A06-IT-001", "type": "visual", "parent": "v001", "problem": "v001 底部说明面板三列无宽度约束，反馈 A 文本溢出、反馈 B 不可见；N04→N13 被路由到下方，与“数据快照直达”标签不符；节点编号/层号 13/11px 小于注释 18px。", "change": "底部三列固定 600/390/390；跨 3 层以上先决边改走上方 y=215；节点编号/层号/层标尺提升至 18px，节点高 70；补两条入边箭头错开。", "result": "v002 图面与底部面板均完整，跨层边与标签一致。", "evidence": "tmp/20261018T1140/A06/renders/v002.png"},
+    {"id": "A06-IT-002", "type": "visual", "parent": "v002", "problem": "N06→N08 与 N07→N08 的箭头在 N08 左边缘重合，方向不够清楚。", "change": "对 N06/N07 入 N08 的终点 y 分别偏移 +8/−8，并同步 audit 路径。", "result": "v003 两个箭头分离，所有边方向可辨。", "evidence": "tmp/20261018T1140/A06/renders/v003.png"}
+  ],
+  "views": [
+    {"id": "A06-view-v001", "version": "v001", "image": "tmp/20261018T1140/A06/renders/v001.png", "viewed_at": "2026-10-18T12:13:47+08:00", "note": "基线：发现底部反馈文本溢出、长边路由与标签不符、注释偏小。"},
+    {"id": "A06-view-v002", "version": "v002", "image": "tmp/20261018T1140/A06/renders/v002.png", "viewed_at": "2026-10-18T12:14:12+08:00", "note": "底部三列完整；跨层边在上方；发现 N08 两个入箭头重合。"},
+    {"id": "A06-view-v003", "version": "v003", "image": "tmp/20261018T1140/A06/renders/v003.png", "viewed_at": "2026-10-18T12:14:33+08:00", "note": "最终整图：14 节点、16 实线、2 虚线反馈、底部解释全部完整。"}
+  ],
+  "closing": "临时目录保留 3 次成功请求、3 个 DSL 版本、全部 PNG 与 graph-audit；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

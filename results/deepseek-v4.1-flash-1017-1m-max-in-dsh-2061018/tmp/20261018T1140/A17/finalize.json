@@ -1,0 +1,66 @@
+{
+  "task": "A17",
+  "title": "四页可实践的 DSL 入门手册",
+  "started_at": "2026-10-18T13:22:40+08:00",
+  "status": "completed",
+  "dsl_versions": 4,
+  "files": [
+    {"src": "tmp/20261018T1140/A17/renders/handbook-01-v003.png", "dst": "handbook-01.png", "purpose": "1200×1600 第1页 请求契约", "pair": "handbook-01.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/handbook-01-v003.snapshot", "dst": "handbook-01.snapshot", "purpose": "第1页完整 DSL", "pair": "handbook-01.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/renders/handbook-02-v004.png", "dst": "handbook-02.png", "purpose": "1200×1600 第2页 布局", "pair": "handbook-02.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/handbook-02-v004.snapshot", "dst": "handbook-02.snapshot", "purpose": "第2页完整 DSL", "pair": "handbook-02.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/renders/handbook-03-v004.png", "dst": "handbook-03.png", "purpose": "1200×1600 第3页 文本/alpha", "pair": "handbook-03.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/handbook-03-v004.snapshot", "dst": "handbook-03.snapshot", "purpose": "第3页完整 DSL", "pair": "handbook-03.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/renders/handbook-04-v003.png", "dst": "handbook-04.png", "purpose": "1200×1600 第4页 滤镜/交付", "pair": "handbook-04.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/handbook-04-v003.snapshot", "dst": "handbook-04.snapshot", "purpose": "第4页完整 DSL", "pair": "handbook-04.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/examples/example-01-v002.png", "dst": "example-01.png", "purpose": "400×240 请求契约示例", "pair": "example-01.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/example-01-v004.snapshot", "dst": "example-01.snapshot", "purpose": "示例1完整DSL", "pair": "example-01.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/examples/example-02-v004.png", "dst": "example-02.png", "purpose": "400×240 布局示例", "pair": "example-02.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/example-02-v004.snapshot", "dst": "example-02.snapshot", "purpose": "示例2完整DSL", "pair": "example-02.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/examples/example-03-v002.png", "dst": "example-03.png", "purpose": "400×240 文本/alpha示例", "pair": "example-03.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/example-03-v004.snapshot", "dst": "example-03.snapshot", "purpose": "示例3完整DSL", "pair": "example-03.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/examples/example-04-v002.png", "dst": "example-04.png", "purpose": "400×240 子树滤镜示例", "pair": "example-04.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/dsl/example-04-v004.snapshot", "dst": "example-04.snapshot", "purpose": "示例4完整DSL", "pair": "example-04.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/sources.md", "dst": "sources.md", "purpose": "技术结论到实际文档/实测的映射", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A17/examples.json", "dst": "examples.json", "purpose": "4 示例的行号/原文/页面定位/response/claims", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["handbook-01.png", "handbook-01.snapshot", "handbook-02.png", "handbook-02.snapshot", "handbook-03.png", "handbook-03.snapshot", "handbook-04.png", "handbook-04.snapshot", "example-01.png", "example-01.snapshot", "example-02.png", "example-02.snapshot", "example-03.png", "example-03.snapshot", "example-04.png", "example-04.snapshot", "sources.md", "examples.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "四页均 1200×1600，正文 24、标题 46、代码 20、边距 48；每页含页码/章节/短说明/示例插图/代码块/页脚。",
+    "第1页：请求契约、200 image/png、400 JSON(code/message/requestId)、错误 JSON 不可存成 PNG；示例 13 行。",
+    "第2页：有界容器、Row/Column 主轴、Expanded 1:2、Stack Positioned；示例 16 行；400×240 内对照。",
+    "第3页：Text trim、Raw、CDATA 非机制、text 属性字面 < > &、#RRGGBBAA alpha；示例 14 行。",
+    "第4页：ImageFiltered 子树、ClipRRect、BackdropFilter 实测不稳、视觉自检与交付留痕；示例 18 行。",
+    "四例全 DSL 分别 17/20/18/32 行，印刷 13/16/14/18 行（8–18 内）；省略位置用“……省略……”明确标出，省略号不插入可执行源码。",
+    "四例 400×240 均真实渲染；页面插图与独立示例核心逐像素比对：1–3 为 0 像素差，4 为 5 个模糊边缘抗锯齿像素；无缩放。",
+    "examples.json 记录完整 DSL/PNG、核心/页面定位、包装差异、1-based 行段、逐字原文、requestId 与 7 条技术结论；印刷片段已与完整 DSL 逐行比对一致。",
+    "四页与四例全部实际打开查看；sources.md 将每条结论指到实际阅读文档或本套 A03/A10 实测。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应/错误与 PNG 字节", "P01"],
+    ["https://snapshot.muedsa.com/guides/layout/", "有界布局/尺寸来源", "P02"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Text/Raw/text 属性/#RRGGBBAA/ImageFiltered/无 CDATA", "P03–P04"],
+    ["tmp/20261018T1140/A03/composite-audit.json", "BackdropFilter 实测不稳定", "P04"],
+    ["tmp/20261018T1140/A10/composite-audit.json", "背景副本+ImageFiltered 的可靠模糊", "P04"]
+  ],
+  "capabilities": "四页教学排版、同子树 1:1 页面插图、400×240 独立可运行示例、代码行号/原文映射、XML 转义展示、真实 requestId 证据；未使用 Image。",
+  "design": "米白纸张 + 珊瑚/墨绿双色：每页统一页号、章节、标题、说明、左文右图、底部整幅代码块与练习句。教学插图用白色画框浮起，核心 400×240 与独立 PNG 同源；代码块深色，突出可运行片段。",
+  "experience": "教学页最容易在“长 URL/长 Code 行”处重叠；正文每行必须预留换行高度，代码展示需按实际字符宽度控制。页面插图和独立示例必须共享同一个 core 字符串，再用像素 diff 证明 1:1（本次 0/0/0/5 px）。代码印刷用 XML 转义，examples.json 保留未转义原文，才能真正还原。",
+  "issues": [],
+  "iterations": [
+    {"id": "A17-IT-001", "type": "visual", "parent": "v001", "problem": "v001 第1页 URL 在 580px 列内换行并与下一行重叠；第3/4页长句换行后压到下一个标题；代码块长行溢出。", "change": "URL 拆成两行；CDATA/BackdropFilter 长句拆成短条目；代码块延长到 660px；页面 text 属性改用 Tattr 保留字面 <>&。", "result": "v002 第1/3/4页无文字重叠，代码块不再被底边裁切。", "evidence": "tmp/20261018T1140/A17/renders/handbook-01-v002.png"},
+    {"id": "A17-IT-002", "type": "visual", "parent": "v002", "problem": "第4页 18 行代码的最后省略提示贴住/超出代码块底边。", "change": "代码块 610→660px，练习句下移到 1382。", "result": "v003 四页代码块与提示均完整。", "evidence": "tmp/20261018T1140/A17/renders/handbook-04-v003.png"},
+    {"id": "A17-IT-003", "type": "visual", "parent": "v003", "problem": "第2页 Positioned 行在代码块右缘换行；第3页 intro 的字面 < > & 被 T 清洗成全角。", "change": "示例2 coral 容器 80×30→70×26；第3页 intro 改 Tattr。", "result": "v004 第2/3页可读，字面尖括号保留；插图像素仍与示例一致。", "evidence": "tmp/20261018T1140/A17/renders/handbook-03-v004.png"}
+  ],
+  "views": [
+    {"id": "A17-view-ex1", "version": "ex1-v002", "image": "tmp/20261018T1140/A17/examples/example-01-v002.png", "viewed_at": "2026-10-18T13:24:40+08:00", "note": "400×240 契约卡：POST/200/400/错误非PNG。"},
+    {"id": "A17-view-ex2", "version": "ex2-v004", "image": "tmp/20261018T1140/A17/examples/example-02-v004.png", "viewed_at": "2026-10-18T13:26:30+08:00", "note": "400×240 Row/Expanded 1:2 + Stack Positioned。"},
+    {"id": "A17-view-ex3", "version": "ex3-v002", "image": "tmp/20261018T1140/A17/examples/example-03-v002.png", "viewed_at": "2026-10-18T13:24:52+08:00", "note": "400×240 Raw/text/alpha 示例。"},
+    {"id": "A17-view-ex4", "version": "ex4-v002", "image": "tmp/20261018T1140/A17/examples/example-04-v002.png", "viewed_at": "2026-10-18T13:24:58+08:00", "note": "400×240 crisp vs ImageFiltered 子树。"},
+    {"id": "A17-view-p1", "version": "p1-v003", "image": "tmp/20261018T1140/A17/renders/handbook-01-v003.png", "viewed_at": "2026-10-18T13:25:40+08:00", "note": "第1页：URL/响应/代码/插图完整。"},
+    {"id": "A17-view-p2", "version": "p2-v004", "image": "tmp/20261018T1140/A17/renders/handbook-02-v004.png", "viewed_at": "2026-10-18T13:26:55+08:00", "note": "第2页：有界/Expanded/Positioned 对照。"},
+    {"id": "A17-view-p3", "version": "p3-v004", "image": "tmp/20261018T1140/A17/renders/handbook-03-v004.png", "viewed_at": "2026-10-18T13:27:25+08:00", "note": "第3页：字面 <>&、Raw、alpha；无文字重叠。"},
+    {"id": "A17-view-p4", "version": "p4-v003", "image": "tmp/20261018T1140/A17/renders/handbook-04-v003.png", "viewed_at": "2026-10-18T13:25:40+08:00", "note": "第4页：滤镜/自检/交付；代码块 18 行与提示完整。"}
+  ],
+  "closing": "临时目录保留 23 次真实渲染、4 个 DSL 版本、4 页与 4 例、页面/示例像素 diff、sources.md 与 examples.json；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

@@ -1,0 +1,54 @@
+{
+  "task": "A11",
+  "title": "文字保真与跨页结算单",
+  "started_at": "2026-10-18T12:35:40+08:00",
+  "status": "completed",
+  "dsl_versions": 7,
+  "files": [
+    {"src": "tmp/20261018T1140/A11/renders/page1/v007.png", "dst": "invoice-page-01.png", "purpose": "1200×1600 结算与明细", "pair": "invoice-page-01.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A11/dsl/page1/v007.snapshot", "dst": "invoice-page-01.snapshot", "purpose": "第 1 页完整 DSL", "pair": "invoice-page-01.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A11/renders/page2/v007.png", "dst": "invoice-page-02.png", "purpose": "1200×1600 说明与原样文字", "pair": "invoice-page-02.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A11/dsl/page2/v007.snapshot", "dst": "invoice-page-02.snapshot", "purpose": "第 2 页完整 DSL", "pair": "invoice-page-02.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A11/invoice-audit.json", "dst": "invoice-audit.json", "purpose": "逐行金额、计税基数、舍入与 literal_lines 原样", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A11/text-map.json", "dst": "text-map.json", "purpose": "54 段文本的页面/像素盒/字体/字号与核对", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["invoice-page-01.png", "invoice-page-01.snapshot", "invoice-page-02.png", "invoice-page-02.snapshot", "invoice-audit.json", "text-map.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "两页均 1200×1600；同一页眉显示 SN-2026-1107-008、2026-11-07、CNY，页码 1/2 与 2/2；安全边距 ≥48，正文 22–26px、脚注 ≥20px。",
+    "第 1 页四行 SKU/名称/数量/单价/行金额完整：805.50、478.80、1,160.00、1,680.00；金额列右对齐、等宽字体、两位小数。",
+    "小计 4,124.30；折扣 −180.00；税前 3,944.30；税 236.66（236.658 经 ROUND_HALF_UP 至分）；运费 35.00 不计税；应付 4,215.96。",
+    "计量使用 Decimal 定点：行金额乘后 quantize 0.01，税只在本步舍入，运费最后相加；invoice-audit 记录精确基数与顺序。",
+    "第 1 页表头、合计值、核验摘要均无裁切；SKU A<B&C>D 用 Text 的 text 属性原样显示，未变成实体。",
+    "第 2 页四条 notes 与四条 literal_lines 完整；literal 行使用 text 属性逐字符保真：批次行双空格、路径反斜杠、A < B & C > D、英文指令行均原样。",
+    "PAID / 已结算 用同一外层 Text 的三个 span：PAID 绿色、斜线灰色、中文深色，同基线；状态不改应付。指令行仅排版。",
+    "两页整图与表格、合计、literal、PAID 局部图实际查看；text-map 54 段覆盖页眉、双方、四行、合计、四条 notes、四条 literal 与 PAID。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、颜色与字体", "全部 13 次渲染请求"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Text text 属性、嵌套 span/Raw、fontFamily、颜色", "literal 保真与 PAID 富文本"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定尺寸 Stack 与 Positioned", "两页页眉、表格、合计"]
+  ],
+  "capabilities": "十进制定点计费与 ROUND_HALF_UP、Text text 属性原样字符、嵌套 span 富文本、等宽金额对齐、中/日/拉丁字体回退、跨页重复页眉；未使用 Image。",
+  "design": "以米白纸张、深墨与墨绿作“正式结算单”：第 1 页上半部是买卖双方和发票元信息，中部是四行明细，右侧纵向合计，底部核验摘要；第 2 页用四张编号说明卡、深色等宽原样文字块和状态样张收束。金额与 SKU 用等宽字体，中文/日文按语言切换字体。",
+  "experience": "literal_lines 里的 <、>、& 必须走 Text 的 text 属性，内容节点会被当作标签；双空格在属性中保留。嵌套 span 里的普通空格可能被 trim，PAID 的斜线两侧应使用 Raw。页眉嵌套 Stack 若只有 Positioned 子节点也会触发 Layout size infinite，需要非定位 SizedBox。",
+  "issues": [],
+  "iterations": [
+    {"id": "A11-IT-001", "type": "syntax-fix", "parent": "v001-v003", "problem": "两页 v002/v003 均 400 RENDER_ERROR：Layout size is infinite。", "change": "页眉 Stack 首部加入非定位 SizedBox(W,230)，并给页眉/说明行 Row 显式宽度。", "result": "v004 两页 200，1200×1600。", "evidence": "tmp/20261018T1140/A11/responses/page1-v002-A11-baseline-3dbf04c903.json"},
+    {"id": "A11-IT-002", "type": "visual", "parent": "v004", "problem": "表头 AMOUNT 被内边距裁切，合计 4,215.96 被 192px 值框裁切，PAID 空格被 trim。", "change": "表头去水平内边距；合计值框 340/192→300/208；PAID 斜线用 Raw 保留空格。", "result": "v005 表头与合计完整，PAID 显示空格。", "evidence": "tmp/20261018T1140/A11/renders/p2_paid_v005.png"},
+    {"id": "A11-IT-003", "type": "visual", "parent": "v005", "problem": "SKU 的 O/0 在无衬线等宽中仍易混，合计值贴近卡片右缘。", "change": "SKU 改 DejaVu Sans Mono；合计值框 232→208，右侧留 12px。", "result": "v006 SKU 更易区分，合计不贴边。", "evidence": "tmp/20261018T1140/A11/renders/p1_table_v006.png"},
+    {"id": "A11-IT-004", "type": "visual", "parent": "v006", "problem": "摘要标签 18px、合计脚注 18px，低于脚注 20px；摘要值 22px 低于正文 24px。", "change": "标签/脚注提升到 20px，摘要值 24px，合计值右移留白。", "result": "v007 字号层级满足要求，无裁切。", "evidence": "tmp/20261018T1140/A11/renders/page1/v007.png"}
+  ],
+  "views": [
+    {"id": "A11-view-literal-test", "version": "literal-test", "image": "tmp/20261018T1140/A11/renders/literal-test.png", "viewed_at": "2026-10-18T12:35:30+08:00", "note": "验证 text 属性可原样显示 < & >，实体形式会显示成字面量。"},
+    {"id": "A11-view-page1-v004", "version": "page1-v004", "image": "tmp/20261018T1140/A11/renders/page1/v004.png", "viewed_at": "2026-10-18T12:37:38+08:00", "note": "首版成功：表头/合计右侧裁切，PAID 无空格。"},
+    {"id": "A11-view-page2-v004", "version": "page2-v004", "image": "tmp/20261018T1140/A11/renders/page2/v004.png", "viewed_at": "2026-10-18T12:37:55+08:00", "note": "四条 notes、literal 与 PAID 结构完整；PAID 空格缺失。"},
+    {"id": "A11-view-p1-table-v004", "version": "crop", "image": "tmp/20261018T1140/A11/renders/p1_table.png", "viewed_at": "2026-10-18T12:38:00+08:00", "note": "局部：表头 AMOUNT 被裁。"},
+    {"id": "A11-view-p1-totals-v004", "version": "crop", "image": "tmp/20261018T1140/A11/renders/p1_totals.png", "viewed_at": "2026-10-18T12:38:02+08:00", "note": "局部：合计 4,215.96 贴边裁切。"},
+    {"id": "A11-view-p2-literal-v005", "version": "crop", "image": "tmp/20261018T1140/A11/renders/p2_literal_v005.png", "viewed_at": "2026-10-18T12:38:32+08:00", "note": "局部：双空格、反斜杠、< & > 原样。"},
+    {"id": "A11-view-p2-paid-v006", "version": "crop", "image": "tmp/20261018T1140/A11/renders/p2_paid_v006.png", "viewed_at": "2026-10-18T12:39:08+08:00", "note": "局部：PAID 绿、斜线灰、中文深色，空格已保留。"},
+    {"id": "A11-view-page1-v007", "version": "page1-v007", "image": "tmp/20261018T1140/A11/renders/page1/v007.png", "viewed_at": "2026-10-18T12:39:40+08:00", "note": "最终第 1 页：表头/合计/摘要完整，字号达标。"},
+    {"id": "A11-view-page2-v007", "version": "page2-v007", "image": "tmp/20261018T1140/A11/renders/page2/v007.png", "viewed_at": "2026-10-18T12:39:45+08:00", "note": "最终第 2 页：notes、literal、PAID、check 完整。"},
+    {"id": "A11-view-p2-paid-v007", "version": "crop", "image": "tmp/20261018T1140/A11/renders/p2_paid_v007.png", "viewed_at": "2026-10-18T12:39:50+08:00", "note": "局部复查：PAID / 已结算 空格与颜色。"}
+  ],
+  "closing": "临时目录保留 13 次服务请求（4 次失败、1 次字符测试）、7 个 DSL 版本、两页 PNG 与 8 张局部证据；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

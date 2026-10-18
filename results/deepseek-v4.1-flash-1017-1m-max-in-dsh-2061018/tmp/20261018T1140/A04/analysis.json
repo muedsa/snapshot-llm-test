@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "source": "tasks/A04-conversion-paradox/inputs/conversion.csv",
+  "units": {
+    "visits": "次",
+    "conversions": "笔",
+    "rate": "%"
+  },
+  "groups": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "conversions": 2400,
+      "visits": 8000,
+      "exact_fraction": [
+        2400,
+        8000
+      ],
+      "decimal": 0.3,
+      "display": "30.00%"
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "conversions": 200,
+      "visits": 2000,
+      "exact_fraction": [
+        200,
+        2000
+      ],
+      "decimal": 0.1,
+      "display": "10.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "conversions": 700,
+      "visits": 2000,
+      "exact_fraction": [
+        700,
+        2000
+      ],
+      "decimal": 0.35,
+      "display": "35.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "conversions": 960,
+      "visits": 8000,
+      "exact_fraction": [
+        960,
+        8000
+      ],
+      "decimal": 0.12,
+      "display": "12.00%"
+    }
+  ],
+  "periods": [
+    {
+      "period": "前期",
+      "conversions": 2600,
+      "visits": 10000,
+      "exact_fraction": [
+        2600,
+        10000
+      ],
+      "weighted_formula": "sum(conversions) / sum(visits)",
+      "decimal": 0.26,
+      "display": "26.00%",
+      "visit_composition": {
+        "直接访问": 0.8,
+        "推广访问": 0.2
+      },
+      "composition_percent": {
+        "直接访问": 80.0,
+        "推广访问": 20.0
+      }
+    },
+    {
+      "period": "后期",
+      "conversions": 1660,
+      "visits": 10000,
+      "exact_fraction": [
+        1660,
+        10000
+      ],
+      "weighted_formula": "sum(conversions) / sum(visits)",
+      "decimal": 0.166,
+      "display": "16.60%",
+      "visit_composition": {
+        "直接访问": 0.2,
+        "推广访问": 0.8
+      },
+      "composition_percent": {
+        "直接访问": 20.0,
+        "推广访问": 80.0
+      }
+    }
+  ],
+  "axes": [
+    {
+      "chart": "channel_rates",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "zero_baseline": true,
+      "ticks": [
+        0,
+        25,
+        50,
+        75,
+        100
+      ],
+      "plot_px": {
+        "x": 60,
+        "y": 18,
+        "width": 608,
+        "height": 220
+      },
+      "mapping": "y = 18 + 220 * (100 - value_percent) / 100"
+    },
+    {
+      "chart": "visit_composition",
+      "unit": "share of period visits",
+      "min": 0,
+      "max": 100,
+      "equal_bar_length_px": 620,
+      "mapping": "segment_px = 620 * channel_visits / period_visits; both periods use 620px"
+    }
+  ],
+  "comparison": {
+    "direct_delta_pp": 5.0,
+    "promo_delta_pp": 2.0,
+    "overall_delta_pp": -9.4,
+    "both_groups_improved": true,
+    "overall_declined": true,
+    "composition_shift": {
+      "direct_share_early": 80.0,
+      "direct_share_late": 20.0
+    }
+  },
+  "conclusions": [
+    {
+      "claim": "两渠道转化率均上升，但总体转化率下降；总体按成交总数/访问总数计算，构成变化解释了同向性差异。",
+      "evidence_fields": [
+        "groups[0].display",
+        "groups[2].display",
+        "groups[1].display",
+        "groups[3].display",
+        "periods[0].display",
+        "periods[1].display",
+        "periods[0].composition_percent",
+        "periods[1].composition_percent"
+      ],
+      "values": [
+        "30.00%",
+        "35.00%",
+        "10.00%",
+        "12.00%",
+        "26.00%",
+        "16.60%",
+        {
+          "直接访问": 80.0,
+          "推广访问": 20.0
+        },
+        {
+          "直接访问": 20.0,
+          "推广访问": 80.0
+        }
+      ]
+    },
+    {
+      "claim": "不能由该数据证明因果。",
+      "limitation": "两期观察数据，无随机化或对照；季节、投放质量、渠道口径、用户结构等混杂因素均可能影响结果。",
+      "evidence_fields": [
+        "source",
+        "periods"
+      ]
+    }
+  ]
+}

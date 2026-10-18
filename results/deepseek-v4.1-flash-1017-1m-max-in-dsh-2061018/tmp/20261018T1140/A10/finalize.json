@@ -1,0 +1,47 @@
+{
+  "task": "A10",
+  "title": "透明合成与滤镜语义实验板",
+  "started_at": "2026-10-18T12:27:30+08:00",
+  "status": "completed",
+  "dsl_versions": 3,
+  "files": [
+    {"src": "tmp/20261018T1140/A10/renders/v005.png", "dst": "compositing-lab.png", "purpose": "1440×1100 六格实验板", "pair": "compositing-lab.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A10/dsl/v005.snapshot", "dst": "compositing-lab.snapshot", "purpose": "最终完整 DSL", "pair": "compositing-lab.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A10/composite-audit.json", "dst": "composite-audit.json", "purpose": "①②理论/实测、③–⑥配对画面与视觉证据", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["compositing-lab.png", "compositing-lab.snapshot", "composite-audit.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "1440×1100；六个 320×240 白底实验区，3 列×2 行，格间距 32px；编号与说明全部在实验区外，区原点为 (88,228)/(520,228)/(952,228)/(88,600)/(520,600)/(952,600)。",
+    "① 红 #FF000080、蓝 #0000FF80 逐形状 alpha；采样 (180,100) 实测 (127,63,191)，与 128/255 理论 (127,63,191) 误差 0；解释 128/255=0.5019608 与 0.5 的差异。",
+    "② 不透明红蓝在 Opacity(0.5) 组内；采样实测 (126,126,255)，理论 (128,128,255)，误差 -2/-2/0，在每通道 ±3 容差内；alpha=255。",
+    "③ 卡 240×160、圆角 20、局部 (40,40)；条纹跨卡边。文字区最大相邻梯度 227.8（清晰），卡内条纹梯度 4.1、卡外 93.5（背景被模糊、卡外锐利），卡外像素与④逐像素一致。",
+    "④ 同一基础场景，文字与橙色前景一起模糊：文字区梯度仅 8.7（③为 227.8）；卡外像素与③一致，无外溢。",
+    "⑤⑥ 共用同一场景与 sigma=6；⑤无裁剪，圆周外 (40,120) 保留模糊色 (30,30,16)；⑥同一结果被 r=100 圆裁剪，同点为白 (255,255,255)；圆内 r≤90 像素两格逐像素一致。",
+    "⑤ 含深色矩形、两块上方色块、底部色条、透明间隙、白色圆角卡与阴影；每形状先 ColorFiltered(MULTIPLY #F6B94A)，整组再高斯模糊；⑥仅增加 ClipPath 圆。",
+    "说明/图例 20px 以上；六区与局部证据实际查看；PNG 为服务真实响应 1440×1100。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、PNG 与错误处理", "全部 5 次渲染尝试"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "8 位颜色 alpha、Opacity、ImageFiltered、ColorFiltered、ClipPath", "①–⑥ 效果节点"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定尺寸与绝对定位", "六格实验室布局"]
+  ],
+  "capabilities": "逐形状 8 位 alpha、组 Opacity、ImageFiltered 局部/子树模糊、ColorFiltered(MULTIPLY) 与模糊顺序、ClipPath 圆形裁剪、1:1 像素采样与配对区域差异统计；未使用 Image。",
+  "design": "六格像一张“视觉语义对照表”：上排把 alpha 放在形状上 vs 放在组上，直观看到 ① 的紫色重叠与 ② 的蓝色重叠；下排把模糊作用层做成 ③ 背景模糊/④ 整卡模糊、⑤ 无裁剪/⑥ 圆裁剪两组对照，每格只改变一个语义变量。",
+  "experience": "ColorFiltered 包裹整张透明场景会把透明像素也染成滤色；应逐形状滤色后再对整组模糊，透明间隙才保持白底。Opactiy 组的实测值可能比理论低 1–2，需按容差与 8-bit 合成解释。像素核对必须按“区原点+局部坐标”读取，不能按缩略图估计。",
+  "issues": [],
+  "iterations": [
+    {"id": "A10-IT-001", "type": "retry", "parent": "v002", "problem": "v002 渲染两次网络失败：Empty reply / TLS handshake failed。", "change": "服务恢复后以 v004 重试同一 DSL，HTTP 200。", "result": "v004 成功；重试请求单独计数，不伪装成视觉迭代。", "evidence": "tmp/20261018T1140/A10/requests.jsonl"},
+    {"id": "A10-IT-002", "type": "visual", "parent": "v001", "problem": "v001 ⑤/⑥ 的 ColorFiltered 包裹整张透明场景，透明间隙被染成 #F6B94A；v004 改为逐形状滤色后仍保留外层滤镜，间隙仍偏黄。", "change": "逐形状 ColorFiltered，并移除场景外层 ColorFiltered，只保留整组 ImageFiltered。", "result": "v005 间隙恢复白底，深色矩形/阴影/圆裁剪边界清楚；③④⑤⑥局部证据保存。", "evidence": "tmp/20261018T1140/A10/renders/v005.png"},
+    {"id": "A10-IT-003", "type": "visual", "parent": "v004", "problem": "v004 的 ⑤/⑥ 透明间隙仍为滤色黄。", "change": "删除 filtered() 中的外层 ColorFiltered，保留逐形状滤色 + 整组模糊。", "result": "v005 通过；③④卡外一致、⑤⑥圆内一致、⑤圆外保留模糊、⑥圆外为白。", "evidence": "tmp/20261018T1140/A10/checks/panel5.png"}
+  ],
+  "views": [
+    {"id": "A10-view-v001", "version": "v001", "image": "tmp/20261018T1140/A10/renders/v001.png", "viewed_at": "2026-10-18T12:27:58+08:00", "note": "基线：六格齐全；⑤/⑥ 透明间隙被整场 ColorFiltered 染色。"},
+    {"id": "A10-view-v004", "version": "v004", "image": "tmp/20261018T1140/A10/renders/v004.png", "viewed_at": "2026-10-18T12:32:52+08:00", "note": "重试成功；逐形状滤色后仍有外层滤镜，间隙偏黄。"},
+    {"id": "A10-view-v005", "version": "v005", "image": "tmp/20261018T1140/A10/renders/v005.png", "viewed_at": "2026-10-18T12:33:58+08:00", "note": "最终整图：六区、白底间隙、圆形裁剪、脚注公式完整。"},
+    {"id": "A10-view-panel3", "version": "v005-check", "image": "tmp/20261018T1140/A10/checks/panel3.png", "viewed_at": "2026-10-18T12:34:03+08:00", "note": "局部：文字清晰、卡内背景柔化、卡外条纹锐利。"},
+    {"id": "A10-view-panel4", "version": "v005-check", "image": "tmp/20261018T1140/A10/checks/panel4.png", "viewed_at": "2026-10-18T12:34:05+08:00", "note": "局部：文字与橙色前景一起模糊。"},
+    {"id": "A10-view-panel6", "version": "v005-check", "image": "tmp/20261018T1140/A10/checks/panel6.png", "viewed_at": "2026-10-18T12:34:07+08:00", "note": "局部：圆形边界清晰，圆外白底。"},
+    {"id": "A10-view-panel5-big", "version": "v005-check", "image": "tmp/20261018T1140/A10/renders/v005_panel5_big.png", "viewed_at": "2026-10-18T12:34:09+08:00", "note": "放大：深色矩形、透明间隙、阴影与滤色模糊。"}
+  ],
+  "closing": "临时目录保留 5 次渲染请求（含 2 次网络失败）、3 个 DSL 版本、6 张面板裁图与 composite-audit；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

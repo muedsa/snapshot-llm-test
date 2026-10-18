@@ -1,0 +1,57 @@
+{
+  "task": "A13",
+  "title": "品牌标志到完整活动应用（叠光 / Layerlight）",
+  "started_at": "2026-10-18T13:06:30+08:00",
+  "status": "completed",
+  "dsl_versions": 4,
+  "files": [
+    {"src": "tmp/20261018T1140/A13/renders/symbol-color/v004.png", "dst": "symbol-color.png", "purpose": "512×512 透明彩色图标", "pair": "symbol-color.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/dsl/symbol-color/v004.snapshot", "dst": "symbol-color.snapshot", "purpose": "彩色图标完整 DSL", "pair": "symbol-color.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/renders/symbol-black/v004.png", "dst": "symbol-black.png", "purpose": "512×512 透明纯黑图标", "pair": "symbol-black.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/dsl/symbol-black/v004.snapshot", "dst": "symbol-black.snapshot", "purpose": "纯黑图标完整 DSL", "pair": "symbol-black.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/renders/banner/v004.png", "dst": "brand-banner.png", "purpose": "1200×400 品牌横幅", "pair": "brand-banner.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/dsl/banner/v004.snapshot", "dst": "brand-banner.snapshot", "purpose": "横幅完整 DSL", "pair": "brand-banner.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/renders/poster/v004.png", "dst": "launch-poster.png", "purpose": "1080×1350 发布海报", "pair": "launch-poster.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/dsl/poster/v004.snapshot", "dst": "launch-poster.snapshot", "purpose": "海报完整 DSL", "pair": "launch-poster.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/brand-system.json", "dst": "brand-system.json", "purpose": "色彩/比例/5 构件/留白/应用映射/黑色审计", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A13/rationale.md", "dst": "rationale.md", "purpose": "224 字方向与选择说明", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["symbol-color.png", "symbol-color.snapshot", "symbol-black.png", "symbol-black.snapshot", "brand-banner.png", "brand-banner.snapshot", "launch-poster.png", "launch-poster.snapshot", "brand-system.json", "rationale.md", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "先做 A/B 两个 512×512 透明预览并实际查看：A 为三条水平圆角条 + 珊瑚圆环 + 点；B 为两条对角梁 + 菱形 + 点；32px 同看后选 A（横条/圆环在小尺寸仍辨层数与孔径）。",
+    "彩色/纯黑图标均 512×512、透明背景；同一 logo_a 几何（3 条 + 1 环 + 1 点，共 5 个主要几何构件），未把文字整体当图标、无现成标志、无外部图片。",
+    "纯黑版所有 alpha>0 像素 R=G=B=0：56181 个像素，违规 0，alpha 范围 1–255；alpha=0 的 RGB 全为 0。",
+    "彩色与黑色 alpha 掩码最大差 1（203 个边缘像素，均为抗锯齿），几何一致；彩色图标外 alpha=0 区域 RGB 非零数 0。",
+    "32×32 检查用 Pillow 10.0.0 预乘 RGB + LANCZOS + 反预乘，实际 32px 浅底查看彩色/黑色轮廓；A 的 3 层与圆孔仍可读，B 的斜梁更易糊。",
+    "横幅 1200×400：同一几何以 0.5 缩放重绘，文字“叠光 Layerlight”“把复杂信息，组织成清晰画面”完整，含日期与品牌页脚。",
+    "海报 1080×1350：独立竖构图，0.62 缩放重绘同一几何，含“2026.11.07 · ONLINE”“OPEN BETA”“layerlight.example.org”及品牌/口号；非横幅放大。",
+    "图标留白：外接框到 512 画布边最小 56px；brand-system 记录 5 构件参数、环孔负空间与两应用几何映射；rationale 224 字 ≤300。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、PNG/透明背景", "全部 11 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Container 圆角/边框、Transform、颜色 alpha、Text", "图标、横幅、海报"],
+    ["https://snapshot.muedsa.com/guides/layout/", "绝对定位与画布尺寸", "四件应用"]
+  ],
+  "capabilities": "纯 DSL 几何标志（3 圆角条 + 圆环 + 圆点）、透明 PNG、同几何多尺度复用、纯黑 alpha 审计、预乘 Lanczos 32px 检查；未使用 Image。",
+  "design": "标志用“信息层叠仍被清晰框定”作核心：三条错位横条代表叠加信息，珊瑚圆环作为取景/聚焦框，黑点在环心稳定视线。横幅沿用横向阅读；海报改为竖向舞台，标志放大置顶、标题与日期形成单独节奏，底部留白承载 OPEN BETA 与网址。",
+  "experience": "透明图标必须确认 alpha=0 区域 RGB 也为 0；黑色版若用半透明填充会在浅底变灰，应统一为不透明黑，仅让抗锯齿产生 alpha；32px 检查要用预乘 Lanczos，普通 RGBA resize 会产生黑边；圆环用 border 生成孔洞，负空间不另计构件。",
+  "issues": [],
+  "iterations": [
+    {"id": "A13-IT-001", "type": "alternative", "parent": null, "problem": "两个几何方向需要先比较，不能直接定稿。", "change": "A：三条水平圆角条 + 圆环 + 点；B：两条 45° 梁 + 菱形 + 点。", "result": "两预览 512×512 实看；A 在 32px 仍保留层数与孔洞，B 斜梁变细，选 A。", "evidence": "tmp/20261018T1140/A13/previews/preview-a.png"},
+    {"id": "A13-IT-002", "type": "visual", "parent": "v002", "problem": "黑色版三条 bar 用 92/85/90% alpha，浅底显示为灰，不符合“纯黑图标”的视觉预期。", "change": "黑色版全部形状改 #000000FF，仅抗锯齿保留 alpha。", "result": "v003 纯黑；灰色消失，RGB 违规 0。", "evidence": "tmp/20261018T1140/A13/renders/symbol-black/v003.png"},
+    {"id": "A13-IT-003", "type": "visual", "parent": "v003", "problem": "彩色版 bar 仍为半透明，与黑色版的 alpha 掩码不完全一致。", "change": "彩色 bar 也改不透明；重新生成横幅/海报以复用同一几何与不透明度。", "result": "v004 两图标 alpha 差 ≤1（仅 AA），横幅/海报同步更新。", "evidence": "tmp/20261018T1140/A13/renders/symbol-color/v004.png"}
+  ],
+  "views": [
+    {"id": "A13-view-preview-a", "version": "preview-a", "image": "tmp/20261018T1140/A13/previews/preview-a.png", "viewed_at": "2026-10-18T13:06:58+08:00", "note": "方向 A：横条 + 圆环，层次清楚。"},
+    {"id": "A13-view-preview-b", "version": "preview-b", "image": "tmp/20261018T1140/A13/previews/preview-b.png", "viewed_at": "2026-10-18T13:07:00+08:00", "note": "方向 B：对角棱镜，动势强但斜梁在 32px 偏细。"},
+    {"id": "A13-view-color-32", "version": "color-32", "image": "tmp/20261018T1140/A13/previews/view-color-32.png", "viewed_at": "2026-10-18T13:08:20+08:00", "note": "实际 32px：三层与圆孔可辨。"},
+    {"id": "A13-view-black-32", "version": "black-32", "image": "tmp/20261018T1140/A13/previews/view-black-32.png", "viewed_at": "2026-10-18T13:08:22+08:00", "note": "实际 32px：黑色剪影与圆孔可辨。"},
+    {"id": "A13-view-a-32", "version": "a-32", "image": "tmp/20261018T1140/A13/previews/view-preview-a-32.png", "viewed_at": "2026-10-18T13:08:24+08:00", "note": "A 的 32px 对比。"},
+    {"id": "A13-view-b-32", "version": "b-32", "image": "tmp/20261018T1140/A13/previews/view-preview-b-32.png", "viewed_at": "2026-10-18T13:08:26+08:00", "note": "B 的 32px 对比，斜梁糊化更明显。"},
+    {"id": "A13-view-color", "version": "color-v004", "image": "tmp/20261018T1140/A13/renders/symbol-color/v004.png", "viewed_at": "2026-10-18T13:08:40+08:00", "note": "最终彩色图标，透明背景、5 构件。"},
+    {"id": "A13-view-black", "version": "black-v003", "image": "tmp/20261018T1140/A13/renders/symbol-black/v003.png", "viewed_at": "2026-10-18T13:08:42+08:00", "note": "最终黑版视觉；后续 v004 字节相同。"},
+    {"id": "A13-view-banner", "version": "banner-v004", "image": "tmp/20261018T1140/A13/renders/banner/v004.png", "viewed_at": "2026-10-18T13:08:50+08:00", "note": "横幅文字、标志、日期完整。"},
+    {"id": "A13-view-poster", "version": "poster-v004", "image": "tmp/20261018T1140/A13/renders/poster/v004.png", "viewed_at": "2026-10-18T13:08:55+08:00", "note": "海报独立竖构图，品牌/口号/日期/OPEN BETA/网址完整。"}
+  ],
+  "closing": "临时目录保留两方向预览、32px 彩色/黑色/方向对比、4 个 DSL 版本与全部渲染；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

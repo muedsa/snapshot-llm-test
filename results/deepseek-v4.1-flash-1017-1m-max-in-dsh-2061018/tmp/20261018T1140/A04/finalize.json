@@ -1,0 +1,48 @@
+{
+  "task": "A04",
+  "title": "分组改善与总体下降的数据解释（转化悖论）",
+  "started_at": "2026-10-18T12:08:20+08:00",
+  "status": "completed",
+  "dsl_versions": 6,
+  "files": [
+    {"src": "tmp/20261018T1140/A04/renders/v006.png", "dst": "conversion-story.png", "purpose": "1600×1000 分组与总体解释信息图", "pair": "conversion-story.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A04/dsl/v006.snapshot", "dst": "conversion-story.snapshot", "purpose": "最终完整 DSL", "pair": "conversion-story.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A04/analysis.json", "dst": "analysis.json", "purpose": "精确分数、显示百分比、加权公式、轴定义与结论依据", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["conversion-story.png", "conversion-story.snapshot", "analysis.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "1600×1000 实际渲染；三图编号 1/2/3 形成“分组率 → 访问构成 → 总体”的阅读顺序，主结论放在底部，未先行给结论。",
+    "渠道率图四柱顺序正确：直接·前期 30.0%、直接·后期 35.0%、推广·前期 10.0%、推广·后期 12.0%，共用 0–100% 线性尺度；差值 +5.0pp / +2.0pp。",
+    "访问构成图两期条长均 620px；前期直接 80%/推广 20%，后期直接 20%/推广 80%，分段像素宽 496/124 与真实访问数 8,000/2,000 对应。",
+    "总体对照：前期 2,600/10,000 = 26.0%，后期 1,660/10,000 = 16.6%，下降 9.4pp；公式明确为成交总数/访问总数，并注明不是渠道比例平均。",
+    "原始分子/分母小表四行齐全（2,400/8,000、200/2,000、700/2,000、960/8,000），可在总体对照中加权核对；单位次/笔、期名前期/后期齐全。",
+    "正文（表格、结论）22px，图表刻度/标注 18px；三图色系一致：直接=青、推广=琥珀、总体=红/灰。",
+    "主结论引用 26.0%→16.6%、+5.0pp/+2.0pp、80%→20% 等数值；因果限制写明两期观察、无随机化/对照、存在季节/投放/口径混杂。",
+    "整图与右侧构成面板局部裁图均实际打开检查；所有文字无裁切，面板无溢出。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、颜色与字体", "全部 6 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Row/Column/Stack/Positioned、Text 字号与对齐、EdgeInsets、颜色 alpha", "信息图与三图布局"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定尺寸 Stack/Positioned 与面板高度约束", "避免图表面板与表格裁切"]
+  ],
+  "capabilities": "自定义 0–100% 柱图、等长堆叠条、加权总体对照、表格、Stack/Positioned 绝对布局、文字对齐与多字体混排；未使用 Image。",
+  "design": "用暖纸色数据新闻风格与深色结论条形成对比：三张图按 1→2→3 排列，直接访问用青色、推广用琥珀色贯穿率图与构成图，总体用红/灰强调下降；结论放到底部深色条，左侧主结论、右侧因果限制，形成“先证据、后判断”的阅读节奏。",
+  "experience": "图表数据必须按标签顺序显式重排，不能假设 CSV 行序；等长堆叠条要按真实占比计算像素宽；面板内 Stack 的最后一行文字必须留足高度，否则会被 HARD_EDGE 裁掉；表格正文 22px 时每行至少 32px。",
+  "issues": [],
+  "iterations": [
+    {"id": "A04-IT-001", "type": "syntax-fix", "parent": "v001", "problem": "Label 传入 align=LEFT/RIGHT，服务返回 400 PARSE_ERROR。", "change": "改为 CENTER_LEFT / CENTER_RIGHT。", "result": "v002 返回 200，1600×1000。", "evidence": "tmp/20261018T1140/A04/responses/story-v001-A04-baseline-6c483eb0ae.json"},
+    {"id": "A04-IT-002", "type": "visual", "parent": "v002", "problem": "v002 率图按 CSV 行序绘制，柱与标签错位（直接·后期显示 10%、推广·前期显示 35%）；头部副标题被面板遮住。", "change": "率图显式重排为 [前期直接, 后期直接, 前期推广, 后期推广]；调整头部与面板起点。", "result": "v003 四柱与标签一致：30/35/10/12。", "evidence": "tmp/20261018T1140/A04/renders/v003.png"},
+    {"id": "A04-IT-003", "type": "visual", "parent": "v003", "problem": "v003 率图底部摘要被面板裁切，表格第 4 行被裁切。", "change": "率图 body 高度 334→272；表格高度 150→170。", "result": "v004 摘要与四行全部可见。", "evidence": "tmp/20261018T1140/A04/renders/v004.png"},
+    {"id": "A04-IT-004", "type": "visual", "parent": "v004", "problem": "构成图底部说明被 Stack 裁掉；总体面板下方留白过多。", "change": "说明移至 y=230；总体面板恢复 26.0/16.6 两条 mini bar 并压缩说明。", "result": "v005 总体面板更完整；构成说明仍未显示（y 仍为 256）。", "evidence": "tmp/20261018T1140/A04/renders/v005.png"},
+    {"id": "A04-IT-005", "type": "visual", "parent": "v005", "problem": "构成图说明 y=256 超出 Stack 高 258，实际被裁掉。", "change": "说明改到 y=230、高 24；局部复查。", "result": "v006 说明完整可见；右侧局部裁图确认。", "evidence": "tmp/20261018T1140/A04/renders/v006_crop_right.png"}
+  ],
+  "views": [
+    {"id": "A04-view-v002", "version": "v002", "image": "tmp/20261018T1140/A04/renders/v002.png", "viewed_at": "2026-10-18T12:08:55+08:00", "note": "基线：发现率图柱序与标签错位、头部副标题被面板遮挡。"},
+    {"id": "A04-view-v003", "version": "v003", "image": "tmp/20261018T1140/A04/renders/v003.png", "viewed_at": "2026-10-18T12:09:20+08:00", "note": "柱序修正；发现率图摘要与表格末行裁切。"},
+    {"id": "A04-view-v004", "version": "v004", "image": "tmp/20261018T1140/A04/renders/v004.png", "viewed_at": "2026-10-18T12:09:35+08:00", "note": "表格与摘要完整；总体面板偏空、构成说明仍缺。"},
+    {"id": "A04-view-v005", "version": "v005", "image": "tmp/20261018T1140/A04/renders/v005.png", "viewed_at": "2026-10-18T12:09:52+08:00", "note": "mini bar 已恢复；构成说明仍被裁。"},
+    {"id": "A04-view-v006", "version": "v006", "image": "tmp/20261018T1140/A04/renders/v006.png", "viewed_at": "2026-10-18T12:10:08+08:00", "note": "最终整图：三图、表格、结论全部完整。"},
+    {"id": "A04-view-crop-right", "version": "v006-crop", "image": "tmp/20261018T1140/A04/renders/v006_crop_right.png", "viewed_at": "2026-10-18T12:10:20+08:00", "note": "局部：构成图说明完整、两期分段与标签清晰。"}
+  ],
+  "closing": "临时目录保留 6 次请求（1 次 400）、6 个 DSL 版本、全部 PNG 与局部裁图；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

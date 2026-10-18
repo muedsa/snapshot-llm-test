@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "purpose": "专用审计JSON最小字段说明；不是已完成记录",
+  "common_rules": {
+    "required": "artifacts中各对象的required_fields为最小必需字段，允许扩展；数组项字段由该字段说明规定。模板说明不是执行数据，不复制说明为答案。",
+    "identity": "每份最终JSON另含schema_version:1、task_id和path_base:output_dir；多轮文件的round须与目录一致。",
+    "paths": "PNG/DSL和其他交付路径相对本题输出根。临时证据用对象{path_base:suite_root,path:tmp/<run_id>/<task_id>/...}明确基准；不写机器路径。",
+    "coordinates": "有几何时默认画布左上原点、x向右/y向下、像素单位，框为[left,top,right,bottom]；题面另定义的网格/逻辑坐标须单列并记录映射。",
+    "numbers": "单位与精度以题面为准，未指定数值容差的精确数据保持原值，不自行发明合格阈值；几何检查记录未舍入值及方法。",
+    "evidence": "结果由实际计算/图片/响应支持；passed类字段附方法与证据。无法取得值时用null并写原因，不预填成功。",
+    "rounds": "artifacts以文件基本名索引，各轮复用同一字段约定；实际交付位置以task.json完整路径为准。"
+  },
+  "artifacts": {
+    "label-layout.json": {
+      "required_fields": {
+        "coordinate_system": "object；逻辑原点/范围、画布映射和单位",
+        "labels": "array；点ID/name/value/逻辑坐标/未舍入像素锚点/实际点径、标签框[left,top,right,bottom]、文字字号和引导折线（无则null并说明距盒≤24px）"
+      }
+    },
+    "layout-audit.json": {
+      "required_fields": {
+        "distances": "array；锚点至自有盒、标签盒之间的最短欧氏距离及阈值比较",
+        "point_overlaps": "array；标签盒与非本点圆盘的几何核验",
+        "leader_checks": "object；穿标签/自交/共线重合检查、交点坐标与线对列表、交叉总数及1e-6容差",
+        "bounds": "array；点/标签/线在画布内的检查，主图框保持固定",
+        "highlights": "object；value前三ID、中心6点局部和整图的实际查看证据"
+      }
+    }
+  }
+}

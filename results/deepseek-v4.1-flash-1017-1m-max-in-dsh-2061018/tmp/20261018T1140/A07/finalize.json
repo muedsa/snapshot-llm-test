@@ -1,0 +1,51 @@
+{
+  "task": "A07",
+  "title": "三线换乘图与路线核验（地铁示意图 + 旅行卡）",
+  "started_at": "2026-10-18T12:16:50+08:00",
+  "status": "completed",
+  "dsl_versions": 5,
+  "files": [
+    {"src": "tmp/20261018T1140/A07/renders/map/v003.png", "dst": "network-map.png", "purpose": "1600×1000 三线换乘示意图", "pair": "network-map.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A07/dsl/map/v003.snapshot", "dst": "network-map.snapshot", "purpose": "地图完整 DSL", "pair": "network-map.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A07/renders/card/v005.png", "dst": "travel-card.png", "purpose": "720×1280 三条路线旅行卡", "pair": "travel-card.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A07/dsl/card/v005.snapshot", "dst": "travel-card.snapshot", "purpose": "旅行卡完整 DSL", "pair": "travel-card.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A07/routes.json", "dst": "routes.json", "purpose": "普通/无障碍路线、最优性方法、无障碍属性与内容映射", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["network-map.png", "network-map.snapshot", "travel-card.png", "travel-card.snapshot", "routes.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "地图 1600×1000，16 站名称与编号全部出现；三条线路用 7px 折线绘制，B/G 线转角为 45° 或 90°（R 线为直线段），无曲线。",
+    "仅 S04 中心、S08 工坊、S05 东桥为双圈换乘站；其余站点单圈，图例写明“仅双圈站可换乘；线条交叉不换乘”。实际线路无交叉误导。",
+    "线路以颜色 + R/B/G 字母双重编码；无障碍状态以 A（绿）/N（红）逐站标注并给出图例；S03/S05/S09/S14 为 N。",
+    "地图明确写“非地理示意图”“站距不代表实际距离”“相邻站耗时相同”，右上角标注折线转角 45°/90°。",
+    "Q1 S01→S11：普通=无障碍，6 区间、1 换乘（S04）；Q2 S13→S12：普通 6/1（换乘 S05，N），无障碍替代 6/2（S08、S04）；Q3 S07→S16：普通=无障碍，4/1（S08）。",
+    "旅行卡 720×1280，三张查询卡完整显示站序、线路段、区间数、换乘数、换乘站与无障碍判定；Q2 另列无障碍替代，并注明 S05 可乘车通过但不可换乘。",
+    "普通最短按（区间数，换乘数）字典序最优；routes.json 记录方法、代价、站序、逐边线路与 transfer_stations。",
+    "地图站名 20px、手机正文 20px；两图同一深色视觉系统、同一颜色/字母/站号。整图与地图 S05 局部均实际查看，标签无遮挡。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应、颜色与字体", "全部 7 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Stack/Positioned、ClipPath 折线、Text 嵌套 Span、多字体", "线路、站点标签、路线文本"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定画布与绝对定位", "两图排版"]
+  ],
+  "capabilities": "折线路径按站点坐标绘制、ClipPath 粗线带、站点双圈/单圈标记、颜色+字母双编码、嵌套文本着色线路字母、字典序 Dijkstra 路线求解、无障碍约束过滤；未使用 Image。",
+  "design": "地图采用“三角换乘”骨架：R 线横贯上方，B 线从西南上行到 S04，G 线从南侧经 S08 上行到 S05，三个换乘站构成清晰的三角；手机卡把三条查询拆成三张路线卡，用彩色线路字母与站序文本表达分段，Q2 用“普通 ✗ / 无障碍替代 ✓”对照呈现。",
+  "experience": "换乘站要用形状（双圈）而不只是颜色区分；线路字母必须和颜色同时出现；无障碍约束只限制起终点与换乘站，途经 N 站要单独说明；换乘站的标签容易被线路穿过，应做位置偏移；Dijkstra 状态要带当前线路才能正确计换乘。",
+  "issues": [],
+  "iterations": [
+    {"id": "A07-IT-001", "type": "visual", "parent": "v001", "problem": "地图 S09/S10/S11 标签拥挤、S04 被 R 线折角穿过；旅行卡缺少起始线路字母与 N 站途经说明。", "change": "R 改直线；S10 标签移到线下；S05 标签左移；路线文本前置线路字母，并补“途经 N 站”说明。", "result": "v002 地图标签清晰、卡片线路分段完整。", "evidence": "tmp/20261018T1140/A07/renders/map/v002.png"},
+    {"id": "A07-IT-002", "type": "visual", "parent": "v002", "problem": "S05 标签仍被 G 线斜段穿过“⇄”。", "change": "S05 标签水平左移 42px。", "result": "v003 标签与线路分离，局部裁图复查通过。", "evidence": "tmp/20261018T1140/A07/renders/map/v003_crop_s05.png"},
+    {"id": "A07-IT-003", "type": "visual", "parent": "card-v002", "problem": "加入分段计数后 Q2 卡片内容超出 330px，底部分段行被裁。", "change": "Q2 卡高 330→366，Q3/说明/页脚下移。", "result": "card v005 三张卡完整，无裁切。", "evidence": "tmp/20261018T1140/A07/renders/card/v005.png"}
+  ],
+  "views": [
+    {"id": "A07-view-map-v001", "version": "map-v001", "image": "tmp/20261018T1140/A07/renders/map/v001.png", "viewed_at": "2026-10-18T12:17:33+08:00", "note": "地图基线：16 站齐全；S09/S10/S11 标签拥挤，S04 被折角穿过。"},
+    {"id": "A07-view-card-v001", "version": "card-v001", "image": "tmp/20261018T1140/A07/renders/card/v001.png", "viewed_at": "2026-10-18T12:17:40+08:00", "note": "卡片基线：三条查询与无障碍判定完整；缺起始线路字母。"},
+    {"id": "A07-view-map-v002", "version": "map-v002", "image": "tmp/20261018T1140/A07/renders/map/v002.png", "viewed_at": "2026-10-18T12:18:25+08:00", "note": "标签重排；发现 S05 标签仍被 G 线穿过。"},
+    {"id": "A07-view-card-v002", "version": "card-v002", "image": "tmp/20261018T1140/A07/renders/card/v002.png", "viewed_at": "2026-10-18T12:18:36+08:00", "note": "线路字母与 N 站说明已补；卡片完整。"},
+    {"id": "A07-view-map-crop-s05", "version": "map-v002-crop", "image": "tmp/20261018T1140/A07/renders/map/v002_crop_s05.png", "viewed_at": "2026-10-18T12:18:40+08:00", "note": "局部：S05 标签与 G 线相碰。"},
+    {"id": "A07-view-map-v003", "version": "map-v003", "image": "tmp/20261018T1140/A07/renders/map/v003.png", "viewed_at": "2026-10-18T12:19:06+08:00", "note": "最终地图：S05 左移后无遮挡，全部站名/编号可读。"},
+    {"id": "A07-view-map-crop-s05-v003", "version": "map-v003-crop", "image": "tmp/20261018T1140/A07/renders/map/v003_crop_s05.png", "viewed_at": "2026-10-18T12:19:10+08:00", "note": "局部复查：S05 标签、N 标记、G 线分离。"},
+    {"id": "A07-view-card-v004", "version": "card-v004", "image": "tmp/20261018T1140/A07/renders/card/v004.png", "viewed_at": "2026-10-18T12:19:22+08:00", "note": "加入分段计数；发现 Q2 底部分段行被裁。"},
+    {"id": "A07-view-card-v005", "version": "card-v005", "image": "tmp/20261018T1140/A07/renders/card/v005.png", "viewed_at": "2026-10-18T12:19:34+08:00", "note": "最终卡片：Q2 366px，三卡无裁切。"}
+  ],
+  "closing": "临时目录保留 7 次成功请求、5 个 DSL 版本、全部 PNG/裁图与 routes.json；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

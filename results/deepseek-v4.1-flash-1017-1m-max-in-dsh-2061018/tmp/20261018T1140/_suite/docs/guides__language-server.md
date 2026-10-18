@@ -1,0 +1,121 @@
+<!-- source: https://snapshot.muedsa.com/guides/language-server/ -->
+
+Snapshot DSL 语言服务 | Snapshot跳转到内容
+
+##
+
+# Snapshot DSL 语言服务
+
+snapshot-lsp 是 Snapshot 类 DOM DSL 的独立 TypeScript 语言服务。它通过标准 Language Server Protocol（LSP）连接编辑器，既可作为 Node.js 进程通过 stdio 运行，也可在浏览器 Web Worker 中运行。编写 DSL 不需要启动 JVM 渲染器。
+
+## 能提供什么
+Section titled “能提供什么”
+
+覆盖 Parser 默认注册的 39 个标签及其属性，包含 SVG 路径裁剪的 ClipPath；提供标签、属性、枚举值和闭合标签补全，以及悬停说明。
+
+对未知标签或属性、重复属性、缺少必填属性、根节点错误、父子关系、子节点数量和部分属性值进行实时诊断；颜色检查支持 Parser 的常用 CSS 颜色写法。
+
+容忍编辑过程中暂时未写完的标签，便于继续补全。
+
+标签和属性名区分大小写。Parser 可能静默忽略未知属性，而语言服务会发出警告，帮助发现拼写错误。
+
+@muedsa/snapshot-lsp 从 0.2.0 起支持 ClipPath：提供必填 path 提示、viewBox 格式检查，以及 fit、fillRule、clipBehavior 枚举补全。SVG 路径命令的完整语法与坐标有效性由 Parser 校验。使用规则见 ClipPath 标签参考。
+
+### 0.2.1 的编辑体验改进
+Section titled “0.2.1 的编辑体验改进”
+
+在已有属性名中接受补全时保留原赋值、引号和空白；闭合标签按当前位置仍打开的父节点提示，并补齐缺少的 >。
+
+改进不完整标签恢复，标签候选同时考虑前后的子节点数量，避免提示重复根节点或超过单子节点限制的内容。
+
+补齐方向、对齐、图片重复、渐变平铺、文本、字体和画笔模式等枚举；补全与诊断使用相同值域，颜色属性别名也按 CSS 颜色检查。
+
+正确处理无引号 URL / 路径中的 /，提示完整标签中必填属性缺少值的情况，并允许 Raw 内嵌套 WidgetSpan。
+
+网站已升级到 0.2.1。语言服务升级不会同步升级服务端 Parser，实际渲染能力仍以部署的 Open Snapshot 版本为准。
+
+## 在线体验
+Section titled “在线体验”
+
+打开在线 Playground即可使用 Monaco 编辑器中的补全、悬停和问题提示。网站将 @muedsa/snapshot-lsp/browser 放在 Web Worker 中运行：编辑时的语言服务在浏览器内完成；点击“运行”才会将 DSL 发往 Open Snapshot 服务生成图片。
+
+## 在 VS Code 中使用
+Section titled “在 VS Code 中使用”
+
+可以安装独立的 Snapshot DSL 扩展。它已将客户端与语言服务器打包在 VSIX 内，使用者无需单独安装 npm 包或配置 GitHub Packages 令牌。
+
+按扩展仓库的说明获取 VSIX（工作流产物或自行打包）。
+
+在 VS Code 扩展视图中选择“从 VSIX 安装”。
+
+打开 .snapshot 文件，即可使用补全、诊断、悬停、语法着色、大纲与格式化。
+
+语言服务无响应时，可在命令面板运行“Snapshot: 重启语言服务器”。扩展只负责编辑体验，图片仍需通过 Parser 或 Playground 渲染。VSIX 获取和支持的 VS Code 版本以扩展仓库说明为准。
+
+## 手动接入 LSP 客户端
+Section titled “手动接入 LSP 客户端”
+
+包发布在 GitHub Packages，要求 Node.js 22 或更高版本。在用户级 .npmrc 或 pnpm 全局配置中指定 registry，并通过环境变量提供具备 read:packages 权限的令牌：
+
+@muedsa:registry=https://npm.pkg.github.com
+
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+
+不要把实际令牌写进仓库。新版 pnpm 不展开项目级 .npmrc 中的环境变量占位符；请使用用户级配置，详见项目维护说明。配置好 NODE_AUTH_TOKEN 后安装：
+
+终端窗口
+
+pnpm add -D @muedsa/snapshot-lsp@^0.2.1
+
+在支持 LSP 的编辑器中，将 .snapshot 文件关联到语言 ID snapshot，并以 stdio 启动服务：
+
+终端窗口
+
+pnpm exec snapshot-lsp --stdio
+
+服务实现了文档同步、补全、悬停和诊断发布。具体的服务启动配置由编辑器或其 LSP 客户端决定；此 npm 包是通用语言服务器，VS Code 用户可以直接使用上面的独立扩展。
+
+## 在浏览器中集成
+Section titled “在浏览器中集成”
+
+在浏览器应用中，也可将服务放进 Worker，并用支持 Web Worker 传输的 LSP 客户端连接：
+
+import { startBrowserWorkerServer } from '@muedsa/snapshot-lsp/browser';
+
+startBrowserWorkerServer(self);
+
+本网站使用 Monaco 自带的 monaco.lsp 客户端连接 Worker。集成 0.2.1 时注意两项协议约定：
+
+客户端只有在初始化时显式声明 textDocument.completion.completionItem.snippetSupport: true，才会收到含占位符的 snippet；缺省或 false 返回普通文本，例如 width=""。
+
+接受补全时必须同时应用 textEdit 和可选的 additionalTextEdits。多行属性值使用单行主编辑及不重叠的额外编辑，遗漏后者会残留旧值或换行。不要只取 insertText 或按当前单词范围替换。
+
+Monaco 0.56 能应用 snippet，但内置 LSP 客户端默认未声明上述能力。本网站在发送初始化报文时补充 snippetSupport: true，保留其他能力字段；补全结果（含额外编辑）仍由 Monaco 原生处理。自行接入时也应确认能力协商与实际编辑器行为一致。
+
+### 直接使用语言核心
+Section titled “直接使用语言核心”
+
+不经 LSP 连接时，可直接调用 SnapshotLanguageService。核心 API 为兼容旧调用，默认支持 snippet；不解析 snippet 的宿主需要显式关闭：
+
+import { SnapshotLanguageService, type CompletionOptions } from '@muedsa/snapshot-lsp';
+
+const service = new SnapshotLanguageService();
+
+const text = '<Snapshot><Container wi';
+
+const options: CompletionOptions = { snippetSupport: false };
+
+const items = service.completions(text, { line: 0, character: text.length }, undefined, options);
+
+// 接受候选时，同样要处理 textEdit 和 additionalTextEdits。
+
+扩展目录的 AttributeSpec.valueType 可复用内置值域（类型为导出的 ValueType），也可用 values 显式覆盖候选；Parser 的自定义标签注册仍需单独完成。
+
+## 与 Parser 的分工
+Section titled “与 Parser 的分工”
+
+语言服务只做静态检查，不会解码图片、执行布局或生成图片。复杂的属性组合约束和最终解析结果仍以 snapshot-parser 为准；语言服务的提示不能替代实际解析与渲染测试。
+
+Parser 的 ParseException.attributeDiagnostic 是 Kotlin Parser 提供的错误信息，与编辑器的 LSP 诊断是两套接口。新增属性填写说明不会自动扩展 LSP 协议或 HTTP 响应字段，在线服务的提示仍取决于后端部署版本。
+
+如果为 Parser 注册了自定义标签，还需要单独扩展语言服务的标签目录；仅注册 WidgetParserManager 不会自动让编辑器认识新标签。扩展接口和最新接入说明见 snapshot-lsp 项目。

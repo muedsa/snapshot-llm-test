@@ -1,0 +1,871 @@
+{
+  "schema_version": 1,
+  "task_id": "A06",
+  "path_base": "output_dir",
+  "source": "tasks/A06-dependency-graph/inputs/graph.json",
+  "coordinate_system": {
+    "origin": "top-left",
+    "x": "right",
+    "y": "down",
+    "unit": "px",
+    "canvas": [
+      1600,
+      1000
+    ]
+  },
+  "nodes": [
+    {
+      "id": "N01",
+      "label": "需求冻结",
+      "layer": 0,
+      "in_neighbors": [],
+      "out_neighbors": [
+        "N02",
+        "N03"
+      ],
+      "box": [
+        70,
+        385,
+        186,
+        455
+      ]
+    },
+    {
+      "id": "N02",
+      "label": "输入检查",
+      "layer": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N04",
+        "N05"
+      ],
+      "box": [
+        202,
+        305,
+        318,
+        375
+      ]
+    },
+    {
+      "id": "N03",
+      "label": "字体查询",
+      "layer": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "box": [
+        202,
+        485,
+        318,
+        555
+      ]
+    },
+    {
+      "id": "N04",
+      "label": "数据计算",
+      "layer": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N07",
+        "N13"
+      ],
+      "box": [
+        334,
+        245,
+        450,
+        315
+      ]
+    },
+    {
+      "id": "N05",
+      "label": "内容规划",
+      "layer": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "box": [
+        334,
+        405,
+        450,
+        475
+      ]
+    },
+    {
+      "id": "N06",
+      "label": "版式系统",
+      "layer": 3,
+      "in_neighbors": [
+        "N03",
+        "N05"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "box": [
+        466,
+        425,
+        582,
+        495
+      ]
+    },
+    {
+      "id": "N07",
+      "label": "图表生成",
+      "layer": 3,
+      "in_neighbors": [
+        "N04"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "box": [
+        466,
+        245,
+        582,
+        315
+      ]
+    },
+    {
+      "id": "N08",
+      "label": "DSL构建",
+      "layer": 4,
+      "in_neighbors": [
+        "N06",
+        "N07"
+      ],
+      "out_neighbors": [
+        "N09"
+      ],
+      "box": [
+        598,
+        355,
+        714,
+        425
+      ]
+    },
+    {
+      "id": "N09",
+      "label": "首轮渲染",
+      "layer": 5,
+      "in_neighbors": [
+        "N08"
+      ],
+      "out_neighbors": [
+        "N10"
+      ],
+      "box": [
+        730,
+        355,
+        846,
+        425
+      ]
+    },
+    {
+      "id": "N10",
+      "label": "视觉检查",
+      "layer": 6,
+      "in_neighbors": [
+        "N09"
+      ],
+      "out_neighbors": [
+        "N11"
+      ],
+      "box": [
+        862,
+        355,
+        978,
+        425
+      ]
+    },
+    {
+      "id": "N11",
+      "label": "问题修复",
+      "layer": 7,
+      "in_neighbors": [
+        "N10"
+      ],
+      "out_neighbors": [
+        "N12"
+      ],
+      "box": [
+        994,
+        355,
+        1110,
+        425
+      ]
+    },
+    {
+      "id": "N12",
+      "label": "回归渲染",
+      "layer": 8,
+      "in_neighbors": [
+        "N11"
+      ],
+      "out_neighbors": [
+        "N13"
+      ],
+      "box": [
+        1126,
+        355,
+        1242,
+        425
+      ]
+    },
+    {
+      "id": "N13",
+      "label": "产物校验",
+      "layer": 9,
+      "in_neighbors": [
+        "N12",
+        "N04"
+      ],
+      "out_neighbors": [
+        "N14"
+      ],
+      "box": [
+        1258,
+        355,
+        1374,
+        425
+      ]
+    },
+    {
+      "id": "N14",
+      "label": "交付归档",
+      "layer": 10,
+      "in_neighbors": [
+        "N13"
+      ],
+      "out_neighbors": [],
+      "box": [
+        1390,
+        355,
+        1506,
+        425
+      ]
+    }
+  ],
+  "topological_layers": {
+    "0": [
+      "N01"
+    ],
+    "1": [
+      "N02",
+      "N03"
+    ],
+    "2": [
+      "N04",
+      "N05"
+    ],
+    "3": [
+      "N06",
+      "N07"
+    ],
+    "4": [
+      "N08"
+    ],
+    "5": [
+      "N09"
+    ],
+    "6": [
+      "N10"
+    ],
+    "7": [
+      "N11"
+    ],
+    "8": [
+      "N12"
+    ],
+    "9": [
+      "N13"
+    ],
+    "10": [
+      "N14"
+    ]
+  },
+  "prerequisite_edges": [
+    {
+      "from": "N01",
+      "to": "N02",
+      "path": [
+        [
+          186,
+          420
+        ],
+        [
+          194.0,
+          420
+        ],
+        [
+          194.0,
+          340
+        ],
+        [
+          202,
+          340
+        ]
+      ],
+      "arrow": {
+        "at": [
+          202,
+          340
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N01",
+      "to": "N03",
+      "path": [
+        [
+          186,
+          420
+        ],
+        [
+          194.0,
+          420
+        ],
+        [
+          194.0,
+          520
+        ],
+        [
+          202,
+          520
+        ]
+      ],
+      "arrow": {
+        "at": [
+          202,
+          520
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N02",
+      "to": "N04",
+      "path": [
+        [
+          318,
+          340
+        ],
+        [
+          326.0,
+          340
+        ],
+        [
+          326.0,
+          280
+        ],
+        [
+          334,
+          280
+        ]
+      ],
+      "arrow": {
+        "at": [
+          334,
+          280
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N02",
+      "to": "N05",
+      "path": [
+        [
+          318,
+          340
+        ],
+        [
+          326.0,
+          340
+        ],
+        [
+          326.0,
+          440
+        ],
+        [
+          334,
+          440
+        ]
+      ],
+      "arrow": {
+        "at": [
+          334,
+          440
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N03",
+      "to": "N06",
+      "path": [
+        [
+          260,
+          555
+        ],
+        [
+          260,
+          620
+        ],
+        [
+          524,
+          620
+        ],
+        [
+          524,
+          495
+        ]
+      ],
+      "arrow": {
+        "at": [
+          524,
+          495
+        ],
+        "direction": "up"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N05",
+      "to": "N06",
+      "path": [
+        [
+          450,
+          440
+        ],
+        [
+          458.0,
+          440
+        ],
+        [
+          458.0,
+          460
+        ],
+        [
+          466,
+          460
+        ]
+      ],
+      "arrow": {
+        "at": [
+          466,
+          460
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N04",
+      "to": "N07",
+      "path": [
+        [
+          450,
+          280
+        ],
+        [
+          458.0,
+          280
+        ],
+        [
+          458.0,
+          280
+        ],
+        [
+          466,
+          280
+        ]
+      ],
+      "arrow": {
+        "at": [
+          466,
+          280
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N06",
+      "to": "N08",
+      "path": [
+        [
+          582,
+          460
+        ],
+        [
+          590.0,
+          460
+        ],
+        [
+          590.0,
+          398
+        ],
+        [
+          598,
+          398
+        ]
+      ],
+      "arrow": {
+        "at": [
+          598,
+          398
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N07",
+      "to": "N08",
+      "path": [
+        [
+          582,
+          280
+        ],
+        [
+          590.0,
+          280
+        ],
+        [
+          590.0,
+          382
+        ],
+        [
+          598,
+          382
+        ]
+      ],
+      "arrow": {
+        "at": [
+          598,
+          382
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N08",
+      "to": "N09",
+      "path": [
+        [
+          714,
+          390
+        ],
+        [
+          722.0,
+          390
+        ],
+        [
+          722.0,
+          390
+        ],
+        [
+          730,
+          390
+        ]
+      ],
+      "arrow": {
+        "at": [
+          730,
+          390
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N09",
+      "to": "N10",
+      "path": [
+        [
+          846,
+          390
+        ],
+        [
+          854.0,
+          390
+        ],
+        [
+          854.0,
+          390
+        ],
+        [
+          862,
+          390
+        ]
+      ],
+      "arrow": {
+        "at": [
+          862,
+          390
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N10",
+      "to": "N11",
+      "path": [
+        [
+          978,
+          390
+        ],
+        [
+          986.0,
+          390
+        ],
+        [
+          986.0,
+          390
+        ],
+        [
+          994,
+          390
+        ]
+      ],
+      "arrow": {
+        "at": [
+          994,
+          390
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N11",
+      "to": "N12",
+      "path": [
+        [
+          1110,
+          390
+        ],
+        [
+          1118.0,
+          390
+        ],
+        [
+          1118.0,
+          390
+        ],
+        [
+          1126,
+          390
+        ]
+      ],
+      "arrow": {
+        "at": [
+          1126,
+          390
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N12",
+      "to": "N13",
+      "path": [
+        [
+          1242,
+          390
+        ],
+        [
+          1250.0,
+          390
+        ],
+        [
+          1250.0,
+          390
+        ],
+        [
+          1258,
+          390
+        ]
+      ],
+      "arrow": {
+        "at": [
+          1258,
+          390
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N13",
+      "to": "N14",
+      "path": [
+        [
+          1374,
+          390
+        ],
+        [
+          1382.0,
+          390
+        ],
+        [
+          1382.0,
+          390
+        ],
+        [
+          1390,
+          390
+        ]
+      ],
+      "arrow": {
+        "at": [
+          1390,
+          390
+        ],
+        "direction": "right"
+      },
+      "points_forward": true
+    },
+    {
+      "from": "N04",
+      "to": "N13",
+      "path": [
+        [
+          392,
+          245
+        ],
+        [
+          392,
+          215
+        ],
+        [
+          1316,
+          215
+        ],
+        [
+          1316,
+          355
+        ]
+      ],
+      "arrow": {
+        "at": [
+          1316,
+          355
+        ],
+        "direction": "down"
+      },
+      "points_forward": true
+    }
+  ],
+  "longest_path": {
+    "nodes": [
+      "N01",
+      "N02",
+      "N04",
+      "N07",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ],
+    "length_nodes": 11,
+    "length_edges": 10,
+    "method": "DAG 上动态规划，按节点数取最大；允许多解，此处给出一个最大解。"
+  },
+  "feedback_edges": [
+    {
+      "from": "N09",
+      "to": "N08",
+      "style": "dashed",
+      "color": "#F59E0B",
+      "path": [
+        [
+          788,
+          355
+        ],
+        [
+          788,
+          330
+        ],
+        [
+          656,
+          330
+        ],
+        [
+          656,
+          355
+        ]
+      ],
+      "arrow": {
+        "at": [
+          656,
+          355
+        ],
+        "direction": "down"
+      },
+      "in_dag": false,
+      "note": "反馈关系，不参与 DAG 排序。"
+    },
+    {
+      "from": "N10",
+      "to": "N08",
+      "style": "dashed",
+      "color": "#F59E0B",
+      "path": [
+        [
+          920,
+          425
+        ],
+        [
+          920,
+          545
+        ],
+        [
+          656,
+          545
+        ],
+        [
+          656,
+          425
+        ]
+      ],
+      "arrow": {
+        "at": [
+          656,
+          425
+        ],
+        "direction": "up"
+      },
+      "in_dag": false,
+      "note": "反馈关系，不参与 DAG 排序。"
+    }
+  ],
+  "checks": {
+    "all_14_nodes": true,
+    "solid_edges": 16,
+    "feedback_edges": 2,
+    "all_solid_point_forward": true,
+    "layers_match_longest": true
+  }
+}

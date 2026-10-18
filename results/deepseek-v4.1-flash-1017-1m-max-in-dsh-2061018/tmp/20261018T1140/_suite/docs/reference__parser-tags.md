@@ -1,0 +1,698 @@
+标签与属性参考 | Snapshot跳转到内容
+
+##
+
+# 标签与属性参考
+
+解析器默认注册 39 个标签。标签名和属性名区分大小写，未知属性会被忽略；除根标签外，属性通常在建树阶段校验。
+
+第一次写模板建议先运行完整示例；本页用于查参数。点击总表中的标签可跳到相应属性说明。
+
+“单个”表示最多一个子节点；出图时 Snapshot 必须有一个根 Widget，WidgetSpan 必须恰有一个子节点。? 表示该属性可省略，具体回退行为以默认值栏为准。局部示例需放入 <Snapshot> 中，并满足父子关系。
+
+## 标签总表
+Section titled “标签总表”
+
+标签子节点模式对应能力
+
+Snapshot单个根节点、背景色、调试和图片格式
+
+Container单个尺寸、约束、间距、颜色、边框和对齐
+
+Border单个边框、圆角与阴影装饰
+
+ColoredBox单个纯色填充
+
+DecoratedBox单个背景或前景装饰
+
+Flex多个水平或垂直 Flex
+
+Row多个横向 Flex
+
+Column多个纵向 Flex
+
+Expanded单个以紧约束占用 Flex 剩余空间
+
+Flexible单个可配置份额和松紧约束的 Flex 子项
+
+Spacer无占用 Flex 剩余空间
+
+Stack多个层叠布局
+
+IndexedStack多个仅绘制选中子节点
+
+Positioned单个Stack / IndexedStack 子节点定位
+
+SizedBox单个指定宽高
+
+AspectRatio单个按宽高比确定尺寸
+
+FractionallySizedBox单个按父约束比例确定尺寸
+
+UnconstrainedBox单个解除子节点轴约束
+
+ConstrainedBox单个对子节点附加最小/最大约束
+
+LimitedBox单个在无界轴上限制最大尺寸
+
+OverflowBox单个允许子节点突破父约束
+
+SizedOverflowBox单个固定自身尺寸并允许子节点溢出
+
+Padding单个添加内边距
+
+Align单个对齐并可按因子调整自身尺寸
+
+Center单个居中并可按因子调整自身尺寸
+
+Opacity单个整体透明度
+
+Transform单个4×4 矩阵变换
+
+ClipRect单个矩形裁剪
+
+ClipOval单个椭圆裁剪
+
+ClipRRect单个圆角矩形裁剪
+
+ClipPath单个SVG 路径裁剪、坐标缩放与多轮廓镂空
+
+ColorFiltered单个颜色混合滤镜
+
+ImageFiltered单个子树高斯模糊
+
+BackdropFilter单个背景高斯模糊
+
+Image无网络或 Data URI 图片
+
+Text行内文本与嵌套 Span
+
+Raw行内多个保留空白的原始文本 Span，可嵌套行内 Span
+
+Emoji无文本内的网络或 Data URI 图片占位符
+
+WidgetSpan单个文本内嵌普通 Widget
+
+## 通用属性格式
+Section titled “通用属性格式”
+
+推荐使用带引号的属性值。无引号的 URL / 路径可以包含 /，但后接自闭合标记时必须用空白分隔，例如 <Image url=https://example.com/a.png />；带引号时可以直接写 url="https://example.com/a.png"/>。不要用 HTML 实体代替实际引号或字符，Parser 不做实体解码。详见属性引号与自闭合。
+
+### 颜色
+Section titled “颜色”
+
+颜色属性支持常用 CSS 写法：
+
+#RGB
+
+#RGBA
+
+#RRGGBB
+
+#RRGGBBAA
+
+red / rebeccapurple / transparent
+
+rgb(255, 0, 0) / rgba(255, 0, 0, .5)
+
+hsl(120, 100%, 50%) / hsla(120, 100%, 50%, 50%)
+
+rgb(255 0 0 / 50%) / hsl(120deg 100% 50% / 50%)
+
+十六进制颜色需以 # 开头，支持 3、4、6、8 位；4 位与 8 位的最后一组是透明度（alpha）。例如 #f00 和 #FF0000 都是不透明红色，#FF000080 是约 50% 透明红色。命名颜色不区分大小写，transparent 表示完全透明。
+
+rgb()、rgba()、hsl()、hsla() 支持逗号分隔或空格加 / 的透明度写法；RGB 通道可用数字或百分比，HSL 色相可用 deg、rad、grad、turn，饱和度和亮度需写百分比。此处只支持上述常用 CSS 颜色，不支持 currentColor、lab()、color() 等表达式。
+
+### 数值与布尔值
+Section titled “数值与布尔值”
+
+宽高、位置、字号等使用十进制 Float。布尔值必须显式写为字符串：
+
+<Snapshot debug="true">
+
+裸属性 <Snapshot debug> 会回退为默认值，不等价于 true。
+
+### EdgeInsets
+Section titled “EdgeInsets”
+
+padding 和 margin 支持三种格式：
+
+格式含义
+
+"12"四边 12
+
+"(8,16)"vertical=8，horizontal=16
+
+"(8,12,16,20)"left、top、right、bottom
+
+括号和逗号是语法的一部分。
+
+### 对齐
+Section titled “对齐”
+
+对齐值使用常量名：TOP_LEFT、TOP_CENTER、TOP_RIGHT、CENTER_LEFT、CENTER、CENTER_RIGHT、BOTTOM_LEFT、BOTTOM_CENTER、BOTTOM_RIGHT；也支持无空格的 "(x,y)"。
+
+### 坐标与矩阵
+Section titled “坐标与矩阵”
+
+二维坐标使用无空格的 "(x,y)" 格式，例如 origin="(20,10)"。
+
+Transform.matrix 使用列主序的 4×4 矩阵，共 16 个有限 Float，外层必须有括号且值之间不能有空格：
+
+(1,0,0,0,0,1,0,0,0,0,1,0,20,10,0,1)
+
+### 圆角
+Section titled “圆角”
+
+borderRadius="16" 设置四角。也可以使用：borderRadiusTopLeft、borderRadiusTopRight、borderRadiusBottomLeft、borderRadiusBottomRight。
+
+### 边框
+Section titled “边框”
+
+格式为：
+
+宽度 样式 颜色
+
+例如 "2 SOLID #38BDF8" 或 "2 SOLID rgb(56, 189, 248)"。可用属性：border、borderLeft、borderTop、borderRight、borderBottom。单边设置会覆盖统一边框的对应边。
+
+### 阴影
+Section titled “阴影”
+
+boxShadow 可使用内置 elevation 名称，例如 ELEVATION_4。可用层级为 0、1、2、3、4、6、8、9、12、16、24。
+
+自定义格式中，单个阴影写成 x y [blurRadius] [spreadRadius] [color] [blurStyle]，多个阴影用英文逗号分隔。例如：
+
+0 4 12 0 #00000033 NORMAL,0 1 3 0 #00000022 NORMAL
+
+阴影颜色也可使用 rgb()、hsl() 等函数；函数内部的逗号不会被当作多个阴影的分隔符。
+
+## Snapshot
+Section titled “Snapshot”
+
+属性类型默认值说明
+
+backgroundcolortransparent透明画布背景；白底需显式设置
+
+debugboolfalse是否绘制调试信息
+
+typestringpngpng、jpg 或 webp
+
+必须是文档第一个开始标签，只能出现一次，并且最终必须有一个根 Widget 子节点。
+
+## Container
+Section titled “Container”
+
+属性类型默认值
+
+width / heightfloat?未设置
+
+minWidth / maxWidthfloat0 / Infinity
+
+minHeight / maxHeightfloat0 / Infinity
+
+alignmentalignment?未设置
+
+padding / margininsets?未设置
+
+colorcolor?未设置
+
+border 与四边边框border?未设置
+
+borderRadius 与四角圆角radius?未设置
+
+boxShadowshadow?未设置
+
+shape / backgroundBlendModeenum?RECTANGLE / 未设置
+
+gradient*渐变属性未设置
+
+foregroundColor / foregroundBorder* / foregroundBorderRadius* / foregroundBoxShadow前景装饰未设置
+
+foregroundShape / foregroundBackgroundBlendMode / foregroundGradient*前景装饰未设置
+
+transform / transformAlignmentmatrix / alignment?未设置
+
+clipBehaviorenumNONE
+
+出现任何边框或装饰属性时，解析器会构造 BoxDecoration，并把 color 合并进去，避免 DSL 中 color 与 decoration 互斥的问题。
+
+gradientType 为 LINEAR、RADIAL 或 SWEEP，设置渐变时 gradientColors 至少两色；可配 gradientStops、gradientTileMode、gradientRotation，以及对应类型的 gradientBegin / gradientEnd、gradientCenter / gradientRadius / gradientFocal / gradientFocalRadius、gradientStartAngle / gradientEndAngle。前景渐变在属性名前加 foreground。clipBehavior 非 NONE 时需提供背景装饰作为裁剪路径；仅设置纯色不够。
+
+渐变属性格式 / 默认值
+
+gradientColors逗号分隔的至少两种颜色，逗号两侧可有空白；颜色函数内部的逗号不作为列表分隔符
+
+gradientStops与颜色等长、位于 0～1 且非递减的浮点列表，允许相同位置；默认等距
+
+gradientRotation有限弧度，绕绘制矩形中心旋转渐变；未设置则不旋转
+
+gradientTileModeCLAMP（默认）、REPEAT、MIRROR、DECAL
+
+gradientBegin / gradientEnd线性渐变起止对齐，默认 CENTER_LEFT / CENTER_RIGHT
+
+gradientCenter / gradientRadius径向渐变中心与半径，默认 CENTER / 0.5；半径须大于 0
+
+gradientFocal / gradientFocalRadius焦点默认未设置，焦点半径默认 0.5（短边比例）；显式设置半径时必须指定焦点
+
+gradientStartAngle / gradientEndAngle扫描渐变起止弧度，默认 0 / 2π，起点必须小于终点
+
+不同渐变类型的专用参数不可混用。完整坐标规则、取值与前景属性名见渐变参考。例如：
+
+<Container width="320" height="120"
+
+gradientType="LINEAR"
+
+gradientColors="#6750A4,#03DAC6,#FFC107"
+
+gradientStops="0,0.55,1"
+
+gradientBegin="TOP_LEFT" gradientEnd="BOTTOM_RIGHT" />
+
+<Container
+
+width="320"
+
+height="180"
+
+padding="(16,24)"
+
+color="#0F172A"
+
+border="1 SOLID #334155"
+
+borderRadius="20"
+
+alignment="CENTER">
+
+<Text color="#F8FAFC" fontSize="24">Snapshot</Text>
+
+</Container>
+
+## Border
+Section titled “Border”
+
+Border 支持 color、边框、圆角、阴影、形状、背景混合模式和整组 gradient* 属性。ColoredBox 要求 color；DecoratedBox 支持相同的装饰属性，另可用 position="BACKGROUND" 或 "FOREGROUND" 控制绘制顺序。三者最多一个子节点；需要控制尺寸和 padding 时使用 Container。
+
+## SizedBox、Padding、Align 与 Center
+Section titled “SizedBox、Padding、Align 与 Center”
+
+标签属性默认值说明
+
+SizedBoxwidth / height未设置指定任一或两个轴的尺寸
+
+Paddingpadding0使用 EdgeInsets 格式
+
+AlignalignmentCENTER子节点在可用空间中的位置
+
+AlignwidthFactor / heightFactor未设置自身尺寸为子节点对应尺寸的倍数
+
+CenterwidthFactor / heightFactor未设置等价于固定 CENTER 对齐的 Align
+
+<Padding padding="(12,20)">
+
+<Align alignment="BOTTOM_RIGHT" widthFactor="2" heightFactor="1.5">
+
+<SizedBox width="120" height="48" />
+
+</Align>
+
+</Padding>
+
+## Row 与 Column
+Section titled “Row 与 Column”
+
+Flex 使用相同属性，但必须额外指定 direction="HORIZONTAL" 或 "VERTICAL"。
+
+属性默认值可选值
+
+mainAxisAlignmentSTARTSTART、END、CENTER、SPACE_BETWEEN、SPACE_AROUND、SPACE_EVENLY
+
+mainAxisSizeMAXMIN、MAX
+
+crossAxisAlignmentCENTERSTART、END、CENTER、STRETCH、BASELINE
+
+textDirectionLTRLTR、RTL
+
+verticalDirectionDOWNUP、DOWN
+
+textBaseline未设置ALPHABETIC、IDEOGRAPHIC；基线对齐时使用
+
+clipBehaviorNONENONE、HARD_EDGE、ANTI_ALIAS、ANTI_ALIAS_WITH_SAVE_LAYER
+
+### Expanded 与 Flexible
+Section titled “Expanded 与 Flexible”
+
+标签属性默认值说明
+
+Expandedflex1整数份额；固定使用 TIGHT，不接受 fit 属性
+
+Flexibleflex1整数份额
+
+FlexiblefitLOOSELOOSE 或 TIGHT
+
+Spacerflex1正整数，无子节点
+
+三者必须是 Flex、Row 或 Column 的直接子节点。Expanded 强制填满分配到的主轴空间；Flexible fit="LOOSE" 允许子节点小于分配份额。Spacer 不绘制内容。
+
+弹性分配不解除交叉轴最大约束：Column 中的子节点仍受父级最大宽度限制，文本默认据此换行；Row 中则保留最大高度。非 STRETCH 对齐允许更窄或更矮，只有 crossAxisAlignment="STRETCH" 才强制填满交叉轴。
+
+<SizedBox width="480" height="120">
+
+<Row>
+
+<Expanded flex="2"><Container color="#38BDF8" /></Expanded>
+
+<Flexible flex="1" fit="TIGHT"><Container color="#A78BFA" /></Flexible>
+
+</Row>
+
+</SizedBox>
+
+## Stack
+Section titled “Stack”
+
+属性默认值说明
+
+alignmentTOP_LEFT非 Positioned 子节点对齐
+
+textDirectionLTR方向
+
+fitLOOSELOOSE、EXPAND、PASSTHROUGH
+
+clipBehaviorHARD_EDGE直接子节点布局矩形越界时的裁剪策略
+
+IndexedStack 使用相同属性，另支持 index（默认 0，从零起）。裸写 index 表示 null，不绘制子节点，但全部子节点仍参与布局。
+
+Stack / IndexedStack 根据所有直接子节点的布局矩形累计越界状态，后续未越界节点不会取消已有裁剪需求。只有阴影、变换或更深子孙的绘制越界时，不一定触发裁剪；需要无条件限制在容器边界内时外包 <ClipRect>。要允许越界绘制可设置 clipBehavior="NONE"，但祖先的裁剪仍然生效。
+
+## Positioned
+Section titled “Positioned”
+
+支持 left、top、right、bottom、width、height。每个轴最多设置三项中的两项：
+
+<Positioned right="16" bottom="16" width="120" height="40">
+
+<Container color="#38BDF8" borderRadius="20" />
+
+</Positioned>
+
+Positioned 必须是 Stack 或 IndexedStack 的直接子节点。
+
+## 比例与约束布局
+Section titled “比例与约束布局”
+
+标签属性默认值约束要求
+
+AspectRatioaspectRatio必填，有限正数父约束至少一轴有界
+
+FractionallySizedBoxwidthFactor / heightFactor、alignment未设置、CENTER设置比例的轴必须有界；比例须有限且非负
+
+UnconstrainedBoxconstrainedAxis、alignment未设置、CENTERHORIZONTAL / VERTICAL 保留对应轴约束；未设置则解除双轴子约束
+
+三者自身仍受父约束限制。UnconstrainedBox 中的子节点须能在解除约束后确定有限尺寸。
+
+## 约束与溢出
+Section titled “约束与溢出”
+
+### ConstrainedBox
+Section titled “ConstrainedBox”
+
+属性默认值
+
+minWidth / minHeight0
+
+maxWidth / maxHeightInfinity
+
+最小值不能大于同轴最大值。该标签会把指定约束叠加到父级传入的约束上。
+
+### LimitedBox
+Section titled “LimitedBox”
+
+支持 maxWidth 和 maxHeight，默认均为 Infinity。它只在对应轴为无界约束时对孩子施加上限。
+
+### OverflowBox
+Section titled “OverflowBox”
+
+属性默认值
+
+alignmentCENTER
+
+minWidth / maxWidth未设置
+
+minHeight / maxHeight未设置
+
+它允许为子节点指定不同于父级的约束，并按照 alignment 放置可能溢出的内容。
+
+### SizedOverflowBox
+Section titled “SizedOverflowBox”
+
+width 和 height 均为必填 Float，alignment 默认为 CENTER。自身保持指定尺寸，但子节点仍按父级原始约束布局，因此可以超出它的边界。
+
+<SizedOverflowBox width="160" height="100" alignment="BOTTOM_RIGHT">
+
+<SizedBox width="240" height="140" />
+
+</SizedOverflowBox>
+
+## Opacity 与 Transform
+Section titled “Opacity 与 Transform”
+
+### Opacity
+Section titled “Opacity”
+
+opacity 默认为 1，有效范围为 0 到 1。它对整个子树应用透明度。
+
+### Transform
+Section titled “Transform”
+
+属性必填默认值 / 说明
+
+matrix是16 个 Float 的列主序 4×4 矩阵
+
+origin否"(x,y)"，变换原点偏移
+
+alignment否未设置；相对于子节点尺寸的变换对齐点
+
+<Transform
+
+matrix="(1,0,0,0,0,1,0,0,0,0,1,0,20,10,0,1)"
+
+origin="(2,3)"
+
+alignment="CENTER">
+
+<SizedBox width="120" height="60" />
+
+</Transform>
+
+## ColorFiltered、ImageFiltered 与 BackdropFilter
+Section titled “ColorFiltered、ImageFiltered 与 BackdropFilter”
+
+标签必填属性可选属性与默认值
+
+ColorFilteredcolor、blendMode无
+
+ImageFilteredsigmaX、sigmaYtileMode="CLAMP"
+
+BackdropFiltersigmaX、sigmaYtileMode="CLAMP"、blendMode="SRC_OVER"
+
+blendMode 使用 Skia 混合模式。sigmaX、sigmaY 必须有限且非负。后两个标签只构造高斯模糊；其他图片滤镜仍需 Kotlin DSL。
+
+ColorFiltered 在子树绘制边界可确定时限制颜色作用范围，保留合法溢出和阴影；部分混合模式也会给边界内的透明间隙着色。ImageFiltered 会按 sigma 自动提供模糊输出边界，因此下面的嵌套无需配置额外边界属性：
+
+<ColorFiltered color="red" blendMode="MULTIPLY">
+
+<ImageFiltered sigmaX="2" sigmaY="2" tileMode="CLAMP">
+
+<Container width="20" height="20" color="blue" />
+
+</ImageFiltered>
+
+</ColorFiltered>
+
+BackdropFilter 读取已有背景，仍建议配合 ClipRect、ClipOval 或 ClipRRect 限定区域。Kotlin DSL 的通用 ImageFiltered 边界配置见 ImageFiltered。
+
+## ClipRect、ClipOval 与 ClipRRect
+Section titled “ClipRect、ClipOval 与 ClipRRect”
+
+标签clipBehavior 默认值其他属性
+
+ClipRectHARD_EDGE无
+
+ClipOvalANTI_ALIAS无
+
+ClipRRectANTI_ALIASborderRadius 与四角圆角属性
+
+可选裁剪模式为 NONE、HARD_EDGE、ANTI_ALIAS、ANTI_ALIAS_WITH_SAVE_LAYER。ClipRRect 的圆角格式与 Container、Border 相同。
+
+<ClipRRect borderRadius="24" clipBehavior="ANTI_ALIAS">
+
+<Container width="320" height="180" color="#0F172A" />
+
+</ClipRRect>
+
+## ClipPath
+Section titled “ClipPath”
+
+最多包含一个子节点。path 使用 SVG 的 d 属性语法，支持 M/L/H/V/Z、Q/T、C/S、A 命令及多轮廓；小写命令使用相对坐标。属性内容是路径数据，不是完整 SVG 文档，也不读取路径文件或 URL。
+
+属性默认值说明
+
+path必填非空 SVG 路径数据，坐标必须有限
+
+viewBox未设置minX minY width height，允许空白或逗号分隔及科学计数法；四个值须有限，宽高须大于 0
+
+fitFILL有 viewBox 时生效；FILL 分别缩放宽高，CONTAIN 等比缩放并居中
+
+fillRuleNON_ZERO非零环绕规则；EVEN_ODD 使用奇偶规则，可实现镂空
+
+clipBehaviorANTI_ALIASNONE、HARD_EDGE、ANTI_ALIAS、ANTI_ALIAS_WITH_SAVE_LAYER
+
+路径坐标与布局：
+
+无 viewBox 时，路径直接使用组件本地坐标，原点在左上角，X 向右、Y 向下；fit 不改变路径。
+
+有 viewBox 时，先减去窗口原点，再映射到实际布局尺寸。FILL 可能拉伸形状，CONTAIN 保持比例并居中。
+
+viewBox 和路径边界都不决定布局尺寸；通常用外层 SizedBox 或子节点的宽高指定尺寸。
+
+viewBox 只用于坐标映射，不额外施加矩形裁剪；如需限制在组件矩形内，可再包一层 ClipRect。
+
+裁剪使用路径的填充区域，未闭合轮廓按填充语义闭合。NON_ZERO 下轮廓方向影响镂空；EVEN_ODD 不依赖轮廓方向。
+
+将曲线徽章映射到 240 × 160：
+
+<SizedBox width="240" height="160">
+
+<ClipPath path="M0 0 H100 V75 Q50 125 0 75 Z"
+
+viewBox="0 0 100 100" fit="FILL">
+
+<Container color="#3F51B5" />
+
+</ClipPath>
+
+</SizedBox>
+
+使用两个同方向轮廓与 EVEN_ODD 镂空，中心露出背景：
+
+<SizedBox width="240" height="160">
+
+<ClipPath path="M0 0 H100 V100 H0 Z M25 25 H75 V75 H25 Z"
+
+viewBox="0 0 100 100" fit="CONTAIN" fillRule="EVEN_ODD">
+
+<Container color="#00C853" />
+
+</ClipPath>
+
+</SizedBox>
+
+路径在创建 Widget 时解析一次，布局时只做坐标变换。非法路径、非有限坐标、无效 viewBox 或枚举值会在 createWidget() / snapshot() 阶段报告带位置的 ParseException。需要按布局尺寸动态计算几何时，使用 Kotlin DSL 的 ClipPath 回调，或注册自定义标签。
+
+## Image
+Section titled “Image”
+
+属性必填默认值 / 说明
+
+url / dataUri二选一网络 URL 或内嵌 Data URI，不能同时指定
+
+width / height否图片盒尺寸
+
+fit否未设置时按 SCALE_DOWN（等比缩小、不放大）；可设 FILL、CONTAIN、COVER、FIT_WIDTH、FIT_HEIGHT、NONE、SCALE_DOWN
+
+alignment否CENTER
+
+repeat否NO_REPEAT、REPEAT、REPEAT_X、REPEAT_Y
+
+scale否1；像素密度，必须有限且大于 0；自然逻辑尺寸 = 图像像素尺寸 ÷ scale
+
+opacity否1
+
+color否叠加色
+
+colorBlendMode否Skia BlendMode 常量名
+
+noCache否false，仅适用于 url
+
+默认 SimpleDataUriImageDecoder 只处理 PNG、JPEG、WebP 的 Base64 Data URI；解码发生在建树阶段，不访问网络。可通过 Parser(dataUriImageDecoder = ...) 注入自定义解码器。网络 URL 则由同步图片缓存获取，服务端应自行施加访问限制。
+
+fit 决定盒内绘制适配，不改变组件布局尺寸；默认 SCALE_DOWN 的剩余空间按 alignment 对齐。需要保留旧版省略 fit 时拉伸铺满的效果，请写 fit="FILL"。scale 不是目标框缩放倍数：40 × 20 像素图设为 scale="2" 后，自然逻辑尺寸为 20 × 10，平铺间距也按适配后的逻辑尺寸计算。centerSlice 仅由底层 API / DecorationImage 提供，不能作为 Parser 的 Image 属性。
+
+repeat 为 REPEAT、REPEAT_X 或 REPEAT_Y 时，单次绘制默认最多生成 100,000 个平铺矩形；超限会抛 IllegalArgumentException。服务端可通过 ImageRepeatConfig.maxTileCount 调整全局上限（必须大于 0），Parser 文本不能覆盖它。
+
+## Text
+Section titled “Text”
+
+以下为入口索引。每个字段的类型、取值、条件默认值、继承规则及完整示例见Parser 文本属性详解；复杂配置不要只依据总表中的“未设置”推断行为。
+
+属性默认值说明
+
+text未设置属性形式的文本内容
+
+color未设置文本颜色
+
+fontSize未设置字号
+
+fontFamily未设置多个字体用英文逗号分隔
+
+fontStyle未设置NORMAL、BOLD、ITALIC、BOLD_ITALIC
+
+height / topRatio / letterSpacing / wordSpacing / locale未设置行高倍数、上下度量比例、间距和语言区域
+
+baselineMode / fontEdging / fontHinting / subpixel未设置基线选择与字体栅格化设置
+
+foregroundColor / foreground* / backgroundColor未设置前景画笔与文本背景；其他 foreground* 参数要求 foregroundColor
+
+decoration / decorationColor / decorationLineStyle / decorationThickness / decorationGaps未设置时继承；创建后的默认见详解装饰线及样式；修饰参数要求 decoration
+
+textShadow / fontFeatures未设置文本阴影与 OpenType 特性；NONE 可取消继承
+
+strut*未设置段落支撑样式，仅最外层 Text 生效
+
+textAlign / textDirection / softWrap / overflow / maxLinesSTART / LTR / true / CLIP / 未设置段落对齐、换行和溢出，仅最外层 Text 生效
+
+textWidthBasis / textHeightModePARENT / 未设置段落尺寸计算，仅最外层 Text 生效
+
+Text 可以嵌套 Text、Raw、Emoji 和 WidgetSpan。普通文本节点会被 trim；多字体字符串不会逐项 trim，因此 "A, B" 的第二个名称会保留前导空格，建议写成 "A,B"。decoration 支持 UNDERLINE、OVERLINE、LINE_THROUGH；textShadow 格式为 x y [blurSigma] [color]；fontFeatures 支持 +liga -kern tnum=2 smcp[2:8] 等形式。详细语法见文本属性详解。
+
+foregroundColor 是其他前景画笔参数的前提；可搭配 foregroundMode（FILL / STROKE / STROKE_AND_FILL）、foregroundStrokeWidth、foregroundStrokeMiter、foregroundStrokeCap、foregroundStrokeJoin、foregroundAntiAlias。backgroundColor 提供纯色文本背景。
+
+decorationColor、decorationLineStyle、decorationThickness、decorationGaps 必须与 decoration 一起使用；可用 decoration="NONE" 取消继承的装饰。textShadow 用英文逗号分隔多条阴影，例如 "3 4 1.5 #00000066,-2 0 #E5393566"；textShadow="NONE" 可取消继承。颜色函数内部的逗号不会拆分阴影。fontFeatures 用空白分隔 OpenType 特性，标签为四个小写字母或数字，支持 NONE 取消继承。
+
+字体特性的范围语法会被解析和校验，但当前 Skiko 段落样式未使用 start/end；按片段应用请拆分 Span，见字体特性限制。
+
+strutEnabled、strutFontFamily、strutFontStyle、strutFontSize、strutHeight、strutLeading、strutHeightForced、strutHeightOverridden 只作用于最外层 Text；指定任一 strut* 属性即创建支撑样式，strutFontSize / strutHeight 必须是有限正数。当前 Parser 不提供 strutTopRatio。段落属性同样只作用于最外层 Text，嵌套 Text 仅作为行内 Span。
+
+## Raw
+Section titled “Raw”
+
+支持 Text 的文本样式属性，但 textAlign、softWrap、overflow 等段落布局属性不会在 Raw 上生效。文本不做 trim，首尾空格和换行会保留；可以嵌套行内 Span，但只能出现在由最外层 Text 创建的行内内容树中。
+
+## WidgetSpan
+Section titled “WidgetSpan”
+
+只能作为 Text 子节点，且必须恰有一个普通 Widget 子节点。alignment 默认为 BOTTOM，可设 BASELINE、ABOVE_BASELINE、BELOW_BASELINE、TOP、BOTTOM、MIDDLE；baseline 可设 ALPHABETIC 或 IDEOGRAPHIC，并支持 Text 的文本样式属性。
+
+## Emoji
+Section titled “Emoji”
+
+属性必填默认值 / 说明
+
+url / dataUri二选一网络 URL 或内嵌 Data URI，不能同时指定
+
+alignment否BASELINE；PlaceholderAlignment
+
+baseline否ALPHABETIC 或 IDEOGRAPHIC
+
+width / height否未设置时根据所在 Span 字号推导
+
+fit否未设置时按 SCALE_DOWN；可选值同 Image，小图不自动放大到占位框，需要拉伸时写 FILL
+
+imageAlignment / repeat否CENTER / NO_REPEAT；可选值同 Image
+
+scale / opacity否1；scale 是像素密度，必须有限且大于 0
+
+color / colorBlendMode否图片着色
+
+只能作为 Text 的子节点；使用 URL 获取网络图片时会同步阻塞，Data URI 则由解码器在本地处理。

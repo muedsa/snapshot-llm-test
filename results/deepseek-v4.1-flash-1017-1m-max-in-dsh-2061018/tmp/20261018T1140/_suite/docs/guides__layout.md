@@ -1,0 +1,168 @@
+<!-- source: https://snapshot.muedsa.com/guides/layout/ -->
+
+约束、布局与调试 | Snapshot跳转到内容
+
+##
+
+# 约束、布局与调试
+
+## 父节点给约束，子节点报尺寸
+Section titled “父节点给约束，子节点报尺寸”
+
+Snapshot 采用与 Flutter 相同的 Box 布局协议：父节点向子节点传递 BoxConstraints，子节点必须在范围内选择尺寸，父节点再决定子节点的位置。
+
+data class BoxConstraints(
+
+val minWidth: Float = 0f,
+
+val maxWidth: Float = Float.POSITIVE_INFINITY,
+
+val minHeight: Float = 0f,
+
+val maxHeight: Float = Float.POSITIVE_INFINITY,
+
+)
+
+常用工厂：
+
+工厂结果
+
+tight(size)宽高都固定
+
+tightFor(width, height)只固定指定的维度
+
+loose(size)最小为 0，最大为给定尺寸
+
+expand(width, height)尽可能扩张，未指定维度默认为无限
+
+## Container 的组合顺序
+Section titled “Container 的组合顺序”
+
+Container 不是单一 RenderBox，而是按属性组合多个 Widget。大致顺序为：子节点 → 对齐 → padding → 颜色/裁剪/装饰 → 约束 → margin → transform。
+
+这带来几个重要规则：
+
+width / height 会收紧 constraints；
+
+margin 实际是最外层 Padding；
+
+color 与 decoration 不能同时传入；需要同时使用时把颜色放进 BoxDecoration；
+
+clipBehavior != NONE 时必须提供可生成裁剪路径的 decoration；
+
+没有子节点、没有约束的空 Container 在无界根约束下会收缩为零尺寸；根出图仍需非零宽高。
+
+## Flex 布局
+Section titled “Flex 布局”
+
+Row 与 Column 都是 Flex 的特化：
+
+参数作用
+
+mainAxisAlignment子节点在主轴上的分布方式
+
+mainAxisSizeFlex 自身在主轴上取最大或最小尺寸
+
+crossAxisAlignment子节点在交叉轴上的对齐方式
+
+textDirection水平方向的 start/end 解释
+
+verticalDirection垂直方向排列顺序
+
+textBaseline基线对齐时使用的基线类型
+
+clipBehavior溢出时的裁剪策略
+
+Expanded 相当于 Flexible(fit = TIGHT)，强制占满分配到的空间；Flexible(fit = LOOSE) 允许子节点更小。两者只能是 Flex 的直接子节点。
+
+弹性分配只改变主轴约束，不解除交叉轴的最大尺寸限制。Column 中的弹性子节点仍受父级最大宽度约束，文本可据此换行；Row 中则保留最大高度约束。非 STRETCH 对齐允许子节点更窄或更矮，只有 crossAxisAlignment = STRETCH 才强制填满交叉轴。若父级交叉轴本来无界，Flex 不会凭空增加有限约束。
+
+SizedBox(width = 600f, height = 160f) {
+
+Row(crossAxisAlignment = CrossAxisAlignment.STRETCH) {
+
+Expanded(flex = 2) { Container(color = 0xFF38BDF8.toInt()) }
+
+Flexible(flex = 1) { Container(width = 120f, color = 0xFFA78BFA.toInt()) }
+
+}
+
+}
+
+## Stack 与 Positioned
+Section titled “Stack 与 Positioned”
+
+Stack 先布局非 Positioned 子节点，再按 left / top / right / bottom / width / height 放置 Positioned 子节点。
+
+Stack(
+
+alignment = BoxAlignment.CENTER,
+
+fit = StackFit.LOOSE,
+
+clipBehavior = ClipBehavior.NONE,
+
+) {
+
+Container(width = 400f, height = 240f)
+
+Positioned(right = 16f, bottom = 16f) {
+
+Container(width = 80f, height = 32f)
+
+}
+
+}
+
+同一轴上 left、right、width 最多只能给两个，垂直轴规则相同。
+
+## 溢出相关 Widget
+Section titled “溢出相关 Widget”
+
+AspectRatio 用有限宽高比确定尺寸，父约束至少一轴有界；FractionallySizedBox 按父约束最大宽高的倍数设置子节点尺寸，设置比例的轴必须有界。UnconstrainedBox 可以解除传给子节点的轴约束，但自身仍遵守父约束。Spacer 可作为 Flex 的直属子项填满剩余空间。IndexedStack 会布局全部子项，只绘制指定索引。
+
+Widget行为
+
+OverflowBox给子节点一套不同的约束，允许子节点超出父盒
+
+SizedOverflowBox自身使用指定尺寸，子节点仍按父约束布局
+
+LimitedBox仅在收到无限约束时施加最大宽高
+
+ClipRect / ClipRRect / ClipOval / ClipPath显式裁剪绘制结果
+
+布局溢出和绘制裁剪是两个不同问题：子节点可以布局得更大，但最终是否显示取决于父级和裁剪 Widget。
+
+## 布局自省
+Section titled “布局自省”
+
+val root = layoutWidget {
+
+Container(width = 320f, height = 180f) { /* ... */ }
+
+}
+
+val tree: LayoutNode = root.toLayoutNode()
+
+LayoutNode 用于只读布局自省，包含 RenderBox 类型、尺寸、局部偏移、累计布局偏移和子节点。偏移与结构在调用时固化，尺寸仍读取 RenderBox；布局或树结构改变后应重新构建。它忽略 Transform 等画布矩阵，适合打印布局信息或写结构断言，但不代表变换后的可见边界。
+
+### 查询到祖先的绘制坐标变换
+Section titled “查询到祖先的绘制坐标变换”
+
+在布局完成后，可通过 RenderBox.getTransformTo(ancestor) 获取当前节点局部绘制坐标到指定祖先局部坐标的矩阵：
+
+// child 与 ancestor 来自同一棵已布局的 RenderBox 树。
+
+val transform = child.getTransformTo(ancestor)
+
+目标只能是自身或祖先；自身返回单位矩阵，兄弟节点、子孙或另一棵树中的节点会触发 IllegalArgumentException。
+
+从祖先向当前节点累计每一级 applyPaintTransform，包含布局偏移及沿途的绘制变换；不包含目标祖先到其父节点的变换。
+
+缩放或旋转会作用于内层布局偏移，不能简单把所有偏移相加。例如外层偏移 (5,7)、中间缩放 (2,3)、内层偏移 (11,13)，内层原点映射到祖先后为 (27,46)。
+
+布局偏移和依赖组件尺寸的 origin / alignment 应在布局后查询；重新布局后需重新获取矩阵。
+
+getTransformTo 描述坐标映射，不计算裁剪后的可见区域，也不是任意两节点间的坐标转换 API。
+
+定位问题时建议按顺序检查：根约束是否有限 → 子节点尺寸是否满足约束 → parentData 是否放在正确父节点下 → 是否被裁剪 → 是否只是绘制透明。

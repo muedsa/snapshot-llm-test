@@ -1,0 +1,48 @@
+{
+  "task": "A19",
+  "title": "构造可核验的视觉题场",
+  "started_at": "2026-10-18T13:47:30+08:00",
+  "status": "completed",
+  "dsl_versions": 2,
+  "files": [
+    {"src": "tmp/20261018T1140/A19/renders/grid-v001.png", "dst": "grid-scene.png", "purpose": "1600×1600 8×8、64对象网格", "pair": "grid-scene.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/dsl/grid-v001.snapshot", "dst": "grid-scene.snapshot", "purpose": "网格完整 DSL", "pair": "grid-scene.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/renders/occlusion-v002.png", "dst": "occlusion.png", "purpose": "800×800 遮挡 A", "pair": "occlusion.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/dsl/occlusion-v002.snapshot", "dst": "occlusion.snapshot", "purpose": "遮挡 A 完整 DSL", "pair": "occlusion.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/renders/occlusion-alt-v002.png", "dst": "occlusion-alternative.png", "purpose": "800×800 遮挡 B（隐藏内容不同）", "pair": "occlusion-alternative.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/dsl/occlusion-alt-v002.snapshot", "dst": "occlusion-alternative.snapshot", "purpose": "遮挡 B 完整 DSL", "pair": "occlusion-alternative.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/scene-data.json", "dst": "scene-data.json", "purpose": "64对象真实几何/频数/行检查", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/questions.json", "dst": "questions.json", "purpose": "12网格题+2遮挡题，不含答案", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/answers.json", "dst": "answers.json", "purpose": "14题答案/计算/容差/可见性", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A19/equivalence.json", "dst": "equivalence.json", "purpose": "A/B SHA-256 与逐像素四通道对比", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["grid-scene.png", "grid-scene.snapshot", "occlusion.png", "occlusion.snapshot", "occlusion-alternative.png", "occlusion-alternative.snapshot", "scene-data.json", "questions.json", "answers.json", "equivalence.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "网格 1600×1600，8×8 格、每格 180px、原点 (80,80)；64 个对象 G01–G64 行优先编号，每格恰一主体，ID 在主体外。",
+    "颜色蓝/橙/绿/紫各16，形状圆/方/圆环/圆角方各16；尺寸 48/64/80 计数 32/16/16；16种颜色×形状组合全部出现；每种颜色与每种形状都出现三种尺寸；每行颜色/形状均≥3。",
+    "圆/方/圆环/圆角方按 48/64/80 绘制；圆按直径、方按边长；圆环外径=尺寸、内径=一半；无外部图。",
+    "64 个 ID 标签均在主体外（cell 内左上），全图与标签实际查看；对象颜色/形状/尺寸组合可辨。",
+    "遮挡 A/B 均 800×800；可见层（米白底、蓝圆、绿圆角方、不透明块 [120,200,680,620]）完全一致；隐藏 A 红圆+黄方，B 紫环+青圆角方，均完全在块内，无阴影/滤镜/虚线。",
+    "两遮挡 PNG 解码为 8 位未预乘 RGBA：尺寸相同、不同像素数 0、最大通道差 0；像素数组哈希相同；文件 SHA-256 也相同。",
+    "12 道网格题覆盖复合检索、严格中心关系、距离、排序、包围框、颜色/形状计数；Q08/Q09/Q11/Q12 为两步关系；2 道遮挡题，Q14 答案为“无法确定”。",
+    "所有题目写明左上原点、x向右/y向下、像素与边界/并列规则；questions.json 不含答案，answers.json 给出方法/容差/可见性依据。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应与 PNG", "5 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Container 边框/圆角、Stack、Text", "网格与遮挡"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定画布与坐标", "1600/800"]
+  ],
+  "capabilities": "结构化 64 对象属性网格、四形状/三尺寸、稳定 ID、完全遮挡等价对、RGBA 逐像素等价、14 题问答数据；未使用 Image。",
+  "design": "网格用米白底与细格线，ID 置左上、主体居中；颜色/形状/尺寸三属性可逐格读。遮挡图用极简可见层与一整块深色不透明矩形，隐藏内容只存在于块后，A/B 视觉完全同图。",
+  "experience": "先固定 16 组合×4副本的尺寸序列，再洗牌并检查每行颜色/形状数，能同时满足覆盖与行约束。完全遮挡必须把隐藏对象画在遮挡块之前、完全落在块边界内且不加阴影；最终用 RGBA 数组而非文件哈希判定像素等价。",
+  "issues": [],
+  "iterations": [
+    {"id": "A19-IT-001", "type": "visual", "parent": "v001", "problem": "v001 遮挡图右下绿色圆角方与遮挡块重叠 5px，可见前景被裁。", "change": "绿色圆角方从 (615,615) 移到 (640,650)，完全离开遮挡块。", "result": "v002 可见层完整，A/B 仍逐像素相同。", "evidence": "tmp/20261018T1140/A19/renders/occlusion-v002.png"}
+  ],
+  "views": [
+    {"id": "A19-view-grid", "version": "grid-v001", "image": "tmp/20261018T1140/A19/renders/grid-v001.png", "viewed_at": "2026-10-18T13:48:20+08:00", "note": "8×8、64 ID/对象完整；形状尺寸可辨。"},
+    {"id": "A19-view-occl-a", "version": "occl-v002", "image": "tmp/20261018T1140/A19/renders/occlusion-v002.png", "viewed_at": "2026-10-18T13:49:30+08:00", "note": "可见蓝圆/绿圆角方；遮挡块完整。"},
+    {"id": "A19-view-occl-b", "version": "occl-alt-v002", "image": "tmp/20261018T1140/A19/renders/occlusion-alt-v002.png", "viewed_at": "2026-10-18T13:49:35+08:00", "note": "与 A 视觉完全相同；隐藏内容不可见。"}
+  ],
+  "closing": "临时目录保留两版遮挡、5 次真实渲染、scene/questions/answers/equivalence；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

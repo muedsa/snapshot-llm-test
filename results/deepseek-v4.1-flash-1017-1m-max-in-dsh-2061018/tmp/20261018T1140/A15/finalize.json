@@ -1,0 +1,54 @@
+{
+  "task": "A15",
+  "title": "复杂界面视觉复刻",
+  "started_at": "2026-10-18T13:14:00+08:00",
+  "status": "completed",
+  "dsl_versions": 5,
+  "files": [
+    {"src": "tmp/20261018T1140/A15/renders/v005.png", "dst": "reconstructed.png", "purpose": "1440×900 参考界面复刻", "pair": "reconstructed.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A15/dsl/v005.snapshot", "dst": "reconstructed.snapshot", "purpose": "完整 DSL，无 Image", "pair": "reconstructed.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A15/reconstruction-audit.json", "dst": "reconstruction-audit.json", "purpose": "12 锚点/图表/表格/颜色/残差", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A15/comparison.md", "dst": "comparison.md", "purpose": "原尺寸/缩略/局部并排与残余差异", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["reconstructed.png", "reconstructed.snapshot", "reconstruction-audit.json", "comparison.md", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "1440×900 原尺寸；侧栏/品牌/导航/标题/副标题/Export 按钮/3 KPI/净收入图表/Team activity/Recent projects/页脚全部重建。",
+    "12 个指定锚点全部记录：侧栏右边界 220、导航 [20,115,201,163]、标题字形 [261,39,593,68]、三 KPI、图表卡、零线 (325,549)、末柱 (888,420)、活动卡、表格卡、末行状态；最大分量误差 1px。",
+    "图表零线 549、刻度 405/441/477/513/549、值×1.2px；六柱顺序 Apr–Sep，柱顶误差 ≤1px；月份与数值来自 content.json。",
+    "表格三行 Atlas/Pulse/Orbit，In progress/Review/Done 颜色+文字+框位置准确，Due Nov 09/11/12；行/表头对齐参考。",
+    "颜色原尺寸与相同背景下并排判断：侧栏 #14233C、主背景 #F3F6FB、白卡、主蓝 #245CE4、三种状态底均同色；未只写“颜色一致”。",
+    "主标题字形框与参考完全一致；副标题、KPI 数字、图表标题、表头、行文字、页脚均实际查看无裁切。",
+    "1/3 缩略、导航/标题/KPI/图表/活动/表格局部并排均打开；残余为字体字形、ELEVATION_1 阴影、标志内方块和 1px 抗锯齿。",
+    "最终 DSL 无 Image；未嵌入参考图或裁块，主体全部由 Container/Text/Stack/Positioned 等构造。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "请求/响应与字体", "5 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Container boxShadow/边框/圆角、Text、Stack/Positioned", "全部界面"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定尺寸与绝对定位", "1440×900"]
+  ],
+  "capabilities": "从参考图估坐标重建侧栏/卡片/图表/表格/状态；ELEVATION_1 阴影、精确网格与柱高、状态色+文字编码、像素锚点测量；未使用 Image。",
+  "design": "严格复刻参考的信息架构与视觉系统：220px 深色侧栏、冷白灰主区、白卡、蓝色主操作与图表、三枚状态标签；主区 260–1400 的 12 栏节奏，图表零线/刻度/柱宽与表格列位按参考测量值放置。",
+  "experience": "文字节点的 y 坐标是行盒顶部，字形顶部通常还要下移数像素；必须用实际渲染的深色像素 bbox 校正标题/KPI/表头，而不能只按 DSL 坐标。卡片阴影会改变边缘观感但不应改变外框锚点；表格首列有 19px 内缩，不能按卡片 padding 猜。",
+  "issues": [],
+  "iterations": [
+    {"id": "A15-IT-001", "type": "visual", "parent": "v001", "problem": "v001 文字整体偏下：标题字形顶 45（参考 39）、KPI 值 194（参考 200 反而偏高）、表头/行文字偏下；表格首列与 Due 列 x 偏差。", "change": "按实测 bbox 校正标题/副标题/KPI/图表/表格/页脚；首列 299、owner 784、due 1232；KPI 值下移 6。", "result": "v002 标题 261,39、KPI 值 200、表头 699、行文字 735，锚点误差 ≤1。", "evidence": "tmp/20261018T1140/A15/renders/v002.png"},
+    {"id": "A15-IT-002", "type": "visual", "parent": "v002", "problem": "卡片只有 1px 边框，缺少参考的柔和投影；标志内白方块为实心，参考更接近描边。", "change": "卡片加 ELEVATION_1；标志内方块改 3px 白描边。", "result": "v003 卡片层次更接近参考，标志轮廓改善。", "evidence": "tmp/20261018T1140/A15/renders/crop-nav.png"},
+    {"id": "A15-IT-003", "type": "visual", "parent": "v003", "problem": "活动列表 40px 行距偏挤，时间与下一条太近；表格分隔线偏淡。", "change": "活动行距 44px；表格分隔线改 #E1E7F0。", "result": "v004 活动三条与参考节奏一致，表格行界更清楚。", "evidence": "tmp/20261018T1140/A15/renders/crop-activity.png"},
+    {"id": "A15-IT-004", "type": "visual", "parent": "v004", "problem": "活动时间仍比参考高约 4px。", "change": "时间 y+19→y+23。", "result": "v005 时间与标签间距接近参考，最终通过。", "evidence": "tmp/20261018T1140/A15/renders/v005.png"}
+  ],
+  "views": [
+    {"id": "A15-view-reference", "version": "reference", "image": "tasks/A15-reference-reconstruction/inputs/reference.png", "viewed_at": "2026-10-18T13:14:30+08:00", "note": "原尺寸观察参考，估 12 锚点与颜色。"},
+    {"id": "A15-view-v001", "version": "v001", "image": "tmp/20261018T1140/A15/renders/v001.png", "viewed_at": "2026-10-18T13:14:45+08:00", "note": "首版结构完整，文字整体偏低，表格列位偏。"},
+    {"id": "A15-view-v002", "version": "v002", "image": "tmp/20261018T1140/A15/renders/v002.png", "viewed_at": "2026-10-18T13:15:20+08:00", "note": "锚点校正后标题/KPI/表格基本对齐。"},
+    {"id": "A15-view-v003", "version": "v003", "image": "tmp/20261018T1140/A15/renders/v003.png", "viewed_at": "2026-10-18T13:16:05+08:00", "note": "加阴影、改标志内方块；整体更接近。"},
+    {"id": "A15-view-v004", "version": "v004", "image": "tmp/20261018T1140/A15/renders/v004.png", "viewed_at": "2026-10-18T13:16:47+08:00", "note": "活动行距修正；时间仍略高。"},
+    {"id": "A15-view-v005", "version": "v005", "image": "tmp/20261018T1140/A15/renders/v005.png", "viewed_at": "2026-10-18T13:17:03+08:00", "note": "最终整图：结构/文字/图表/表格/颜色通过。"},
+    {"id": "A15-view-thumb-v005", "version": "v005-thumb", "image": "tmp/20261018T1140/A15/renders/thumb-compare.png", "viewed_at": "2026-10-18T13:17:08+08:00", "note": "1/3 并排：整体密度、卡片比例、侧栏节奏一致。"},
+    {"id": "A15-view-title", "version": "crop", "image": "tmp/20261018T1140/A15/renders/crop-title.png", "viewed_at": "2026-10-18T13:17:12+08:00", "note": "标题/副标题局部：字形顶对齐，字宽接近。"},
+    {"id": "A15-view-kpi", "version": "crop", "image": "tmp/20261018T1140/A15/renders/crop-kpi.png", "viewed_at": "2026-10-18T13:17:15+08:00", "note": "KPI 局部：数值/变化/卡宽一致。"},
+    {"id": "A15-view-chart", "version": "crop", "image": "tmp/20261018T1140/A15/renders/crop-chart.png", "viewed_at": "2026-10-18T13:17:18+08:00", "note": "图表局部：零线/刻度/六柱高度与宽度。"},
+    {"id": "A15-view-activity", "version": "crop", "image": "tmp/20261018T1140/A15/renders/crop-activity.png", "viewed_at": "2026-10-18T13:17:21+08:00", "note": "活动局部：三条节奏与时间。"},
+    {"id": "A15-view-table", "version": "crop", "image": "tmp/20261018T1140/A15/renders/crop-table.png", "viewed_at": "2026-10-18T13:17:24+08:00", "note": "表格局部：列位、三行状态、Due。"}
+  ],
+  "closing": "临时目录保留参考观察、5 个 DSL 版本、缩略/局部并排与审计；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

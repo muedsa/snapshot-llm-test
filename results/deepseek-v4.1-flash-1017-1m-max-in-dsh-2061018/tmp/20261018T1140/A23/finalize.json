@@ -1,0 +1,61 @@
+{
+  "task": "A23",
+  "title": "格式边界下的动画分镜交付",
+  "started_at": "2026-10-18T13:55:40+08:00",
+  "status": "completed",
+  "dsl_versions": 3,
+  "files": [
+    {"src": "tmp/20261018T1140/A23/renders/cover-v001.png", "dst": "cover.png", "purpose": "1200×800 RGB 封面", "pair": "cover.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/dsl/cover-v001.snapshot", "dst": "cover.snapshot", "purpose": "封面完整 DSL", "pair": "cover.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/renders/frame-01-v003.png", "dst": "frame-01.png", "purpose": "600×600 透明关键帧1", "pair": "frame-01.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/dsl/frame-01-v003.snapshot", "dst": "frame-01.snapshot", "purpose": "帧1完整 DSL", "pair": "frame-01.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/renders/frame-02-v003.png", "dst": "frame-02.png", "purpose": "透明关键帧2", "pair": "frame-02.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/dsl/frame-02-v003.snapshot", "dst": "frame-02.snapshot", "purpose": "帧2完整 DSL", "pair": "frame-02.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/renders/frame-03-v003.png", "dst": "frame-03.png", "purpose": "透明关键帧3", "pair": "frame-03.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/dsl/frame-03-v003.snapshot", "dst": "frame-03.snapshot", "purpose": "帧3完整 DSL", "pair": "frame-03.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/renders/frame-04-v003.png", "dst": "frame-04.png", "purpose": "透明关键帧4", "pair": "frame-04.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/dsl/frame-04-v003.snapshot", "dst": "frame-04.snapshot", "purpose": "帧4完整 DSL", "pair": "frame-04.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/renders/frame-05-v003.png", "dst": "frame-05.png", "purpose": "透明关键帧5", "pair": "frame-05.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/dsl/frame-05-v003.snapshot", "dst": "frame-05.snapshot", "purpose": "帧5完整 DSL", "pair": "frame-05.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/renders/frame-06-v003.png", "dst": "frame-06.png", "purpose": "透明关键帧6（光圈）", "pair": "frame-06.snapshot", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/dsl/frame-06-v003.snapshot", "dst": "frame-06.snapshot", "purpose": "帧6完整 DSL", "pair": "frame-06.png", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/limitations.md", "dst": "limitations.md", "purpose": "SVG/CMYK/GIF/动画逐项判定与替代", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/frame-data.json", "dst": "frame-data.json", "purpose": "6帧×12单元几何/轨迹/接缝", "pair": "—", "status": "通过"},
+    {"src": "tmp/20261018T1140/A23/timing.json", "dst": "timing.json", "purpose": "250ms/帧、1500ms循环、跳变接缝", "pair": "—", "status": "通过"}
+  ],
+  "artifacts": ["cover.png", "cover.snapshot", "frame-01.png", "frame-01.snapshot", "frame-02.png", "frame-02.snapshot", "frame-03.png", "frame-03.snapshot", "frame-04.png", "frame-04.snapshot", "frame-05.png", "frame-05.snapshot", "frame-06.png", "frame-06.snapshot", "limitations.md", "frame-data.json", "timing.json", "snapshot-usage.md", "task-metrics.json"],
+  "checks": [
+    "先按实际文档判定：服务只返回静态 PNG；不原生支持 SVG/CMYK/GIF/动画时间轴；limitations.md 逐项写明依据、替代和外部后续，不创建假格式文件。",
+    "封面 1200×800 RGB，文字“从结构到画面”可读；右侧 12 单元光圈，主色与字体层级统一；封面 DSL 无 Image。",
+    "6 帧均 600×600 透明 PNG；alpha 范围 0–255，四角 alpha=0；每帧 12 个单元，U01–U12 的颜色/形状/宽高/alpha 跨帧不变，只有位置与旋转变化。",
+    "6 帧从外圈半径 270px 逐步收拢到 190px；末帧形成 12 点光圈；单元不越出画布、不缩放、不变色、不渐隐；无文字。",
+    "frame-data 记录 6×12 的实际中心/旋转/尺寸/颜色/alpha、相邻帧位移/角度与插值规则；timing 记录 0/250/500/750/1000/1250ms 与 1500ms 循环。",
+    "末帧→首帧是 250ms 跳变：最大平移 106.875px、最大旋转差 90°；timing/limitations 明确不声称无缝。",
+    "逐帧 1–6、封面与 3×2 接触表均实际查看；接触表只作辅助，不替代 6 张原图。",
+    "7 张指定 PNG 全部来自真实服务 200 image/png；封面无 alpha，6 帧真透明；没有合成 GIF/矢量化/CMYK。"
+  ],
+  "docs": [
+    ["https://open-snapshot.muedsa.com/ai-guide.md", "响应类型、PNG 字节、错误", "全部 19 次渲染"],
+    ["https://snapshot.muedsa.com/reference/parser-tags/", "Container/Transform/颜色/无动画/SVG/CMYK/GIF 标签", "封面与 6 帧"],
+    ["https://snapshot.muedsa.com/guides/layout/", "固定 600×600 与位置", "6 帧"]
+  ],
+  "capabilities": "透明 PNG 关键帧、稳定 ID 与属性守恒、位置/旋转轨迹、时序与跳变接缝记录、格式边界判定；未使用 Image。",
+  "design": "封面用“结构汇聚成画面”的叙事：左侧文字，右侧 12 个形状/颜色单元组成光圈；6 帧从外圈 270px 收拢到 190px，保持单元属性不变，末帧成为可识别的 12 点光圈。接触表按 3×2 排列便于看汇聚。",
+  "experience": "透明帧必须从 alpha=0 角点和 extrema 验证；随机散点会在中间帧碰撞，改用同角度的径向收拢可保证全程 12 个单元不重叠/不越界。循环若首尾不同必须如实写跳变，不能因 loop=true 就称无缝；Transform 旋转要以自身中心放置。",
+  "issues": [],
+  "iterations": [
+    {"id": "A23-IT-001", "type": "visual", "parent": "v001", "problem": "v001 用随机散点，frame 3 出现单元重叠，且 frame 1 的 300px 轨道让边缘单元越出 600 画布。", "change": "改为同角度径向收拢，外圈 270px，内圈 190px，保留 12 个单元与旋转。", "result": "v002/v003 六帧均 12 个单元、无越界、无重叠；末帧光圈清楚。", "evidence": "tmp/20261018T1140/A23/renders/frame-01-v003.png"},
+    {"id": "A23-IT-002", "type": "visual", "parent": "v002", "problem": "v002 之外圈仍略大，frame 1 边缘单元贴边风险。", "change": "外圈 300→270；其余半径同步收紧；加入接缝旋转数据。", "result": "v003 全部单元在 600×600 内；接缝 106.875px/90° 明确记录。", "evidence": "tmp/20261018T1140/A23/renders/contact-sheet.png"}
+  ],
+  "views": [
+    {"id": "A23-view-cover", "version": "cover-v001", "image": "tmp/20261018T1140/A23/renders/cover-v001.png", "viewed_at": "2026-10-18T13:55:50+08:00", "note": "封面：文字可读，12 单元光圈完整。"},
+    {"id": "A23-view-f1", "version": "f1-v003", "image": "tmp/20261018T1140/A23/renders/frame-01-v003.png", "viewed_at": "2026-10-18T13:56:50+08:00", "note": "外圈：12 单元均在画布内。"},
+    {"id": "A23-view-f2", "version": "f2-v003", "image": "tmp/20261018T1140/A23/renders/frame-02-v003.png", "viewed_at": "2026-10-18T13:56:53+08:00", "note": "第二帧：半径收拢。"},
+    {"id": "A23-view-f3", "version": "f3-v003", "image": "tmp/20261018T1140/A23/renders/frame-03-v003.png", "viewed_at": "2026-10-18T13:56:56+08:00", "note": "第三帧：无重叠。"},
+    {"id": "A23-view-f4", "version": "f4-v003", "image": "tmp/20261018T1140/A23/renders/frame-04-v003.png", "viewed_at": "2026-10-18T13:56:59+08:00", "note": "第四帧：继续收拢。"},
+    {"id": "A23-view-f5", "version": "f5-v003", "image": "tmp/20261018T1140/A23/renders/frame-05-v003.png", "viewed_at": "2026-10-18T13:57:02+08:00", "note": "第五帧：接近最终环。"},
+    {"id": "A23-view-f6", "version": "f6-v003", "image": "tmp/20261018T1140/A23/renders/frame-06-v003.png", "viewed_at": "2026-10-18T13:57:05+08:00", "note": "末帧：12 点光圈，可识别。"},
+    {"id": "A23-view-contact", "version": "contact", "image": "tmp/20261018T1140/A23/renders/contact-sheet.png", "viewed_at": "2026-10-18T13:57:15+08:00", "note": "3×2 接触表：汇聚趋势清楚；仅辅助。"}
+  ],
+  "closing": "临时目录保留 19 次真实渲染、3 个 DSL 版本、6 帧、封面、接触表、frame-data/timing/limitations；根 .gitignore 已创建，仅忽略运行时缓存。"
+}

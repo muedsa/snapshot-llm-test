@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "canvas": {
+    "width": 1280,
+    "height": 800,
+    "background": "#0B1220",
+    "safe_margin": 32
+  },
+  "initial_attempt": {
+    "request_id": "7f53ff2c-01d5-40a9-90fc-187c8f801fe3",
+    "http_status": 400,
+    "raw_response": {
+      "path_base": "suite_root",
+      "path": "tmp/20261018T1140/A03/responses/broken-original-A03-initial-broken-9a5c64ccda.json"
+    },
+    "summary": "PARSE_ERROR：Container padding 值 \"24 32\" 格式非法。"
+  },
+  "issues": [
+    {
+      "id": "A03-01",
+      "line": "broken.snapshot:2",
+      "node": "Container[padding]",
+      "category": "real-error",
+      "observation": "首次原样提交返回 400 PARSE_ERROR：padding 值 \"24 32\" 格式非法，位置 92。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · EdgeInsets 仅支持 12 / (8,16) / (8,12,16,20)",
+      "fix": "改为 padding=\"(24,32)\"（垂直 24、水平 32）。",
+      "verification": "v002 返回新的 PARSE_ERROR（Transform matrix），说明 padding 已通过解析。"
+    },
+    {
+      "id": "A03-02",
+      "line": "broken.snapshot:10",
+      "node": "Transform[rotate]",
+      "category": "real-error",
+      "observation": "v002 返回 400 PARSE_ERROR：Attr [matrix] must not be null；rotate 不是 Transform 的已文档属性。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · Transform 必填 matrix（列主序 4×4，16 个浮点）",
+      "fix": "以 -8°（屏幕逆时针）旋转矩阵替换 rotate：cos=0.990268、sin=-0.139173，m=(0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1)，并设置 alignment=CENTER，最终由绝对定位放到右下。",
+      "verification": "v003 不再报 Transform 错误，进入渲染阶段并暴露 Positioned 父节点错误。"
+    },
+    {
+      "id": "A03-03",
+      "line": "broken.snapshot:7",
+      "node": "Positioned inside Row",
+      "category": "real-error",
+      "observation": "v003 返回 400 RENDER_ERROR：renderBox.parentData must be StackParentData；Positioned 出现在 Row 中。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · Positioned 必须是 Stack / IndexedStack 的直接子节点",
+      "fix": "把 LIVE 从 Row 移出，改为根 Stack 中的绝对定位 96×36 标签，仍保留 LIVE 需求而非删除。",
+      "verification": "v004 不再报 parentData 错误，但暴露 Layout size is infinite。"
+    },
+    {
+      "id": "A03-04",
+      "line": "broken.snapshot:1-13",
+      "node": "Snapshot/Container/Column",
+      "category": "real-error",
+      "observation": "v004 返回 400 RENDER_ERROR：Layout size is infinite。根 Snapshot 的 width/height 属性未被接受，根 Container 无显式尺寸，Column 内的 Spacer 在无界高度下无法布局。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · Snapshot 只有 background/debug/type；root 需要非零尺寸；guides/layout 约束规则",
+      "fix": "最终稿用绝对定位的根 Stack + 首个非定位 SizedBox(1280,800) 建立有界画布，所有区域按像素坐标放置，不再依赖无界 Column/Spacer。",
+      "verification": "最终 v010 返回 200 PNG，尺寸 1280×800。"
+    },
+    {
+      "id": "A03-05",
+      "line": "broken.snapshot:1",
+      "node": "Snapshot[width,height]",
+      "category": "silent-ignore",
+      "observation": "Snapshot 文档没有 width/height 属性；未知属性被忽略，画布尺寸实际由内容决定。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · Snapshot 属性表",
+      "fix": "最终用根 Stack 的 SizedBox(1280,800) 明确画布；Request/响应像素校验为 1280×800。",
+      "verification": "最终 PNG 像素 1280×800（响应记录 pixels）。"
+    },
+    {
+      "id": "A03-06",
+      "line": "broken.snapshot:4",
+      "node": "Text[font-size]",
+      "category": "silent-ignore",
+      "observation": "font-size 不是 Text 的文档属性，未知属性被忽略，标题不会得到 44px。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · Text 使用 fontSize",
+      "fix": "最终标题 fontSize=44；正文与指标按题意使用 28/24/18/16。",
+      "verification": "最终图中标题测量高度与 44px 字号匹配。"
+    },
+    {
+      "id": "A03-07",
+      "line": "broken.snapshot:11",
+      "node": "ImageFiltered",
+      "category": "visual-only",
+      "observation": "ImageFiltered 会模糊整个子树，包括 \"Background-only blur\" 文字，与“只模糊卡内背景”相反。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · BackdropFilter 读取已有背景并建议配合 ClipRRect",
+      "fix": "v010 先按文档尝试 ClipRRect(radius=24)+BackdropFilter，但实际图上卡内细条仍然锐利、没有可见模糊；v011 改为 Stack：彩色细条先绘制 → ClipRRect 裁剪的 500×150 区域内再画一份细条副本并用 ImageFiltered(sigma=14) 模糊 → 半透明卡面与 28px 文字最后绘制。这样只模糊卡内背景副本，文字保持清晰。",
+      "verification": "v010 与 v011 对比：v010 卡内细条锐利（BackdropFilter 未产生可见效果）；v011 卡内细条柔化、卡外仍锐利，文字清晰。"
+    },
+    {
+      "id": "A03-08",
+      "line": "broken.snapshot:10",
+      "node": "REVIEW Transform/Container",
+      "category": "visual-only",
+      "observation": "REVIEW 在 Column 流中，不是右下 160×56；背景 #33FFFFFF 的 20% 白色语义正确，但文字缺少 24px 字号；旋转属性无效。",
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags/ · 颜色 alpha 为最后两位；Transform matrix + alignment",
+      "fix": "绝对定位到右下（1062,694），160×56，背景 #FFFFFF33（20% 白），文字 #FFFFFF 24px，Transform -8° alignment=CENTER。",
+      "verification": "最终图 REVIEW 逆时针倾斜且文字完全不透明，旋转后边界仍在 32px 安全边距内。"
+    },
+    {
+      "id": "A03-09",
+      "line": "broken.snapshot:5-8",
+      "node": "Row/Expanded metric",
+      "category": "visual-only",
+      "observation": "原稿只有一张 360×200 指标卡；题目要求第一行三张等宽卡，分别显示三个指标。",
+      "doc_source": "题面 + Row/Expanded 文档",
+      "fix": "三张 389.333×180 卡 + 24px 间距，总宽 1216；指标文案 28px。",
+      "verification": "最终图三卡等宽、间距一致、文案完整。"
+    },
+    {
+      "id": "A03-10",
+      "line": "broken.snapshot:7",
+      "node": "LIVE",
+      "category": "visual-only",
+      "observation": "LIVE 只有白色文本，没有 96×36 尺寸，且放在 Row 中会盖住/挤占标题区域。",
+      "doc_source": "题面 + Positioned 文档",
+      "fix": "根 Stack 右上 (1152,32) 放 96×36 标签；标题宽 900 且结束于约 330px，无重叠。",
+      "verification": "最终图 LIVE 与标题水平间距 >800px。"
+    },
+    {
+      "id": "A03-11",
+      "line": "v010 root Stack",
+      "node": "Stack child 900x900 gradient",
+      "category": "visual-only",
+      "observation": "v010 输出 1280×900 而非 1280×800；根 Stack 中一个 900×900 的非定位渐变子节点把 Stack 高度撑到 900。",
+      "doc_source": "https://snapshot.muedsa.com/guides/layout/ · Stack 尺寸由非定位子节点决定",
+      "fix": "把环境渐变改为 Positioned(1280×800)，不再参与 Stack 尺寸计算。",
+      "verification": "v011 起响应像素固定 1280×800。"
+    },
+    {
+      "id": "A03-12",
+      "line": "v011 标题",
+      "node": "title y=24",
+      "category": "visual-only",
+      "observation": "标题容器距顶 24px，小于题面要求的 32px 安全边距。",
+      "doc_source": "题面 + 布局坐标自检",
+      "fix": "标题与 LIVE 同移到 y=32；其余内容保持 32px 以上边距。",
+      "verification": "v012/v013 图中标题顶部与画布上沿距离 32px。"
+    }
+  ],
+  "versions": [
+    {
+      "version": "original",
+      "parent": null,
+      "kind": "initial-broken",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/broken/original.snapshot"
+      },
+      "response": "tmp/20261018T1140/A03/responses/broken-original-A03-initial-broken-9a5c64ccda.json",
+      "http_status": 400,
+      "png": null,
+      "viewed": false
+    },
+    {
+      "version": "v002",
+      "parent": "original",
+      "kind": "syntax-fix",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/broken/v002.snapshot"
+      },
+      "response": "tmp/20261018T1140/A03/responses/broken-v002-A03-syntax-fix-26f2e03655.json",
+      "http_status": 400,
+      "png": null,
+      "viewed": false
+    },
+    {
+      "version": "v003",
+      "parent": "v002",
+      "kind": "syntax-fix",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/broken/v003.snapshot"
+      },
+      "response": "tmp/20261018T1140/A03/responses/broken-v003-A03-syntax-fix-d2297d75ee.json",
+      "http_status": 400,
+      "png": null,
+      "viewed": false
+    },
+    {
+      "version": "v004",
+      "parent": "v003",
+      "kind": "alternative",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/broken/v004.snapshot"
+      },
+      "response": "tmp/20261018T1140/A03/responses/broken-v004-A03-alternative-984bc7a0be.json",
+      "http_status": 400,
+      "png": null,
+      "viewed": false
+    },
+    {
+      "version": "v010",
+      "parent": "v004",
+      "kind": "visual",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/system-pulse/v010.snapshot"
+      },
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/renders/system-pulse/v010.png"
+      },
+      "http_status": 200,
+      "png": "tmp/20261018T1140/A03/renders/system-pulse/v010.png",
+      "viewed": true,
+      "note": "1280×900；BackdropFilter 未见可见模糊；标题距顶 24px。"
+    },
+    {
+      "version": "v011",
+      "parent": "v010",
+      "kind": "visual",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/system-pulse/v011.snapshot"
+      },
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/renders/system-pulse/v011.png"
+      },
+      "http_status": 200,
+      "png": "tmp/20261018T1140/A03/renders/system-pulse/v011.png",
+      "viewed": true,
+      "note": "1280×800；裁剪模糊副本生效；标题仍距顶 24px。"
+    },
+    {
+      "version": "v012",
+      "parent": "v011",
+      "kind": "visual",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/system-pulse/v012.snapshot"
+      },
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/renders/system-pulse/v012.png"
+      },
+      "http_status": 200,
+      "png": "tmp/20261018T1140/A03/renders/system-pulse/v012.png",
+      "viewed": true,
+      "note": "标题移至 y=32，满足 32px 安全边距。"
+    },
+    {
+      "version": "v013",
+      "parent": "v012",
+      "kind": "repaired-final",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/dsl/system-pulse/v013.snapshot"
+      },
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261018T1140/A03/renders/system-pulse/v013.png"
+      },
+      "http_status": 200,
+      "png": "tmp/20261018T1140/A03/renders/system-pulse/v013.png",
+      "viewed": true,
+      "note": "sigma 18、卡面 alpha 0x22，卡内外对比清晰；最终交付。"
+    }
+  ],
+  "verification": {
+    "canvas_px": [
+      1280,
+      800
+    ],
+    "safe_margin_px": 32,
+    "review_background": "#FFFFFF33 (alpha 0x33 = 51/255 = 20%)",
+    "review_text": "#FFFFFF opaque, 24px",
+    "review_rotation_deg": -8,
+    "card": {
+      "width": 500,
+      "height": 150,
+      "radius": 24
+    },
+    "title_font_px": 44,
+    "metric_font_px": 28,
+    "explanation_font_px": 28,
+    "blur_sigma": 18,
+    "blur_clip": "ClipRRect radius 24; blurred copy of the rails drawn with ImageFiltered inside the clip"
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "questions": [
+    {
+      "id": "Q01",
+      "image": "grid-scene.png",
+      "type": "复合属性检索",
+      "text": "列出所有同时满足 颜色=蓝、形状=圆环、尺寸=64 的对象 ID，按 ID 升序。",
+      "rules": {
+        "origin": "画布左上，x向右/y向下，单位像素",
+        "color": "blue",
+        "shape": "ring",
+        "size": 64
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q02",
+      "image": "grid-scene.png",
+      "type": "严格中心左右关系",
+      "text": "比较 G23 与 G47 的主体中心 x 坐标：哪个严格更小？若相等写 tie。",
+      "rules": {
+        "compare": "x",
+        "strict": true,
+        "tie": "tie"
+      },
+      "tolerance": 0.01,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q03",
+      "image": "grid-scene.png",
+      "type": "距离",
+      "text": "在相邻 ID 对 G01-G02、G02-G03、…、G63-G64 中，哪一对的主体中心欧氏距离最大？若并列取 ID 字典序较小的一对。",
+      "rules": {
+        "distance": "sqrt((x1-x2)^2+(y1-y2)^2)",
+        "pairs": "adjacent IDs",
+        "tie": "lexicographically smaller pair"
+      },
+      "tolerance": 0.5,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q04",
+      "image": "grid-scene.png",
+      "type": "排序",
+      "text": "将 G52、G05、G37、G20 按主体中心 y 升序排列；y 相同则按 ID 升序。输出 ID 序列。",
+      "rules": {
+        "sort": [
+          "y asc",
+          "ID asc"
+        ]
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q05",
+      "image": "grid-scene.png",
+      "type": "包围框计数",
+      "text": "统计主体中心同时满足 400≤x≤1200 且 400≤y≤1200 的对象数量；边界包含。",
+      "rules": {
+        "box": [
+          400,
+          400,
+          1200,
+          1200
+        ],
+        "boundary": "inclusive"
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q06",
+      "image": "grid-scene.png",
+      "type": "颜色计数",
+      "text": "统计颜色=蓝的对象数量。",
+      "rules": {
+        "color": "blue"
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q07",
+      "image": "grid-scene.png",
+      "type": "形状计数",
+      "text": "统计形状=圆环的对象数量。",
+      "rules": {
+        "shape": "ring"
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q08",
+      "image": "grid-scene.png",
+      "type": "两步复合检索",
+      "text": "先筛选颜色=橙且形状=方，再在其中取尺寸=80 的对象 ID；按 ID 升序。",
+      "rules": {
+        "step1": {
+          "color": "orange",
+          "shape": "square"
+        },
+        "step2": {
+          "size": 80
+        }
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q09",
+      "image": "grid-scene.png",
+      "type": "两步关系检索",
+      "text": "在 G10 中心右侧（x 严格更大）的紫色对象中，找主体中心距离 G10 最近的一个；并列取 ID 升序。",
+      "rules": {
+        "filter": {
+          "color": "purple",
+          "x": ">G10.x"
+        },
+        "distance": "center Euclidean",
+        "tie": "ID asc"
+      },
+      "tolerance": 0.5,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q10",
+      "image": "grid-scene.png",
+      "type": "包围框计数",
+      "text": "统计主体中心同时满足 600≤x≤1000 且 600≤y≤1000 的对象数量；边界包含。",
+      "rules": {
+        "box": [
+          600,
+          600,
+          1000,
+          1000
+        ],
+        "boundary": "inclusive"
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q11",
+      "image": "grid-scene.png",
+      "type": "两步距离检索",
+      "text": "在颜色=橙的对象中，找主体中心距离 G01 最近的一个；并列取 ID 升序。",
+      "rules": {
+        "filter": {
+          "color": "orange"
+        },
+        "distance": "center Euclidean",
+        "tie": "ID asc"
+      },
+      "tolerance": 0.5,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q12",
+      "image": "grid-scene.png",
+      "type": "排序+并列规则",
+      "text": "按尺寸降序、ID 升序排列全部对象，取前 5 个 ID。",
+      "rules": {
+        "sort": [
+          "size desc",
+          "ID asc"
+        ],
+        "limit": 5
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        1600,
+        1600
+      ]
+    },
+    {
+      "id": "Q13",
+      "image": "occlusion.png",
+      "type": "可见区域计数",
+      "text": "可见区域中，直径为 80px 的蓝色圆有多少个？只依据最终可见画面。",
+      "rules": {
+        "visible_only": true,
+        "size": 80,
+        "color": "blue",
+        "shape": "circle"
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        800,
+        800
+      ]
+    },
+    {
+      "id": "Q14",
+      "image": "occlusion.png",
+      "type": "不可确定",
+      "text": "遮挡块后面隐藏对象的数量、颜色和形状是什么？只依据最终可见画面回答。",
+      "rules": {
+        "visible_only": true,
+        "hidden": true
+      },
+      "tolerance": 0,
+      "coordinate_origin": "左上角 (0,0)，x向右，y向下，像素",
+      "image_size": [
+        800,
+        800
+      ]
+    }
+  ],
+  "coordinate_system": "原点为画布左上角，x 向右、y 向下，单位像素；网格画布 1600×1600，遮挡画布 800×800。"
+}
