@@ -1,0 +1,214 @@
+类 DOM 解析器 | Snapshot
+- 
+- 
+- 
+- 
+- 跳转到内容Snapshot
+搜索CtrlK取消
+
+GitHub
+选择主题深色浅色自动
+
+## 类 DOM 解析器
+
+snapshot-parser 将类 DOM 文本解析为 core 的 Widget 树。根标签必须是 Snapshot，标签名和属性名区分大小写。
+
+## 处理流程
+Section titled “处理流程”
+
+- Reader → Tokenizer → Element 树 → WidgetParser → Widget 树 → RenderBox → 图片字节
+
+Tokenizer 负责标签、属性、文本、注释和 CDATA；Parser 维护元素栈；WidgetParserManager 根据标签名选择构建器；根 SnapshotElement.snapshot() 最终调用 core 的渲染入口。
+
+val text = """
+
+&#x3C;Snapshot background="#FFFFFF" type="png">
+
+ &#x3C;Column>
+
+ &#x3C;Row>
+
+ &#x3C;Container color="#FF0000" width="200" height="200" />
+
+ &#x3C;Container color="#00FF00" width="200" height="200" />
+
+ &#x3C;/Row>
+
+ &#x3C;Text color="#111827" fontSize="24">Hello Snapshot&#x3C;/Text>
+
+ &#x3C;/Column>
+
+&#x3C;/Snapshot>
+
+""".trimIndent()
+
+val bytes = Parser().parse(StringReader(text)).snapshot()
+
+      Hello Snapshot &#x22;&#x22;&#x22;.trimIndent()val bytes = Parser().parse(StringReader(text)).snapshot()">
+
+snapshot() 根据根标签的 type 返回编码后的字节。
+
+## 常用标签
+Section titled “常用标签”
+Snapshot、Container、SizedBox、Row、Column、Stack、Positioned、Image、Text 和 Raw 是最常用的标签。Container 可以通过 padding、border、borderRadius、boxShadow 等属性表达常见卡片样式。
+
+默认管理器目前注册 39 个标签，还包括：
+
+- 基础布局：Padding、Align、Center、AspectRatio、FractionallySizedBox、UnconstrainedBox；
+
+- Flex 与子项：Flex、Expanded、Flexible、Spacer；
+
+- 约束与溢出：ConstrainedBox、LimitedBox、OverflowBox、SizedOverflowBox、IndexedStack；
+
+- 绘制效果：Opacity、Transform、ColoredBox、DecoratedBox、ColorFiltered、ImageFiltered、BackdropFilter；
+
+- 裁剪：ClipRect、ClipOval、ClipRRect、ClipPath（SVG 路径）；
+
+- 装饰与行内内容：Border、Emoji、WidgetSpan。
+详见标签与属性参考。
+
+编写类 DOM DSL 时，可以使用 snapshot-lsp 获取标签、属性和枚举补全、悬停说明及实时诊断；在线 Playground 已集成这项语言服务。
+
+## 复用 Parser
+Section titled “复用 Parser”
+当标签管理器配置相同，可以长期持有一个 Parser：
+
+val parser = Parser()
+
+val first = parser.parse(StringReader(firstSource)).snapshot()
+
+val second = parser.parse(StringReader(secondSource)).snapshot()
+
+即使 firstSource 解析失败，下一次 parse() 仍会从干净状态开始。@Synchronized 仅串行化同一实例的 parse()，返回元素后的 createWidget() / snapshot() 不在该锁内；不要把它当作整个渲染服务的串行保证。复用期间不要并发修改 WidgetParserManager，渲染并发由应用按字体、缓存及资源使用情况单独控制。
+
+## 一个更完整的模板
+Section titled “一个更完整的模板”
+&#x3C;Snapshot background="#020617" type="png">
+
+ &#x3C;Stack alignment="TOP_LEFT">
+
+ &#x3C;Container width="640" height="360" color="#0F172A" />
+
+ &#x3C;Positioned left="32" top="28" right="32">
+
+ &#x3C;Column crossAxisAlignment="START">
+
+ &#x3C;Text color="#38BDF8" fontSize="16" fontStyle="BOLD">SNAPSHOT REPORT&#x3C;/Text>
+
+ &#x3C;Container height="16" />
+
+ &#x3C;Text color="#F8FAFC" fontSize="36" fontStyle="BOLD">Declarative image rendering&#x3C;/Text>
+
+ &#x3C;Container height="12" />
+
+ &#x3C;Text color="#94A3B8" fontSize="20">Widget tree → layout → Skia → image&#x3C;/Text>
+
+ &#x3C;/Column>
+
+ &#x3C;/Positioned>
+
+ &#x3C;Positioned right="32" bottom="28">
+
+ &#x3C;Border border="1 SOLID #334155" borderRadius="16" boxShadow="ELEVATION_4">
+
+ &#x3C;Container padding="(10,16)" color="#1E293B">
+
+ &#x3C;Text color="#E2E8F0" fontSize="16">PNG · JPEG · WebP&#x3C;/Text>
+
+ &#x3C;/Container>
+
+ &#x3C;/Border>
+
+ &#x3C;/Positioned>
+
+ &#x3C;/Stack>
+
+&#x3C;/Snapshot>
+
+     SNAPSHOT REPORT  Declarative image rendering  Widget tree → layout → Skia → image      PNG · JPEG · WebP    ">
+
+## SVG 路径裁剪
+Section titled “SVG 路径裁剪”
+&lt;ClipPath&gt; 通过必填的 path 属性描述 SVG 路径；可使用 viewBox 和 fit 映射到组件尺寸，或通过 fillRule=&quot;EVEN_ODD&quot; 实现多轮廓镂空。路径本身不决定布局尺寸：
+
+&#x3C;Snapshot>
+
+ &#x3C;SizedBox width="240" height="160">
+
+ &#x3C;ClipPath path="M0 0 H100 V100 H0 Z M25 25 H75 V75 H25 Z"
+
+ viewBox="0 0 100 100" fit="CONTAIN" fillRule="EVEN_ODD">
+
+ &#x3C;Container color="#00C853" />
+
+ &#x3C;/ClipPath>
+
+ &#x3C;/SizedBox>
+
+&#x3C;/Snapshot>
+
+     ">
+
+属性与坐标规则见 ClipPath 标签参考。在线 Playground 支持对应的标签、属性和枚举补全，可以将上例复制到编辑器中。
+
+## 图片来源与扩展
+Section titled “图片来源与扩展”
+Image 和文本内的 Emoji 必须且只能设置 url 或 dataUri。前者同步访问网络；默认 Data URI 解码器只支持 PNG、JPEG、WebP 的 Base64 内容，可通过 Parser(dataUriImageDecoder = ...) 注入自定义实现。noCache 仅适用于 URL。默认每个 Parser 拥有独立的标签注册表；自定义标签可基于 WidgetParserManager.withDefaults() 注册。
+
+## 文本中的特殊字符
+Section titled “文本中的特殊字符”
+
+## 属性引号与自闭合
+Section titled “属性引号与自闭合”
+推荐给属性值加引号，尤其是含空白的颜色函数、SVG 路径或文本。无引号 URL / 路径中的 / 可以属于值；此时自闭合标记 /&gt; 前需要空白：
+
+&#x3C;Image url=https://example.com/a.png />
+
+&#x3C;Image url="https://example.com/a.png"/>
+
+">
+
+两种写法都将 URL 与自闭合标记分开；不应写成 url=https://example.com/a.png/&gt;，否则末尾的 / 会进入属性值，也不再是自闭合标签。示例 URL 只用于说明语法，不保证可下载图片。
+
+## 文本与 CDATA
+Section titled “文本与 CDATA”
+解析器不做 HTML 实体解码。文本中要包含 &lt; 或 &gt; 时，使用 CDATA：
+
+&#x3C;Text>&#x3C;![CDATA[ken_test &#x3C;a>&#x3C;/a> 233]]>&#x3C;/Text>
+
+ 233]]>">
+
+Text 会裁剪首尾空白；需要保留原始空白时使用 Raw。非文本标签中不能出现非空白原始文本。
+
+&lt;!-- ... --&gt; 注释可位于根标签前后、标签之间和文本中，解析时会被忽略；空注释 &lt;!----&gt; 也有效：
+
+&#x3C;!-- 页面说明 -->
+
+&#x3C;Snapshot>
+
+ &#x3C;!---->
+
+ &#x3C;Text>前&#x3C;!-- 不显示 -->后&#x3C;![CDATA[&#x3C;!-- 原文 -->]]>&#x3C;/Text>
+
+&#x3C;/Snapshot>
+
+&#x3C;!-- 结束说明 -->
+
+  前后]]>">
+
+上例的文本内容为 前后&lt;!-- 原文 --&gt;：CDATA 内的注释样式字符仍按原文保留。注释必须以 --&gt; 结束，否则在 EOF 处抛出 ParseException；CDATA 未闭合时则会将已读取内容作为文本输出，行为与注释不同。&lt;!DOCTYPE ...&gt; 仍不受支持。
+
+## 错误处理
+Section titled “错误处理”
+解析与建树阶段可捕获 ParseException：pos 提供行、列和偏移，message 提供可读提示，cause 保留原始异常；toString() 会把位置加到提示前。根标签属性在 parse() 时校验，其他标签属性在 createWidget() / snapshot() 时校验；空文档也会抛 ParseException。
+
+包含提交 a7974dd 的 Parser 还会在属性错误后补充中文填写说明。例如 mainAxisAlignment=&quot;MIDDLE&quot; 会提示实际值、枚举格式，以及 START、END、CENTER 等可用值。需要按字段展示时，读取可选的 attributeDiagnostic，位置仍从 pos 读取。
+
+属性缺失、只写名称和空字符串可以区分；结构错误或组件组合约束不一定有属性诊断。Parser 仍然首错即抛，语法、默认值和布尔转换规则保持不变。完整字段、可运行的捕获示例及版本边界见属性错误提示与结构化诊断。
+
+自建 HTTP 服务可以将 ParseException 映射为 400 Bad Request；布局尺寸为空或无限则更适合作为 422 Unprocessable Content。已有服务以其实际响应协议为准。
+
+## 安全边界
+Section titled “安全边界”
+错误分类、HTTP 映射和自定义标签见错误处理与扩展。
+

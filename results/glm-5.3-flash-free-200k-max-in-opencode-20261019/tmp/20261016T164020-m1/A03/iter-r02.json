@@ -1,0 +1,17 @@
+{
+  "version": "r02",
+  "parent": "r01",
+  "type": "syntax-fix",
+  "task_id": "A03",
+  "image": null,
+  "dsl": "tmp/20261016T164020-m1/A03/steps/r02-matrix-fix.snapshot",
+  "request_id": "99cff989-1f07-4ee7-a049-288aa20f4717",
+  "observable_issues": [
+    "解析通过：本版故意保留 rotate=\"-8\" 未知属性且未报错——证明未知属性是『静默忽略』而非错误（正式版已移除，避免让你宣称实现了需求）",
+    "渲染阶段新错误：HTTP 400 RENDER_ERROR “renderBox.parentData must be StackParentData”：<Positioned> 位于 <Row> 内，Positioned 仅允许 Stack/IndexedStack 直接子节点"
+  ],
+  "changes": "为 Transform 提供列主序 4×4 旋转矩阵（视觉逆时针 8°）+ alignment=\"CENTER\"；仍保留 rotate 属性以验证静默行为",
+  "comparison": "解析错误消除，暴露布局结构错误",
+  "recheck": "pending",
+  "round": null
+}

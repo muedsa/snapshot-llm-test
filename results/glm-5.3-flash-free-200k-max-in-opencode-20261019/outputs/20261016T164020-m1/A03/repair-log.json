@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "initial_attempt": {
+    "dsl": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+    "dsl_path_base": "suite_root",
+    "request_id": "d1b93485-536a-4981-a5ac-035ecb6d7a70",
+    "http_status": 400,
+    "content_type": "application/json",
+    "error_code": "PARSE_ERROR",
+    "error_summary": "Attr [padding] value format error；元素 <Container>；实值 \"24 32\"；期望：十进制数 / (垂直,水平) / (左,上,右,下)",
+    "request_file": {"path_base": "suite_root", "path": "tmp/20261016T164020-m1/A03/renders/broken-asis-v00-174327830.req.snapshot"},
+    "response_file": {"path_base": "suite_root", "path": "tmp/20261016T164020-m1/A03/renders/broken-asis-v00-174327830.resp"},
+    "note": "原稿未做任何修改直接提交，响应原字节保存；parses 在首个错误处停止（文档 parser-errors.md），后续错误须逐层揭示"
+  },
+  "issues": [
+    {
+      "id": "I01",
+      "location": "原稿行2 <Container padding=\"24 32\">",
+      "category": "真实报错",
+      "evidence": "原样提交响应 HTTP 400 PARSE_ERROR（requestId d1b93485），错误文本包含元素、实值与期望格式",
+      "doc_basis": "docs/parser-tags.md #EdgeInsets：三种格式 \"12\" / \"(8,16)\" 垂直,水平 / \"(8,12,16,20)\" 左,上,右,下；空格分隔的 \"24 32\" 不是 insets",
+      "fix": "改为 padding=\"(24,32)\"（垂直24，水平32）",
+      "verify": "r01 渲染后该错误消失，错误前移到行10（Transform）"
+    },
+    {
+      "id": "I02",
+      "location": "原稿行10 <Transform rotate=\"-8\">",
+      "category": "真实报错",
+      "evidence": "r01 响应 HTTP 400 “Attr [matrix] must not be null”（requestId cedb4af4）",
+      "doc_basis": "docs/parser-tags.md #Transform：matrix 必填，16 个有限 Float 的列主序 4×4；rotate 不是文档属性",
+      "fix": "提供视觉逆时针 8° 的列主序旋转矩阵 (0.99026807,-0.13917310,0,0,0.13917310,0.99026807,0,0,0,0,1,0,0,0,0,1) + alignment=\"CENTER\"（绕子中心旋转），删除非法 rotate 属性",
+      "verify": "r04 渲染与最终 v01 放大复核：REVIEW 右端上扬 = 视觉逆时针 8°"
+    },
+    {
+      "id": "I03",
+      "location": "原稿行10 同节点 rotate=\"-8\" 属性",
+      "category": "静默忽略",
+      "evidence": "r02 版本在补充 matrix 的同时故意保留 rotate=\"-8\"：解析通过、渲染照常执行（HTTP 400 仅因另一处结构错误触发，未提及任何数组/rotate 警告）——未知属性不报错也不生效",
+      "doc_basis": "docs/parser-tags.md：属性解析失败即抛错，而未知属性无定义；docs/parser-errors.md 未知标签才报 Unknown element tag",
+      "fix": "正式稿中删除该未知属性；旋转语义由 matrix 承担（不以未生效属性充当实现）",
+      "verify": "最终 v01 不含 rotate；REVIEW 旋转效果由放大截图核验"
+    },
+    {
+      "id": "I04",
+      "location": "原稿行7 <Row> 内 <Positioned right=\"20\">",
+      "category": "真实报错",
+      "evidence": "r02 渲染阶段 HTTP 400 RENDER_ERROR “renderBox.parentData must be StackParentData”（requestId 99cff989）",
+      "doc_basis": "docs/parser-tags.md #Positioned：必须是 Stack 或 IndexedStack 的直接子节点",
+      "fix": "r03 将其退化为 Row 内普通文本以解除报错；LIVE 标签最终经根 Stack + Positioned(1152,40,96×36) 定位在右上",
+      "verify": "最终 v01：LIVE 位于右上角，不与标题重叠（占位 1152–1248 × 40–76，标题字形终止于 x≈323）"
+    },
+    {
+      "id": "I05",
+      "location": "原稿行1 <Snapshot width=\"1280\" height=\"800\">",
+      "category": "静默忽略（width/height 非法属性）→ 渲染层真实报错",
+      "evidence": "r03（保留 width/height）响应 HTTP 400 RENDER_ERROR “Layout size is infinite”；r04 换用 Stack+SizedBox 后立即渲染成功且画布恰为 1280×800——width/height 从未被解析",
+      "doc_basis": "docs/parser-tags.md #Snapshot：仅 background/debug/type 三属性；docs/rendering.md：Parser 的 <Snapshot> 默认透明背景（未提尺寸）",
+      "fix": "画布用 <Stack><SizedBox width=\"1280\" height=\"800\"/> + 根级 Positioned 承载内容；同时满足 Expanded/Spacer 需要的有界布局",
+      "verify": "r04 与最终 v01 PNG 实测 1280×800"
+    },
+    {
+      "id": "I06",
+      "location": "原稿行4 <Text font-size=\"44\">",
+      "category": "静默忽略（未生效属性）",
+      "evidence": "r04 渲染图中标题以默认小字号显示（目测约 14px，远小于其它 28px 文本）——font-size 非 camelCase，文档定义的是 fontSize",
+      "doc_basis": "docs/parser-tags.md #Text/示例：fontSize=\"24\" 属性名为 camelCase；无 font-size 定义",
+      "fix": "正式稿用 fontSize=\"44\"（camelCase 文档属性名）",
+      "verify": "最终 v01 标题 44px，与 28px 指标文案明显阶梯"
+    },
+    {
+      "id": "I07",
+      "location": "原稿行10 color=\"#33FFFFFF\"",
+      "category": "仅视觉暴露",
+      "evidence": "r04 渲染 REVIEW 底色呈不透明亮青白（#33FFFF）而非 20% 半透明白——8 位颜色被视为 #RRGGBBAA，首两位 #33 被读作 R 通道",
+      "doc_basis": "docs/parser-tags.md #颜色：\"#RRGGBBAA，8 位最后一组为透明度\"；命名颜色不适用 rgba() 亦可",
+      "fix": "白底不透明度 20% 写为 #FFFFFF33（RRGGBBAA 顺序，AA=0x33）",
+      "verify": "最终 v01 放大复核：深底上呈均匀灰白半透明，文字纯白不透明清晰"
+    },
+    {
+      "id": "I08",
+      "location": "原稿行11 <ImageFiltered sigmaX=\"10\" sigmaY=\"10\" …>",
+      "category": "仅视觉暴露（语义错误）",
+      "evidence": "r04 渲染中说明卡整体连同 'Background-only blur' 文字一起糊化；需求是『只模糊卡内背景，文字保持清晰』",
+      "doc_basis": "docs/parser-tags.md #滤镜：ImageFiltered = 子树高斯模糊；BackdropFilter = 背景高斯模糊（读取已有背景），建议配合 ClipRect/ClipRRect 限定区域",
+      "fix": "彩色细条（776×14 LINEAR 渐变 #22D3EE→#818CF8→#F472B6，x 252–1028）保持锐利绘制；说明卡区叠 ClipRRect(24)+BackdropFilter(sigma 10)+半透明白罩；文字位于模糊层之上的独立图层",
+      "verify": "最终 v01：卡外条带边缘锐利、卡内条带柔化，文字清晰锐利且无模糊"
+    },
+    {
+      "id": "I09",
+      "location": "原稿行9 <Spacer flex=\"1\"/>、行6 <Expanded flex=\"1\">",
+      "category": "依赖有界布局（连环问题）",
+      "evidence": "与 I05 同源：无界根布局直接报 Layout size is infinite；有界化后 Expanded/Spacer 正常",
+      "doc_basis": "docs/parser-tags.md #Expanded 与 Flexible：三者必须是 Flex/Row/Column 直接子节点；#Stack：非 Positioned 子节点默认 alignment",
+      "fix": "保留合法用法；根布局增设 SizedBox 尺寸锚",
+      "verify": "r04 与最终 v01 均无布局错误"
+    },
+    {
+      "id": "I10",
+      "location": "最终稿组合要求（需求清单）",
+      "category": "需求核验",
+      "evidence": "final v01 截图 + 放大验证",
+      "doc_basis": "TASK.md 需求清单",
+      "fix": "1280×800 深底 #0B1220；安全边距 32（全部内容含在 ±32 内界：LIVE 底 76、右缘 1248；REVIEW 旋转外接 ≈1077–1243 × 629–707）；标题 44；三张等宽指标卡 389.33×160 间距 24（(1216−48)/3=389.33）；文案 28；LIVE 96×36 右上不盖标题；REVIEW 160×56 白 20% 白字 24 视觉逆时针 8°；中央说明卡 500×150 圆角 24 + 穿界彩色细条 + 仅卡内背景模糊 + 文字 28 清晰",
+      "verify": "逐项截图核验（见 versions 的 v01 记录与 zoom）"
+    }
+  ],
+  "category_summary": {
+    "真实报错": ["I01 padding 格式 400", "I02 Transform 缺 matrix 400", "I04 Positioned 在 Row 内 400", "I05 连锁：根布局无界 → RENDER_ERROR Layout size is infinite 400"],
+    "静默忽略": ["I03 未知属性 rotate", "I05 Snapshot width/height 非法属性", "I06 font-size 未生效"],
+    "仅视觉暴露": ["I07 alpha 通道语义（#33FFFFFF 渲染为不透明青白；无 HTTP 错误，仅颜色可见）", "I08 ImageFiltered 连同文字一起模糊（与『仅模糊背景』需求不符）"],
+    "note": "I05 原因链跨两类：width/height 被静默忽略（静默层），随后布局以 Layout size is infinite 报错（渲染层）；I07 无任何 HTTP 错误，仅从渲染颜色暴露。全部失败稿 r00–r04 与原始响应均已保留。"
+  },
+  "versions": [
+    {"version": "r00", "dsl": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "dsl_path_base": "suite_root", "parent": null, "http_status": 400, "request_id": "d1b93485-536a-4981-a5ac-035ecb6d7a70", "image": null, "kind": "initial-as-is"},
+    {"version": "r01", "dsl": "tmp/20261016T164020-m1/A03/steps/r01-padding-fix.snapshot", "dsl_path_base": "suite_root", "parent": "r00", "http_status": 400, "request_id": "cedb4af4-da97-48e8-8b24-1ba46a5d9ca0", "image": null, "kind": "syntax-fix"},
+    {"version": "r02", "dsl": "tmp/20261016T164020-m1/A03/steps/r02-matrix-fix.snapshot", "dsl_path_base": "suite_root", "parent": "r01", "http_status": 400, "request_id": "99cff989-1f07-4ee7-a049-288aa20f4717", "image": null, "kind": "syntax-fix"},
+    {"version": "r03", "dsl": "tmp/20261016T164020-m1/A03/steps/r03-positioned-fix.snapshot", "dsl_path_base": "suite_root", "parent": "r02", "http_status": 400, "request_id": "99fcd1f2-9731-46f6-9cf2-6cb922279b32", "image": null, "kind": "syntax-fix"},
+    {"version": "r04", "dsl": "tmp/20261016T164020-m1/A03/steps/r04-canvas-bound.snapshot", "dsl_path_base": "suite_root", "parent": "r03", "http_status": 200, "request_id": "1ff73676-b798-4f19-8c1a-283b9d630e9f", "image": "tmp/20261016T164020-m1/A03/steps/r04-canvas-bound.png", "image_path_base": "suite_root", "kind": "syntax-fix", "viewed": true},
+    {"version": "v01-final", "dsl": "outputs/20261016T164020-m1/A03/system-pulse.snapshot", "dsl_path_base": "output_dir", "parent": "r04", "http_status": 200, "request_id": "7b4a330e-161b-4058-af29-e01a1435e8ca", "image": "system-pulse.png", "image_path_base": "output_dir", "kind": "spec-build (baseline for final product)", "viewed": true, "zoom_check": "tmp/20261016T164020-m1/A03/steps/review-zoom.png"}
+  ],
+  "iteration_log": {"path_base": "suite_root", "path": "tmp/20261016T164020-m1/A03/iterations.jsonl"},
+  "final_checklist": {
+    "canvas_1280x800_bg_0B1220": true,
+    "safe_margin_32_all_elements": true,
+    "title_font_44": true,
+    "three_equal_metric_cards_text28": {"card_width": 389.33, "gap": 24, "cards_y": [120, 280], "row_x": [32, 1248]},
+    "live_96x36_right_top_no_cover_title": {"box": [1152, 40, 1248, 76], "title_text_end_px": 323},
+    "review_160x56_rot8ccw_white20_text24": {"unrotated_box": [1080, 640, 1240, 696], "bg": "#FFFFFF33", "text": "#FFFFFF 24px 不透明，矩阵旋转 −8°（屏幕坐标）"},
+    "center_card_500x150_r24": {"box": [390, 325, 890, 475]},
+    "strip_crosses_both_card_edges_only_cardarea_blurred": {"strip_box": [252, 393, 1028, 407], "card_left_edge": 390, "card_right_edge": 890, "blur_sigma": 10, "text_unblurred": true},
+    "all_elements_fully_visible": true
+  },
+  "open_issues": []
+}

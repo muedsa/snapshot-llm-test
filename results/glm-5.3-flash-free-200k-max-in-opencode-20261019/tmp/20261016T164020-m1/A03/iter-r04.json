@@ -1,0 +1,21 @@
+{
+  "version": "r04",
+  "parent": "r03",
+  "type": "syntax-fix",
+  "task_id": "A03",
+  "image": "tmp/20261016T164020-m1/A03/steps/r04-canvas-bound.png",
+  "dsl": "tmp/20261016T164020-m1/A03/steps/r04-canvas-bound.snapshot",
+  "request_id": "1ff73676-b798-4f19-8c1a-283b9d630e9f",
+  "observable_issues": [
+    "首张成功渲染（1280×800 实测）。视觉暴露的语义问题：",
+    "① 行4 font-size=\"44\" 为非法 kebab 属性，标题以默认约14px 渲染——『未生效属性』",
+    "② 行10 color=\"#33FFFFFF\" 是 ARGB 顺序误用：本服务颜色 8 位为 #RRGGBBAA，渲染为不透明亮青色（约 #33FFFF）——『视觉暴露』的 alpha 语义错误",
+    "③ 行11 ImageFiltered 把整棵子树连同文字一起模糊，说明文字无法保持清晰——滤镜语义错误，需求是仅模糊背景（应 BackdropFilter）",
+    "④ LIVE 文本尺寸/位置与需求不符（曾处于 Row 流内）；行10 REVIEW 位置在 Column 流内而非右下",
+    "⑤ 行7 原 <Positioned right> 只在 Stack 中合法（r02 已证），正式版应经根 Stack 定位"
+  ],
+  "changes": "根节点换成 Snapshot > Stack > SizedBox(1280,800) + Positioned 承载原 Container 内容，取得首张有效图；其余未动，用于视觉诊断",
+  "comparison": "对照 r00–r03 逐层报错，验证画布尺寸与有界布局修复生效",
+  "recheck": "passed",
+  "round": null
+}

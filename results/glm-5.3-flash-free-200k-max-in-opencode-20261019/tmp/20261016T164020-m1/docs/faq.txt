@@ -1,0 +1,142 @@
+常见问题 | Snapshot
+- 
+- 
+- 
+- 
+- 跳转到内容Snapshot
+搜索CtrlK取消
+
+GitHub
+选择主题深色浅色自动
+
+## 常见问题
+
+## 按现象查找
+Section titled “按现象查找”
+ | 
+ | 现象 | 先看哪里
+
+ | 安装、下载或原生库加载失败 | 安装排错
+
+ | 出图尺寸不对、Flex 无法分配空间 | 约束与布局
+
+ | 长文本不换行、宽度溢出 | 自适应文本完整示例
+
+ | 图片没有铺满或密度不对 | 默认适配与迁移
+
+ | 语法或属性报错 | Parser 错误分类
+
+ | 编辑器没有补全或提示 | DSL 语言服务
+
+ | 找不到文本、渐变或装饰对象的详细参数 | 公共配置阅读入口
+
+## 为什么 FADE 没有渐隐，VISIBLE 仍被裁剪？
+Section titled “为什么 FADE 没有渐隐，VISIBLE 仍被裁剪？”
+当前 TextOverflow 接受这些名称，但 RenderParagraph 检测到溢出时仍统一裁剪；只有 ELLIPSIS 会为 Skia 额外配置省略号。这是当前实现边界，不是改一个父容器属性就能恢复的效果。见段落布局说明。
+
+## 为什么空 Container() 报尺寸为空？
+Section titled “为什么空 Container() 报尺寸为空？”
+无子节点、无约束的 Container 在无界根约束下会被限制为零尺寸，无法创建有效 Surface。给它非零的 width 和 height，或让子节点产生非零尺寸。其他布局仍可能因无界约束产生无限尺寸，两类异常应分别排查。
+
+## 为什么空 Row {} 报尺寸为空？
+Section titled “为什么空 Row {} 报尺寸为空？”
+没有子节点的 Flex 在主轴上收缩到 0，最终无法创建有效 Surface。添加内容或外层固定尺寸。
+
+## 如何得到固定画布？
+Section titled “如何得到固定画布？”
+使用固定尺寸的根 Container / SizedBox。Snapshot 没有独立 canvasWidth 参数，Surface 尺寸来自根布局。
+
+## 如何生成 2× 图片？
+Section titled “如何生成 2× 图片？”
+把布局中的尺寸、间距、字号等整体放大两倍。只让 initSurface 返回更大 Surface 不会缩放内容。
+
+## 为什么 color 和 decoration 不能同时使用？
+Section titled “为什么 color 和 decoration 不能同时使用？”
+Container 会检查两者互斥。需要颜色和边框、圆角、渐变一起使用时：
+
+- decoration = BoxDecoration(
+
+ color = 0xFFFFFFFF.toInt(),
+
+ border = Border.all(...),
+
+)
+
+Parser 的 Container 已自动做这层转换。
+
+## Stack 中的阴影为什么被切掉？
+Section titled “Stack 中的阴影为什么被切掉？”
+Stack 默认 clipBehavior = HARD_EDGE，但只在直接子节点布局矩形越界时启用裁剪；启用后阴影也可能被切掉。允许越界绘制时改为 ClipBehavior.NONE（Parser 写 clipBehavior=&quot;NONE&quot;），同时确认更外层没有其他 Clip。反过来，只有阴影、变换或深层子孙绘制越界时，Stack 不保证裁剪；需要无条件裁到容器边界时外包 ClipRect。
+
+## Column 中的 Expanded / Flexible 会解除宽度限制吗？
+Section titled “Column 中的 Expanded / Flexible 会解除宽度限制吗？”
+不会。弹性分配只改变主轴高度，子节点仍受父级最大宽度约束；文本默认据此换行。非 STRETCH 对齐允许更窄，只有 crossAxisAlignment = STRETCH 才要求填满宽度。父级本来无界时仍需先提供宽度约束，详见 Column。
+
+## 升级后图片不再铺满目标框怎么办？
+Section titled “升级后图片不再铺满目标框怎么办？”
+普通图片省略 fit 现在按 SCALE_DOWN 等比缩小、不放大；要保留旧版拉伸铺满效果，请显式设置 fit = BoxFit.FILL，Parser 的 &lt;Image&gt; / &lt;Emoji&gt; 写 fit=&quot;FILL&quot;。底层九宫格省略 fit 则改为 FILL，要保留原先只缩不放的效果，显式设置 SCALE_DOWN。这改变的是绘制适配，不改变组件布局尺寸。
+
+## 图片 scale 是直接放大目标框吗？
+Section titled “图片 scale 是直接放大目标框吗？”
+不是。它是像素密度，自然逻辑尺寸 = 图像像素尺寸 ÷ scale；40 × 20 像素图片在 scale = 2f 时为 20 × 10。平铺间距与九宫格 centerSlice 都使用逻辑坐标，完整说明见 RawImage。
+
+## 为什么 ColorFiltered 仍可能给背景染色？
+Section titled “为什么 ColorFiltered 仍可能给背景染色？”
+ColorFiltered 会依据可确定的子树绘制边界限制作用范围；但通用 ImageFiltered 未提供 outputBounds 时，模糊、位移等效果的输出范围无法安全推断，会保留不裁剪回退。高斯模糊可传入 outputBounds = blurImageFilterBounds(sigmaX, sigmaY)；Parser 的 &lt;ImageFiltered&gt; 会自动提供这个边界。包含 BackdropFilter 或自定义绘制时，可用外层 ClipRect 等组件明确限定区域。
+
+SRC、MULTIPLY 等混合模式还可能给绘制边界内的透明间隙着色。参数和示例见 ColorFiltered 与 ImageFiltered。
+
+## Parser 能使用 Expanded、Opacity 或 Transform 吗？
+Section titled “Parser 能使用 Expanded、Opacity 或 Transform 吗？”
+可以。默认管理器已注册 Expanded、Flexible、Opacity 和 Transform，也支持常用约束、溢出和基础裁剪标签。完整集合和属性见标签与属性参考。
+
+新增的 Flex、Spacer、IndexedStack、比例布局、基础滤镜和 WidgetSpan 也已可用。
+
+ClipPath 也已内置，可通过 SVG 路径字符串、viewBox 和填充规则实现复杂裁剪与镂空，详见 ClipPath 标签参考。需要按布局尺寸动态计算路径时，可以使用 Kotlin DSL 的 clipper 回调。
+
+## 为什么 Parser 的属性没有生效也没有报错？
+Section titled “为什么 Parser 的属性没有生效也没有报错？”
+未知属性会被静默忽略。检查拼写、大小写和属性格式；布尔值要显式写 &quot;true&quot;。某些属性错误直到 createWidget() 或 snapshot() 才会出现。
+
+属性诊断增强也没有将布尔解析改成严格校验：已赋值的文本只有 true（忽略大小写）转换为 true，其余文本转换为 false，不会因为拼写错误自动报错。
+
+## 属性报错时，怎样知道正确写法？
+Section titled “属性报错时，怎样知道正确写法？”
+包含提交 a7974dd 的 Parser 会在属性错误提示中追加实际输入、格式、示例和适用的可用值。例如 ClipPath.fit 只提示实际支持的 FILL / CONTAIN，不是全部图片适配枚举。
+
+程序中可读取 ParseException.attributeDiagnostic；位置仍读 pos，不要拆分 message。其中 attributePresent 与 rawValue 可区分属性缺失、未赋值和空字符串。完整字段与示例见结构化诊断。在线服务是否返回这些信息取决于后端版本及其响应协议。
+
+## 为什么错误没有 attributeDiagnostic？
+Section titled “为什么错误没有 attributeDiagnostic？”
+结构错误、组件组合约束和统一属性入口之外的校验可能没有该字段；自定义解析器直接抛出的 ParseException 也不会自动补充属性诊断。即使有诊断，自定义属性的 valueInfo 也可为 null，直接解析属性 Map 时的 elementName 也可为 null。
+
+调用方应保留 message 和 pos 的回退展示。只有首个错误会被抛出，不会一次列出全部问题，详见诊断边界。
+
+## 文本中怎样写 &lt; 和 &gt;？
+Section titled “文本中怎样写 &amp;lt; 和 &amp;gt;？”
+使用 CDATA。解析器不实现 HTML 实体解码，因此 &amp;lt; 不会变成 &lt;。
+
+&lt;!-- ... --&gt; 是注释，会从解析结果中消失；如果需要显示字面量 &lt;!-- ... --&gt;，也应将其放进 CDATA。
+
+## Parser 可以复用吗？
+Section titled “Parser 可以复用吗？”
+可以。parse() 会在每次调用前重置内部状态，解析失败后也能继续处理下一个文档。该方法使用 @Synchronized，只串行化解析调用；后续 createWidget() / snapshot() 不在该锁内，渲染并发仍需应用自行控制。详见 Parser 实例生命周期。
+
+## 网络图片是异步的吗？
+Section titled “网络图片是异步的吗？”
+不是。CachedNetworkImage 以及使用 url 的 Image、Emoji 会同步获取网络图片。若使用 dataUri，则在建树阶段由解码器本地处理；默认仅支持 PNG、JPEG、WebP Base64 Data URI。服务端仍需为不可信输入设置大小、时间和网络访问限制。
+
+## 怎样调试布局？
+Section titled “怎样调试布局？”
+先用 layoutWidget 获取 RenderBox，再用 toLayoutNode() 查看尺寸与全局偏移；需要视觉辅助时启用 debug = true。测试中优先用 testkit 的布局断言。
+
+LayoutNode 的累计偏移不包含 Transform 等画布矩阵。查询变换后的绘制坐标时，在布局完成后使用 getTransformTo(ancestor)；目标只能是自身或祖先，其他目标会抛出 IllegalArgumentException，见坐标变换说明。
+
+## 为什么文本 Golden 在不同系统不一致？
+Section titled “为什么文本 Golden 在不同系统不一致？”
+字体选择、字体版本、Hinting 和抗锯齿都可能不同。固定字体文件，并优先测试文本度量、基线和区域采样；只有环境稳定时才对整段文字做像素级 Golden。
+
+## 如何输出到窗口而不是文件？
+Section titled “如何输出到窗口而不是文件？”
+先 layoutWidget，再在已有 Skia Canvas 上调用 drawRenderBox。仓库的 DrawToDevice.kt 包含接入 Skiko 渲染回调的示例。
+

@@ -1,0 +1,276 @@
+{
+ "schema_version": 1,
+ "task_id": "A22",
+ "path_base": "output_dir",
+ "round": 3,
+ "applied_changes": [
+  {
+   "field": "2026-08.refund_amount",
+   "old": 15048,
+   "new": 25048,
+   "source": "rounds/round-02.md（继续有效）"
+  },
+  {
+   "field": "2026-09.operating_cost",
+   "old": 138000,
+   "new": 208000,
+   "source": "rounds/round-02.md（继续有效）"
+  },
+  {
+   "field": "新增行",
+   "old": null,
+   "new": {
+    "month": "2026-10",
+    "orders": 640,
+    "gross_revenue": 224000,
+    "refund_amount": 11200,
+    "operating_cost": 142000,
+    "sessions": 5900
+   },
+   "source": "rounds/round-03.md（r3 预置新增；inputs/monthly.csv 无该行）"
+  }
+ ],
+ "propagation": [
+  {
+   "item": "新增 2026-10 行",
+   "values": {
+    "orders": 640,
+    "gross_revenue": 224000,
+    "refund_amount": 11200,
+    "operating_cost": 142000,
+    "sessions": 5900
+   },
+   "derived": {
+    "net_revenue": 212800,
+    "profit": 70800,
+    "refund_rate": "5.00%",
+    "conversion": "10.85%"
+   },
+   "where": [
+    "柱图第 7 组 21.28/7.08",
+    "表格第 7 行 212,800/70,800/5.00%/10.85%",
+    "KPI 七个月汇总",
+    "结论第一行（七个月最高 + 环比 +5.15%）",
+    "脚注来源标注（第三轮预置）"
+   ]
+  },
+  {
+   "item": "KPI 改七个月汇总",
+   "old_net": 908624,
+   "new_net": 1121424,
+   "old_profit": 182124,
+   "new_profit": 252924,
+   "conversion": "11.10%",
+   "conversion_formula": "3,685 ÷ 33,200（非月均）",
+   "where": [
+    "四 KPI 卡",
+    "结论第二行分子分母语境"
+   ]
+  },
+  {
+   "item": "2026-09 负利润延续",
+   "profit": -5632,
+   "where": [
+    "柱图红色负柱 −0.56 自零线向下",
+    "表格 −5,632 红色加粗",
+    "结论第二行"
+   ]
+  },
+  {
+   "item": "柱图分组",
+   "groups": {
+    "r2": 6,
+    "r3": 7
+   },
+   "bar": {
+    "r2": {
+     "w": 58,
+     "gap": 10
+    },
+    "r3": {
+     "w": 48,
+     "gap": 10
+    }
+   },
+   "axis": "保持 r2 的 −4..24 万（21.28 < 24 未超上限）",
+   "where": [
+    "组宽 205.143（拆内部刻度/行距属预置允许），区域边界不变"
+   ]
+  },
+  {
+   "item": "表格行距",
+   "rows": {
+    "r2": 6,
+    "r3": 7
+   },
+   "row_h": "25.142857（未舍入），hdr 34；22px 行内居中公式不变",
+   "where": [
+    "七行全部显示、无裁切、红标语义不变"
+   ]
+  }
+ ],
+ "unchanged": {
+  "months_2026_04_to_09_values": "r2 更正后净收入/利润逐月原样（未恢复旧数据、未省略 2026-04）",
+  "canvas": [
+   1600,
+   1000
+  ],
+  "primary_regions": "六主区域边界与 r2 逐分量 0 差（见 layout-map.comparison）",
+  "visual_system": "色板/字体/字号（全图 ≥22px）/零线强调/面板圆角与 r1、r2 一致",
+  "source_csv": "inputs/monthly.csv 未改写；2026-10 行仅存在于构建内存并标注来源",
+  "highlight_rules": "退款率 ≥7.5% 红 / ≤4.5% 绿 / 负利润红加粗不变"
+ },
+ "regression_check": {
+  "method": "以 round-02 layout-map.json regions box 为基线对 round-03 求差；柱组 6→7 与表行 6→7 的内部重排为 round-03.md 预置允许项",
+  "result": [
+   {
+    "region": "R-chart",
+    "box_r2": [
+     28,
+     240,
+     1572,
+     660
+    ],
+    "box_r3": [
+     28,
+     240,
+     1572,
+     660
+    ],
+    "delta_l_trb": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "within_±2px": true
+   },
+   {
+    "region": "R-conclusion",
+    "box_r2": [
+     28,
+     900,
+     1572,
+     964
+    ],
+    "box_r3": [
+     28,
+     900,
+     1572,
+     964
+    ],
+    "delta_l_trb": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "within_±2px": true
+   },
+   {
+    "region": "R-footnote",
+    "box_r2": [
+     28,
+     968,
+     1572,
+     996
+    ],
+    "box_r3": [
+     28,
+     968,
+     1572,
+     996
+    ],
+    "delta_l_trb": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "within_±2px": true
+   },
+   {
+    "region": "R-kpi",
+    "box_r2": [
+     28,
+     108,
+     1572,
+     226
+    ],
+    "box_r3": [
+     28,
+     108,
+     1572,
+     226
+    ],
+    "delta_l_trb": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "within_±2px": true
+   },
+   {
+    "region": "R-table",
+    "box_r2": [
+     28,
+     676,
+     1572,
+     886
+    ],
+    "box_r3": [
+     28,
+     676,
+     1572,
+     886
+    ],
+    "delta_l_trb": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "within_±2px": true
+   },
+   {
+    "region": "R-title",
+    "box_r2": [
+     28,
+     28,
+     1572,
+     90
+    ],
+    "box_r3": [
+     28,
+     28,
+     1572,
+     90
+    ],
+    "delta_l_trb": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "within_±2px": true
+   }
+  ],
+  "max_abs_delta": 0,
+  "all_within_±2px": true,
+  "evidence": {
+   "views": [
+    "steps/r3-v2-half.png",
+    "steps/r3-v2-footnote-1x.png",
+    "steps/r3-v2-chart-left.png",
+    "steps/r3-v2-chart-right.png",
+    "steps/r3-table.png",
+    "steps/r3-conclusion-1x.png"
+   ],
+   "viewed_at": "2026-10-18T12:36:51+08:00",
+   "server_render_bytes_r3_final": 257624,
+   "note": "v1 渲染后查出『脚注右端被裁（止于 monthly.csv 原）』→ 精简脚注 v2；v1 的 400（色值漏 #）已留证 req a22-r03-dash-122855186"
+  }
+ },
+ "deliverable": "round-03/dashboard.png/.snapshot"
+}

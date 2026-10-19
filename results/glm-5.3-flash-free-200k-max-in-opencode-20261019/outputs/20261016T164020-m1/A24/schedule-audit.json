@@ -1,0 +1,252 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "schedule_ref": "schedule.json",
+ "checks": [
+  {
+   "check_id": "c-R01",
+   "task": "R01",
+   "team": "design",
+   "start_minute": 0,
+   "end_minute": 25,
+   "duration_ok": true,
+   "duration_evidence": "25−0=25 分程与输入 minutes=25 一致",
+   "deps": [],
+   "deps_ok": true,
+   "deps_evidence": "无先决",
+   "resource_ok": true,
+   "resource_evidence": "design 泳道相邻块 — end=— / R04 start=25（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R02",
+   "task": "R02",
+   "team": "engineering",
+   "start_minute": 0,
+   "end_minute": 20,
+   "duration_ok": true,
+   "duration_evidence": "20−0=20 分程与输入 minutes=20 一致",
+   "deps": [],
+   "deps_ok": true,
+   "deps_evidence": "无先决",
+   "resource_ok": true,
+   "resource_evidence": "engineering 泳道相邻块 — end=— / R05 start=25（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R03",
+   "task": "R03",
+   "team": "engineering",
+   "start_minute": 55,
+   "end_minute": 95,
+   "duration_ok": true,
+   "duration_evidence": "95−55=40 分程与输入 minutes=40 一致",
+   "deps": [
+    "R02"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R02 end=20≤R03 start=55",
+   "resource_ok": true,
+   "resource_evidence": "engineering 泳道相邻块 R05 end=55 / R06 start=95（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R04",
+   "task": "R04",
+   "team": "design",
+   "start_minute": 25,
+   "end_minute": 85,
+   "duration_ok": true,
+   "duration_evidence": "85−25=60 分程与输入 minutes=60 一致",
+   "deps": [
+    "R01"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R01 end=25≤R04 start=25",
+   "resource_ok": true,
+   "resource_evidence": "design 泳道相邻块 R01 end=25 / R07 start=85（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R05",
+   "task": "R05",
+   "team": "engineering",
+   "start_minute": 25,
+   "end_minute": 55,
+   "duration_ok": true,
+   "duration_evidence": "55−25=30 分程与输入 minutes=30 一致",
+   "deps": [
+    "R01"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R01 end=25≤R05 start=25",
+   "resource_ok": true,
+   "resource_evidence": "engineering 泳道相邻块 R02 end=20 / R03 start=55（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R06",
+   "task": "R06",
+   "team": "engineering",
+   "start_minute": 95,
+   "end_minute": 140,
+   "duration_ok": true,
+   "duration_evidence": "140−95=45 分程与输入 minutes=45 一致",
+   "deps": [
+    "R03"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R03 end=95≤R06 start=95",
+   "resource_ok": true,
+   "resource_evidence": "engineering 泳道相邻块 R03 end=95 / R08 start=140（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R07",
+   "task": "R07",
+   "team": "design",
+   "start_minute": 85,
+   "end_minute": 155,
+   "duration_ok": true,
+   "duration_evidence": "155−85=70 分程与输入 minutes=70 一致",
+   "deps": [
+    "R04",
+    "R05"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R04 end=85≤R07 start=85, R05 end=55≤R07 start=85",
+   "resource_ok": true,
+   "resource_evidence": "design 泳道相邻块 R04 end=85 / R09 start=155（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R08",
+   "task": "R08",
+   "team": "engineering",
+   "start_minute": 140,
+   "end_minute": 205,
+   "duration_ok": true,
+   "duration_evidence": "205−140=65 分程与输入 minutes=65 一致",
+   "deps": [
+    "R04",
+    "R06"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R04 end=85≤R08 start=140, R06 end=140≤R08 start=140",
+   "resource_ok": true,
+   "resource_evidence": "engineering 泳道相邻块 R06 end=140 / R11 start=205（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R09",
+   "task": "R09",
+   "team": "design",
+   "start_minute": 155,
+   "end_minute": 200,
+   "duration_ok": true,
+   "duration_evidence": "200−155=45 分程与输入 minutes=45 一致",
+   "deps": [
+    "R07"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R07 end=155≤R09 start=155",
+   "resource_ok": true,
+   "resource_evidence": "design 泳道相邻块 R07 end=155 / R10 start=205（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R10",
+   "task": "R10",
+   "team": "design",
+   "start_minute": 205,
+   "end_minute": 240,
+   "duration_ok": true,
+   "duration_evidence": "240−205=35 分程与输入 minutes=35 一致",
+   "deps": [
+    "R07",
+    "R08",
+    "R09"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R07 end=155≤R10 start=205, R08 end=205≤R10 start=205, R09 end=200≤R10 start=205",
+   "resource_ok": true,
+   "resource_evidence": "design 泳道相邻块 R09 end=200 / — start=—（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R11",
+   "task": "R11",
+   "team": "engineering",
+   "start_minute": 205,
+   "end_minute": 235,
+   "duration_ok": true,
+   "duration_evidence": "235−205=30 分程与输入 minutes=30 一致",
+   "deps": [
+    "R08",
+    "R09"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R08 end=205≤R11 start=205, R09 end=200≤R11 start=205",
+   "resource_ok": true,
+   "resource_evidence": "engineering 泳道相邻块 R08 end=205 / R12 start=240（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-R12",
+   "task": "R12",
+   "team": "engineering",
+   "start_minute": 240,
+   "end_minute": 260,
+   "duration_ok": true,
+   "duration_evidence": "260−240=20 分程与输入 minutes=20 一致",
+   "deps": [
+    "R10",
+    "R11"
+   ],
+   "deps_ok": true,
+   "deps_evidence": "R10 end=240≤R12 start=240, R11 end=235≤R12 start=240",
+   "resource_ok": true,
+   "resource_evidence": "engineering 泳道相邻块 R11 end=235 / — start=—（[start,end) 半开衔接）"
+  },
+  {
+   "check_id": "c-window",
+   "task": "ALL",
+   "window_ok": true,
+   "evidence": "全部 end≤420（最大 255=R12），start≥0；09:00–16:00 = 420 分钟连续窗口按 release.json，未扣除午休"
+  },
+  {
+   "check_id": "c-parallel",
+   "task": "design/engineering",
+   "window_ok": true,
+   "evidence": "design 泳道 5 块（R01/R04/R07/R09/R10）相邻 end≤start 全部通过；engineering 7 块（R02/R03/R05/R06/R08/R11/R12）同检通过；不存在同团队交叠（blocked algorithm 见 resource_evidence）"
+  }
+ ],
+ "lower_bounds": {
+  "dependency_critical_path_minutes": 255,
+  "critical_path": [
+   "R01",
+   "R04",
+   "R07",
+   "R09",
+   "R10",
+   "R12"
+  ],
+  "critical_path_sum": "25+60+70+45+35+20=255",
+  "workload_lower_bound_minutes": 242.5,
+  "total_minutes": 485,
+  "teams": 2,
+  "workload_formula": "485 ÷ 2 = 242.5",
+  "binding_bound": "255（依赖关键路径；工作量下界 242.5 更松）"
+ },
+ "finish": {
+  "minute": 260,
+  "time": "2026-11-07T13:20:00+08:00",
+  "buffer_minutes": 160,
+  "buffer_to": "2026-11-07T16:00:00+08:00",
+  "cash_flows_note": null
+ },
+ "optimality": {
+  "claimed": "proven_optimal（对给定约束集）",
+  "bound_minutes": 260,
+  "argument": "R05 依赖 R01（end≥25）且只可用 design/engineering：(a) 若在 design，则 R01+R05+R04 共 115 分钟，R07.end≥185 → R09.end≥230 → R12.end≥285；(b) 若在 engineering，E 侧R02.end=20，R05.start≥25 → R02→R05→R03→R06→R08 链长 20+30+40+45+65=200，R08.end≥205 → R10.end≥240 → R12.end≥260。取 min(285,260)=260；本排程 R12 end=260 达界。",
+  "dependency_only_bound_minutes": 255,
+  "dependency_only_bound_note": "25+60+70+45+35+20=255，但被 R05 的资源-依赖冲突抬高到 260（见 argument）；工作量下界 242.5 更松",
+  "caveat": "证明仅对 release.json 的两团队/依赖/时长约束成立",
+  "not_claimed": "全局最优未另有独立混合整数验证；论证为穷举 R05 两种归属的分析性下界，256–259 无可行解已由 argument 覆盖"
+ },
+ "slack_notes": {
+  "design": "D 泳道 0..240（R01/R04/R07/R09/R10 首尾相接）、R10.end 205..240 等待 R08.end=205 的 5 分钟（155..205 期R07→R09 后 155..205 与 E 并行）；实际 D 空档 235..240 5 分在 R10 前（R09 end 200 → R10 start 205 等 R08）",
+  "engineering": "R11.end 235 → R12.start 240 空档 5 分钟",
+  "idle_visualization": "execution-board 在 D 泳道 200..205 与 E 泳道 235..240 渲染空档标记"
+ }
+}

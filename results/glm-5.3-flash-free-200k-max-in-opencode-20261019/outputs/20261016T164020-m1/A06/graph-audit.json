@@ -1,0 +1,936 @@
+{
+  "schema_version": 1,
+  "task_id": "A06",
+  "path_base": "output_dir",
+  "question": "十四节点依赖图与反馈回路",
+  "inputs": {
+    "path_base": "suite_root",
+    "paths": [
+      "tasks/A06-dependency-graph/inputs/graph.json"
+    ],
+    "nodes_used": 14,
+    "solid_edges_used": 16,
+    "feedback_edges_used": 2,
+    "modifications": "无——节点/边按输入原值；布局与绕行是绘制决策，不改变图语义"
+  },
+  "topology": {
+    "method": "以 solid_edges 为 DAG，按 最长前驱层 分层（Kahn 等价）；feedback_edges 不参与",
+    "layer_count": 11,
+    "layers": {
+      "L0": [
+        "N01"
+      ],
+      "L1": [
+        "N02",
+        "N03"
+      ],
+      "L2": [
+        "N04",
+        "N05"
+      ],
+      "L3": [
+        "N06",
+        "N07"
+      ],
+      "L4": [
+        "N08"
+      ],
+      "L5": [
+        "N09"
+      ],
+      "L6": [
+        "N10"
+      ],
+      "L7": [
+        "N11"
+      ],
+      "L8": [
+        "N12"
+      ],
+      "L9": [
+        "N13"
+      ],
+      "L10": [
+        "N14"
+      ]
+    },
+    "forward_only_check": "所有先决边 from 层 < to 层（无指向过去层的布局歧义）"
+  },
+  "nodes": [
+    {
+      "id": "N01",
+      "label": "需求冻结",
+      "layer": 0,
+      "in_neighbors": [],
+      "out_neighbors": [
+        "N02",
+        "N03"
+      ],
+      "box_px": [
+        64.0,
+        390.0,
+        168.0,
+        462.0
+      ],
+      "phase": "准备",
+      "phase_color": "#2E90FA"
+    },
+    {
+      "id": "N02",
+      "label": "输入检查",
+      "layer": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N04",
+        "N05"
+      ],
+      "box_px": [
+        200.8,
+        524.0,
+        304.8,
+        596.0
+      ],
+      "phase": "准备",
+      "phase_color": "#2E90FA"
+    },
+    {
+      "id": "N03",
+      "label": "字体查询",
+      "layer": 1,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "box_px": [
+        200.8,
+        284.0,
+        304.8,
+        356.0
+      ],
+      "phase": "准备",
+      "phase_color": "#2E90FA"
+    },
+    {
+      "id": "N04",
+      "label": "数据计算",
+      "layer": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N07",
+        "N13"
+      ],
+      "box_px": [
+        337.6,
+        524.0,
+        441.6,
+        596.0
+      ],
+      "phase": "准备",
+      "phase_color": "#2E90FA"
+    },
+    {
+      "id": "N05",
+      "label": "内容规划",
+      "layer": 2,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "box_px": [
+        337.6,
+        284.0,
+        441.6,
+        356.0
+      ],
+      "phase": "构图",
+      "phase_color": "#14B8A6"
+    },
+    {
+      "id": "N06",
+      "label": "版式系统",
+      "layer": 3,
+      "in_neighbors": [
+        "N03",
+        "N05"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "box_px": [
+        474.4,
+        284.0,
+        578.4,
+        356.0
+      ],
+      "phase": "构图",
+      "phase_color": "#14B8A6"
+    },
+    {
+      "id": "N07",
+      "label": "图表生成",
+      "layer": 3,
+      "in_neighbors": [
+        "N04"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "box_px": [
+        474.4,
+        524.0,
+        578.4,
+        596.0
+      ],
+      "phase": "构图",
+      "phase_color": "#14B8A6"
+    },
+    {
+      "id": "N08",
+      "label": "DSL构建",
+      "layer": 4,
+      "in_neighbors": [
+        "N06",
+        "N07"
+      ],
+      "out_neighbors": [
+        "N09"
+      ],
+      "box_px": [
+        611.2,
+        390.0,
+        715.2,
+        462.0
+      ],
+      "phase": "构建",
+      "phase_color": "#F59E0B"
+    },
+    {
+      "id": "N09",
+      "label": "首轮渲染",
+      "layer": 5,
+      "in_neighbors": [
+        "N08"
+      ],
+      "out_neighbors": [
+        "N10"
+      ],
+      "box_px": [
+        748.0,
+        390.0,
+        852.0,
+        462.0
+      ],
+      "phase": "审校",
+      "phase_color": "#7C3AED"
+    },
+    {
+      "id": "N10",
+      "label": "视觉检查",
+      "layer": 6,
+      "in_neighbors": [
+        "N09"
+      ],
+      "out_neighbors": [
+        "N11"
+      ],
+      "box_px": [
+        884.8,
+        390.0,
+        988.8,
+        462.0
+      ],
+      "phase": "审校",
+      "phase_color": "#7C3AED"
+    },
+    {
+      "id": "N11",
+      "label": "问题修复",
+      "layer": 7,
+      "in_neighbors": [
+        "N10"
+      ],
+      "out_neighbors": [
+        "N12"
+      ],
+      "box_px": [
+        1021.6,
+        390.0,
+        1125.6,
+        462.0
+      ],
+      "phase": "审校",
+      "phase_color": "#7C3AED"
+    },
+    {
+      "id": "N12",
+      "label": "回归渲染",
+      "layer": 8,
+      "in_neighbors": [
+        "N11"
+      ],
+      "out_neighbors": [
+        "N13"
+      ],
+      "box_px": [
+        1158.4,
+        390.0,
+        1262.4,
+        462.0
+      ],
+      "phase": "审校",
+      "phase_color": "#7C3AED"
+    },
+    {
+      "id": "N13",
+      "label": "产物校验",
+      "layer": 9,
+      "in_neighbors": [
+        "N12",
+        "N04"
+      ],
+      "out_neighbors": [
+        "N14"
+      ],
+      "box_px": [
+        1295.2,
+        390.0,
+        1399.2,
+        462.0
+      ],
+      "phase": "收束",
+      "phase_color": "#059669"
+    },
+    {
+      "id": "N14",
+      "label": "交付归档",
+      "layer": 10,
+      "in_neighbors": [
+        "N13"
+      ],
+      "out_neighbors": [],
+      "box_px": [
+        1432.0,
+        390.0,
+        1536.0,
+        462.0
+      ],
+      "phase": "收束",
+      "phase_color": "#059669"
+    }
+  ],
+  "prerequisite_edges": [
+    {
+      "from": "N01",
+      "to": "N02",
+      "from_label": "需求冻结",
+      "to_label": "输入检查",
+      "polyline_px": [
+        [
+          168.0,
+          426.0
+        ],
+        [
+          184.0,
+          426.0
+        ],
+        [
+          184.0,
+          560.0
+        ],
+        [
+          200.8,
+          560.0
+        ]
+      ],
+      "arrow_tip_px": [
+        200.8,
+        560.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L0 → L1（指向更晚层）"
+    },
+    {
+      "from": "N01",
+      "to": "N03",
+      "from_label": "需求冻结",
+      "to_label": "字体查询",
+      "polyline_px": [
+        [
+          168.0,
+          426.0
+        ],
+        [
+          184.0,
+          426.0
+        ],
+        [
+          184.0,
+          320.0
+        ],
+        [
+          200.8,
+          320.0
+        ]
+      ],
+      "arrow_tip_px": [
+        200.8,
+        320.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L0 → L1（指向更晚层）"
+    },
+    {
+      "from": "N02",
+      "to": "N05",
+      "from_label": "输入检查",
+      "to_label": "内容规划",
+      "polyline_px": [
+        [
+          252.8,
+          524.0
+        ],
+        [
+          252.8,
+          380
+        ],
+        [
+          389.6,
+          380
+        ],
+        [
+          389.6,
+          356.0
+        ]
+      ],
+      "arrow_tip_px": [
+        389.6,
+        356.0
+      ],
+      "arrow_direction": "U",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L1 → L2（指向更晚层）"
+    },
+    {
+      "from": "N02",
+      "to": "N04",
+      "from_label": "输入检查",
+      "to_label": "数据计算",
+      "polyline_px": [
+        [
+          304.8,
+          560.0
+        ],
+        [
+          337.6,
+          560.0
+        ]
+      ],
+      "arrow_tip_px": [
+        337.6,
+        560.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L1 → L2（指向更晚层）"
+    },
+    {
+      "from": "N03",
+      "to": "N06",
+      "from_label": "字体查询",
+      "to_label": "版式系统",
+      "polyline_px": [
+        [
+          304.8,
+          320.0
+        ],
+        [
+          330.0,
+          320.0
+        ],
+        [
+          330.0,
+          252
+        ],
+        [
+          460.0,
+          252
+        ],
+        [
+          460.0,
+          302
+        ],
+        [
+          474.4,
+          302
+        ]
+      ],
+      "arrow_tip_px": [
+        474.4,
+        302
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L1 → L3（指向更晚层）"
+    },
+    {
+      "from": "N05",
+      "to": "N06",
+      "from_label": "内容规划",
+      "to_label": "版式系统",
+      "polyline_px": [
+        [
+          441.6,
+          320.0
+        ],
+        [
+          474.4,
+          320.0
+        ]
+      ],
+      "arrow_tip_px": [
+        474.4,
+        320.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L2 → L3（指向更晚层）"
+    },
+    {
+      "from": "N04",
+      "to": "N07",
+      "from_label": "数据计算",
+      "to_label": "图表生成",
+      "polyline_px": [
+        [
+          441.6,
+          560.0
+        ],
+        [
+          474.4,
+          560.0
+        ]
+      ],
+      "arrow_tip_px": [
+        474.4,
+        560.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L2 → L3（指向更晚层）"
+    },
+    {
+      "from": "N06",
+      "to": "N08",
+      "from_label": "版式系统",
+      "to_label": "DSL构建",
+      "polyline_px": [
+        [
+          578.4,
+          320.0
+        ],
+        [
+          594.0,
+          320.0
+        ],
+        [
+          594.0,
+          408.0
+        ],
+        [
+          611.2,
+          408.0
+        ]
+      ],
+      "arrow_tip_px": [
+        611.2,
+        408.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L3 → L4（指向更晚层）"
+    },
+    {
+      "from": "N07",
+      "to": "N08",
+      "from_label": "图表生成",
+      "to_label": "DSL构建",
+      "polyline_px": [
+        [
+          578.4,
+          560.0
+        ],
+        [
+          594.0,
+          560.0
+        ],
+        [
+          594.0,
+          444.0
+        ],
+        [
+          611.2,
+          444.0
+        ]
+      ],
+      "arrow_tip_px": [
+        611.2,
+        444.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L3 → L4（指向更晚层）"
+    },
+    {
+      "from": "N08",
+      "to": "N09",
+      "from_label": "DSL构建",
+      "to_label": "首轮渲染",
+      "polyline_px": [
+        [
+          715.2,
+          426.0
+        ],
+        [
+          748.0,
+          426.0
+        ]
+      ],
+      "arrow_tip_px": [
+        748.0,
+        426.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L4 → L5（指向更晚层）"
+    },
+    {
+      "from": "N09",
+      "to": "N10",
+      "from_label": "首轮渲染",
+      "to_label": "视觉检查",
+      "polyline_px": [
+        [
+          852.0,
+          426.0
+        ],
+        [
+          884.8,
+          426.0
+        ]
+      ],
+      "arrow_tip_px": [
+        884.8,
+        426.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L5 → L6（指向更晚层）"
+    },
+    {
+      "from": "N10",
+      "to": "N11",
+      "from_label": "视觉检查",
+      "to_label": "问题修复",
+      "polyline_px": [
+        [
+          988.8,
+          426.0
+        ],
+        [
+          1021.6,
+          426.0
+        ]
+      ],
+      "arrow_tip_px": [
+        1021.6,
+        426.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L6 → L7（指向更晚层）"
+    },
+    {
+      "from": "N11",
+      "to": "N12",
+      "from_label": "问题修复",
+      "to_label": "回归渲染",
+      "polyline_px": [
+        [
+          1125.6,
+          426.0
+        ],
+        [
+          1158.4,
+          426.0
+        ]
+      ],
+      "arrow_tip_px": [
+        1158.4,
+        426.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L7 → L8（指向更晚层）"
+    },
+    {
+      "from": "N12",
+      "to": "N13",
+      "from_label": "回归渲染",
+      "to_label": "产物校验",
+      "polyline_px": [
+        [
+          1262.4,
+          426.0
+        ],
+        [
+          1295.2,
+          426.0
+        ]
+      ],
+      "arrow_tip_px": [
+        1295.2,
+        426.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L8 → L9（指向更晚层）"
+    },
+    {
+      "from": "N13",
+      "to": "N14",
+      "from_label": "产物校验",
+      "to_label": "交付归档",
+      "polyline_px": [
+        [
+          1399.2,
+          426.0
+        ],
+        [
+          1432.0,
+          426.0
+        ]
+      ],
+      "arrow_tip_px": [
+        1432.0,
+        426.0
+      ],
+      "arrow_direction": "R",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L9 → L10（指向更晚层）"
+    },
+    {
+      "from": "N04",
+      "to": "N13",
+      "from_label": "数据计算",
+      "to_label": "产物校验",
+      "polyline_px": [
+        [
+          389.6,
+          596.0
+        ],
+        [
+          389.6,
+          780
+        ],
+        [
+          1347.2,
+          780
+        ],
+        [
+          1347.2,
+          462.0
+        ]
+      ],
+      "arrow_tip_px": [
+        1347.2,
+        462.0
+      ],
+      "arrow_direction": "U",
+      "drawn": "实线 #6B7A93 3px + 实心箭头",
+      "layer_check": "L2 → L9（指向更晚层）"
+    }
+  ],
+  "longest_path": {
+    "node_sequence": [
+      "N01",
+      "N02",
+      "N04",
+      "N07",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ],
+    "labels": [
+      "需求冻结",
+      "输入检查",
+      "数据计算",
+      "图表生成",
+      "DSL构建",
+      "首轮渲染",
+      "视觉检查",
+      "问题修复",
+      "回归渲染",
+      "产物校验",
+      "交付归档"
+    ],
+    "length_nodes": 11,
+    "length_edges": 10,
+    "method": "DAG 最长路径动态规划（拓扑序、按节点数计）；并列最优取先出者",
+    "alternative_same_length": [
+      "N01",
+      "N02",
+      "N05",
+      "N06",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ]
+  },
+  "feedback_edges": [
+    {
+      "from": "N09",
+      "to": "N08",
+      "from_label": "首轮渲染",
+      "to_label": "DSL构建",
+      "polyline_px": [
+        [
+          776.0,
+          390.0
+        ],
+        [
+          776.0,
+          350
+        ],
+        [
+          658.2,
+          350
+        ],
+        [
+          658.2,
+          390.0
+        ]
+      ],
+      "arrow_tip_px": [
+        658.2,
+        390.0
+      ],
+      "drawn": "红虚线 9px 划线 / 7px 间隔，末端实心箭头指入目标节点",
+      "not_part_of_dag": true,
+      "meaning": "运行中的回退关系：不改变任何节点的拓扑层与先决次序"
+    },
+    {
+      "from": "N10",
+      "to": "N08",
+      "from_label": "视觉检查",
+      "to_label": "DSL构建",
+      "polyline_px": [
+        [
+          932.8,
+          462.0
+        ],
+        [
+          932.8,
+          502
+        ],
+        [
+          658.2,
+          502
+        ],
+        [
+          658.2,
+          462.0
+        ]
+      ],
+      "arrow_tip_px": [
+        658.2,
+        462.0
+      ],
+      "drawn": "红虚线 9px 划线 / 7px 间隔，末端实心箭头指入目标节点",
+      "not_part_of_dag": true,
+      "meaning": "运行中的回退关系：不改变任何节点的拓扑层与先决次序"
+    }
+  ],
+  "crossings": [],
+  "legend": {
+    "solid": "实线灰箭头 = 先决依赖（拓扑排序内）",
+    "dashed_red": "红虚线 = 反馈回路（不参与排序，指回构建）",
+    "phase": "节点左色条 = 阶段：准备/构图/构建/审校/收束"
+  },
+  "images": {
+    "dependency-map.png": {
+      "size": [
+        1600,
+        1000
+      ],
+      "dsl": "dependency-map.snapshot",
+      "product": "14 节点依赖与反馈解释图（层列 + 绕行 + 反馈环）"
+    }
+  },
+  "visual_checks": [
+    {
+      "check": "整图 1600×1000 打开查看：标题带/徽标/副题/图例行/图卡/说明卡齐备，无遮挡无裁剪",
+      "pass": true
+    },
+    {
+      "check": "14 节点全部出现：编号(22px Inter)+标签(22px bold)双行，左缘 6px 阶段色条（准备蓝/构图青/构建橙/审校紫/收束绿）与 PH_OF 一致；放大 z1 复核文字清晰无溢出（4 字 88px ≤ 98px 可用宽）",
+      "pass": true
+    },
+    {
+      "check": "拓扑层列 L0–L10 表头与节点对齐：L0 {N01}、L1 {N03上,N02下}、L2 {N05上,N04下}、L3 {N06上,N07下}、L4–L10 单节点居中 y=426；先决边全部指向更晚层（N03→N06 跨 L1→L3、N04→N13 跨 L2→L9）",
+      "pass": true
+    },
+    {
+      "check": "16 条先决边逐条看图：均 3px 实线 + 实心箭头（R/U/D 与末端行进方向一致）；N01 出边为分叉（右行 16px 后上下分流）；N02→N05 自顶缘上行 y=380 右行后上入 N05 底缘；N06/N07→N08 肘形进入左上/左下双端口，箭头方向见图",
+      "pass": true
+    },
+    {
+      "check": "两条跨层绕行：N03→N06 顶部绕行（右行 25px→上行至 y252→右行至 x460→下行至 y302→右入 N06 左上端口，箭头 R）；N04→N13 图底通道（底缘下行至 y780→右行→上行入 N13 底缘，箭头 U）；两条均不穿过任何节点盒，各配 18px 灰色小注",
+      "pass": true
+    },
+    {
+      "check": "2 条反馈回路红虚线（9px 划线/7px 间隔）+ 实心箭头：① N09 顶缘出→y350 左行→下行入 N08 顶缘（箭头 D）；② N10 底缘出→y502 左行→上行入 N08 底缘（箭头 U）；颜色 #C0392B 与先决边灰色明显区分；绝不画成先决样式",
+      "pass": true
+    },
+    {
+      "check": "①② 图内红字标签（18px bold）与底部说明卡两行解释一一对应；说明卡含最长路径 11 节点链与读图要点",
+      "pass": true
+    },
+    {
+      "check": "交叉与相接核查：程序几何求交 = 0 处交叉；放大复核所有垂直/水平通道与节点盒保持间距（E5 顶横线距 N05 顶缘 32px、E3 竖线距 N03 底缘 24px、E16 底通道距节点区 184px），线线无重叠段（N01 分叉共用 16px 出干为同色重绘，为分叉造型而非交叉）",
+      "pass": true
+    },
+    {
+      "check": "交叉无连接点语义：全图无边线接触节点盒非端口位置；反馈环走节点上下空带与先决边视觉分离",
+      "pass": true
+    },
+    {
+      "check": "dependency-map.snapshot 与 dependency-map.png 同名配对，PNG 为服务原始 200 响应字节（247,437B）",
+      "pass": true
+    }
+  ],
+  "build_script": {
+    "path_base": "suite_root",
+    "path": "tmp/20261016T164020-m1/A06/build_a06.py"
+  },
+  "visual_checks_recorded_at": "2026-10-17T12:59:09.035+08:00",
+  "draw_layout": "列=拓扑层 L0–L10（colw 136.8px）；双层行序为绘制决策：L1 上=N03/下=N02、L2 上=N05/下=N04（使 N04→N13 走图底通道、N02→N04 直连，全图零交叉）；N03→N06 顶绕、N04→N13 底绕",
+  "tie_break": "最长路径并列两条（经由数据计算→图表生成 / 内容规划→版式系统）；审计主取前者（与绘制主链一致），后者列于 alternative_same_length"
+}

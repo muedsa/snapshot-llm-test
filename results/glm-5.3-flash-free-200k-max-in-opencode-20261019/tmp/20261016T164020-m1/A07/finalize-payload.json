@@ -1,0 +1,92 @@
+{
+  "extra": {
+    "content_map": [
+      {
+        "query": 1,
+        "route": "normal",
+        "map_zone": {
+          "panel_row": 1,
+          "ribbon_y_px": 296,
+          "ribbon_x_px": [1052, 1520],
+          "transfer_mark_px": {"S04": [500, 550]}
+        },
+        "card_zone": {"block": 1, "row": "top", "ribbon_y_px": 258, "ribbon_x_px": [72, 656]},
+        "verified": true,
+        "verdict": "两图站序 松林→北门→书院→中心→花园→南门→会展 与 edge_lines RR RBBB 色带逐段一致；换乘记号=图(500,550) bullseye / 卡第4点 bullseye，与 transfer_stations=[S04] 一致"
+      },
+      {
+        "query": 2,
+        "route": "normal",
+        "map_zone": {
+          "panel_row": 2,
+          "ribbon_y_px": 418,
+          "ribbon_x_px": [1052, 1520],
+          "transfer_mark_px": {"S05": [620, 670]}
+        },
+        "card_zone": {"block": 2, "row": "top", "ribbon_y_px": 542, "ribbon_x_px": [72, 656]},
+        "verified": true,
+        "verdict": "两图站序 石溪→公园→工坊→剧院→东桥→江湾→机场 与 GGGGRR 色带一致；东桥=深色菱形（换乘+未设）记号在两图一致；面板该组注为橙色「换乘 东桥 未设无障碍 → 卡内有替代」"
+      },
+      {
+        "query": 3,
+        "route": "normal",
+        "map_zone": {
+          "panel_row": 3,
+          "ribbon_y_px": 540,
+          "ribbon_x_px": [1052, 1520],
+          "transfer_mark_px": {"S08": [500, 790]}
+        },
+        "card_zone": {"block": 3, "row": "top", "ribbon_y_px": 1010, "ribbon_x_px": [72, 656]},
+        "verified": true,
+        "verdict": "两图站序 西港→工坊→剧院→东桥→研究所 与 BGGG 色带一致；换乘记号=工坊 bullseye (500,790)"
+      },
+      {
+        "query": 2,
+        "route": "accessible_alternative",
+        "map_zone": {"panel_row": 2, "note": "面板第2组橙色注指向卡内替代"},
+        "card_zone": {"block": 2, "row": "access_sub", "divider_y_px": 652, "ribbon_y_px": 776, "ribbon_x_px": [64, 656]},
+        "verified": true,
+        "verdict": "替代带 石溪→公园→工坊→中心→东桥→江湾→机场 与 GGBRRR 字母chip+色带一致；工坊/中心两处 bullseye 与 transfer_stations=[S08,S04] 一致；警告行「东桥 未设无障碍——不能作为无障碍换乘站」+ 结论行「换乘 工坊、中心均设无障碍设施 ✓」均与 accessibility 数据一致"
+      }
+    ],
+    "geometry": {
+      "stations_px": {
+        "S01": [140, 670], "S02": [260, 670], "S03": [380, 670], "S04": [500, 550],
+        "S05": [620, 670], "S06": [760, 670], "S07": [500, 910], "S08": [500, 790],
+        "S09": [500, 430], "S10": [500, 310], "S11": [380, 190], "S12": [900, 530],
+        "S13": [200, 910], "S14": [380, 910], "S15": [620, 910], "S16": [740, 550]
+      },
+      "angle_rule": "所有线段为水平/垂直/45°方向（脚本对全网每段 dx∈{0,±dy} 断言通过；输出 all_paths_normal=[7,7,5] 区间数与 6/6/4 旅程一致）",
+      "crossings": "程序求交=0 处非站交叉；线线相交仅在 3 个换乘站内部（放大约束复核 中心/东桥/工坊 三枢纽）",
+      "note_geo": "非地理示意图：坐标为拓扑布局选择，不代表真实地理方位"
+    },
+    "render_chain": {
+      "network-map": [
+        {"version": "v0", "result": "400 PARSE_ERROR（语法修复类）：diamond_ring/diamond_at 返回字符串被 S.extend 逐字展开，DSL 每字符插入换行；改为返回列表后重建", "kept": "renders/network-map-v01 前 400 响应留痕"},
+        {"version": "v01", "result": "200 基线；发现 8 处缺陷（图例/终点chip字母下沉越界、角标END盒左参误写伸入面板、底部脚注与站名重叠、S02/S03标签相撞、面板末站名溢出、右下长注被裁、S07终点chip悬空、卡内两注相撞见卡）"},
+        {"version": "v02", "result": "修复 chip字母垂直居中/角标盒left=690/删脚注/S03标签下移/S07chip贴节点/面板带收窄1052,468/面板底注两行/卡内注2b缩短；放大复核发现红线斜线穿过「05 东桥」标签"},
+        {"version": "v03", "result": "ribbon() 站名盒心对齐站点（消除 +bw/2 右偏导致末站溢出面板与卡片）；S05 标签移至站点下左空区；卡二替代带 600→592；像素测量复核全部站名居中", "evidence": "steps/z8_SE.png z9_panel.png c1-c3"},
+        {"version": "v04", "result": "「05 东桥」再左移 8px（与绿线净距 4→12px）定稿", "evidence": "steps/z10_final_SE.png"}
+      ],
+      "travel-card": [
+        {"version": "v01", "result": "200 基线；chip字母下沉 + 块2底部两注相撞"},
+        {"version": "v02", "result": "chip 居中/注2b缩短；仍见站名右偏溢出块缘"},
+        {"version": "v03", "result": "站名盒心对齐修复，定稿（卡内三块节奏/图例/页脚复核通过）", "evidence": "steps/c1_names.png c2_block2.png c3_block3.png"}
+      ],
+      "final": {"network-map": "v04 (259,661B 服务原始字节)", "travel-card": "v03 (226,616B 服务原始字节)"}
+    }
+  },
+  "visual_checks": [
+    {"check": "地图 1600×1000 整图查看：标题「城市轨道线网 · 拓扑与无障碍速览」/徽标「16 站 · 3 线 · 3 换乘站」/副题/图例行/左侧地图卡/右侧问答面板齐备，无遮挡无裁剪（v02 起角标不再越入面板）", "pass": true},
+    {"check": "16 站全部出现且编号(20px)+名称(22px bold)可读；每站标签与线段不相交（S03 下移、S05 下左 v03/v04、S07 终点chip贴节点左侧 v02），放大 z4/z8/z10 复核", "pass": true},
+    {"check": "线路几何与输入一致：R 线 松林-北门-书院 水平→书院-中心 45°→中心-东桥 45°→东桥-江湾 水平→江湾-机场 45°；B 线 会展-南门 45° 及 竖排 南门-花园-中心-工坊-西港；G 线 石溪-公园 水平→二人汇于 工坊→剧院-东桥 竖→东桥-研究所 45°；全段 45°/90° 断言通过", "pass": true},
+    {"check": "3 换乘站深色记号：中心/工坊=双圈 bullseye（多线换乘且设无障碍），东桥=深色菱形+白心（换乘且未设）；图例「◎ 换乘站」与之一致；放大 z2/z4/z8 复核", "pass": true},
+    {"check": "4 未设无障碍站菱形环：书院(红)/花园(蓝)/公园(绿)/东桥(深色) 与 accessibility=false 集合一致；图例「○ 设无障碍设施 / ◇ 未设 · 仅乘车通过」", "pass": true},
+    {"check": "6 处终点线别字母 chip（R 松林/机场、B 西港/会展、G 石溪/研究所）字母垂直居中无越界（v02 修复后），chip 紧邻对应站点", "pass": true},
+    {"check": "无误导性交叉：程序求交 0 处 + 放大复核东西两枢纽——绿线 S15→S05 竖段与红色对角线均终于东桥站内；B 竖线与 G 对角线终于工坊站内；全图仅 3 站内部多线交会", "pass": true},
+    {"check": "问答面板 3 组：①松林→会展 ②石溪→机场 ③西港→研究所 迷你旅程带站序/色带/换乘记号与 routes.json 逐项一致；注色区分（青=同路径可无障碍✓，橙=东桥未设→卡内有替代）；末站名居中且不越面板缘（v03 修复，像素测量 1577→≤1553）", "pass": true},
+    {"check": "旅程卡 720×1280 三块纵向节奏：①主线带 RR RBBB+中心 bullseye+状态行（青●/橙◇逐站） ②主线 GGGGRR+东桥菱形记+警告行+分隔线+替代带 GGBRRR+工坊/中心双 bullseye+缩短结论注 ③③题带+要点列表；无相撞无溢出（v02/v03）", "pass": true},
+    {"check": "双图共享同一视觉系统：同一红#C0392B/蓝#2B6CB0/绿#18865C、Inter+Noto Sans CJK SC 混排、同一 chip/菱形/bullseye 语言；正文字号≥20px", "pass": true},
+    {"check": "estw 宽度守卫全部通过（无 WARN 退出）；network-map.snapshot(41001B)/travel-card.snapshot(39710B) 与同名 PNG 配对，PNG 为服务 200 响应原始字节；请求留痕于 tmp/A07/renders/", "pass": true}
+  ]
+}

@@ -1,0 +1,69 @@
+{
+ "schema_version": 1,
+ "task_id": "A23",
+ "path_base": "output_dir",
+ "frames": [
+  {
+   "file": "F1",
+   "sequence": 1,
+   "png": "frame-01.png",
+   "dsl": "frame-01.snapshot",
+   "start_ms": 0,
+   "duration_ms": 250
+  },
+  {
+   "file": "F2",
+   "sequence": 2,
+   "png": "frame-02.png",
+   "dsl": "frame-02.snapshot",
+   "start_ms": 250,
+   "duration_ms": 250
+  },
+  {
+   "file": "F3",
+   "sequence": 3,
+   "png": "frame-03.png",
+   "dsl": "frame-03.snapshot",
+   "start_ms": 500,
+   "duration_ms": 250
+  },
+  {
+   "file": "F4",
+   "sequence": 4,
+   "png": "frame-04.png",
+   "dsl": "frame-04.snapshot",
+   "start_ms": 750,
+   "duration_ms": 250
+  },
+  {
+   "file": "F5",
+   "sequence": 5,
+   "png": "frame-05.png",
+   "dsl": "frame-05.snapshot",
+   "start_ms": 1000,
+   "duration_ms": 250
+  },
+  {
+   "file": "F6",
+   "sequence": 6,
+   "png": "frame-06.png",
+   "dsl": "frame-06.snapshot",
+   "start_ms": 1250,
+   "duration_ms": 250
+  }
+ ],
+ "frame_interval_ms": 250,
+ "loop": true,
+ "period_ms": 1500,
+ "frames_per_second_equivalent": 4.0,
+ "frame_order_note": "按 t=0,250,…,1250ms 顺序播放 F1→F6；周期 1500ms 后回 F1",
+ "seamless": false,
+ "seam_evidence": {
+  "location": "F6(t=1250ms) → F1(t=1500≡0ms) 循环回绕点",
+  "per_unit_reference": "frame-data.json → seam.per_unit（12 个 ID 的位移/旋转差与相邻步长对比）",
+  "observed": "所有单元从汇聚完成位置一夜回跳分散初位（distance ≈ 全程位移量级，seam_over_max 远大于 1）；表现为一次性跳切",
+  "impact": "循环播放时每周期末出现 250ms 间隔内的整画面跳变（汇聚图形瞬间回到分散布局），后续 6 帧重新汇聚——样片作为分镜素材可接受；如需观感平滑需在合成端处理（见 limitations.md）",
+  "mitigation_outside_scope": "合成 GIF/Lottie 时可 hold F6 1–2 帧、加 120–250ms cross-fade，或按 trajectories 公式补中间帧",
+  "not_claimed": "本交付未使用『无缝』表述；仅为授权的 6 关键帧 + 时序描述"
+ }
+}

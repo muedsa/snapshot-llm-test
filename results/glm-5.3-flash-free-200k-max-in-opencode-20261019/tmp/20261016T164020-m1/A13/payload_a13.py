@@ -1,0 +1,14 @@
+# -*- coding: utf-8 -*-
+import io, sys, json, pathlib
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+pay = {"artifacts": ["symbol-color.png", "symbol-color.snapshot", "symbol-black.png", "symbol-black.snapshot",
+                     "brand-banner.png", "brand-banner.snapshot", "launch-poster.png", "launch-poster.snapshot",
+                     "brand-system.json", "rationale.md", "snapshot-usage.md", "task-metrics.json"],
+       "evidence": ["两方向 512 透明预览真实渲染并查看后择 A（rationale 194字 ≤300）",
+                     "四应用同一 mark() 几何生成器（放大件验证同构）；构件 3/6，负空间规则已记录",
+                     "黑版纯黑审计 0 违例（alpha [1,255]）；两版轮廓 64 格对称差 0；彩版 alpha 高原 255/242/207/184 与设计一致",
+                     "32×32 预乘 LANCZOS 预览彩/黑实际尺寸查看通过 + 8× 边缘放大件；renders 11 全 200；迭代 4（孔坐标修复→大屏标题重排）"],
+       "summary": "A13 完成：叠光/Layerlight 品牌系统——彩+纯黑 512 透明图标、1200×400 横幅、1080×1350 独立海报，brand-system.json 全映射。"}
+pathlib.Path("tmp/20261016T164020-m1/A13/complete-payload.json").write_text(
+    json.dumps(pay, ensure_ascii=False, indent=1), encoding="utf-8")
+print("payload ok")

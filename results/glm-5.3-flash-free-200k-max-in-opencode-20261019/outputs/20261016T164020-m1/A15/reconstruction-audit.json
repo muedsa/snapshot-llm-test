@@ -1,0 +1,835 @@
+{
+ "task": "A15-reference-reconstruction",
+ "size": [
+  1440,
+  900
+ ],
+ "source": {
+  "path_base": "task_input",
+  "path": "reference.png",
+  "note": "公开参考图，无作者坐标；参考值由像素扫描估计（方法逐条记录）"
+ },
+ "content": {
+  "path_base": "task_input",
+  "path": "content.json",
+  "note": "文本数值逐字来自 content.json；几何/配色由观察参考图标定"
+ },
+ "anchors": [
+  {
+   "id": "A01",
+   "object": "侧栏右边界（x 分量）",
+   "type": "edge_x",
+   "ref": 220,
+   "mine": 220,
+   "err": 0,
+   "pass": true,
+   "method": "row450 主背景 #F3F6FB 首像素列扫描",
+   "quadrant": "left"
+  },
+  {
+   "id": "A02",
+   "object": "导航选中态 pill 外框",
+   "type": "rect",
+   "ref": [
+    18,
+    116,
+    202,
+    163
+   ],
+   "mine": [
+    18,
+    116,
+    202,
+    162
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    1
+   ],
+   "pass": true,
+   "method": "row120/col30 以 #294467 带扫描（避开行内文字与圆点）",
+   "quadrant": "left-top"
+  },
+  {
+   "id": "A03",
+   "object": "主标题字形框左上角（Workspace Overview）",
+   "type": "point_tl",
+   "ref": [
+    261,
+    39
+   ],
+   "mine": [
+    261,
+    38
+   ],
+   "err": [
+    0,
+    1
+   ],
+   "pass": true,
+   "method": "暗墨 (#<70,<80,<100) 包围盒左上",
+   "quadrant": "top"
+  },
+  {
+   "id": "A04",
+   "object": "KPI 卡 1 外框",
+   "type": "rect",
+   "ref": [
+    261,
+    139,
+    614,
+    280
+   ],
+   "mine": [
+    261,
+    139,
+    614,
+    280
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "row210 白色段起止 + col300 白色纵段",
+   "quadrant": "left"
+  },
+  {
+   "id": "A05",
+   "object": "KPI 卡 2 外框",
+   "type": "rect",
+   "ref": [
+    645,
+    139,
+    998,
+    280
+   ],
+   "mine": [
+    645,
+    139,
+    998,
+    280
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "同 A04（row210 第二白段）",
+   "quadrant": "center"
+  },
+  {
+   "id": "A06",
+   "object": "KPI 卡 3 外框",
+   "type": "rect",
+   "ref": [
+    1029,
+    1382
+   ],
+   "mine": [
+    1029,
+    1382
+   ],
+   "err": [
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "row210 第三白段左右边",
+   "quadrant": "right"
+  },
+  {
+   "id": "A07",
+   "object": "净收入图表卡外框",
+   "type": "rect",
+   "ref": [
+    261,
+    311,
+    1000,
+    594
+   ],
+   "mine": [
+    261,
+    311,
+    1000,
+    593
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    1
+   ],
+   "pass": true,
+   "method": "row450 白段 + col300 白纵段（280..605）",
+   "quadrant": "left"
+  },
+  {
+   "id": "A08",
+   "object": "图表零线（0 刻度网格线）左端点",
+   "type": "point",
+   "ref": [
+    333,
+    549
+   ],
+   "mine": [
+    333,
+    549
+   ],
+   "err": [
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "整行灰线行检测合并行中心 + 该行向左首个 #E4E9F1 数值像素",
+   "quadrant": "center"
+  },
+  {
+   "id": "A09",
+   "object": "最后一根柱（Sep）顶部中心",
+   "type": "point",
+   "ref": [
+    888,
+    420
+   ],
+   "mine": [
+    888,
+    420
+   ],
+   "err": [
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "row520 蓝色段求 Sep 柱中心列 + col 从 395..555 首个 #245CE4",
+   "quadrant": "center"
+  },
+  {
+   "id": "A10",
+   "object": "活动卡外框",
+   "type": "rect",
+   "ref": [
+    1031,
+    311,
+    1398,
+    594
+   ],
+   "mine": [
+    1031,
+    311,
+    1398,
+    593
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    1
+   ],
+   "pass": true,
+   "method": "row450 白段（1015..1440）+ col1330 白纵段",
+   "quadrant": "right"
+  },
+  {
+   "id": "A11",
+   "object": "项目表格卡外框",
+   "type": "rect",
+   "ref": [
+    261,
+    625,
+    1398,
+    840
+   ],
+   "mine": [
+    261,
+    625,
+    1398,
+    840
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "row680 白段 + col700 白纵段（600..880）",
+   "quadrant": "bottom"
+  },
+  {
+   "id": "A12",
+   "object": "最后一行状态标签（Done）外框",
+   "type": "rect",
+   "ref": [
+    1028,
+    799,
+    1175,
+    826
+   ],
+   "mine": [
+    1028,
+    799,
+    1175,
+    825
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    1
+   ],
+   "pass": true,
+   "method": "浅绿 #DCF5EC 包围盒",
+   "quadrant": "bottom-right"
+  },
+  {
+   "id": "A13",
+   "object": "Export report 按钮外框",
+   "type": "rect",
+   "ref": [
+    1184,
+    43,
+    1399,
+    90
+   ],
+   "mine": [
+    1184,
+    44,
+    1399,
+    90
+   ],
+   "err": [
+    0,
+    1,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "蓝像素（#245CE4 带）包围盒",
+   "quadrant": "top-right"
+  },
+  {
+   "id": "A14",
+   "object": "图表 6 根柱 x 跨度（全部）",
+   "type": "runs",
+   "ref": [
+    [
+     357,
+     410
+    ],
+    [
+     458,
+     511
+    ],
+    [
+     559,
+     612
+    ],
+    [
+     660,
+     713
+    ],
+    [
+     761,
+     814
+    ],
+    [
+     862,
+     915
+    ]
+   ],
+   "mine": [
+    [
+     357,
+     410
+    ],
+    [
+     458,
+     511
+    ],
+    [
+     559,
+     612
+    ],
+    [
+     660,
+     713
+    ],
+    [
+     761,
+     814
+    ],
+    [
+     862,
+     915
+    ]
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "row520 蓝色连续段",
+   "quadrant": "center"
+  },
+  {
+   "id": "A15",
+   "object": "图表网格线行（检测核 y，设计 5 线 36 步距）",
+   "type": "rows",
+   "ref": [
+    405,
+    441,
+    549
+   ],
+   "mine": [
+    405,
+    441,
+    549
+   ],
+   "err": 0,
+   "pass": true,
+   "method": "x340..960 整行灰线检测（120/90/0 刻度线中部；60/30 线被柱覆盖检测段略短）",
+   "quadrant": "center"
+  },
+  {
+   "id": "A16",
+   "object": "页脚文字框（All data is fictional…）",
+   "type": "rect",
+   "ref": [
+    261,
+    867,
+    515,
+    879
+   ],
+   "mine": [
+    261,
+    867,
+    515,
+    879
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "灰字包围盒（x250..560, y858..888）",
+   "quadrant": "bottom-left"
+  },
+  {
+   "id": "A17",
+   "object": "表格行 1 项目名（Atlas / Visual system）字形框",
+   "type": "rect",
+   "ref": [
+    299,
+    735,
+    459,
+    749
+   ],
+   "mine": [
+    299,
+    735,
+    459,
+    749
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "暗墨包围盒",
+   "quadrant": "bottom"
+  },
+  {
+   "id": "A18",
+   "object": "表格 owner/due 数据列首格字形框",
+   "type": "rect",
+   "ref": [
+    [
+     783,
+     735,
+     855,
+     746
+    ],
+    [
+     1231,
+     735,
+     1284,
+     746
+    ]
+   ],
+   "mine": [
+    [
+     783,
+     735,
+     855,
+     746
+    ],
+    [
+     1231,
+     735,
+     1284,
+     746
+    ]
+   ],
+   "err": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pass": true,
+   "method": "灰墨包围盒双列",
+   "quadrant": "bottom"
+  },
+  {
+   "id": "A19",
+   "object": "侧栏 Overview 选中项字形框 + 墨量",
+   "type": "rect+ink",
+   "ref": [
+    63,
+    127,
+    148,
+    140,
+    415
+   ],
+   "mine": [
+    63,
+    127,
+    147,
+    140,
+    445
+   ],
+   "err": [
+    0,
+    0,
+    1,
+    0,
+    "ink 7%"
+   ],
+   "pass": true,
+   "method": "白字包围盒+字芯计数；Extra Bold 字族选型实测 6 候选",
+   "quadrant": "left-top"
+  },
+  {
+   "id": "A20",
+   "object": "NORTHSTAR 品牌字字形框",
+   "type": "rect+ink",
+   "ref": [
+    73,
+    38,
+    188,
+    51,
+    661
+   ],
+   "mine": [
+    73,
+    38,
+    189,
+    50,
+    655
+   ],
+   "err": [
+    0,
+    0,
+    1,
+    1,
+    "ink 1%"
+   ],
+   "pass": true,
+   "method": "白字包围盒+字芯计数",
+   "quadrant": "left-top"
+  }
+ ],
+ "anchor_pass": 20,
+ "anchor_total": 20,
+ "tolerance": "±8px（矩形四边分量分别比较，不作平均）",
+ "colors": [
+  {
+   "token": "主背景",
+   "ref_sample_xy": [
+    700,
+    120
+   ],
+   "value": "#F3F6FB",
+   "usage": "画布/表头带"
+  },
+  {
+   "token": "侧栏",
+   "ref_sample_xy": [
+    110,
+    400
+   ],
+   "value": "#14233C"
+  },
+  {
+   "token": "导航选中 pill",
+   "ref_sample_xy": [
+    196,
+    128
+   ],
+   "value": "#294467"
+  },
+  {
+   "token": "侧栏底面板",
+   "ref_sample_xy": [
+    110,
+    800
+   ],
+   "value": "#233954"
+  },
+  {
+   "token": "卡白",
+   "ref_sample_xy": [
+    600,
+    160
+   ],
+   "value": "#FFFFFF"
+  },
+  {
+   "token": "蓝（柱/按钮/进行中）",
+   "ref_sample_xy": [
+    383,
+    520
+   ],
+   "value": "#245CE4"
+  },
+  {
+   "token": "绿（涨跌/Done/绿点）",
+   "ref_sample_xy": [
+    292,
+    252
+   ],
+   "value": "#168267"
+  },
+  {
+   "token": "琥珀点",
+   "ref_sample_xy": [
+    1058,
+    403
+   ],
+   "value": "#EAAF40"
+  },
+  {
+   "token": "品牌青绿（logo/PRO/选中点）",
+   "ref_sample_xy": [
+    36,
+    38
+   ],
+   "value": "#64DBB6"
+  },
+  {
+   "token": "导航未选中点",
+   "ref_sample_xy": [
+    39,
+    197
+   ],
+   "value": "#7791B3"
+  },
+  {
+   "token": "状态底 In progress/Review/Done",
+   "ref_sample_xy": [
+    1040,
+    742
+   ],
+   "value": [
+    "#E7EFFF",
+    "#FFF3D7",
+    "#DCF5EC"
+   ]
+  },
+  {
+   "token": "网格灰线",
+   "ref_sample_xy": [
+    900,
+    477
+   ],
+   "value": "#E4E9F1"
+  }
+ ],
+ "color_match": "柱/点/状态底/品牌青绿/网格线逐像素同色；卡白/侧栏/pill 背景同色",
+ "chart": {
+  "scale": "1.2 px/¥k，零线 y=549，网格 0/30/60/90/120 → y 549/513/477/441/405（36 步距）",
+  "bars": "6 柱 x 左缘 [357+101i]，宽 54，顶圆角 5，峭顶 = 549 − 1.2×value",
+  "note": "重建按同比例绘制，非照搬数字"
+ },
+ "table": {
+  "rows": "3 行顺序 Atlas/Pulse/Orbit；状态 In progress(蓝)/Review(琥珀)/Done(绿) 三重编码（底色+字色+原词）"
+ },
+ "residuals": [
+  {
+   "object": "In progress 标签文字左缘",
+   "delta": 9,
+   "note": "参考对该 pill 内文字有约占位（中心偏右约 3.5px）与更窄字距，DSL 字距补偿 −0.3 后仍差 9px；外框已对齐",
+   "action": "保留（pill 外框与配色已对齐，文字左右缘为非关键锚点）"
+  },
+  {
+   "object": "Apr – Sep 周期文字左右缘",
+   "delta": [
+    6,
+    5
+   ],
+   "note": "估宽换行算法与参考字距差 ≤6px",
+   "action": "保留"
+  },
+  {
+   "object": "灰字中间调分布（副标题/owner 等）",
+   "delta": "semi 计数 −30%",
+   "note": "参考为更锐利 AA（疑似 2x 超采样降采样），同色同宽度下中间调更深；表格行名等加粗字已用真 BOLD 对齐核心墨",
+   "action": "保留（bbox 全等，色相一致）"
+  },
+  {
+   "object": "PRO WORKSPACE 品牌标签字芯数",
+   "delta": "257 vs 210（teal 预测下）",
+   "note": "Extra Bold 12.5/ls0.5 与参考 W111/cap9 已对齐",
+   "action": "保留"
+  },
+  {
+   "object": "th 表头标签顶行",
+   "delta": 3,
+   "note": "11px 大写在小字号下 AA 阈值影响",
+   "action": "保留"
+  }
+ ],
+ "evidence": {
+  "anchor_diff": [
+   {
+    "path_base": "task_tmp",
+    "path": "steps/anchor-diff.json"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/sup-diff-v02.json"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/ref-measure.json"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/ref-measure2.json"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/nav-diff.json"
+   }
+  ],
+  "contact": [
+   {
+    "path_base": "task_tmp",
+    "path": "steps/compare-01.png"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/compare-02.png"
+   }
+  ],
+  "zooms": [
+   {
+    "path_base": "task_tmp",
+    "path": "steps/zoomv4_nav.png"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/zoomv4_panel.png"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/zoomv4_thead.png"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/zoomv4_chartaxis.png"
+   }
+  ],
+  "version_views": [
+   {
+    "path_base": "task_tmp",
+    "path": "steps/v01.png",
+    "note": "全图 16:32"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/v07.png",
+    "note": "全图 17:02"
+   }
+  ],
+  "probes": [
+   {
+    "path_base": "task_tmp",
+    "path": "steps/../probe/weights.snapshot"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/../probe/families.snapshot"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/../probe/weights2.snapshot"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/../probe/shadows.snapshot"
+   },
+   {
+    "path_base": "task_tmp",
+    "path": "steps/../probe/fsattr.snapshot"
+   }
+  ],
+  "viewed": [
+   {
+    "image": "outputs/…/A15/reconstructed.png（v01 定稿基线）",
+    "viewed_at": "2026-10-17T16:32:30+08:00"
+   },
+   {
+    "image": "steps/compare-01.png（v01 七区域对照）",
+    "viewed_at": "2026-10-17T16:36:00+08:00"
+   },
+   {
+    "image": "outputs/…/A15/reconstructed.png（v07 终版全图）",
+    "viewed_at": "2026-10-17T17:02:10+08:00"
+   },
+   {
+    "image": "steps/compare-02.png（v07 七区域对照）",
+    "viewed_at": "2026-10-17T17:02:40+08:00"
+   },
+   {
+    "image": "steps/zoomv4_nav.png（v05 起 EB 字族+12px 点）",
+    "viewed_at": "2026-10-17T16:58:20+08:00"
+   },
+   {
+    "image": "steps/zoomv4_panel.png",
+    "viewed_at": "2026-10-17T16:59:00+08:00"
+   },
+   {
+    "image": "steps/zoomv4_thead.png（v07 真实加粗行名）",
+    "viewed_at": "2026-10-17T17:03:10+08:00"
+   }
+  ]
+ },
+ "probe_findings": [
+  "fontWeight 属性在此服务中无效（W800/W900 与 BOLD 渲染逐像素相同）——正确属性为 fontStyle=\"BOLD\"（真加粗字面），A15 前多题的 bold=True 文本实为 Regular 渲染",
+  "Inter 附加字族（Extra Bold/Black/Semi Bold/Medium…）作为独立 fontFamily 名称可用；侧栏 NORTHSTAR/Overview/PRO WORKSPACE 用 Inter Extra Bold 校准",
+  "同色 textShadow(σ) 可加浓字芯 ~+50%，但参考的锐利 AA 疑似超采样降采样，未采用；改用真 BOLD 字面对齐"
+ ],
+ "requests": {
+  "render_total": 12,
+  "http_ok": 12,
+  "http_fail": 0,
+  "final_version": "v07",
+  "final_request_id": "b5ae2b56-1b17-4137-b00a-2335f38074b2"
+ }
+}

@@ -1,0 +1,2255 @@
+{
+ "schema_version": 1,
+ "task_id": "A21",
+ "path_base": "output_dir",
+ "round": 3,
+ "generated_at": "2026-10-18T12:11:32+08:00",
+ "formula": {
+  "standard": "WCAG 2.x 相对亮度对比度（sRGB 线性化）",
+  "linearization": "通道 c=c_raw/255；c≤0.04045 → c/12.92，否则 ((c+0.055)/1.055)^2.4",
+  "luminance": "L=0.2126*R_lin+0.7152*G_lin+0.0722*B_lin",
+  "contrast": "ratio=(L_lighter+0.05)/(L_darker+0.05)",
+  "threshold": 4.5,
+  "unrounded_judgement": true,
+  "note": "判定采用全程未舍入浮点值；JSON 中的 6 位小数仅为展示，ratio_unrounded_repr 保留 repr 精度。未使用 UA/特殊公式豁免。"
+ },
+ "background_method": {
+  "probe": "每处文字使用同构布局的『去文字辅助渲染』PNG（删除全部 Text 及仅含 Text 的 Positioned 包装，保留全部容器/净值装饰），在文字 covered_range 内逐像素计算与前景色的对比度，取最小者作为该段文字的真实背景最差位置样本（含渐变底、幽灵环、点阵、白胶囊、深色胶囊的合成结果）。",
+  "fg_check": "前景色采用 DSL 声明值，并在最终 PNG 同框内实测：与声明色逐通道差≤3 的核心字形像素 ≥10 才认定该前景真实渲染。",
+  "coverage": "text_runs 覆盖浅色主题全部普通文字（12 段/图），含 Sponsor 行两种色彩 run 与两处胶囊/胶囊内文字；背景最差样本取『最终图实测字形范围（外扩2px）』内像素，避免把字形范围外的装饰（信标点/渐变条/胶囊边框/圆角外侧）误计为文字背景。"
+ },
+ "images": [
+  {
+   "image": "launch-portrait.png",
+   "dsl": "launch-portrait.snapshot",
+   "canvas": "portrait",
+   "background_probe": {
+    "path_base": "suite_root",
+    "path": "tmp/20261016T164020-m1/A21/bg-data/r03-portrait-bg.png",
+    "note": "去文字辅助渲染：同构布局删除全部 Text（含仅含 Text 的 Positioned 包装），保留渐变底/幽灵环/点阵/白胶囊/深色网址胶囊"
+   },
+   "text_runs": [
+    {
+     "id": "TR-P01",
+     "role": "eyebrow",
+     "text": "ONLINE LAUNCH",
+     "font_px": 26,
+     "covered_range": [
+      240,
+      472,
+      840,
+      511
+     ],
+     "glyph_band_core": [
+      357,
+      478,
+      710,
+      496
+     ],
+     "glyph_range_measured": [
+      355,
+      476,
+      713,
+      499
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 1376,
+     "fg_color": "#085F55",
+     "fg_luminance": 0.088919,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 389,
+      "y": 476,
+      "hex": "#C7DCEE",
+      "rgb": [
+       199,
+       220,
+       238
+      ],
+      "luminance": 0.695016,
+      "component": "ghost-ring-inner"
+     },
+     "contrast_ratio_unrounded_repr": "5.362942288584311",
+     "contrast_ratio_6dp": 5.362942,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P02",
+     "role": "title_line1",
+     "text": "当所有信息都想成为标题：",
+     "font_px": 64,
+     "covered_range": [
+      0,
+      524,
+      1080,
+      618
+     ],
+     "glyph_band_core": [
+      151,
+      543,
+      890,
+      603
+     ],
+     "glyph_range_measured": [
+      149,
+      541,
+      893,
+      606
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 17831,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 462,
+      "y": 541,
+      "hex": "#C7DCEE",
+      "rgb": [
+       199,
+       220,
+       238
+      ],
+      "luminance": 0.695016,
+      "component": "ghost-ring-inner"
+     },
+     "contrast_ratio_unrounded_repr": "12.263862211731446",
+     "contrast_ratio_6dp": 12.263862,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P03",
+     "role": "title_line2",
+     "text": "让复杂信息变得清晰的",
+     "font_px": 64,
+     "covered_range": [
+      0,
+      602,
+      1080,
+      696
+     ],
+     "glyph_band_core": [
+      213,
+      621,
+      863,
+      681
+     ],
+     "glyph_range_measured": [
+      211,
+      619,
+      866,
+      684
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 15538,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 538,
+      "y": 619,
+      "hex": "#CFE3EF",
+      "rgb": [
+       207,
+       227,
+       239
+      ],
+      "luminance": 0.744356,
+      "component": "ghost-ring-outer"
+     },
+     "contrast_ratio_unrounded_repr": "13.076059138886222",
+     "contrast_ratio_6dp": 13.076059,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P04",
+     "role": "title_line3",
+     "text": "结构化方法",
+     "font_px": 64,
+     "covered_range": [
+      0,
+      680,
+      1080,
+      774
+     ],
+     "glyph_band_core": [
+      377,
+      700,
+      699,
+      759
+     ],
+     "glyph_range_measured": [
+      375,
+      698,
+      702,
+      762
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 7259,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 375,
+      "y": 731,
+      "hex": "#EEF3F9",
+      "rgb": [
+       238,
+       243,
+       249
+      ],
+      "luminance": 0.891179,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "15.492946988584919",
+     "contrast_ratio_6dp": 15.492947,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P05",
+     "role": "tagline",
+     "text": "叠光 Layerlight 发布活动",
+     "font_px": 30,
+     "covered_range": [
+      0,
+      768,
+      1080,
+      813
+     ],
+     "glyph_band_core": [
+      375,
+      778,
+      704,
+      808
+     ],
+     "glyph_range_measured": [
+      373,
+      776,
+      707,
+      811
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 1530,
+     "fg_color": "#44536B",
+     "fg_luminance": 0.08477,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 373,
+      "y": 776,
+      "hex": "#EEF3F9",
+      "rgb": [
+       238,
+       243,
+       249
+      ],
+      "luminance": 0.891179,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "6.983596245785808",
+     "contrast_ratio_6dp": 6.983596,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P06",
+     "role": "date",
+     "text": "2026.11.07 19:30",
+     "font_px": 46,
+     "covered_range": [
+      0,
+      828,
+      1080,
+      896
+     ],
+     "glyph_band_core": [
+      335,
+      840,
+      742,
+      872
+     ],
+     "glyph_range_measured": [
+      333,
+      838,
+      745,
+      875
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 4448,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 333,
+      "y": 844,
+      "hex": "#EDF2F9",
+      "rgb": [
+       237,
+       242,
+       249
+      ],
+      "luminance": 0.883483,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "15.366271234852638",
+     "contrast_ratio_6dp": 15.366271,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P07",
+     "role": "speakers",
+     "text": "讲者：林川 / 苏言",
+     "font_px": 30,
+     "covered_range": [
+      0,
+      918,
+      1080,
+      963
+     ],
+     "glyph_band_core": [
+      424,
+      928,
+      655,
+      957
+     ],
+     "glyph_range_measured": [
+      422,
+      926,
+      658,
+      960
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 902,
+     "fg_color": "#2A3A54",
+     "fg_luminance": 0.041584,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 422,
+      "y": 956,
+      "hex": "#ECF2F8",
+      "rgb": [
+       236,
+       242,
+       248
+      ],
+      "luminance": 0.881144,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "10.167056669560253",
+     "contrast_ratio_6dp": 10.167057,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P08",
+     "role": "sponsor_prefix",
+     "text": "赞助",
+     "font_px": 26,
+     "covered_range": [
+      0,
+      986,
+      1080,
+      1025
+     ],
+     "glyph_band_core": [
+      333,
+      994,
+      380,
+      1017
+     ],
+     "glyph_range_measured": [
+      331,
+      992,
+      383,
+      1020
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 228,
+     "fg_color": "#506681",
+     "fg_luminance": 0.127932,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 331,
+      "y": 992,
+      "hex": "#ECF1F8",
+      "rgb": [
+       236,
+       241,
+       248
+      ],
+      "luminance": 0.875208,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "5.199784091461831",
+     "contrast_ratio_6dp": 5.199784,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P09",
+     "role": "sponsor_name",
+     "text": "Northstar Research / 云构工具",
+     "font_px": 26,
+     "covered_range": [
+      0,
+      986,
+      1080,
+      1025
+     ],
+     "glyph_band_core": [
+      393,
+      994,
+      746,
+      1020
+     ],
+     "glyph_range_measured": [
+      391,
+      992,
+      749,
+      1023
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 1061,
+     "fg_color": "#44536B",
+     "fg_luminance": 0.08477,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 391,
+      "y": 992,
+      "hex": "#ECF1F8",
+      "rgb": [
+       236,
+       241,
+       248
+      ],
+      "luminance": 0.875208,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "6.865089960242646",
+     "contrast_ratio_6dp": 6.86509,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P10",
+     "role": "free_pill_text",
+     "text": "免费参加 · 无需报名",
+     "font_px": 26,
+     "covered_range": [
+      390,
+      1045,
+      690,
+      1084
+     ],
+     "glyph_band_core": [
+      419,
+      1053,
+      658,
+      1076
+     ],
+     "glyph_range_measured": [
+      417,
+      1051,
+      661,
+      1079
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 841,
+     "fg_color": "#085F55",
+     "fg_luminance": 0.088919,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 417,
+      "y": 1051,
+      "hex": "#FCFEFE",
+      "rgb": [
+       252,
+       254,
+       254
+      ],
+      "luminance": 0.987348,
+      "component": "free-pill-white"
+     },
+     "contrast_ratio_unrounded_repr": "7.467278372248364",
+     "contrast_ratio_6dp": 7.467278,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P11",
+     "role": "tagline_en",
+     "text": "Clarity through structure",
+     "font_px": 26,
+     "covered_range": [
+      0,
+      1108,
+      1080,
+      1147
+     ],
+     "glyph_band_core": [
+      354,
+      1114,
+      722,
+      1137
+     ],
+     "glyph_range_measured": [
+      352,
+      1112,
+      725,
+      1140
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 695,
+     "fg_color": "#085F55",
+     "fg_luminance": 0.088919,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 352,
+      "y": 1125,
+      "hex": "#EBF0F8",
+      "rgb": [
+       235,
+       240,
+       248
+      ],
+      "luminance": 0.867597,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "6.605254116987525",
+     "contrast_ratio_6dp": 6.605254,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-P12",
+     "role": "url_text",
+     "text": "layerlight.example.org",
+     "font_px": 30,
+     "covered_range": [
+      310,
+      1168,
+      770,
+      1218
+     ],
+     "glyph_band_core": [
+      388,
+      1175,
+      691,
+      1202
+     ],
+     "glyph_range_measured": [
+      386,
+      1173,
+      694,
+      1205
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 1170,
+     "fg_color": "#7FF3E6",
+     "fg_luminance": 0.743264,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 386,
+      "y": 1173,
+      "hex": "#0D2237",
+      "rgb": [
+       13,
+       34,
+       55
+      ],
+      "luminance": 0.015055,
+      "component": "url-chip-dark"
+     },
+     "contrast_ratio_unrounded_repr": "12.193823433190698",
+     "contrast_ratio_6dp": 12.193823,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    }
+   ],
+   "detailed_samples": [
+    {
+     "sample": "TR-P01",
+     "role": "eyebrow",
+     "coordinates": {
+      "covered_range": [
+       240,
+       472,
+       840,
+       511
+      ],
+      "glyph_range": [
+       355,
+       476,
+       713,
+       499
+      ],
+      "worst_pixel": [
+       389,
+       476
+      ]
+     },
+     "colors": {
+      "fg_hex": "#085F55",
+      "fg_rgb": [
+       8,
+       95,
+       85
+      ],
+      "bg_hex": "#C7DCEE",
+      "bg_rgb": [
+       199,
+       220,
+       238
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08891918960211351",
+      "bg_linear": "0.6950155966130366",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.6950155966130366+0.05)/(0.08891918960211351+0.05)=5.362942288584311",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P02",
+     "role": "title_line1",
+     "coordinates": {
+      "covered_range": [
+       0,
+       524,
+       1080,
+       618
+      ],
+      "glyph_range": [
+       149,
+       541,
+       893,
+       606
+      ],
+      "worst_pixel": [
+       462,
+       541
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#C7DCEE",
+      "bg_rgb": [
+       199,
+       220,
+       238
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.6950155966130366",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.6950155966130366+0.05)/(0.010748855764244041+0.05)=12.263862211731446",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P03",
+     "role": "title_line2",
+     "coordinates": {
+      "covered_range": [
+       0,
+       602,
+       1080,
+       696
+      ],
+      "glyph_range": [
+       211,
+       619,
+       866,
+       684
+      ],
+      "worst_pixel": [
+       538,
+       619
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#CFE3EF",
+      "bg_rgb": [
+       207,
+       227,
+       239
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.7443556305929243",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.7443556305929243+0.05)/(0.010748855764244041+0.05)=13.076059138886222",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P04",
+     "role": "title_line3",
+     "coordinates": {
+      "covered_range": [
+       0,
+       680,
+       1080,
+       774
+      ],
+      "glyph_range": [
+       375,
+       698,
+       702,
+       762
+      ],
+      "worst_pixel": [
+       375,
+       731
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#EEF3F9",
+      "bg_rgb": [
+       238,
+       243,
+       249
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.8911788019726243",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8911788019726243+0.05)/(0.010748855764244041+0.05)=15.492946988584919",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P05",
+     "role": "tagline",
+     "coordinates": {
+      "covered_range": [
+       0,
+       768,
+       1080,
+       813
+      ],
+      "glyph_range": [
+       373,
+       776,
+       707,
+       811
+      ],
+      "worst_pixel": [
+       373,
+       776
+      ]
+     },
+     "colors": {
+      "fg_hex": "#44536B",
+      "fg_rgb": [
+       68,
+       83,
+       107
+      ],
+      "bg_hex": "#EEF3F9",
+      "bg_rgb": [
+       238,
+       243,
+       249
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08476993354828763",
+      "bg_linear": "0.8911788019726243",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8911788019726243+0.05)/(0.08476993354828763+0.05)=6.983596245785808",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P06",
+     "role": "date",
+     "coordinates": {
+      "covered_range": [
+       0,
+       828,
+       1080,
+       896
+      ],
+      "glyph_range": [
+       333,
+       838,
+       745,
+       875
+      ],
+      "worst_pixel": [
+       333,
+       844
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#EDF2F9",
+      "bg_rgb": [
+       237,
+       242,
+       249
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.8834833948803151",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8834833948803151+0.05)/(0.010748855764244041+0.05)=15.366271234852638",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P07",
+     "role": "speakers",
+     "coordinates": {
+      "covered_range": [
+       0,
+       918,
+       1080,
+       963
+      ],
+      "glyph_range": [
+       422,
+       926,
+       658,
+       960
+      ],
+      "worst_pixel": [
+       422,
+       956
+      ]
+     },
+     "colors": {
+      "fg_hex": "#2A3A54",
+      "fg_rgb": [
+       42,
+       58,
+       84
+      ],
+      "bg_hex": "#ECF2F8",
+      "bg_rgb": [
+       236,
+       242,
+       248
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.04158445985530216",
+      "bg_linear": "0.8811443933999231",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8811443933999231+0.05)/(0.04158445985530216+0.05)=10.167056669560253",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P08",
+     "role": "sponsor_prefix",
+     "coordinates": {
+      "covered_range": [
+       0,
+       986,
+       1080,
+       1025
+      ],
+      "glyph_range": [
+       331,
+       992,
+       383,
+       1020
+      ],
+      "worst_pixel": [
+       331,
+       992
+      ]
+     },
+     "colors": {
+      "fg_hex": "#506681",
+      "fg_rgb": [
+       80,
+       102,
+       129
+      ],
+      "bg_hex": "#ECF1F8",
+      "bg_rgb": [
+       236,
+       241,
+       248
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.1279319489945998",
+      "bg_linear": "0.875207717744918",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.875207717744918+0.05)/(0.1279319489945998+0.05)=5.199784091461831",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P09",
+     "role": "sponsor_name",
+     "coordinates": {
+      "covered_range": [
+       0,
+       986,
+       1080,
+       1025
+      ],
+      "glyph_range": [
+       391,
+       992,
+       749,
+       1023
+      ],
+      "worst_pixel": [
+       391,
+       992
+      ]
+     },
+     "colors": {
+      "fg_hex": "#44536B",
+      "fg_rgb": [
+       68,
+       83,
+       107
+      ],
+      "bg_hex": "#ECF1F8",
+      "bg_rgb": [
+       236,
+       241,
+       248
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08476993354828763",
+      "bg_linear": "0.875207717744918",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.875207717744918+0.05)/(0.08476993354828763+0.05)=6.865089960242646",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P10",
+     "role": "free_pill_text",
+     "coordinates": {
+      "covered_range": [
+       390,
+       1045,
+       690,
+       1084
+      ],
+      "glyph_range": [
+       417,
+       1051,
+       661,
+       1079
+      ],
+      "worst_pixel": [
+       417,
+       1051
+      ]
+     },
+     "colors": {
+      "fg_hex": "#085F55",
+      "fg_rgb": [
+       8,
+       95,
+       85
+      ],
+      "bg_hex": "#FCFEFE",
+      "bg_rgb": [
+       252,
+       254,
+       254
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08891918960211351",
+      "bg_linear": "0.9873482600061321",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.9873482600061321+0.05)/(0.08891918960211351+0.05)=7.467278372248364",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P11",
+     "role": "tagline_en",
+     "coordinates": {
+      "covered_range": [
+       0,
+       1108,
+       1080,
+       1147
+      ],
+      "glyph_range": [
+       352,
+       1112,
+       725,
+       1140
+      ],
+      "worst_pixel": [
+       352,
+       1125
+      ]
+     },
+     "colors": {
+      "fg_hex": "#085F55",
+      "fg_rgb": [
+       8,
+       95,
+       85
+      ],
+      "bg_hex": "#EBF0F8",
+      "bg_rgb": [
+       235,
+       240,
+       248
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08891918960211351",
+      "bg_linear": "0.8675965490479308",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8675965490479308+0.05)/(0.08891918960211351+0.05)=6.605254116987525",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-P12",
+     "role": "url_text",
+     "coordinates": {
+      "covered_range": [
+       310,
+       1168,
+       770,
+       1218
+      ],
+      "glyph_range": [
+       386,
+       1173,
+       694,
+       1205
+      ],
+      "worst_pixel": [
+       386,
+       1173
+      ]
+     },
+     "colors": {
+      "fg_hex": "#7FF3E6",
+      "fg_rgb": [
+       127,
+       243,
+       230
+      ],
+      "bg_hex": "#0D2237",
+      "bg_rgb": [
+       13,
+       34,
+       55
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.7432638118515194",
+      "bg_linear": "0.01505455948232882",
+      "lighter": "fg",
+      "darker": "bg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.7432638118515194+0.05)/(0.01505455948232882+0.05)=12.193823433190698",
+     "pass_unrounded": true
+    }
+   ],
+   "failing_runs": [],
+   "all_pass": true,
+   "runs_total": 12,
+   "detailed_samples_count": 12
+  },
+  {
+   "image": "launch-wide.png",
+   "dsl": "launch-wide.snapshot",
+   "canvas": "wide",
+   "background_probe": {
+    "path_base": "suite_root",
+    "path": "tmp/20261016T164020-m1/A21/bg-data/r03-wide-bg.png",
+    "note": "去文字辅助渲染：同构布局删除全部 Text（含仅含 Text 的 Positioned 包装），保留渐变底/幽灵环/点阵/白胶囊/深色网址胶囊"
+   },
+   "text_runs": [
+    {
+     "id": "TR-W01",
+     "role": "eyebrow",
+     "text": "ONLINE LAUNCH",
+     "font_px": 26,
+     "covered_range": [
+      660,
+      150,
+      1320,
+      189
+     ],
+     "glyph_band_core": [
+      662,
+      156,
+      1015,
+      174
+     ],
+     "glyph_range_measured": [
+      660,
+      154,
+      1018,
+      177
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 1368,
+     "fg_color": "#085F55",
+     "fg_luminance": 0.088919,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 660,
+      "y": 169,
+      "hex": "#F2F6FB",
+      "rgb": [
+       242,
+       246,
+       251
+      ],
+      "luminance": 0.917538,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "6.9647551813424",
+     "contrast_ratio_6dp": 6.964755,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W02",
+     "role": "title_line1",
+     "text": "当所有信息都想成为标题：",
+     "font_px": 54,
+     "covered_range": [
+      660,
+      206,
+      1350,
+      286
+     ],
+     "glyph_band_core": [
+      666,
+      222,
+      1293,
+      272
+     ],
+     "glyph_range_measured": [
+      664,
+      220,
+      1296,
+      275
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 12496,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 664,
+      "y": 243,
+      "hex": "#F1F5FA",
+      "rgb": [
+       241,
+       245,
+       250
+      ],
+      "luminance": 0.909077,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "15.787575607475143",
+     "contrast_ratio_6dp": 15.787576,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W03",
+     "role": "title_line2",
+     "text": "让复杂信息变得清晰的",
+     "font_px": 54,
+     "covered_range": [
+      660,
+      268,
+      1350,
+      348
+     ],
+     "glyph_band_core": [
+      663,
+      284,
+      1213,
+      335
+     ],
+     "glyph_range_measured": [
+      661,
+      282,
+      1216,
+      338
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 10750,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 661,
+      "y": 315,
+      "hex": "#F0F4FA",
+      "rgb": [
+       240,
+       244,
+       250
+      ],
+      "luminance": 0.901288,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "15.659350050354826",
+     "contrast_ratio_6dp": 15.65935,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W04",
+     "role": "title_line3",
+     "text": "结构化方法",
+     "font_px": 54,
+     "covered_range": [
+      660,
+      330,
+      1350,
+      410
+     ],
+     "glyph_band_core": [
+      662,
+      346,
+      934,
+      397
+     ],
+     "glyph_range_measured": [
+      660,
+      344,
+      937,
+      400
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 5060,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 660,
+      "y": 371,
+      "hex": "#EFF4FA",
+      "rgb": [
+       239,
+       244,
+       250
+      ],
+      "luminance": 0.899542,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "15.630618217641864",
+     "contrast_ratio_6dp": 15.630618,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W05",
+     "role": "tagline",
+     "text": "叠光 Layerlight 发布活动",
+     "font_px": 28,
+     "covered_range": [
+      660,
+      398,
+      1350,
+      440
+     ],
+     "glyph_band_core": [
+      662,
+      406,
+      970,
+      435
+     ],
+     "glyph_range_measured": [
+      660,
+      404,
+      973,
+      438
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 1274,
+     "fg_color": "#44536B",
+     "fg_luminance": 0.08477,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 660,
+      "y": 405,
+      "hex": "#EFF3F9",
+      "rgb": [
+       239,
+       243,
+       249
+      ],
+      "luminance": 0.892915,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "6.996475936733404",
+     "contrast_ratio_6dp": 6.996476,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W06",
+     "role": "date",
+     "text": "2026.11.07 19:30",
+     "font_px": 44,
+     "covered_range": [
+      660,
+      442,
+      1350,
+      507
+     ],
+     "glyph_band_core": [
+      663,
+      453,
+      1051,
+      484
+     ],
+     "glyph_range_measured": [
+      661,
+      451,
+      1054,
+      487
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 4012,
+     "fg_color": "#0F1B2D",
+     "fg_luminance": 0.010749,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 661,
+      "y": 451,
+      "hex": "#EEF3F9",
+      "rgb": [
+       238,
+       243,
+       249
+      ],
+      "luminance": 0.891179,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "15.492946988584919",
+     "contrast_ratio_6dp": 15.492947,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W07",
+     "role": "speakers",
+     "text": "讲者：林川 / 苏言",
+     "font_px": 28,
+     "covered_range": [
+      660,
+      520,
+      1320,
+      562
+     ],
+     "glyph_band_core": [
+      662,
+      528,
+      876,
+      556
+     ],
+     "glyph_range_measured": [
+      660,
+      526,
+      879,
+      559
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 732,
+     "fg_color": "#2A3A54",
+     "fg_luminance": 0.041584,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 660,
+      "y": 526,
+      "hex": "#EDF2F9",
+      "rgb": [
+       237,
+       242,
+       249
+      ],
+      "luminance": 0.883483,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "10.192595953016065",
+     "contrast_ratio_6dp": 10.192596,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W08",
+     "role": "sponsor_prefix",
+     "text": "赞助",
+     "font_px": 26,
+     "covered_range": [
+      660,
+      572,
+      1350,
+      611
+     ],
+     "glyph_band_core": [
+      662,
+      580,
+      709,
+      603
+     ],
+     "glyph_range_measured": [
+      660,
+      578,
+      712,
+      606
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 220,
+     "fg_color": "#506681",
+     "fg_luminance": 0.127932,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 660,
+      "y": 585,
+      "hex": "#ECF1F8",
+      "rgb": [
+       236,
+       241,
+       248
+      ],
+      "luminance": 0.875208,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "5.199784091461831",
+     "contrast_ratio_6dp": 5.199784,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W09",
+     "role": "sponsor_name",
+     "text": "Northstar Research / 云构工具",
+     "font_px": 26,
+     "covered_range": [
+      660,
+      572,
+      1350,
+      611
+     ],
+     "glyph_band_core": [
+      721,
+      580,
+      1074,
+      605
+     ],
+     "glyph_range_measured": [
+      719,
+      578,
+      1077,
+      608
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 980,
+     "fg_color": "#44536B",
+     "fg_luminance": 0.08477,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 719,
+      "y": 585,
+      "hex": "#ECF1F8",
+      "rgb": [
+       236,
+       241,
+       248
+      ],
+      "luminance": 0.875208,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "6.865089960242646",
+     "contrast_ratio_6dp": 6.86509,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W10",
+     "role": "tagline_en",
+     "text": "Clarity through structure",
+     "font_px": 26,
+     "covered_range": [
+      660,
+      624,
+      1350,
+      663
+     ],
+     "glyph_band_core": [
+      662,
+      630,
+      1030,
+      653
+     ],
+     "glyph_range_measured": [
+      660,
+      628,
+      1033,
+      656
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 759,
+     "fg_color": "#085F55",
+     "fg_luminance": 0.088919,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 660,
+      "y": 641,
+      "hex": "#EBF1F8",
+      "rgb": [
+       235,
+       241,
+       248
+      ],
+      "luminance": 0.873501,
+      "component": "base-gradient"
+     },
+     "contrast_ratio_unrounded_repr": "6.64775490194105",
+     "contrast_ratio_6dp": 6.647755,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W11",
+     "role": "url_text",
+     "text": "layerlight.example.org",
+     "font_px": 30,
+     "covered_range": [
+      660,
+      679,
+      1120,
+      726
+     ],
+     "glyph_band_core": [
+      738,
+      686,
+      1041,
+      713
+     ],
+     "glyph_range_measured": [
+      736,
+      684,
+      1044,
+      716
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 1170,
+     "fg_color": "#7FF3E6",
+     "fg_luminance": 0.743264,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 736,
+      "y": 684,
+      "hex": "#0D2237",
+      "rgb": [
+       13,
+       34,
+       55
+      ],
+      "luminance": 0.015055,
+      "component": "url-chip-dark"
+     },
+     "contrast_ratio_unrounded_repr": "12.193823433190698",
+     "contrast_ratio_6dp": 12.193823,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    },
+    {
+     "id": "TR-W12",
+     "role": "free_pill_text",
+     "text": "免费参加 · 无需报名",
+     "font_px": 26,
+     "covered_range": [
+      122,
+      629,
+      398,
+      668
+     ],
+     "glyph_band_core": [
+      139,
+      637,
+      378,
+      660
+     ],
+     "glyph_range_measured": [
+      137,
+      635,
+      381,
+      663
+     ],
+     "glyph_source": "行剖面（±3/通道）墨迹核框；链行归属排除上一行墨迹；gl = core 外扩左上2/右下3px",
+     "fg_pixels_matched": 841,
+     "fg_color": "#085F55",
+     "fg_luminance": 0.088919,
+     "background_source": "去文字辅助渲染实际合成背景，字形范围内逐像素取最劣",
+     "worst_background": {
+      "x": 137,
+      "y": 635,
+      "hex": "#FCFEFE",
+      "rgb": [
+       252,
+       254,
+       254
+      ],
+      "luminance": 0.987348,
+      "component": "free-pill-white"
+     },
+     "contrast_ratio_unrounded_repr": "7.467278372248364",
+     "contrast_ratio_6dp": 7.467278,
+     "threshold": 4.5,
+     "pass_unrounded": true,
+     "fg_render_confirmed": true
+    }
+   ],
+   "detailed_samples": [
+    {
+     "sample": "TR-W01",
+     "role": "eyebrow",
+     "coordinates": {
+      "covered_range": [
+       660,
+       150,
+       1320,
+       189
+      ],
+      "glyph_range": [
+       660,
+       154,
+       1018,
+       177
+      ],
+      "worst_pixel": [
+       660,
+       169
+      ]
+     },
+     "colors": {
+      "fg_hex": "#085F55",
+      "fg_rgb": [
+       8,
+       95,
+       85
+      ],
+      "bg_hex": "#F2F6FB",
+      "bg_rgb": [
+       242,
+       246,
+       251
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08891918960211351",
+      "bg_linear": "0.9175381455692074",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.9175381455692074+0.05)/(0.08891918960211351+0.05)=6.9647551813424",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W02",
+     "role": "title_line1",
+     "coordinates": {
+      "covered_range": [
+       660,
+       206,
+       1350,
+       286
+      ],
+      "glyph_range": [
+       664,
+       220,
+       1296,
+       275
+      ],
+      "worst_pixel": [
+       664,
+       243
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#F1F5FA",
+      "bg_rgb": [
+       241,
+       245,
+       250
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.909077153445605",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.909077153445605+0.05)/(0.010748855764244041+0.05)=15.787575607475143",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W03",
+     "role": "title_line2",
+     "coordinates": {
+      "covered_range": [
+       660,
+       268,
+       1350,
+       348
+      ],
+      "glyph_range": [
+       661,
+       282,
+       1216,
+       338
+      ],
+      "worst_pixel": [
+       661,
+       315
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#F0F4FA",
+      "bg_rgb": [
+       240,
+       244,
+       250
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.901287597570813",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.901287597570813+0.05)/(0.010748855764244041+0.05)=15.659350050354826",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W04",
+     "role": "title_line3",
+     "coordinates": {
+      "covered_range": [
+       660,
+       330,
+       1350,
+       410
+      ],
+      "glyph_range": [
+       660,
+       344,
+       937,
+       400
+      ],
+      "worst_pixel": [
+       660,
+       371
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#EFF4FA",
+      "bg_rgb": [
+       239,
+       244,
+       250
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.8995421716094909",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8995421716094909+0.05)/(0.010748855764244041+0.05)=15.630618217641864",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W05",
+     "role": "tagline",
+     "coordinates": {
+      "covered_range": [
+       660,
+       398,
+       1350,
+       440
+      ],
+      "glyph_range": [
+       660,
+       404,
+       973,
+       438
+      ],
+      "worst_pixel": [
+       660,
+       405
+      ]
+     },
+     "colors": {
+      "fg_hex": "#44536B",
+      "fg_rgb": [
+       68,
+       83,
+       107
+      ],
+      "bg_hex": "#EFF3F9",
+      "bg_rgb": [
+       239,
+       243,
+       249
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08476993354828763",
+      "bg_linear": "0.8929145970657544",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8929145970657544+0.05)/(0.08476993354828763+0.05)=6.996475936733404",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W06",
+     "role": "date",
+     "coordinates": {
+      "covered_range": [
+       660,
+       442,
+       1350,
+       507
+      ],
+      "glyph_range": [
+       661,
+       451,
+       1054,
+       487
+      ],
+      "worst_pixel": [
+       661,
+       451
+      ]
+     },
+     "colors": {
+      "fg_hex": "#0F1B2D",
+      "fg_rgb": [
+       15,
+       27,
+       45
+      ],
+      "bg_hex": "#EEF3F9",
+      "bg_rgb": [
+       238,
+       243,
+       249
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.010748855764244041",
+      "bg_linear": "0.8911788019726243",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8911788019726243+0.05)/(0.010748855764244041+0.05)=15.492946988584919",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W07",
+     "role": "speakers",
+     "coordinates": {
+      "covered_range": [
+       660,
+       520,
+       1320,
+       562
+      ],
+      "glyph_range": [
+       660,
+       526,
+       879,
+       559
+      ],
+      "worst_pixel": [
+       660,
+       526
+      ]
+     },
+     "colors": {
+      "fg_hex": "#2A3A54",
+      "fg_rgb": [
+       42,
+       58,
+       84
+      ],
+      "bg_hex": "#EDF2F9",
+      "bg_rgb": [
+       237,
+       242,
+       249
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.04158445985530216",
+      "bg_linear": "0.8834833948803151",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8834833948803151+0.05)/(0.04158445985530216+0.05)=10.192595953016065",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W08",
+     "role": "sponsor_prefix",
+     "coordinates": {
+      "covered_range": [
+       660,
+       572,
+       1350,
+       611
+      ],
+      "glyph_range": [
+       660,
+       578,
+       712,
+       606
+      ],
+      "worst_pixel": [
+       660,
+       585
+      ]
+     },
+     "colors": {
+      "fg_hex": "#506681",
+      "fg_rgb": [
+       80,
+       102,
+       129
+      ],
+      "bg_hex": "#ECF1F8",
+      "bg_rgb": [
+       236,
+       241,
+       248
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.1279319489945998",
+      "bg_linear": "0.875207717744918",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.875207717744918+0.05)/(0.1279319489945998+0.05)=5.199784091461831",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W09",
+     "role": "sponsor_name",
+     "coordinates": {
+      "covered_range": [
+       660,
+       572,
+       1350,
+       611
+      ],
+      "glyph_range": [
+       719,
+       578,
+       1077,
+       608
+      ],
+      "worst_pixel": [
+       719,
+       585
+      ]
+     },
+     "colors": {
+      "fg_hex": "#44536B",
+      "fg_rgb": [
+       68,
+       83,
+       107
+      ],
+      "bg_hex": "#ECF1F8",
+      "bg_rgb": [
+       236,
+       241,
+       248
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08476993354828763",
+      "bg_linear": "0.875207717744918",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.875207717744918+0.05)/(0.08476993354828763+0.05)=6.865089960242646",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W10",
+     "role": "tagline_en",
+     "coordinates": {
+      "covered_range": [
+       660,
+       624,
+       1350,
+       663
+      ],
+      "glyph_range": [
+       660,
+       628,
+       1033,
+       656
+      ],
+      "worst_pixel": [
+       660,
+       641
+      ]
+     },
+     "colors": {
+      "fg_hex": "#085F55",
+      "fg_rgb": [
+       8,
+       95,
+       85
+      ],
+      "bg_hex": "#EBF1F8",
+      "bg_rgb": [
+       235,
+       241,
+       248
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08891918960211351",
+      "bg_linear": "0.8735007236511283",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.8735007236511283+0.05)/(0.08891918960211351+0.05)=6.64775490194105",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W11",
+     "role": "url_text",
+     "coordinates": {
+      "covered_range": [
+       660,
+       679,
+       1120,
+       726
+      ],
+      "glyph_range": [
+       736,
+       684,
+       1044,
+       716
+      ],
+      "worst_pixel": [
+       736,
+       684
+      ]
+     },
+     "colors": {
+      "fg_hex": "#7FF3E6",
+      "fg_rgb": [
+       127,
+       243,
+       230
+      ],
+      "bg_hex": "#0D2237",
+      "bg_rgb": [
+       13,
+       34,
+       55
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.7432638118515194",
+      "bg_linear": "0.01505455948232882",
+      "lighter": "fg",
+      "darker": "bg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.7432638118515194+0.05)/(0.01505455948232882+0.05)=12.193823433190698",
+     "pass_unrounded": true
+    },
+    {
+     "sample": "TR-W12",
+     "role": "free_pill_text",
+     "coordinates": {
+      "covered_range": [
+       122,
+       629,
+       398,
+       668
+      ],
+      "glyph_range": [
+       137,
+       635,
+       381,
+       663
+      ],
+      "worst_pixel": [
+       137,
+       635
+      ]
+     },
+     "colors": {
+      "fg_hex": "#085F55",
+      "fg_rgb": [
+       8,
+       95,
+       85
+      ],
+      "bg_hex": "#FCFEFE",
+      "bg_rgb": [
+       252,
+       254,
+       254
+      ]
+     },
+     "luminance": {
+      "fg_linear": "0.08891918960211351",
+      "bg_linear": "0.9873482600061321",
+      "lighter": "bg",
+      "darker": "fg"
+     },
+     "computation": "lin(sRGB)=c/255→c≤0.04045?c/12.92:((c+0.055)/1.055)^2.4;L=0.2126R+0.7152G+0.0722B;ratio=(0.9873482600061321+0.05)/(0.08891918960211351+0.05)=7.467278372248364",
+     "pass_unrounded": true
+    }
+   ],
+   "failing_runs": [],
+   "all_pass": true,
+   "runs_total": 12,
+   "detailed_samples_count": 12
+  }
+ ],
+ "evidence": [
+  {
+   "kind": "helper-render",
+   "path_base": "suite_root",
+   "paths": [
+    "tmp/20261016T164020-m1/A21/bg-data/r03-portrait-bg.png",
+    "tmp/20261016T164020-m1/A21/bg-data/r03-wide-bg.png"
+   ],
+   "label": "a21-r03-portrait-bg / a21-r03-wide-bg",
+   "request_id": "9538823a-657e-4a80-97ab-24abd839f041 / ca3ad94f-db48-4eb9-9475-a60a46353618",
+   "note": "HTTP 200，复用最终 DSL 结构删去文本；文件保留在临时目录不清理"
+  },
+  {
+   "kind": "visual-review",
+   "paths": [
+    "tmp/20261016T164020-m1/A21/steps/r03p-half.png",
+    "tmp/20261016T164020-m1/A21/steps/r03w-half.png",
+    "r03p-top.png",
+    "r03p-title.png",
+    "r03p-mid.png",
+    "r03p-bottom.png",
+    "r03w-top.png",
+    "r03w-bottom.png",
+    "r03p-bg-half.png",
+    "r03w-bg-half.png"
+   ],
+   "note": "最终两图整图+分区放大查看与辅助版无字核验；视图存 tmp/20261016T164020-m1/A21/steps/（部分文件名省略前缀，见 iterations 记录）"
+  }
+ ],
+ "summary": {
+  "images": 2,
+  "text_runs_total": 24,
+  "detailed_samples_total": 24,
+  "all_pass_unrounded": true,
+  "min_ratio_observed_6dp": 5.199784
+ }
+}

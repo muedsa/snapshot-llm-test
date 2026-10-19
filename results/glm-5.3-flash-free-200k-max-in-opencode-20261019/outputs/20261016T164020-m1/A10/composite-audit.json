@@ -1,0 +1,733 @@
+{
+ "schema_version": 1,
+ "task_id": "A10",
+ "path_base": "output_dir",
+ "canvas": {
+  "size": [
+   1440,
+   1100
+  ],
+  "background": "#F4F7FB"
+ },
+ "coordinate_system": {
+  "unit": "px",
+  "origin": "画布左上，x 右/y 下",
+  "panels_local": "每格 320×240 实验区局部原点=该区左上外边界；镜头像素=decode PNG[(ox+lx),(oy+ly)]（0 基）",
+  "sample_point_local": [
+   180,
+   100
+  ]
+ },
+ "panels": [
+  {
+   "panel": 1,
+   "origin_canvas": [
+    208,
+    170
+   ],
+   "size": [
+    320,
+    240
+   ],
+   "sample_local": [
+    180,
+    100
+   ],
+   "sample_canvas": [
+    388,
+    270
+   ],
+   "scene": {
+    "red_rect_local": [
+     40,
+     40,
+     160,
+     120
+    ],
+    "blue_rect_local": [
+     120,
+     80,
+     160,
+     120
+    ],
+    "blue_on_top": true
+   },
+   "effect_node": "双 Container 颜色 #FF000080/#0000FF80（CSS #RRGGBBAA，末二位 alpha=0x80）"
+  },
+  {
+   "panel": 2,
+   "origin_canvas": [
+    560,
+    170
+   ],
+   "size": [
+    320,
+    240
+   ],
+   "sample_local": [
+    180,
+    100
+   ],
+   "sample_canvas": [
+    740,
+    270
+   ],
+   "scene": {
+    "red_rect_local": [
+     40,
+     40,
+     160,
+     120
+    ],
+    "blue_rect_local": [
+     120,
+     80,
+     160,
+     120
+    ],
+    "blue_on_top": true
+   },
+   "effect_node": "<Opacity opacity=0.5> 包裹完全不透明 #FF0000/#0000FF（Stack 320×240）"
+  },
+  {
+   "panel": 3,
+   "origin_canvas": [
+    912,
+    170
+   ],
+   "size": [
+    320,
+    240
+   ],
+   "sample_local": [
+    180,
+    100
+   ],
+   "sample_canvas": [
+    1092,
+    270
+   ],
+   "scene": {
+    "stripe_color": "#5B7395",
+    "stripe_width": 28,
+    "pitch": 56,
+    "phase": "x=0",
+    "card_local": [
+     40,
+     40,
+     240,
+     160
+    ],
+    "card_radius": 20,
+    "label": "SHARP",
+    "front": [
+     "#F6B94A 120×26 r6",
+     "#334155 26×26"
+    ],
+    "glass": "#FFFFFF59"
+   },
+   "effect_node": "<ClipRRect r20><BackdropFilter sigmaX=6 sigmaY=6 tileMode=CLAMP>"
+  },
+  {
+   "panel": 4,
+   "origin_canvas": [
+    208,
+    530
+   ],
+   "size": [
+    320,
+    240
+   ],
+   "sample_local": [
+    180,
+    100
+   ],
+   "sample_canvas": [
+    388,
+    630
+   ],
+   "scene": {
+    "stripe_color": "#5B7395",
+    "stripe_width": 28,
+    "pitch": 56,
+    "phase": "x=0",
+    "card_local": [
+     40,
+     40,
+     240,
+     160
+    ],
+    "card_radius": 20,
+    "label": "BLUR",
+    "front": [
+     "#F6B94A 120×26 r6",
+     "#334155 26×26"
+    ],
+    "glass": "#FFFFFF59"
+   },
+   "effect_node": "<ClipRRect r20><ImageFiltered sigmaX=6 sigmaY=6 tileMode=CLAMP>（子树含白底+条纹复刻+玻璃+文字+前景）"
+  },
+  {
+   "panel": 5,
+   "origin_canvas": [
+    560,
+    530
+   ],
+   "size": [
+    320,
+    240
+   ],
+   "sample_local": [
+    180,
+    100
+   ],
+   "sample_canvas": [
+    740,
+    630
+   ],
+   "scene": {
+    "top_rect": "#8EC3F0 24,24 272×200",
+    "dark_rects": [
+     "#1B2B4B 52,54 84×64",
+     "#22304A 196,128 76×56"
+    ],
+    "chip": "#F2C94C 108,96 60×40",
+    "chip_shadow": "0 6 14 0 #00000055 NORMAL",
+    "transparent_gaps": "未绘制区域（间隙）"
+   },
+   "effect_node": "<ColorFiltered color=#F6B94A blendMode=MULTIPLY><ImageFiltered 6,6>"
+  },
+  {
+   "panel": 6,
+   "origin_canvas": [
+    912,
+    530
+   ],
+   "size": [
+    320,
+    240
+   ],
+   "sample_local": [
+    180,
+    100
+   ],
+   "sample_canvas": [
+    1092,
+    630
+   ],
+   "scene": {
+    "top_rect": "#8EC3F0 24,24 272×200",
+    "dark_rects": [
+     "#1B2B4B 52,54 84×64",
+     "#22304A 196,128 76×56"
+    ],
+    "chip": "#F2C94C 108,96 60×40",
+    "chip_shadow": "0 6 14 0 #00000055 NORMAL",
+    "transparent_gaps": "未绘制区域（间隙）"
+   },
+   "effect_node": "<ClipOval 200×200@局部(60,20)> 包裹 <ColorFiltered #F6B94A MULTIPLY><ImageFiltered 6,6>（子树=白底+场景复刻偏移(-60,-20)）"
+  }
+ ],
+ "paired_scenes": [
+  {
+   "pair": "P34",
+   "shared": {
+    "stripes": "#5B7395 宽14 节距28 相位x=0 全幅",
+    "card": "240×160 r20 @区局部(40,40)",
+    "glass_tint": "#FFFFFF59（白 alpha 0x59）",
+    "text": "24px bold #0B1220（SHARP/BLUR）",
+    "front_shapes": [
+     "#F6B94A 120×26 r6 @(22,102)",
+     "#334155 26×26 @(156,102)"
+    ],
+    "sigma": 6,
+    "tileMode": "CLAMP"
+   },
+   "unique_diff": "③ 仅对卡覆盖处的既有背景做 BackdropFilter，文字/前景保持清晰；④ 相同范围的背景+文字+前景整体子树 ImageFiltered",
+   "clip_geometry": "两者均为 ClipRRect borderRadius=20 @区局部(40,40,240×160)；卡外条纹共用同一相位保持锐利"
+  },
+  {
+   "pair": "P56",
+   "shared": {
+    "scene": [
+     "#8EC3F0 (24,24) 272×200",
+     "#1B2B4B (52,54) 84×64",
+     "#22304A (196,128) 76×56",
+     "#F2C94C (108,96) 60×40 boxShadow 0 6 14 0 #3A000000 NORMAL"
+    ],
+    "transparent_gaps": "形状之间未绘制区域",
+    "color_filter": "#F6B94A MULTIPLY",
+    "blur": "sigmaX=sigmaY=6 tileMode=CLAMP"
+   },
+   "unique_diff": "⑤ 无裁剪（整区滤色+模糊），⑥ 最外层加 ClipOval",
+   "clip_geometry": "圆心=区局部(160,120)，半径100 → ClipOval 盒 局部(60,20,200×200)；跨圆周证据：#8EC3F0 矩形同时覆盖圆内/外，圆周处与圆外锐利同色但明显模糊差异",
+   "rim_crossing": "圆周与 #8EC3F0 相交于 y≈30..214 多处（例如 y=30 时 x≈116/204），圆周内琥珀色调+模糊、圆外原色锐利"
+  }
+ ],
+ "alpha_models": {
+  "panel1": {
+   "alpha": "128/255 = 0.5019607843…（每矩形各自携带）",
+   "order": "蓝 over 红 over 白；source-over、sRGB 0–255；中间不取整",
+   "steps": [
+    {
+     "op": "红(255,0,0) over 白",
+     "rgb": [
+      255,
+      127.0,
+      127.0
+     ]
+    },
+    {
+     "op": "蓝(0,0,255) over 上一步",
+     "rgb": [
+      127.0,
+      63.25098,
+      191.25098
+     ]
+    }
+   ],
+   "expected_rgb": [
+    127,
+    63,
+    191
+   ],
+   "formula": {
+    "R": "红 R=255 未被红衰减；蓝 R=0 → (1−a)·255 = 127",
+    "G": "(1−a)·[(1−a)·255] = (127/255)²·255 = 63.2549…（红残余 G=127 再被蓝衰减一次）",
+    "B": "a·255 + (1−a)·127 = 191.2549…"
+   },
+   "rounding": "floor(v+0.5)",
+   "note": "逐矩形 alpha 的要害：红在半透明蓝下仍按 (1−a) 权重参与，红残余（G=127）再衰减一次 → G=63；与②组透明度的 128 差 65，语义差别一目了然。"
+  },
+  "panel2": {
+   "alpha": "0.5（组层透明度，非逐矩形）",
+   "order": "组内：不透明蓝完全盖住红 → 组层重叠(0,0,255)；组层 over 白 · 0.5",
+   "expected_rgb": [
+    128,
+    128,
+    255
+   ],
+   "formula": {
+    "R": "0.5·0+0.5·255 = 127.5",
+    "G": "127.5",
+    "B": "0.5·255+0.5·255 = 255"
+   },
+   "rounding": "floor(v+0.5)",
+   "note": "② 与①的本质差别：组透明度先完全不透明地合成子树（遮挡两次不再衰减）再整体乘 0.5；重叠处显示纯蓝的 50% 版本，B=255 而 ① B=191。若运行时把组 alpha 量化（实测有效 α≈129/255），会向 (126,126,255) 偏 2，仍在每通道 ≤3 容差内；红/蓝单区实测 (255,126,126)/(126,126,255) 与该量化一致（推测为 Skia 层 alpha 量化，未查源码确认）。"
+  }
+ },
+ "samples": [
+  {
+   "panel": 1,
+   "point_local": [
+    180,
+    100
+   ],
+   "point_canvas": [
+    388,
+    270
+   ],
+   "composition": "红α+蓝α（各 128/255）依次 source-over 后与白底合成",
+   "alpha_model": "128/255 逐矩形",
+   "expected_rgb": [
+    127,
+    63,
+    191
+   ],
+   "rounding": "floor(v+0.5)，中间不取整",
+   "measured_rgb": [
+    127,
+    63,
+    191
+   ],
+   "measured_alpha": 255,
+   "per_channel_abs_err": [
+    0,
+    0,
+    0
+   ],
+   "tolerance_px": 3,
+   "pass": true,
+   "method": "PIL Image.getpixel 直读最终 PNG（v08 渲染产物）",
+   "note": "实测与修正模型逐通道一致（G=63：红残余被蓝二次衰减）。"
+  },
+  {
+   "panel": 1,
+   "point_local": [
+    70,
+    60
+   ],
+   "point_canvas": [
+    278,
+    230
+   ],
+   "composition": "红α 单独 on 白",
+   "alpha_model": "128/255 逐矩形",
+   "expected_rgb": [
+    255,
+    127,
+    127
+   ],
+   "rounding": "floor(v+0.5)，中间不取整",
+   "measured_rgb": [
+    255,
+    127,
+    127
+   ],
+   "measured_alpha": 255,
+   "per_channel_abs_err": [
+    0,
+    0,
+    0
+   ],
+   "tolerance_px": 3,
+   "pass": true,
+   "method": "PIL Image.getpixel 直读最终 PNG（v08 渲染产物）",
+   "note": "交叉样本：非重叠红区精确落位。"
+  },
+  {
+   "panel": 1,
+   "point_local": [
+    240,
+    180
+   ],
+   "point_canvas": [
+    448,
+    350
+   ],
+   "composition": "蓝α 单独 on 白",
+   "alpha_model": "128/255 逐矩形",
+   "expected_rgb": [
+    127,
+    127,
+    255
+   ],
+   "rounding": "floor(v+0.5)，中间不取整",
+   "measured_rgb": [
+    127,
+    127,
+    255
+   ],
+   "measured_alpha": 255,
+   "per_channel_abs_err": [
+    0,
+    0,
+    0
+   ],
+   "tolerance_px": 3,
+   "pass": true,
+   "method": "PIL Image.getpixel 直读最终 PNG（v08 渲染产物）",
+   "note": "交叉样本：蓝区 B=255、R/G=127 精确。"
+  },
+  {
+   "panel": 2,
+   "point_local": [
+    180,
+    100
+   ],
+   "point_canvas": [
+    740,
+    270
+   ],
+   "composition": "组内不透明蓝完全盖红 → 组层 over 白 ×0.5",
+   "alpha_model": "0.5 组",
+   "expected_rgb": [
+    128,
+    128,
+    255
+   ],
+   "rounding": "floor(v+0.5)，中间不取整",
+   "measured_rgb": [
+    126,
+    126,
+    255
+   ],
+   "measured_alpha": 255,
+   "per_channel_abs_err": [
+    2,
+    2,
+    0
+   ],
+   "tolerance_px": 3,
+   "pass": true,
+   "method": "PIL Image.getpixel 直读最终 PNG（v08 渲染产物）",
+   "note": "实测 α_eff≈129/255：(126,126,255) 与理论差 2，在容差内；与红/蓝单区 (255,126,126)/(126,126,255) 一致，推测为运行时组层 alpha 量化（Skia saveLayer 字节量化，未查源码确认）。"
+  },
+  {
+   "panel": 2,
+   "point_local": [
+    70,
+    60
+   ],
+   "point_canvas": [
+    630,
+    230
+   ],
+   "composition": "组内红（被 0.5 组层整体乘）on 白",
+   "alpha_model": "0.5 组",
+   "expected_rgb": [
+    255,
+    128,
+    128
+   ],
+   "rounding": "floor(v+0.5)，中间不取整",
+   "measured_rgb": [
+    255,
+    126,
+    126
+   ],
+   "measured_alpha": 255,
+   "per_channel_abs_err": [
+    0,
+    2,
+    2
+   ],
+   "tolerance_px": 3,
+   "pass": true,
+   "method": "PIL Image.getpixel 直读最终 PNG（v08 渲染产物）",
+   "note": "理论 (255,127.5,127.5) 取整 (255,128,128)；实测 (255,126,126)。"
+  },
+  {
+   "panel": 2,
+   "point_local": [
+    240,
+    180
+   ],
+   "point_canvas": [
+    800,
+    350
+   ],
+   "composition": "组内蓝 on 白",
+   "alpha_model": "0.5 组",
+   "expected_rgb": [
+    128,
+    128,
+    255
+   ],
+   "rounding": "floor(v+0.5)，中间不取整",
+   "measured_rgb": [
+    126,
+    126,
+    255
+   ],
+   "measured_alpha": 255,
+   "per_channel_abs_err": [
+    2,
+    2,
+    0
+   ],
+   "tolerance_px": 3,
+   "pass": true,
+   "method": "PIL Image.getpixel 直读最终 PNG（v08 渲染产物）",
+   "note": "与重叠区同值（0.5·纯蓝上白），交叉一致。"
+  }
+ ],
+ "visual_checks": [
+  {
+   "panel": 1,
+   "kind": "alpha 语义对照（①vs②）",
+   "observation": "① 重叠处呈红透蓝的暗紫（实测 (127,63,191)），② 同位置为纯蓝的半透明版 (126,126,255)：G 通道差 63、B 差 64，肉眼可辨；，该差别对应 alpha 语义差异。",
+   "dsl_nodes": [
+    "Container color=#FF000080",
+    "Container color=#0000FF80",
+    "<Opacity opacity=0.5> 组"
+   ],
+   "doc_refs": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/parser-tags.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/painting.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/widgets.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    }
+   ],
+   "doc_quotes": [
+    "十六进制颜色…支持 3、4、6、8 位；4 位与 8 位的最后一组是透明度（alpha）。例如 #f00 和 #FF0000 都是不透明红色，#FF000080 是约 50% 透明红色",
+    "Opacity 把整个子树作为一层合成透明度；ColorFiltered 对子树应用 ColorFilter，在绘制边界可确定时限制作用范围；ImageFiltered 对子树结果应用 ImageFilter；BackdropFilter 对已经绘制在当前内容背后的区域应用滤镜"
+   ],
+   "evidence": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A10/steps/v6_p1.png"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A10/steps/v6_p2.png"
+    }
+   ],
+   "spill": "两格皆有白底区框，无溢出"
+  },
+  {
+   "panel": 3,
+   "kind": "仅背景模糊（BackdropFilter）",
+   "observation": "『SHARP』24px 与前景条/方块清晰锐利；卡内条纹呈 σ6 模糊后的柔和暗带（56 节距保留低频对比），与卡外同相位 sharp 条纹立即分界；模糊被 ClipRRect r20 精确限定，无外溢。",
+   "dsl_nodes": [
+    "ClipRRect borderRadius=20 @(40,40)",
+    "BackdropFilter sigmaX=6 sigmaY=6 tileMode=CLAMP",
+    "玻璃 Container #FFFFFF59",
+    "Text SHARP 24 bold #0B1220",
+    "前景 #F6B94A 条 / #334155 方块"
+   ],
+   "doc_refs": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/painting.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/parser-tags.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    }
+   ],
+   "doc_quotes": [
+    "Opacity 把整个子树作为一层合成透明度；ColorFiltered 对子树应用 ColorFilter，在绘制边界可确定时限制作用范围；ImageFiltered 对子树结果应用 ImageFilter；BackdropFilter 对已经绘制在当前内容背后的区域应用滤镜",
+    "BackdropFilter 读取已有背景，通常需要 ClipRect 或 ClipRRect 限定区域；只有在其背后已经有内容时才有可见效果，常用于毛玻璃样式",
+    "标签表：Opacity 整体透明度 / ColorFiltered 颜色混合滤镜 / ImageFiltered 子树高斯模糊 / BackdropFilter 背景高斯模糊 / ClipRRect 圆角矩形裁剪 / ClipOval 椭圆裁剪"
+   ],
+   "evidence": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A10/steps/v6_p3.png"
+    }
+   ],
+   "spill": "无：卡外条纹保持原锐利度"
+  },
+  {
+   "panel": 4,
+   "kind": "整子树模糊（ImageFiltered）",
+   "observation": "『BLUR』字与前景形状一起被 σ6 高斯糊至不可读/边缘消失；卡内白底+条纹复刻+玻璃+文字+前景整块糊化；与 ③ 的唯一差别=模糊作用的层（整子树 vs 仅背景）；卡外条纹仍锐利。",
+   "dsl_nodes": [
+    "ClipRRect borderRadius=20 @(40,40)",
+    "ImageFiltered sigmaX=6 sigmaY=6 tileMode=CLAMP",
+    "子树=白底+条纹复刻(同相位)+玻璃+Text BLUR+前景"
+   ],
+   "doc_refs": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/painting.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/parser-tags.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    }
+   ],
+   "doc_quotes": [
+    "Opacity 把整个子树作为一层合成透明度；ColorFiltered 对子树应用 ColorFilter，在绘制边界可确定时限制作用范围；ImageFiltered 对子树结果应用 ImageFilter；BackdropFilter 对已经绘制在当前内容背后的区域应用滤镜",
+    "Parser 的 <ImageFiltered> 会自动按 sigma 提供模糊输出边界，嵌套在 <ColorFiltered> 内时无需手动配置 outputBounds；Parser 现提供 <ColorFiltered color=… blendMode=…>、<ImageFiltered sigmaX=… sigmaY=…> 和 <BackdropFilter sigmaX=… sigmaY=…>，后两者只支持高斯模糊",
+    "标签表：Opacity 整体透明度 / ColorFiltered 颜色混合滤镜 / ImageFiltered 子树高斯模糊 / BackdropFilter 背景高斯模糊 / ClipRRect 圆角矩形裁剪 / ClipOval 椭圆裁剪"
+   ],
+   "evidence": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A10/steps/v6_p4.png"
+    }
+   ],
+   "spill": "无：ImageFiltered 输出边界按 sigma 自动提供并被 ClipRRect 裁剪"
+  },
+  {
+   "panel": 5,
+   "kind": "MULTIPLY 颜色滤镜 + 子树模糊（无裁剪）",
+   "observation": "全区被 #F6B94A 琥珀色化：白底→琥珀、底景 #8EC3F0→橄榄（逐通道乘 (0.9647,0.7255,0.2902)）、深块更暗、#F2C94C 芯片→深橙且其 33% 黑阴影晕可辨（v6_chipA 4× 放大）；绘制边界内的透明间隙亦被命色（与 faq.txt 描述一致）；σ6 子树模糊全境；无裁剪=效果铺满实验区，越界模糊由区框 ClipRect 硬截。",
+   "dsl_nodes": [
+    "ColorFiltered color=#F6B94A blendMode=MULTIPLY",
+    "ImageFiltered sigmaX=6 sigmaY=6 tileMode=CLAMP",
+    "场景 Stack：底景/深块×2/芯片(boxShadow 0 6 14 0 #00000055 NORMAL)/透明间隙未绘制"
+   ],
+   "doc_refs": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/painting.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/faq.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/parser-tags.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    }
+   ],
+   "doc_quotes": [
+    "Opacity 把整个子树作为一层合成透明度；ColorFiltered 对子树应用 ColorFilter，在绘制边界可确定时限制作用范围；ImageFiltered 对子树结果应用 ImageFilter；BackdropFilter 对已经绘制在当前内容背后的区域应用滤镜",
+    "SRC、MULTIPLY 等混合模式还可能给绘制边界内的透明间隙着色",
+    "Parser 的 <ImageFiltered> 会自动按 sigma 提供模糊输出边界，嵌套在 <ColorFiltered> 内时无需手动配置 outputBounds；Parser 现提供 <ColorFiltered color=… blendMode=…>、<ImageFiltered sigmaX=… sigmaY=…> 和 <BackdropFilter sigmaX=… sigmaY=…>，后两者只支持高斯模糊"
+   ],
+   "evidence": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A10/steps/v6_p5.png"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A10/steps/v6_chipA.png"
+    }
+   ],
+   "spill": "效果铺满实验区（无裁剪属本题⑤设定），区界外无残留"
+  },
+  {
+   "panel": 6,
+   "kind": "同⑤ + ClipOval r100 圆形裁剪",
+   "observation": "圆内=滤色+模糊结果（橄榄模糊、深块糊化、芯片橙晕），圆外=同一基础场景锐利原色（蓝底景、深块实边、白底）；跨界证据充分：底景 #8EC3F0 同时覆盖圆内外（rim 交点两侧色差/清晰度跳变），左上与右侧深块亦跨圆周；圆周线本身锐利无晕 = ClipOval ANTI_ALIAS 边界。",
+   "dsl_nodes": [
+    "Positioned (60,20) 200×200",
+    "ClipOval（盒=区局部(60,20,200,200)→圆心(160,120) r100）",
+    "内部 ColorFiltered+ImageFiltered（子树=白底+场景复刻，偏移 (-60,-20)）",
+    "区外同场景原图层"
+   ],
+   "doc_refs": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/parser-tags.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    },
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/docs/painting.txt",
+     "source": "snapshot.muedsa.com 文档站（此前已真实抓取并缓存）"
+    }
+   ],
+   "doc_quotes": [
+    "标签表：Opacity 整体透明度 / ColorFiltered 颜色混合滤镜 / ImageFiltered 子树高斯模糊 / BackdropFilter 背景高斯模糊 / ClipRRect 圆角矩形裁剪 / ClipOval 椭圆裁剪",
+    "Parser 的 <ImageFiltered> 会自动按 sigma 提供模糊输出边界，嵌套在 <ColorFiltered> 内时无需手动配置 outputBounds；Parser 现提供 <ColorFiltered color=… blendMode=…>、<ImageFiltered sigmaX=… sigmaY=…> 和 <BackdropFilter sigmaX=… sigmaY=…>，后两者只支持高斯模糊"
+   ],
+   "evidence": [
+    {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A10/steps/v6_p6.png"
+    }
+   ],
+   "spill": "无：圆外内容全部锐利原样"
+  }
+ ],
+ "samples_summary": {
+  "n_samples": 6,
+  "tolerance_per_channel": 3,
+  "all_pass": true,
+  "max_abs_err": 2,
+  "alphas_all_255": true,
+  "note": "① 逐矩形 128/255 模型逐通道精确吻合；② 理论 0.5 模型与实测差 2（运行时组层 alpha 量化，推测说明），容差内通过。"
+ },
+ "final_version": {
+  "png": "compositing-lab.png",
+  "dsl": "compositing-lab.snapshot",
+  "request_id": "187244d0-f3da-4e3b-885b-c1b2d8eb5e6e",
+  "viewed_evidence": {
+   "path_base": "suite_root",
+   "path": "tmp/20261016T164020-m1/A10/steps/"
+  }
+ }
+}

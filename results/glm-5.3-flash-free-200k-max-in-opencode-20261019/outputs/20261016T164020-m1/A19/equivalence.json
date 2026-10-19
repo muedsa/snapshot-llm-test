@@ -1,0 +1,62 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "files": {
+  "occlusion.png": {
+   "sha256": "33986123d95d3b4da6cb59dd373164dcd6efcef8aebc6c553013cd63e75a56f3",
+   "bytes": 9635,
+   "request_id": "65ecc9d9-8dba-49ab-8a12-d364b4c29d0f"
+  },
+  "occlusion-alternative.png": {
+   "sha256": "33986123d95d3b4da6cb59dd373164dcd6efcef8aebc6c553013cd63e75a56f3",
+   "bytes": 9635,
+   "request_id": "4f100fdf-0a7a-4c84-a8ec-f72c2c09320b"
+  }
+ },
+ "method": {
+  "decoder": "Pillow (PIL) 10.0.0 — PNG 解码为 8 位未预乘 RGBA",
+  "compare": "Image.convert('RGBA') → ImageChops.difference 逐像素四通道比较;另取 rgba.tobytes() 的 SHA-256 作为数组哈希",
+  "note": "PNG 通道为未预乘(非 Premultiplied)8 位; 文件哈希仅作留痕, 不作为像素等价依据"
+ },
+ "result": {
+  "same_size": true,
+  "size": [
+   800,
+   800
+  ],
+  "different_pixel_count": 0,
+  "difference_bbox_exclusive": true,
+  "max_channel_diff": 0,
+  "raw_rgba_sha256": {
+   "occlusion.png": "bc301874a5fe80d86d81ddd0f7b4a5107d5a9f14333d7139d4f5f56e37024a1d",
+   "occlusion-alternative.png": "bc301874a5fe80d86d81ddd0f7b4a5107d5a9f14333d7139d4f5f56e37024a1d"
+  },
+  "conclusion": "两版最终 PNG 在同一解码器、8 位未预乘 RGBA 下逐像素四通道完全一致"
+ },
+ "dsl_relation": {
+  "identical_segments": "背景层 + 可见前景(4 主体) + 遮挡板段落逐字节相同(同一构造字符串)",
+  "diff_segment": "仅板后被遮挡层: A=蓝圆160@(320,340)+橙环120@(240,500); B=绿方150@(325,335)+紫圆角方100@(515,535)",
+  "leak_audit": "被遮主体外接框完全含于遮挡板 bbox [150,250,650,650] 且各边余量≥6px(程序断言); 板无透明/阴影/滤镜; 两版均无虚线或缺口",
+  "hidden_files": [
+   {
+    "path_base": "suite_root",
+    "path": "tmp/20261016T164020-m1/A19/hidden-a.txt"
+   },
+   {
+    "path_base": "suite_root",
+    "path": "tmp/20261016T164020-m1/A19/hidden-b.txt"
+   }
+  ]
+ },
+ "viewed_evidence": [
+  {
+   "path_base": "suite_root",
+   "path": "tmp/20261016T164020-m1/A19/steps/occlusion-side-by-side.png"
+  },
+  {
+   "path_base": "suite_root",
+   "path": "tmp/20261016T164020-m1/A19/steps/occlusion-zoom-cover.png"
+  }
+ ]
+}

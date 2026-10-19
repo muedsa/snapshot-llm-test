@@ -1,0 +1,176 @@
+{
+ "schema_version": 1,
+ "task_id": "A16",
+ "path_base": "output_dir",
+ "source": {
+  "path_base": "task_input",
+  "path": "source.csv",
+  "note": "收入/成本列原值；利润=收入−成本（万元）"
+ },
+ "artifacts": {
+  "image": {
+   "path_base": "output_dir",
+   "path": "corrected-report.png"
+  },
+  "dsl": {
+   "path_base": "output_dir",
+   "path": "corrected-report.snapshot"
+  }
+ },
+ "quarters": [
+  {
+   "quarter": "Q1",
+   "revenue_wan": 120,
+   "cost_wan": 90,
+   "profit_wan": 30,
+   "profit_margin_pct": 25.0,
+   "rev_qoq_pct": null
+  },
+  {
+   "quarter": "Q2",
+   "revenue_wan": 135,
+   "cost_wan": 108,
+   "profit_wan": 27,
+   "profit_margin_pct": 20.0,
+   "rev_qoq_pct": 12.5
+  },
+  {
+   "quarter": "Q3",
+   "revenue_wan": 128,
+   "cost_wan": 96,
+   "profit_wan": 32,
+   "profit_margin_pct": 25.0,
+   "rev_qoq_pct": -5.185
+  },
+  {
+   "quarter": "Q4",
+   "revenue_wan": 180,
+   "cost_wan": 126,
+   "profit_wan": 54,
+   "profit_margin_pct": 30.0,
+   "rev_qoq_pct": 40.625
+  }
+ ],
+ "totals": {
+  "profit_sum_wan": 143,
+  "revenue_sum_wan": 563,
+  "cost_sum_wan": 420
+ },
+ "axes": {
+  "common_zero": true,
+  "unit": "万元",
+  "canvas": [
+   1280,
+   900
+  ],
+  "plot_x": [
+   150,
+   1160
+  ],
+  "baseline_y": 512,
+  "top_y": 272,
+  "value_min_wan": 0,
+  "value_max_wan": 200,
+  "tick_step_wan": 50,
+  "pixels_per_wan": 1.2,
+  "tick_ys": {
+   "0": 512,
+   "50": 452,
+   "100": 392,
+   "150": 332,
+   "200": 272
+  },
+  "axis_label_right_x": 138,
+  "bar_w": 64,
+  "bar_gap": 14,
+  "group_centers": [
+   276.25,
+   528.75,
+   781.25,
+   1033.75
+  ],
+  "bars": [
+   {
+    "quarter": "Q1",
+    "revenue": {
+     "x": 205.25,
+     "top_y": 368.0,
+     "height_px": 144.0
+    },
+    "cost": {
+     "x": 283.25,
+     "top_y": 404.0,
+     "height_px": 108.0
+    }
+   },
+   {
+    "quarter": "Q2",
+    "revenue": {
+     "x": 457.75,
+     "top_y": 350.0,
+     "height_px": 162.0
+    },
+    "cost": {
+     "x": 535.75,
+     "top_y": 382.4,
+     "height_px": 129.6
+    }
+   },
+   {
+    "quarter": "Q3",
+    "revenue": {
+     "x": 710.25,
+     "top_y": 358.4,
+     "height_px": 153.6
+    },
+    "cost": {
+     "x": 788.25,
+     "top_y": 396.8,
+     "height_px": 115.19999999999999
+    }
+   },
+   {
+    "quarter": "Q4",
+    "revenue": {
+     "x": 962.75,
+     "top_y": 296.0,
+     "height_px": 216.0
+    },
+    "cost": {
+     "x": 1040.75,
+     "top_y": 360.8,
+     "height_px": 151.2
+    }
+   }
+  ],
+  "note": "柱高=数值×1.2（端点含子像素圆整，实际渲染反算差 ≤0.5px）"
+ },
+ "conclusion": {
+  "headline": "季度复盘：Q4 利润 54 万元领先全年",
+  "subtitle": "全年利润 143 万元；Q3 收入环比 −5.2%，Q4 重回 180 万元新高",
+  "focus_quarter": "Q4",
+  "body": "利润 54 万元、利润率 30%，均为全年最高；Q3 收入为全年唯一下降（−5.2%），Q4 反弹至 180 万元。",
+  "supporting_numbers": [
+   {
+    "claim": "Q4 利润全年最高",
+    "value": "54 万元（Q4）; 30/27/32（其余三季）",
+    "source": "quarters.profit_wan"
+   },
+   {
+    "claim": "Q4 利润率全年最高",
+    "value": "30%（Q4）; 25/20/25",
+    "source": "quarters.profit_margin_pct"
+   },
+   {
+    "claim": "Q3 唯一收入环比下降",
+    "value": "−5.185%（Q3）; +12.5%/+40.625%",
+    "source": "quarters.rev_qoq_pct"
+   },
+   {
+    "claim": "Q4 环比利润增量",
+    "value": "+22 万元（+68.8%）",
+    "source": "profit_wan[Q4]−profit_wan[Q3]"
+   }
+  ]
+ }
+}

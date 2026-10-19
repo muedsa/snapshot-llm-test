@@ -1,0 +1,106 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "run_id": "20261016T164020-m1",
+ "status": "completed",
+ "output_dir": "./",
+ "timings": {
+  "started_at": "2026-10-18T16:20:23.684+08:00",
+  "ended_at": "2026-10-18T16:30:39+08:00",
+  "elapsed_seconds": 615.3,
+  "first_usable_image_seconds": 6.0,
+  "user_feedback_wait_seconds": null,
+  "rate_limit_wait_seconds": null,
+  "queue_wait_seconds": null,
+  "request_duration_sum_seconds": 7.842,
+  "server_timing_source": "snapshot_client（X-Server-Timing total）",
+  "note": "started_at 为首次泳道渲染请求；排程计算在首渲前完成（本地计时）"
+ },
+ "counts": {
+  "snapshot_requests": 8,
+  "successful_snapshot_requests": 8,
+  "failed_snapshot_requests": 0,
+  "retry_requests": 0,
+  "other_service_requests": 0,
+  "dsl_versions": 3,
+  "image_views": 11,
+  "completed_visual_iterations": 1,
+  "syntax_fix_iterations": 1,
+  "incomplete_visual_iterations": 0,
+  "final_images": 3,
+  "baseline_note": "v1 为语法缺陷基线（渲染 200 但无矩形），保留于 renders 与 steps",
+  "request_groups": {
+   "a24": 8
+  }
+ },
+ "logs": {
+  "requests": "tmp/20261016T164020-m1/A24/requests.jsonl（8 条，全部 200）",
+  "iterations": "tmp/20261016T164020-m1/A24/iterations.jsonl",
+  "renders": "tmp/20261016T164020-m1/A24/renders/（v1–v3 每次响应成对保留）"
+ },
+ "outputs": [
+  {
+   "name": "execution-board.png",
+   "path_base": "output_dir",
+   "path": "execution-board.png"
+  },
+  {
+   "name": "execution-board.snapshot",
+   "path_base": "output_dir",
+   "path": "execution-board.snapshot"
+  },
+  {
+   "name": "decision-brief.png",
+   "path_base": "output_dir",
+   "path": "decision-brief.png"
+  },
+  {
+   "name": "decision-brief.snapshot",
+   "path_base": "output_dir",
+   "path": "decision-brief.snapshot"
+  },
+  {
+   "name": "action-card.png",
+   "path_base": "output_dir",
+   "path": "action-card.png"
+  },
+  {
+   "name": "action-card.snapshot",
+   "path_base": "output_dir",
+   "path": "action-card.snapshot"
+  },
+  {
+   "name": "schedule.json",
+   "path_base": "output_dir",
+   "path": "schedule.json"
+  },
+  {
+   "name": "schedule-audit.json",
+   "path_base": "output_dir",
+   "path": "schedule-audit.json"
+  },
+  {
+   "name": "content-map.json",
+   "path_base": "output_dir",
+   "path": "content-map.json"
+  },
+  {
+   "name": "snapshot-usage.md",
+   "path_base": "output_dir",
+   "path": "snapshot-usage.md"
+  },
+  {
+   "name": "task-metrics.json",
+   "path_base": "output_dir",
+   "path": "task-metrics.json"
+  }
+ ],
+ "audits": [
+  "schedule-audit.json（12 任务逐条时长/依赖/半开衔接证据 + 下界 255/242.5 + 联合下界 260 可证最优论证）",
+  "content-map.json（三图坐标映射与 5 条核验记录）"
+ ],
+ "candidates": [],
+ "unresolved_issues": [],
+ "notes": "排程 finish=260 分（13:20）、缓冲 160 分；R05 归属 analysis 得联合下界 260 并达到。v1 语法缺陷→v2 语法修复→v3 视觉小修，三次全量/两次局部重渲，三图终版逐图看图通过。"
+}

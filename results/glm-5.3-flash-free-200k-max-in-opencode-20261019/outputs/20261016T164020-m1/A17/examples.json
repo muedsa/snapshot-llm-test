@@ -1,0 +1,776 @@
+{
+ "schema_version": 1,
+ "task_id": "A17",
+ "path_base": "output_dir",
+ "deliverables": {
+  "pages": [
+   "page-01.png/.snapshot",
+   "page-02.png/.snapshot",
+   "page-03.png/.snapshot",
+   "page-04.png/.snapshot"
+  ],
+  "examples": [
+   "example-01.png/.snapshot",
+   "example-02.png/.snapshot",
+   "example-03.png/.snapshot",
+   "example-04.png/.snapshot"
+  ]
+ },
+ "requirements_checks": {
+  "page_size": "1200×1600 ×4（实际渲染 200）",
+  "margin_px": 48,
+  "body_min_px": 24,
+  "code_min_px": 20,
+  "printed_code_lines_bounds": "P1 16 / P2 15 / P3 18 / P4 17（均在 8–18 行内，省略位置以行号+标记行明确）",
+  "teaching_illustration": "同页 DSL 直接绘制核心子树（嵌套本地 Stack），非 Image 嵌入",
+  "independent_examples": "4 例 400×240 独立渲染 PNG 均为真实 /snapshot 响应"
+ },
+ "examples": [
+  {
+   "page_id": "page-01",
+   "theme": "调用契约：/snapshot 端点、text/plain 请求体、PNG 字节响应、JSON 错误与 Retry-After、X-Request-Id",
+   "page": {
+    "path_base": "output_dir",
+    "path": "page-01.png"
+   },
+   "page_dsl": {
+    "path_base": "output_dir",
+    "path": "page-01.snapshot"
+   },
+   "example_dsl": {
+    "path_base": "output_dir",
+    "path": "example-01.snapshot"
+   },
+   "example_png": {
+    "path_base": "output_dir",
+    "path": "example-01.png"
+   },
+   "canvas": [
+    400,
+    240
+   ],
+   "core_subtree": {
+    "in_example": "根 Stack 内全部定位子项（文件行 4..14），本地坐标 400×240",
+    "in_page": "Positioned(64,368) → Stack<SizedBox 400×240 + 底色容器 + 核心子树（同本地坐标 1:1）",
+    "core_lines": [
+     4,
+     14
+    ],
+    "embed_md5": "38c2ff50a64433651924c2313f9a6506",
+    "embed_verbatim_match": true,
+    "no_scale_change": true
+   },
+   "wrapper_diff": {
+    "独立示例": "Snapshot(background=#F5F3EE, type=png) + Stack + 400×240 SizedBox",
+    "教学页": "432×308 白框（border #E2DFD5）+ 本地 Stack：首位补 #F5F3EE 400×240 底容器承载原 Snapshot 背景；1:1 不缩放、不裁剪"
+   },
+   "printed": {
+    "intervals": [
+     [
+      1,
+      16
+     ]
+    ],
+    "omitted_lines": [],
+    "ellipsis_markers": [],
+    "code_lines_printed": 16,
+    "verbatim": true,
+    "lines": [
+     {
+      "line": 1,
+      "text": "<Snapshot background=\"#F5F3EE\" type=\"png\">"
+     },
+     {
+      "line": 2,
+      "text": "  <Stack>"
+     },
+     {
+      "line": 3,
+      "text": "    <SizedBox width=\"400\" height=\"240\" />"
+     },
+     {
+      "line": 4,
+      "text": "    <Positioned left=\"24\" top=\"76\">"
+     },
+     {
+      "line": 5,
+      "text": "      <Text fontSize=\"34\" color=\"#201A34\" fontFamily=\"Noto Sans CJK SC\""
+     },
+     {
+      "line": 6,
+      "text": "        fontStyle=\"BOLD\">Hello Snapshot</Text>"
+     },
+     {
+      "line": 7,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 8,
+      "text": "    <Positioned left=\"26\" top=\"132\">"
+     },
+     {
+      "line": 9,
+      "text": "      <Text fontSize=\"18\" color=\"#6B6E7F\""
+     },
+     {
+      "line": 10,
+      "text": "        fontFamily=\"Noto Sans CJK SC\">同一段 DSL，输出同样字节</Text>"
+     },
+     {
+      "line": 11,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 12,
+      "text": "    <Positioned left=\"26\" top=\"170\">"
+     },
+     {
+      "line": 13,
+      "text": "      <Container width=\"96\" height=\"6\" color=\"#2F5CD9\" borderRadius=\"3\" />"
+     },
+     {
+      "line": 14,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 15,
+      "text": "  </Stack>"
+     },
+     {
+      "line": 16,
+      "text": "</Snapshot>"
+     }
+    ]
+   },
+   "render": {
+    "http_status": 200,
+    "bytes": 10134,
+    "request_id": "2cd5665a-f039-4f14-9432-6486413a8b2c",
+    "note": ""
+   },
+   "page_render": [
+    {
+     "label": "p01-v01",
+     "request_id": "b979d2cf-3ad0-47a2-8fac-e04e51cb3d32",
+     "bytes": 284095,
+     "final": false
+    },
+    {
+     "label": "p01-v02",
+     "request_id": "b54ddae9-ead8-4904-a780-bcdf3a34f280",
+     "bytes": 273129,
+     "final": true
+    }
+   ],
+   "viewed": {
+    "example": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/example-01.png"
+    },
+    "page": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/page-01.png"
+    }
+   }
+  },
+  {
+   "page_id": "page-02",
+   "theme": "布局：根尺寸来自布局（400×240 SizedBox）；Row/Column/Expanded flex 2:1 分配；Stack/Positioned 定位对照",
+   "page": {
+    "path_base": "output_dir",
+    "path": "page-02.png"
+   },
+   "page_dsl": {
+    "path_base": "output_dir",
+    "path": "page-02.snapshot"
+   },
+   "example_dsl": {
+    "path_base": "output_dir",
+    "path": "example-02.snapshot"
+   },
+   "example_png": {
+    "path_base": "output_dir",
+    "path": "example-02.png"
+   },
+   "canvas": [
+    400,
+    240
+   ],
+   "core_subtree": {
+    "in_example": "根 Stack 内全部定位子项（文件行 4..26），本地坐标 400×240",
+    "in_page": "Positioned(64,368) → Stack<SizedBox 400×240 + 底色容器 + 核心子树（同本地坐标 1:1）",
+    "core_lines": [
+     4,
+     26
+    ],
+    "embed_md5": "0a62616e00c408b457b23ac25be02093",
+    "embed_verbatim_match": true,
+    "no_scale_change": true
+   },
+   "wrapper_diff": {
+    "独立示例": "Snapshot(background=#F2F4F8, type=png) + Stack + 400×240 SizedBox",
+    "教学页": "432×308 白框（border #E2DFD5）+ 本地 Stack：首位补 #F2F4F8 400×240 底容器承载原 Snapshot 背景；1:1 不缩放、不裁剪"
+   },
+   "printed": {
+    "intervals": [
+     [
+      9,
+      23
+     ]
+    ],
+    "omitted_lines": [
+     [
+      1,
+      8
+     ],
+     [
+      24,
+      28
+     ]
+    ],
+    "ellipsis_markers": [
+     "…… 前 8 行省略：Snapshot / Stack / 400×240 与 Column 标题 ……",
+     "…… 后 5 行省略：Column / Container / Stack / Snapshot 闭合 ……"
+    ],
+    "code_lines_printed": 15,
+    "verbatim": true,
+    "lines": [
+     {
+      "line": 9,
+      "text": "        <Row>"
+     },
+     {
+      "line": 10,
+      "text": "          <Expanded flex=\"2\">"
+     },
+     {
+      "line": 11,
+      "text": "            <Container height=\"56\" color=\"#2F5CD9\" />"
+     },
+     {
+      "line": 12,
+      "text": "          </Expanded>"
+     },
+     {
+      "line": 13,
+      "text": "          <Expanded flex=\"1\">"
+     },
+     {
+      "line": 14,
+      "text": "            <Container height=\"56\" color=\"#E88435\" />"
+     },
+     {
+      "line": 15,
+      "text": "          </Expanded>"
+     },
+     {
+      "line": 16,
+      "text": "        </Row>"
+     },
+     {
+      "line": 17,
+      "text": "        <SizedBox height=\"12\" />"
+     },
+     {
+      "line": 18,
+      "text": "        <Row>"
+     },
+     {
+      "line": 19,
+      "text": "          <Container width=\"120\" height=\"56\" color=\"#1F9D74\" />"
+     },
+     {
+      "line": 20,
+      "text": "          <SizedBox width=\"10\" />"
+     },
+     {
+      "line": 21,
+      "text": "          <Expanded>"
+     },
+     {
+      "line": 22,
+      "text": "            <Container height=\"56\" color=\"#64748B\" />"
+     },
+     {
+      "line": 23,
+      "text": "          </Expanded>"
+     }
+    ]
+   },
+   "render": {
+    "http_status": 200,
+    "bytes": 5989,
+    "request_id": "2ee6eb77-af65-4270-a7e1-9a2b13afdf08",
+    "note": ""
+   },
+   "page_render": [
+    {
+     "label": "p02-v01",
+     "request_id": "084a87bc-9534-4160-87dd-ddb10190c860",
+     "bytes": 267676,
+     "final": true
+    }
+   ],
+   "viewed": {
+    "example": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/example-02.png"
+    },
+    "page": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/page-02.png"
+    }
+   }
+  },
+  {
+   "page_id": "page-03",
+   "theme": "文本：实体不解码→CDATA 承载标记；行内 Raw 样式 span；尾部 alpha #RRGGBBAA 同 RGB 深浅对照",
+   "page": {
+    "path_base": "output_dir",
+    "path": "page-03.png"
+   },
+   "page_dsl": {
+    "path_base": "output_dir",
+    "path": "page-03.snapshot"
+   },
+   "example_dsl": {
+    "path_base": "output_dir",
+    "path": "example-03.snapshot"
+   },
+   "example_png": {
+    "path_base": "output_dir",
+    "path": "example-03.png"
+   },
+   "canvas": [
+    400,
+    240
+   ],
+   "core_subtree": {
+    "in_example": "根 Stack 内全部定位子项（文件行 4..21），本地坐标 400×240",
+    "in_page": "Positioned(64,368) → Stack<SizedBox 400×240 + 底色容器 + 核心子树（同本地坐标 1:1）",
+    "core_lines": [
+     4,
+     21
+    ],
+    "embed_md5": "f88f2c009bc91be30e0b60a3e01786bd",
+    "embed_verbatim_match": true,
+    "no_scale_change": true
+   },
+   "wrapper_diff": {
+    "独立示例": "Snapshot(background=#101322, type=png) + Stack + 400×240 SizedBox",
+    "教学页": "432×308 白框（border #E2DFD5）+ 本地 Stack：首位补 #101322 400×240 底容器承载原 Snapshot 背景；1:1 不缩放、不裁剪"
+   },
+   "printed": {
+    "intervals": [
+     [
+      4,
+      21
+     ]
+    ],
+    "omitted_lines": [
+     [
+      1,
+      3
+     ],
+     [
+      22,
+      23
+     ]
+    ],
+    "ellipsis_markers": [
+     "…… 前 3 行省略：Snapshot / Stack / 400×240 包装 ……"
+    ],
+    "code_lines_printed": 18,
+    "verbatim": true,
+    "lines": [
+     {
+      "line": 4,
+      "text": "    <Positioned left=\"24\" top=\"30\">"
+     },
+     {
+      "line": 5,
+      "text": "      <Text"
+     },
+     {
+      "line": 6,
+      "text": "        fontSize=\"20\" color=\"#F2F4F8\""
+     },
+     {
+      "line": 7,
+      "text": "        fontFamily=\"Noto Sans CJK SC\"><Raw"
+     },
+     {
+      "line": 8,
+      "text": "        color=\"#9AB4FF\" fontStyle=\"BOLD\">Span</Raw> 与 <Raw"
+     },
+     {
+      "line": 9,
+      "text": "        color=\"#F49B57\">CDATA</Raw> 混排</Text>"
+     },
+     {
+      "line": 10,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 11,
+      "text": "    <Positioned left=\"24\" top=\"78\">"
+     },
+     {
+      "line": 12,
+      "text": "      <Text fontSize=\"20\" color=\"#8A93A8\""
+     },
+     {
+      "line": 13,
+      "text": "        fontFamily=\"Noto Sans CJK SC\"><![CDATA[实体不解码，<a> 原样保留]]>"
+     },
+     {
+      "line": 14,
+      "text": "      </Text>"
+     },
+     {
+      "line": 15,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 16,
+      "text": "    <Positioned left=\"24\" top=\"136\">"
+     },
+     {
+      "line": 17,
+      "text": "      <Container width=\"170\" height=\"48\" color=\"#2F5CD9\" borderRadius=\"8\" />"
+     },
+     {
+      "line": 18,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 19,
+      "text": "    <Positioned left=\"206\" top=\"136\">"
+     },
+     {
+      "line": 20,
+      "text": "      <Container width=\"170\" height=\"48\" color=\"#2F5CD966\" borderRadius=\"8\" />"
+     },
+     {
+      "line": 21,
+      "text": "    </Positioned>"
+     }
+    ]
+   },
+   "render": {
+    "http_status": 200,
+    "bytes": 12007,
+    "request_id": "e13eb015-220e-4822-a37b-98557058c7be",
+    "note": "首版 <Span> 400 PARSE_ERROR（caa75f13-…）；改 <Raw> 后 200"
+   },
+   "page_render": [
+    {
+     "label": "p03-v01",
+     "request_id": "87dd8535-e751-40cd-9623-dd295e0a027d",
+     "bytes": 307473,
+     "final": true
+    }
+   ],
+   "viewed": {
+    "example": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/example-03.png"
+    },
+    "page": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/page-03.png"
+    }
+   }
+  },
+  {
+   "page_id": "page-04",
+   "theme": "滤镜与交付：BackdropFilter 背景模糊（ClipRRect 限边、低透明白面板）、ImageFiltered 子树模糊、成对留痕与自检",
+   "page": {
+    "path_base": "output_dir",
+    "path": "page-04.png"
+   },
+   "page_dsl": {
+    "path_base": "output_dir",
+    "path": "page-04.snapshot"
+   },
+   "example_dsl": {
+    "path_base": "output_dir",
+    "path": "example-04.snapshot"
+   },
+   "example_png": {
+    "path_base": "output_dir",
+    "path": "example-04.png"
+   },
+   "canvas": [
+    400,
+    240
+   ],
+   "core_subtree": {
+    "in_example": "根 Stack 内全部定位子项（文件行 4..26），本地坐标 400×240",
+    "in_page": "Positioned(64,368) → Stack<SizedBox 400×240 + 底色容器 + 核心子树（同本地坐标 1:1）",
+    "core_lines": [
+     4,
+     26
+    ],
+    "embed_md5": "a989490b109c52edb0bede8b0010f9b7",
+    "embed_verbatim_match": true,
+    "no_scale_change": true
+   },
+   "wrapper_diff": {
+    "独立示例": "Snapshot(background=#0E1016, type=png) + Stack + 400×240 SizedBox",
+    "教学页": "432×308 白框（border #E2DFD5）+ 本地 Stack：首位补 #0E1016 400×240 底容器承载原 Snapshot 背景；1:1 不缩放、不裁剪"
+   },
+   "printed": {
+    "intervals": [
+     [
+      4,
+      16
+     ],
+     [
+      22,
+      25
+     ]
+    ],
+    "omitted_lines": [
+     [
+      1,
+      3
+     ],
+     [
+      17,
+      21
+     ],
+     [
+      26,
+      28
+     ]
+    ],
+    "ellipsis_markers": [
+     "…… 前 3 行省略：Snapshot / Stack / 400×240 包装 ……",
+     "…… 行 17–21 省略：毛玻璃说明标题及上级容器 ……"
+    ],
+    "code_lines_printed": 17,
+    "verbatim": true,
+    "lines": [
+     {
+      "line": 4,
+      "text": "    <Positioned left=\"24\" top=\"30\">"
+     },
+     {
+      "line": 5,
+      "text": "      <Container width=\"170\" height=\"150\" color=\"#4C3AD6\" borderRadius=\"16\" />"
+     },
+     {
+      "line": 6,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 7,
+      "text": "    <Positioned left=\"150\" top=\"70\">"
+     },
+     {
+      "line": 8,
+      "text": "      <Container width=\"180\" height=\"130\" color=\"#E88435\" borderRadius=\"16\" />"
+     },
+     {
+      "line": 9,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 10,
+      "text": "    <Positioned left=\"40\" top=\"146\" width=\"320\" height=\"62\">"
+     },
+     {
+      "line": 11,
+      "text": "      <ClipRRect borderRadius=\"14\" clipBehavior=\"ANTI_ALIAS\">"
+     },
+     {
+      "line": 12,
+      "text": "        <BackdropFilter sigmaX=\"8\" sigmaY=\"8\">"
+     },
+     {
+      "line": 13,
+      "text": "          <Container width=\"320\" height=\"62\" color=\"#FFFFFF2E\" />"
+     },
+     {
+      "line": 14,
+      "text": "        </BackdropFilter>"
+     },
+     {
+      "line": 15,
+      "text": "      </ClipRRect>"
+     },
+     {
+      "line": 16,
+      "text": "    </Positioned>"
+     },
+     {
+      "line": 22,
+      "text": "      <ImageFiltered sigmaX=\"5\" sigmaY=\"5\">"
+     },
+     {
+      "line": 23,
+      "text": "        <Text fontSize=\"20\" color=\"#F2A65A\""
+     },
+     {
+      "line": 24,
+      "text": "          fontFamily=\"Noto Sans CJK SC\">子树模糊</Text>"
+     },
+     {
+      "line": 25,
+      "text": "      </ImageFiltered>"
+     }
+    ]
+   },
+   "render": {
+    "http_status": 200,
+    "bytes": 15923,
+    "request_id": "6569d7fa-c267-48af-a68b-f6a203a5a929",
+    "note": ""
+   },
+   "page_render": [
+    {
+     "label": "p04-v01",
+     "request_id": "e9d99077-7c28-461b-b31e-4889322de4f4",
+     "bytes": 301801,
+     "final": false
+    },
+    {
+     "label": "p04-v02",
+     "request_id": "67c3f3f2-d524-4cb8-9c35-bc48fce46168",
+     "bytes": 302064,
+     "final": true
+    }
+   ],
+   "viewed": {
+    "example": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/example-04.png"
+    },
+    "page": {
+     "path_base": "suite_root",
+     "path": "tmp/20261016T164020-m1/A17/steps/page-04.png"
+    }
+   }
+  }
+ ],
+ "technical_claims": [
+  {
+   "id": "C1",
+   "claim": "POST /snapshot 是 UTF-8 纯文本 XML（Content-Type: text/plain; charset=utf-8），成功响应即图片字节，错误为 JSON（code/message/requestId），429/503 用 Retry-After；请求头 X-Request-Id/Server-Timing 可追踪",
+   "source": "https://open-snapshot.muedsa.com/ai-guide.md（本任务以 GET 实取 3718B，缓存 docs/ai-guide.txt）",
+   "examples": [
+    "page-01",
+    "example-01"
+   ]
+  },
+  {
+   "id": "C2",
+   "claim": "8 位颜色为 #RRGGBBAA——透明度在末两位（不透明红 #FF0000≈#FF0000）",
+   "source": "ai-guide.md（颜色一节）",
+   "examples": [
+    "example-03",
+    "page-03"
+   ]
+  },
+  {
+   "id": "C3",
+   "claim": "解析器不做 HTML 实体解码；<、& 之类须放 CDATA 交给 Text；Raw 保留原文空白；CDATA 在 Text 内按原始文本内容解析",
+   "source": "docs/parser.txt / parser-text.txt（run 内缓存，相关页实读）",
+   "examples": [
+    "example-03",
+    "page-03"
+   ]
+  },
+  {
+   "id": "C4",
+   "claim": "Text 内行内样式 span 标签是 <Raw>（可带 color/fontStyle/decoration 等），不存在 <Span> 标签——首版用 <Span> 得到 400 PARSE_ERROR \"Unknown element tag [Span]\"（requestId caa75f13-568d-4d45-9a4e-75db52df6dee）",
+   "source": "parser-text.txt 完整示例（Raw decoration=\"NONE\" 混排）+ 本任务错误响应记录",
+   "examples": [
+    "example-03"
+   ]
+  },
+  {
+   "id": "C5",
+   "claim": "Expanded 须是 Row/Column/Flex 直接子节点；默认 flex=1，flex=2:1 时剩余宽按 2/3、1/3 强制分配",
+   "source": "https://snapshot.muedsa.com/widgets/layout/expanded/（本任务实际 GET 200，56627B；Kotlin 侧 Expanded(flex=2)/Expanded(flex=1) 示例）",
+   "examples": [
+    "example-02",
+    "page-02"
+   ]
+  },
+  {
+   "id": "C6",
+   "claim": "画布尺寸由布局决定：Snapshot 不带 width/height，根布局须收敛为有限非零根尺寸（本套以根 Stack 首子 SizedBox 承载）",
+   "source": "ai-guide.md（画布尺寸由布局决定）+ docs/layout.txt（根出图约束/无界子项警告）+ overview.raw",
+   "examples": [
+    "example-02",
+    "page-02"
+   ]
+  },
+  {
+   "id": "C7",
+   "claim": "BackdropFilter 对已绘制在背后的内容加模糊（毛玻璃），需背后已有内容，常见 ClipRRect/ClipRect 限定区域；ImageFiltered 对“子树绘制结果”整层模糊。两者解析均读取 sigmaX/sigmaY/tileMode 属性",
+   "source": "docs/painting.txt（透明度与颜色滤镜一节）+ 套内先例 outputs/20261016T164020-m1/A03/system-pulse.snapshot、A10/compositing-lab.snapshot",
+   "examples": [
+    "example-04",
+    "page-04"
+   ]
+  },
+  {
+   "id": "C8",
+   "claim": "字体族 Noto Sans CJK SC（正文/标题 CJK）、Noto Sans Mono CJK SC（代码印刷）为服务实际安装（GET /fonts 列表，套内缓存 docs/fonts-list.txt）；CJK 真加粗用 fontStyle=\"BOLD\"（A15 探针结论）",
+   "source": "docs/fonts-list.txt（run 前期实得）+ A15 探针记录",
+   "examples": [
+    "all pages"
+   ]
+  },
+  {
+   "id": "C9",
+   "claim": "装饰类属性在子 span 上整体替换父值（不逐字段继承）；段落参数只由最外层 Text 控制",
+   "source": "docs/parser-text.txt（修饰项/段落参数两节）",
+   "examples": [
+    "page-03"
+   ]
+  }
+ ],
+ "verification": {
+  "viewed_at": "2026-10-17 17:36–17:52 (+08:00)",
+  "views": [
+   "example-01..04 整图查看",
+   "page-01..04 整图查看",
+   "p04 v02 局部放大（省略标记区）",
+   "p01 双色对比（v01 双转义缺陷 → v02 CDATA 修复）"
+  ],
+  "failures": [
+   {
+    "step": "example-03 首版",
+    "http": 400,
+    "code": "PARSE_ERROR",
+    "message": "Unknown element tag [Span]",
+    "request_id": "caa75f13-568d-4d45-9a4e-75db52df6dee",
+    "fix": "<Span> → <Raw>（parser-text 文档示例与套内 A11 先例）"
+   }
+  ],
+  "doc_requests": [
+   {
+    "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+    "status": 200,
+    "bytes": 3718,
+    "note": "client doc 命令实取并缓存 tmp/docs/ai-guide.txt；另经交互工具先行查看一次（内容一致）"
+   },
+   {
+    "url": "https://snapshot.muedsa.com/widgets/layout/expanded/",
+    "status": 404,
+    "bytes": 20080,
+    "note": "首次路径猜测错误"
+   },
+   {
+    "url": "https://snapshot.muedsa.com/widgets/layout/expanded/",
+    "status": 200,
+    "bytes": 56627,
+    "out": "tmp/20261016T164020-m1/docs/expanded.txt"
+   }
+  ]
+ }
+}
