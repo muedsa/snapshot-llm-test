@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A20",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检（中心6点放大+整图实看；18项几何/像素审计全过；标签盒最小间距5px≥4、与他点圆盘净距6.2px、锚点像素24/24命中、引导线2条0交叉0自交且描边与中线重合）",
+  "output_dir": "outputs/run-20261011-01/A20",
+  "temp_dir": "tmp/run-20261011-01/A20",
+  "timings": {
+    "started_at": "2026-10-19T12:12:21.679000+08:00",
+    "ended_at": "2026-10-19T12:58:38.892492+08:00",
+    "elapsed_seconds": 2777.21,
+    "first_usable_image_seconds": 3.248,
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_note": "本题无逐题用户反馈轮次（确认无发生，故记0）",
+    "session_interruption_note": "任务于2026-10-19单日内连续执行，无平台中断",
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "queue_wait_reason": "客户端不可测排队时间，按约定记 null",
+    "request_duration_sum_seconds": 18.472,
+    "request_duration_sum_detail": {
+      "renders_seconds": 18.472,
+      "document_fetches_seconds": 0.0,
+      "note": "7次渲染串行请求的客户端 measured elapsed 之和；文档/字体复用本 run 本地缓存，无新增 HTTP"
+    },
+    "server_timing_source": null,
+    "server_timing_reason": "服务端未暴露 Server-Timing 头；使用客户端 requests.jsonl 的 elapsed_seconds 自计时"
+  },
+  "counts": {
+    "snapshot_requests": 7,
+    "successful_snapshot_requests": 7,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "other_service_requests_detail": "本题无新增文档/字体 HTTP；DSL 语法（Text 的 text= 属性、Transform matrix、Positioned）复用 A18/A19 已验证配方",
+    "dsl_versions": 1,
+    "dsl_versions_detail": "单一 DSL：a20_layout.py 生成布局→build_a20.py 发射 annotated-map.snapshot；7 次渲染仅迭代参数（字号盒宽、环净距、引导线端点/补偿、路由模板），DSL 结构不变",
+    "image_views": 7,
+    "image_views_detail": "map-01(无字,缺陷)、map-02(有字)、map-03、map-04放大、map-05放大、map-06整图、map-07中心6点放大+整图，各1次打开",
+    "completed_visual_iterations": 4,
+    "incomplete_visual_iterations": 0,
+    "baseline_entries": 1,
+    "syntax_fix_entries": 1,
+    "alternative_entries": 0,
+    "requirement_change_entries": 0,
+    "final_images_delivered": 1
+  },
+  "geometry": {
+    "canvas": [1600, 1100],
+    "plot_rect_px": [280, 160, 1320, 920],
+    "anchor_formula": "px = 280 + 10.4*lx ; py = 920 - 7.6*ly",
+    "logical_origin": "左下角，x 向右、y 向上，0–100",
+    "audit_origin": "画布左上角，x 向右、y 向下，像素，不预取整",
+    "markers": 24,
+    "labels": 24,
+    "leaders": 2,
+    "top3_by_value": ["M10 93", "M08 91", "M23 90"],
+    "min_label_box_distance_px": 5.0,
+    "min_label_to_foreign_disc_px": 6.2,
+    "min_label_to_top3_ring_px": 2.4,
+    "min_own_label_to_own_disc_px": 6.2,
+    "max_anchor_to_box_px_without_leader": 13.8,
+    "leader_anchor_to_box_px": {"M06": 62.2177, "M11": 106.8},
+    "min_center_pair_px": {"a": "M10", "b": "M11", "dist": 30.8623},
+    "min_center_pair_note": "最小圆心距 30.86px > 12px 直径，故无需把任何点缩到 8px（未缩小任何点，已记录）",
+    "crossings": 0,
+    "self_intersections": 0,
+    "collinear_overlaps": 0,
+    "canvas_bounds_used_px": {"left": 24, "top": 14, "right": 1588.0, "bottom": 1066.0},
+    "min_anchor_px": [404.8, 304.4],
+    "max_anchor_px": [1174.4, 775.6]
+  },
+  "checks": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "source": "outputs/run-20261011-01/A20/layout-audit.json"
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A20/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A20/iterations.jsonl",
+    "requests_shared": "tmp/run-20261011-01/_suite/requests-shared.jsonl",
+    "layout_engine": "tmp/run-20261011-01/A20/scripts/a20_layout.py",
+    "build_script": "tmp/run-20261011-01/A20/scripts/build_a20.py",
+    "measure_script": "tmp/run-20261011-01/A20/scripts/measure_a20.py",
+    "finalize_script": "tmp/run-20261011-01/A20/scripts/finalize_a20.py"
+  },
+  "outputs": [
+    "annotated-map.png",
+    "annotated-map.snapshot",
+    "label-layout.json",
+    "layout-audit.json",
+    "finalize-meta.json",
+    "snapshot-usage.md",
+    "task-metrics.json"
+  ],
+  "candidates": [
+    {
+      "file": "tmp/run-20261011-01/A20/gen/annotated-map-01.png",
+      "note": "首版渲染：Text 误用元素内容 <Text>content</Text> 而非 text= 属性，全图无字（保留作缺陷证据）"
+    },
+    {
+      "file": "tmp/run-20261011-01/A20/gen/annotated-map-03.png",
+      "note": "文字齐全但标题 fs24 用 fs20 估宽被 CLIP 截断的版本（保留）"
+    },
+    {
+      "file": "tmp/run-20261011-01/A20/gen/zoom-center6.png",
+      "note": "中心6点 M06/M08/M09/M10/M11/M12 + 引导线 2× 放大查看图（仅查看用，非交付件）"
+    },
+    {
+      "file": "tmp/run-20261011-01/A20/gen/zoom-topleft.png",
+      "note": "左上角 3× 放大（核验标题完整、y=100 刻度不被框线穿越，仅查看用）"
+    },
+    {
+      "file": "tmp/run-20261011-01/A20/gen/measure-a20.json",
+      "note": "像素核验：24/24 锚点色命中、24/24 标签无 CLIP、引导线描边与中线重合"
+    },
+    {
+      "file": "tmp/run-20261011-01/A20/gen/annotated-map-07.png",
+      "note": "交付版最终渲染（A20-map-07 服务原始字节，md5 1032b14c…）"
+    }
+  ],
+  "rounds": [],
+  "unresolved_issues": []
+}

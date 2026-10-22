@@ -1,0 +1,674 @@
+{
+  "schema_version": 2,
+  "path_base": "suite_root",
+  "task_id": "B06",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": null,
+  "output_dir": "outputs/run-20261011-01/B06/",
+  "temp_dir": "tmp/run-20261011-01/B06/",
+  "timings": {
+    "started_at": "2026-10-21T13:41:00+08:00",
+    "ended_at": "2026-10-21T18:13:37+08:00",
+    "elapsed_seconds": 16357.6,
+    "first_usable_image_seconds": 95.25,
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 67.888,
+    "server_timing_source": "elapsed_seconds 由共享渲染器 snap_render.py 客户端计时（含网络往返）；服务未返回 Server-Timing 头，无服务端计时可对照",
+    "note": "任务墙钟 16357.6s（起点=首条 B06 动作 SRC-01 研究抓取，终点=本指标写入）。首末渲染请求跨度 12157.517s；24 次成功渲染的往返耗时合计 67.888s。差额为生成脚本、断言核验、逐版看图、修改与写作时间，非服务等待；无 429/无重试，排队等待不可测记为 null。",
+    "first_usable_image_seconds_reference": "相对首次渲染请求(非任务起点)",
+    "first_usable_image_definition": "首次渲染请求(req-0001 完成) 到 首次实际看图并记录观察(iterations-view-times.jsonl 最早 viewed_recorded_at)",
+    "first_snapshot_request_at": "2026-10-21T13:47:37.746+08:00",
+    "last_snapshot_request_at": "2026-10-21T17:10:15.263+08:00",
+    "request_span_seconds": 12157.517,
+    "final_review_completed_at": "2026-10-21T17:45:00+08:00"
+  },
+  "counts": {
+    "snapshot_requests": 24,
+    "successful_snapshot_requests": 24,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "document_requests": 3,
+    "probe_requests": 0,
+    "dsl_versions": 23,
+    "image_views": 34,
+    "image_views_detail": "24 次逐版看图（iterations.jsonl 每条 viewed=true）+ 10 次交付终审对最终 PNG 的复看",
+    "completed_visual_iterations": 13,
+    "incomplete_visual_iterations": 0,
+    "baseline_iterations": 10,
+    "probe_iterations": 1,
+    "syntax_fix_iterations": 0,
+    "structural_iterations": 0,
+    "regression_fix_iterations": 0,
+    "other_tool_calls": 22,
+    "final_case_count": 10,
+    "document_request_detail": [
+      {
+        "id": "B06-tool-0001",
+        "kind": "webfetch",
+        "url": "https://zh.wikipedia.org/wiki/降水概率",
+        "purpose": "取得降水概率定义原文，作为 case-06 逐字比对基准",
+        "saved_to": "tmp/run-20261011-01/B06/research/SRC-01-precipitation-probability.txt",
+        "http_status": 200,
+        "license": "CC BY-SA 4.0"
+      },
+      {
+        "id": "B06-tool-0002",
+        "kind": "webfetch",
+        "url": "https://zh.wikipedia.org/wiki/营养标签",
+        "purpose": "取得 GB 28050 强制标示项清单，作为 case-02 真实锚点",
+        "saved_to": "tmp/run-20261011-01/B06/research/SRC-02-gb28050-nutrition-label.txt",
+        "http_status": 200
+      },
+      {
+        "id": "B06-tool-0003",
+        "kind": "webfetch",
+        "url": "SRC-03 tiered-electricity-price",
+        "purpose": "尝试取得居民阶梯电价正文，作为 case-03 制度背景",
+        "saved_to": null,
+        "http_status": 404,
+        "outcome": "正文未取得；case-03 的档位电量与单价、用电量与金额一律标为示例演示，不逐字引用任何真实政策数字"
+      }
+    ],
+    "failure_detail": []
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/B06/requests.jsonl",
+    "requests_raw_backup": "tmp/run-20261011-01/B06/requests-raw-000001.jsonl",
+    "iterations": "tmp/run-20261011-01/B06/iterations.jsonl",
+    "tool_usage": "tmp/run-20261011-01/B06/tool-usage.jsonl",
+    "iterations_view_times": "tmp/run-20261011-01/B06/iterations-view-times.jsonl"
+  },
+  "candidates": [],
+  "rounds": [],
+  "unresolved_issues": [
+    "case-01 药点 ② 与已完成勾标擦边约 3px：交付审查放大复看后判定可接受并保留（07:30 与 08:00 在 24h 环上仅差 7.5°，勾标语义正确、字形完整可读），未修改",
+    "十件均未做现场调研与用户实验；可读性判断基于实际渲染与像素量测。可观察改善与未验证效果逐件区分见 outputs/run-20261011-01/B06/design-review.md §3",
+    "case-07 行走中扫读、case-09 3–5 米可读性为设计推断，未做实际距离/运动状态测试",
+    "case-03 档位与单价为演示值，SRC-03 正文 HTTP 404 未取得，不代表任何地区实际政策"
+  ],
+  "asset_policy": "dsl_primary_with_supporting_assets（本题实际全部纯 DSL 完成，无嵌入素材；政策允许的局部辅助素材未使用）",
+  "shared_preparation": {
+    "renderer": "tmp/run-20261011-01/_suite/scripts/snap_render.py",
+    "state_tool": "tmp/run-20261011-01/_suite/scripts/update_state.py",
+    "note": "渲染器与状态工具为全套共享，其构建耗时不计入本题；本题无共享范围的渲染请求"
+  },
+  "case_metrics": [
+    {
+      "case": "case-01",
+      "accepted_version": "v3",
+      "accepted_request_id": "B06-req-0003",
+      "dsl_versions": 3,
+      "snapshot_requests": 3,
+      "successful_snapshot_requests": 3,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 10.422,
+      "iterations_total": 3,
+      "baseline": 1,
+      "completed_visual_iterations": 2,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 3,
+      "first_ts": "2026-10-21T13:47:37.746+08:00",
+      "last_ts": "2026-10-21T13:56:42.733+08:00"
+    },
+    {
+      "case": "case-02",
+      "accepted_version": "v2",
+      "accepted_request_id": "B06-req-0005",
+      "dsl_versions": 2,
+      "snapshot_requests": 2,
+      "successful_snapshot_requests": 2,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 7.684,
+      "iterations_total": 2,
+      "baseline": 1,
+      "completed_visual_iterations": 1,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 2,
+      "first_ts": "2026-10-21T14:24:54.161+08:00",
+      "last_ts": "2026-10-21T14:28:00.794+08:00"
+    },
+    {
+      "case": "case-03",
+      "accepted_version": "v2",
+      "accepted_request_id": "B06-req-0007",
+      "dsl_versions": 2,
+      "snapshot_requests": 3,
+      "successful_snapshot_requests": 3,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 9.149,
+      "iterations_total": 3,
+      "baseline": 1,
+      "completed_visual_iterations": 1,
+      "probe_iterations": 1,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 3,
+      "first_ts": "2026-10-21T14:37:06.658+08:00",
+      "last_ts": "2026-10-21T14:43:46.609+08:00"
+    },
+    {
+      "case": "case-04",
+      "accepted_version": "v1",
+      "accepted_request_id": "B06-req-0009",
+      "dsl_versions": 1,
+      "snapshot_requests": 1,
+      "successful_snapshot_requests": 1,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 4.856,
+      "iterations_total": 1,
+      "baseline": 1,
+      "completed_visual_iterations": 0,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 1,
+      "first_ts": "2026-10-21T14:57:54.227+08:00",
+      "last_ts": "2026-10-21T14:57:54.227+08:00"
+    },
+    {
+      "case": "case-05",
+      "accepted_version": "v2",
+      "accepted_request_id": "B06-req-0011",
+      "dsl_versions": 2,
+      "snapshot_requests": 2,
+      "successful_snapshot_requests": 2,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 6.047,
+      "iterations_total": 2,
+      "baseline": 1,
+      "completed_visual_iterations": 1,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 2,
+      "first_ts": "2026-10-21T15:20:51.423+08:00",
+      "last_ts": "2026-10-21T15:22:41.858+08:00"
+    },
+    {
+      "case": "case-06",
+      "accepted_version": "v2",
+      "accepted_request_id": "B06-req-0013",
+      "dsl_versions": 2,
+      "snapshot_requests": 2,
+      "successful_snapshot_requests": 2,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 3.756,
+      "iterations_total": 2,
+      "baseline": 1,
+      "completed_visual_iterations": 1,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 2,
+      "first_ts": "2026-10-21T15:32:57.532+08:00",
+      "last_ts": "2026-10-21T15:34:07.515+08:00"
+    },
+    {
+      "case": "case-07",
+      "accepted_version": "v2",
+      "accepted_request_id": "B06-req-0015",
+      "dsl_versions": 2,
+      "snapshot_requests": 2,
+      "successful_snapshot_requests": 2,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 5.639,
+      "iterations_total": 2,
+      "baseline": 1,
+      "completed_visual_iterations": 1,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 2,
+      "first_ts": "2026-10-21T15:44:02.944+08:00",
+      "last_ts": "2026-10-21T15:46:41.276+08:00"
+    },
+    {
+      "case": "case-08",
+      "accepted_version": "v2",
+      "accepted_request_id": "B06-req-0017",
+      "dsl_versions": 2,
+      "snapshot_requests": 2,
+      "successful_snapshot_requests": 2,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 5.08,
+      "iterations_total": 2,
+      "baseline": 1,
+      "completed_visual_iterations": 1,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 2,
+      "first_ts": "2026-10-21T15:58:49.644+08:00",
+      "last_ts": "2026-10-21T16:01:08.873+08:00"
+    },
+    {
+      "case": "case-09",
+      "accepted_version": "v3",
+      "accepted_request_id": "B06-req-0020",
+      "dsl_versions": 3,
+      "snapshot_requests": 3,
+      "successful_snapshot_requests": 3,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 7.995,
+      "iterations_total": 3,
+      "baseline": 1,
+      "completed_visual_iterations": 2,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 3,
+      "first_ts": "2026-10-21T16:15:22.442+08:00",
+      "last_ts": "2026-10-21T16:38:03.679+08:00"
+    },
+    {
+      "case": "case-10",
+      "accepted_version": "v4",
+      "accepted_request_id": "B06-req-0024",
+      "dsl_versions": 4,
+      "snapshot_requests": 4,
+      "successful_snapshot_requests": 4,
+      "failed_snapshot_requests": 0,
+      "retry_requests": 0,
+      "request_duration_sum_seconds": 7.26,
+      "iterations_total": 4,
+      "baseline": 1,
+      "completed_visual_iterations": 3,
+      "probe_iterations": 0,
+      "syntax_fix_iterations": 0,
+      "structural_iterations": 0,
+      "regression_fix_iterations": 0,
+      "incomplete_visual_iterations": 0,
+      "image_views": 4,
+      "first_ts": "2026-10-21T16:58:43.194+08:00",
+      "last_ts": "2026-10-21T17:10:15.263+08:00"
+    }
+  ],
+  "tool_usage_summary": [
+    {
+      "seq": 1,
+      "tool": "webfetch",
+      "purpose": "取得降水概率定义原文，作为 case-06 定义三要素的逐字比对基准",
+      "input": "https://zh.wikipedia.org/wiki/降水概率",
+      "output": "tmp/run-20261011-01/B06/research/SRC-01-precipitation-probability.txt",
+      "ts": "2026-10-21T13:41:00+08:00",
+      "ts_basis": "plan-v1.json research.fetched_at",
+      "affects": [
+        "case-06"
+      ],
+      "request_ref": null,
+      "outcome": "success",
+      "note": "CC BY-SA 4.0；引文以繁体原文照录并在图上标明"
+    },
+    {
+      "seq": 2,
+      "tool": "webfetch",
+      "purpose": "取得 GB 28050 预包装食品营养标签条目，作为 case-02 「1+4」强制标示项的比对基准",
+      "input": "https://zh.wikipedia.org/wiki/营养标签",
+      "output": "tmp/run-20261011-01/B06/research/SRC-02-gb28050-nutrition-label.txt",
+      "ts": "2026-10-21T13:42:00+08:00",
+      "ts_basis": "plan-v1.json research.fetched_at",
+      "affects": [
+        "case-02"
+      ],
+      "request_ref": null,
+      "outcome": "success",
+      "note": "仅标示项清单作为真实锚点，具体产品数值为自拟演示数据"
+    },
+    {
+      "seq": 3,
+      "tool": "webfetch",
+      "purpose": "尝试取得居民阶梯电价正文，作为 case-03 档位结构背景",
+      "input": "SRC-03 tiered-electricity-price",
+      "output": null,
+      "ts": null,
+      "ts_basis": "未取得正文，plan-v1.json 未记录 fetched_at，故时间为 null",
+      "affects": [
+        "case-03"
+      ],
+      "request_ref": null,
+      "outcome": "http_404_no_body",
+      "note": "正文未取得，档位与单价一律标为示例演示，不逐字引用"
+    },
+    {
+      "seq": 4,
+      "tool": "python_generator",
+      "purpose": "case-01 服药钟面参数化生成 + C1-C5 断言",
+      "input": "tmp/run-20261011-01/B06/scripts/case01.py",
+      "output": "tmp/run-20261011-01/B06/drafts/case-01-v1.snapshot",
+      "ts": "2026-10-21T13:56:26+08:00",
+      "ts_basis": "生成器文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-01"
+      ],
+      "request_ref": "B06-req-0001",
+      "outcome": "success"
+    },
+    {
+      "seq": 5,
+      "tool": "python_verifier",
+      "purpose": "case-01 像素量测：着色带角度、镜像区、药点质心与主刻度",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify01.py",
+      "output": "断言输出（过程留痕，未落盘为交付件）",
+      "ts": "2026-10-21T14:17:25+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-01"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 6,
+      "tool": "python_generator",
+      "purpose": "case-02 份量换算参数化生成 + C1-C5 断言",
+      "input": "tmp/run-20261011-01/B06/scripts/case02.py",
+      "output": "tmp/run-20261011-01/B06/drafts/case-02-v1.snapshot",
+      "ts": "2026-10-21T14:27:46+08:00",
+      "ts_basis": "生成器文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-02"
+      ],
+      "request_ref": "B06-req-0004",
+      "outcome": "success"
+    },
+    {
+      "seq": 7,
+      "tool": "python_verifier",
+      "purpose": "case-02 像素量测：方糖块宽/螺距、琥珀占比、上下括号宽度",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify02.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T14:29:57+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-02"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 8,
+      "tool": "python_generator",
+      "purpose": "case-03 阶梯账单参数化生成 + C1-C5 断言",
+      "input": "tmp/run-20261011-01/B06/scripts/case03.py",
+      "output": "tmp/run-20261011-01/B06/drafts/case-03-v1.snapshot",
+      "ts": "2026-10-21T14:40:47+08:00",
+      "ts_basis": "生成器文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-03"
+      ],
+      "request_ref": "B06-req-0006",
+      "outcome": "success"
+    },
+    {
+      "seq": 9,
+      "tool": "python_generator",
+      "purpose": "case-03 v1 留痕修复：还原原图表绘制顺序重新生成 v1.snapshot 以恢复与 v1.png 的配对",
+      "input": "tmp/run-20261011-01/B06/scripts/case03_v1.py",
+      "output": "tmp/run-20261011-01/B06/drafts/case-03-v1.snapshot",
+      "ts": "2026-10-21T14:43:25+08:00",
+      "ts_basis": "脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-03"
+      ],
+      "request_ref": "B06-req-0008",
+      "outcome": "success",
+      "note": "重渲染 md5=614bf75b94c488e21632cb8a49d5e104 与原图一致，同时证明服务渲染确定性"
+    },
+    {
+      "seq": 10,
+      "tool": "python_verifier",
+      "purpose": "case-03 像素量测：三档填充右缘、台阶顶、月度线与虚线位置、宽高比",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify03.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T14:46:22+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-03"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 11,
+      "tool": "python_verifier",
+      "purpose": "case-04 像素量测：7 条参考带左右缘、标记落点误差、超出色段与偏离量成正比",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify04.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T15:01:42+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-04"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 12,
+      "tool": "python_verifier",
+      "purpose": "case-05 像素量测 + 数值核对：三费率条宽、零截距最小二乘拟合、IRR 现值闭合",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify05.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T15:27:16+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-05"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 13,
+      "tool": "python_verifier",
+      "purpose": "case-06 像素量测：100 格逐格中心色计数、引文墨迹边界、三枚 chip 数值右缘",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify06.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T15:35:59+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-06"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 14,
+      "tool": "python_verifier",
+      "purpose": "case-07 像素量测：分段像素宽=秒数×2.6417、9 个刻度位置、轨总长正比",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify07.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T15:52:29+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-07"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 15,
+      "tool": "python_verifier",
+      "purpose": "case-08 像素量测：五要素墨迹、五时刻 bbox 递增与右对齐、延误红墨迹、四处登机口/座位一致",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify08.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T16:06:38+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-08"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 16,
+      "tool": "python_generator",
+      "purpose": "case-09 大屏积分榜参数化生成 + 数据自洽与排序规则断言",
+      "input": "tmp/run-20261011-01/B06/scripts/case09.py",
+      "output": "tmp/run-20261011-01/B06/drafts/case-09-v1.snapshot",
+      "ts": "2026-10-21T16:36:32+08:00",
+      "ts_basis": "生成器文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-09"
+      ],
+      "request_ref": "B06-req-0018",
+      "outcome": "success"
+    },
+    {
+      "seq": 17,
+      "tool": "python_verifier",
+      "purpose": "case-09 像素量测：八条比例条宽、零轴连续性、并列连接线、同分色带范围、九列对齐",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify09.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T16:40:27+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-09"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 18,
+      "tool": "python_oneoff",
+      "purpose": "case-09 v3 因 log_iter 长命令在 PowerShell 下解析失败，改用一次性脚本写入 journal",
+      "input": "tmp/run-20261011-01/B06/scripts/_log09.py",
+      "output": "tmp/run-20261011-01/B06/iterations.jsonl",
+      "ts": "2026-10-21T16:43:31+08:00",
+      "ts_basis": "脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-09"
+      ],
+      "request_ref": null,
+      "outcome": "success",
+      "note": "踩坑：超长中文命令行触发 TerminatorExpectedAtEndOfString，后续长日志一律走一次性脚本"
+    },
+    {
+      "seq": 19,
+      "tool": "python_probe",
+      "purpose": "case-10 v1 定点探针：扫描四档蓝色水平线、跨档橙色攀升线、当前标记与坐标轴",
+      "input": "tmp/run-20261011-01/B06/scripts/_probe10.py",
+      "output": "tmp/run-20261011-01/B06/drafts/case-10-v1.png",
+      "ts": "2026-10-21T17:00:02+08:00",
+      "ts_basis": "探针脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-10"
+      ],
+      "request_ref": "B06-req-0021",
+      "outcome": "success",
+      "note": "探针发现三处攀升线缺失（调用未 append），构成 v1 的明确缺陷证据"
+    },
+    {
+      "seq": 20,
+      "tool": "python_verifier",
+      "purpose": "case-10 像素量测：C1 费率层级、C2 分段累加双算法、C3 13 点逐点曲线校验、C4 攀升与临界标注、C5 边距扫描",
+      "input": "tmp/run-20261011-01/B06/scripts/_verify10.py",
+      "output": "断言输出",
+      "ts": "2026-10-21T17:19:04+08:00",
+      "ts_basis": "校验脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-10"
+      ],
+      "request_ref": null,
+      "outcome": "passed"
+    },
+    {
+      "seq": 21,
+      "tool": "python_packager",
+      "purpose": "10 件定版打包：md5 与源响应字节比对、IHDR 尺寸/位深校验、DSL 闭合校验",
+      "input": "tmp/run-20261011-01/B06/scripts/publish.py",
+      "output": "tmp/run-20261011-01/B06/publish-verify.json",
+      "ts": "2026-10-21T17:21:19+08:00",
+      "ts_basis": "打包脚本文件最后写入时间；实际运行不早于该时刻",
+      "affects": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "request_ref": null,
+      "outcome": "passed",
+      "note": "10/10 通过 md5 + IHDR + </Snapshot> 三项校验"
+    },
+    {
+      "seq": 22,
+      "tool": "python_log_builder",
+      "purpose": "补齐 AGENTS 要求的 case_id/类型/起止时间字段并生成看图时间索引",
+      "input": "tmp/run-20261011-01/B06/scripts/_logtools.py",
+      "output": "tmp\\run-20261011-01\\B06\\tool-usage.jsonl",
+      "ts": "2026-10-21T17:35:11+08:00",
+      "ts_basis": "本次日志补写动作本身的执行时间",
+      "affects": [
+        "case-01",
+        "case-02",
+        "case-03",
+        "case-04",
+        "case-05",
+        "case-06",
+        "case-07",
+        "case-08",
+        "case-09",
+        "case-10"
+      ],
+      "request_ref": null,
+      "outcome": "success",
+      "note": "requests.jsonl 原始字节另存于 requests-raw-000001.jsonl，未删除任何原值"
+    }
+  ],
+  "final_case_count": 10,
+  "evidence_notes": [
+    "requests.jsonl 由共享渲染器写入时仅含渲染字段，缺 AGENTS 要求的 case_id/类型/起止时间。原始字节完整保留于 requests-raw-000001.jsonl，其后为每条追加派生字段（case_id 由 dsl_path 确定性推导、request_type、endpoint、started_at = ts − elapsed、finished_at、timezone、credentials_used），派生字段在 derived_fields 中列明，未删除或修改任何原值。服务响应未返回 requestId/Server-Timing 头，两字段如实记为 null。",
+    "iterations.jsonl 的 ts 是 log_iter 的写入时刻（部分按用例批量写入，同一用例多版共用），不是看图时刻。另建 iterations-view-times.jsonl 记录该版真实渲染完成时刻（来自 requests.jsonl）与看图发生所在的区间上下界，不为看图编造精确时间戳。",
+    "tool-usage.jsonl 的 22 条记录使用事件发生时刻而非记录写入时刻：log_tool.py 的 ts 取 now()，对已发生的研究抓取与校验脚本运行会写入错误时刻，故改用一次性脚本 _logtools.py 写入，每条附 ts_basis 说明时间来源；时间未知处（SRC-03 无 fetched_at）如实记为 null。",
+    "24 次渲染请求全部归属具体用例，无共享范围请求（probe_requests=0），case_metrics 之和 24 与 counts 24 一致，无重复累计。",
+    "case-03 的 3 次请求中，B06-req-0008 是 v1 DSL 覆盖事故的证据修复重渲（md5 614bf75b94c488e21632cb8a49d5e104 与原图逐字节一致），不产生新的定版，定版仍为 B06-req-0007；其 1 次 probe 迭代如实计入该用例。"
+  ],
+  "verification": {
+    "sum_case_requests": 24,
+    "sum_case_iterations_native": 24,
+    "iterations_total": 24,
+    "shared_probe_requests": 0,
+    "reconciles": true,
+    "note": "case_metrics 之和 24 次渲染 = counts 24（无共享范围请求）；24 次迭代全部归属具体用例，10 baseline + 13 visual_iteration + 1 probe = 24；counts.image_views 34 = 24 次逐版 + 10 次交付终审复看，与逐用例之和 24 的差额即终审复看，不重复累计。"
+  }
+}

@@ -1,0 +1,1059 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B05",
+  "run_id": "run-20261011-01",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets（本题实际全部纯 DSL 完成，无嵌入素材；政策允许的局部辅助素材未使用）",
+  "curatorial_statement": "以一款虚构的城市积水避险产品『水线 Waterline』为载体，用十个关键画面走完一条可信使用链：市民看总览→查点位→选路线，骑手用更严阈值，路人上报，系统推送到锁屏与车机，运维复核，市级指挥调度，最后个人雨后复盘。全系共用招牌视觉 DepthRuler 水位刻度尺与四档风险色，把『能不能过』表达为水位线与阈值线的几何关系，而非一句文字结论；同一深度在五种设备上回答五个不同的问题。数据由单一事实源 b05_data 驱动并跨画面互指：上报 #1042 在 case-05（提交）、case-08（复核队列）、case-10（个人周报）三处字段一致。唯一真实锚点为中国气象局暴雨预警信号分级，其余全部在图上与元数据中标注为虚构演示数据；未做真实用户验证。",
+  "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（established_before_first_render=true，路径 tmp/run-20261011-01/B05/plan-v1.json）",
+  "criteria_change_note": "plan-v1 的 C1–C5 为约束性标准，全题未删除或放宽任何一条；仅 case-10 就时间口径作过一次显式修订并留痕（见其 criteria_history）。",
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "首页 · 城市水情总览",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（App 首页）",
+      "user_goal": "出门前 30 秒判断：现在全市哪里有积水、我附近危不危险、要不要改路线。",
+      "content_scope": "橙色预警横幅（真实标准文案）、全市积水点列表（6 点，名/水深/趋势/风险色）、顶部城市统计（禁止/绕行/谨慎/可通行计数）、底部导航。",
+      "viewing_environment": "早高峰出门前在手机上快速浏览。",
+      "handoff": "列表首位的 P1 即详情对象",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "Positioned 绝对定位排版",
+        "Text 多字号/色/行高",
+        "SizedBox+DecoratedBox 卡片与迷你水深条",
+        "risk_color 统一上色 + 统计计数由数据派生"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "橙色预警横幅展示真实标准文案『3小时内降雨量将达50毫米以上』且标注来源",
+          "method": "逐字核对渲染文本"
+        },
+        {
+          "id": "C2",
+          "condition": "6 个积水点的水深/风险色与 b05_data 完全一致，禁止通行点排首位",
+          "method": "数据驱动生成 + 看图核对"
+        },
+        {
+          "id": "C3",
+          "condition": "顶部统计计数 n_blocked/n_detour/n_caution/n_open 与点位一致",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C4",
+          "condition": "目标尺寸下点位名/水深/风险标签清晰可读无裁剪",
+          "method": "整图实看"
+        },
+        {
+          "id": "C5",
+          "condition": "底部导航 5 项作用可解释，非装饰死按钮",
+          "method": "内容审查"
+        }
+      ],
+      "visual_review": "v1 因 color='none' 400 失败（req-0001），改 transparent 后重渲；v1 实看风险 pill 与水深数字重叠、第 6 点被底栏遮挡；v2 遮挡修复但 cm 裁成 c；v3 全部清晰接受；v4 为跨案日期回归修复后复看接受",
+      "request_ids": [
+        "B05-req-0001",
+        "B05-req-0002",
+        "B05-req-0003",
+        "B05-req-0004",
+        "B05-req-0031"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0031"
+      ],
+      "iteration_ids": [
+        "B05-case-01-v1-syntax_fix",
+        "B05-case-01-v1-baseline",
+        "B05-case-01-v1-visual_iteration",
+        "B05-case-01-v2-visual_iteration",
+        "B05-case-01-v3-visual_iteration",
+        "B05-case-01-v4-regression_fix"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "逐字核对渲染文本",
+          "evidence": "req-0002..0004/0031 全 200；v1–v4 整图实看横幅为『3小时内降雨量将达50毫米以上』并标注『中国气象局《暴雨预警信号》标准（真实）』"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "数据驱动断言 + 看图",
+          "evidence": "六点名/水深/风险色由 POINTS 派生并断言与 b05_data 一致，禁止通行点 P1 排首位；v3/v4 实看确认"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "计数断言",
+          "evidence": "n_blocked/n_detour/n_caution/n_open 由 POINTS 计算并断言合计=6"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "预算 + 每版实看",
+          "evidence": "v2 修第 6 点被底栏遮挡（标题称 6 处却只见 5 处）、v3 修 cm 被文本框裁成 c；v3/v4 实看名/深/标签清晰无裁剪"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "内容审查 + 实看",
+          "evidence": "底部导航 5 项（水情/地图/上报/提醒/我的）各对应本题一张画面，作用可解释；v4 实看确认"
+        }
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "水点详情 · 滨江路下穿隧道",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（详情页）",
+      "user_goal": "看清这个下穿隧道当前水深、是否还在涨、为何禁止通行、以及替代方案。",
+      "content_scope": "水位刻度尺主视觉（32cm 且上升，红色禁止通行）、趋势 sparkline、传感器+众包双来源标注、通行判定卡、替代建议（解放路地道 8cm 可通行）、更新时间戳。",
+      "viewing_environment": "在地图点开某一点后查看。",
+      "handoff": "禁行判定触发路线规划",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "DepthRuler（DecoratedBox 刻度 + 水位线 + 风险色带）",
+        "趋势折线（手造线段阵）",
+        "双来源与置信度标注",
+        "水位高度与数值成正比的几何断言"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "刻度尺水位高度与 32cm 数值成正比（几何准确）",
+          "method": "计算 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "趋势为『上升』且有趋势曲线佐证",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C3",
+          "condition": "传感器 WL-BJ-001 与众包 4 条双来源明确标注",
+          "method": "核对文本"
+        },
+        {
+          "id": "C4",
+          "condition": "替代建议引用真实存在的 P4（8cm 可通行）",
+          "method": "数据一致性断言"
+        },
+        {
+          "id": "C5",
+          "condition": "禁止通行判定醒目且无文字遮挡/溢出",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看 cm 裁切与 300px 空洞；v2 实看 ASCII < 转义直出；v3 实看刻度压彩色水体；v4 实看接受",
+      "request_ids": [
+        "B05-req-0005",
+        "B05-req-0006",
+        "B05-req-0007",
+        "B05-req-0008"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0008"
+      ],
+      "iteration_ids": [
+        "B05-case-02-v1-visual_iteration",
+        "B05-case-02-v2-visual_iteration",
+        "B05-case-02-v3-visual_iteration",
+        "B05-case-02-v4-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "几何断言 + 看图",
+          "evidence": "水位高度与 32cm 成正比由 geometry 断言；v4 实看水位线落在 32 刻度并含风险色带"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "数据驱动 + 看图",
+          "evidence": "趋势为上升，趋势曲线由数据派生并与 32cm 上升事实一致"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "传感器 WL-BJ-001 与众包 4 条双来源分别标注，各自置信度可见"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "内容审查 + 断言",
+          "evidence": "替代建议引用 P4 解放路地道 8cm 可通行，该点真实存在于 POINTS 并断言"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "每版实看",
+          "evidence": "v1 修替代卡 cm 裁成 c 与 300px 空洞、v2 修 ASCII < 转义成 &lt;、v3 修刻度数字压在彩色水体上；v4 实看无遮挡无溢出"
+        }
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "避水路线规划",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（路线对比）",
+      "user_goal": "比较最短路线与避水路线，选一条不涉禁止通行点的路，并理解为何绕行值得。",
+      "content_scope": "3 条路线卡（最短12min 经禁止点 / 避水17min 推荐 / 地面辅路21min）、途经点位与风险、+5分钟收益说明、车型离地间隙切换提示。",
+      "viewing_environment": "出发前在手机上选路线。",
+      "handoff": "同一决策换车机离地间隙判定",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "路线卡阵列",
+        "迷你 DepthRuler 标途经风险",
+        "推荐徽标与描边强调",
+        "离地间隙判定线"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "推荐路线为避水路线且不途经禁止通行点 P1（与 ROUTES 一致）",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "三条路线耗时 12/17/21 与数据一致，标注途经风险",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C3",
+          "condition": "离地间隙提示与 140mm 真实判定一致（P1 32cm 不可过）",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C4",
+          "condition": "推荐卡视觉突出且理由清晰",
+          "method": "整图实看"
+        },
+        {
+          "id": "C5",
+          "condition": "每张路线卡可解释其选择/不选原因",
+          "method": "内容审查"
+        }
+      ],
+      "visual_review": "v1 实看分字重叠/推荐 badge 压 17；v2 实看 ETA 溢出与图例 1px 裁切；v3 实看发现 C3 离地间隙缺失；v4 实看接受",
+      "request_ids": [
+        "B05-req-0009",
+        "B05-req-0010",
+        "B05-req-0011",
+        "B05-req-0012"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0012"
+      ],
+      "iteration_ids": [
+        "B05-case-03-v1-visual_iteration",
+        "B05-case-03-v2-visual_iteration",
+        "B05-case-03-v3-visual_iteration",
+        "B05-case-03-v4-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "断言 + 看图",
+          "evidence": "推荐为避水路线且其途经点 ['P3','P4'] 不含 P1，断言通过；v4 实看"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "数据驱动 + 看图",
+          "evidence": "12/17/21 分钟与 ROUTES 逐一相等，每张卡标注途经风险点"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "断言 + 内容审查",
+          "evidence": "CAR_CLEAR_MM=140 → 净空 14cm，P1 32cm 大于净空判定不可过；v3 实看发现该提示缺失后 v4 补齐"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "推荐卡描边+徽标突出并给出一句话理由"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "每版实看",
+          "evidence": "v1 修「分」字与数字重叠、推荐 badge 压住 17、v2 修 ETA 行 314px 超出 300px 槽与图例 1px 裁切、v3 补离地间隙；v4 实看全部无碰撞"
+        }
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "骑行横屏导航",
+      "persona": "外卖骑手 · 阿杰（电动车）",
+      "device": "手机横屏（电动车支架导航）",
+      "user_goal": "骑行中一眼看清前方各积水点对『行人/电动车』是否可过（阈值与汽车不同），并保持接单效率。",
+      "content_scope": "横屏大字导航、行人/电动车分级（ped 阈值：5/10cm）、前方 2 个点位的通过性大字判定、到达 ETA、语音播报状态条。",
+      "viewing_environment": "骑行中支架上横屏查看（需极简大字、强对比）。",
+      "handoff": "骑手现场发现新积水引导上报",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1688,
+        780
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "横屏满屏布局",
+        "阈值梯块（骑手 5/10cm）",
+        "判定 pill 与风险色",
+        "语音播报状态条"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "使用 ped 分级而非汽车分级，阈值 5/10cm 与 ped_risk_of 一致",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "横屏形态适配：大字、少信息、强对比、可快速扫读",
+          "method": "整图实看"
+        },
+        {
+          "id": "C3",
+          "condition": "点位通过性与深度一致（如 P4 8cm 注意 / P3 15cm 绕行）",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C4",
+          "condition": "ETA 与接单效率信息可解释",
+          "method": "内容审查"
+        },
+        {
+          "id": "C5",
+          "condition": "语音播报状态条明确（骑手场景必要反馈）",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看 pill 裁字/英文 rising/迷你条色系矛盾；v2 实看换行重叠；v3 实看标签距盒边过近；v4 实看接受",
+      "request_ids": [
+        "B05-req-0013",
+        "B05-req-0014",
+        "B05-req-0015",
+        "B05-req-0016"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0016"
+      ],
+      "iteration_ids": [
+        "B05-case-04-v1-visual_iteration",
+        "B05-case-04-v2-visual_iteration",
+        "B05-case-04-v3-visual_iteration",
+        "B05-case-04-v4-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "断言 + 看图",
+          "evidence": "使用 ped_risk_of 分级阈值 5/10cm，与汽车分级差异在图上明确区分；断言通过"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "横屏大字/少信息/强对比，v4 实看可快速扫读"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "数据驱动 + 看图",
+          "evidence": "P4 8cm 判注意、P3 15cm 判绕行，与骑手分级一致"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "ETA 与接单效率信息给出且可解释"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "每版实看",
+          "evidence": "v1 修判定 pill 裁字（76px 过窄）/趋势显示英文 rising/迷你条误用汽车色、v2 修 5~10cm 换行压住「注意」、v3 修梯块标签距盒边过近；v4 实看无碰撞"
+        }
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "上报积水",
+      "persona": "市民 · 林岚（众包）",
+      "device": "手机竖屏（上报流程）",
+      "user_goal": "目击新积水后快速上报：估水深（按参照物）、选点位、设可信度、提交并看到提交状态。",
+      "content_scope": "取景占位（DSL 构图，不外链图片）、参照物估深（台阶第二级≈15cm）、可信度滑条、点位选择、提交按钮与『待复核』状态反馈。",
+      "viewing_environment": "现场用手机边拍边报。",
+      "handoff": "上报 #1042 进入运维复核队列",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "步骤器",
+        "DSL 取景框（未外链照片）",
+        "台阶剖面估深图元",
+        "可信度刻度与状态 pill"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "参照物估深逻辑清晰（水面到台阶第二级 → 约 26cm，与 REPORT 一致）",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "可信度用滑条/刻度表达且数值 0.8 呈现",
+          "method": "整图实看"
+        },
+        {
+          "id": "C3",
+          "condition": "提交后状态『待复核』有明确反馈",
+          "method": "看图 + 与 case-08 队列一致"
+        },
+        {
+          "id": "C4",
+          "condition": "上报点位 P6 站前广场地下通道 与世界数据一致",
+          "method": "断言"
+        },
+        {
+          "id": "C5",
+          "condition": "取景框为 DSL 构图，未外链真实照片，作用可解释",
+          "method": "内容审查"
+        }
+      ],
+      "visual_review": "v1 生成期断言拦截备注卡与 CTA 碰撞；v1 实看台阶错位悬空/剖面越界/单选圈被压；v2 实看接受",
+      "request_ids": [
+        "B05-req-0017",
+        "B05-req-0018"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0018"
+      ],
+      "iteration_ids": [
+        "B05-case-05-v1-baseline",
+        "B05-case-05-v2-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "断言 + 看图",
+          "evidence": "参照台阶第二级估深约 26cm，与 REPORT.est_depth 一致并断言"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "可信度为带 低/一般/高 三刻度的滑条，滑块落在 0.80 位置，右上大字显示 0.80，说明行写明 0.80"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "整图实看 + 跨案断言",
+          "evidence": "提交后为只读态：标题栏『已提交』pill，三段步骤条 已提交 08:07 → 待复核(当前状态) → 已采纳(复核通过后)，主 CTA 已变为『查看复核进度』；待复核取 R_CAUTION 蓝，与 case-08 队列首行同值"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "逐字段比对 + 断言",
+          "evidence": "画面呈现 站前广场地下通道 · 城南区 · WL-CN-002 · 实测 26cm，与 POINTS 中 P6 条目及 REPORT 逐字段相同（est_depth 26.0 / status 待复核 / submitted 08:07 / confidence 0.8）；b05_data 导入即跑的断言全部 ALL PASS。内部编号 P6 不直接印在画面上"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "DSL 自证 + 每版实看",
+          "evidence": "取景框为 DSL 构图，未外链真实照片，作用可解释；v1 实看修台阶实体块错位悬空/剖面 cm 越出卡右缘(742>736)/「与上报一致」压住单选圈后 v2 接受"
+        }
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "预警与通知中心（锁屏）",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（锁屏推送堆叠）",
+      "user_goal": "不解锁即可看到最紧急的三条：橙色预警、某点禁止通行、避水路线已生成。",
+      "content_scope": "锁屏时钟+日期、三张通知卡（真实橙色预警 / 滨江路禁止通行 / 避水路线就绪）、优先级排序、展开/折叠态区分。",
+      "viewing_environment": "手机在口袋震动后掏出看锁屏。",
+      "handoff": "驾驶中用户把路线决策交给车机",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "锁屏 chrome（时钟/日期/通知堆叠）",
+        "通知卡高度递减层级",
+        "四级预警标尺 蓝Ⅳ/黄Ⅲ/橙Ⅱ/红Ⅰ + Ⅱ级徽标",
+        "可解释动作按钮"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "三条通知优先级正确（预警>禁止通行>路线）且文案与世界一致",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "锁屏形态可辨（时钟/日期/通知堆叠），非普通列表页",
+          "method": "整图实看"
+        },
+        {
+          "id": "C3",
+          "condition": "橙色预警文案为真实标准",
+          "method": "逐字核对"
+        },
+        {
+          "id": "C4",
+          "condition": "通知卡间层级清晰、无遮挡",
+          "method": "整图实看"
+        },
+        {
+          "id": "C5",
+          "condition": "每条通知动作可解释（查看/改道/了解）",
+          "method": "内容审查"
+        }
+      ],
+      "visual_review": "v1 生成期断言拦截展开卡碰撞；v1 实看整卡被自身背景盖住；v2 实看内容正常但优先级与 C1 不符；v3/v4 重组为三张按优先级通知卡后实看接受",
+      "request_ids": [
+        "B05-req-0019",
+        "B05-req-0020",
+        "B05-req-0021",
+        "B05-req-0022"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0022"
+      ],
+      "iteration_ids": [
+        "B05-case-06-v1-baseline",
+        "B05-case-06-v2-visual_iteration",
+        "B05-case-06-v3-visual_iteration",
+        "B05-case-06-v4-structural"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "断言 + 实看",
+          "evidence": "三卡顺序为 预警 > 禁止通行 > 路线，加 n1y<n2y<n3y 断言；v3 实看发现与 C1 不符后 v4 重组，实看确认"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "锁屏形态可辨：大时钟 + 日期 + 通知堆叠，非普通列表页"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "逐字核对",
+          "evidence": "橙色预警文案为中国气象局真实标准原文"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "每版实看",
+          "evidence": "v2 修通知②整卡内容被自身不透明背景盖住（Stack 后绘者在上）与标题行压住「稍后提醒」；v4 实看三卡层级清晰无遮挡"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "内容审查 + 实看",
+          "evidence": "三卡动作逐条可解释：预警卡『了解暴雨预警分级』、禁行卡『建议立即改走解放路地道』(改道)、路线卡『查看路线』+『稍后提醒』；v3 实看发现紧卡缺动作后 v4 补齐"
+        }
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "车机 · 驾驶避水提醒",
+      "persona": "车主 · 林岚（私家车 140mm）",
+      "device": "车载中控（16:9 大字 glanceable）",
+      "user_goal": "驾驶中被告知前方下穿禁止通行、为何（32cm>离地间隙）、并已自动改道，无需低头细读。",
+      "content_scope": "大字禁行横幅、离地间隙对比可视化（32cm vs 140mm）、改道确认、简明 ETA、副屏次要信息。",
+      "viewing_environment": "雨天驾驶中扫视车机（强对比、大字、信息极简）。",
+      "handoff": "驾驶态禁行判定同步到运维视图",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "车机横屏布局",
+        "DepthRuler 叠画离地间隙线",
+        "禁行横幅主视觉",
+        "改道结果反馈卡"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "32cm 与 140mm 的对比关系可视化且判定『不可过』与 car_passable 一致",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "车载形态适配：大字、强对比、可驾驶中扫读",
+          "method": "整图实看"
+        },
+        {
+          "id": "C3",
+          "condition": "改道动作与结果（走避水路线）明确反馈",
+          "method": "看图 + 与 case-03 一致"
+        },
+        {
+          "id": "C4",
+          "condition": "禁行原因一句话可解释",
+          "method": "内容审查"
+        },
+        {
+          "id": "C5",
+          "condition": "次要信息不干扰主告警",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 生成期断言拦下三处；v1 实看三处文字钻到卡外；v2 遮挡消除但徽标缺 18cm；v3 确认非高度问题；v4 实看接受",
+      "request_ids": [
+        "B05-req-0023",
+        "B05-req-0024",
+        "B05-req-0025",
+        "B05-req-0026"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0026"
+      ],
+      "iteration_ids": [
+        "B05-case-07-v1-baseline",
+        "B05-case-07-v2-visual_iteration",
+        "B05-case-07-v3-visual_iteration",
+        "B05-case-07-v4-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "断言 + 实看",
+          "evidence": "DepthRuler 叠画离地间隙线，32cm 与 140mm 对比可视化，判定『不可过』与 car_passable=False 一致"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "车机横屏大字强对比，v4 实看可在驾驶中扫读"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "内容审查 + 实看",
+          "evidence": "改道动作与结果（走避水路线 17 分钟）明确反馈"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "禁行原因一句话可解释：高于离地间隙"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "每版实看",
+          "evidence": "v2 修中列三处文字因宽度表达式 W-64-tx+32 钻到卡外，v3/v4 修徽标缺 18cm（确认为宽度估算偏低而非高度问题，D 方案 56px 同样截断）；v4 实看次要信息不干扰主告警"
+        }
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "排水运维值守台",
+      "persona": "运维员 · 城南排水班组",
+      "device": "桌面端（值守工位）",
+      "user_goal": "值守员掌握传感器在线率、泵站运行、未处置事件，并复核市民上报队列。",
+      "content_scope": "传感器在线 46/52、3 座泵站状态（运行/运行/检修）、未处置事件 3、上报复核队列（含 case-05 的 #1042 待复核）、处置按钮。",
+      "viewing_environment": "值班室桌面显示器长时间值守。",
+      "handoff": "处置结果汇总给市级指挥",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "表格行列与首行高亮可操作态",
+        "环形泵站负载图",
+        "纵向事件时间线",
+        "状态 pill 与全局状态色一致"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "复核队列含 #1042 站前广场 26cm 待复核，与 case-05 提交一致",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "传感器/泵站/事件计数与 OPS 一致",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C3",
+          "condition": "桌面形态信息密度合理、分区清晰",
+          "method": "整图实看"
+        },
+        {
+          "id": "C4",
+          "condition": "复核动作（采纳/驳回）可解释且状态色与全局一致",
+          "method": "内容审查"
+        },
+        {
+          "id": "C5",
+          "condition": "无文字溢出/重叠，长队列可读",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 生成期 FIT-WARN 抓到 31.5 槽不足；v1 实看 26 被截成 2 且 FIT-WARN 沉默；v2 仍截断；v3 引入 tw_fit；v4 实看接受",
+      "request_ids": [
+        "B05-req-0027",
+        "B05-req-0028",
+        "B05-req-0029",
+        "B05-req-0030"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0030"
+      ],
+      "iteration_ids": [
+        "B05-case-08-v1-baseline",
+        "B05-case-08-v2-visual_iteration",
+        "B05-case-08-v3-structural",
+        "B05-case-08-v4-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "断言 + 实看",
+          "evidence": "复核队列首行为 #1042 站前广场 26cm 待复核，与 case-05 提交在点位/深度/状态/时间/置信度五项逐一相等并断言"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "断言",
+          "evidence": "传感器/泵站/事件计数与 OPS 一致；P6 传感器读数 26.0cm 与上报一致"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "桌面形态信息密度合理，队列/泵站/事件三区约 6:3:1 分区清晰"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "断言 + 实看",
+          "evidence": "采纳/驳回动作可解释，状态色与全局一致（待复核 #2E86DE / 已采纳 #2FBF71 / 已驳回 MUTED），case-10 断言同值"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "每版实看 + 离线量测",
+          "evidence": "v1 FIT-WARN 抓到 31.5 需 56px 但槽 52，v1 实看首行 26 被截成 2 且发现 FIT-WARN 因用同一个 tw() 对同类缺口沉默；v3 引入按字符类别的 tw_fit，v4 用 _audit8 量出 KPI 说明与 /52 仅距 5.9px 后移到标签行；终版四行数字完整无溢出重叠"
+        }
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "市级防汛指挥大屏",
+      "persona": "应急指挥席",
+      "device": "指挥中心大屏（16:9 远距离）",
+      "user_goal": "远距离掌握全市风险分布、关键指标与处置时间线，快速下达调度。",
+      "content_scope": "城市水情示意（6 点分布+风险色）、核心指标（预警等级/禁止点/在线率/在岗）、升级处置时间线（08:00→08:14）、调度建议。",
+      "viewing_environment": "指挥中心大屏，数米外观看。",
+      "handoff": "本轮降雨结束后个人端收到复盘",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "accepted_version": "v3",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "城市示意底板（分区 + poly 河道 + 风险着色点位）",
+        "指标条",
+        "时序时间线",
+        "调度建议卡与跨案闭环引用"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "6 点风险分布与全系数据一致，风险色正确",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "时间线节点与 ESCALATION 一致且时序递增",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C3",
+          "condition": "大屏形态适配：远距离可读、指标醒目、层级分明",
+          "method": "整图实看"
+        },
+        {
+          "id": "C4",
+          "condition": "调度建议可解释且与运维/上报闭环呼应",
+          "method": "内容审查"
+        },
+        {
+          "id": "C5",
+          "condition": "整体构图有张力且不拥挤、无裁剪",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 生成期守卫连拦四处后出首版；v1 实看双市标题与空分区；v2 实看切字缺陷与说明冗余；v3 实看接受",
+      "request_ids": [
+        "B05-req-0032",
+        "B05-req-0033",
+        "B05-req-0034"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0034"
+      ],
+      "iteration_ids": [
+        "B05-case-09-v1-baseline",
+        "B05-case-09-v2-visual_iteration",
+        "B05-case-09-v3-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "断言 + 实看",
+          "evidence": "6 点按 risk_color 着色且半径随深度单调，分区 tally 合计=6 断言；v3 实看"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "断言 + 实看",
+          "evidence": "时间线 08:00→08:14 严格递增断言，四个事件与 ESCALATION 一致并含触发方"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "大屏 3–5 米可读：指标值 62px、点位深度 34px、三级层级分明"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "调度 A/B/C 分别呼应 case-05（众包 5 条 + WL-CN-002 + #1042）、case-08（2 座泵站可用）、case-07（避水路线 17 分钟）"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "断言 + 每版实看",
+          "evidence": "v1 修标题成『云州市市防汛指挥中心』（CITY 已含市）与高新区分区空白、v2 实看发现 ROUTES[0][3][3:] 把『滨江』也切掉成『绕开路下穿隧道』、v3 改 [1:] 并加 startswith 回归断言；成对点位/标签重叠断言通过，无裁剪"
+        }
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "雨后个人周报",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（个人复盘）",
+      "user_goal": "雨后回看这周水线帮我避开了多少风险、贡献了多少上报，获得成就感并愿意继续用。",
+      "content_scope": "本周避水绕行 5 次、累计节省 40 分钟、上报 3 采纳 2、逐日雨量柱状 + 避水次数、贡献徽章、下周提示。",
+      "viewing_environment": "周末闲暇在手机上回顾。",
+      "handoff": "旅程终点",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL",
+      "dsl_capabilities": [
+        "柱状图（几何与数值严格成正比，像素校验）",
+        "避水次数点阵",
+        "手绘徽章（circle+seg）",
+        "第一人称战绩排版 + 状态 pill"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "周报数值（5/40min/3/2/6点）与 WEEK 一致",
+          "method": "数据驱动 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "逐日雨量柱状与 rain_mm 成正比（几何准确）",
+          "method": "计算 + 看图"
+        },
+        {
+          "id": "C3",
+          "condition": "个人复盘形态（而非运营视角）清晰",
+          "method": "整图实看"
+        },
+        {
+          "id": "C4",
+          "condition": "贡献徽章与上报闭环（case-05/08）呼应",
+          "method": "内容审查"
+        },
+        {
+          "id": "C5",
+          "condition": "无裁剪/遮挡，柱状标签可读",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看四处缺陷；v2 修 callout 与图例差 7px 并通过像素量测，实看接受",
+      "request_ids": [
+        "B05-req-0035",
+        "B05-req-0036"
+      ],
+      "accepted_request_ids": [
+        "B05-req-0036"
+      ],
+      "iteration_ids": [
+        "B05-case-10-v1-baseline",
+        "B05-case-10-v2-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T03:05:00+08:00（tmp/run-20261011-01/B05/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [
+        {
+          "standard_id": "C1/时间口径",
+          "old": "plan-v1 content_scope 措辞『本周避水绕行 5 次…』",
+          "new": "画面标注为上周 10月12日–10月18日，并加日期完整性断言",
+          "reason": "运行日 2026-10-21 为周三，而 WEEK 含完整七天（含周四–周日）；称『本周』等于报告尚未发生的日期",
+          "evidence": "case-10 断言 ws.weekday()==0 / we.weekday()==6 / (we-ws).days==6 / NOW_DATE>WEEK_END_ISO；iterations v1/v2",
+          "effective_at": "v1 起（首版即以上周标注）"
+        }
+      ],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "pass",
+          "method": "数据驱动断言 + 实看",
+          "evidence": "5 次 / 40 分钟 / 3 上报 / 2 采纳 / 6 点全部由 WEEK 派生并断言；hero 与贡献区实看核对"
+        },
+        {
+          "id": "C2",
+          "result": "pass",
+          "method": "像素量测",
+          "evidence": "_verify10.py 从渲染 PNG 逐列扫描量高：7 根柱高与 rain_mm 成正比，最大误差 0.55px、比例偏差 ≤0.003，周四为唯一橙色柱且顶到 PLOT_Y=580"
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "第一人称战绩语气（『上周战绩』『你的贡献』），非运营视角"
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "method": "断言 + 实看",
+          "evidence": "#1042 为列表首行且状态待复核；断言 case10 状态映射与 case-08 完全相同，上报行 ID 与 case-05 RPT_ID 一致"
+        },
+        {
+          "id": "C5",
+          "result": "pass",
+          "method": "断言 + 每版实看",
+          "evidence": "v1 修待复核误用 R_DETOUR 橙（与 case-08 的 R_CAUTION 蓝不一致且与橙色 26cm 撞色）、hero 标题与说明重复、三处『本周』应为『上周』；v2 按字形实测宽度做双轴判定后抓到 callout 右缘 462 与图例左缘 469 仅差 7px 并修复；实看无裁剪遮挡，柱状标签可读"
+        }
+      ]
+    }
+  ],
+  "final_collection_review": {
+    "reviewed_at": "2026-10-21T13:29:19+08:00",
+    "method": "逐张打开 10 张最终 PNG 整图实看 + 像素量测（case-10 柱状图）+ 跨案字段断言",
+    "checks": [
+      "10 张 final.png 均为服务原始响应字节，md5 与对应草稿一致，IHDR 尺寸与元数据相符",
+      "10 张 final.snapshot 均为完整自包含 DSL，以 </Snapshot> 结尾",
+      "每张均已实际打开查看，无占位图、无未看版本",
+      "跨案一致性：风险四档色、状态三档色、#1042 五字段、17 分钟避水路线、32cm/14cm 判定均一致",
+      "无 ASCII < > 直出、无豆腐字、无文字裁切或遮挡"
+    ],
+    "independence": "10 张分属 5 类角色 × 5 种设备形态，各自解决不同的内容/状态/任务；无同版式换色、无缩放裁切充数",
+    "residual_issues": []
+  },
+  "unresolved_issues": []
+}

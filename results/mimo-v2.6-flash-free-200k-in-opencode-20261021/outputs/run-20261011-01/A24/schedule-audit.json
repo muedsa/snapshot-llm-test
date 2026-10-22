@@ -1,0 +1,374 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "schedule_ref": {
+  "path_base": "output_dir",
+  "path": "schedule.json"
+ },
+ "checks": [
+  {
+   "name": "duration-equals-input",
+   "passed": true,
+   "method": "逐任务比较 end_minute−start_minute 与 inputs minutes、depends 数组相等（a24_finalize.py 实算）",
+   "detail": {
+    "duration_mismatches": [],
+    "dependency_mismatches": []
+   },
+   "evidence": "schedule.json tasks[].input_minutes 与 duration_minutes 逐项相等"
+  },
+  {
+   "name": "window-0-420-half-open",
+   "passed": true,
+   "method": "断言 0 <= start < end <= 420（a24_common.check_schedule）",
+   "detail": {
+    "min_start": 0,
+    "max_end": 260
+   },
+   "evidence": "全部12任务满足；最右占用为 R12 end=260"
+  },
+  {
+   "name": "one-team-per-task-no-preemption",
+   "passed": true,
+   "method": "每任务单一 team 字段；同团队按 start 排序后断言前项 end <= 后项 start（半开占用）；无切换成本按题意建模",
+   "detail": {
+    "team_option_mismatches": [],
+    "seams": {
+     "design": [
+      [
+       "R01",
+       "R04",
+       25,
+       25
+      ],
+      [
+       "R04",
+       "R07",
+       85,
+       90
+      ],
+      [
+       "R07",
+       "R09",
+       160,
+       160
+      ],
+      [
+       "R09",
+       "R10",
+       205,
+       205
+      ],
+      [
+       "R10",
+       "R12",
+       240,
+       240
+      ]
+     ],
+     "engineering": [
+      [
+       "R02",
+       "R03",
+       20,
+       20
+      ],
+      [
+       "R03",
+       "R05",
+       60,
+       60
+      ],
+      [
+       "R05",
+       "R06",
+       90,
+       90
+      ],
+      [
+       "R06",
+       "R08",
+       135,
+       135
+      ],
+      [
+       "R08",
+       "R11",
+       200,
+       205
+      ]
+     ]
+    },
+    "idle_gaps": [
+     [
+      "design",
+      85,
+      90
+     ],
+     [
+      "engineering",
+      200,
+      205
+     ]
+    ]
+   },
+   "evidence": "同团队零重叠；空档仅设计 85–90、工程 200–205（各5min），与执行图浅灰块一致（execution-board.png 像素探针 y=345/#4F46E5、y=625/#0E7490 连续实色）"
+  },
+  {
+   "name": "dependencies-end-le-start",
+   "passed": true,
+   "method": "对全部依赖边断言前序 end_minute <= 后继 start_minute",
+   "detail": {
+    "edge_count": 16,
+    "edges": [
+     {
+      "pred": "R02",
+      "succ": "R03",
+      "pred_end": 20,
+      "succ_start": 20
+     },
+     {
+      "pred": "R01",
+      "succ": "R04",
+      "pred_end": 25,
+      "succ_start": 25
+     },
+     {
+      "pred": "R01",
+      "succ": "R05",
+      "pred_end": 25,
+      "succ_start": 60
+     },
+     {
+      "pred": "R03",
+      "succ": "R06",
+      "pred_end": 60,
+      "succ_start": 90
+     },
+     {
+      "pred": "R04",
+      "succ": "R07",
+      "pred_end": 85,
+      "succ_start": 90
+     },
+     {
+      "pred": "R05",
+      "succ": "R07",
+      "pred_end": 90,
+      "succ_start": 90
+     },
+     {
+      "pred": "R04",
+      "succ": "R08",
+      "pred_end": 85,
+      "succ_start": 135
+     },
+     {
+      "pred": "R06",
+      "succ": "R08",
+      "pred_end": 135,
+      "succ_start": 135
+     },
+     {
+      "pred": "R07",
+      "succ": "R09",
+      "pred_end": 160,
+      "succ_start": 160
+     },
+     {
+      "pred": "R07",
+      "succ": "R10",
+      "pred_end": 160,
+      "succ_start": 205
+     },
+     {
+      "pred": "R08",
+      "succ": "R10",
+      "pred_end": 200,
+      "succ_start": 205
+     },
+     {
+      "pred": "R09",
+      "succ": "R10",
+      "pred_end": 205,
+      "succ_start": 205
+     },
+     {
+      "pred": "R08",
+      "succ": "R11",
+      "pred_end": 200,
+      "succ_start": 205
+     },
+     {
+      "pred": "R09",
+      "succ": "R11",
+      "pred_end": 205,
+      "succ_start": 205
+     },
+     {
+      "pred": "R10",
+      "succ": "R12",
+      "pred_end": 240,
+      "succ_start": 240
+     },
+     {
+      "pred": "R11",
+      "succ": "R12",
+      "pred_end": 235,
+      "succ_start": 240
+     }
+    ]
+   },
+   "evidence": "16条边全部满足；如 R05 end=90 = R07 start=90、R09 end=205 = R10 start=205"
+  },
+  {
+   "name": "cross-image-schedule-identity",
+   "passed": true,
+   "method": "三图与 schedule.json 同源生成（a24_common.SCHEDULE 单一数据源），看图核对时间/团队/风险编号一致",
+   "detail": {
+    "numbers": [
+     "485",
+     "260",
+     "160",
+     "255",
+     "242.5"
+    ],
+    "final_images": [
+     "execution-board.png",
+     "decision-brief.png",
+     "action-card.png"
+    ]
+   },
+   "evidence": "iterations.jsonl seq3–6 看图记录；board 图注与 card 行的12组时间逐项相同"
+  }
+ ],
+ "lower_bounds": {
+  "dependency_critical_path_minutes": 255,
+  "critical_path_ids": [
+   "R01",
+   "R04",
+   "R07",
+   "R09",
+   "R10",
+   "R12"
+  ],
+  "critical_path_calc": "25+60+70+45+35+20 = 255（忽略资源约束的纯依赖链）",
+  "workload_minutes_total": 485,
+  "team_count": 2,
+  "workload_lb": 242.5,
+  "workload_calc": "485 / 2 = 242.5（两团队工作量下界，按原值记录、不提前取整）",
+  "note": "两下界均小于可达完工260，未证明存在更紧的资源相关下界"
+ },
+ "finish": {
+  "finish_minute": 260,
+  "finish_time": "13:20",
+  "finish_datetime": "2026-11-07T13:20:00+08:00",
+  "buffer_minutes": 160,
+  "buffer_calc": "420 − 260 = 160（截止16:00前剩余）"
+ },
+ "optimality": {
+  "feasible": true,
+  "proven_globally_optimal": true,
+  "statement": "本排程完工 260min 等于穷举得到的全局最小完工，故为全局最优（枚举证明，非仅达到某个下界）",
+  "method": "穷举 R05/R09/R12 的全部 2^3=8 种分队方案；每个方案内取设计与工程各自的队内拓扑次序组合（1×1 至 40×…，共112对），以半开区间模拟每团队单线程占用并校验依赖前序，记录最小完工",
+  "assignments_evaluated": 8,
+  "order_pairs_evaluated": 112,
+  "best_makespan": 260,
+  "makespans_by_assignment": [
+   {
+    "assign": {
+     "R05": "design",
+     "R09": "design",
+     "R12": "design"
+    },
+    "best_makespan": 285,
+    "workload_design": 285,
+    "workload_engineering": 200
+   },
+   {
+    "assign": {
+     "R05": "design",
+     "R09": "design",
+     "R12": "engineering"
+    },
+    "best_makespan": 285,
+    "workload_design": 265,
+    "workload_engineering": 220
+   },
+   {
+    "assign": {
+     "R05": "design",
+     "R09": "engineering",
+     "R12": "design"
+    },
+    "best_makespan": 285,
+    "workload_design": 240,
+    "workload_engineering": 245
+   },
+   {
+    "assign": {
+     "R05": "design",
+     "R09": "engineering",
+     "R12": "engineering"
+    },
+    "best_makespan": 285,
+    "workload_design": 220,
+    "workload_engineering": 265
+   },
+   {
+    "assign": {
+     "R05": "engineering",
+     "R09": "design",
+     "R12": "design"
+    },
+    "best_makespan": 260,
+    "workload_design": 255,
+    "workload_engineering": 230
+   },
+   {
+    "assign": {
+     "R05": "engineering",
+     "R09": "design",
+     "R12": "engineering"
+    },
+    "best_makespan": 260,
+    "workload_design": 235,
+    "workload_engineering": 250
+   },
+   {
+    "assign": {
+     "R05": "engineering",
+     "R09": "engineering",
+     "R12": "design"
+    },
+    "best_makespan": 300,
+    "workload_design": 210,
+    "workload_engineering": 275
+   },
+   {
+    "assign": {
+     "R05": "engineering",
+     "R09": "engineering",
+     "R12": "engineering"
+    },
+    "best_makespan": 300,
+    "workload_design": 190,
+    "workload_engineering": 295
+   }
+  ],
+  "chosen_assignment": {
+   "R05": "engineering",
+   "R09": "design",
+   "R12": "design"
+  },
+  "chosen_makespans": {
+   "R05->design": 285,
+   "R05->engineering": 260
+  },
+  "evidence": {
+   "path_base": "suite_root",
+   "path": "tmp/run-20261011-01/A24/solver-result.json",
+   "script": "tmp/run-20261011-01/A24/scripts/a24_solve.py"
+  }
+ }
+}

@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B05",
+  "run_id": "run-20261011-01",
+  "plan_version": "plan-v1 2026-10-21T03:05:00+08:00 (established_before_first_render=true)",
+  "product": "水线 Waterline · 城市积水避险与出行助手",
+  "real_anchor": {
+    "source_id": "SRC-01",
+    "claim": "暴雨橙色预警标准：3小时内降雨量将达50毫米以上",
+    "authority": "中国气象局《暴雨预警信号》标准",
+    "note": "本套画面中唯一真实数据；四级标尺 蓝Ⅳ/黄Ⅲ/橙Ⅱ/红Ⅰ，当前Ⅱ级"
+  },
+  "fidelity_note": "城市(云州市)、点位、水深、传感器、车辆、上报、泵站、人物均为虚构演示数据；车辆10/20/30cm、行人骑行5/10cm、净空140mm为产品自定演示规则，非官方标准；未做真实用户验证。",
+  "journey_summary": "总览(01)→点详情(02)→路线决策(03)→骑行模式(04)→众包上报(05)→锁屏预警(06)→车机驾驶(07)→运维复核(08)→防汛指挥(09)→个人复盘(10)。市民/骑手/车主/运维/指挥 五类角色，跨手机竖屏/横屏/车机/桌面/大屏五种设备形态，统一 DepthRuler 水位刻度尺视觉语言。",
+  "roles": [
+    "市民通勤",
+    "外卖骑手",
+    "私家车主",
+    "排水运维",
+    "防汛指挥"
+  ],
+  "device_forms": [
+    "手机竖屏",
+    "手机横屏",
+    "车机",
+    "桌面",
+    "指挥大屏"
+  ],
+  "shared_facts": {
+    "points": 6,
+    "blocked_point": "P1 滨江路下穿隧道 32cm 禁止通行",
+    "recommended_route": "避水路线 17 分钟（绕开 P1）",
+    "open_report": "#1042 站前广场地下通道 26cm 待复核（林岚 08:07 提交）",
+    "single_source_of_truth": "b05_data.py"
+  },
+  "steps": [
+    {
+      "seq": 1,
+      "case": "case-01",
+      "title": "首页 · 城市水情总览",
+      "role": "市民通勤",
+      "device": "手机竖屏",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "user_goal": "出门前一眼看清全城哪儿有积水风险、能不能正常通勤",
+      "answers": "全城现在哪些点位有风险、各自多深、什么判定",
+      "carries_from": null,
+      "hands_to": "case-02",
+      "handoff": "列表首位的 P1 滨江路下穿隧道即 case-02 的详情对象",
+      "content_basis": "b05_data 6 点位 + CMA 橙色预警（SRC-01）",
+      "state_after": "看到橙色预警与 1 处禁止通行，决定点进 P1"
+    },
+    {
+      "seq": 2,
+      "case": "case-02",
+      "title": "水点详情 · 滨江路下穿隧道",
+      "role": "市民通勤",
+      "device": "手机竖屏",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "user_goal": "确认这个点位到底多深、水位在涨还是在退、来源可不可信",
+      "answers": "32cm 判定禁止通行，双来源校验，趋势上升",
+      "carries_from": "case-01",
+      "hands_to": "case-03",
+      "handoff": "禁行判定触发『那我怎么走』，进入路线规划",
+      "content_basis": "传感器 WL-BJ-001 + 众包 4 条；P4 8cm 可通行作为替代参照",
+      "state_after": "确认不可通行且在涨，需要一条绕开 P1 的路线"
+    },
+    {
+      "seq": 3,
+      "case": "case-03",
+      "title": "避水路线规划",
+      "role": "市民通勤",
+      "device": "手机竖屏",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "user_goal": "在三条路线里选出既安全又不太慢的一条",
+      "answers": "避水路线 17 分钟推荐；最短 12 分钟但途经禁行 P1",
+      "carries_from": "case-02",
+      "hands_to": "case-04 / case-07",
+      "handoff": "同一决策换到骑手与车主设备上，阈值不同结论不同",
+      "content_basis": "ROUTES 三条 + CAR_CLEAR_MM=140 离地间隙判定",
+      "state_after": "选定避水路线；系统可下发至车机或骑行端"
+    },
+    {
+      "seq": 4,
+      "case": "case-04",
+      "title": "骑行横屏导航",
+      "role": "外卖骑手",
+      "device": "手机横屏",
+      "dimensions": [
+        1688,
+        780
+      ],
+      "user_goal": "骑行中单手扫读，判断当前水点能否直接通过",
+      "answers": "骑手用更严的 5/10cm 阈值：P4 8cm 注意 / P3 15cm 绕行",
+      "carries_from": "case-03",
+      "hands_to": "case-05",
+      "handoff": "骑手在现场最容易第一个发现新积水，引导上报",
+      "content_basis": "ped_risk_of 分级；横屏大字少信息强对比",
+      "state_after": "按骑手规则通过或绕行；若发现新积水则上报"
+    },
+    {
+      "seq": 5,
+      "case": "case-05",
+      "title": "上报积水",
+      "role": "市民/骑手",
+      "device": "手机竖屏",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "user_goal": "用身边参照物估出水深并提交，让系统知道这个点的情况",
+      "answers": "参照台阶第二级估约 26cm，可信度 0.8，提交后待复核",
+      "carries_from": "case-04",
+      "hands_to": "case-06 / case-08",
+      "handoff": "生成上报 #1042：推送面成为通知，运维面进入复核队列",
+      "content_basis": "REPORT #1042 P6 站前广场地下通道",
+      "state_after": "产生 #1042 待复核记录，众包 5 条 + 传感器双源"
+    },
+    {
+      "seq": 6,
+      "case": "case-06",
+      "title": "预警与通知中心（锁屏）",
+      "role": "全体用户",
+      "device": "手机竖屏（锁屏）",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "user_goal": "不打开 App 也能按优先级知道发生了什么",
+      "answers": "预警 > 禁止通行 > 路线 三级推送，各带可解释动作",
+      "carries_from": "case-02 / case-03 / case-05",
+      "hands_to": "case-07",
+      "handoff": "正在开车的用户把路线决策交给车机",
+      "content_basis": "CMA 橙色预警文案 + P1 禁行 + 避水路线",
+      "state_after": "用户在锁屏即知橙Ⅱ级与禁行点，点开进入对应页面"
+    },
+    {
+      "seq": 7,
+      "case": "case-07",
+      "title": "车机 · 驾驶避水提醒",
+      "role": "私家车主",
+      "device": "车机 1280×720",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "user_goal": "驾驶中一眼判断我的车过不过得去，并一键改道",
+      "answers": "P1 32cm 高于净空 14cm → 不可过；改走避水路线",
+      "carries_from": "case-03 / case-06",
+      "hands_to": "case-08",
+      "handoff": "驾驶态的禁行判定同步到运维与指挥视图",
+      "content_basis": "CAR_CLEAR_MM=140 vs P1 32cm，DepthRuler 叠画离地间隙线",
+      "state_after": "接受改道，走避水路线 17 分钟"
+    },
+    {
+      "seq": 8,
+      "case": "case-08",
+      "title": "排水运维值守台",
+      "role": "排水运维",
+      "device": "桌面 1440×900",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "user_goal": "复核众包上报真伪、掌握传感器与泵站负载、处置事件",
+      "answers": "#1042 与传感器 26.0cm 一致可采纳；3 座泵站 2 运行 1 检修",
+      "carries_from": "case-05",
+      "hands_to": "case-09",
+      "handoff": "处置结果与事件汇总给市级指挥",
+      "content_basis": "MOD_QUEUE + OPS（泵站/事件/在岗）",
+      "state_after": "#1042 采纳/驳回决定其在市民端的可见状态"
+    },
+    {
+      "seq": 9,
+      "case": "case-09",
+      "title": "市级防汛指挥大屏",
+      "role": "防汛指挥",
+      "device": "大屏 1920×1080",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "user_goal": "远距离掌握全城风险分布与时序，下达调度指令",
+      "answers": "6 点按风险着色分布、08:00→08:14 事件时序、三条调度建议",
+      "carries_from": "case-01 / case-08",
+      "hands_to": "case-10",
+      "handoff": "本轮降雨结束后，个人端收到雨后复盘",
+      "content_basis": "全系数据汇总 + ESCALATION 时序",
+      "state_after": "调度 A/B/C 落地，本轮降雨处置完成"
+    },
+    {
+      "seq": 10,
+      "case": "case-10",
+      "title": "雨后个人周报",
+      "role": "市民通勤（个人）",
+      "device": "手机竖屏",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "user_goal": "回看这周它帮我省了多少时间、我贡献了什么",
+      "answers": "上周 5 次避水绕行、省 40 分钟、上报 3 采纳 2、覆盖 6 点",
+      "carries_from": "case-05 / case-08",
+      "hands_to": null,
+      "handoff": "闭环终点：个人收益与城市数据在复盘中汇合",
+      "content_basis": "WEEK 周数据（10月12日–10月18日，上周）",
+      "state_after": "用户获得成就感，愿意继续上报与使用"
+    }
+  ],
+  "consistency_guards": [
+    "b05_data.py 为单一事实源，十张图的点位/深度/路线/上报/泵站均从此读取并带断言",
+    "风险色四档全系统一：#2FBF71/#2E86DE/#F2A93B/#4572E4",
+    "上报状态色统一：待复核 #2E86DE / 已采纳 #2FBF71 / 已驳回 MUTED（case-08 与 case-10 断言同值）",
+    "case-05 的 #1042 与 case-08 复核队列首行、case-10 个人周报首行三处互指且字段一致",
+    "NOW_DATE=2026-10-21（周三）贯穿十图；case-10 因此标注为上周 10月12日–10月18日"
+  ],
+  "verification_boundary": {
+    "user_testing": "未做；可读性判断基于目标尺寸逐张实际渲染检查",
+    "runtime": "未实现前端运行程序，十张均为静态画面",
+    "algorithm": "传感器融合、路线算法、推送链路为概念演示，不声称可运行",
+    "data": "除 CMA 预警分级外全部为虚构演示数据"
+  },
+  "edges": [
+    {
+      "from": "case-01",
+      "to": "case-02",
+      "note": "列表首位的 P1 即详情对象"
+    },
+    {
+      "from": "case-02",
+      "to": "case-03",
+      "note": "禁行判定触发路线规划"
+    },
+    {
+      "from": "case-03",
+      "to": "case-04",
+      "note": "同一决策换骑手阈值(5/10cm)"
+    },
+    {
+      "from": "case-03",
+      "to": "case-07",
+      "note": "同一决策换车机离地间隙判定"
+    },
+    {
+      "from": "case-04",
+      "to": "case-05",
+      "note": "骑手现场发现新积水引导上报"
+    },
+    {
+      "from": "case-05",
+      "to": "case-06",
+      "note": "上报触发的禁行推送成为锁屏通知"
+    },
+    {
+      "from": "case-05",
+      "to": "case-08",
+      "note": "上报 #1042 进入运维复核队列"
+    },
+    {
+      "from": "case-06",
+      "to": "case-07",
+      "note": "驾驶中用户把路线决策交给车机"
+    },
+    {
+      "from": "case-07",
+      "to": "case-08",
+      "note": "驾驶态禁行判定同步到运维视图"
+    },
+    {
+      "from": "case-08",
+      "to": "case-09",
+      "note": "处置结果汇总给市级指挥"
+    },
+    {
+      "from": "case-09",
+      "to": "case-10",
+      "note": "本轮降雨结束后个人端收到复盘"
+    }
+  ],
+  "fan_in": {
+    "case-04": [
+      "case-03"
+    ],
+    "case-06": [
+      "case-05"
+    ],
+    "case-07": [
+      "case-03",
+      "case-06"
+    ],
+    "case-08": [
+      "case-05",
+      "case-07"
+    ]
+  }
+}

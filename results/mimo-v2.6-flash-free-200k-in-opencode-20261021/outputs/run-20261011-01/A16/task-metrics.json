@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A16",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "像素取证确认7项数据/视觉/叙事问题(截断轴/图例反色/柱高与轴不匹配/Q3利润错/标题副标题结论三处假叙述)；重建为共同零点1280x900报告，8柱高度经像素核验=value*1.2px全部匹配，图例映射正确，Q4重点由三指标论证；口径统一-5.2%",
+  "output_dir": "outputs/run-20261011-01/A16",
+  "temp_dir": "tmp/run-20261011-01/A16",
+  "timings": {
+    "started_at": "2026-10-15T14:20:00+08:00",
+    "started_at_note": "approximate: A15 completed 14:19:36+08:00, A16 task files read and flawed-chart forensic probe began; first A16 render 14:33:00.404+08:00",
+    "ended_at": "2026-10-15T14:42:00+08:00",
+    "elapsed_seconds": 1320,
+    "elapsed_note": "wall clock 14:20:00 -> 14:42:00 +08:00 (single session, no platform interruption)",
+    "first_usable_image_seconds": 780,
+    "first_usable_image_note": "start -> first successful render (A16-req-0001, 14:33:00.404+08:00); preceding ~13 min were forensic pixel probing of flawed-report.png + source.csv cross-check (no service requests)",
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_wait_note": "single-shot automated suite run, no user feedback rounds",
+    "rate_limit_wait_seconds": 0,
+    "rate_limit_wait_note": "no 429 observed across 3 renders",
+    "queue_wait_seconds": null,
+    "queue_wait_note": "server queue time not exposed; client elapsed only",
+    "request_duration_sum_seconds": 11.38,
+    "request_duration_sum_note": "sum of the 3 render requests in requests.jsonl (6.598+2.314+2.467); not the task wall clock",
+    "server_timing_source": null,
+    "server_timing_source_note": "no Server-Timing header; requestId not returned on 200 responses"
+  },
+  "counts": {
+    "snapshot_requests": 3,
+    "successful_snapshot_requests": 3,
+    "failed_snapshot_requests": 0,
+    "failed_snapshot_requests_note": "all 3 DSLs parsed and rendered first attempt; no 400/401/429; range 2.314s-6.598s",
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "other_service_requests_note": "ai-guide.md / parser-tags / fonts list reused from the suite doc cache (no new HTTP); all diagnosis came from local PIL probes of the public flawed-report.png + source.csv",
+    "probe_requests": 0,
+    "probe_requests_note": "no throwaway render probes; forensic probing was local pixel analysis (probe_flawed.py), every render was a full candidate v1..v3",
+    "dsl_versions": 3,
+    "dsl_versions_note": "corrected-v1..v3.snapshot, each rendered once; v3 delivered",
+    "image_views": 4,
+    "image_views_note": "flawed-report.png (diagnosis), corrected-v1 full, corrected-v2 full, corrected-v3 (delivered) full",
+    "completed_visual_iterations": 2,
+    "completed_visual_iterations_note": "v1->v2 (widen title/subtitle/footer text boxes to stop line-wrap overlap), v2->v3 (fix Q3 QoQ percentage -6.7%->-5.2% in image + both JSONs): each = view old -> modify -> render -> open new image and compare",
+    "baseline_iterations": 1,
+    "baseline_iterations_note": "v1: forensic-probe-driven generation, rendered, viewed full-size",
+    "measurement_runs": 2,
+    "measurement_runs_note": "probe_flawed.py on the flawed chart (bar rects/gridlines/legend) + verify_bars.py on corrected-v2 and corrected-v3 (8/8 bars match value*1.2)"
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A16/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A16/iterations.jsonl"
+  },
+  "outputs": [
+    "outputs/run-20261011-01/A16/corrected-report.png",
+    "outputs/run-20261011-01/A16/corrected-report.snapshot",
+    "outputs/run-20261011-01/A16/findings.json",
+    "outputs/run-20261011-01/A16/corrected-data.json",
+    "outputs/run-20261011-01/A16/snapshot-usage.md",
+    "outputs/run-20261011-01/A16/task-metrics.json"
+  ],
+  "candidates": [
+    "tmp/run-20261011-01/A16/drafts/corrected-v1.png",
+    "tmp/run-20261011-01/A16/drafts/corrected-v2.png",
+    "tmp/run-20261011-01/A16/flawed-probe.json",
+    "tmp/run-20261011-01/A16/bar-verify.json"
+  ],
+  "rounds": [],
+  "unresolved_issues": [],
+  "audit_summary": {
+    "diagnosis_method": "opened flawed-report.png first, then PIL probe (probe_flawed.py) measured bar rectangles, gridline y-positions and legend swatch colors (flawed-probe.json); cross-checked every finding against inputs/source.csv before asserting - no assumed generic errors",
+    "findings": "7 confirmed issues (findings.json F1-F7): F1 false title (Q3 highest profit, actually Q4 54>32); F2 false subtitle (revenue continuously rising, actually Q3 128<Q2 135, -5.2% QoQ); F3 swapped legend colors (legend blue=cost/amber=revenue but blue bars carry revenue values, whole chart magnitude inverted); F4 truncated y-axis starting at 100 not 0 (Q1 cost 90 and Q3 cost 96 fall below axis minimum, differences exaggerated); F5 bar heights drawn from 0 baseline but displayed on 100-baseline axis (Q3 blue bar top reads ~173 vs label 128 - geometry itself lied, not just labels); F6 Q3 profit wrong (42 shown, 128-96=32 actual); F7 wrong recommendation (concentrate on Q3 for highest profit; actually Q4 leads revenue+profit+lowest cost-rate)",
+    "uncertainties": "3 items kept separate from confirmed errors (U1-U3): color/corner style preferences (aesthetic, not numerical), label numbers themselves (correct - kept), decorative footer text (no OCR sweep performed)",
+    "corrections": "shared zero baseline 0-200 (ticks 0/50/100/150/200, all 8 bars from y=500); bar height = round(value*1.2px) computed from data not hand-tuned; legend remapped blue=revenue/amber=cost matching values; title/subtitle/conclusion all rewritten to source.csv-traceable statements with unified -5.2% QoQ figure; focus quarter Q4 argued from data (revenue 180 max, profit 54 max, cost-rate 70% min)",
+    "bar_verification": "verify_bars.py color-scans the final render bar-by-bar: 8/8 bars match value*1.2 within 2px (rounded corners/antialias), evidence bar-verify.json - proves bar heights correspond to values, not just fixed labels",
+    "integrity": "delivered corrected-report.png byte-identical to A16-req-0003 service response (md5 94282e94311e9d6040a7d2ef433b8fef, 106365 bytes, no post-processing); corrected-report.snapshot md5 24c79c71e878f0c7cf18b08f35a7452b; 19 shapes + 46 texts all DSL-constructed, no external images, no embedding of the flawed chart"
+  }
+}

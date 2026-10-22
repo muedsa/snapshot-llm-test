@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "task_id": "A23",
+  "path_base": "output_dir",
+  "output_dir": "outputs/run-20261011-01/A23",
+  "status": "completed",
+  "title": "格式边界下的动画分镜交付",
+  "timings": {
+    "started_at": "2026-10-19T14:55:00.995+08:00",
+    "ended_at": "2026-10-19T16:07:35.623965+08:00",
+    "elapsed_seconds": 4354.63,
+    "first_usable_image_seconds": 678.43,
+    "first_usable_image_note": "frame-01(可交付帧)渲染完成时刻；探针图110.2s更早但非交付物",
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_note": "预置任务自动执行，无逐题用户反馈（确认无发生故记0）",
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "queue_wait_reason": "客户端不可测排队时间，按约定记 null",
+    "request_duration_sum_seconds": 23.93,
+    "request_duration_sum_note": "19次渲染 measured elapsed 之和；文档/字体复用本run缓存无新增HTTP；总墙钟4354.63s远大于请求耗时（含能力判定、设计、参数化生成、像素/几何验证、看图、写报告）"
+  },
+  "counts": {
+    "snapshot_requests": 19,
+    "successful_snapshot_requests": 18,
+    "failed_snapshot_requests": 1,
+    "failed_detail": "A23-cover-01 HTTP400 RENDER_ERROR(Positioned误置于Opacity内)，改DSL后A23-cover-02成功，失败响应已留档",
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "dsl_versions": 5,
+    "dsl_versions_note": "frame v1/v2/v3 + cover v1/v2",
+    "image_view_events": 10,
+    "images_opened": 10,
+    "image_view_note": "接触表2版 + 封面1 + 逐帧600x600共6 + 探针1；全部真实打开查看",
+    "completed_visual_iterations": 2,
+    "baseline_entries": 1,
+    "iteration_entries_total": 4,
+    "iteration_note": "baseline1 + syntax-fix1(封面DSL) + visual2(遮挡修复与复验)；1次视觉迭代由像素/几何分析驱动并已注明"
+  },
+  "capability_findings": {
+    "method": "真实文档阅读 + 探针渲染实测，不臆造参数",
+    "png_cover": "native",
+    "transparent_background": "native",
+    "transform_rotation": "native (positive angle clockwise)",
+    "editable_svg": "unsupported",
+    "cmyk_print": "unsupported",
+    "animated_gif": "unsupported -> 6 transparent PNG keyframes + timing.json",
+    "evidence": "tmp/run-20261011-01/A23/requests.jsonl (A23-probe-01, A23-cover-01/02) + _suite/docs/"
+  },
+  "design": {
+    "units": 12,
+    "unit_ids": "U01-U12",
+    "unit_invariants": "type/width/height/rgb/alpha conserved; only x,y,rotation change",
+    "easing_formula": "s(u)=(1-u)^1.35; u in {0,.2,.4,.6,.8,1}",
+    "final_frame": "F6 recognizable camera (structure -> image)",
+    "frame_size_px": [600, 600],
+    "cover_size_px": [1200, 800]
+  },
+  "loop_seam": {
+    "seamless": false,
+    "window": "t=1250ms(F6) -> t=1500ms==0ms(F1)",
+    "mean_displacement_px": 255.67,
+    "min_displacement_px": 76.42,
+    "max_displacement_px": 431.51,
+    "mean_ratio_vs_last_step": 8.78,
+    "rotation_diff_range_deg": [10, 30],
+    "direction": "converge -> diverge (reversed)",
+    "honesty": "记录为不宣称无缝；timing.json 与 frame-data.json 均记录跳变位置与影响"
+  },
+  "verification": {
+    "min_visible_frac_overall": 0.508,
+    "color_conservation": "12 colors conserved across all 6 frames",
+    "transparency": "RGBA, corner alpha=0, transparent area 0.62-0.74",
+    "cover_opaque": true,
+    "report": "tmp/run-20261011-01/A23/verify-report.json"
+  },
+  "works": {
+    "cover.png": {"md5": "760df51fee7517a88ad2d5568bf12371", "bytes": 83265, "dims": [1200, 800], "rid": "A23-cover-02"},
+    "cover.snapshot": {"md5": "4424a12e569306be1a95b671d6fbc75e", "bytes": 6976},
+    "frame-01.png": {"md5": "a3789c3966cfa42aebe32289312316fc", "bytes": 27267, "dims": [600, 600], "rid": "A23-f01c"},
+    "frame-01.snapshot": {"md5": "c096b23f6d4e3e0875e08514efbbe0aa", "bytes": 2816},
+    "frame-02.png": {"md5": "586082525d2916324aa85767bd4ab54a", "bytes": 25696, "dims": [600, 600], "rid": "A23-f02c"},
+    "frame-02.snapshot": {"md5": "e1a1200653142305ab80e826003eee8c", "bytes": 2904},
+    "frame-03.png": {"md5": "5c999890d8f0dc06d36a77c6b5b0e5d1", "bytes": 22739, "dims": [600, 600], "rid": "A23-f03c"},
+    "frame-03.snapshot": {"md5": "889fd6acbd76cb534d1895ae2c9286cb", "bytes": 2900},
+    "frame-04.png": {"md5": "f271211711e737b4e3412f212c29a55d", "bytes": 20455, "dims": [600, 600], "rid": "A23-f04c"},
+    "frame-04.snapshot": {"md5": "e0378ae30b1bc5724f4e27b8aa942bb8", "bytes": 2911},
+    "frame-05.png": {"md5": "30fdd7f5bb8019cf8d0a844956beff56", "bytes": 18240, "dims": [600, 600], "rid": "A23-f05c"},
+    "frame-05.snapshot": {"md5": "314fa0b223c2d9e890b58cf1c5dd456d", "bytes": 2915},
+    "frame-06.png": {"md5": "8a0a291dcb52dbbe200238fe3825835b", "bytes": 10947, "dims": [600, 600], "rid": "A23-f06c"},
+    "frame-06.snapshot": {"md5": "57150660fe0ad2265d8da308bff2b4de", "bytes": 2111}
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A23/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A23/iterations.jsonl",
+    "scripts": "tmp/run-20261011-01/A23/scripts/"
+  },
+  "unresolved_issues": []
+}

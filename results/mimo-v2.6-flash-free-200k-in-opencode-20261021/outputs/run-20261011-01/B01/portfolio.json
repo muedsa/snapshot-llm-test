@@ -1,0 +1,1524 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B01",
+  "run_id": "run-20261011-01",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets（本题全部纯 DSL，未使用外部素材）",
+  "curatorial_statement": "11 件作品覆盖应急/零售/体育/能源/剧场/开源/医疗/户外/休闲/赛事/天文十一个真实领域切片，媒介含值班大屏、手机竖版、A4 打印、超宽电视屏、评审大屏与方形社媒图。每件先定受众/场景/目标与 G1–G6完成标准（2026-10-19T17:50:18+08:00 建立，早于首张渲染 18:00:13），再纯 DSL 实现；数据自洽由生成脚本断言保证，文字宽度预算避免截断；共 24 次渲染全部 200、13 次完整视觉迭代。",
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "汛眼 · 城市内涝值班图板",
+      "audience": "市防汛办值班员（值班室大屏旁的桌面打印图板）",
+      "use_context": "主汛期夜间值班，1600×1100 横板打印/桌面屏，30 秒扫一眼定处置顺序",
+      "user_goal": "10 分钟内决定封路顺序与泵车派往",
+      "content_basis": "自拟虚构演示数据：12 个监测点水深/趋势、3 处下穿隧道剖面、2 台泵车",
+      "visual_intent": "暗色雷达指挥风：水深梯度条带 + 隧道纵剖面小图 + 处置规则条",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        1600,
+        1100
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c01-v3）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c01-v1",
+        "B01-c01-v2",
+        "B01-c01-v3"
+      ],
+      "iteration_ids": [
+        "c01-v1",
+        "c01-v2",
+        "c01-v3"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1600×1100",
+          "evidence": [
+            "outputs/run-20261011-01/case-01/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-01/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：条宽 d×(BW/100) 与水位高 d/100×ch 由生成式保证；水深/趋势/等级三列一一对应",
+          "evidence": [
+            "outputs/run-20261011-01/case-01/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-01/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：12 点深度条+数值+趋势+等级胶囊、3 隧道剖面+封路判定+处置、泵车 2 台派往+时限、响应等级+上报/安全规则",
+          "evidence": [
+            "outputs/run-20261011-01/case-01/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-01/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-01/final.png",
+      "deviation_note": ""
+    },
+    {
+      "id": "case-02",
+      "title": "屿咖啡 · 周备货看板",
+      "audience": "独立咖啡店店长（后场平板/手机，打烊后查看）",
+      "use_context": "打烊后 10 分钟备货决策，1080×1440 竖版",
+      "user_goal": "按上周杯量与天气预报决定豆/奶/杯三品类订量",
+      "content_basis": "自拟虚构演示数据：7 日杯量 186/203/191/244/268/312/287（合计 1691 杯）",
+      "visual_intent": "手冲暖调纸感：白色卡片 + 牛皮纸层次 + 环形库存刻度",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1080,
+        1440
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c02-v2）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c02-v1b",
+        "B01-c02-v2"
+      ],
+      "iteration_ids": [
+        "c02-v1b",
+        "c02-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1080×1440",
+          "evidence": [
+            "outputs/run-20261011-01/case-02/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-02/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：断言 TOTAL==1691；订量=预测消耗−现存+安全垫（豆 31.5−12+6=25.5→2×20kg；奶 210−…",
+          "evidence": [
+            "outputs/run-20261011-01/case-02/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-02/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：7 日杯量柱状+合计+日均线、三品类库存可用天数环+安全线判定、订量结论 3 行（算式+订多少+覆盖天数）、到货时间与预测备注",
+          "evidence": [
+            "outputs/run-20261011-01/case-02/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-02/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-02/final.png",
+      "deviation_note": ""
+    },
+    {
+      "id": "case-03",
+      "title": "Ridgeline · 赛段剖面与补给策略",
+      "audience": "职业自行车队体育主管（车队大巴电视屏，赛前简报）",
+      "use_context": "赛前 5 分钟简报，1800×760 超宽横屏",
+      "user_goal": "确定 3 个补给点里程与最后 20km 配速方案",
+      "content_basis": "自拟虚构赛段：168km 山地赛段 17 个关键点海拔（240m→1560m→310m）",
+      "visual_intent": "超宽山形剖面为主角：km/m 真实比例 + 坡度分色斜线 + 决胜段高亮",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        1800,
+        760
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c03-v2）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c03-v1",
+        "B01-c03-v2"
+      ],
+      "iteration_ids": [
+        "c03-v1",
+        "c03-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1800×760",
+          "evidence": [
+            "outputs/run-20261011-01/case-03/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-03/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：剖面点 (km,m) 经 sx()/sy() 线性映射；坡度 g=(Δe/Δkm)/10×100 与分色阈值（6.5/4…",
+          "evidence": [
+            "outputs/run-20261011-01/case-03/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-03/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：全剖面+坡度分色+图例、3 补给窗 km 范围+虚线标记、最后 20km 决胜段高亮+配速/功率、风险（横风/降温）",
+          "evidence": [
+            "outputs/run-20261011-01/case-03/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-03/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-03/final.png",
+      "deviation_note": ""
+    },
+    {
+      "id": "case-04",
+      "title": "Sonnenspeicher · 家庭能源日调度卡",
+      "audience": "装光伏+储能的家庭用户（厨房贴/手机）",
+      "use_context": "每天早间安排大功率用电，1200×1600 竖版",
+      "user_goal": "决定洗衣机/洗碗机/电动车三件事各自的最佳用电时段",
+      "content_basis": "自拟虚构演示数据：24h 电价三段（0.28/0.36/0.44€）、光伏钟形出力（峰值 4.8kW）、电池 SOC 逐时曲线",
+      "visual_intent": "能量流叙事：电价底色带 + 光伏山形 + SOC 充放带 + 负载时段彩条",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1200,
+        1600
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c04-v2）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c04-v1",
+        "B01-c04-v2"
+      ],
+      "iteration_ids": [
+        "c04-v1",
+        "c04-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1200×1600",
+          "evidence": [
+            "outputs/run-20261011-01/case-04/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-04/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：断言 naive=9.4×0.44=4.136、plan=1.2×0.36+1.0×0.36+7.2×0.28=2.80…",
+          "evidence": [
+            "outputs/run-20261011-01/case-04/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-04/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：24h 电价阶梯+时段标签、光伏出力曲线+峰值、电池 SOC 带、三负载建议时段+电价依据、当日省钱数+对比条",
+          "evidence": [
+            "outputs/run-20261011-01/case-04/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-04/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-04/final.png",
+      "deviation_note": ""
+    },
+    {
+      "id": "case-05",
+      "title": "琥珀剧院 · 今晚登台牌",
+      "audience": "舞台监督与演员（后台侧幕张贴，1.5m 处站立阅读）",
+      "use_context": "演出现场后台，900×1600 竖版张贴",
+      "user_goal": "三幕换景 cue 与道具/演员上场位置时间一目了然",
+      "content_basis": "自拟虚构剧目《雾港》第 24 场：三幕+两幕间+谢幕时间轴、8 条 CUE",
+      "visual_intent": "黑金剧场美学：幕布渐变+褶皱层、CUE 表、舞台平面俯视图",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        900,
+        1600
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c05-v2）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c05-v1",
+        "B01-c05-v2"
+      ],
+      "iteration_ids": [
+        "c05-v1",
+        "c05-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 900×1600",
+          "evidence": [
+            "outputs/run-20261011-01/case-05/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-05/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：时间轴块起止与 CUE 时间同源（19:00–21:55）；幕间合计 15min 与块宽一致",
+          "evidence": [
+            "outputs/run-20261011-01/case-05/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-05/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：三幕+幕间+谢幕时间轴、8 条 CUE（时间/系统/内容/执行位）、舞台平面+4 道具位+上下场门、警铃规则+签名位",
+          "evidence": [
+            "outputs/run-20261011-01/case-05/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-05/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-05/final.png",
+      "deviation_note": ""
+    },
+    {
+      "id": "case-06",
+      "title": "启航计划 · 首次贡献者导航",
+      "audience": "想给开源项目提第一个 PR 的新手开发者（笔记本屏）",
+      "use_context": "周末上手，1400×1000 横版",
+      "user_goal": "30 分钟内从选 issue 到开 PR 的每一步与命令",
+      "content_basis": "自拟虚构社区“启航计划”；git 命令为通用真实用法",
+      "visual_intent": "终端编辑器美学：暗底命令卡 + 编号管道 + 社区高亮配色",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        1400,
+        1000
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c06-v1）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c06-v1"
+      ],
+      "iteration_ids": [
+        "c06-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1400×1000",
+          "evidence": [
+            "outputs/run-20261011-01/case-06/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-06/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：5 步时限 5+6+10+6+3=30 分钟与标题承诺一致",
+          "evidence": [
+            "outputs/run-20261011-01/case-06/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-06/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：5 步流程+每步命令+时限、好第一 issue 三标签+判定口径、常见坑 3 条+解法、30 分钟总预算",
+          "evidence": [
+            "outputs/run-20261011-01/case-06/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-06/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-06/final.png",
+      "deviation_note": ""
+    },
+    {
+      "id": "case-07",
+      "title": "安诺药房 · 处方核对单",
+      "audience": "社区药房药师（柜台 A4 打印，逐行勾核）",
+      "use_context": "发药核对场景，1240×1754 A4 竖版打印",
+      "user_goal": "核对 5 位患者 7 张处方并拦下 1 处高危相互作用 + 1 处剂量异常",
+      "content_basis": "自拟虚构处方：王建国/刘敏/陈晓/赵岚/孙博共 7 张",
+      "visual_intent": "临床秩序感：白底细网格 + 红/橙安全警示 + 核对流程 + 交代逐患者",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1240,
+        1754
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c07-v3）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c07-v1",
+        "B01-c07-v2",
+        "B01-c07-v3"
+      ],
+      "iteration_ids": [
+        "c07-v1",
+        "c07-v2",
+        "c07-v3"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1240×1754",
+          "evidence": [
+            "outputs/run-20261011-01/case-07/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-07/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：剂量核对口径 10mg/kg×22kg=220mg <300mg 判异常成立；华法林+他汀为真实药学相互作用类别（演示用…",
+          "evidence": [
+            "outputs/run-20261011-01/case-07/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-07/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：7 张处方×6 核对项矩阵、高危相互作用红卡+处置、剂量异常橙卡+换算依据、核对流程+逐患者交代+签名位",
+          "evidence": [
+            "outputs/run-20261011-01/case-07/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-07/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-07/final.png",
+      "deviation_note": "v1 渲染成功但被生成期告警触发的结构重写取代，最终审查时补看 v1 留证"
+    },
+    {
+      "id": "case-08",
+      "title": "峰线向导 · 明日窗口判定",
+      "audience": "周末徒步领队（出发前夜手机查看）",
+      "use_context": "大本营/家中，1080×1920 手机竖版",
+      "user_goal": "判断明日是否出发、走哪条线、几点折返",
+      "content_basis": "自拟虚构山区气象：13 个小时段风/云/降水/气温",
+      "visual_intent": "暗夜山地风：判定卡 + 逐小时窗口表 + 线路三选一",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c08-v1）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c08-v1"
+      ],
+      "iteration_ids": [
+        "c08-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1080×1920",
+          "evidence": [
+            "outputs/run-20261011-01/case-08/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-08/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：断言 13 段数据齐全、max(风)=18、max(降水)=80 与图一致；判定“窗口06:00–11:00”与表中绿色…",
+          "evidence": [
+            "outputs/run-20261011-01/case-08/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-08/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：出发判定+依据、逐小时风/云/降水/气温、三条线路取舍+折返时刻、装备底线",
+          "evidence": [
+            "outputs/run-20261011-01/case-08/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-08/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-08/final.png",
+      "deviation_note": "计划原文的“海拔分层带”改为逐小时窗口表+线路卡，user_goal（出发/折返/选线）完整覆盖；G1–G6 标准未变"
+    },
+    {
+      "id": "case-09",
+      "title": "赶海历 · 东岙湾潮汐窗口",
+      "audience": "周末赶海爱好者（出发前手机 + 渔市张贴）",
+      "use_context": "出发决策，1500×1000 横版",
+      "user_goal": "按当日潮位曲线决定去哪片滩涂、采什么、几点必须撤",
+      "content_basis": "自拟虚构潮汐：四极值（05:20 高 4.2m / 11:40 低 0.6m / 17:50 高 4.0m / 23:55 低 0.8m）余弦拟合",
+      "visual_intent": "潮位曲线主角：真实双峰正弦 + 赶海窗口带 + 挖点三卡 + 安全线",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        1500,
+        1000
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c09-v2）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c09-v1",
+        "B01-c09-v2"
+      ],
+      "iteration_ids": [
+        "c09-v1",
+        "c09-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1500×1000",
+          "evidence": [
+            "outputs/run-20261011-01/case-09/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-09/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：断言四个极值处 level() 精确还原、[0,24] 全域 min=0.6/max=4.2；窗口 09:20–14:1…",
+          "evidence": [
+            "outputs/run-20261011-01/case-09/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-09/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：24h 潮位曲线+四极值标注、赶海窗口带+撤离提醒、3 挖点（步行/目标品类/收桶时限）、三条安全线+装备",
+          "evidence": [
+            "outputs/run-20261011-01/case-09/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-09/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-09/final.png",
+      "deviation_note": "计划原文的“滩涂平面地图”改为挖点信息卡（手机横版下卡片信息密度更高）；user_goal（去哪/采什么/几点撤）完整覆盖；G1–G6 标准未变"
+    },
+    {
+      "id": "case-10",
+      "title": "金杯拉花赛 · 评审记分屏",
+      "audience": "比赛评委、观众与直播（舞台侧屏，远距可读）",
+      "use_context": "决赛现场大屏，1600×900 横版",
+      "user_goal": "看到四位选手两轮得分构成与排名变化",
+      "content_basis": "自拟虚构赛事：4 选手×2 轮×3 维度评分（风味 40/图案 40/完成度 20）",
+      "visual_intent": "记分牌黑金：选手大卡（名次/总分/轮次走势/变化胶囊）+ 明细表",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1600,
+        900
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c10-v2）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c10-v1",
+        "B01-c10-v2"
+      ],
+      "iteration_ids": [
+        "c10-v1",
+        "c10-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1600×900",
+          "evidence": [
+            "outputs/run-20261011-01/case-10/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-10/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：断言总分互异无并列、冠军 180.0；轮小计=三维度和、总分=两轮和；卡片“首轮第 N”与明细表变化列同源",
+          "evidence": [
+            "outputs/run-20261011-01/case-10/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-10/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：4 选手卡：名次/总分/两轮走势/维度堆叠条、排名变化胶囊+首轮名次、两轮分维度明细表、评分维度说明",
+          "evidence": [
+            "outputs/run-20261011-01/case-10/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-10/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-10/final.png",
+      "deviation_note": "计划原文的“实时雷达+杯面几何+倒计时”改为终局记分屏（两轮完毕的总成绩发布场景，排名变化信息更完整）；user_goal（得分构成+排名变化）覆盖；G1–G6 标准未变"
+    },
+    {
+      "id": "case-11",
+      "title": "夜巡观星 · 今晚观测条件卡",
+      "audience": "城市天文爱好者（傍晚出发前手机扫一眼，亦可发小组帖）",
+      "use_context": "出发决策，1200×1200 方形",
+      "user_goal": "选出今晚最佳观星时段，并对比市内/近郊两观测点",
+      "content_basis": "自拟虚构观测数据：残月 18%（月出 03:12）、云量 12%、视宁度 3/5、透明度 4/5、Bortle 6/8 两站点",
+      "visual_intent": "深空夜色：星野底 + 残月几何 + 四项条件点阵 + 时段评分 + 两站点对比",
+      "png": "case-11/final.png",
+      "snapshot": "case-11/final.snapshot",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": "Container/DecoratedBox/Positioned/Stack/SizedBox/Text/Transform/Opacity/gradient/boxShadow/圆角与描边；文本宽度预算 tw/fit",
+      "completion_criteria": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查"
+        }
+      ],
+      "visual_review": "终版整图已看（c11-v4）；初版与中间版全部看图，修复依据记于 iterations.jsonl",
+      "request_ids": [
+        "B01-c11-v1",
+        "B01-c11-v2",
+        "B01-c11-v3",
+        "B01-c11-v4"
+      ],
+      "iteration_ids": [
+        "c11-v1",
+        "c11-v2",
+        "c11-v3",
+        "c11-v4"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "v1 @ 2026-10-19T17:50:18+08:00（tmp/run-20261011-01/B01/plan-v1.json，suite_root 基准）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "G1",
+          "condition": "经真实open-snapshot服务HTTP200渲染，PNG尺寸与计划一致，final.png为服务原始字节",
+          "method": "requests.jsonl + PNG头读取 + md5对比",
+          "result": "通过：200 + md5 一致 + IHDR 1200×1200",
+          "evidence": [
+            "outputs/run-20261011-01/case-11/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G2",
+          "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+          "method": "整图看图 + 关键区放大裁片；生成期按CJK=字号px、ASCII≈0.56×字号做宽度预算",
+          "result": "通过：宽度预算 + 整图看图无截断",
+          "evidence": [
+            "outputs/run-20261011-01/case-11/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G3",
+          "condition": "图上数字/几何与生成数据一致（比例、计算结果可复核）",
+          "method": "生成脚本内断言 + 看图核对",
+          "result": "通过：星野随机种子固定可复现；残月几何与“月出 03:12、月龄 25.4 天”方向一致",
+          "evidence": [
+            "outputs/run-20261011-01/case-11/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G4",
+          "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+          "method": "看图 + 必要时像素探针",
+          "result": "通过：修复记录见 iterations.jsonl，终版无缺陷",
+          "evidence": [
+            "outputs/run-20261011-01/case-11/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G5",
+          "condition": "达成该用例user_goal所需的关键决策信息全部在图上",
+          "method": "对照本计划content_scope逐项看图勾对",
+          "result": "通过：月相几何+月出时间、四项条件+点阵刻度、时段评分选最佳窗口、推荐目标 3 条、市内/近郊两站点对比、器材建议",
+          "evidence": [
+            "outputs/run-20261011-01/case-11/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G6",
+          "condition": "虚构品牌/数据在case.md如实声明",
+          "method": "文件审查",
+          "result": "通过：虚构声明见 case.md",
+          "evidence": [
+            "outputs/run-20261011-01/case-11/final.png",
+            "tmp/run-20261011-01/B01/iterations.jsonl",
+            "tmp/run-20261011-01/B01/copy-report.json"
+          ],
+          "status": "passed"
+        }
+      ],
+      "final_artifact": "outputs/run-20261011-01/case-11/final.png",
+      "deviation_note": "v3 时对照计划发现 user_goal 两方案缺口，v4 补齐（属于按计划标准补全，非标准变更；G1–G6 未变）"
+    }
+  ],
+  "final_collection_review": "逐张终版已实际查看：11/11 完整可用；作品相互独立（领域/媒介/数据结构/配色各异，无版式复用）；已知缺陷全部修复（详 case.md 迭代记录）；无未解决问题。",
+  "unresolved_issues": []
+}

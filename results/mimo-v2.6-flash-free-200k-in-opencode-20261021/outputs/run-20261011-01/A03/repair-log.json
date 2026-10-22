@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "source_draft": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+  "initial_attempt": {
+    "request_id": "A03-req-0001",
+    "dsl_path_base": "suite_root",
+    "dsl_path": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+    "http_status": 400,
+    "content_type": "application/json",
+    "raw_response_path_base": "suite_root",
+    "raw_response_path": "tmp/run-20261011-01/A03/drafts/broken-v0.error.json",
+    "response_body": "{\"code\":\"PARSE_ERROR\",\"message\":\"Attr [padding] value format error at position 92 near: \\\"png\\\">\\r\\n  <Container padding=\\\"24 32\\\" borderRadius=\\\"24\\\">\\r\\n   \",\"requestId\":\"aaade24e-d057-4d2b-9f7e-ddc32750c764\"}",
+    "requestId": "aaade24e-d057-4d2b-9f7e-ddc32750c764",
+    "note": "原稿原样提交，未做任何修改；服务在解析阶段即失败，未产生图片"
+  },
+  "issues": [
+    {
+      "id": "ISS-01",
+      "location": "第2行 Container padding=\"24 32\"",
+      "category": "真实报错（PARSE_ERROR）",
+      "evidence": "A03-req-0001 返回 400，code=PARSE_ERROR，message 指向 Attr [padding] value format error，位置与行号吻合",
+      "doc": "https://snapshot.muedsa.com/ 标签参考 · 通用属性格式 · EdgeInsets：padding 支持 \"12\"、\"(8,16)\"、\"(8,12,16,20)\" 三种格式，括号与逗号是语法的一部分（缓存 tmp/run-20261011-01/_suite/docs/parser-tags.html）",
+      "fix": "padding=\"24 32\" → padding=\"(24,32)\"（vertical=24, horizontal=32）",
+      "verification": "A03-req-0002 不再报 padding 错误，报错推进到下一个问题（Transform matrix）"
+    },
+    {
+      "id": "ISS-02",
+      "location": "第10行 Transform rotate=\"-8\"",
+      "category": "真实报错（PARSE_ERROR，属性缺失被提升为错误）",
+      "evidence": "A03-req-0002 返回 400，message=Attr [matrix] must not be null，指向 Transform 标签",
+      "doc": "标签参考 · Opacity 与 Transform：Transform 仅支持 matrix（16 个 Float 的列主序 4×4 矩阵）、origin、alignment，没有 rotate 属性",
+      "fix": "用列主序矩阵表达视觉逆时针 8°：matrix=\"(0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1)\"（屏幕 y 向下时该矩阵为逆时针），并加 alignment=\"CENTER\" 绕标签中心旋转",
+      "verification": "A03-req-0003 该错误消失；最终图 fix-v7.png 上 REVIEW 标签呈逆时针 8° 倾斜（视觉核对）"
+    },
+    {
+      "id": "ISS-03",
+      "location": "第7行 Row 内的 Positioned right=\"20\"",
+      "category": "真实报错（RENDER_ERROR，父数据类型不匹配）",
+      "evidence": "A03-req-0003 返回 400，message=renderBox.parentData must be StackParentData",
+      "doc": "标签总表：Positioned 的子节点模式为 Stack / IndexedStack 子节点定位，只能放在 Stack 内",
+      "fix": "重构为根级 Stack：指标卡用 Row/Expanded 排布，LIVE 标签改为 <Positioned right top> 作为 Stack 直接子节点",
+      "verification": "A03-req-0004 该错误消失"
+    },
+    {
+      "id": "ISS-04",
+      "location": "第1行 Snapshot width=\"1280\" height=\"800\" + 第3行 Column（无界布局）",
+      "category": "真实报错（RENDER_ERROR：Layout size is infinite）+ 静默忽略（Snapshot 的 width/height）",
+      "evidence": "A03-req-0004 返回 400，message=Layout size is infinite；同时文档证明 Snapshot 只有 background/debug/type 三个属性，原稿的 width/height 从未生效",
+      "doc": "标签参考 · Snapshot 属性表（background、debug、type）；ai-guide：根节点尺寸必须有限",
+      "fix": "去掉 Snapshot 上无效的 width/height，改为根级 <SizedBox width=\"1280\" height=\"800\"> 提供有界画布",
+      "verification": "A03-req-0005 返回 200 image/png，图片尺寸 1280×800（PIL 校验）"
+    },
+    {
+      "id": "ISS-05",
+      "location": "第4行 Text font-size=\"44\"",
+      "category": "静默忽略（kebab-case 属性名不存在）",
+      "evidence": "fix-v4.png 中 System Pulse 以默认字号渲染，明显不是 44；服务未报任何错误",
+      "doc": "标签参考 · Text 属性表使用 camelCase（fontSize）；文档：未知属性会被忽略，标签与属性名区分大小写",
+      "fix": "font-size=\"44\" → fontSize=\"44\"，并加 fontFamily/fontStyle 提升质感",
+      "verification": "fix-v5.png 起标题为 44 号粗体，视觉与像素采样确认"
+    },
+    {
+      "id": "ISS-06",
+      "location": "第10行 Container color=\"#33FFFFFF\"（REVIEW 标签底色）",
+      "category": "只在视觉上暴露的问题（八位颜色语义变更）",
+      "evidence": "fix-v4.png 中 REVIEW 标签呈不透明亮青色，而非预期的 20% 白；需求要求白底不透明度 20%、文字不透明",
+      "doc": "标签参考 · 八位十六进制颜色的迁移：旧版按 #AARRGGBB 解析，现按 CSS 的 #RRGGBBAA。#33FFFFFF 现在是 R=33 G=FF B=FF A=FF 的不透明色",
+      "fix": "#33FFFFFF → #FFFFFF33（白、alpha≈20%）；文字用不透明白 #FFFFFF、fontSize 24",
+      "verification": "fix-v6.png 起 REVIEW 为半透明白底+清晰白字；像素采样 review_center=rgb(59,65,76) 为 20% 白叠加深底的合成值"
+    },
+    {
+      "id": "ISS-07",
+      "location": "第11行 ImageFiltered 包裹整张说明卡（含文字）",
+      "category": "只在视觉上暴露的问题（滤镜语义：整棵子树被模糊）",
+      "evidence": "fix-v4.png 中 Background-only blur 文字被完全糊掉，不可读；ImageFiltered 对整个子树生效",
+      "doc": "标签参考 · Opacity 与 Transform：ImageFiltered 对子树应用高斯模糊（sigmaX/sigmaY）",
+      "fix": "拆层：两条彩色细条在卡外保持锐利（独立 Positioned），卡内 ClipRRect(r=24) 里重绘同样两条细条并各自包 ImageFiltered(sigma=10)，说明文字放在 ImageFiltered 之外、圆角裁剪之内 → 只有卡内背景被模糊，文字保持清晰",
+      "verification": "fix-v6.png 起文字清晰锐利；像素探针：卡外细条 rgb(60,187,248) 为纯色锐利，卡内同一条 rgb(39,97,136) 为模糊后的混合色"
+    },
+    {
+      "id": "ISS-08",
+      "location": "fix-v5 初版中央说明卡（自建，非原稿）",
+      "category": "只在视觉上暴露的问题（ClipRRect 内 Stack 全为 Positioned 导致尺寸为 0）",
+      "evidence": "fix-v5.png 中中央说明卡完全消失——Stack 只有 Positioned 子节点时尺寸塌缩为 0，ClipRRect 裁剪后无可视内容",
+      "doc": "标签总表：Stack 多个子节点层叠布局；ClipRRect 单个子节点圆角裁剪",
+      "fix": "在裁剪内 Stack 加一个非 Positioned 的基底 <SizedBox width=\"500\" height=\"150\"> 提供尺寸，其余内容仍用 Positioned 精确定位",
+      "verification": "fix-v6.png 起说明卡完整可见；像素探针卡体 rgb(16,26,43)=#101A2B，卡边界 390/890 处颜色由底色切换为卡色"
+    },
+    {
+      "id": "ISS-09",
+      "location": "整体重排（原稿为单卡+散落元素，未表达需求结构）",
+      "category": "需求符合性（非报错）",
+      "evidence": "原稿只有一张 360×200 指标卡，需求要求第一行三个等宽指标卡；LIVE 无 96×36 尺寸；REVIEW 无固定位置",
+      "doc": "需求：1280×800、深底 #0B1220、安全边距 32、44 号标题、三个等宽指标卡（USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%，文案 28 号）、LIVE 96×36 右上且不盖标题、REVIEW 160×56 右下逆时针 8°、中央说明卡 500×150 圆角 24",
+      "fix": "以 Stack+Positioned 全幅重排：三卡各 389 宽（32+389×3+24×2=1216+64=1280 内含边距），顶部渐变分隔线、卡顶 4px 色条与序号为装饰，不引入输入之外的数据",
+      "verification": "fix-v7.png 逐项视觉核对 + 像素探针核验卡边界与安全边距；旋转后标签四角仍在画布内且不越 32px 安全边距太多（右移 4px 修正至 1084）"
+    }
+  ],
+  "versions": [
+    { "version": "broken-v0", "parent": null, "kind": "baseline", "dsl": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "request_id": "A03-req-0001", "http_status": 400, "png": null, "error_body": "tmp/run-20261011-01/A03/drafts/broken-v0.error.json", "viewed": null, "note": "原稿原样提交，保存真实报错响应" },
+    { "version": "fix-v1", "parent": "broken-v0", "kind": "syntax-fix", "dsl": "tmp/run-20261011-01/A03/drafts/fix-v1.snapshot", "request_id": "A03-req-0002", "http_status": 400, "png": null, "error_body": "tmp/run-20261011-01/A03/drafts/fix-v1.error.json", "viewed": null, "note": "仅修 padding 语法" },
+    { "version": "fix-v2", "parent": "fix-v1", "kind": "syntax-fix", "dsl": "tmp/run-20261011-01/A03/drafts/fix-v2.snapshot", "request_id": "A03-req-0003", "http_status": 400, "png": null, "error_body": "tmp/run-20261011-01/A03/drafts/fix-v2.error.json", "viewed": null, "note": "padding+Transform matrix" },
+    { "version": "fix-v3", "parent": "fix-v2", "kind": "syntax-fix", "dsl": "tmp/run-20261011-01/A03/drafts/fix-v3.snapshot", "request_id": "A03-req-0004", "http_status": 400, "png": null, "error_body": "tmp/run-20261011-01/A03/drafts/fix-v3.error.json", "viewed": null, "note": "Positioned 移入 Stack" },
+    { "version": "fix-v4", "parent": "fix-v3", "kind": "visual", "dsl": "tmp/run-20261011-01/A03/drafts/fix-v4.snapshot", "request_id": "A03-req-0005", "http_status": 200, "png": "tmp/run-20261011-01/A03/drafts/fix-v4.png", "viewed_at": "2026-10-12T09:33:20+08:00", "note": "首个成功渲染；暴露 fontSize 被忽略、#33FFFFFF 语义、文字被模糊、结构不符四个静默/视觉问题" },
+    { "version": "fix-v5", "parent": "fix-v4", "kind": "visual", "dsl": "tmp/run-20261011-01/A03/drafts/fix-v5.snapshot", "request_id": "A03-req-0006", "http_status": 200, "png": "tmp/run-20261011-01/A03/drafts/fix-v5.png", "viewed_at": "2026-10-12T09:36:20+08:00", "note": "整体重排；发现中央说明卡因 Stack 尺寸塌缩而消失" },
+    { "version": "fix-v6", "parent": "fix-v5", "kind": "visual", "dsl": "tmp/run-20261011-01/A03/drafts/fix-v6.snapshot", "request_id": "A03-req-0007", "http_status": 200, "png": "tmp/run-20261011-01/A03/drafts/fix-v6.png", "viewed_at": "2026-10-12T09:40:00+08:00", "note": "说明卡恢复；发现旋转标签越安全边距约 3px" },
+    { "version": "fix-v7", "parent": "fix-v6", "kind": "visual", "dsl": "tmp/run-20261011-01/A03/drafts/fix-v7.snapshot", "request_id": "A03-req-0008", "http_status": 200, "png": "tmp/run-20261011-01/A03/drafts/fix-v7.png", "viewed_at": "2026-10-12T09:42:00+08:00", "note": "定稿：全部需求项可见且几何核验通过；像素探针 8 点全部符合计算值" },
+    { "version": "final", "parent": "fix-v7", "kind": "requirement-change", "dsl": "outputs/run-20261011-01/A03/system-pulse.snapshot", "request_id": "A03-req-0009", "http_status": 200, "png": "outputs/run-20261011-01/A03/system-pulse.png", "viewed_at": "2026-10-12T09:44:40+08:00", "note": "以输出目录 DSL 重新渲染，MD5 与 fix-v7.png 完全一致" }
+  ],
+  "summary": {
+    "real_errors": 4,
+    "silent_ignores": 2,
+    "visual_only_issues": 3,
+    "statement": "所有修复都对应具体报错或文档依据；没有删除任何出错区块——原稿的标题、指标卡、LIVE、REVIEW、模糊说明卡全部保留并按需求补齐（三卡、尺寸、旋转、alpha、背景限定模糊）。源码中不保留任何未知属性。"
+  }
+}

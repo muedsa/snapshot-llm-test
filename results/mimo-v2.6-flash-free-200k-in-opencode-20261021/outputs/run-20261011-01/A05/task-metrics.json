@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A05",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "三联趋势报告满足共用真实时间轴、断线不补值、零线与负区段标注、统计卡与明细表、字号与审计JSON全部要求，几何探针核验通过",
+  "output_dir": "outputs/run-20261011-01/A05/",
+  "temp_dir": "tmp/run-20261011-01/A05/",
+  "timings": {
+    "started_at": "2026-10-12T10:48:27.923+08:00",
+    "ended_at": "2026-10-12T11:12:00.000+08:00",
+    "elapsed_seconds": 1412,
+    "first_usable_image_seconds": 688,
+    "first_usable_image_note": "A05-req-0002（v1）为首个 200 成功渲染；A05-req-0001 为 400 PARSE_ERROR",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 16.992,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 5,
+    "successful_snapshot_requests": 4,
+    "failed_snapshot_requests": 1,
+    "retry_requests": 0,
+    "failed_request_note": "A05-req-0001 服务端 PARSE_ERROR（border 属性语法），修正后一次通过；错误原文保留于 drafts/sensor-report-v1.error.json",
+    "other_service_requests": 0,
+    "document_requests": 0,
+    "document_requests_note": "复用 _suite 共享文档缓存，未重复计为本题新请求",
+    "dsl_versions": 5,
+    "image_views": 7,
+    "completed_visual_iterations": 2,
+    "incomplete_visual_iterations": 0,
+    "syntax_fix_iterations": 1
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A05/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A05/iterations.jsonl",
+    "shared_requests": "tmp/run-20261011-01/_suite/requests-shared.jsonl"
+  },
+  "outputs": [
+    { "file": "sensor-report.png", "dsl": "sensor-report.snapshot", "width": 1440, "height": 1000,
+      "bytes": 246376, "request_id": "A05-req-0005", "content_type": "image/png", "status": 200,
+      "purpose": "三联趋势（温度/湿度/压差）+ 统计卡 + 12 时点明细表，与已查看 v3 字节一致" },
+    { "file": "sensor-report.snapshot", "bytes": 52413, "purpose": "完整可复现 DSL，数值与连接段由脚本从 CSV 计算" },
+    { "file": "normalized-data.json", "bytes": 9243,
+      "purpose": "分钟偏移、null 缺测、范围与有效数量、逐指标连接段与断点、负采样、共享横轴与各纵轴映射" },
+    { "file": "snapshot-usage.md", "purpose": "使用说明与踩坑记录" },
+    { "file": "task-metrics.json", "purpose": "本题指标" }
+  ],
+  "candidates": [
+    { "file": "tmp/run-20261011-01/A05/drafts/sensor-report-v1.error.json", "note": "首版 400 PARSE_ERROR 服务原文" },
+    { "file": "tmp/run-20261011-01/A05/drafts/sensor-report-v1.png", "note": "基线版本：标签粘连/注释越界/表格裁字" },
+    { "file": "tmp/run-20261011-01/A05/drafts/sensor-report-v2.png", "note": "标签药丸与注释两行版本，几何探针在此版核验" },
+    { "file": "tmp/run-20261011-01/A05/drafts/sensor-report-v3.png", "note": "缺测虚线避开文字的定稿版本" },
+    { "file": "tmp/run-20261011-01/A05/drafts/crop-temp.png", "note": "温度面板文字/虚线重叠问题裁切证据" },
+    { "file": "tmp/run-20261011-01/A05/drafts/crop-pressure.png", "note": "负区段注释与零线可读性复查" },
+    { "file": "tmp/run-20261011-01/A05/drafts/crop-xlabels.png", "note": "横轴错行时点标签与明细表复查" },
+    { "file": "tmp/run-20261011-01/A05/scripts/gen_a05.py", "note": "DSL 与 normalized-data.json 同源生成脚本" },
+    { "file": "tmp/run-20261011-01/A05/scripts/probe_a05.py", "note": "参考线对齐、零线、标记点像素探针" }
+  ],
+  "rounds": [],
+  "unresolved_issues": []
+}

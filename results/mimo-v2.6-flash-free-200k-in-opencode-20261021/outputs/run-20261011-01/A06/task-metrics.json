@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A06",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "14节点依赖解释图满足16条实线先决边方向可辨、2条虚线反馈专用图例与图内解释、层/并行布局、无指向过去层歧义、字号要求与graph-audit.json全部字段",
+  "output_dir": "outputs/run-20261011-01/A06/",
+  "temp_dir": "tmp/run-20261011-01/A06/",
+  "timings": {
+    "started_at": "2026-10-12T11:12:30.000+08:00",
+    "ended_at": "2026-10-12T11:37:00.000+08:00",
+    "elapsed_seconds": 1470,
+    "first_usable_image_seconds": 604,
+    "first_usable_image_note": "A06-req-0001（v1）为首个 200 成功渲染",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 48.937,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 6,
+    "successful_snapshot_requests": 3,
+    "failed_snapshot_requests": 3,
+    "retry_requests": 2,
+    "failed_request_note": "A06-req-0002、A06-req-0004 为本地 shell 120s 超时终止（无服务响应可记，未进 requests.jsonl）；A06-req-0003 服务端 RemoteDisconnected（原文保留 drafts/dependency-map.png.error.json）。重试 A06-req-0002b、A06-req-0005 均 200",
+    "other_service_requests": 0,
+    "document_requests": 0,
+    "document_requests_note": "复用 _suite 共享文档缓存，未重复计为本题新请求",
+    "dsl_versions": 3,
+    "image_views": 5,
+    "completed_visual_iterations": 1,
+    "incomplete_visual_iterations": 0,
+    "syntax_fix_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A06/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A06/iterations.jsonl",
+    "shared_requests": "tmp/run-20261011-01/_suite/requests-shared.jsonl"
+  },
+  "outputs": [
+    { "file": "dependency-map.png", "dsl": "dependency-map.snapshot", "width": 1600, "height": 1000,
+      "bytes": 268024, "request_id": "A06-req-0005", "content_type": "image/png", "status": 200,
+      "purpose": "14节点依赖解释图：16条实线先决边+2条虚线反馈+专用图例+两张反馈解释卡，与已查看 v2 字节一致" },
+    { "file": "dependency-map.snapshot", "bytes": 45404, "purpose": "完整可复现 DSL，边与节点由脚本从 graph.json 计算并 assert 校验" },
+    { "file": "graph-audit.json", "bytes": 14678,
+      "purpose": "拓扑层、入/出邻居、11节点最长先决路径（含方法与多解注记）、反馈边折线与图上表示位置、像素盒" },
+    { "file": "snapshot-usage.md", "purpose": "使用说明与踩坑记录" },
+    { "file": "task-metrics.json", "purpose": "本题指标" }
+  ],
+  "candidates": [
+    { "file": "tmp/run-20261011-01/A06/drafts/dependency-map-v1.png", "note": "基线版本：图例交叉示例误读为连接点" },
+    { "file": "tmp/run-20261011-01/A06/drafts/dependency-map-v2.png", "note": "X形交叉图例的定稿版本" },
+    { "file": "tmp/run-20261011-01/A06/drafts/crop-legend.png", "note": "图例区复查裁切" },
+    { "file": "tmp/run-20261011-01/A06/drafts/crop-feedback.png", "note": "反馈①②绕行与N08汇入复查裁切" },
+    { "file": "tmp/run-20261011-01/A06/drafts/dependency-map.png.error.json", "note": "A06-req-0003 RemoteDisconnected 错误响应留痕（0字节响应体）" },
+    { "file": "tmp/run-20261011-01/A06/scripts/gen_a06.py", "note": "DSL与graph-audit.json同源生成脚本（含DAG分层/最长路计算与边集assert）" }
+  ],
+  "rounds": [],
+  "unresolved_issues": []
+}

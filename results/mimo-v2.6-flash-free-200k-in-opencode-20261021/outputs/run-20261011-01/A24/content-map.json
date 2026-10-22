@@ -1,0 +1,717 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "finals": [
+  "execution-board.png",
+  "decision-brief.png",
+  "action-card.png"
+ ],
+ "tasks": [
+  {
+   "id": "R01",
+   "label": "需求核对",
+   "team": "design",
+   "depends": [],
+   "start_minute": 0,
+   "end_minute": 25,
+   "board": {
+    "lane": "design",
+    "block_rect": [
+     260.0,
+     308,
+     355.25,
+     384
+    ],
+    "id_center": [
+     307.62,
+     364
+    ],
+    "caption_row": "A",
+    "caption_y": 392,
+    "caption_lines": [
+     "需求核对",
+     "09:00–09:25 · 25min",
+     "依赖：无（起点）"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 1,
+    "node_rect": [
+     150,
+     398,
+     420,
+     452
+    ],
+    "parents": [],
+    "children": [
+     "R04",
+     "R05"
+    ]
+   },
+   "card": {
+    "row_index": 1,
+    "line1": "09:00 → 09:25  |  R01  需求核对  design",
+    "line2_type": "deps",
+    "line2": "起点任务"
+   }
+  },
+  {
+   "id": "R02",
+   "label": "服务与字体探测",
+   "team": "engineering",
+   "depends": [],
+   "start_minute": 0,
+   "end_minute": 20,
+   "board": {
+    "lane": "engineering",
+    "block_rect": [
+     260.0,
+     588,
+     336.2,
+     664
+    ],
+    "id_center": [
+     298.1,
+     644
+    ],
+    "caption_row": "A",
+    "caption_y": 672,
+    "caption_lines": [
+     "服务与字体探测",
+     "09:00–09:20 · 20min",
+     "依赖：无（起点）"
+    ],
+    "risk_badge": [
+     "K1",
+     284.2,
+     594
+    ]
+   },
+   "brief": {
+    "layer": 1,
+    "node_rect": [
+     720,
+     398,
+     990,
+     452
+    ],
+    "parents": [],
+    "children": [
+     "R03"
+    ]
+   },
+   "card": {
+    "row_index": 2,
+    "line1": "09:00 → 09:20  |  R02  服务与字体探测  engineering",
+    "line2_type": "risk",
+    "line2": "K1 · 服务限流导致等待 → 保留响应并依据Retry-After重试"
+   }
+  },
+  {
+   "id": "R03",
+   "label": "数据清洗",
+   "team": "engineering",
+   "depends": [
+    "R02"
+   ],
+   "start_minute": 20,
+   "end_minute": 60,
+   "board": {
+    "lane": "engineering",
+    "block_rect": [
+     336.2,
+     588,
+     488.6,
+     664
+    ],
+    "id_center": [
+     412.4,
+     644
+    ],
+    "caption_row": "B",
+    "caption_y": 756,
+    "caption_lines": [
+     "数据清洗",
+     "09:20–10:00 · 40min",
+     "依赖：R02"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 2,
+    "node_rect": [
+     780,
+     472,
+     1050,
+     526
+    ],
+    "parents": [
+     "R02"
+    ],
+    "children": [
+     "R06"
+    ]
+   },
+   "card": {
+    "row_index": 3,
+    "line1": "09:20 → 10:00  |  R03  数据清洗  engineering",
+    "line2_type": "deps",
+    "line2": "依赖 R02"
+   }
+  },
+  {
+   "id": "R04",
+   "label": "视觉系统",
+   "team": "design",
+   "depends": [
+    "R01"
+   ],
+   "start_minute": 25,
+   "end_minute": 85,
+   "board": {
+    "lane": "design",
+    "block_rect": [
+     355.25,
+     308,
+     583.85,
+     384
+    ],
+    "id_center": [
+     469.55,
+     364
+    ],
+    "caption_row": "B",
+    "caption_y": 476,
+    "caption_lines": [
+     "视觉系统",
+     "09:25–10:25 · 60min",
+     "依赖：R01"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 2,
+    "node_rect": [
+     110,
+     472,
+     380,
+     526
+    ],
+    "parents": [
+     "R01"
+    ],
+    "children": [
+     "R07",
+     "R08"
+    ]
+   },
+   "card": {
+    "row_index": 4,
+    "line1": "09:25 → 10:25  |  R04  视觉系统  design",
+    "line2_type": "deps",
+    "line2": "依赖 R01"
+   }
+  },
+  {
+   "id": "R05",
+   "label": "文案审校",
+   "team": "engineering",
+   "depends": [
+    "R01"
+   ],
+   "start_minute": 60,
+   "end_minute": 90,
+   "board": {
+    "lane": "engineering",
+    "block_rect": [
+     488.6,
+     588,
+     602.9,
+     664
+    ],
+    "id_center": [
+     545.75,
+     644
+    ],
+    "caption_row": "A",
+    "caption_y": 672,
+    "caption_lines": [
+     "文案审校",
+     "10:00–10:30 · 30min",
+     "依赖：R01"
+    ],
+    "risk_badge": [
+     "K2",
+     550.9,
+     594
+    ]
+   },
+   "brief": {
+    "layer": 2,
+    "node_rect": [
+     420,
+     472,
+     690,
+     526
+    ],
+    "parents": [
+     "R01"
+    ],
+    "children": [
+     "R07"
+    ]
+   },
+   "card": {
+    "row_index": 5,
+    "line1": "10:00 → 10:30  |  R05  文案审校  engineering",
+    "line2_type": "risk",
+    "line2": "K2 · 长文案导致版式回归 → 冻结文案后再完成适配"
+   }
+  },
+  {
+   "id": "R06",
+   "label": "图表计算",
+   "team": "engineering",
+   "depends": [
+    "R03"
+   ],
+   "start_minute": 90,
+   "end_minute": 135,
+   "board": {
+    "lane": "engineering",
+    "block_rect": [
+     602.9,
+     588,
+     774.35,
+     664
+    ],
+    "id_center": [
+     688.62,
+     644
+    ],
+    "caption_row": "B",
+    "caption_y": 756,
+    "caption_lines": [
+     "图表计算",
+     "10:30–11:15 · 45min",
+     "依赖：R03"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 3,
+    "node_rect": [
+     780,
+     546,
+     1050,
+     600
+    ],
+    "parents": [
+     "R03"
+    ],
+    "children": [
+     "R08"
+    ]
+   },
+   "card": {
+    "row_index": 6,
+    "line1": "10:30 → 11:15  |  R06  图表计算  engineering",
+    "line2_type": "deps",
+    "line2": "依赖 R03"
+   }
+  },
+  {
+   "id": "R07",
+   "label": "主海报构建",
+   "team": "design",
+   "depends": [
+    "R04",
+    "R05"
+   ],
+   "start_minute": 90,
+   "end_minute": 160,
+   "board": {
+    "lane": "design",
+    "block_rect": [
+     602.9,
+     308,
+     869.6,
+     384
+    ],
+    "id_center": [
+     736.25,
+     364
+    ],
+    "caption_row": "A",
+    "caption_y": 392,
+    "caption_lines": [
+     "主海报构建",
+     "10:30–11:40 · 70min",
+     "依赖：R04、R05"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 3,
+    "node_rect": [
+     250,
+     546,
+     520,
+     600
+    ],
+    "parents": [
+     "R04",
+     "R05"
+    ],
+    "children": [
+     "R09",
+     "R10"
+    ]
+   },
+   "card": {
+    "row_index": 7,
+    "line1": "10:30 → 11:40  |  R07  主海报构建  design",
+    "line2_type": "deps",
+    "line2": "依赖 R04、R05"
+   }
+  },
+  {
+   "id": "R08",
+   "label": "驾驶舱构建",
+   "team": "engineering",
+   "depends": [
+    "R04",
+    "R06"
+   ],
+   "start_minute": 135,
+   "end_minute": 200,
+   "board": {
+    "lane": "engineering",
+    "block_rect": [
+     774.35,
+     588,
+     1022.0,
+     664
+    ],
+    "id_center": [
+     898.18,
+     644
+    ],
+    "caption_row": "A",
+    "caption_y": 672,
+    "caption_lines": [
+     "驾驶舱构建",
+     "11:15–12:20 · 65min",
+     "依赖：R04、R06"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 4,
+    "node_rect": [
+     640,
+     620,
+     910,
+     674
+    ],
+    "parents": [
+     "R04",
+     "R06"
+    ],
+    "children": [
+     "R10",
+     "R11"
+    ]
+   },
+   "card": {
+    "row_index": 8,
+    "line1": "11:15 → 12:20  |  R08  驾驶舱构建  engineering",
+    "line2_type": "deps",
+    "line2": "依赖 R04、R06"
+   }
+  },
+  {
+   "id": "R09",
+   "label": "手机适配",
+   "team": "design",
+   "depends": [
+    "R07"
+   ],
+   "start_minute": 160,
+   "end_minute": 205,
+   "board": {
+    "lane": "design",
+    "block_rect": [
+     869.6,
+     308,
+     1041.05,
+     384
+    ],
+    "id_center": [
+     955.33,
+     364
+    ],
+    "caption_row": "B",
+    "caption_y": 476,
+    "caption_lines": [
+     "手机适配",
+     "11:40–12:25 · 45min",
+     "依赖：R07"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 4,
+    "node_rect": [
+     250,
+     620,
+     520,
+     674
+    ],
+    "parents": [
+     "R07"
+    ],
+    "children": [
+     "R10",
+     "R11"
+    ]
+   },
+   "card": {
+    "row_index": 9,
+    "line1": "11:40 → 12:25  |  R09  手机适配  design",
+    "line2_type": "deps",
+    "line2": "依赖 R07"
+   }
+  },
+  {
+   "id": "R10",
+   "label": "视觉回归检查",
+   "team": "design",
+   "depends": [
+    "R07",
+    "R08",
+    "R09"
+   ],
+   "start_minute": 205,
+   "end_minute": 240,
+   "board": {
+    "lane": "design",
+    "block_rect": [
+     1041.05,
+     308,
+     1174.4,
+     384
+    ],
+    "id_center": [
+     1107.72,
+     364
+    ],
+    "caption_row": "A",
+    "caption_y": 392,
+    "caption_lines": [
+     "视觉回归检查",
+     "12:25–13:00 · 35min",
+     "依赖：R07、R08、R09"
+    ],
+    "risk_badge": [
+     "K3",
+     1122.4,
+     314
+    ]
+   },
+   "brief": {
+    "layer": 5,
+    "node_rect": [
+     250,
+     694,
+     520,
+     748
+    ],
+    "parents": [
+     "R07",
+     "R08",
+     "R09"
+    ],
+    "children": [
+     "R12"
+    ]
+   },
+   "card": {
+    "row_index": 10,
+    "line1": "12:25 → 13:00  |  R10  视觉回归检查  design",
+    "line2_type": "risk",
+    "line2": "K3 · 实际图像暴露裁剪或比例错误 → 预留返工缓冲，不跳过看图"
+   }
+  },
+  {
+   "id": "R11",
+   "label": "产物与数据核验",
+   "team": "engineering",
+   "depends": [
+    "R08",
+    "R09"
+   ],
+   "start_minute": 205,
+   "end_minute": 235,
+   "board": {
+    "lane": "engineering",
+    "block_rect": [
+     1041.05,
+     588,
+     1155.35,
+     664
+    ],
+    "id_center": [
+     1098.2,
+     644
+    ],
+    "caption_row": "B",
+    "caption_y": 756,
+    "caption_lines": [
+     "产物与数据核验",
+     "12:25–12:55 · 30min",
+     "依赖：R08、R09"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 5,
+    "node_rect": [
+     640,
+     694,
+     910,
+     748
+    ],
+    "parents": [
+     "R08",
+     "R09"
+    ],
+    "children": [
+     "R12"
+    ]
+   },
+   "card": {
+    "row_index": 11,
+    "line1": "12:25 → 12:55  |  R11  产物与数据核验  engineering",
+    "line2_type": "deps",
+    "line2": "依赖 R08、R09"
+   }
+  },
+  {
+   "id": "R12",
+   "label": "交付归档",
+   "team": "design",
+   "depends": [
+    "R10",
+    "R11"
+   ],
+   "start_minute": 240,
+   "end_minute": 260,
+   "board": {
+    "lane": "design",
+    "block_rect": [
+     1174.4,
+     308,
+     1250.6,
+     384
+    ],
+    "id_center": [
+     1212.5,
+     364
+    ],
+    "caption_row": "B",
+    "caption_y": 476,
+    "caption_lines": [
+     "交付归档",
+     "13:00–13:20 · 20min",
+     "依赖：R10、R11"
+    ],
+    "risk_badge": null
+   },
+   "brief": {
+    "layer": 6,
+    "node_rect": [
+     440,
+     768,
+     710,
+     822
+    ],
+    "parents": [
+     "R10",
+     "R11"
+    ],
+    "children": []
+   },
+   "card": {
+    "row_index": 12,
+    "line1": "13:00 → 13:20  |  R12  交付归档  design",
+    "line2_type": "deps",
+    "line2": "依赖 R10、R11"
+   }
+  }
+ ],
+ "risks": [
+  {
+   "id": "K1",
+   "task": "R02",
+   "impact": "服务限流导致等待",
+   "mitigation": "保留响应并依据Retry-After重试",
+   "refs": {
+    "board": "R02 块右上 K 徽标",
+    "brief": "三风险与对策卡片 K1",
+    "card": "行内风险提醒 + 底部风险提醒块 K1"
+   }
+  },
+  {
+   "id": "K2",
+   "task": "R05",
+   "impact": "长文案导致版式回归",
+   "mitigation": "冻结文案后再完成适配",
+   "refs": {
+    "board": "R05 块右上 K 徽标",
+    "brief": "三风险与对策卡片 K2",
+    "card": "行内风险提醒 + 底部风险提醒块 K2"
+   }
+  },
+  {
+   "id": "K3",
+   "task": "R10",
+   "impact": "实际图像暴露裁剪或比例错误",
+   "mitigation": "预留返工缓冲，不跳过看图",
+   "refs": {
+    "board": "R10 块右上 K 徽标",
+    "brief": "三风险与对策卡片 K3",
+    "card": "行内风险提醒 + 底部风险提醒块 K3"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "numbers-identical-across-images",
+   "detail": "485min（总工时/下界基数）、260min/13:20（完工）、160min（缓冲）、255min（关键路径下界）、242.5min（工作量下界）在 board 页脚、brief KPI+依据、card 页眉/页脚出现且数值一致",
+   "method": "看图核对（finals + iterations.jsonl seq5/6）"
+  },
+  {
+   "name": "times-identical-board-vs-card",
+   "detail": "12 任务的起止时间在执行图图注与行动卡行内逐项一致（同一 SCHEDULE 生成）",
+   "method": "生成时同源 + 看图抽查 R01/R05/R10/R12"
+  },
+  {
+   "name": "team-identity-consistent",
+   "detail": "design=indigo #4F46E5/设计团队、engineering=cyan #0E7490/工程团队；R05→engineering、R09/R12→design 三图一致（board 泳道归属、brief 节点边框色、card 团队列）",
+   "method": "看图核对泳道/边框/团队列"
+  },
+  {
+   "name": "time-scale-board-linear",
+   "detail": "board X(m)=260+3.81·m px；块宽=minutes×3.81；完工线 X(260)=1250.6、截止线 X(420)=1860.0 与刻度同尺",
+   "method": "DSL 构造值 + 完工线落于 R12 右缘（看图确认）"
+  },
+  {
+   "name": "fonts-meet-minimums",
+   "detail": "横屏 board 正文 ≥20px；竖页 brief 正文 ≥24px；手机 card 正文 ≥20px（CJK 字体 Noto Sans CJK SC）",
+   "method": "DSL fontSize 常量 + 渲染可读性看图"
+  }
+ ]
+}

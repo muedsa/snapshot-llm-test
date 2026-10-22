@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "artifacts": {
+    "occlusion_a": {
+      "dsl": "occlusion.snapshot",
+      "png": "occlusion.png"
+    },
+    "occlusion_b": {
+      "dsl": "occlusion-alternative.snapshot",
+      "png": "occlusion-alternative.png"
+    }
+  },
+  "versions": [
+    {
+      "version": "A",
+      "dsl": "occlusion.snapshot",
+      "png": "occlusion.png",
+      "file_sha256": "6b9afe0f16630d53c5d4fe3c509a58cf4f5b5d5cc45831b46ae245c4a7dbce25",
+      "file_bytes": 16118,
+      "hidden_content": "遮挡板下：绿色圆形 d=160 @(320,300) + 白色数字“3”（fontSize96、BOLD），圆形带阴影 boxShadow=\"0 8 24 0 #00000066 NORMAL\"",
+      "hidden_diff_point": "DSL中隐藏组（容器+文本）与B不同；绘制顺序上位于不透明遮挡物(240,240,320,320)之前（下层）"
+    },
+    {
+      "version": "B",
+      "dsl": "occlusion-alternative.snapshot",
+      "png": "occlusion-alternative.png",
+      "file_sha256": "6b9afe0f16630d53c5d4fe3c509a58cf4f5b5d5cc45831b46ae245c4a7dbce25",
+      "file_bytes": 16118,
+      "hidden_content": "遮挡板下：橙色圆角方 160×160 @(320,300) borderRadius=40 + 白色数字“8”（fontSize96、BOLD），同款阴影",
+      "hidden_diff_point": "DSL中隐藏组（容器+文本）与A不同；其余可见元素（背景、标题栏、四角主体、遮挡板及其标签）与A逐元素一致"
+    }
+  ],
+  "comparison": {
+    "decoder": "Pillow (PIL.Image)",
+    "decoder_version": "10.0.0",
+    "environment": {
+      "python": "3.11.5",
+      "platform": "Windows-10-10.0.19045-SP0"
+    },
+    "method": "两文件各自 Image.open(...).convert(\"RGBA\") 解码为8位未预乘RGBA（PNG规范通道模型即未预乘），比较完整字节数组；未合成到白底、未缩放、未忽略alpha或透明像素RGB",
+    "size_a": [
+      800,
+      800
+    ],
+    "size_b": [
+      800,
+      800
+    ],
+    "same_dimensions": true,
+    "rgba_array_sha256_a": "734efd9804dcb9a5f11141899b1c3f9373ed4cf8fb44c2c65d700bb253f6c8e1",
+    "rgba_array_sha256_b": "734efd9804dcb9a5f11141899b1c3f9373ed4cf8fb44c2c65d700bb253f6c8e1",
+    "differing_pixels": 0,
+    "max_channel_diff": 0,
+    "first_difference": null,
+    "pixel_equivalent": true,
+    "file_hash_note": "两PNG的文件SHA-256已记录用于来源留痕，但像素等价判定不使用文件哈希，而以解码后的RGBA逐像素比较为准",
+    "hidden_content_confirmed_different": "A隐藏组=绿圆+“3”，B=橙圆角方+“8”（DSL文本差异可见于两份.snapshot；像素等价同时证明两者均被完全遮住，含阴影影响）"
+  },
+  "occluder_coverage": {
+    "occluder_bbox": [
+      240,
+      240,
+      560,
+      560
+    ],
+    "hidden_body_bbox": [
+      320,
+      300,
+      480,
+      460
+    ],
+    "shadow_probe_extent": "探针实测 boxShadow=\"6 10 24 0 ...\" 的最大外扩≈左16/上12/右34/下31px；本场景阴影为\"0 8 24 0 ...\"，外扩≤右/下24+8、左/上24",
+    "coverage_margin_min_px": 56,
+    "verdict": "隐藏主体+阴影外接框完全落在遮挡物内部（最近边距≥56px），且遮挡物为完全不透明填充；两版RGBA逐像素一致（差异0）即为最终证明"
+  }
+}

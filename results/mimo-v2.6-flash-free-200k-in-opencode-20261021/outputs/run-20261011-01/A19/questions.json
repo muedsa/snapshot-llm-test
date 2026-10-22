@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "conventions": {
+    "coordinate_origin": "画布左上角，x向右、y向下，单位像素",
+    "row_col": "行列均自1计；行自上而下、列自左而右；G编号按行优先（id=(row-1)*8+col）",
+    "center": "主体外接框中心；格中心=(200·col+100, 200·row+100)",
+    "size": "圆按直径、方按边长、圆角方按边长、圆环按外径（内径=外径一半）",
+    "subject": "每格的彩色几何主体；ID文字不属于主体"
+  },
+  "questions": [
+    {
+      "id": "Q18",
+      "image": "grid-scene.png",
+      "type": "composite-retrieval",
+      "text": "在 grid-scene.png（1600×1600，画布左上角，x向右、y向下，单位像素）中，全图64个对象里唯一同时满足「颜色=绿、形状=正方形、尺寸=64」的对象是哪个ID？（圆按直径、方按边长取尺寸；全图仅此一个，不存在并列）",
+      "rule": "三属性（颜色×形状×尺寸）合取，全图范围，唯一性由生成数据保证",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "无坐标比较；ID为格位派生的精确标签",
+      "two_step": false
+    },
+    {
+      "id": "Q19",
+      "image": "grid-scene.png",
+      "type": "composite-retrieval",
+      "text": "在 grid-scene.png 中，第8行（最下面一行，行自上而下计）内同时满足「颜色=橙、形状=圆角方」的对象是哪个ID？（行列均自1计；该行内仅此一个）",
+      "rule": "行范围+颜色+形状合取，行内唯一性由生成数据保证",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "无坐标比较；ID为精确标签",
+      "two_step": false
+    },
+    {
+      "id": "Q20",
+      "image": "grid-scene.png",
+      "type": "strict-center-relation",
+      "text": "以主体中心的x坐标为准（画布左上角，x向右、y向下，单位像素；中心=主体外接框中心），找出中心x严格大于G11的中心x、且严格小于G40的中心x、并且颜色=蓝的全部对象；其中中心y最小者的ID是？（两处均为严格不等式——中心x恰好等于G11或G40中心x的对象不计入；并列时先取中心x更小者，仍并列再按ID升序）",
+      "rule": "严格中心左右关系：x1 < x < x2（开区间，不含端点），再按y升序、x升序、ID升序三级排序保证唯一",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "中心x为格位派生整数（200·col+100），比较精确无容差；像素核验±1px",
+      "two_step": true
+    },
+    {
+      "id": "Q21",
+      "image": "grid-scene.png",
+      "type": "distance",
+      "text": "对象G01与G36的主体中心之间的欧氏距离是多少像素？（画布左上角，x向右、y向下，单位像素；距离=√((x₁−x₂)²+(y₁−y₂)²)，中心=主体外接框中心；给出精确值）",
+      "rule": "欧氏距离，直接代入两个中心的整数坐标计算",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "中心为精确整数，结果为精确整数值，无容差",
+      "two_step": false
+    },
+    {
+      "id": "Q22",
+      "image": "grid-scene.png",
+      "type": "ordering",
+      "text": "全图中尺寸=80的全部对象按「中心x升序，x相同时中心y升序」排列（画布左上角，x向右、y向下，单位像素），排在最后一位的对象ID是？（排序键给全，不存在并列）",
+      "rule": "排序键=(x, y)字典序，全序无并列",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "中心为精确整数，比较无容差",
+      "two_step": false
+    },
+    {
+      "id": "Q23",
+      "image": "grid-scene.png",
+      "type": "ordering",
+      "text": "全图中颜色=紫的全部对象按「中心y升序，y相同时中心x升序」排列（画布左上角，x向右、y向下，单位像素）；排在第3位的对象的形状是哪一种（圆/正方形/圆环/圆角方）？",
+      "rule": "排序键=(y, x)字典序；第3位唯一确定后再读其形状",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "中心为精确整数，比较无容差",
+      "two_step": true
+    },
+    {
+      "id": "Q24",
+      "image": "grid-scene.png",
+      "type": "bounding-box",
+      "text": "主体外接框面积最大的对象——若有多个并列，取其中中心x最小者，x再相同取中心y较小者——的ID是？（外接框=主体的最小对齐矩形；面积按可见主体计算，圆按直径、方按边长、圆环按外径；ID文字不计入）",
+      "rule": "外接框面积=max(size²)；三级排序 (−面积, x, y) 保证唯一",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "外接框由格位与尺寸精确决定，无容差",
+      "two_step": false
+    },
+    {
+      "id": "Q25",
+      "image": "grid-scene.png",
+      "type": "counting",
+      "text": "全图中同时满足「颜色=绿、尺寸=80」的对象共有几个？（只计可见彩色主体，ID文字不计入）",
+      "rule": "颜色与尺寸合取计数，逐对象判属性",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "整数精确计数，无容差",
+      "two_step": false
+    },
+    {
+      "id": "Q26",
+      "image": "grid-scene.png",
+      "type": "counting",
+      "text": "第4行至第7行（含第4行与第7行两界）之内，形状=圆环的对象共有几个？（行自上而下计；只计可见主体）",
+      "rule": "行范围（闭区间）与形状合取计数",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "整数精确计数，无容差",
+      "two_step": false
+    },
+    {
+      "id": "Q27",
+      "image": "grid-scene.png",
+      "type": "two-step-relation",
+      "text": "第一步：找出主体中心y严格大于G28中心y的全部对象；第二步：在其中取「颜色=橙且尺寸=64」者，若仍有多个则取中心x最小者（仍并列按ID升序）。该对象的ID是？（画布左上角，x向右、y向下，单位像素；严格不等式——中心y恰好等于G28中心y的对象不计入）",
+      "rule": "第一步严格中心上下关系 y>y_G28；第二步属性过滤后再按 (x, id) 排序",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "中心y为精确整数，比较无容差；像素核验±1px",
+      "two_step": true
+    },
+    {
+      "id": "Q28",
+      "image": "grid-scene.png",
+      "type": "two-step-relation",
+      "text": "第一步：取尺寸=48的全部对象；第二步：按「中心x降序，x相同时中心y升序」取第1个。该对象的颜色是哪一种（蓝/橙/绿/紫）？（画布左上角，x向右、y向下，单位像素）",
+      "rule": "第一步属性过滤；第二步排序键=(−x, y)字典序取首位",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "中心为精确整数，比较无容差",
+      "two_step": true
+    },
+    {
+      "id": "Q29",
+      "image": "grid-scene.png",
+      "type": "two-step-relation",
+      "text": "第一步：找出与G40处于同一列的全部对象（判据：主体中心x相等，即同一格列）；第二步：按「尺寸降序，尺寸相同时中心y升序」排列，排在首位的对象ID是？（画布左上角，x向右、y向下，单位像素）",
+      "rule": "第一步列关系（中心x相等）；第二步排序键=(−size, y)字典序",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "中心x为精确整数，比较无容差",
+      "two_step": true
+    },
+    {
+      "id": "Q30",
+      "image": "occlusion.png",
+      "type": "uncertainty",
+      "text": "occlusion.png（800×800，画布左上角，x向右、y向下，单位像素）中，中央遮挡板下方被遮住的隐藏对象是什么形状？仅依据本图可见信息作答，不得猜测。",
+      "rule": "可见信息不足以唯一确定隐藏内容时，正确答案为「无法确定」",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "无数值答案；结论依据像素等价证据（equivalence.json）",
+      "two_step": false
+    },
+    {
+      "id": "Q31",
+      "image": "occlusion.png",
+      "type": "counting",
+      "text": "occlusion.png中，除顶部标题栏与中央遮挡板之外，完整可见的主体对象（彩色几何形状：圆/正方形/圆环/圆角方）共有几个？",
+      "rule": "可见主体逐个计数，标题栏与遮挡板不属于主体",
+      "origin": "原点=画布左上角（x向右、y向下、单位像素）",
+      "tolerance": "整数精确计数，无容差",
+      "two_step": false
+    }
+  ]
+}

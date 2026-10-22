@@ -1,0 +1,109 @@
+{
+  "schema": "plan-amendment",
+  "plan_version_from": "plan-v1a",
+  "plan_version_to": "plan-v1b",
+  "established_at": "2026-10-20T22:01:16+08:00",
+  "established_before_first_render": true,
+  "reason_summary": "扩大研究：从 moonfact.html 页内链接找到真正的 notes 页 fact_notes.html(此前 notes.html/notesnotes.html 均404)，并补抓 7 张分表(金星/水星/火星/木星/土星/天王星/海王星)取得体积平均半径、扁率、GM、黑体温度、大气成分等新证据。据此把3处解释升级为有源事实、1处校验升级为更严格口径、1处图形参数修正、1处范围升级。无件已渲染(affects_rendered 全 false)。",
+  "evidence": [
+    "tmp/run-20261011-01/B04/research/SRC-04-fact-notes.txt",
+    "tmp/run-20261011-01/B04/research/SRC-05-venus-factsheet.txt",
+    "tmp/run-20261011-01/B04/research/SRC-06-mercury-factsheet.txt",
+    "tmp/run-20261011-01/B04/research/SRC-07-mars-factsheet.txt",
+    "tmp/run-20261011-01/B04/research/SRC-08-jupiter-factsheet.txt",
+    "tmp/run-20261011-01/B04/research/SRC-09-saturn-factsheet.txt",
+    "tmp/run-20261011-01/B04/research/SRC-10-uranus-factsheet.txt",
+    "tmp/run-20261011-01/B04/research/SRC-11-neptune-factsheet.txt"
+  ],
+  "source_base_extension": {
+    "added": ["SRC-04", "SRC-05", "SRC-06", "SRC-07", "SRC-08", "SRC-09", "SRC-10", "SRC-11"],
+    "SRC-04": {"title": "Notes on the Fact Sheets", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/fact_notes.html", "updated": "2024-05-06", "accessed": "2026-10-20T21:40+08:00", "note": "定义页；负号=逆行的原文出处；经 moonfact.html 内链找到，此前错误URL notes.html/notesnotes.html 404(记入 unread_sources)"},
+    "SRC-05": {"title": "Venus Fact Sheet", "updated": "2024-01-11", "accessed": "2026-10-20T21:36+08:00"},
+    "SRC-06": {"title": "Mercury Fact Sheet", "updated": "2024-01-11", "accessed": "2026-10-20T21:44+08:00"},
+    "SRC-07": {"title": "Mars Fact Sheet", "updated": "2025-05-19", "accessed": "2026-10-20T21:45+08:00"},
+    "SRC-08": {"title": "Jupiter Fact Sheet", "updated": "2024-10-02", "accessed": "2026-10-20T21:37+08:00"},
+    "SRC-09": {"title": "Saturn Fact Sheet", "updated": "2025-03-18", "accessed": "2026-10-20T21:38+08:00"},
+    "SRC-10": {"title": "Uranus Fact Sheet", "updated": "2024-10-02", "accessed": "2026-10-20T21:39+08:00"},
+    "SRC-11": {"title": "Neptune Fact Sheet", "updated": "2024-10-03", "accessed": "2026-10-20T21:41+08:00"},
+    "all_by": "Dr. David R. Williams / NSSDCA, NASA GSFC（与 SRC-01/02/03 同一作者与站点）"
+  },
+  "amendments": [
+    {
+      "id": "AM-6",
+      "case_id": "case-03",
+      "field": "technique",
+      "old": "log-log 散点(周期T对半径a) + T²/a³≈常数 标注 + 等比参考线(斜率3)",
+      "new": "log-log 散点(周期T对半径a) + T²/a³≈常数 标注 + 参考线 logT=1.5·loga−0.6999(斜率1.5)",
+      "reason": "T²∝a³ 两边取对数得 logT=1.5·loga+c，故以 T 对 a 作 log-log 图时参考线斜率是1.5不是3；'斜率3'若成立需以 logT² 对 loga。原字段是图形参数错误，纸面推导发现。",
+      "recomputed": "logT = 1.5·loga + c；地球代入 c = log(365.2) − 1.5·log(149.6) = 2.5625 − 3.2624 = −0.6999；水星 logT(88)=1.9445 vs 1.5·1.7626−0.6999=1.9440 ✓；海王星 4.7767 vs 4.7820(k=0.975 同向) ✓",
+      "evidence": "初等推导 + b04_data.ck_case03 既有断言",
+      "effective_version": "plan-v1b",
+      "affects_rendered": false
+    },
+    {
+      "id": "AM-7",
+      "case_id": "case-05",
+      "field": "numeric_claims",
+      "old": "v=√(2gR) 与表值偏差≤10%(断言, 并注明气态巨行星因扁率偏差更大—本辑解释)",
+      "new": "保留原√(2gR)≤10%断言(实测最大土星−7.2%✓)但改写成因：SRC-04 定义 SRC-01 的 Gravity 行=含自转效应的赤道有效加速度(木星23.12→23.1等五条跨源核对一致)，用它配赤道半径算逃逸速度会系统性偏低且自转越快越多。新增主校验 v=√(2GM/r_eq)：GM 取各分表(0.022032/0.32486/0.39860/0.042828/126.687/37.931/5.7940/6.8351e6 km³/s²)，月球 GM 按 SRC-04 定义由 g·r²=1.62·(1737.4)² 推得4890 km³/s²，冥王星用 SRC-03 GM=870 km³/s²：九体偏差≤1.5%(断言, 实算最大水星/月球−1.18%)；冥王星对 SRC-03 自身逃逸值1.21偏差≤0.5%(断言)，对 SRC-01 表值1.3为−6.9%并记录两表不一致为 uncertainty。",
+      "reason": "原成因解释('扁率')不准确：主要原因是表中 Gravity 为含自转的赤道有效值(定义见新源 SRC-04)；GM 口径校验比 gR 严格一个量级且全部有源。",
+      "recomputed": "各体 √(2GM/r_eq) vs SRC-01：水星4.249/4.3=−1.18%，金星10.36/10.4=−0.37%，地球11.18/11.2=−0.18%，月球2.372/2.4=−1.18%，火星5.02/5.0=+0.45%，木星59.53/59.5=+0.06%，土星35.48/35.5=−0.06%，天王星21.29/21.3=−0.03%，海王星23.49/23.5=−0.03%，冥王星1.210/1.3=−6.92%、/1.21=0.0%",
+      "evidence": "SRC-04 定义原文 + SRC-05..08/10/11 GM行 + SRC-03 GM/逃逸行 + 手工复算",
+      "effective_version": "plan-v1b",
+      "affects_rendered": false
+    },
+    {
+      "id": "AM-8",
+      "case_id": "case-06",
+      "field": "content_scope",
+      "old": "垂直温度色阶(-225…+464) + 九天体定位 + 金星/水星对照高亮 + '成因不在本辑数据范围内'诚实注",
+      "new": "垂直温度色阶(-225…+464) + 九天体定位 + 金星/水星对照高亮 + 新增黑体温度对照三联卡：水星 440K−439.6K=+0.4K、地球 288.15K−254.0K=+34.2K、金星 737.15K−226.6K=+510.6K(逐项断言)；黑体定义引 SRC-04 原文('had no atmosphere, but the same albedo')；大气事实水星 <5e−15 bar 源自自大气(SRC-06 原文'essentially a vacuum') vs 金星92 bar/96.5% CO2(SRC-05)；入射太阳辐照水星9082.7 vs 金星2601.3 W/m²(断言比值3.49，说明水星日照更强反而更冷)。因果('厚大气是金星高出黑体510K的原因')标 basis_type=interpretation。诚实注改为：巨行星温度行为定义在1-bar高度(SRC-08..11 原文)，与黑体(顶层辐射平衡)不同口径，不纳入Δ断言。",
+      "reason": "找到 SRC-04 定义与各分表黑体温度后，原'成因不在数据范围内'已不成立——温度反差可用同站数据严谨讲述，仅因果解释仍标本辑解释。范围升级为更完整，不删任何原条目。",
+      "recomputed": "水星 Δ=440−439.6=0.4K(用SRC-01 167°C→440.15K 则0.55K，均<2K)；地球 Δ=288.15−254.0=34.15K；金星 Δ=737.15−226.6=510.55K；辐照比 9082.7/2601.3=3.4916",
+      "evidence": "SRC-04 定义 + SRC-05/06 黑体行与大气段 + SRC-01 温度行",
+      "effective_version": "plan-v1b",
+      "affects_rendered": false
+    },
+    {
+      "id": "AM-9",
+      "case_id": "case-10",
+      "field": "numeric_claims",
+      "old": "AM-4：ρ=M/(4/3πR³)(R=表直径/2) 分档：类地5体+冥王星≤1%；四巨行星 2–10% 带内且偏低(带内断言) + 口径解释标interpretation",
+      "new": "主校验升级为 ρ=M/(4/3πR_mean³)，R_mean 取各分表体积平均半径(SRC-02..08/10/11+SRC-03，共10体)：全体≤1%断言(实算最大月球−0.51%，系SRC-01质量行0.073舍入)。对照演示保留：用表直径/2(赤道口径)球算，四巨行星−2.1%~−9.8%且按扁率排序(土星0.09796最扁偏最多、海王星0.01708最轻偏最少)——'表直径为赤道值'可由 Jupiter 分表 71492×2=142984=表值等算术核对(断言)；扁率数值有源(SRC-08..11 ellipticity行)，故'扁率越大球算偏低越多'升为有源事实(basis_type=fact+interpretation 混合标为已核对算术)。分野空档成员不变：冥王星+月球∈(1638,3934)。",
+      "reason": "AM-4 的 2–10% 带是缺证据时的保守带宽；补抓分表后可用体积平均半径把十体全部收进≤1%，口径差异也从猜测变成有数值有源的对照演示。AM-4 被本条取代(superseded_by=AM-9)，原文保留。",
+      "recomputed": "按体积平均半径：水星5426/5429=−0.05%、金星5248/5243=+0.09%、地球5511/5514=−0.05%、月球3323/3340=−0.51%、火星3935/3934=+0.04%、木星1326.0/1326=0.00%、土星686.7/687=−0.04%、天王星1270/1270=+0.02%、海王星1632/1638=−0.38%、冥王星1852/1850=+0.11%；赤道口径巨行星：木星1240(−6.5%)、土星620(−9.8%)、天王星1241(−2.3%)、海王星1604(−2.1%)，扁率序0.09796>0.06487>0.02293>0.01708 对应偏差序9.8%>6.5%>2.3%>2.1% ✓ 同序",
+      "evidence": "SRC-02..08/10/11 volumetric mean radius 行、ellipticity 行 + 手工复算",
+      "effective_version": "plan-v1b",
+      "affects_rendered": false
+    },
+    {
+      "id": "AM-10",
+      "case_id": "case-04",
+      "field": "numeric_claims",
+      "old": "AM-2：负号=逆行自转标 basis_type=interpretation(数据自洽推导)，因 notes 页404不可达",
+      "new": "负号=逆行升级为 basis_type=fact，直接引 SRC-04 原文：'A minus sign indicates retrograde rotation.'；原表内自洽推导(水星顺转4220.5✓/逆行844.7✗、金星逆行2802.0✓/顺转无解)保留为第二重独立核对。AM-2 的前提('notes页不可达')被推翻：正确URL是 fact_notes.html，由 moonfact.html 内链发现；404记录仍如实保留(错URL尝试)。",
+      "reason": "取得定义原文，事实等级从推断升级为直接引用；推导链保留以增强而非删除。",
+      "recomputed": "SRC-04 原文见 SRC-04-fact-notes.txt [retrograde sign] 段；推导见 AM-2 recomputed",
+      "evidence": "SRC-04 verbatim quote",
+      "effective_version": "plan-v1b",
+      "supersedes": "AM-2",
+      "affects_rendered": false
+    },
+    {
+      "id": "AM-11",
+      "case_id": "case-01,case-03,case-11",
+      "field": "numeric_claims",
+      "old": "（隐含前提）SRC-01 数值为唯一口径，无同站对照",
+      "new": "在相关作品脚注增加跨表取整提示：SRC-01 轨道周期为取整值(木星4331 vs SRC-08 4332.589、土星10747 vs 10755.699、天王星30589 vs 30685.4、海王星59800 vs 60189.018、冥王星90560 vs 90560)，case-03 的 k 值(海王星0.975最小)受取整影响——图上注明'SRC-01 取整口径'即可，断言区间[0.96,1.04]维持不变(不放松)。新增跨表不一致登记(全部进 sources.json uncertainties，作品不引不一致值)：冥王星重力 0.7(SRC-01) vs 0.62(SRC-03)、逃逸 1.3 vs 1.21、火星均温 −65°C(SRC-01) vs ~214K≈−59°C(SRC-07)、地球密度5514(SRC-01) vs 5513(各分表)、水星SRC-06比率列58.785与1407.6h/24=58.65不一致(作品用小时原值)。",
+      "reason": "补抓分表后发现同站两表口径/取整差异；必须如实登记并声明作品取值来源，避免把不一致值混用为'互相印证'。",
+      "recomputed": "见 reason 所列各对数值",
+      "evidence": "SRC-01 与 SRC-03/06/07/08/09/10/11 对应行",
+      "effective_version": "plan-v1b",
+      "affects_rendered": false
+    }
+  ],
+  "not_amended": [
+    "case-01/02/07/08/09/11 原断言维持：case-08 的 AM-3 分档经新源补充后不变(SRC-02 比值页内自带 Ratio 列=自洽，跨表用 AM-3 分档)；case-09 的 1/1560、606/1188 不变；case-02 轨道间隙与交错不变；case-07 合计421不变；case-04 AM-1 公式断言不变(实算最大0.26%)。"
+  ],
+  "impact": "sources_base 由3源扩为11源(全部同作者同站，构成单一数据底座)；AM-4 被 AM-9 取代、AM-2 被 AM-10 升级，原文均保留；无件已渲染，首渲前生效；plan-v1/v1a 文件不修改，本文件为追加件，case.md/portfolio 引用 plan_version=plan-v1b。"
+}

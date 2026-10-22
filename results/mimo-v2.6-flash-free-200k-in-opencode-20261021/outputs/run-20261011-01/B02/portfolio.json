@@ -1,0 +1,1333 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "B02",
+ "run_id": "run-20261011-01",
+ "status": "completed",
+ "asset_policy": "dsl_primary_with_supporting_assets（本题全部纯 DSL，0 外部素材）",
+ "project": "禾风里社区共耕花园",
+ "curatorial_statement": "为一个虚构社区农园“禾风里”构建 11 件触点作品：按用户旅程（认知→加入→计划→参与→学习→购买→复购→亲子→反馈）各解决一个真实运营断点，靠同一份共享事实（价格/产量/名额/缺口）互相咬合，用“一底两色一母题”设计系统保持同一项目感，同时让海报、证书、价目牌、长图、排班表、说明牌、甘特日历、警示牌、数据报告、横幅、报名卡各按其媒介与观看距离分化。全部纯 DSL，20 次成功渲染逐张实际查看，9 次完整视觉迭代 + 8 次语法/生成修复。",
+ "plan_ref": {
+  "file": "tmp/run-20261011-01/B02/plan-v1.json",
+  "version": "v1",
+  "established_at": "2026-10-19T19:26:16+08:00",
+  "criteria": [
+   {
+    "id": "G1",
+    "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+    "method": "requests.jsonl + PNG IHDR 读取 + md5 对比"
+   },
+   {
+    "id": "G2",
+    "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+    "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）"
+   },
+   {
+    "id": "G3",
+    "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+    "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）"
+   },
+   {
+    "id": "G4",
+    "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+    "method": "看图 + 必要时像素探针"
+   },
+   {
+    "id": "G5",
+    "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+    "method": "对照本计划 content_scope 逐项看图勾对"
+   },
+   {
+    "id": "G6",
+    "condition": "虚构品牌/数据在 case.md 如实声明",
+    "method": "文件审查"
+   },
+   {
+    "id": "G7",
+    "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+    "method": "design-system.json 对照 + 全套看图终审"
+   },
+   {
+    "id": "G8",
+    "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+    "method": "touchpoint-map.json 对照 + 全套看图终审"
+   }
+  ],
+  "note": "计划建立于首渲 19:33:28 之前；本运行未增删 G1–G8 标准"
+ },
+ "design_system": "design-system.json",
+ "touchpoint_map": "touchpoint-map.json",
+ "project_brief": "project-brief.md",
+ "cases": [
+  {
+   "id": "case-01",
+   "title": "开放日报名海报",
+   "journey_stage": "认知→报名",
+   "audience": "路过的居民（街道公告栏/地铁灯箱，2–3m 处扫视）",
+   "use_context": "1080×1528 竖版（A3 比例）公告栏/灯箱印刷",
+   "user_goal": "30 秒内知道开放日时间地点并扫码报名",
+   "content_basis": "自拟虚构演示数据：标题、三亮点、开放日时间地点、认养规模、占位二维码（非功能性已注明）、主办信息",
+   "visual_intent": "宣纸底 + 土陶大标题 + 叶绿亮点条，大留白公告风",
+   "png": "case-01/final.png",
+   "snapshot": "case-01/final.snapshot",
+   "case_md": "case-01/case.md",
+   "dimensions": [
+    1080,
+    1528
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-01-v2）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c01-v1",
+    "B02-c01-v1b",
+    "B02-c01-v1c",
+    "B02-c01-v2"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 4 次请求中 2 次 200（语法型失败见 iterations.jsonl）；final.png md5=6628e40673ec7ffb… 与草稿一致；IHDR 1080×1528",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 2 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：assert_facts()；二维码为确定性随机占位图案（seed=420），图上明示“示意图案非真实二维码”",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（1 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（30 秒内知道开放日时间地点并扫码报名）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1080×1528 竖版”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-02",
+   "title": "地块认养证",
+   "journey_stage": "加入",
+   "audience": "认养户（开放日现场 A4 打印，签约后装裱留存）",
+   "use_context": "1240×1754（A4 比例）打印证书",
+   "user_goal": "拿到有仪式感的凭证并知晓三条基本义务",
+   "content_basis": "自拟虚构演示数据：认养人、地块编号/尺寸、认养期、须知三条、双方签署、印章",
+   "visual_intent": "证书排版：细双线边框 + 刻度尺 + 圆形印章，庄重留白",
+   "png": "case-02/final.png",
+   "snapshot": "case-02/final.snapshot",
+   "case_md": "case-02/case.md",
+   "dimensions": [
+    1240,
+    1754
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-02-v2）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c02-v1",
+    "B02-c02-v1b",
+    "B02-c02-v1c",
+    "B02-c02-v2"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 4 次请求中 2 次 200（语法型失败见 iterations.jsonl）；final.png md5=5fb0cb4a1a3690c5… 与草稿一致；IHDR 1240×1754",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 2 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：地块示意 225×300px 按 3m×4m=3:4 真实比例；assert_facts()（12 块/24 户）",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（1 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（拿到有仪式感的凭证并知晓三条基本义务）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1240×1754”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-03",
+   "title": "周六市集价目牌",
+   "journey_stage": "购买",
+   "audience": "市集顾客（摊位立牌，1m 处快速扫读）",
+   "use_context": "1080×1350 立牌",
+   "user_goal": "3 秒找到想买的菜、单价与会员折后价",
+   "content_basis": "自拟虚构演示数据：8 种当季菜单价+会员价、限购提示、支付方式、市集时段",
+   "visual_intent": "价目网格：白卡 + 叶绿价签 + 土陶限购条",
+   "png": "case-03/final.png",
+   "snapshot": "case-03/final.snapshot",
+   "case_md": "case-03/case.md",
+   "dimensions": [
+    1080,
+    1350
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-03-v1）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c03-v1"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 1 次请求中 1 次 200（语法型失败见 iterations.jsonl）；final.png md5=562578016d20222f… 与草稿一致；IHDR 1080×1350",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 1 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：会员价 = round(单价×0.8) 由 MARKET_PRICES 统一计算；assert_facts()",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：首版看图即无缺陷；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（3 秒找到想买的菜、单价与会员折后价）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1080×1350 立牌”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-04",
+   "title": "菜篮订阅卡",
+   "journey_stage": "复购",
+   "audience": "家庭用户（微信群/朋友圈转发，手机竖屏睡前点开）",
+   "use_context": "1080×1920 手机长图",
+   "user_goal": "选好规格并知道配送日与退订规则",
+   "content_basis": "自拟虚构演示数据：三规格价格与适用人数、每周菜色示例、配送自提、订阅流程、退订规则",
+   "visual_intent": "手机长图：三层规格卡 + 菜色 chips + 流程条 + 规则脚注",
+   "png": "case-04/final.png",
+   "snapshot": "case-04/final.snapshot",
+   "case_md": "case-04/case.md",
+   "dimensions": [
+    1080,
+    1920
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-04-v2）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c04-v1",
+    "B02-c04-v2"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 2 次请求中 2 次 200（语法型失败见 iterations.jsonl）；final.png md5=0db58e54cbe2c7ff… 与草稿一致；IHDR 1080×1920",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 2 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：规格 29/49/79 与 FACTS.basket 一致；小/中/家菜色数 4/6/8 与篮内示例一致；assert_facts()",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（1 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（选好规格并知道配送日与退订规则）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1080×1920 手机长图”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-05",
+   "title": "志愿者排班表",
+   "journey_stage": "参与",
+   "audience": "志愿者与管理员（出门前手机查看/工具房打印）",
+   "use_context": "1400×1000 横版网格",
+   "user_goal": "看清本周各时段岗位缺口并认领",
+   "content_basis": "自拟虚构演示数据：7 天×4 时段网格、四岗位需求与缺口高亮、容量条、认领方式与联系人",
+   "visual_intent": "排班网格：叶绿表头语义 + 土陶缺口高亮 + 容量条三色",
+   "png": "case-05/final.png",
+   "snapshot": "case-05/final.snapshot",
+   "case_md": "case-05/case.md",
+   "dimensions": [
+    1400,
+    1000
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-05-v2）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c05-v1",
+    "B02-c05-v2"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 2 次请求中 2 次 200（语法型失败见 iterations.jsonl）；final.png md5=1d9e3b27361d0dba… 与草稿一致；IHDR 1400×1000",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 2 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：GRID=28 格断言；缺口 5 人次 = 三处明细(2+2+1)；本周志愿 59 人次由数据求和",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（1 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（看清本周各时段岗位缺口并认领）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1400×1000 横版网格”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-06",
+   "title": "厨余堆肥三步图",
+   "journey_stage": "学习",
+   "audience": "手提厨余的居民（堆肥箱旁立牌，0.8m 处）",
+   "use_context": "1000×1400 立牌",
+   "user_goal": "30 秒学会可投/不可投与三层堆法",
+   "content_basis": "自拟虚构演示数据：可投清单、不可投警示、三层堆法剖面、翻堆周期、熟肥用法",
+   "visual_intent": "说明图：堆体剖面三层色带 + 清单双栏 + 土棕场景色",
+   "png": "case-06/final.png",
+   "snapshot": "case-06/final.snapshot",
+   "case_md": "case-06/case.md",
+   "dimensions": [
+    1000,
+    1400
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-06-v1）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c06-v1"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 1 次请求中 1 次 200（语法型失败见 iterations.jsonl）；final.png md5=6c773f3b8400eea2… 与草稿一致；IHDR 1000×1400",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 1 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：厨余 2.4 吨→堆肥 0.8 吨与 FACTS 一致、转化率 33% 计算一致",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：首版看图即无缺陷；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（30 秒学会可投/不可投与三层堆法）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1000×1400 立牌”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-07",
+   "title": "二十四节气种植日历",
+   "journey_stage": "计划",
+   "audience": "会员与志愿者（活动中心横屏，3m 处站立观看）",
+   "use_context": "1600×900 横屏大图",
+   "user_goal": "知道本月该播种什么、正收什么",
+   "content_basis": "自拟虚构演示数据：12 节气条、6 作物行、播种/养护/采收三色区间、本月(谷雨)高亮、本月农事三条",
+   "visual_intent": "甘特式日历：宣纸底 + 三色区间条 + 本月光柱",
+   "png": "case-07/final.png",
+   "snapshot": "case-07/final.snapshot",
+   "case_md": "case-07/case.md",
+   "dimensions": [
+    1600,
+    900
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-07-v2）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c07-v1",
+    "B02-c07-v2"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 2 次请求中 2 次 200（语法型失败见 iterations.jsonl）；final.png md5=1450c42e7957d7e6… 与草稿一致；IHDR 1600×900",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 2 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：区间端点有序且 ≤11 断言、本月=谷雨断言；本月笔记(生菜尾茬/黄瓜始收)与区间表一致",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（1 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（知道本月该播种什么、正收什么）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1600×900 横屏大图”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-08",
+   "title": "工具房安全须知",
+   "journey_stage": "参与/安全",
+   "audience": "取用工具的志愿者（工具房门内，0.6m 处）",
+   "use_context": "900×1200 门内警示挂牌",
+   "user_goal": "取工具前读懂 6 条安全规则与归还要求",
+   "content_basis": "自拟虚构演示数据：6 条编号规则、PPE 四件、归还要求、紧急联系",
+   "visual_intent": "警示牌：土陶底白纸卡反转 + 编号圆章 + 深土棕信息条",
+   "png": "case-08/final.png",
+   "snapshot": "case-08/final.snapshot",
+   "case_md": "case-08/case.md",
+   "dimensions": [
+    900,
+    1200
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-08-v2）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c08-v1",
+    "B02-c08-v2"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 2 次请求中 2 次 200（语法型失败见 iterations.jsonl）；final.png md5=e7e403775127bc94… 与草稿一致；IHDR 900×1200",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 2 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：6 规则/PPE4/归还3条/联系3条结构齐全；无外部数据",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（1 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（取工具前读懂 6 条安全规则与归还要求）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“900×1200 门内警示挂牌”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-09",
+   "title": "三季度收成报告",
+   "journey_stage": "反馈",
+   "audience": "认养户与捐赠方（公示栏 1m 处/社群点开）",
+   "use_context": "1600×900 横版数据报告",
+   "user_goal": "看懂本季产出、参与度与资金去向",
+   "content_basis": "自拟虚构演示数据：三项 KPI、品类构成条形、收成去向、支出构成、下季计划",
+   "visual_intent": "数据报告：KPI 卡 + 品类条形 + 支出堆叠条 + 计划面板",
+   "png": "case-09/final.png",
+   "snapshot": "case-09/final.snapshot",
+   "case_md": "case-09/case.md",
+   "dimensions": [
+    1600,
+    900
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-09-v2）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c09-v1",
+    "B02-c09-v2"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 2 次请求中 2 次 200（语法型失败见 iterations.jsonl）；final.png md5=e1cba7a186b6c5fd… 与草稿一致；IHDR 1600×900",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 2 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：sum(q3_break)=1286=FACTS.q3_total 断言；支出占比 32+24+18+14+12=100 断言；收成去向 42+46+12=100",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（1 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（看懂本季产出、参与度与资金去向）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1600×900 横版数据报告”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-10",
+   "title": "市集帐篷横幅",
+   "journey_stage": "认知/招徕",
+   "audience": "市集人流（帐篷檐口，5–8m 远距）",
+   "use_context": "1920×640 超宽横幅",
+   "user_goal": "远处识别摊位并记住三样主打与会员招募",
+   "content_basis": "自拟虚构演示数据：摊位名、三样主打菜+价格、会员招募一句话、品牌锁定组合、叶纹边",
+   "visual_intent": "超宽横幅：叶绿大底 + 重复叶纹水印 + 土陶招募块",
+   "png": "case-10/final.png",
+   "snapshot": "case-10/final.snapshot",
+   "case_md": "case-10/case.md",
+   "dimensions": [
+    1920,
+    640
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-10-v3）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c10-v1",
+    "B02-c10-v1b",
+    "B02-c10-v2",
+    "B02-c10-v3"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 4 次请求中 3 次 200（语法型失败见 iterations.jsonl）；final.png md5=32eddf34c2096edd… 与草稿一致；IHDR 1920×640",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 3 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：三主打单价与 MARKET_PRICES 一致；会员价 round(p×0.8)=5/4/8 断言",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：修复后终版无缺陷（3 次迭代）；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（远处识别摊位并记住三样主打与会员招募）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1920×640 超宽横幅”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-11",
+   "title": "自然课报名卡",
+   "journey_stage": "亲子参与",
+   "audience": "家长（家长群转发/现场领取，手机方图）",
+   "use_context": "1200×1200 手机方图",
+   "user_goal": "给孩子报名本周六自然课并知道携带物",
+   "content_basis": "自拟虚构演示数据：课程主题、时间/时长/年龄/地点、名额进度、携带清单、报名方式",
+   "visual_intent": "亲子风：番茄红主题头 + 番茄图形 + 名额进度条",
+   "png": "case-11/final.png",
+   "snapshot": "case-11/final.snapshot",
+   "case_md": "case-11/case.md",
+   "dimensions": [
+    1200,
+    1200
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "Positioned>Transform(column-major)叶标记、Container渐变、DecoratedBox圆角描边boxShadow、Stack居中、多行Text lineHeight、自写 tw/fit 预算",
+   "visual_review": "终版整图已看（case-11-v1）；其余成功渲染全部看图，修复依据见 iterations.jsonl",
+   "request_ids": [
+    "B02-c11-v1"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "v1 @ 2026-10-19T19:26:16+08:00（tmp/run-20261011-01/B02/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节",
+     "method": "requests.jsonl + PNG IHDR 读取 + md5 对比",
+     "result": "通过：本件 1 次请求中 1 次 200（语法型失败见 iterations.jsonl）；final.png md5=6b8045310757d1a4… 与草稿一致；IHDR 1200×1200",
+     "evidence": [
+      "requests.jsonl",
+      "copy-report.json"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看尺寸下全部文字可读、无折行截断/越界",
+     "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）",
+     "result": "通过：生成期 tw()/fit() 预算；本件 1 次成功渲染全部实际看图，无截断/越界",
+     "evidence": [
+      "生成脚本输出",
+      "看图记录 iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G3",
+     "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）",
+     "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）",
+     "result": "通过：9/12 进度条 75% 与 FACTS.class 一致；剩余 3 位计算一致；assert_facts()",
+     "evidence": [
+      "生成脚本断言",
+      "看图核对"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G4",
+     "condition": "无元素重叠/遮挡/穿线类视觉缺陷",
+     "method": "看图 + 必要时像素探针",
+     "result": "通过：首版看图即无缺陷；终版复看无缺陷",
+     "evidence": [
+      "iterations.jsonl",
+      "看图记录"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G5",
+     "condition": "达成该触点 user_goal 所需关键信息全部在图上",
+     "method": "对照本计划 content_scope 逐项看图勾对",
+     "result": "通过：content_scope 逐项在终版看图勾对（给孩子报名本周六自然课并知道携带物）",
+     "evidence": [
+      "终版整图看图"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G6",
+     "condition": "虚构品牌/数据在 case.md 如实声明",
+     "method": "文件审查",
+     "result": "通过：见下方虚构声明；页脚图上标注",
+     "evidence": [
+      "本文件"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G7",
+     "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调",
+     "method": "design-system.json 对照 + 全套看图终审",
+     "result": "通过：色板 + Noto Sans CJK SC + 叶形母题在本件出现，全套协调（design-system.json C1–C8）",
+     "evidence": [
+      "design-system.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "G8",
+     "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）",
+     "method": "touchpoint-map.json 对照 + 全套看图终审",
+     "result": "通过：本件媒介为“1200×1200 手机方图”，任务独立（touchpoint-map.json）",
+     "evidence": [
+      "touchpoint-map.json",
+      "全套看图终审"
+     ],
+     "status": "passed"
+    }
+   ]
+  }
+ ],
+ "final_collection_review": "11 件终版逐张实际查看：内容完整、无截断/遮挡、层级清晰、目标观看距离可读；作品集媒介/任务/数据结构互不重复（touchpoint-map.json）；共享事实跨件对账一致；设计系统一致性见 design-system.json。",
+ "unresolved_issues": []
+}

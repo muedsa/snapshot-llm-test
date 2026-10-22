@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A03",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "原稿真实报错全部修复，静默与视觉问题按文档依据解决，最终图逐项视觉与像素核验通过",
+  "output_dir": "outputs/run-20261011-01/A03/",
+  "temp_dir": "tmp/run-20261011-01/A03/",
+  "timings": {
+    "started_at": "2026-10-12T09:24:40.000+08:00",
+    "ended_at": "2026-10-12T09:47:30.000+08:00",
+    "elapsed_seconds": 1430,
+    "first_usable_image_seconds": 458,
+    "first_usable_image_note": "req-0005 (fix-v4) 为首个 200 成功渲染",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 15.95,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 9,
+    "successful_snapshot_requests": 5,
+    "failed_snapshot_requests": 4,
+    "failed_note": "4 次均为原稿真实报错（PARSE_ERROR×2、RENDER_ERROR×2），错误响应全部保存",
+    "retry_requests": 0,
+    "other_service_requests": 0,
+    "document_requests": 0,
+    "document_requests_note": "复用 _suite 共享文档缓存（parser-tags.html / parser-guide.html / ai-guide.md），未重复计为新请求",
+    "dsl_versions": 9,
+    "image_views": 7,
+    "completed_visual_iterations": 4,
+    "incomplete_visual_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A03/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A03/iterations.jsonl",
+    "shared_requests": "tmp/run-20261011-01/_suite/requests-shared.jsonl"
+  },
+  "outputs": [
+    { "file": "system-pulse.png", "dsl": "system-pulse.snapshot", "width": 1280, "height": 800,
+      "bytes": 47566, "request_id": "A03-req-0009", "content_type": "image/png", "status": 200,
+      "purpose": "修复后的 System Pulse 监控卡" },
+    { "file": "system-pulse.snapshot", "bytes": 5295, "purpose": "完整可复现 DSL（不含任何未知属性）" },
+    { "file": "repair-log.json", "purpose": "问题→原稿位置/依据/修改/验证映射；区分真实报错、静默忽略与视觉问题" },
+    { "file": "snapshot-usage.md", "purpose": "使用说明与踩坑记录" },
+    { "file": "task-metrics.json", "purpose": "本题指标" }
+  ],
+  "candidates": [
+    { "file": "tmp/run-20261011-01/A03/drafts/broken-v0.error.json", "note": "原稿原样提交的真实 400 响应" },
+    { "file": "tmp/run-20261011-01/A03/drafts/fix-v1.error.json", "note": "Transform matrix 报错响应" },
+    { "file": "tmp/run-20261011-01/A03/drafts/fix-v2.error.json", "note": "Positioned 父数据报错响应" },
+    { "file": "tmp/run-20261011-01/A03/drafts/fix-v3.error.json", "note": "无限布局报错响应" },
+    { "file": "tmp/run-20261011-01/A03/drafts/fix-v4.png", "note": "首个成功渲染，暴露 fontSize/alpha/滤镜语义问题" },
+    { "file": "tmp/run-20261011-01/A03/drafts/fix-v5.png", "note": "重排版本，暴露 ClipRRect 内 Stack 尺寸塌缩" },
+    { "file": "tmp/run-20261011-01/A03/drafts/fix-v6.png", "note": "说明卡恢复版本，发现标签越安全边距" },
+    { "file": "tmp/run-20261011-01/A03/drafts/fix-v7.png", "note": "定稿草稿，与最终交付 PNG 字节一致" }
+  ],
+  "rounds": [],
+  "unresolved_issues": []
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "task_id": "B02",
+  "path_base": "suite_root",
+  "plan_ref": "tmp/run-20261011-01/B02/plan-v1.json（v1 @ 2026-10-19T19:26:16+08:00，先于首渲）",
+  "project": {
+    "name": "禾风里社区共耕花园",
+    "latin": "HEFENGLI COMMUNITY GARDEN",
+    "note": "虚构演示项目；运作方式参照真实社区花园常识，数据全部自拟"
+  },
+  "tokens": {
+    "colors": {
+      "paper": "#F7F1E4（宣纸底，主背景）",
+      "paper_card": "#FDFAF2（浅纸白卡）",
+      "clay": "#C1502E（土陶橙，主强调/警示）",
+      "clay_deep": "#98381D（深土陶，渐变端）",
+      "leaf": "#4A7C4E（叶绿，主色）",
+      "leaf_deep": "#2F5A38（深叶绿，品牌头底色）",
+      "leaf_light": "#D9E4CE（浅叶绿底，信息面板）",
+      "sun": "#E8A93D（阳光黄，次强调/品牌点）",
+      "ink": "#2E2A25（墨，正文）",
+      "muted": "#7A7264（灰墨，辅助文字）",
+      "line": "#D8CFBC（纸纹线）",
+      "soil": "#6B4A2F（土棕，堆肥/工具场景）"
+    },
+    "type": {
+      "font_family": "Noto Sans CJK SC（全套唯一字体，服务端已验证可用）",
+      "scale": {
+        "far_view_title": "84–108px（横幅/大海报 5m+）",
+        "display": "46–64px（标题/大数字）",
+        "section": "22–34px（栏目头）",
+        "body": "17–26px（正文/表格）",
+        "caption": "12–16px（脚注/图例）"
+      },
+      "weight_rule": "层级只用 字号/字重/颜色 三手段，不引入第二字体"
+    },
+    "spacing": {
+      "canvas_margin": "44–70px（按画幅比例）",
+      "card_gap": "20–28px",
+      "radius": { "card": "14–20", "chip": "8–26（胶囊）", "bar": "12–13" }
+    }
+  },
+  "components": [
+    { "id": "C1", "name": "叶形标记 leaf_mark", "impl": "Positioned>Transform(column-major matrix,45°)>SizedBox>DecoratedBox 圆角菱形 + 可选叶柄线", "used_by": ["case-01", "case-02", "case-03", "case-04", "case-06", "case-09", "case-10", "case-11"] },
+    { "id": "C2", "name": "品牌锁定组合 brand_header", "impl": "叶标记 + 禾风里(粗) + HEFENGLI COMMUNITY GARDEN 小字", "used_by": ["case-01", "case-03", "case-04", "case-05", "case-06", "case-07", "case-09"] },
+    { "id": "C3", "name": "栏目头 section", "impl": "5px 竖色条 + 粗标题 + 底部 1px 细线", "used_by": ["case-01", "case-02", "case-06", "case-07", "case-09", "case-11"] },
+    { "id": "C4", "name": "圆章 seal", "impl": "双层描边圆 + 叶标记 + 两行章文", "used_by": ["case-02"] },
+    { "id": "C5", "name": "刻度尺 ruler_ticks", "impl": "等距小矩形，长刻度每 4 格", "used_by": ["case-01", "case-02", "case-08", "case-10"] },
+    { "id": "C6", "name": "胶囊 chip", "impl": "圆角底 + 居中单行文字，宽度预算 fit()", "used_by": ["全部 11 件"] },
+    { "id": "C7", "name": "容量/进度条 bar", "impl": "轨道圆角条 + 按比例填充条（绿=满/黄=2人/红=缺口；数据=比例）", "used_by": ["case-05", "case-07", "case-09", "case-11"] },
+    { "id": "C8", "name": "脚注 footnote", "impl": "12px 灰墨单行，标注虚构声明/更新时间", "used_by": ["全部 11 件"] }
+  ],
+  "rules": [
+    "每件必带：色板约束 + Noto Sans CJK SC + 叶形母题（C1/C2 至少其一）+ 虚构声明脚注",
+    "远距件（case-10）字号预算：主标≥96px、价格≥40px、元素数≤12",
+    "数据与共享事实同源：价格=MARKET_PRICES、会员价=round(单价×0.8)、产量=q3_break（和=1286）",
+    "文字溢出生成期用 tw()/fit() 拦截；含 \n 的多行文本逐行核对后再放行",
+    "图层顺序规则：底纹/行底 → 高亮带 → 图形条 → 标签（标签裁剪到不被后画条覆盖的可见跨度）",
+    "警示类场景（case-08）土陶底白纸卡反转，信息条深土棕，页脚不得压入信息条"
+  ],
+  "verification": {
+    "consistency_check": "11 件终版逐张实际查看（套件看图记录）+ 本文件对照",
+    "evidence": "tmp/run-20261011-01/B02/requests.jsonl、iterations.jsonl；outputs/run-20261011-01/B02/case-NN/final.png"
+  }
+}

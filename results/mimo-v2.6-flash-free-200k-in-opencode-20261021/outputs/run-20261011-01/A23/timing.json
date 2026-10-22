@@ -1,0 +1,84 @@
+{
+ "schema_version": 1,
+ "task_id": "A23",
+ "path_base": "output_dir",
+ "theme": "结构汇聚成图像",
+ "frames": [
+  {
+   "index": 1,
+   "id": "F1",
+   "png": "frame-01.png",
+   "dsl": "frame-01.snapshot",
+   "t_ms": 0,
+   "duration_ms": 250
+  },
+  {
+   "index": 2,
+   "id": "F2",
+   "png": "frame-02.png",
+   "dsl": "frame-02.snapshot",
+   "t_ms": 250,
+   "duration_ms": 250
+  },
+  {
+   "index": 3,
+   "id": "F3",
+   "png": "frame-03.png",
+   "dsl": "frame-03.snapshot",
+   "t_ms": 500,
+   "duration_ms": 250
+  },
+  {
+   "index": 4,
+   "id": "F4",
+   "png": "frame-04.png",
+   "dsl": "frame-04.snapshot",
+   "t_ms": 750,
+   "duration_ms": 250
+  },
+  {
+   "index": 5,
+   "id": "F5",
+   "png": "frame-05.png",
+   "dsl": "frame-05.snapshot",
+   "t_ms": 1000,
+   "duration_ms": 250
+  },
+  {
+   "index": 6,
+   "id": "F6",
+   "png": "frame-06.png",
+   "dsl": "frame-06.snapshot",
+   "t_ms": 1250,
+   "duration_ms": 250
+  }
+ ],
+ "loop": {
+  "enabled": true,
+  "period_ms": 1500,
+  "seamless": false,
+  "seam_ref": "frame-data.json#/seam",
+  "restart_behavior": "t=1500ms 硬切回 frame-01：12单元位置跳变均值 255.7px（最大 431.5px、最小 76.4px），旋转跳变10°–30°",
+  "impact": "循环播放时每 1.5s 出现一次明显重置跳变；前6帧内部轨迹连续、单元无突然消失或出现"
+ },
+ "interpolation": {
+  "keyframe_sampling": "关键帧为设计轨迹 s(u)=(1−u)^1.35 在 u=0,0.2,0.4,0.6,0.8,1.0 的采样，对应 t=0…1250ms",
+  "between_keyframes": "若下游需要补中间帧，按相邻关键帧对位置与角度做线性插值（设计轨迹的分段线性近似）",
+  "rendered_intermediates": 0,
+  "note": "插值仅描述设计轨迹，不代表已渲染帧；交付物只有6张关键帧PNG"
+ },
+ "fps_effective": 4,
+ "frame_count": 6,
+ "playback_order": "frame-01 → frame-02 → … → frame-06 → (loop) frame-01",
+ "playback_recommendations": [
+  "每帧 250ms、周期 1500ms 循环播放（frame-01…frame-06 顺序）",
+  "如需避免循环跳变：ping-pong（1→6→1）或末帧停留后手动重置",
+  "如需真正无缝循环：需重新设计闭合轨迹并给出 t=1500ms 位移=0 的证据（本版本未采用）"
+ ],
+ "evidence": {
+  "path_base": "suite_root",
+  "path": "tmp/run-20261011-01/A23/contact-sheet.png",
+  "viewed_at": "2026-10-19T15:29:03.767928+08:00",
+  "note": "6帧棋盘格接触表+逐帧600×600整图+接触表+逐帧600×600整图+封面实看：12单元逐帧齐全可见(纯色像素占比全帧>=0.51)，透明背景真实，F6相机可识别，F1分散无出画，循环接缝F6→F1为明显重置跳变(已如实记录为不无缝)"
+ }
+}

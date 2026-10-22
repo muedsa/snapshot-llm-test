@@ -1,0 +1,1048 @@
+{
+ "schema_version": 1,
+ "task_id": "A10",
+ "path_base": "output_dir",
+ "run_id": "run-20261011-01",
+ "generated_at": "2026-10-13T12:29:57.080366+08:00",
+ "coordinate_system": {
+  "canvas": {
+   "width": 1440,
+   "height": 1100,
+   "origin": "top-left",
+   "x_axis": "right",
+   "y_axis": "down",
+   "units": "px"
+  },
+  "panel_local": "each 320x240 experiment area has its own origin at its top-left OUTER edge; x right, y down, px; canvas_xy = origin_px + local_xy",
+  "panel_origins_integer": true,
+  "sample_mapping": "local (180,100) -> decoded PNG pixel (origin_x+180, origin_y+100), 0-based, taken from the final service PNG (not a screenshot)"
+ },
+ "artifacts": {
+  "png": "compositing-lab.png",
+  "dsl": "compositing-lab.snapshot",
+  "png_size_px": [
+   1440,
+   1100
+  ]
+ },
+ "alpha_notes": {
+  "hex_alpha": "8-digit CSS colour is #RRGGBBAA (alpha in the last two digits), so #FF000080 is red with alpha 0x80 = 128/255 = 0.5019607843137255",
+  "why_not_half": "128/255 and 0.5 differ by 0.0019607843137254902; over two source-over steps with a 255 white backdrop this moves the rounded R/G channels by one unit, so the two alphas cannot be used interchangeably",
+  "group_vs_per_shape": "Opacity(0.5) on a group blends the composited layer once; per-shape alpha blends every shape against whatever is below it",
+  "doc_source": "ai-guide.md: colours use CSS syntax #RRGGBBAA with alpha in the last two digits; parser-tags.html: Opacity 'opacity defaults to 1, range 0..1, applies to the whole subtree'"
+ },
+ "panels": [
+  {
+   "panel": 1,
+   "origin_px": [
+    144,
+    188
+   ],
+   "size_px": [
+    320,
+    240
+   ],
+   "local_coordinate_note": "origin = panel top-left OUTER edge, x right, y down, px; canvas_xy = origin_px + local_xy",
+   "scene": {
+    "red_rect_local_xywh": [
+     40,
+     40,
+     160,
+     120
+    ],
+    "red_color": "#FF000080",
+    "blue_rect_local_xywh": [
+     120,
+     80,
+     160,
+     120
+    ],
+    "blue_color": "#0000FF80",
+    "z_order": "red first, blue on top",
+    "backdrop": "#FFFFFF",
+    "alpha": "per-shape 0x80 = 128/255"
+   },
+   "effect_nodes": [
+    "Container color=#FF000080 (red, alpha 128/255)",
+    "Container color=#0000FF80 (blue, alpha 128/255, painted after red)"
+   ],
+   "effect_summary": "no filter; straight-alpha source-over onto the white panel"
+  },
+  {
+   "panel": 2,
+   "origin_px": [
+    560,
+    188
+   ],
+   "size_px": [
+    320,
+    240
+   ],
+   "local_coordinate_note": "origin = panel top-left OUTER edge, x right, y down, px; canvas_xy = origin_px + local_xy",
+   "scene": {
+    "red_rect_local_xywh": [
+     40,
+     40,
+     160,
+     120
+    ],
+    "red_color": "#FF0000",
+    "blue_rect_local_xywh": [
+     120,
+     80,
+     160,
+     120
+    ],
+    "blue_color": "#0000FF",
+    "z_order": "red first, blue on top",
+    "backdrop": "#FFFFFF",
+    "alpha": "group Opacity 0.5 over opaque children"
+   },
+   "effect_nodes": [
+    "Opacity opacity=0.5 wrapping one Stack of two opaque Containers (#FF0000 then #0000FF)"
+   ],
+   "effect_summary": "single layer: children composite at alpha 1, the layer is blended once at 0.5"
+  },
+  {
+   "panel": 3,
+   "origin_px": [
+    976,
+    188
+   ],
+   "size_px": [
+    320,
+    240
+   ],
+   "local_coordinate_note": "origin = panel top-left OUTER edge, x right, y down, px; canvas_xy = origin_px + local_xy",
+   "scene": {
+    "stripes": {
+     "colour": "#334155",
+     "pitch_px": 24,
+     "width_px": 12,
+     "phase": "dark stripe starts at local x = 0 (mod 16)",
+     "orientation": "vertical",
+     "base": "#FFFFFF"
+    },
+    "card": {
+     "local_xywh_radius": [
+      40,
+      40,
+      240,
+      160,
+      20
+     ],
+     "fill": "#FFFFFF99",
+     "text": {
+      "content": "SHARP / BLUR",
+      "fontSize": 24,
+      "local_xy": [
+       24,
+       26
+      ]
+     },
+     "foreground": {
+      "bar": {
+       "local_xywh": [
+        24,
+        84,
+        100,
+        16
+       ],
+       "color": "#E11D48",
+       "radius": 8
+      },
+      "circle": {
+       "local_xywh": [
+        148,
+        72,
+        64,
+        64
+       ],
+       "color": "#16A34A"
+      }
+     },
+     "draw_order": [
+      "panel white",
+      "stripes",
+      "card fill",
+      "text",
+      "bar",
+      "circle"
+     ]
+    }
+   },
+   "effect_nodes": [
+    "white panel",
+    "stripe field (crisp, full panel)",
+    "ClipRRect(40,40,240,160,r20) > BackdropFilter sigmaX=sigmaY=6 > Container(#FFFFFFB3, r20)",
+    "Text(SHARP / BLUR, 24)",
+    "bar + circle (crisp, painted after the filter)"
+   ],
+   "effect_summary": "BackdropFilter blurs only what is already painted behind the card"
+  },
+  {
+   "panel": 4,
+   "origin_px": [
+    144,
+    584
+   ],
+   "size_px": [
+    320,
+    240
+   ],
+   "local_coordinate_note": "origin = panel top-left OUTER edge, x right, y down, px; canvas_xy = origin_px + local_xy",
+   "scene": {
+    "stripes": {
+     "colour": "#334155",
+     "pitch_px": 24,
+     "width_px": 12,
+     "phase": "dark stripe starts at local x = 0 (mod 16)",
+     "orientation": "vertical",
+     "base": "#FFFFFF"
+    },
+    "card": {
+     "local_xywh_radius": [
+      40,
+      40,
+      240,
+      160,
+      20
+     ],
+     "fill": "#FFFFFF99",
+     "text": {
+      "content": "SHARP / BLUR",
+      "fontSize": 24,
+      "local_xy": [
+       24,
+       26
+      ]
+     },
+     "foreground": {
+      "bar": {
+       "local_xywh": [
+        24,
+        84,
+        100,
+        16
+       ],
+       "color": "#E11D48",
+       "radius": 8
+      },
+      "circle": {
+       "local_xywh": [
+        148,
+        72,
+        64,
+        64
+       ],
+       "color": "#16A34A"
+      }
+     },
+     "draw_order": [
+      "panel white",
+      "stripes",
+      "card fill",
+      "text",
+      "bar",
+      "circle"
+     ]
+    }
+   },
+   "effect_nodes": [
+    "white panel",
+    "stripe field (crisp, full panel)",
+    "ClipRRect(40,40,240,160,r20) > ImageFiltered sigmaX=sigmaY=6 > Stack(white base + panel-aligned stripes + card fill + text + bar + circle)"
+   ],
+   "effect_summary": "ImageFiltered blurs the whole subtree output, then ClipRRect clips it"
+  },
+  {
+   "panel": 5,
+   "origin_px": [
+    560,
+    584
+   ],
+   "size_px": [
+    320,
+    240
+   ],
+   "local_coordinate_note": "origin = panel top-left OUTER edge, x right, y down, px; canvas_xy = origin_px + local_xy",
+   "scene": {
+    "filter_color": "#F6B94A",
+    "blend_mode": "MULTIPLY",
+    "sigmaX": 6,
+    "sigmaY": 6,
+    "transparent_gaps_panel_local": [
+     [
+      110,
+      70,
+      20,
+      40
+     ],
+     [
+      210,
+      70,
+      20,
+      40
+     ]
+    ],
+    "bar_segments_panel_local": [
+     [
+      30,
+      70,
+      80,
+      40
+     ],
+     [
+      130,
+      70,
+      80,
+      40
+     ],
+     [
+      230,
+      70,
+      60,
+      40
+     ]
+    ],
+    "bar_color": "#2563EB",
+    "dark_rect_panel_local": [
+     90,
+     140,
+     80,
+     60
+    ],
+    "dark_rect_color": "#1F2937",
+    "shadow_rect_panel_local": [
+     186,
+     136,
+     84,
+     56
+    ],
+    "shadow_rect_color": "#EAB308",
+    "box_shadow": "0 6 16 0 #00000059",
+    "draw_order": [
+     "panel white (outside the filter)",
+     "ColorFiltered(MULTIPLY) content bar segments, dark rect, shadow rect",
+     "ImageFiltered(sigma=6)"
+    ]
+   },
+   "effect_nodes": [
+    "white panel",
+    "ImageFiltered sigmaX=sigmaY=6 > ColorFiltered(color=#F6B94A, blendMode=MULTIPLY) > Stack(bar segments, dark rect, shadow rect)"
+   ],
+   "effect_summary": "no clip: blur output may extend over the whole subtree bounds"
+  },
+  {
+   "panel": 6,
+   "origin_px": [
+    976,
+    584
+   ],
+   "size_px": [
+    320,
+    240
+   ],
+   "local_coordinate_note": "origin = panel top-left OUTER edge, x right, y down, px; canvas_xy = origin_px + local_xy",
+   "scene": {
+    "filter_color": "#F6B94A",
+    "blend_mode": "MULTIPLY",
+    "sigmaX": 6,
+    "sigmaY": 6,
+    "transparent_gaps_panel_local": [
+     [
+      110,
+      70,
+      20,
+      40
+     ],
+     [
+      210,
+      70,
+      20,
+      40
+     ]
+    ],
+    "bar_segments_panel_local": [
+     [
+      30,
+      70,
+      80,
+      40
+     ],
+     [
+      130,
+      70,
+      80,
+      40
+     ],
+     [
+      230,
+      70,
+      60,
+      40
+     ]
+    ],
+    "bar_color": "#2563EB",
+    "dark_rect_panel_local": [
+     90,
+     140,
+     80,
+     60
+    ],
+    "dark_rect_color": "#1F2937",
+    "shadow_rect_panel_local": [
+     186,
+     136,
+     84,
+     56
+    ],
+    "shadow_rect_color": "#EAB308",
+    "box_shadow": "0 6 16 0 #00000059",
+    "draw_order": [
+     "panel white (outside the filter)",
+     "ColorFiltered(MULTIPLY) content bar segments, dark rect, shadow rect",
+     "ImageFiltered(sigma=6)"
+    ]
+   },
+   "effect_nodes": [
+    "white panel",
+    "ClipOval(box=(60,20,200,200)) > ImageFiltered sigmaX=sigmaY=6 > ColorFiltered(color=#F6B94A, blendMode=MULTIPLY) > Stack(same content offset by (-60,-20))"
+   ],
+   "effect_summary": "identical to panel 5 except the outermost circular clip"
+  }
+ ],
+ "paired_scenes": [
+  {
+   "pair": "3-4",
+   "shared_scene": {
+    "stripes": {
+     "colour": "#334155",
+     "pitch_px": 24,
+     "width_px": 12,
+     "phase": "dark stripe starts at local x = 0 (mod 16)",
+     "orientation": "vertical",
+     "base": "#FFFFFF"
+    },
+    "card": {
+     "local_xywh_radius": [
+      40,
+      40,
+      240,
+      160,
+      20
+     ],
+     "fill": "#FFFFFF99",
+     "text": {
+      "content": "SHARP / BLUR",
+      "fontSize": 24,
+      "local_xy": [
+       24,
+       26
+      ]
+     },
+     "foreground": {
+      "bar": {
+       "local_xywh": [
+        24,
+        84,
+        100,
+        16
+       ],
+       "color": "#E11D48",
+       "radius": 8
+      },
+      "circle": {
+       "local_xywh": [
+        148,
+        72,
+        64,
+        64
+       ],
+       "color": "#16A34A"
+      }
+     },
+     "draw_order": [
+      "panel white",
+      "stripes",
+      "card fill",
+      "text",
+      "bar",
+      "circle"
+     ]
+    }
+   },
+   "shared_parameters": [
+    "stripe colour/width/pitch/phase",
+    "card xywh+radius+fill",
+    "text content/size/position",
+    "foreground shapes and draw order",
+    "sigmaX=sigmaY=6",
+    "clip radius 20 on the same rounded card box"
+   ],
+   "single_difference": "which layer the blur is applied to: panel 3 blurs only the backdrop behind the card (BackdropFilter) then paints text/foreground crisp; panel 4 blurs the identical background+text+foreground subtree (ImageFiltered). No scene parameter differs.",
+   "circular_clip": null
+  },
+  {
+   "pair": "5-6",
+   "shared_scene": {
+    "filter_color": "#F6B94A",
+    "blend_mode": "MULTIPLY",
+    "sigmaX": 6,
+    "sigmaY": 6,
+    "transparent_gaps_panel_local": [
+     [
+      110,
+      70,
+      20,
+      40
+     ],
+     [
+      210,
+      70,
+      20,
+      40
+     ]
+    ],
+    "bar_segments_panel_local": [
+     [
+      30,
+      70,
+      80,
+      40
+     ],
+     [
+      130,
+      70,
+      80,
+      40
+     ],
+     [
+      230,
+      70,
+      60,
+      40
+     ]
+    ],
+    "bar_color": "#2563EB",
+    "dark_rect_panel_local": [
+     90,
+     140,
+     80,
+     60
+    ],
+    "dark_rect_color": "#1F2937",
+    "shadow_rect_panel_local": [
+     186,
+     136,
+     84,
+     56
+    ],
+    "shadow_rect_color": "#EAB308",
+    "box_shadow": "0 6 16 0 #00000059",
+    "draw_order": [
+     "panel white (outside the filter)",
+     "ColorFiltered(MULTIPLY) content bar segments, dark rect, shadow rect",
+     "ImageFiltered(sigma=6)"
+    ]
+   },
+   "shared_parameters": [
+    "filter colour #F6B94A",
+    "blendMode MULTIPLY",
+    "sigmaX=sigmaY=6",
+    "content geometry/colours/shadow (drawn through one shared builder with a constant origin offset)",
+    "white panel backdrop"
+   ],
+   "single_difference": "panel 6 adds the outermost ClipOval circular clip; panel 5 has no clip",
+   "circular_clip": {
+    "center_local": [
+     160,
+     120
+    ],
+    "radius_px": 100,
+    "clip_box_local": [
+     60,
+     20,
+     200,
+     200
+    ],
+    "widget": "ClipOval clipBehavior=ANTI_ALIAS",
+    "clip_position": "outermost, wraps the blurred multiply result",
+    "crossing_shape": "bar segment (30,70,80,40) crosses the circle at x = 160 - sqrt(100^2 - (y-120)^2); segment (230,70,60,40) and the shadow rect cross on the right"
+   }
+  }
+ ],
+ "samples": [
+  {
+   "panel": 1,
+   "local_xy": [
+    180,
+    100
+   ],
+   "index_note": "the (origin_x+180, origin_y+100)-th pixel of the decoded PNG, 0-based",
+   "canvas_index_xy": [
+    324,
+    288
+   ],
+   "origin_px": [
+    144,
+    188
+   ],
+   "alpha_at_sample_expected": 255,
+   "theory_float_rgb": [
+    127.0,
+    63.25098039215686,
+    191.25098039215686
+   ],
+   "theory_rounded_rgb": [
+    127,
+    63,
+    191
+   ],
+   "rounding_rule": "floor(value + 0.5)",
+   "actual_rgb": [
+    127,
+    63,
+    191
+   ],
+   "actual_alpha": 255,
+   "abs_error_per_channel": [
+    0,
+    0,
+    0
+   ],
+   "tolerance_per_channel": 3,
+   "within_tolerance": true,
+   "actual_note": "filled by tmp/run-20261011-01/A10/scripts/sample_a10.py from the final service PNG (RGBA, unpremultiplied 8-bit)",
+   "composition_steps": [
+    "start from the white panel: dst = (255,255,255), alpha = 1",
+    "step 1 red #FF000080: src = (255,0,0), a = 128/255 = 0.5019607843137255",
+    "  mid = src*a + dst*(1-a) = [255.0, 127.0, 127.0]",
+    "step 2 blue #0000FF80 on top: src = (0,0,255), a = 128/255",
+    "  out = src*a + mid*(1-a) = [127.0, 63.25098039215686, 191.25098039215686]",
+    "final RGB = floor(value + 0.5)"
+   ],
+   "alpha_note": "0x80 = 128, and 128/255 = 0.5019607843137255 != 0.5; using exactly 0.5 would give [127.5, 63.75, 191.25] -> [128, 64, 191], i.e. one unit higher in R and G than the 0.501961 result [127, 63, 191]. 128/255 and 0.5 are different alphas and must not be conflated."
+  },
+  {
+   "panel": 2,
+   "local_xy": [
+    180,
+    100
+   ],
+   "index_note": "the (origin_x+180, origin_y+100)-th pixel of the decoded PNG, 0-based",
+   "canvas_index_xy": [
+    740,
+    288
+   ],
+   "origin_px": [
+    560,
+    188
+   ],
+   "alpha_at_sample_expected": 255,
+   "theory_float_rgb": [
+    127.5,
+    127.5,
+    255.0
+   ],
+   "theory_rounded_rgb": [
+    128,
+    128,
+    255
+   ],
+   "rounding_rule": "floor(value + 0.5)",
+   "actual_rgb": [
+    126,
+    126,
+    255
+   ],
+   "actual_alpha": 255,
+   "abs_error_per_channel": [
+    2,
+    2,
+    0
+   ],
+   "tolerance_per_channel": 3,
+   "within_tolerance": true,
+   "actual_note": "filled by tmp/run-20261011-01/A10/scripts/sample_a10.py from the final service PNG (RGBA, unpremultiplied 8-bit)",
+   "composition_steps": [
+    "inside Opacity(0.5) the two opaque children composite first (alpha 1 each):",
+    "  group layer at the sample = blue (0,0,255) because blue is painted last on top",
+    "the layer is blended once onto the white panel: a = 0.5",
+    "  out = (0,0,255)*0.5 + (255,255,255)*0.5 = [127.5, 127.5, 255.0]",
+    "final RGB = floor(value + 0.5)"
+   ],
+   "alpha_note": "group opacity applies a single 0.5 blend of the finished layer; it is not the same as giving each child alpha 128/255. A per-child (incorrect) opacity-0.5 composite would yield [127.5, 63.75, 191.25] -> [128, 64, 191], which fails the <=3 channel tolerance against [128, 128, 255].",
+   "contrast_with_panel1": "panel 1 blends twice (red over white, then blue over the result) with a = 128/255; panel 2 blends once with a = 0.5"
+  }
+ ],
+ "visual_checks": [
+  {
+   "panel": 3,
+   "question": "背景是否被模糊、文字是否清晰、效果是否外溢到卡外",
+   "observations": {
+    "text_sharp": true,
+    "text_evidence": "整图与 crops/panel3.png 中 'SHARP / BLUR' 字样完全可读，字形边缘最大逐像素灰度梯度 192.7 gray/px（面板4同一字带仅 8.7），红条与绿圆边缘同样锐利",
+    "background_blurred": true,
+    "background_evidence": "卡内只含条纹的行带 (local y=100/104/108) 最大水平梯度 [4.0, 4.0, 4.0] gray/px，而卡外同一 24px 条纹场 (y=210/220/230) 为 [188.0, 188.0, 188.0] gray/px；卡内条纹呈柔和渐变带，正是 BackdropFilter σ=6 读取并模糊卡下背景的结果",
+    "effect_outside_card": false,
+    "outside_evidence": "与共享同一基础场景的面板4逐像素比较 36784 个卡外像素，最大通道差 0（差异像素 0），卡外条纹相位/宽度一致且锐利，模糊未外溢",
+    "stripe_crossing_card_edge": true
+   },
+   "dsl_evidence": [
+    "ClipRRect borderRadius=20 包住 BackdropFilter 与其后绘制的 Text/前景",
+    "BackdropFilter sigmaX=sigmaY=6 的子节点是半透明卡底 Container(#FFFFFF99)，按文档'读取已有背景，子节点随后照常绘制在模糊结果之上'实现毛玻璃"
+   ],
+   "evidence": {
+    "final_png": "compositing-lab.png",
+    "crop": {
+     "path_base": "suite_root",
+     "path": "tmp/run-20261011-01/A10/crops/panel3.png"
+    },
+    "viewed_at": "2026-10-13T12:26:00+08:00"
+   },
+   "doc_sources": [
+    {
+     "title": "Snapshot 标签与属性参考（parser-tags）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/parser-tags.html"
+     },
+     "quotes": [
+      "Opacity 单个 整体透明度；opacity 默认为 1，有效范围为 0 到 1（对整个子树一次性应用）",
+      "ImageFiltered 单个 子树高斯模糊",
+      "BackdropFilter 单个 背景高斯模糊；BackdropFilter 读取已有背景，仍建议配合 ClipRect、ClipOval 或 ClipRRect 限定区域",
+      "ColorFiltered 单个 颜色混合滤镜；示例 <ColorFiltered color=\"red\" blendMode=\"MULTIPLY\"> 内嵌子树",
+      "ClipRRect 单个 圆角矩形裁剪；ClipOval 单个 椭圆裁剪"
+     ]
+    },
+    {
+     "title": "open-snapshot ai-guide.md（服务指南）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/ai-guide.md"
+     },
+     "quotes": [
+      "颜色使用 CSS 语法，包括 #RGB、#RGBA、#RRGGBB、#RRGGBBAA；8 位格式的透明度在最后两位",
+      "绘制效果：Opacity、Transform、ColoredBox、DecoratedBox、ColorFiltered、ImageFiltered、BackdropFilter；裁剪：ClipRect、ClipOval、ClipRRect"
+     ]
+    }
+   ]
+  },
+  {
+   "panel": 4,
+   "question": "同一场景整体子树模糊后，文字/背景/前景是否一起变模糊、卡外是否不变",
+   "observations": {
+    "text_sharp": false,
+    "text_evidence": "'SHARP / BLUR' 字样在 crops/panel4.png 中不可辨认，同一字带最大梯度仅 8.7 gray/px，约为面板3清晰字形（192.7）的 1/22",
+    "background_blurred": true,
+    "background_evidence": "卡内条纹与卡底、圆角边缘一起呈整体柔化（ImageFiltered 对整个子树输出施加 σ=6 高斯模糊，先绘制子节点再对结果滤波），与面板3'仅背景模糊、前景锐利'形成对照",
+    "foreground_blurred": true,
+    "foreground_evidence": "红条与绿圆边缘出现宽渐变过渡带（σ=6 半径量级），面板3同位置为单像素锐利边缘",
+    "effect_outside_card": false,
+    "outside_evidence": "与面板3共享场景的卡外 36784 个像素零差异（max diff 0），区外条纹保持同一清晰背景，模糊被 ClipRRect 限定在圆角卡内"
+   },
+   "dsl_evidence": [
+    "ClipRRect borderRadius=20 > ImageFiltered sigmaX=sigmaY=6 > Stack(白底 + 与面板对齐的同相位条纹 + 卡底 + 文字 + 红条 + 绿圆)",
+    "与面板3唯一的差别是模糊作用的层：面板3只模糊卡下背景，面板4模糊同一范围的整个子树"
+   ],
+   "evidence": {
+    "final_png": "compositing-lab.png",
+    "crop": {
+     "path_base": "suite_root",
+     "path": "tmp/run-20261011-01/A10/crops/panel4.png"
+    },
+    "viewed_at": "2026-10-13T12:26:00+08:00"
+   },
+   "doc_sources": [
+    {
+     "title": "Snapshot 标签与属性参考（parser-tags）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/parser-tags.html"
+     },
+     "quotes": [
+      "Opacity 单个 整体透明度；opacity 默认为 1，有效范围为 0 到 1（对整个子树一次性应用）",
+      "ImageFiltered 单个 子树高斯模糊",
+      "BackdropFilter 单个 背景高斯模糊；BackdropFilter 读取已有背景，仍建议配合 ClipRect、ClipOval 或 ClipRRect 限定区域",
+      "ColorFiltered 单个 颜色混合滤镜；示例 <ColorFiltered color=\"red\" blendMode=\"MULTIPLY\"> 内嵌子树",
+      "ClipRRect 单个 圆角矩形裁剪；ClipOval 单个 椭圆裁剪"
+     ]
+    },
+    {
+     "title": "open-snapshot ai-guide.md（服务指南）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/ai-guide.md"
+     },
+     "quotes": [
+      "颜色使用 CSS 语法，包括 #RGB、#RGBA、#RRGGBB、#RRGGBBAA；8 位格式的透明度在最后两位",
+      "绘制效果：Opacity、Transform、ColoredBox、DecoratedBox、ColorFiltered、ImageFiltered、BackdropFilter；裁剪：ClipRect、ClipOval、ClipRRect"
+     ]
+    }
+   ]
+  },
+  {
+   "panel": 5,
+   "question": "MULTIPLY 滤色是否生效、模糊是否生效、无裁剪时效果范围如何",
+   "observations": {
+    "multiply_applied": true,
+    "multiply_evidence": "蓝条 #2563EB 经 #F6B94A MULTIPLY 后变为深青色（采样 local (40,100) = (51, 82, 73)），整体呈暖黄罩色；透明间隙被滤色着色，与 ColorFiltered/MULTIPLY 对边界内透明像素同样参与混合的行为一致（文档说明部分混合模式会给透明间隙着色）",
+    "blur_applied": true,
+    "blur_evidence": "条形、深色矩形与阴影边缘均为 σ=6 的宽渐变过渡（crops/panel5.png 可见）",
+    "clipped": false,
+    "scope_evidence": "local (40,100) 距⑥圆心 121.66px（>r=100），面板5该点仍为着色内容 (51, 82, 73) 而非白底，证明面板5没有圆形裁剪，效果范围=整个子树（含模糊外扩），四周留白为面板底色",
+    "shadow_visible": true,
+    "shadow_evidence": "阴影 boxShadow 经 MULTIPLY+模糊后仍表现为橙色矩形下缘的柔和暗晕，证明滤色+模糊保留了半透明阴影信息"
+   },
+   "dsl_evidence": [
+    "ImageFiltered sigmaX=sigmaY=6 > ColorFiltered color=#F6B94A blendMode=MULTIPLY > Stack(条形段/深色矩形/阴影矩形)",
+    "先 ColorFiltered(MULTIPLY) 对内容着色，再对结果做子树高斯模糊（嵌套顺序即渲染顺序）"
+   ],
+   "evidence": {
+    "final_png": "compositing-lab.png",
+    "crop": {
+     "path_base": "suite_root",
+     "path": "tmp/run-20261011-01/A10/crops/panel5.png"
+    },
+    "viewed_at": "2026-10-13T12:26:00+08:00"
+   },
+   "doc_sources": [
+    {
+     "title": "Snapshot 标签与属性参考（parser-tags）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/parser-tags.html"
+     },
+     "quotes": [
+      "Opacity 单个 整体透明度；opacity 默认为 1，有效范围为 0 到 1（对整个子树一次性应用）",
+      "ImageFiltered 单个 子树高斯模糊",
+      "BackdropFilter 单个 背景高斯模糊；BackdropFilter 读取已有背景，仍建议配合 ClipRect、ClipOval 或 ClipRRect 限定区域",
+      "ColorFiltered 单个 颜色混合滤镜；示例 <ColorFiltered color=\"red\" blendMode=\"MULTIPLY\"> 内嵌子树",
+      "ClipRRect 单个 圆角矩形裁剪；ClipOval 单个 椭圆裁剪"
+     ]
+    },
+    {
+     "title": "open-snapshot ai-guide.md（服务指南）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/ai-guide.md"
+     },
+     "quotes": [
+      "颜色使用 CSS 语法，包括 #RGB、#RGBA、#RRGGBB、#RRGGBBAA；8 位格式的透明度在最后两位",
+      "绘制效果：Opacity、Transform、ColoredBox、DecoratedBox、ColorFiltered、ImageFiltered、BackdropFilter；裁剪：ClipRect、ClipOval、ClipRRect"
+     ]
+    }
+   ]
+  },
+  {
+   "panel": 6,
+   "question": "在⑤完全相同的结果上加 ClipOval 圆形裁剪后，边界是否可见、内容是否一致",
+   "observations": {
+    "same_content_as_panel5": true,
+    "same_content_evidence": "⑤⑥由同一个 scene56 构造器生成（仅常量原点偏移 (-60,-20)），滤色/模糊/几何参数完全一致；圆内条形、间隙、深色矩形、阴影与⑤同形同色",
+    "clip_boundary_visible": true,
+    "clip_boundary_evidence": "圆心行 (local y=120) 的着色内容跨距为 local x [60, 260]，与圆直径 2r=200 (期望 [60, 260]) 精确一致；跨圆周的条形段与橙色矩形在圆边被干净截断，圆外为纯白面板底色",
+    "outside_circle_probe": true,
+    "outside_probe_evidence": "同一 local (40,100)（距圆心 121.66px）在面板5为着色内容 (51, 82, 73)，在面板6为纯白 (255, 255, 255)；圆心处为着色内容 (240, 182, 74)",
+    "effect_outside_circle": false,
+    "outside_evidence": "模糊结果先在 ClipOval 内生成再被裁剪（ClipOval 位于最外层），圆外无任何着色或模糊残留"
+   },
+   "dsl_evidence": [
+    "ClipOval clipBehavior=ANTI_ALIAS(box=local (60,20,200,200) → 圆心(160,120) r=100) > ImageFiltered σ=6 > ColorFiltered(MULTIPLY #F6B94A) > 与⑤相同的 Stack",
+    "有色形状跨过圆周：条形段 (30,70,80,40) 在 y=90 行与圆相交于 x≈64.6，(230,70,60,40) 与橙色矩形在右侧被圆边截断"
+   ],
+   "evidence": {
+    "final_png": "compositing-lab.png",
+    "crop": {
+     "path_base": "suite_root",
+     "path": "tmp/run-20261011-01/A10/crops/panel6.png"
+    },
+    "viewed_at": "2026-10-13T12:26:00+08:00"
+   },
+   "doc_sources": [
+    {
+     "title": "Snapshot 标签与属性参考（parser-tags）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/parser-tags.html"
+     },
+     "quotes": [
+      "Opacity 单个 整体透明度；opacity 默认为 1，有效范围为 0 到 1（对整个子树一次性应用）",
+      "ImageFiltered 单个 子树高斯模糊",
+      "BackdropFilter 单个 背景高斯模糊；BackdropFilter 读取已有背景，仍建议配合 ClipRect、ClipOval 或 ClipRRect 限定区域",
+      "ColorFiltered 单个 颜色混合滤镜；示例 <ColorFiltered color=\"red\" blendMode=\"MULTIPLY\"> 内嵌子树",
+      "ClipRRect 单个 圆角矩形裁剪；ClipOval 单个 椭圆裁剪"
+     ]
+    },
+    {
+     "title": "open-snapshot ai-guide.md（服务指南）",
+     "cache": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/_suite/docs/ai-guide.md"
+     },
+     "quotes": [
+      "颜色使用 CSS 语法，包括 #RGB、#RGBA、#RRGGBB、#RRGGBBAA；8 位格式的透明度在最后两位",
+      "绘制效果：Opacity、Transform、ColoredBox、DecoratedBox、ColorFiltered、ImageFiltered、BackdropFilter；裁剪：ClipRect、ClipOval、ClipRRect"
+     ]
+    }
+   ]
+  }
+ ],
+ "evidence": {
+  "service_png": "compositing-lab.png",
+  "crops": {
+   "path_base": "suite_root",
+   "paths": [
+    "tmp/run-20261011-01/A10/crops/panel1.png",
+    "tmp/run-20261011-01/A10/crops/panel2.png",
+    "tmp/run-20261011-01/A10/crops/panel3.png",
+    "tmp/run-20261011-01/A10/crops/panel4.png",
+    "tmp/run-20261011-01/A10/crops/panel5.png",
+    "tmp/run-20261011-01/A10/crops/panel6.png"
+   ]
+  }
+ },
+ "measurements": {
+  "paired_3_4_outside_card": {
+   "compared_area": "full 320x240 panel area minus the card box (local 38..282 x 38..202, 2px margin around the rounded card) and the 1px outline outside the area",
+   "pixels_compared": 36784,
+   "max_abs_channel_diff": 0,
+   "differing_pixels": 0,
+   "first_difference": null,
+   "meaning": "stripes/card surroundings outside the card are pixel-identical between 3 and 4; the only difference between the pair is which layer the blur touches",
+   "passed": true
+  },
+  "stripe_field": {
+   "panel": 3,
+   "scan_row_local_y": 10,
+   "dark_run_starts": [
+    0,
+    24,
+    48,
+    72,
+    96,
+    120
+   ],
+   "dark_run_widths": [
+    12,
+    12,
+    12,
+    12,
+    12,
+    12
+   ],
+   "pitches": [
+    24,
+    24,
+    24,
+    24,
+    24
+   ],
+   "expected": "dark 12px every 24px, phase local x=0 (mod 24)",
+   "passed": false
+  },
+  "blur_vs_sharp": {
+   "panel": 3,
+   "outside_card_rows_local_y": [
+    210,
+    220,
+    230
+   ],
+   "outside_card_max_hgrad_gray_per_px": [
+    188.0,
+    188.0,
+    188.0
+   ],
+   "inside_card_rows_local_y": [
+    100,
+    104,
+    108
+   ],
+   "inside_card_rows_note": "chosen to contain only the blurred stripe field (between the text band ending at y=90 and the foreground shapes starting at y=112)",
+   "inside_card_max_hgrad_gray_per_px": [
+    4.0,
+    4.0,
+    4.0
+   ],
+   "outside_minmax_gray_row_y220": 188.0,
+   "inside_minmax_gray_row_y120": 146.7,
+   "expected": "stripe edges inside the card are soft (small per-pixel gradient) while the same field outside the card keeps single-pixel black/white steps",
+   "passed": true
+  },
+  "text_sharpness": {
+   "band_local_xywh": [
+    64,
+    66,
+    166,
+    26
+   ],
+   "panel3_max_horizontal_gray_gradient": 192.7,
+   "panel4_max_horizontal_gray_gradient": 8.7,
+   "expected": "panel 3 (backdrop-only blur) keeps crisp glyph edges (large gradient); panel 4 (subtree blur) has soft edges (small gradient)",
+   "passed": true
+  },
+  "clip_5_6": {
+   "probe_local_xy_outside_circle": [
+    40,
+    100
+   ],
+   "distance_from_centre_px": 121.66,
+   "panel5_rgb": [
+    51,
+    82,
+    73
+   ],
+   "panel5_meaning": "unclipped multiply+blur content (tinted)",
+   "panel6_rgb": [
+    255,
+    255,
+    255
+   ],
+   "panel6_meaning": "outside the r=100 circle -> white panel",
+   "panel6_centre_rgb": [
+    240,
+    182,
+    74
+   ],
+   "panel6_centre_meaning": "inside the circle -> tinted content",
+   "expected": "panel5 non-white, panel6 white at the same local point, panel6 centre non-white",
+   "passed": true,
+   "panel6_centre_row_span_local": [
+    60,
+    260
+   ],
+   "panel6_centre_row_span_expected": [
+    60,
+    260
+   ]
+  }
+ },
+ "measurement_method": {
+  "tool": "PIL pixel access on the decoded final service PNG (compositing-lab.png, the untouched bytes returned by open-snapshot)",
+  "script": {
+   "path_base": "suite_root",
+   "path": "tmp/run-20261011-01/A10/scripts/sample_a10.py"
+  },
+  "crops": {
+   "path_base": "suite_root",
+   "paths": [
+    "tmp/run-20261011-01/A10/crops/panel1.png",
+    "tmp/run-20261011-01/A10/crops/panel2.png",
+    "tmp/run-20261011-01/A10/crops/panel3.png",
+    "tmp/run-20261011-01/A10/crops/panel4.png",
+    "tmp/run-20261011-01/A10/crops/panel5.png",
+    "tmp/run-20261011-01/A10/crops/panel6.png"
+   ],
+   "note": "2x nearest-neighbour crops of the FINAL png around each panel"
+  }
+ },
+ "visual_check_method": {
+  "viewing": "each crop (2x, from the untouched final service PNG) was opened with the read tool; the full 1440x1100 board was viewed as well",
+  "crop_script": {
+   "path_base": "suite_root",
+   "path": "tmp/run-20261011-01/A10/scripts/sample_a10.py"
+  },
+  "quant_backing": "observations cite measurements[] (gradients, paired-pixel diff, probes) so they are reproducible from the delivered PNG"
+ }
+}

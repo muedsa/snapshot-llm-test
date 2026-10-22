@@ -1,0 +1,812 @@
+{
+  "schema_version": 1,
+  "task_id": "A06",
+  "path_base": "output_dir",
+  "source_graph": "tasks/A06-dependency-graph/inputs/graph.json",
+  "canvas": {
+    "width": 1600,
+    "height": 1000,
+    "origin": "top_left",
+    "unit": "px",
+    "x_axis": "right_positive",
+    "y_axis": "down_positive"
+  },
+  "layout": {
+    "model": "分层桑基式布局：列＝拓扑层（层k 的 x 位置固定），行＝upper/main/lower 三条泳道",
+    "column_width": 116.0,
+    "column_gap": 24.4,
+    "first_column_left": 40.0,
+    "row_centers": {
+      "upper": 300.0,
+      "main": 440.0,
+      "lower": 580.0
+    },
+    "lane_note": "同层多节点上下排列表示并行；全部先决边都向右（列号增大）推进，无指向过去层的布局歧义",
+    "bypass_notes": [
+      "N03→N06 从节点下方 y=652 绕行（避开同层 N05）",
+      "N04→N13 从节点上方 y=230 长线跨越（避开中间各层节点）"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "N01",
+      "label": "需求冻结",
+      "topological_layer": 1,
+      "in_neighbors": [],
+      "out_neighbors": [
+        "N02",
+        "N03"
+      ],
+      "pixel_box": [
+        40.0,
+        406.0,
+        156.0,
+        474.0
+      ],
+      "stage": "S1"
+    },
+    {
+      "id": "N02",
+      "label": "输入检查",
+      "topological_layer": 2,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N04",
+        "N05"
+      ],
+      "pixel_box": [
+        180.4,
+        266.0,
+        296.4,
+        334.0
+      ],
+      "stage": "S1"
+    },
+    {
+      "id": "N03",
+      "label": "字体查询",
+      "topological_layer": 2,
+      "in_neighbors": [
+        "N01"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "pixel_box": [
+        180.4,
+        546.0,
+        296.4,
+        614.0
+      ],
+      "stage": "S1"
+    },
+    {
+      "id": "N04",
+      "label": "数据计算",
+      "topological_layer": 3,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N07",
+        "N13"
+      ],
+      "pixel_box": [
+        320.8,
+        266.0,
+        436.8,
+        334.0
+      ],
+      "stage": "S1"
+    },
+    {
+      "id": "N05",
+      "label": "内容规划",
+      "topological_layer": 3,
+      "in_neighbors": [
+        "N02"
+      ],
+      "out_neighbors": [
+        "N06"
+      ],
+      "pixel_box": [
+        320.8,
+        546.0,
+        436.8,
+        614.0
+      ],
+      "stage": "S1"
+    },
+    {
+      "id": "N06",
+      "label": "版式系统",
+      "topological_layer": 4,
+      "in_neighbors": [
+        "N03",
+        "N05"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "pixel_box": [
+        461.2,
+        546.0,
+        577.2,
+        614.0
+      ],
+      "stage": "S2"
+    },
+    {
+      "id": "N07",
+      "label": "图表生成",
+      "topological_layer": 4,
+      "in_neighbors": [
+        "N04"
+      ],
+      "out_neighbors": [
+        "N08"
+      ],
+      "pixel_box": [
+        461.2,
+        266.0,
+        577.2,
+        334.0
+      ],
+      "stage": "S2"
+    },
+    {
+      "id": "N08",
+      "label": "DSL构建",
+      "topological_layer": 5,
+      "in_neighbors": [
+        "N06",
+        "N07"
+      ],
+      "out_neighbors": [
+        "N09"
+      ],
+      "pixel_box": [
+        601.6,
+        406.0,
+        717.6,
+        474.0
+      ],
+      "stage": "S2"
+    },
+    {
+      "id": "N09",
+      "label": "首轮渲染",
+      "topological_layer": 6,
+      "in_neighbors": [
+        "N08"
+      ],
+      "out_neighbors": [
+        "N10"
+      ],
+      "pixel_box": [
+        742.0,
+        406.0,
+        858.0,
+        474.0
+      ],
+      "stage": "S3"
+    },
+    {
+      "id": "N10",
+      "label": "视觉检查",
+      "topological_layer": 7,
+      "in_neighbors": [
+        "N09"
+      ],
+      "out_neighbors": [
+        "N11"
+      ],
+      "pixel_box": [
+        882.4,
+        406.0,
+        998.4,
+        474.0
+      ],
+      "stage": "S3"
+    },
+    {
+      "id": "N11",
+      "label": "问题修复",
+      "topological_layer": 8,
+      "in_neighbors": [
+        "N10"
+      ],
+      "out_neighbors": [
+        "N12"
+      ],
+      "pixel_box": [
+        1022.8,
+        406.0,
+        1138.8,
+        474.0
+      ],
+      "stage": "S3"
+    },
+    {
+      "id": "N12",
+      "label": "回归渲染",
+      "topological_layer": 9,
+      "in_neighbors": [
+        "N11"
+      ],
+      "out_neighbors": [
+        "N13"
+      ],
+      "pixel_box": [
+        1163.2,
+        406.0,
+        1279.2,
+        474.0
+      ],
+      "stage": "S3"
+    },
+    {
+      "id": "N13",
+      "label": "产物校验",
+      "topological_layer": 10,
+      "in_neighbors": [
+        "N12",
+        "N04"
+      ],
+      "out_neighbors": [
+        "N14"
+      ],
+      "pixel_box": [
+        1303.6,
+        406.0,
+        1419.6,
+        474.0
+      ],
+      "stage": "S4"
+    },
+    {
+      "id": "N14",
+      "label": "交付归档",
+      "topological_layer": 11,
+      "in_neighbors": [
+        "N13"
+      ],
+      "out_neighbors": [],
+      "pixel_box": [
+        1444.0,
+        406.0,
+        1560.0,
+        474.0
+      ],
+      "stage": "S4"
+    }
+  ],
+  "prerequisite_edges": [
+    {
+      "from": "N01",
+      "to": "N02",
+      "kind": "solid",
+      "path": [
+        [
+          156.0,
+          425
+        ],
+        [
+          168.0,
+          425
+        ],
+        [
+          168.0,
+          300
+        ],
+        [
+          180.4,
+          300
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          180.4,
+          300
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N01",
+      "to": "N03",
+      "kind": "solid",
+      "path": [
+        [
+          156.0,
+          455
+        ],
+        [
+          168.0,
+          455
+        ],
+        [
+          168.0,
+          580
+        ],
+        [
+          180.4,
+          580
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          180.4,
+          580
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N02",
+      "to": "N04",
+      "kind": "solid",
+      "path": [
+        [
+          296.4,
+          290
+        ],
+        [
+          320.8,
+          290
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          320.8,
+          290
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N02",
+      "to": "N05",
+      "kind": "solid",
+      "path": [
+        [
+          296.4,
+          320
+        ],
+        [
+          308.6,
+          320
+        ],
+        [
+          308.6,
+          580
+        ],
+        [
+          320.8,
+          580
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          320.8,
+          580
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N04",
+      "to": "N07",
+      "kind": "solid",
+      "path": [
+        [
+          436.8,
+          310
+        ],
+        [
+          461.2,
+          310
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          461.2,
+          310
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N05",
+      "to": "N06",
+      "kind": "solid",
+      "path": [
+        [
+          436.8,
+          580
+        ],
+        [
+          461.2,
+          580
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          461.2,
+          580
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N03",
+      "to": "N06",
+      "kind": "solid",
+      "path": [
+        [
+          238.4,
+          614.0
+        ],
+        [
+          238.4,
+          652
+        ],
+        [
+          519.2,
+          652
+        ],
+        [
+          519.2,
+          614.0
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          519.2,
+          614.0
+        ],
+        "direction_deg": -90.0
+      }
+    },
+    {
+      "from": "N04",
+      "to": "N13",
+      "kind": "solid",
+      "path": [
+        [
+          378.8,
+          266.0
+        ],
+        [
+          378.8,
+          230
+        ],
+        [
+          1361.6,
+          230
+        ],
+        [
+          1361.6,
+          406.0
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          1361.6,
+          406.0
+        ],
+        "direction_deg": 90.0
+      }
+    },
+    {
+      "from": "N06",
+      "to": "N08",
+      "kind": "solid",
+      "path": [
+        [
+          577.2,
+          580
+        ],
+        [
+          594.4,
+          580
+        ],
+        [
+          594.4,
+          455
+        ],
+        [
+          601.6,
+          455
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          601.6,
+          455
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N07",
+      "to": "N08",
+      "kind": "solid",
+      "path": [
+        [
+          577.2,
+          300
+        ],
+        [
+          589.4,
+          300
+        ],
+        [
+          589.4,
+          425
+        ],
+        [
+          601.6,
+          425
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          601.6,
+          425
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N08",
+      "to": "N09",
+      "kind": "solid",
+      "path": [
+        [
+          717.6,
+          440
+        ],
+        [
+          742.0,
+          440
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          742.0,
+          440
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N09",
+      "to": "N10",
+      "kind": "solid",
+      "path": [
+        [
+          858.0,
+          440
+        ],
+        [
+          882.4,
+          440
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          882.4,
+          440
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N10",
+      "to": "N11",
+      "kind": "solid",
+      "path": [
+        [
+          998.4,
+          440
+        ],
+        [
+          1022.8,
+          440
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          1022.8,
+          440
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N11",
+      "to": "N12",
+      "kind": "solid",
+      "path": [
+        [
+          1138.8,
+          440
+        ],
+        [
+          1163.2,
+          440
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          1163.2,
+          440
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N12",
+      "to": "N13",
+      "kind": "solid",
+      "path": [
+        [
+          1279.2,
+          440
+        ],
+        [
+          1303.6,
+          440
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          1303.6,
+          440
+        ],
+        "direction_deg": 0.0
+      }
+    },
+    {
+      "from": "N13",
+      "to": "N14",
+      "kind": "solid",
+      "path": [
+        [
+          1419.6,
+          440
+        ],
+        [
+          1444.0,
+          440
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          1444.0,
+          440
+        ],
+        "direction_deg": 0.0
+      }
+    }
+  ],
+  "longest_path": {
+    "sequence": [
+      "N01",
+      "N02",
+      "N05",
+      "N06",
+      "N08",
+      "N09",
+      "N10",
+      "N11",
+      "N12",
+      "N13",
+      "N14"
+    ],
+    "length_nodes": 11,
+    "length_edges": 10,
+    "method": "在 DAG 上按节点数做最长路动态规划：dp[v]=1+max(dp[u])（u 为先决前驱），从入度为 0 的 N01 递推，回溯最长者；同长度的多解任取一条，本条为其中一条",
+    "all_paths_note": "存在并列 11 节点的解（如经 N07 的 N01→N02→N04→N07→N08…），本对象给出计算得到的一条"
+  },
+  "feedback_edges": [
+    {
+      "from": "N09",
+      "to": "N08",
+      "style": "dashed",
+      "color": "#F87171",
+      "polyline": [
+        [
+          800.0,
+          406.0
+        ],
+        [
+          800.0,
+          370
+        ],
+        [
+          659.6,
+          370
+        ],
+        [
+          659.6,
+          406.0
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          659.6,
+          406.0
+        ],
+        "direction_deg": 90.0
+      },
+      "participates_in_dag": false,
+      "representation": {
+        "legend_label": "反馈①",
+        "on_canvas_label": "反馈①",
+        "on_canvas_label_box": [
+          666,
+          344,
+          738,
+          366
+        ],
+        "routing": "从 N09 顶部上折到 y=370，向左，下折进入 N08 顶部",
+        "explanation_card": "outputs/run-20261011-01/A06/dependency-map.png 内左下卡片",
+        "note": "红色虚线箭头，向左返回；不参与 DAG 层计算，也不构成新的先决依赖"
+      }
+    },
+    {
+      "from": "N10",
+      "to": "N08",
+      "style": "dashed",
+      "color": "#F87171",
+      "polyline": [
+        [
+          940.4,
+          474.0
+        ],
+        [
+          940.4,
+          706
+        ],
+        [
+          735.0,
+          706
+        ],
+        [
+          735.0,
+          460
+        ],
+        [
+          717.6,
+          460
+        ]
+      ],
+      "arrow": {
+        "tip": [
+          717.6,
+          460
+        ],
+        "direction_deg": 180.0
+      },
+      "participates_in_dag": false,
+      "representation": {
+        "legend_label": "反馈②",
+        "on_canvas_label": "反馈②",
+        "on_canvas_label_box": [
+          752,
+          714,
+          824,
+          736
+        ],
+        "routing": "从 N10 底部下折到 y=706，向左到 x=735，上折到 y=460，左折进入 N08 右侧",
+        "explanation_card": "outputs/run-20261011-01/A06/dependency-map.png 内右下卡片",
+        "note": "红色虚线箭头，向左返回；不参与 DAG 层计算，也不构成新的先决依赖"
+      }
+    }
+  ],
+  "crossing_policy": "线段交叉处不画连接圆点即表示不相连，不产生新的依赖；图内图例已注明"
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "task_id": "B02",
+  "plan_version": "v1",
+  "established_at": "2026-10-19T19:26:16+08:00",
+  "established_note": "文件创建时间（mtime），先于首次渲染 19:33:28",
+  "path_base": "suite_root",
+  "project": {
+    "name": "禾风里社区共耕花园",
+    "latin": "HEFENGLI COMMUNITY GARDEN",
+    "nature": "城市居民共建共享的小型农园（虚构品牌与数据，运作方式参照真实社区花园常识）",
+    "promise": "认养一块地，四季有收成",
+    "audience": "周边 1km 内家庭住户、上班族志愿者、亲子家庭",
+    "shared_facts": {
+      "address": "临风路 88 号（虚构）",
+      "plots": "12 块 3m×4m 地块，24 户认养",
+      "market_day": "每周六 09:00–13:00 市集",
+      "member_discount": "会员 8 折",
+      "basket_prices": "小份 29 / 中份 49 / 家庭份 79 元",
+      "season_crops": ["番茄", "黄瓜", "生菜", "空心菜", "辣椒", "茄子", "南瓜", "罗勒"],
+      "q3_harvest_kg": 1286,
+      "q3_breakdown_kg": {"番茄": 380, "黄瓜": 265, "生菜": 210, "空心菜": 180, "辣椒": 126, "茄子": 95, "南瓜": 30},
+      "volunteers": 38,
+      "compost": "厨余 2.4 吨/季 → 堆肥 0.8 吨",
+      "kids_class": "每周六 15:00 · 90 分钟 · 6–10 岁 · 12 名额"
+    }
+  },
+  "policy": "11 件触点作品全部纯 DSL；统一设计系统（土陶橙/叶绿/宣纸底 + 叶形标记/印章/刻度尺组件）贯穿，媒介与任务各不相同；品牌与数据虚构并逐件在 case.md 声明",
+  "common_criteria": [
+    {"id": "G1", "condition": "经真实 open-snapshot 服务 HTTP200 渲染，PNG 尺寸与计划一致，final.png 为服务原始字节", "method": "requests.jsonl + PNG IHDR 读取 + md5 对比"},
+    {"id": "G2", "condition": "目标观看尺寸下全部文字可读、无折行截断/越界", "method": "整图看图 + 生成期 CJK=字号px/ASCII≈0.56×字号 宽度预算（b02_common.tw/fit）"},
+    {"id": "G3", "condition": "图上数字与 shared_facts 同源一致（跨触点可互相对账）", "method": "各生成脚本引用同一 facts 常量并断言（如收成合计、价格、时段）"},
+    {"id": "G4", "condition": "无元素重叠/遮挡/穿线类视觉缺陷", "method": "看图 + 必要时像素探针"},
+    {"id": "G5", "condition": "达成该触点 user_goal 所需关键信息全部在图上", "method": "对照本计划 content_scope 逐项看图勾对"},
+    {"id": "G6", "condition": "虚构品牌/数据在 case.md 如实声明", "method": "文件审查"},
+    {"id": "G7", "condition": "设计系统一致性：同一色板/字体/叶形标记/印章在本件出现，与全套其余件协调", "method": "design-system.json 对照 + 全套看图终审"},
+    {"id": "G8", "condition": "触点独立性：内容任务/媒介/构图与其余 10 件实质不同（非换色换字）", "method": "touchpoint-map.json 对照 + 全套看图终审"}
+  ],
+  "cases": [
+    {"id": "case-01", "title": "开放日报名海报", "journey": "认知→报名", "audience": "路过的居民（街道公告栏/地铁灯箱 2–3m 处）", "user_goal": "30 秒内知道开放日时间地点并扫码报名", "content_scope": "标题、三亮点、开放日时间、地点、像素风占位二维码（非功能性，注明）、主办信息", "size": [1080, 1528], "visual_intent": "宣纸底+土陶大标题+叶绿亮点条，大留白公告风"},
+    {"id": "case-02", "title": "地块认养证", "journey": "加入", "audience": "认养户（开放日现场 A4 打印，装裱留存）", "user_goal": "拿到有仪式感的凭证并知晓三条基本义务", "content_scope": "认养人、地块编号/尺寸、认养期、须知三条、双方签署、印章", "size": [1240, 1754], "visual_intent": "证书排版：细边框+印章+编号刻线，庄重留白"},
+    {"id": "case-03", "title": "周六市集价目牌", "journey": "购买", "audience": "市集顾客（摊位立牌 1m 处快速扫读）", "user_goal": "3 秒找到想买的菜、单价与会员折后价", "content_scope": "8 种当季菜单价+会员价、限购提示、支付方式、市集时段", "size": [1080, 1350], "visual_intent": "价目网格：白卡+叶绿价签+土陶限购条"},
+    {"id": "case-04", "title": "菜篮订阅卡", "journey": "复购", "audience": "家庭用户（微信群/朋友圈转发，手机竖屏）", "user_goal": "选好规格并知道配送日与退订规则", "content_scope": "三规格价格与适用人数、每周菜色示例、配送日、退订规则", "size": [1080, 1920], "visual_intent": "手机长图：三层规格卡+菜色 chips+规则脚注"},
+    {"id": "case-05", "title": "志愿者排班表", "journey": "参与", "audience": "志愿者与管理员（手机查看/工具房打印）", "user_goal": "看清本周各时段岗位缺口并认领", "content_scope": "7 天×4 时段网格、四岗位需求人数与缺口高亮、工具携带、联系人", "size": [1400, 1000], "visual_intent": "排班网格：叶绿表头+土陶缺口高亮"},
+    {"id": "case-06", "title": "厨余堆肥三步图", "journey": "学习", "audience": "投放厨余的居民（堆肥箱旁立牌 0.8m 处）", "user_goal": "30 秒学会可投/不可投与三层堆法", "content_scope": "可投清单、不可投警示、三层堆法图、成熟周期与翻堆频率", "size": [1000, 1400], "visual_intent": "说明图：堆体剖面三层色带+清单双栏"},
+    {"id": "case-07", "title": "二十四节气种植日历", "journey": "计划", "audience": "会员与志愿者（活动中心横屏 3m 处）", "user_goal": "知道本月该播种什么、正收什么", "content_scope": "12 节气条、6 作物行、播种/养护/采收三色区间、本月高亮", "size": [1600, 900], "visual_intent": "甘特式日历：宣纸底+三色区间条+本月光柱"},
+    {"id": "case-08", "title": "工具房安全须知", "journey": "参与/安全", "audience": "取用工具的志愿者（工具房门内 0.6m 处）", "user_goal": "取工具前读懂 6 条安全规则与归还要求", "content_scope": "6 条规则、PPE 图标位、工具归还、紧急联系", "size": [900, 1200], "visual_intent": "警示牌：土陶底白字+编号圆章+底部信息条"},
+    {"id": "case-09", "title": "三季度收成报告", "journey": "反馈", "audience": "认养户与捐赠方（公示栏/社群 1m 处）", "user_goal": "看懂本季产出、参与度与资金去向", "content_scope": "总收成与品类构成、志愿人次、堆肥转化、支出构成、下季计划", "size": [1600, 900], "visual_intent": "数据报告：四模块卡片+品类条形+支出环形"},
+    {"id": "case-10", "title": "市集帐篷横幅", "journey": "认知/招徕", "audience": "市集人流（帐篷檐口 5–8m 远距）", "user_goal": "远处识别摊位并记住三样主打与会员招募", "content_scope": "摊位名、三样主打菜+价格锚点、会员招募一句话、logo", "size": [1920, 640], "visual_intent": "超宽横幅：叶绿大底+土陶主打字+重复叶纹边"},
+    {"id": "case-11", "title": "自然课报名卡", "journey": "亲子参与", "audience": "家长（家长群转发/现场领取，手机方图）", "user_goal": "给孩子报名本周六自然课并知道携带物", "content_scope": "课程主题、时间/时长/年龄、名额进度、携带清单、报名方式", "size": [1200, 1200], "visual_intent": "亲子风：番茄红主题卡+名额进度条+番茄图形"}
+  ]
+}

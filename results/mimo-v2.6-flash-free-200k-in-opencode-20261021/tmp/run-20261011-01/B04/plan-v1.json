@@ -1,0 +1,45 @@
+{
+  "plan_version": "plan-v1",
+  "task_id": "B04",
+  "run_id": "run-20261011-01",
+  "established_at": "2026-10-20T21:15:00+08:00",
+  "established_before_first_render": true,
+  "theme": "太阳系数据特辑 · 用 NASA 一张数据表读懂九个世界",
+  "editorial_thesis": "以 NASA NSSDCA 三份事实表（行星/月球/冥王星）为唯一数据底座，做一组数据新闻式视觉特辑：每件只回答一个读者问题，用可复核的数字和自洽校验讲清一个尺度/规律/反直觉事实；系列内部形成'逐维度扫描→特写→综合'的阅读关系。",
+  "reader_question": "太阳系到底有多大、多快、多热、多空？数字之间有什么可以自己验证的规律？",
+  "narrative_route": "01尺寸→02距离(空旷)→03开普勒规律→04时间(日与年)→05重力→06温度→07卫星→08地月特写→09冥王星特写→10环/磁场/密度分类→11全家福导读",
+  "audience_primary": "中学生与天文爱好者的科普阅读（手机 0.4m 为主，兼做展板 1–1.5m）",
+  "sources_base": [
+    {"id": "SRC-01", "title": "Planetary Fact Sheet (Metric)", "author_or_organization": "Dr. David R. Williams / NSSDCA, NASA Goddard Space Flight Center", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/", "page_last_updated": "2025-03-18", "fetched_at": "2026-10-20T21:05+08:00", "evidence": "tmp/run-20261011-01/B04/research/SRC-01-planetary-factsheet-metric.txt"},
+    {"id": "SRC-02", "title": "Moon Fact Sheet", "author_or_organization": "Dr. David R. Williams / NSSDCA, NASA GSFC", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html", "page_last_updated": "2024-01-11", "fetched_at": "2026-10-20T21:06+08:00", "evidence": "tmp/run-20261011-01/B04/research/SRC-02-moon-factsheet.txt"},
+    {"id": "SRC-03", "title": "Pluto Fact Sheet", "author_or_organization": "Dr. David R. Williams / NSSDCA, NASA GSFC", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/plutofact.html", "page_last_updated": "2024-01-11", "fetched_at": "2026-10-20T21:07+08:00", "evidence": "tmp/run-20261011-01/B04/research/SRC-03-pluto-factsheet.txt"}
+  ],
+  "data_policy": "所有展示数值逐点来自三份事实表(b04_data.py 单一事实源, 抄录时标注*行语义); 我方计算(开普勒比、逃逸速度校验、密度校验、太阳日公式、比值/百分比)全部在生成期断言并标注为'本辑推算'; 类比与解释不冒充数据。",
+  "probe_plan": [],
+  "probe_note": "无需新探针：本辑全部手法(SWEEP/色差/模糊/Transform/clip/dash/PRNG)已在 B01–B03 经 probe 与真实渲染验证, 直接复用已确认边界(见 B03 technique-notes.md)。",
+  "common_criteria": [
+    {"id": "G1", "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致", "method": "requests.jsonl + copy-report（md5 双向 + IHDR）"},
+    {"id": "G2", "condition": "目标观看环境（手机0.4m为主/展板1–1.5m）下全部文字可读、无截断/越界", "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看"},
+    {"id": "G3", "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图）", "method": "DSL 文本自证 + probe 已验证手法清单"},
+    {"id": "G4", "condition": "图表数据的分母/单位/比例/时间范围正确；几何比例与数值一致；本辑推算可复核", "method": "b04_data.py 单一事实源 + 生成期交叉校验断言(开普勒/逃逸速度/密度/太阳日/跨表比值) + 看图核对"},
+    {"id": "G5", "condition": "content_scope 关键信息齐备，user_goal 在作品上可达成", "method": "终版整图逐项勾对"},
+    {"id": "G6", "condition": "受众/使用场景/观看环境明确；事实/来源结论/本辑推算/演示在图上与 sources.json 如实分层标注", "method": "每件图上标注层 + sources.json claims basis_type"},
+    {"id": "G7", "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立", "method": "每版看图；缺陷修复后重渲复看比较"},
+    {"id": "G8", "condition": "合集级：11 件图形形式/读者任务互不重复（非同版式换色换字）；系列阅读关系成立", "method": "portfolio 逐件形式字段 + 合集终审"},
+    {"id": "G9", "condition": "来源可追溯：每件的每个外部数值都有 claim_id → source_id + 精确定位(行名/列名/字段)", "method": "sources.json claims/coverage 逐条核对"}
+  ],
+  "cases": [
+    {"id": "case-01", "title": "行星有多大：直径比例尺", "audience": "科普读者（手机/展板）", "viewing_env": "手机0.4m 与展板1.5m 双档", "user_goal": "一眼建立八大行星的大小直觉：木星是水星的多少倍、地球排第几", "content_scope": "八大行星直径线性比例横条(木星=满格) + 等比例圆阵 + 关键倍数标注(木星/水星、地球/月球)", "technique": "线性比例条(长度∝直径, 断言) + 等比例圆(面积∝直径², 断言) + 数据角标", "size": [1600, 1000], "numeric_claims": "条长与直径严格成比例(断言)；圆面积比=直径比²(断言)；木星/水星=29.3倍、地球直径=月球3.67倍(由表值推算断言)"},
+    {"id": "case-02", "title": "太阳系有多空：对数距离标尺", "audience": "科普读者", "viewing_env": "展板1.5m/手机0.4m", "user_goal": "理解距离跨度与轨道间隙：从太阳到海王星相差近百倍，内行星轨道互不重叠", "content_scope": "log10 距离轴(太阳→冥王星远日点) + 各行星近日点–远日点区间条 + '轨道不重叠'标注", "technique": "对数刻度映射(断言单调) + 区间条(近日点/远日点) + 分档底色(内/外太阳系)", "size": [1800, 900], "numeric_claims": "log 位置严格单调递增(断言)；水星远日69.8<金星近日107.5 等内行星间隙(断言)；海王星4515/水星57.9≈78倍(推算断言)"},
+    {"id": "case-03", "title": "开普勒定律的指纹：T²∝a³", "audience": "中学物理师生", "viewing_env": "教室展板/手机", "user_goal": "看到并相信公转周期与轨道半径的立方关系：自己能在图上核对", "content_scope": "log-log 散点(周期T对半径a) + T²/a³≈常数 标注 + 轨道速度交叉校验", "technique": "log-log 散点 + 等比参考线(斜率3) + 校验角注", "size": [1600, 1200], "numeric_claims": "以地球归一 T²/a³∈[0.96,1.04](逐行星断言)；v=2πa/T 与表值偏差≤3%(断言)"},
+    {"id": "case-04", "title": "一天有多长：太阳日与自转", "audience": "科普读者", "viewing_env": "手机0.4m", "user_goal": "分清自转周期与太阳日，并看懂金星'日长于年'的准确含义", "content_scope": "太阳日横条(水星176天最长) + 自转周期正负发散条(负值=与公转反向, 表内符号如实呈现) + 金星/水星注释", "technique": "正负发散条 + 公式校验角注(D=T·R/(T±R))", "size": [1400, 1000], "numeric_claims": "太阳日公式校验逐行星≤1%(断言)；金星自转243天>公转224.7天(表值断言)；水星太阳日=2×58.65天近似(176 vs 4222.6h 断言)"},
+    {"id": "case-05", "title": "能跳多高：重力与逃逸速度", "audience": "科普读者", "viewing_env": "手机0.4m", "user_goal": "用体重/跳跃直觉理解各星重力差异与逃逸速度的物理含义", "content_scope": "表面重力条(对地球比) + 逃逸速度阶梯 + 60kg 虚拟体重换算(标注推算) + v=√(2gR) 校验", "technique": "比例条 + 阶梯图 + 校验角注", "size": [1400, 1000], "numeric_claims": "v=√(2gR) 与表值偏差≤10%(断言, 并注明气态巨行星因扁率偏差更大—本辑解释)；60kg×g/9.8 换算(推算断言)"},
+    {"id": "case-06", "title": "哪里最热：温度阶梯", "audience": "科普读者", "viewing_env": "手机0.4m", "user_goal": "记住反直觉事实：离太阳第二近的金星(464°C)比最近的水星(167°C)热得多", "content_scope": "垂直温度色阶(-225…+464) + 九天体定位 + 金星/水星对照高亮 + '成因不在本辑数据范围内'诚实注", "technique": "垂直色温带 + 定位标 + 高亮对照", "size": [1200, 1400], "numeric_claims": "温标线性映射(断言端点与定位)；金星464>水星167>地球15>(月球-20)(表值序断言)"},
+    {"id": "case-07", "title": "卫星家族：谁的孩子多", "audience": "科普读者", "viewing_env": "手机0.4m", "user_goal": "记住卫星数量格局：土星274、木星95遥遥领先，内行星几乎空白", "content_scope": "点阵单位图(1点=1卫星) + 数字标注 + 冥王星5颗小卫星名单(Charon/Styx/Nix/Kerberos/Hydra, 轨道半长轴)", "technique": "单位点阵(程序化) + 名单表", "size": [1400, 1000], "numeric_claims": "点数==表值(断言逐行)；总和=421(断言)；冥王星卫星轨道半长轴42413<48690<57750<64721km 单调(断言)"},
+    {"id": "case-08", "title": "地月系统：1/4 与 1/81", "audience": "科普读者", "viewing_env": "手机0.4m", "user_goal": "建立地月尺度直觉：月球半径≈地球27%、质量≈1.23%、每年远离3.8cm", "content_scope": "地月等比例圆 + 比值表(半径/质量/密度/重力/逃逸) + 3.8cm/年远离标注 + 384,400km 距离带", "technique": "等比例圆 + 比值表(双源交叉断言)", "size": [1400, 1000], "numeric_claims": "SRC-02 比值与 SRC-01 直径/质量交叉验证≤0.1%(断言)；3.8cm/年 类比(指甲生长速度)标注为本辑类比"},
+    {"id": "case-09", "title": "冥王星档案卡", "audience": "科普读者", "viewing_env": "手机0.4m", "user_goal": "快速了解冥王星关键事实：1930年发现、极稀薄大气、五卫星、日照仅地球1/1560", "content_scope": "档案卡版式：发现(1930-02-18, Tombaugh)/距离地球区间/视星等15.1/大气99% N2 ~13微巴/5卫星+Charon(606km)/日照0.873 vs 1361 W/m²", "technique": "档案卡网格 + 数据徽章 + 时间轴点", "size": [1200, 1600], "numeric_claims": "0.873/1361=0.00064≈1/1560(断言)；Charon半径606/冥王星1188≈0.51(断言)；发现日期与人物照抄表值"},
+    {"id": "case-10", "title": "环、磁场与密度分野", "audience": "科普读者", "viewing_env": "展板1.5m/手机", "user_goal": "一眼看出'类地/类木'的密度分野与环/磁场的分布格局", "content_scope": "行星环/全球磁场二值矩阵(如实含 Unknown) + 密度散点分组(类地3934–5514 vs 巨行星687–1638, 冥王星1854居间) + ρ=M/V 校验", "technique": "二值矩阵 + 分组散点 + 校验角注", "size": [1600, 1000], "numeric_claims": "类地最小密度3934>巨行星最大1638 断言分野成立；ρ=M/(4/3πR³) 与表密度≤1%(断言)；冥王星落在分野空档(断言)"},
+    {"id": "case-11", "title": "全家福：特辑导读图", "audience": "特辑读者", "viewing_env": "手机0.4m", "user_goal": "用一张图纵览八行星关键数并知道每件特辑讲什么", "content_scope": "按日距排序的行星带(每行星: 直径/日距/周期/温度四数角标) + 11件导读指针 + 数据来源与方法声明", "technique": "综合信息带 + 导读指针网格 + 声明栏", "size": [1600, 1000], "numeric_claims": "全部角标数值==b04_data.py 表值(断言逐项)；日距排序严格单调(断言)"}
+  ],
+  "planned_counts": {"cases": 11, "min_final_png": 11, "probes": 0}
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A08",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "1560×1080 导览图经 3 版视觉迭代后正式渲染通过；路径由 BFS 唯一解生成并断言，paths.json 必填字段与 9 项 audit 逐项核对，双共享段双线身份经裁切放大核验",
+  "output_dir": "outputs/run-20261011-01/A08/",
+  "temp_dir": "tmp/run-20261011-01/A08/",
+  "timings": {
+    "started_at": "2026-10-13T10:20:00.000+08:00",
+    "ended_at": "2026-10-13T10:45:00.000+08:00",
+    "elapsed_seconds": 1500,
+    "elapsed_note": "单次连续会话；含读题、生成器编写与 5 次渲染",
+    "first_usable_image_seconds": 415,
+    "first_usable_image_note": "A08-req-0002（v1）为首个 200 成功渲染；A08-req-0001 因 DSL 颜色语法 400 失败",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 21.822,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 5,
+    "successful_snapshot_requests": 4,
+    "failed_snapshot_requests": 1,
+    "retry_requests": 0,
+    "failed_request_note": "A08-req-0001 HTTP 400 PARSE_ERROR：Container color=\"none\" 不被支持，改省略 color 后成功",
+    "other_service_requests": 0,
+    "document_requests": 0,
+    "document_requests_note": "复用 _suite 共享文档缓存与 floor.txt/legend.json/模板本地输入，未新增 HTTP 请求",
+    "dsl_versions": 3,
+    "dsl_versions_note": "v1/v2/v3；正式图为 v3 DSL 原样复制后重渲染（sha256 核对一致），未新增版本",
+    "image_views": 9,
+    "image_views_note": "v1 整图、v1 右侧裁切、v2 整图、v2 分岔/合流/入馆段/图例 4 裁切、v3 整图、正式 wayfinding.png",
+    "completed_visual_iterations": 2,
+    "incomplete_visual_iterations": 0,
+    "syntax_fix_iterations": 1
+  },
+  "artifacts": [
+    "outputs/run-20261011-01/A08/wayfinding.png",
+    "outputs/run-20261011-01/A08/wayfinding.snapshot",
+    "outputs/run-20261011-01/A08/paths.json",
+    "outputs/run-20261011-01/A08/snapshot-usage.md",
+    "outputs/run-20261011-01/A08/task-metrics.json"
+  ],
+  "logs": {
+    "requests": "tmp/run-20261011-01/A08/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A08/iterations.jsonl",
+    "requests_count": 5,
+    "iterations_count": 3,
+    "request_ids": ["A08-req-0001", "A08-req-0002", "A08-req-0003", "A08-req-0004", "A08-req-0005"]
+  },
+  "verification": {
+    "route_r1": "S(0,13)→E(25,7) 36 格 35 步 70 米，BFS 最短解唯一",
+    "route_r2": "S→B→D→E 48 格 47 步 94 米（19+16+12），各段最短解唯一",
+    "shared_runs": "入馆段 S…(6,10) 10 格 9 边；离馆段 (20,10)…E 9 格 8 边；两段两线同向，边集求交取极大链",
+    "visual_evidence": "A08-req-0003 整图+4 裁切、A08-req-0005 正式图复看；迭代记录 tmp/run-20261011-01/A08/iterations.jsonl"
+  }
+}

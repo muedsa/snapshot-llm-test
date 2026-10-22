@@ -1,0 +1,232 @@
+{
+  "task_id": "B03",
+  "run_id": "run-20261011-01",
+  "path_base": "suite_root",
+  "version": "v1",
+  "established_at": "2026-10-19T20:34:03+08:00",
+  "established_note": "文件创建时间（mtime），首次渲染前校正",
+  "research_basis": {
+    "docs_cached": [
+      "tmp/run-20261011-01/_suite/docs/ai-guide.md（套件共享，未新增HTTP）",
+      "tmp/run-20261011-01/_suite/docs/parser-tags.html → 本题提取 parser-tags.txt（38标签+全属性表）",
+      "tmp/run-20261011-01/_suite/docs/enums.html → 本题提取 enums.txt（BorderStyle仅NONE/SOLID、BoxShape RECTANGLE/CIRCLE、FilterBlurMode等）",
+      "tmp/run-20261011-01/_suite/docs/parser-guide.html、fonts.txt"
+    ],
+    "capability_findings_drive_design": [
+      "gradientType=SWEEP + gradientStartAngle/EndAngle：扫描渐变（case-03 钟盘昼夜带）",
+      "textShadow 多条 x y blurSigma color：红青色差字（case-06）",
+      "Text foregroundMode=STROKE/foregroundStrokeWidth：描边字（case-06 空心标题）",
+      "Text letterSpacing/wordSpacing/fontFeatures(smcp,tnum)：字距节奏与等宽数字",
+      "ImageFiltered sigmaX/Y：高斯模糊（case-06 辉光、case-09 星点辉光）",
+      "ColorFiltered color+blendMode：颜色混合（probe 记录）",
+      "ClipRect/ClipOval/ClipRRect：合成裁剪（case-04 演示窗、case-07 外圆负空间）",
+      "BoxShape=CIRCLE：环形描边（probe 验证）",
+      "Transform matrix 列主序 + alignment：45°线段/等距斜切/旋转对称",
+      "BorderStyle 仅 NONE/SOLID：虚线折痕需程序化短划（case-10）"
+    ],
+    "no_new_http_in_b03_research": true
+  },
+  "probe_plan": [
+    {
+      "id": "probe-01",
+      "purpose": "SWEEP/RADIAL 渐变、BoxShape CIRCLE 环、ClipOval 组合是否按文档渲染"
+    },
+    {
+      "id": "probe-02",
+      "purpose": "textShadow 色差、foregroundMode STROKE 描边、letterSpacing、fontFeatures smcp 实际效果"
+    },
+    {
+      "id": "probe-03",
+      "purpose": "ImageFiltered 模糊、ColorFiltered blendMode、45°对角段、等距斜切矩阵"
+    }
+  ],
+  "common_criteria": [
+    {
+      "id": "G1",
+      "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+      "method": "requests.jsonl + copy-report（md5 双向 + IHDR）"
+    },
+    {
+      "id": "G2",
+      "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+      "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看"
+    },
+    {
+      "id": "G3",
+      "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+      "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果"
+    },
+    {
+      "id": "G4",
+      "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+      "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）"
+    },
+    {
+      "id": "G5",
+      "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+      "method": "终版整图逐项勾对"
+    },
+    {
+      "id": "G6",
+      "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+      "method": "case.md 虚构声明节 + 作品页脚"
+    },
+    {
+      "id": "G7",
+      "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+      "method": "每版看图；缺陷修复后重渲复看比较"
+    },
+    {
+      "id": "G8",
+      "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+      "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审"
+    }
+  ],
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "青禾岭登山等高线路线图",
+      "audience": "山径徒步者（登山口图板 0.8m 处 + A3 打印随身）",
+      "viewing_env": "户外图板/打印，0.8–1.5m，白天",
+      "user_goal": "选路线并估算时间：两条路线的距离/爬升/用时对得上等高线",
+      "content_scope": "等高线山体（含计曲线+首曲线+高程注记）、两条路线与补给点、比例尺与指北、路线用时表、坡度提示",
+      "technique": "程序化等高线：同心椭圆环带按高程递减半径、计曲线加粗；路线=折线段（旋转矩阵短线段首尾相接）",
+      "size": [
+        1200,
+        1600
+      ],
+      "numeric_claims": "等高距 40m（10 条@峰顶 782m）；路线用时 = 距离/平速 + 爬升/爬速（断言）；环半径单调递减（断言）"
+    },
+    {
+      "id": "case-02",
+      "title": "江城地铁换乘图",
+      "audience": "通勤乘客（地铁站灯箱/手机查询，1–3m）",
+      "viewing_env": "站厅灯箱 1.5m / 手机 0.4m",
+      "user_goal": "规划最快换乘：线路、换乘站、步行分钟、末班车对上",
+      "content_scope": "3 条线（1/2/4 号）严格 45°/90° 走线、12 站与 2 个换乘枢纽、换乘步行时长、末班车表、图例",
+      "technique": "强制直角几何：所有对角段 |dx|=|dy| 恰 45°（断言）；换乘站双环白心；站点均匀钉在线上",
+      "size": [
+        1800,
+        1000
+      ],
+      "numeric_claims": "对角段 45° 断言；换乘步行 2/3 分钟与换乘站注记一致；末班车表与线路色一致"
+    },
+    {
+      "id": "case-03",
+      "title": "昼夜节律钟盘",
+      "audience": "中学生家长（家长群/打印贴冰箱，手持 0.4m）",
+      "viewing_env": "手机/打印 0.4–0.6m",
+      "user_goal": "看懂孩子睡眠缺口：理想与实际作息在同一钟面比较",
+      "content_scope": "24h 钟面+整点刻度、理想睡眠弧（22:30–6:30）、实际睡眠弧（23:40–6:20）、缺口高亮与分钟数、3 条调整建议",
+      "technique": "SWEEP 扫描渐变昼夜带 + 极坐标刻度（trig 定位）+ 弧段由沿弧等距旋转短矩形拟合",
+      "size": [
+        1200,
+        1200
+      ],
+      "numeric_claims": "理想 8h00m、实际 6h40m、缺口 1h20m（断言）；24 刻度角度 = 15°/h（断言）；弧段角度与时刻一致"
+    },
+    {
+      "id": "case-04",
+      "title": "摩尔纹科普展板",
+      "audience": "科技馆观众（展区立板，1.5m，2m 外被吸引）",
+      "viewing_env": "展厅立板 1–2m",
+      "user_goal": "看见干涉条纹并理解成因：线距相同+微小错角=粗大条纹",
+      "content_scope": "主演示窗（两组细线栅 0.5° 错角）、对照窗（10° 错角）、原理解说三步、线距参数标注、互动提示",
+      "technique": "摩尔纹：两层细线栅以不同角度叠放（透明度区分层），ClipRect 限定演示窗；条纹走向标注",
+      "size": [
+        1000,
+        1400
+      ],
+      "numeric_claims": "线距 6px 两组一致（断言）、错角 0.5°/10° 与标注一致（断言）；条纹间距解释为几何后果（文字如实表述）"
+    },
+    {
+      "id": "case-05",
+      "title": "工坊轴测导览图",
+      "audience": "新志愿者（入职 10 分钟导览/墙面张贴，1.2m）",
+      "viewing_env": "墙面张贴 1–1.5m",
+      "user_goal": "在工坊平面里找到 5 个功能区与动线（入口→洗手→工具→播种→堆肥）",
+      "content_scope": "等距投影工坊：5 个挤出体块+顶/左/右三面明暗、编号与图例、动线箭头、尺寸注记（m）",
+      "technique": "等距投影：Transform 斜切矩阵（x'=x-y·cos30 系数）逐面构造，顶面亮/左面中/右面暗三阶明度",
+      "size": [
+        1400,
+        1000
+      ],
+      "numeric_claims": "投影矩阵系数固定（断言同矩阵复用）；体块长宽高 2:1:1 与图例 m 数一致；动线 5 站编号连续"
+    },
+    {
+      "id": "case-06",
+      "title": "潮汐回声巡演海报",
+      "audience": "演出观众（街头贴柱/朋友圈图，2m 街头 + 手机）",
+      "viewing_env": "街头海报 2m、手机 0.4m",
+      "user_goal": "被吸引并记住：乐队名、两场时间地点、购票方式",
+      "content_scope": "乐队名大字（色差重影）、巡演两站信息、场地/时间/票价、扫码位（示意）、暖场嘉宾行",
+      "technique": "文字色差：textShadow 红/青双影偏移 + 描边字（foregroundMode=STROKE）+ ImageFiltered 辉光层 + 字距节奏",
+      "size": [
+        1080,
+        1500
+      ],
+      "numeric_claims": "色差偏移量对称（断言 ±offset）；两场时间票价自洽（断言日期顺序）；字距数值与标注（如 +0.12em）一致"
+    },
+    {
+      "id": "case-07",
+      "title": "春集剪纸窗花旗",
+      "audience": "市集摊主与顾客（摊位挂旗/摊布印花，1m）",
+      "viewing_env": "摊位悬挂 0.8–1.2m",
+      "user_goal": "一眼认出春集摊位并感到节庆氛围：摊名与开集时间可读",
+      "content_scope": "8 重旋转对称窗花主体、中心摊名章、外圈回纹边、四角时令字、底部摊位信息条",
+      "technique": "旋转对称：同一母题以 45° 步进矩阵复制 8 份（含镜像组），圆内负空间 ClipOval 约束",
+      "size": [
+        1000,
+        1000
+      ],
+      "numeric_claims": "8 份母题同参数生成（断言同源）；45° 步进（断言 360/8）；圆环半径一致"
+    },
+    {
+      "id": "case-08",
+      "title": "无障碍盲文导览牌",
+      "audience": "视障人士（市集入口触摸，手持触摸 0.2m）与明眼人导视",
+      "viewing_env": "入口立牌触摸高度，触摸+近看",
+      "user_goal": "摸/看到并到达：厕所、东门、服务台三处位置与方向",
+      "content_scope": "3 个目的地（中英文+方向箭头）、对应盲文行、图例（点位说明）、服务台电话",
+      "technique": "标准一级英语盲文：字母 6 点编码表程序化生成点阵（断言字母→点位映射）+ 浮雕感（高光点+影点）",
+      "size": [
+        1400,
+        700
+      ],
+      "numeric_claims": "TOILET/EAST/INFO 的字母点位逐一按标准表断言；点径/点距恒定（断言）"
+    },
+    {
+      "id": "case-09",
+      "title": "夏夜观星星图",
+      "audience": "观星活动参与者（楼顶活动现场手持 A4 图板，0.5m + 头灯弱光）",
+      "viewing_env": "夜间户外弱光 A4 图板 0.4–0.6m",
+      "user_goal": "找到 3 个目标天体：方位、仰角、最佳观测时段对得上",
+      "content_scope": "星场（星等→星径）、3 组星座连线与名称、银河带、方位圈（东南西北）、观测时刻表与月相提示",
+      "technique": "程序化星场：确定性 PRNG 播种、星等 1–5 级映射星径；亮星辉光=ImageFiltered 模糊层；连线=旋转段",
+      "size": [
+        1600,
+        1000
+      ],
+      "numeric_claims": "星径=mag 映射函数断言；星场 220 颗计数断言；时刻表与方位标注一致；星图为示意编排（声明非星表）"
+    },
+    {
+      "id": "case-10",
+      "title": "果酱罐标签展开刀模图",
+      "audience": "小型果酱作坊印务（打样核对/贴标机参考，桌面 0.5m）",
+      "viewing_env": "桌面核对打印 0.4–0.6m",
+      "user_goal": "核对罐周标签的展开尺寸、贴合方向与折线，正确打样",
+      "content_scope": "前/后/侧/粘合舌面板展开、实线裁切+虚线折痕区分、mm 尺寸标注与箭头、贴合方向说明、版本栏",
+      "technique": "几何刀模：程序化虚线（等距短划阵列，BorderStyle 仅 SOLID 故手造）+ 梯形粘合舌（旋转边）+ 尺寸链自洽",
+      "size": [
+        1600,
+        1200
+      ],
+      "numeric_claims": "面板宽 96+44+96+18=254mm=罐周（断言）；高 72mm 恒定（断言）；粘合舌 18mm=侧舌宽（断言）"
+    }
+  ],
+  "planned_counts": {
+    "cases": 10,
+    "probes": 3,
+    "min_final_png": 10
+  }
+}

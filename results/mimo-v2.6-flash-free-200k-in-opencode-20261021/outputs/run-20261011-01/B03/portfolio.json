@@ -1,0 +1,1990 @@
+{
+ "schema_version": 1,
+ "path_base": "output_dir",
+ "task_id": "B03",
+ "run_id": "run-20261011-01",
+ "status": "completed",
+ "asset_policy": "dsl_primary_with_supporting_assets（本题 10 件全部纯 DSL，0 外部素材嵌入）",
+ "curatorial_statement": "以十件互不重复的真实使用场景作品探索 Snapshot DSL 的创意边界：登山等高线路线图、地铁换乘图、昼夜节律钟盘、摩尔纹科普展板、工坊轴测导览、乐队巡演海报、剪纸窗花旗、盲文导览牌、观星星图、果酱罐刀模图——程序化等高线/星场/盲文/条码、强制直角几何、SWEEP 昼夜与光谱、Transform 等距与旋转对称、多层 textShadow 色差、手造虚线刀模等手法全部由 .snapshot 构造，服务真实渲染 40 次（32 成功全部逐张看图），12 次完整视觉迭代 + 5 次需求收口（c06–c10 收口到计划记录的受众/内容范围）+ 生成期断言拦截。",
+ "plan_ref": {
+  "file": "tmp/run-20261011-01/B03/plan-v1.json",
+  "version": "plan-v1",
+  "established_at": "2026-10-19T20:34:03+08:00",
+  "criteria": [
+   {
+    "id": "G1",
+    "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+    "method": "requests.jsonl + copy-report（md5 双向 + IHDR）"
+   },
+   {
+    "id": "G2",
+    "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+    "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看"
+   },
+   {
+    "id": "G3",
+    "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+    "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果"
+   },
+   {
+    "id": "G4",
+    "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+    "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）"
+   },
+   {
+    "id": "G5",
+    "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+    "method": "终版整图逐项勾对"
+   },
+   {
+    "id": "G6",
+    "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+    "method": "case.md 虚构声明节 + 作品页脚"
+   },
+   {
+    "id": "G7",
+    "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+    "method": "每版看图；缺陷修复后重渲复看比较"
+   },
+   {
+    "id": "G8",
+    "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+    "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审"
+   }
+  ],
+  "amendments": [
+   {
+    "file": "tmp/run-20261011-01/B03/plan-v1a-case05-amendment.json",
+    "id": "B03-plan-v1a-case05",
+    "established_at": "2026-10-20T18:45:00+08:00",
+    "note": "plan-v1 的 case-05 条件写有『体块长宽高 2:1:1 与图例 m 数一致』。编写真实使用场景脚本时确认：5 个功能区按真实工坊用途定尺寸（入口门厅3×2×2.4、洗手台2×1.2×1.0、工具墙1×4×2.0、播种台4×2×0.9、堆肥区2.5×3×1.4，单位m），统一 2:1:1 不成立；仅播种台俯视呈 2:1。该数值型条件改为可验证的等价形式，不是降低标准：仍要求脚本断言图例 m 数与轴测体块屏幕边长严格一致。"
+   }
+  ],
+  "note": "计划与通用标准建立于首渲 2026-10-19T21:00 前；G1–G8 未增删；case-05 数值条件按 plan-v1a 修订（首渲前，未倒填）"
+ },
+ "cases": [
+  {
+   "id": "case-01",
+   "title": "青禾岭登山等高线路线图",
+   "audience": "山径徒步者（登山口图板 0.8m 处 + A3 打印随身）",
+   "use_context": "户外图板/打印，0.8–1.5m，白天",
+   "viewing_env": "户外图板/打印，0.8–1.5m，白天",
+   "user_goal": "选路线并估算时间：两条路线的距离/爬升/用时对得上等高线",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：等高线山体（含计曲线+首曲线+高程注记）、两条路线与补给点、比例尺与指北、路线用时表、坡度提示",
+   "visual_intent": "等高线同心环带（计曲线加粗+高程注记）+ 双路线沟槽 + 图例/比例尺/用时表",
+   "png": "case-01/final.png",
+   "snapshot": "case-01/final.snapshot",
+   "case_md": "case-01/case.md",
+   "dimensions": [
+    1200,
+    1600
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "程序化等高线：同心椭圆环带按高程递减半径、计曲线加粗；路线=折线段（旋转矩阵短线段首尾相接）",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "等高距 40m（10 条@峰顶 782m）；路线用时 = 距离/平速 + 爬升/爬速（断言）；环半径单调递减（断言）",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-01-v3 整图已实际查看；本件全部 3 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c01-v1",
+    "B03-c01-v1b",
+    "B03-c01-v2",
+    "B03-c01-v3"
+   ],
+   "iteration_ids": [
+    "B03-case-01-v1-syntax_fix",
+    "B03-case-01-v1-syntax_fix2",
+    "B03-case-01-v1b-baseline",
+    "B03-case-01-v2-visual_iteration",
+    "B03-case-01-v3-visual_iteration"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-01/case.md G 表）",
+     "evidence": [
+      "case-01/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：等高距 40m（10 条@峰顶 782m）；路线用时 = 距离/平速 + 爬升/爬速（断言）；环半径单调递减（断言）",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：峰顶782m/等高距40m/10条断言；环半径单调递减断言；两线同门同顶断言；用时 4.2/4.5h+402/400m≈116min 断言；过线计数=10 断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case01.py",
+      "case-01/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-02",
+   "title": "江城地铁换乘图",
+   "audience": "通勤乘客（地铁站灯箱/手机查询，1–3m）",
+   "use_context": "站厅灯箱 1.5m / 手机 0.4m",
+   "viewing_env": "站厅灯箱 1.5m / 手机 0.4m",
+   "user_goal": "规划最快换乘：线路、换乘站、步行分钟、末班车对上",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：3 条线（1/2/4 号）严格 45°/90° 走线、12 站与 2 个换乘枢纽、换乘步行时长、末班车表、图例",
+   "visual_intent": "强直角线路色带 + 双环换乘枢纽 + 末班车表（线路色一致）",
+   "png": "case-02/final.png",
+   "snapshot": "case-02/final.snapshot",
+   "case_md": "case-02/case.md",
+   "dimensions": [
+    1800,
+    1000
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "强制直角几何：所有对角段 |dx|=|dy| 恰 45°（断言）；换乘站双环白心；站点均匀钉在线上",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "对角段 45° 断言；换乘步行 2/3 分钟与换乘站注记一致；末班车表与线路色一致",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-02-v2 整图已实际查看；本件全部 2 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c02-v1",
+    "B03-c02-v2"
+   ],
+   "iteration_ids": [
+    "B03-case-02-v2-visual_iteration",
+    "B03-case-02-v1-baseline"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-02/case.md G 表）",
+     "evidence": [
+      "case-02/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：对角段 45° 断言；换乘步行 2/3 分钟与换乘站注记一致；末班车表与线路色一致",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：所有对角段 |dx|=|dy| 恰45°断言；12站/2换乘断言；步行2/3分与注记一致；末班车表与线路色一致断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case02.py",
+      "case-02/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-03",
+   "title": "昼夜节律钟盘",
+   "audience": "中学生家长（家长群/打印贴冰箱，手持 0.4m）",
+   "use_context": "手机/打印 0.4–0.6m",
+   "viewing_env": "手机/打印 0.4–0.6m",
+   "user_goal": "看懂孩子睡眠缺口：理想与实际作息在同一钟面比较",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：24h 钟面+整点刻度、理想睡眠弧（22:30–6:30）、实际睡眠弧（23:40–6:20）、缺口高亮与分钟数、3 条调整建议",
+   "visual_intent": "SWEEP 昼夜环带 + 24h 双色刻度 + 理想/实际睡眠弧 + 缺口高亮",
+   "png": "case-03/final.png",
+   "snapshot": "case-03/final.snapshot",
+   "case_md": "case-03/case.md",
+   "dimensions": [
+    1200,
+    1200
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "SWEEP 扫描渐变昼夜带 + 极坐标刻度（trig 定位）+ 弧段由沿弧等距旋转短矩形拟合",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "理想 8h00m、实际 6h40m、缺口 1h20m（断言）；24 刻度角度 = 15°/h（断言）；弧段角度与时刻一致",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-03-v2 整图已实际查看；本件全部 2 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c03-v1",
+    "B03-c03-v2"
+   ],
+   "iteration_ids": [
+    "B03-case-03-v1-syntax_fix",
+    "B03-case-03-v2-visual_iteration",
+    "B03-case-03-v1-baseline"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-03/case.md G 表）",
+     "evidence": [
+      "case-03/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：理想 8h00m、实际 6h40m、缺口 1h20m（断言）；24 刻度角度 = 15°/h（断言）；弧段角度与时刻一致",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：480/400/80=70+10 分钟断言；弧角度=分钟×15°/h 断言(120/100/17.5/2.5°)；24刻度 range(24) 生成；22.5%15°换算断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case03.py",
+      "case-03/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-04",
+   "title": "摩尔纹科普展板",
+   "audience": "科技馆观众（展区立板，1.5m，2m 外被吸引）",
+   "use_context": "展厅立板 1–2m",
+   "viewing_env": "展厅立板 1–2m",
+   "user_goal": "看见干涉条纹并理解成因：线距相同+微小错角=粗大条纹",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：主演示窗（两组细线栅 0.5° 错角）、对照窗（10° 错角）、原理解说三步、线距参数标注、互动提示",
+   "visual_intent": "主窗0.5°/对照窗10° 双线栅 + 三步原理 + 条纹走向标注",
+   "png": "case-04/final.png",
+   "snapshot": "case-04/final.snapshot",
+   "case_md": "case-04/case.md",
+   "dimensions": [
+    1000,
+    1400
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "摩尔纹：两层细线栅以不同角度叠放（透明度区分层），ClipRect 限定演示窗；条纹走向标注",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "线距 6px 两组一致（断言）、错角 0.5°/10° 与标注一致（断言）；条纹间距解释为几何后果（文字如实表述）",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-04-v2 整图已实际查看；本件全部 2 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c04-v1",
+    "B03-c04-v1b",
+    "B03-c04-v2"
+   ],
+   "iteration_ids": [
+    "B03-case-04-v1-syntax_fix",
+    "B03-case-04-v2-visual_iteration",
+    "B03-case-04-v1b-baseline"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-04/case.md G 表）",
+     "evidence": [
+      "case-04/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：线距 6px 两组一致（断言）、错角 0.5°/10° 与标注一致（断言）；条纹间距解释为几何后果（文字如实表述）",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：线距6px 由 d=6/sinθ 断言(d_main=687.5, d_ctrl=34.56)；条纹数 117/81 断言；主窗<1周期/对照窗~7.5周期断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case04.py",
+      "case-04/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-05",
+   "title": "工坊轴测导览图",
+   "audience": "新志愿者（入职 10 分钟导览/墙面张贴，1.2m）",
+   "use_context": "墙面张贴 1–1.5m",
+   "viewing_env": "墙面张贴 1–1.5m",
+   "user_goal": "在工坊平面里找到 5 个功能区与动线（入口→洗手→工具→播种→堆肥）",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：等距投影工坊：5 个挤出体块+顶/左/右三面明暗、编号与图例、动线箭头、尺寸注记（m）",
+   "visual_intent": "等距投影三面体块（顶亮/左中/右暗）+ 琥珀虚线动线 + 尺寸表",
+   "png": "case-05/final.png",
+   "snapshot": "case-05/final.snapshot",
+   "case_md": "case-05/case.md",
+   "dimensions": [
+    1400,
+    1000
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "等距投影：Transform 斜切矩阵（x'=x-y·cos30 系数）逐面构造，顶面亮/左面中/右面暗三阶明度",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "投影矩阵系数固定（断言同矩阵复用）；体块长宽高 2:1:1 与图例 m 数一致；动线 5 站编号连续",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-05-v4 整图已实际查看；本件全部 4 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c05-v1",
+    "B03-c05-v2",
+    "B03-c05-v3",
+    "B03-c05-v4"
+   ],
+   "iteration_ids": [
+    "B03-case-05-v4-visual_iteration",
+    "B03-case-05-v1-baseline",
+    "B03-case-05-v2-baseline",
+    "B03-case-05-v3-visual_iteration"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）；数值条件按 tmp/run-20261011-01/B03/plan-v1a-case05-amendment.json 修订（首渲前）",
+   "criteria_history": [
+    {
+     "criterion_id": "N1",
+     "status": "amended",
+     "old": "体块长宽高 2:1:1 与图例 m 数一致",
+     "new": "各体块长宽高以米为单位与底部尺寸表逐行一致（脚本由同一 w/d/h 事实源生成体块与标注并断言）；播种台俯视 4×2m 呈 2:1",
+     "reason": "plan-v1 的 case-05 条件写有『体块长宽高 2:1:1 与图例 m 数一致』。编写真实使用场景脚本时确认：5 个功能区按真实工坊用途定尺寸（入口门厅3×2×2.4、洗手台2×1.2×1.0、工具墙1×4×2.0、播种台4×2×0.9、堆肥区2.5×3×1.4，单位m），统一 2:1:1 不成立；仅播种台俯视呈 2:1。该数值型条件改为可验证的等价形式，不是降低标准：仍要求脚本断言图例 m 数与轴测体块屏幕边长严格一致。",
+     "evidence": "工坊真实使用动线要求不同功能区有不同台面尺寸（洗手台低矮、工具墙狭长、堆肥区大），2:1:1 统一比例无法对应真实场景；b03_case05.py 以单一 zones 事实表驱动三面体块与表格",
+     "effective_version": "plan-v1a @ 2026-10-20T18:45:00+08:00",
+     "source": "tmp/run-20261011-01/B03/plan-v1a-case05-amendment.json"
+    }
+   ],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-05/case.md G 表）",
+     "evidence": [
+      "case-05/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：投影矩阵系数固定（断言同矩阵复用）；体块长宽高 2:1:1 与图例 m 数一致；动线 5 站编号连续",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：同一斜切矩阵复用断言；三组明度互异断言；zones 事实表驱动体块与表格逐行一致断言；动线编号[1..5]断言（计划数值条件按 plan-v1a 修订）",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case05.py",
+      "case-05/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-06",
+   "title": "潮汐回声巡演海报",
+   "audience": "演出观众（街头贴柱/朋友圈图，2m 街头 + 手机）",
+   "use_context": "街头海报 2m、手机 0.4m",
+   "viewing_env": "街头海报 2m、手机 0.4m",
+   "user_goal": "被吸引并记住：乐队名、两场时间地点、购票方式",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：乐队名大字（色差重影）、巡演两站信息、场地/时间/票价、扫码位（示意）、暖场嘉宾行",
+   "visual_intent": "色差重影标题 + SWEEP 光谱盘 + 描边幽灵字 + 高斯光晕 + 字距标注",
+   "png": "case-06/final.png",
+   "snapshot": "case-06/final.snapshot",
+   "case_md": "case-06/case.md",
+   "dimensions": [
+    1080,
+    1500
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "文字色差：textShadow 红/青双影偏移 + 描边字（foregroundMode=STROKE）+ ImageFiltered 辉光层 + 字距节奏",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "色差偏移量对称（断言 ±offset）；两场时间票价自洽（断言日期顺序）；字距数值与标注（如 +0.12em）一致",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-06-v2 整图已实际查看；本件全部 2 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c06-v1",
+    "B03-c06-v1b",
+    "B03-c06-v1c",
+    "B03-c06-v2"
+   ],
+   "iteration_ids": [
+    "B03-case-06-v1-syntax_fix",
+    "B03-case-06-v1c-baseline",
+    "B03-case-06-v2-requirement-change"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-06/case.md G 表）",
+     "evidence": [
+      "case-06/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：色差偏移量对称（断言 ±offset）；两场时间票价自洽（断言日期顺序）；字距数值与标注（如 +0.12em）一致",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：标题±12/镜环±14 对称断言；两场日期递增且均为周日(datetime)断言；现场价=预售+40 断言；3.6px/30px=+0.12em 断言；QR 种子重算一致断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case06.py",
+      "case-06/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-07",
+   "title": "春集剪纸窗花旗",
+   "audience": "市集摊主与顾客（摊位挂旗/摊布印花，1m）",
+   "use_context": "摊位悬挂 0.8–1.2m",
+   "viewing_env": "摊位悬挂 0.8–1.2m",
+   "user_goal": "一眼认出春集摊位并感到节庆氛围：摊名与开集时间可读",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：8 重旋转对称窗花主体、中心摊名章、外圈回纹边、四角时令字、底部摊位信息条",
+   "visual_intent": "8重旋转对称窗花 + 中心摊名章 + 回纹刻线带 + 四角时令字 + 信息条",
+   "png": "case-07/final.png",
+   "snapshot": "case-07/final.snapshot",
+   "case_md": "case-07/case.md",
+   "dimensions": [
+    1000,
+    1000
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "旋转对称：同一母题以 45° 步进矩阵复制 8 份（含镜像组），圆内负空间 ClipOval 约束",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "8 份母题同参数生成（断言同源）；45° 步进（断言 360/8）；圆环半径一致",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-07-v3 整图已实际查看；本件全部 3 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c07-v1",
+    "B03-c07-v2",
+    "B03-c07-v3"
+   ],
+   "iteration_ids": [
+    "B03-case-07-v1-baseline",
+    "B03-case-07-v2-visual_iteration",
+    "B03-case-07-v3-requirement-change"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-07/case.md G 表）",
+     "evidence": [
+      "case-07/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：8 份母题同参数生成（断言同源）；45° 步进（断言 360/8）；圆环半径一致",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：8份×45°同源断言；环半径层级 104<118<246<378<392 断言；瓣尖370<378 断言；四角药丸与外环>394 断言；信息条与角花留白断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case07.py",
+      "case-07/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-08",
+   "title": "无障碍盲文导览牌",
+   "audience": "视障人士（市集入口触摸，手持触摸 0.2m）与明眼人导视",
+   "use_context": "入口立牌触摸高度，触摸+近看",
+   "viewing_env": "入口立牌触摸高度，触摸+近看",
+   "user_goal": "摸/看到并到达：厕所、东门、服务台三处位置与方向",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：3 个目的地（中英文+方向箭头）、对应盲文行、图例（点位说明）、服务台电话",
+   "visual_intent": "三面板中英文+方向箭头 + 一级盲文点阵 + 点位图例 + 服务台电话",
+   "png": "case-08/final.png",
+   "snapshot": "case-08/final.snapshot",
+   "case_md": "case-08/case.md",
+   "dimensions": [
+    1400,
+    700
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "标准一级英语盲文：字母 6 点编码表程序化生成点阵（断言字母→点位映射）+ 浮雕感（高光点+影点）",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "TOILET/EAST/INFO 的字母点位逐一按标准表断言；点径/点距恒定（断言）",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-08-v3 整图已实际查看；本件全部 3 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c08-v1",
+    "B03-c08-v1b",
+    "B03-c08-v2",
+    "B03-c08-v3"
+   ],
+   "iteration_ids": [
+    "B03-case-08-v1-syntax_fix",
+    "B03-case-08-v1b-baseline",
+    "B03-case-08-v2-visual_iteration",
+    "B03-case-08-v3-requirement-change",
+    "B03-case-08-v3-syntax_fix"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-08/case.md G 表）",
+     "evidence": [
+      "case-08/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：TOILET/EAST/INFO 的字母点位逐一按标准表断言；点径/点距恒定（断言）",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：9字母点位逐一断言(A/E/F/I/L/N/O/S/T)；14格40点总数断言；点径/点距常量恒定断言(CELL_W==COL_GAP+2*DOT_R==36)；绘制点数==表算断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case08.py",
+      "case-08/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-09",
+   "title": "夏夜观星星图",
+   "audience": "观星活动参与者（楼顶活动现场手持 A4 图板，0.5m + 头灯弱光）",
+   "use_context": "夜间户外弱光 A4 图板 0.4–0.6m",
+   "viewing_env": "夜间户外弱光 A4 图板 0.4–0.6m",
+   "user_goal": "找到 3 个目标天体：方位、仰角、最佳观测时段对得上",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：星场（星等→星径）、3 组星座连线与名称、银河带、方位圈（东南西北）、观测时刻表与月相提示",
+   "visual_intent": "220颗星场 + 银河带 + 两真实星座与一虚构星座 + 方位圈 + 时刻表",
+   "png": "case-09/final.png",
+   "snapshot": "case-09/final.snapshot",
+   "case_md": "case-09/case.md",
+   "dimensions": [
+    1600,
+    1000
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "程序化星场：确定性 PRNG 播种、星等 1–5 级映射星径；亮星辉光=ImageFiltered 模糊层；连线=旋转段",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "星径=mag 映射函数断言；星场 220 颗计数断言；时刻表与方位标注一致；星图为示意编排（声明非星表）",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-09-v2 整图已实际查看；本件全部 2 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c09-v1",
+    "B03-c09-v2"
+   ],
+   "iteration_ids": [
+    "B03-case-09-v1-syntax_fix",
+    "B03-case-09-v1-baseline",
+    "B03-case-09-v2-requirement-change"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-09/case.md G 表）",
+     "evidence": [
+      "case-09/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：星径=mag 映射函数断言；星场 220 颗计数断言；时刻表与方位标注一致；星图为示意编排（声明非星表）",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：同seed双生成一致/异seed不同断言；星场恰220颗断言；星径=mag映射带宽断言；时刻表方位/仰角==图面质心推算断言；时段跨零点时长60..480min断言；月相22%<30断言",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case09.py",
+      "case-09/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  },
+  {
+   "id": "case-10",
+   "title": "果酱罐标签展开刀模图",
+   "audience": "小型果酱作坊印务（打样核对/贴标机参考，桌面 0.5m）",
+   "use_context": "桌面核对打印 0.4–0.6m",
+   "viewing_env": "桌面核对打印 0.4–0.6m",
+   "user_goal": "核对罐周标签的展开尺寸、贴合方向与折线，正确打样",
+   "content_basis": "自拟虚构演示数据（见 case.md 虚构声明）：前/后/侧/粘合舌面板展开、实线裁切+虚线折痕区分、mm 尺寸标注与箭头、贴合方向说明、版本栏",
+   "visual_intent": "254mm四面板刀模链 + 梯形粘合舌 + 程序化虚线 + 十字盖贴 + 尺寸标注",
+   "png": "case-10/final.png",
+   "snapshot": "case-10/final.snapshot",
+   "case_md": "case-10/case.md",
+   "dimensions": [
+    1600,
+    1200
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "几何刀模：程序化虚线（等距短划阵列，BorderStyle 仅 SOLID 故手造）+ 梯形粘合舌（旋转边）+ 尺寸链自洽",
+   "completion_criteria": [
+    {
+     "id": "G1",
+     "condition": "经真实 open-snapshot 服务 HTTP200 渲染；final.png 为服务原始响应字节，尺寸与本计划一致",
+     "method": "requests.jsonl + copy-report（md5 双向 + IHDR）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G2",
+     "condition": "目标观看环境下全部文字可读、无截断/越界（按各 case 的 viewing_env 分档验收）",
+     "method": "生成期 tw/fit 宽度预算 + 每张成功响应整图实际查看",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G3",
+     "condition": "所声称的 DSL 手法真实存在且由 .snapshot 构造达成（无预绘整图、无不存在标签冒充）",
+     "method": "probe 试验渲染 + DSL 文本自证（手法元素可指认）+ 看图确认效果",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G4",
+     "condition": "定量内容的数值与几何一致（角度、长度、和差、编码、比例可复核）",
+     "method": "生成脚本断言 + 看图核对（逐 case 记录断言项）",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G5",
+     "condition": "content_scope 内关键信息齐备，user_goal 在作品上可达成",
+     "method": "终版整图逐项勾对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G6",
+     "condition": "受众/使用场景/观看环境明确，虚构信息在 case.md 与 portfolio 如实声明",
+     "method": "case.md 虚构声明节 + 作品页脚",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G7",
+     "condition": "无重叠遮挡/穿线/裁剪类缺陷，构图在目标尺寸成立",
+     "method": "每版看图；缺陷修复后重渲复看比较",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "G8",
+     "condition": "合集级：10 件手法/媒介/使用任务互不重复（非同版式换色换字）；technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界",
+     "method": "portfolio 逐件手法字段 + technique-notes.md + 合集终审",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    },
+    {
+     "id": "N1",
+     "condition": "面板宽 96+44+96+18=254mm=罐周（断言）；高 72mm 恒定（断言）；粘合舌 18mm=侧舌宽（断言）",
+     "method": "生成脚本断言 + 看图核对",
+     "established_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json）"
+    }
+   ],
+   "visual_review": "终版 case-10-v5 整图已实际查看；本件全部 5 次成功响应均查看，观察/修改/复看记录见 iterations.jsonl",
+   "request_ids": [
+    "B03-c10-v1",
+    "B03-c10-v2",
+    "B03-c10-v3",
+    "B03-c10-v4",
+    "B03-c10-v5"
+   ],
+   "iteration_ids": [
+    "B03-case-10-v1-syntax_fix",
+    "B03-case-10-v1-baseline",
+    "B03-case-10-v2-visual_iteration",
+    "B03-case-10-v3-visual_iteration",
+    "B03-case-10-v4-visual_iteration",
+    "B03-case-10-v5-requirement-change"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan-v1 @ 2026-10-19T20:34:03+08:00（tmp/run-20261011-01/B03/plan-v1.json，suite_root 基准）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "id",
+     "condition": "condition",
+     "method": "method",
+     "result": "passed（详见 case-10/case.md G 表）",
+     "evidence": [
+      "case-10/case.md",
+      "tmp/run-20261011-01/B03/iterations.jsonl"
+     ],
+     "status": "passed"
+    },
+    {
+     "id": "N1",
+     "condition": "案例数值型主张成立：面板宽 96+44+96+18=254mm=罐周（断言）；高 72mm 恒定（断言）；粘合舌 18mm=侧舌宽（断言）",
+     "method": "生成脚本断言 + 看图核对",
+     "result": "passed：96+44+96+18=254mm 断言；比例3.937px/mm 全域一致断言；高72mm/舌18mm 断言；5界4chip；条码推进位越界断言；窄跨度chip下移",
+     "evidence": [
+      "tmp/run-20261011-01/B03/scripts/b03_case10.py",
+      "case-10/final.png"
+     ],
+     "status": "passed"
+    }
+   ]
+  }
+ ],
+ "final_collection_review": "10 件终版逐张实际查看：内容完整、无截断/遮挡、目标观看环境可读；手法/媒介/使用任务互不重复（technique-notes.md 逐件记录手法、文档依据、试验证据、应用价值与已确认边界）；c06–c10 已收口到计划记录的 user_goal，G5 全部达成。",
+ "unresolved_issues": []
+}

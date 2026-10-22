@@ -1,0 +1,67 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A09",
+ "run_id": "run-20261011-01",
+ "task_round": null,
+ "status": "completed",
+ "stop_reason": "1600×1200 变换图谱经 2 版视觉迭代后正式渲染；geometry-audit.json 72 个分量亚像素实测全部 ≤1.5px（最差 0.785px），T07/T08 操作顺序差异经裁剪对比确认，正式图与草稿 v2 DSL/PNG 字节一致",
+ "output_dir": "outputs/run-20261011-01/A09/",
+ "temp_dir": "tmp/run-20261011-01/A09/",
+ "timings": {
+  "started_at": "2026-10-13T10:47:00.000+08:00",
+  "ended_at": "2026-10-13T12:05:00.000+08:00",
+  "elapsed_seconds": 4680,
+  "elapsed_note": "单次连续会话；含读题、生成器与核验脚本编写、3 次渲染与 6 轮测量算法迭代",
+  "first_usable_image_seconds": 408,
+  "first_usable_image_note": "A09-req-0001（v1）即为 200 成功渲染，首个可用图",
+  "user_feedback_wait_seconds": 0,
+  "rate_limit_wait_seconds": 0,
+  "queue_wait_seconds": null,
+  "request_duration_sum_seconds": 12.652,
+  "server_timing_source": null
+ },
+ "counts": {
+  "snapshot_requests": 3,
+  "successful_snapshot_requests": 3,
+  "failed_snapshot_requests": 0,
+  "retry_requests": 0,
+  "failed_request_note": null,
+  "other_service_requests": 0,
+  "document_requests": 0,
+  "document_requests_note": "复用 _suite 共享文档缓存与本地 inputs/templates，未新增 HTTP 请求",
+  "dsl_versions": 2,
+  "dsl_versions_note": "v1/v2（图例间距修复）；正式图为 v2 DSL 原样复制后重渲染（sha256 一致），未新增版本",
+  "image_views": 4,
+  "image_views_note": "v1 整图、v2 整图、v2 T07/T08 裁剪对比、正式 transform-atlas.png",
+  "completed_visual_iterations": 1,
+  "incomplete_visual_iterations": 0,
+  "syntax_fix_iterations": 0,
+  "measurement_iterations": 6
+ },
+ "artifacts": [
+  "outputs/run-20261011-01/A09/transform-atlas.png",
+  "outputs/run-20261011-01/A09/transform-atlas.snapshot",
+  "outputs/run-20261011-01/A09/geometry-audit.json",
+  "outputs/run-20261011-01/A09/snapshot-usage.md",
+  "outputs/run-20261011-01/A09/task-metrics.json"
+ ],
+ "logs": {
+  "requests": "tmp/run-20261011-01/A09/requests.jsonl",
+  "iterations": "tmp/run-20261011-01/A09/iterations.jsonl",
+  "requests_count": 3,
+  "iterations_count": 3,
+  "request_ids": [
+   "A09-req-0001",
+   "A09-req-0002",
+   "A09-req-0003"
+  ]
+ },
+ "verification": {
+  "layout": "4 列×3 行、格 300×250、间距 32、网格原点 (152,193) 居中于 1600×1200；ID/操作名/刻度均在格外带或格内标签区，主体与标签区不相交断言通过",
+  "matrix_method": "操作按输入顺序关于局部 (60,60) 合成列主序 16 元矩阵；DSL 用 alignment=CENTER 的 240×240 盒使盒心=枢轴，线性部分即最终变换",
+  "order_difference": "T07（镜像→旋转90°）与 T08（旋转90°→镜像）矩阵不等且图面结构互为反序，裁剪对比肉眼可辨",
+  "pixel_measurement": "72 分量（12 变换 × 6：3 矩形 bbox + 圆心 + 圆 bbox + 整章 bbox）亚像素连线残差法实测，worst 0.785px ≤ 1.5px 判据，verification_summary.all_passed=true",
+  "visual_evidence": "A09-req-0002 整图与 T07/T08 裁剪、A09-req-0003 正式图复看；迭代记录 tmp/run-20261011-01/A09/iterations.jsonl"
+ }
+}

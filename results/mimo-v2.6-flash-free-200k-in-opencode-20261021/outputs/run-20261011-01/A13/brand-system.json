@@ -1,0 +1,651 @@
+{
+  "schema_version": 1,
+  "task_id": "A13",
+  "path_base": "output_dir",
+  "brand": {
+    "name": "叠光 Layerlight",
+    "concept": "信息叠加后仍然清晰"
+  },
+  "colors": {
+    "light_cyan": {
+      "hex": "#22D3EE",
+      "role": "主色 · 圆环（光圈本体）"
+    },
+    "violet": {
+      "hex": "#7C3AED",
+      "role": "辅色 · 透镜圆盘（叠加层）"
+    },
+    "blue": {
+      "hex": "#3B82F6",
+      "role": "点缀 · 光点"
+    },
+    "ink_top": {
+      "hex": "#0B1220",
+      "role": "应用底色 · 渐变起点（横幅/海报）"
+    },
+    "ink_mid": {
+      "hex": "#0D1526",
+      "role": "应用底色 · 渐变中点"
+    },
+    "ink_bottom": {
+      "hex": "#111C31",
+      "role": "应用底色 · 渐变终点"
+    },
+    "amber": {
+      "hex": "#F59E0B",
+      "role": "强调 · OPEN BETA 徽章"
+    },
+    "text_primary": {
+      "hex": "#F8FAFC",
+      "role": "标题文字"
+    },
+    "text_secondary": {
+      "hex": "#A9BCD8",
+      "role": "副文文字"
+    },
+    "pure_black": {
+      "hex": "#000000",
+      "role": "单色版图标（RGB 必须为 0）"
+    }
+  },
+  "geometry": {
+    "coordinate_system": "画布左上原点，x 向右、y 向下，单位像素；图标基准盒 512×512",
+    "base_box": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "icon_center": [
+      256,
+      256
+    ],
+    "ring": {
+      "box": [
+        56,
+        56,
+        455,
+        455
+      ],
+      "diameter": 400,
+      "border": 72,
+      "shape": "CIRCLE",
+      "inner_hole_diameter": 256,
+      "note": "Container shape=CIRCLE + border=\"72 SOLID <色>\"，无填充"
+    },
+    "disc": {
+      "box": [
+        240,
+        240,
+        399,
+        399
+      ],
+      "diameter": 160,
+      "center": [
+        320,
+        320
+      ],
+      "offset_from_icon_center": [
+        64,
+        64
+      ],
+      "offset_distance": 90.5097,
+      "overlap_into_ring_band": 42.5097,
+      "ring_remnant_at_45deg": 29.4903
+    },
+    "dot": {
+      "box": [
+        183,
+        183,
+        238,
+        238
+      ],
+      "diameter": 56,
+      "center": [
+        211,
+        211
+      ],
+      "offset_distance": 63.6396
+    },
+    "negative_space": {
+      "key": "环孔月牙：圆环内孔（直径256）减去透镜圆盘与光点后的剩余区域，随盘/点位置呈偏心月牙形",
+      "generation_rule": "hole = circle(r=128@center) minus disc(d=160@(320,320)) minus dot(d=56@(211,211))",
+      "crescent_max_width_ring_to_disc": 138.5097,
+      "crescent_note": "月牙沿 -45° 轴（背离圆盘方向）的最大宽度 = 环内缘128 + 盘近缘距中心10.5097；圆盘在 +45° 方向压过环内缘，故该处无间隙而是重叠42.51单位",
+      "gap_ring_to_dot": 36.3604,
+      "gap_disc_to_dot": 46.1493,
+      "min_gap_icon_units": 36.3604,
+      "min_gap_at_32px": 2.273
+    },
+    "proportions": {
+      "ring_diameter_to_box": 0.78125,
+      "border_to_ring_diameter": 0.18,
+      "disc_to_ring_diameter": 0.4,
+      "dot_to_ring_diameter": 0.14,
+      "scale_note": "所有应用 = 本表坐标 × 统一比例 s + 原点偏移 (ox,oy)，无其他变换"
+    }
+  },
+  "components": [
+    {
+      "id": "C1",
+      "prototype": "圆环（CIRCLE border 环形母形）",
+      "instance_count": 1,
+      "geometry": "box(56,56) d=400 border=72 shape=CIRCLE 无填充",
+      "dsl_positioning": "<Positioned left=56 top=56 width=400 height=400><Container shape=\"CIRCLE\" border=\"72 SOLID #22D3EE\"/></Positioned>",
+      "count_basis": "1 个可独立辨认母形实例"
+    },
+    {
+      "id": "C2",
+      "prototype": "实心圆盘（CIRCLE 实色母形）",
+      "instance_count": 1,
+      "geometry": "box(240,240) d=160 实色 #7C3AED；与环 45° 方向重叠 42.51 单位（遮挡表达'叠'）",
+      "dsl_positioning": "<Positioned left=240 top=240 width=160 height=160><Container shape=\"CIRCLE\" color=\"#7C3AED\"/></Positioned>",
+      "count_basis": "1 个母形实例"
+    },
+    {
+      "id": "C3",
+      "prototype": "实心光点（CIRCLE 实色母形，C2 的缩小实例）",
+      "instance_count": 1,
+      "geometry": "box(183,183) d=56 实色 #3B82F6，位于环孔月牙内",
+      "dsl_positioning": "<Positioned left=183 top=183 width=56 height=56><Container shape=\"CIRCLE\" color=\"#3B82F6\"/></Positioned>",
+      "count_basis": "1 个母形实例（重复放置的母形分别计数，此处仅 1 个）"
+    }
+  ],
+  "component_count": {
+    "total": 3,
+    "limit": 6,
+    "within_limit": true,
+    "justification": "按可独立辨认母形实例计数：环1+盘1+点1=3；环孔与三处间隙为负空间不计数（生成规则见 geometry.negative_space）；无裁剪分割图形。位置、尺寸、分组包装不另计。"
+  },
+  "clear_space": {
+    "unit": "icon_units (512 基准盒像素)",
+    "value": 56,
+    "value_ratio_of_box": 0.109375,
+    "measurement_basis": "两枚512图标 alpha 包围盒实测 [56,56,455,455]（见 black_check/bounds 实测），即环外缘到画布边 56 单位；规定任何其他文字/图形距图标外接矩形 ≥56 单位（=11% 图标盒 = 0.7×环宽）",
+    "measured_in_applications": {
+      "brand-banner": {
+        "min_gap_target_px": 72,
+        "between": "图标盒右缘 x=264 到强调条 x=336",
+        "in_icon_units": 192.0,
+        "passed": true
+      },
+      "launch-poster": {
+        "min_gap_target_px": 225.28,
+        "between": "环外缘 y=458.72 到 OPEN BETA 徽章 y=560",
+        "in_icon_units": 363.35,
+        "passed": true
+      }
+    },
+    "evidence": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261011-01/A13/checks.json"
+    }
+  },
+  "applications": [
+    {
+      "file": "symbol-color.png",
+      "type": "color icon",
+      "canvas": [
+        512,
+        512
+      ],
+      "background": "transparent",
+      "icon_scale": 1.0,
+      "icon_origin": [
+        0,
+        0
+      ],
+      "ink_alpha_bbox": [
+        56,
+        56,
+        455,
+        455
+      ],
+      "geometry_mapping": "基准坐标 ×1.0 + (0,0)"
+    },
+    {
+      "file": "symbol-black.png",
+      "type": "black icon",
+      "canvas": [
+        512,
+        512
+      ],
+      "background": "transparent",
+      "icon_scale": 1.0,
+      "icon_origin": [
+        0,
+        0
+      ],
+      "ink_alpha_bbox": [
+        56,
+        56,
+        455,
+        455
+      ],
+      "geometry_mapping": "同彩版，仅颜色全部 #000000（alpha 通道实测一致，见 geometry_identity）"
+    },
+    {
+      "file": "brand-banner.png",
+      "type": "brand banner",
+      "canvas": [
+        1200,
+        400
+      ],
+      "background": "线性渐变 #0B1220→#0D1526→#111C31 (TOP_LEFT→BOTTOM_RIGHT)",
+      "icon_scale": 0.375,
+      "icon_origin": [
+        72,
+        104
+      ],
+      "icon_box": [
+        72,
+        104,
+        264,
+        296
+      ],
+      "geometry_mapping": "同一 ICON 表坐标 ×0.375 + (72,104)：环(93,125) d150 border27 / 盘(162,194) d60 / 点(140.63,172.63) d21",
+      "texts": [
+        "叠光 Layerlight",
+        "把复杂信息，组织成清晰画面",
+        "layerlight.example.org"
+      ]
+    },
+    {
+      "file": "launch-poster.png",
+      "type": "launch poster",
+      "canvas": [
+        1080,
+        1350
+      ],
+      "background": "线性渐变 #0B1220→#0D1526→#111C31 (TOP→BOTTOM)",
+      "icon_scale": 0.62,
+      "icon_origin": [
+        382,
+        176
+      ],
+      "icon_box": [
+        382,
+        176,
+        699.44,
+        493.44
+      ],
+      "geometry_mapping": "同一 ICON 表坐标 ×0.62 + (382,176)：环(416.72,210.72) d248 border44.64 / 盘(530.8,324.8) d99.2 / 点(495.46,289.46) d34.72；独立纵向构图（徽章/标题/副文/分隔/日期/网址），非横幅放大",
+      "texts": [
+        "叠光 Layerlight",
+        "把复杂信息，组织成清晰画面",
+        "2026.11.07 · ONLINE",
+        "OPEN BETA",
+        "layerlight.example.org"
+      ]
+    }
+  ],
+  "black_check": {
+    "file": "symbol-black.png (service bytes: drafts/symbol-black-v1.png)",
+    "md5": "286a90412b28abd977cbaa6ff4965b8d",
+    "alpha_range_pixels_with_alpha_gt_0": [
+      1,
+      255
+    ],
+    "alpha_values_present": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255
+    ],
+    "pixels_with_alpha_gt_0": 92549,
+    "violations_rgb_not_zero_with_alpha_gt_0": 0,
+    "first_violation": null,
+    "passed": true
+  },
+  "geometry_identity_check": {
+    "mismatch_pixels": 542,
+    "max_abs_alpha_delta": 1,
+    "min_abs_alpha_delta": 1,
+    "mean_abs_alpha_delta": 1.0,
+    "edge_pixels_among_mismatches": 542,
+    "all_mismatches_on_shape_edges": true,
+    "alpha_coverage_sum_color": 23261990,
+    "alpha_coverage_sum_black": 23262532,
+    "coverage_rel_diff": 2.3e-05,
+    "conclusion": "geometry identical; alpha deltas are antialiasing rounding on shape boundaries only (all mismatch pixels sit next to fully opaque pixels in both renders; max delta is small)",
+    "applied_to": [
+      "symbol-color.png",
+      "symbol-black.png"
+    ],
+    "passed": true
+  },
+  "small_size_review": {
+    "thumbnails": [
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/symbol-color-32.png",
+        "size": [
+          32,
+          32
+        ],
+        "note": "512→32 重采样结果（未合成背景，RGBA）"
+      },
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/symbol-black-32.png",
+        "size": [
+          32,
+          32
+        ],
+        "note": "同上"
+      },
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/symbol-color-32-light.png",
+        "note": "共享浅色底 #F1F5F9 上的实际尺寸查看图（原尺寸检查用）"
+      },
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/symbol-black-32-light.png",
+        "note": "同上"
+      },
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/symbol-color-32-light-x8.png",
+        "note": "×8 NEAREST 放大，仅观察边缘，不能替代原尺寸检查"
+      },
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/symbol-black-32-light-x8.png",
+        "note": "同上"
+      },
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/preview-a-32-light.png",
+        "note": "方向A预览的32px检查图"
+      },
+      {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261011-01/A13/thumbs/preview-b-32-light.png",
+        "note": "方向B预览的32px检查图"
+      }
+    ],
+    "tool": "Pillow 10.0.0 (scripts/tool_thumb32.py)",
+    "pipeline": "RGBA解码 → alpha 预乘 → Image.LANCZOS 512→32 → 反预乘（alpha=0 的 RGB 忽略）→ 32×32 RGBA 保存；再合成到共享浅色底 #F1F5F9 生成原尺寸查看图；×8 放大用 NEAREST",
+    "actual_size_viewing_evidence": "2026-10-14T10:52+08:00 以 32×32 实际尺寸打开两张 -light.png：环、透镜盘、光点与月牙负空间均可辨认（色版/黑版）；另开 ×8 图观察边缘。预览仅存临时目录，未覆盖任何最终服务 PNG，未做额外描边或锐化。",
+    "small_size_findings": [
+      "方向A预览（三横条）32px 下最清晰但形态接近通用列表图标",
+      "方向B预览（环+盘+点）32px 下环孔月牙保留；v1 圆盘85%透明度压环导致轮廓混色发糊、圆盘176过大、光点48偏小",
+      "定稿改进后（盘160不透明、外移；点56；最小间隙36.36单位=2.27px@32）实际尺寸可辨认"
+    ]
+  },
+  "refinement_log": {
+    "direction_previews": [
+      {
+        "direction": "A",
+        "kind": "叠层光板（正交圆角横条对角错排）",
+        "dsl": "tmp/run-20261011-01/A13/drafts/preview-a.snapshot",
+        "png": "tmp/run-20261011-01/A13/drafts/preview-a.png"
+      },
+      {
+        "direction": "B",
+        "kind": "光圈叠月（环+偏心透镜盘+光点）",
+        "dsl": "tmp/run-20261011-01/A13/drafts/preview-b.snapshot",
+        "png": "tmp/run-20261011-01/A13/drafts/preview-b.png"
+      }
+    ],
+    "chosen": "B",
+    "changes_for_small_size": [
+      "圆盘 d176→160 并外移至 (240,240)：45° 处保留 29.49 单位残环，32px 下环保持连续（约1.84px）",
+      "圆盘去透明（原 alpha 217/D9→255）：85% 透明度压在环上时 32px 轮廓混色发糊",
+      "光点 d48→56：32px 下约 3.5px，清晰可见",
+      "最小负空间间隙 36.36 单位（32px 下 2.27px），月牙负空间保留"
+    ]
+  }
+}

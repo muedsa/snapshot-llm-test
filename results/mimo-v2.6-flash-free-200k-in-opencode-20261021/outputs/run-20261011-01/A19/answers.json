@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "numbering_note": "题号Q18–Q31（数字部分≥18）；14题=12网格题+2遮挡题",
+  "verification": [
+    {
+      "question": "Q18",
+      "assertion": "green^square^64 == [G05]",
+      "passed": true
+    },
+    {
+      "question": "Q19",
+      "assertion": "row8^orange^rounded == [G58]",
+      "passed": true
+    },
+    {
+      "question": "Q20",
+      "assertion": "boundary-touching blue objects exist and are excluded (strict inequality): ['G40', 'G51', 'G59']",
+      "passed": true
+    },
+    {
+      "question": "Q20",
+      "assertion": "min-y after strict-x filter == G06",
+      "passed": true
+    },
+    {
+      "question": "Q21",
+      "assertion": "dx=-600 dy=-800 => sqrt=1000 (exact integer)",
+      "passed": true
+    },
+    {
+      "question": "Q22",
+      "assertion": "last of size80 by (x,y) == G64",
+      "passed": true
+    },
+    {
+      "question": "Q23",
+      "assertion": "3rd purple by (y,x) == G15 (ring)",
+      "passed": true
+    },
+    {
+      "question": "Q24",
+      "assertion": "leftmost-topmost size-80 == G09",
+      "passed": true
+    },
+    {
+      "question": "Q25",
+      "assertion": "green^80 count == 6",
+      "passed": true
+    },
+    {
+      "question": "Q26",
+      "assertion": "rings in rows 4-7 count == 8: G26,G29,G30,G33,G34,G39,G48,G51",
+      "passed": true
+    },
+    {
+      "question": "Q27",
+      "assertion": "orange^64 sitting exactly on the y boundary exists and is excluded: G27",
+      "passed": true
+    },
+    {
+      "question": "Q27",
+      "assertion": "min-x orange^64 with y>700 == G33",
+      "passed": true
+    },
+    {
+      "question": "Q28",
+      "assertion": "rightmost-topmost size48 == G08 (green)",
+      "passed": true
+    },
+    {
+      "question": "Q29",
+      "assertion": "col of G40, largest-then-topmost == G16",
+      "passed": true
+    },
+    {
+      "question": "Q31",
+      "assertion": "occlusion visible subjects == 4",
+      "passed": true
+    },
+    {
+      "question": "REF",
+      "assertion": "distinct object ids referenced across questions/answers >= 18: 25",
+      "passed": true
+    },
+    {
+      "question": "Q26-answer",
+      "assertion": "rows4-7 ring ids: G26,G29,G30,G33,G34,G39,G48,G51",
+      "passed": true
+    }
+  ],
+  "answers": [
+    {
+      "id": "Q18",
+      "answer": "G05",
+      "answer_type": "object-id",
+      "steps": [
+        "列出全图颜色=绿的对象",
+        "筛出其中形状=正方形者",
+        "再筛尺寸=64，得到唯一对象"
+      ],
+      "references": [
+        "G05",
+        "G08",
+        "G10",
+        "G35"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖 grid-scene.png 中G05可见的绿色、正方形外观与其标注尺寸（外接框64×64，逐像素核验一致）"
+    },
+    {
+      "id": "Q19",
+      "answer": "G58",
+      "answer_type": "object-id",
+      "steps": [
+        "限定第8行（最下一行）的8个对象",
+        "筛出颜色=橙者",
+        "再筛形状=圆角方，得到唯一对象"
+      ],
+      "references": [
+        "G57",
+        "G58",
+        "G59",
+        "G60",
+        "G61",
+        "G62",
+        "G63",
+        "G64"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖第8行可见对象的橙色与圆角方外观"
+    },
+    {
+      "id": "Q20",
+      "answer": "G06",
+      "answer_type": "object-id",
+      "steps": [
+        "取G11中心x=500与G40中心x=1500为开区间端点",
+        "筛出500<x<1500且颜色=蓝的对象（边界上的蓝色对象G51、G59的x恰为500，按严格不等式排除）",
+        "按中心y升序取最小者：y=100处有G06(x=1100)与G07(x=1300)，再按x升序取G06"
+      ],
+      "references": [
+        "G11",
+        "G40",
+        "G06",
+        "G07",
+        "G51",
+        "G59"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "left_right": "严格中心左右：A在B左侧 ⇔ x_A < x_B；本题为开区间 500<x<1500，端点不计入",
+        "ordering": "(y, x, id) 字典序"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖可见图中各对象的蓝色外观与其格位中心坐标"
+    },
+    {
+      "id": "Q21",
+      "answer": "1000像素",
+      "answer_type": "exact-number",
+      "steps": [
+        "G01中心=(100,100)，G36中心=(700,900)",
+        "Δx=600，Δy=800",
+        "距离=√(600²+800²)=√(360000+640000)=√1000000=1000（精确整数）"
+      ],
+      "references": [
+        "G01",
+        "G36"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "distance": "d=√((x₁−x₂)²+(y₁−y₂)²)，像素"
+      },
+      "tolerance": {
+        "coordinate": "两端中心均为精确整数",
+        "value": "1000为精确值（600-800-1000勾股数），无容差"
+      },
+      "visibility_basis": "答案只依赖G01与G36在可见图中的格位（中心坐标由格位精确决定）"
+    },
+    {
+      "id": "Q22",
+      "answer": "G64",
+      "answer_type": "object-id",
+      "steps": [
+        "筛出全部尺寸=80的对象（共21个）",
+        "按(x, y)字典序升序排列",
+        "末位为x最大者；x=1500的并列组按y升序，末位是(1500,1500)的G64"
+      ],
+      "references": [
+        "G03",
+        "G07",
+        "G09",
+        "G10",
+        "G13",
+        "G14",
+        "G16",
+        "G24",
+        "G25",
+        "G28",
+        "G34",
+        "G36",
+        "G37",
+        "G40",
+        "G42",
+        "G43",
+        "G48",
+        "G49",
+        "G51",
+        "G55",
+        "G64"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "ordering": "(x, y) 字典序，全序无并列"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖可见的尺寸80对象集合与其格位"
+    },
+    {
+      "id": "Q23",
+      "answer": "圆环",
+      "answer_type": "shape-name",
+      "steps": [
+        "筛出全部颜色=紫的对象（共16个）",
+        "按(y, x)字典序升序排列",
+        "第1位G04(y=100)；y=300并列组按x升序：第2位G13(x=900)、第3位G15(x=1300)；G15的形状为圆环"
+      ],
+      "references": [
+        "G04",
+        "G13",
+        "G15",
+        "G17",
+        "G19",
+        "G23",
+        "G25",
+        "G31",
+        "G36",
+        "G44",
+        "G45",
+        "G47",
+        "G48",
+        "G49",
+        "G61",
+        "G63",
+        "G15"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "ordering": "(y, x) 字典序，全序无并列"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖紫色对象的可见外观与格位；G15的圆环外观（外径64、内径32）在图中直接可见"
+    },
+    {
+      "id": "Q24",
+      "answer": "G09",
+      "answer_type": "object-id",
+      "steps": [
+        "外接框面积最大即尺寸最大（80×80=6400，共21个并列）",
+        "并列集合中取中心x最小者：x=100的有G09(300)、G25(700)、G49(1300)",
+        "再取中心y较小者：G09(y=300)"
+      ],
+      "references": [
+        "G03",
+        "G07",
+        "G09",
+        "G10",
+        "G13",
+        "G14",
+        "G16",
+        "G24",
+        "G25",
+        "G28",
+        "G34",
+        "G36",
+        "G37",
+        "G40",
+        "G42",
+        "G43",
+        "G48",
+        "G49",
+        "G51",
+        "G55",
+        "G64"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "bbox": "主体最小对齐矩形，面积=size²",
+        "ordering": "(−size, x, y) 字典序"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖可见主体的外接框尺寸（逐像素核验外接框与构造值一致，容差≤2px）"
+    },
+    {
+      "id": "Q25",
+      "answer": 6,
+      "answer_type": "integer-count",
+      "steps": [
+        "筛出颜色=绿的对象（16个）",
+        "再筛尺寸=80者：G09、G10、G16、G24、G43、G64，共6个"
+      ],
+      "references": [
+        "G09",
+        "G10",
+        "G16",
+        "G24",
+        "G43",
+        "G64"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖可见对象的颜色与外接框尺寸"
+    },
+    {
+      "id": "Q26",
+      "answer": 8,
+      "answer_type": "integer-count",
+      "steps": [
+        "取第4~7行的对象（32个）",
+        "其中形状=圆环者：G26、G29、G30（行4），G33、G34、G39（行5），G48（行6），G51（行7），共8个"
+      ],
+      "references": [
+        "G26",
+        "G29",
+        "G30",
+        "G33",
+        "G34",
+        "G39",
+        "G48",
+        "G51"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖可见对象的圆环外观与所在行"
+    },
+    {
+      "id": "Q27",
+      "answer": "G33",
+      "answer_type": "object-id",
+      "steps": [
+        "以G28中心y=700为严格下界，筛出y>700的对象（G27中心y=700恰在边界，按严格不等式排除）",
+        "在其中筛颜色=橙且尺寸=64者：G33(100,900)、G38(1100,900)、G46(1100,1100)、G52(700,1300)",
+        "按中心x升序取最小者：G33(x=100)"
+      ],
+      "references": [
+        "G28",
+        "G33",
+        "G38",
+        "G46",
+        "G52",
+        "G27"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "strict_y": "严格上下：y_A>y_B，端点不计入",
+        "ordering": "(x, id) 字典序"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖可见对象的颜色、尺寸与格位"
+    },
+    {
+      "id": "Q28",
+      "answer": "绿色",
+      "answer_type": "color-name",
+      "steps": [
+        "筛出尺寸=48的对象（共22个）",
+        "按(−x, y)字典序取首位：x最大为1500，该列有G08(y=100)与G56(y=1300)，y升序取G08",
+        "G08的颜色为绿色"
+      ],
+      "references": [
+        "G01",
+        "G02",
+        "G04",
+        "G06",
+        "G08",
+        "G12",
+        "G17",
+        "G18",
+        "G21",
+        "G22",
+        "G23",
+        "G30",
+        "G32",
+        "G35",
+        "G39",
+        "G44",
+        "G45",
+        "G50",
+        "G54",
+        "G56",
+        "G58",
+        "G61",
+        "G08"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "ordering": "(−x, y) 字典序，全序无并列"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖可见的尺寸48对象集合；G08的绿色外观在图中直接可见"
+    },
+    {
+      "id": "Q29",
+      "answer": "G16",
+      "answer_type": "object-id",
+      "steps": [
+        "以中心x=1500（G40所在列，即第8列）筛出同列8个对象",
+        "按(−size, y)字典序排列：尺寸80的并列组为G16(300)、G24(500)、G40(900)、G48(1100)、G64(1500)",
+        "y升序取首位：G16"
+      ],
+      "references": [
+        "G40",
+        "G16",
+        "G24",
+        "G48",
+        "G64",
+        "G08",
+        "G32",
+        "G56"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "same_column": "同一列 ⇔ 中心x相等（本图为规则格位）",
+        "ordering": "(−size, y) 字典序"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖第8列可见对象的尺寸与格位"
+    },
+    {
+      "id": "Q30",
+      "answer": "无法确定",
+      "answer_type": "uncertainty",
+      "steps": [
+        "occlusion.png 与 occlusion-alternative.png 的可见部分逐像素一致（equivalence.json：解码为8位RGBA后逐通道比较，差异像素=0，最大通道差=0）",
+        "两版的隐藏内容不同（A=绿色圆形+数字3，B=橙色圆角方+数字8，差异写在两份DSL中且被同一不透明遮挡板完全覆盖，含阴影影响）",
+        "因此仅凭可见图无法区分两版，任何具体形状答案都会同时错一半——正确答案为「无法确定」"
+      ],
+      "references": [],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "uncertainty": "可见信息不足以唯一确定时如实回答「无法确定」，不得猜测隐藏对象数量或形状"
+      },
+      "tolerance": {
+        "coordinate": null,
+        "value": null,
+        "reason": "本题为文字性判断题，无坐标/数值答案"
+      },
+      "visibility_basis": "答案的依据正是可见性边界本身：可见像素在两版间完全相同，被遮内容不可见且题目禁止以隐藏内容为标准答案",
+      "equivalence_evidence": "equivalence.json（differing_pixels=0）",
+      "image_pair": [
+        "occlusion.png",
+        "occlusion-alternative.png"
+      ]
+    },
+    {
+      "id": "Q31",
+      "answer": 4,
+      "answer_type": "integer-count",
+      "steps": [
+        "排除顶部标题栏（深色横条，非主体）与中央遮挡板（遮挡物，非主体）",
+        "剩余完整可见的彩色几何主体逐个计数：左上橙色圆形、右上绿色正方形、左下紫色圆角方、右下蓝色圆环，共4个"
+      ],
+      "references": [
+        "橙色圆形(左上)",
+        "绿色正方形(右上)",
+        "紫色圆角方(左下)",
+        "蓝色圆环(右下)"
+      ],
+      "relation_definitions": {
+        "origin": "画布左上角，x向右、y向下，单位像素",
+        "center": "主体外接框中心",
+        "size": "圆=直径，方=边长，圆环=外径",
+        "subject": "彩色几何主体；标题栏与遮挡板不属于主体"
+      },
+      "tolerance": {
+        "coordinate": "中心坐标为格位派生的精确整数，比较无容差",
+        "value": "整数精确；如经像素核验，允许±1px抗锯齿边缘"
+      },
+      "visibility_basis": "答案只依赖 occlusion.png 的可见部分（与另一版完全相同，故对两版均成立）"
+    }
+  ]
+}

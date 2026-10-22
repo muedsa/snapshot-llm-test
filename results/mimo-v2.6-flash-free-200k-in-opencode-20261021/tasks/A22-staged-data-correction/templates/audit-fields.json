@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "purpose": "专用审计JSON最小字段说明；不是已完成记录",
+  "common_rules": {
+    "required": "artifacts中各对象的required_fields为最小必需字段，允许扩展；数组项字段由该字段说明规定。模板说明不是执行数据，不复制说明为答案。",
+    "identity": "每份最终JSON另含schema_version:1、task_id和path_base:output_dir；多轮文件的round须与目录一致。",
+    "paths": "PNG/DSL和其他交付路径相对本题输出根。临时证据用对象{path_base:suite_root,path:tmp/<run_id>/<task_id>/...}明确基准；不写机器路径。",
+    "coordinates": "有几何时默认画布左上原点、x向右/y向下、像素单位，框为[left,top,right,bottom]；题面另定义的网格/逻辑坐标须单列并记录映射。",
+    "numbers": "单位与精度以题面为准，未指定数值容差的精确数据保持原值，不自行发明合格阈值；几何检查记录未舍入值及方法。",
+    "evidence": "结果由实际计算/图片/响应支持；passed类字段附方法与证据。无法取得值时用null并写原因，不预填成功。",
+    "rounds": "artifacts以文件基本名索引，各轮复用同一字段约定；实际交付位置以task.json完整路径为准。"
+  },
+  "artifacts": {
+    "computed-data.json": {
+      "required_fields": {
+        "round": "integer；1/2/3",
+        "applied_changes": "array；本轮沿用/新增修訂的字段、旧新值与来源；不覆盖原CSV",
+        "months": "array；原始六项字段、净收入/利润、各比率的分子/分母/未按显示精度舍入的值及显示文本",
+        "totals": "object；期间范围、收入/退款/成本/净收入/利润/订单/访问总数、加权率",
+        "axes": "object；柱图共同比例/零线/负轴/刻度与单位",
+        "conclusion": "object；实际标题/主张及引用数值"
+      }
+    },
+    "layout-map.json": {
+      "required_fields": {
+        "round": "integer；所属轮次",
+        "canvas": "[1600,1000]",
+        "regions": "array；稳定区域ID、[left,top,right,bottom]、主字体/字号/色彩/轴参数",
+        "comparison": "array；对上轮各区域边界的分量差（≤2px）；首轮为空"
+      }
+    },
+    "change-audit.json": {
+      "required_fields": {
+        "round": "integer；2或3",
+        "baseline": "object；上一轮文件路径",
+        "changes": "array；原字段旧新值、传播到的计算/KPI/柱高/表格/结论、实际输出定位",
+        "preserved": "array；未改内容/主区域/样式与证据",
+        "regression": "array；数据/轴/布局/真实图像核验的方法、结果与证据"
+      }
+    }
+  }
+}

@@ -1,0 +1,201 @@
+{
+ "schema_version": 1,
+ "task_id": "A21",
+ "path_base": "output_dir",
+ "round": 3,
+ "entries": [
+  {
+   "id": "title",
+   "req": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+   "text": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+   "role": "主标题",
+   "portrait": {
+    "size": 48,
+    "lines": 2
+   },
+   "wide": {
+    "size": 48,
+    "lines": 2
+   },
+   "origin": "retained-round2",
+   "status": "rendered"
+  },
+  {
+   "id": "kicker",
+   "req": "ONLINE LAUNCH",
+   "text": "ONLINE LAUNCH",
+   "role": "眉标",
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "datetime",
+   "req": "2026.11.07 19:30",
+   "text": "2026.11.07 19:30",
+   "role": "时间",
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "speakers",
+   "req": "讲者：林川 / 苏言",
+   "text": "讲者：林川 / 苏言",
+   "role": "讲者",
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "en_line",
+   "req": "Clarity through structure",
+   "text": "Clarity through structure",
+   "role": "英语短句(网址上方)",
+   "portrait": {
+    "size": 26
+   },
+   "wide": {
+    "size": 26
+   },
+   "origin": "added-round3",
+   "status": "rendered"
+  },
+  {
+   "id": "url",
+   "req": "layerlight.example.org",
+   "text": "layerlight.example.org",
+   "role": "网址",
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "sponsor",
+   "req": "Northstar Research / 云构工具",
+   "text": "Northstar Research / 云构工具",
+   "role": "赞助方",
+   "origin": "added-round2-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "cta",
+   "req": "免费参加 · 无需报名",
+   "text": "免费参加 · 无需报名",
+   "role": "CTA",
+   "origin": "added-round2-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "brand_pill",
+   "req": null,
+   "text": "叠光 Layerlight · 结构化呈现",
+   "role": "品牌句药丸",
+   "origin": "added-brand",
+   "status": "rendered"
+  }
+ ],
+ "checks": [
+  {
+   "id": "light-theme-contrast",
+   "passed": true,
+   "method": "全部正文对实际合成背景（去文字辅助渲染取样）逐像素计算对比度，未舍入结果判>=4.5",
+   "evidence": {
+    "portrait": {
+     "texts_checked": 16,
+     "all_passed": true,
+     "min_contrast": 5.2237,
+     "worst_element": "Layerlight",
+     "audit_ref": "round-03/contrast-audit.json"
+    },
+    "wide": {
+     "texts_checked": 17,
+     "all_passed": true,
+     "min_contrast": 5.2237,
+     "worst_element": "Layerlight",
+     "audit_ref": "round-03/contrast-audit.json"
+    }
+   }
+  },
+  {
+   "id": "en-line-above-url",
+   "passed": true,
+   "method": "英语短句置于网址卡上方，字号26（>=24）",
+   "evidence": {
+    "text": "Clarity through structure",
+    "size": 26,
+    "position": "above url"
+   }
+  },
+  {
+   "id": "title-still-3lines-max",
+   "passed": true,
+   "method": "长标题仍<=3行、>=48",
+   "evidence": {
+    "portrait_lines": 2,
+    "wide_lines": 2,
+    "size": 48
+   }
+  },
+  {
+   "id": "all-round2-retained",
+   "passed": true,
+   "method": "round-02 全部文案与品牌图形保留，赞助方未消失",
+   "evidence": {
+    "retained": [
+     "title",
+     "kicker",
+     "datetime",
+     "speakers",
+     "url",
+     "sponsor",
+     "cta",
+     "brand_pill"
+    ],
+    "sponsor_present": true
+   }
+  },
+  {
+   "id": "sizes-unchanged",
+   "passed": true,
+   "method": "两图尺寸与前两轮相同",
+   "evidence": {
+    "portrait": [
+     1080,
+     1350
+    ],
+    "wide": [
+     1440,
+     810
+    ]
+   }
+  },
+  {
+   "id": "brand-constructs-kept",
+   "passed": true,
+   "method": "主色#4F46E5与5构件形态保持，仅移动/缩放",
+   "evidence": {
+    "primary": "#4F46E5",
+    "constructs": 5
+   }
+  },
+  {
+   "id": "no-collision",
+   "passed": true,
+   "method": "纵向游标堆叠+实测块间距（round3-geom.json）",
+   "evidence": {
+    "portrait_min_gap_px": 16.0,
+    "wide_min_gap_px": 16.0,
+    "threshold_px": 16
+   }
+  },
+  {
+   "id": "viewed-both",
+   "passed": true,
+   "method": "用视觉工具实际打开两图核验",
+   "evidence": {
+    "viewed": [
+     "launch-portrait-01.png",
+     "launch-wide-01.png"
+    ],
+    "conclusion": "浅色主题；EN句在网址上方清晰；长标题2行完整；全部round-02文案+品牌图形保留，赞助方在；无碰撞"
+   }
+  }
+ ]
+}

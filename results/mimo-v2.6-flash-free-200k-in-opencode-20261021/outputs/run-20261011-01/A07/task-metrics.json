@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A07",
+  "run_id": "run-20261011-01",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "16站3线拓扑图与旅行卡均通过视觉迭代（地图2版、卡片3版），7次渲染请求全部200；路线求解经Dijkstra与DFS枚举双向断言一致，routes.json四类必需字段逐项核对通过",
+  "output_dir": "outputs/run-20261011-01/A07/",
+  "temp_dir": "tmp/run-20261011-01/A07/",
+  "timings": {
+    "started_at": "2026-10-12T11:41:50.584+08:00",
+    "ended_at": "2026-10-13T09:10:00.000+08:00",
+    "elapsed_seconds": 77290,
+    "elapsed_note": "墙钟含跨夜会话中断（上下文压缩后按 suite-state 检查点续跑）；实际活跃工作分布在 2026-10-12 11:41–13:30 与 2026-10-13 08:50–09:10",
+    "first_usable_image_seconds": 5207,
+    "first_usable_image_note": "A07-req-0001（地图v1）为首个 200 成功渲染；此前为读题、输入解析与双求解器编写核验",
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 20.964,
+    "server_timing_source": null
+  },
+  "counts": {
+    "snapshot_requests": 7,
+    "successful_snapshot_requests": 7,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "failed_request_note": "无失败请求；429/5xx/超时均未出现",
+    "other_service_requests": 0,
+    "document_requests": 0,
+    "document_requests_note": "复用 _suite 共享 ai-guide.md 文档缓存，未重复计新请求",
+    "dsl_versions": 5,
+    "dsl_versions_note": "地图 v1/v2 + 卡片 v1/v2/v3（正式图为草稿 DSL 原样复制后重渲染，未新增版本）",
+    "image_views": 8,
+    "image_views_note": "地图v1/v2、卡片v1/v2/v3、Q2a裁切图、正式 network-map.png 与 travel-card.png",
+    "completed_visual_iterations": 3,
+    "incomplete_visual_iterations": 0,
+    "syntax_fix_iterations": 0
+  },
+  "logs": {
+    "requests": "tmp/run-20261011-01/A07/requests.jsonl",
+    "iterations": "tmp/run-20261011-01/A07/iterations.jsonl",
+    "shared_requests": "tmp/run-20261011-01/_suite/requests-shared.jsonl"
+  },
+  "outputs": [
+    { "file": "network-map.png", "dsl": "network-map.snapshot", "width": 1600, "height": 1000,
+      "bytes": 237602, "request_id": "A07-req-0006", "content_type": "image/png", "status": 200,
+      "purpose": "16站3线非地理示意图：线路段仅45°/90°、颜色+R/B/G字母双编码、站点三态图形、图例+三旅程概览+①②③端点徽标；已整图查看" },
+    { "file": "travel-card.png", "dsl": "travel-card.snapshot", "width": 720, "height": 1280,
+      "bytes": 284814, "request_id": "A07-req-0007", "content_type": "image/png", "status": 200,
+      "purpose": "三条旅程卡：站序chip+线路段彩条+区间/换乘统计+无障碍判定，Q2含最短无障碍替代完整站序；已整图查看+Q2a裁切复查" },
+    { "file": "network-map.snapshot", "bytes": 23317, "purpose": "地图完整 DSL（生成脚本同源，含几何角度assert）" },
+    { "file": "travel-card.snapshot", "bytes": 23033, "purpose": "旅行卡完整 DSL" },
+    { "file": "routes.json", "bytes": 25813,
+      "purpose": "queries(3×normal/accessible)、accessibility(16站)、optimality(6条含枚举证据)、content_map(3条含两图坐标区域)" },
+    { "file": "snapshot-usage.md", "purpose": "使用报告与可见记录" },
+    { "file": "task-metrics.json", "purpose": "任务指标" }
+  ],
+  "candidates": [
+    { "file": "tmp/run-20261011-01/A07/drafts/network-map-v1.png", "note": "地图首版：底部编号裁切、概览框折行重叠" },
+    { "file": "tmp/run-20261011-01/A07/drafts/network-map-v2.png", "note": "地图修订版，布局定稿" },
+    { "file": "tmp/run-20261011-01/A07/drafts/travel-card-v1.png", "note": "卡片首版：标题残字外露、stats裁切、留白失衡" },
+    { "file": "tmp/run-20261011-01/A07/drafts/travel-card-v2.png", "note": "卡片修订版：布局重排后，小标题间距偏紧" },
+    { "file": "tmp/run-20261011-01/A07/drafts/travel-card-v3.png", "note": "卡片定稿版" },
+    { "file": "tmp/run-20261011-01/A07/drafts/crop-card-q2a.png", "note": "Q2无障碍替代区裁切复查图" },
+    { "file": "tmp/run-20261011-01/A07/scripts/gen_a07.py", "note": "求解+两图DSL+routes.json同源生成脚本，含角度与双求解器交叉assert" }
+  ],
+  "rounds": [],
+  "unresolved_issues": []
+}

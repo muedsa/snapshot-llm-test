@@ -1,0 +1,198 @@
+{
+  "plan_id": "B05-plan",
+  "version": "v1",
+  "established_at": "2026-10-21T03:05:00+08:00",
+  "established_before_first_render": true,
+  "path_base": "suite_root",
+  "product": {
+    "name": "水线 Waterline",
+    "tagline": "城市积水避险与出行助手",
+    "problem": "暴雨时城市下穿隧道/涵洞/地道迅速积水，市民与骑手无法判断能否安全通过，误入深水导致溺亡与车辆被淹（真实屡发事故）。",
+    "solution": "以实测水深传感器 + 众包上报融合，按统一的水深风险分级给出能否通行判定，并据此规划避水路线、推送预警、支撑排水调度与防汛指挥。",
+    "fidelity_note": "仅暴雨预警信号分级为真实标准（CMA，SRC-01）；城市、点位、水深、传感器、车辆、上报等均为虚构演示数据，作品元数据中标明。"
+  },
+  "design_language": {
+    "signature": "贯穿全系的『水位刻度尺 DepthRuler』—— 竖向水位标尺 + 水面波纹，作为风险判定的统一记忆点；风险色语言 safe绿/caution蓝/detour琥珀/block红 全程一致。",
+    "theme": "深水应急主题（防汛/夜间雨天基调），跨手机/车机/桌面/指挥墙统一。",
+    "fonts": { "body": "Noto Sans CJK SC", "numeral": "Inter", "telemetry": "Noto Sans Mono CJK SC" }
+  },
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "首页 · 城市水情总览",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（App 首页）",
+      "dimensions": [780, 1688],
+      "user_goal": "出门前 30 秒判断：现在全市哪里有积水、我附近危不危险、要不要改路线。",
+      "content_scope": "橙色预警横幅（真实标准文案）、全市积水点列表（6 点，名/水深/趋势/风险色）、顶部城市统计（禁止/绕行/谨慎/可通行计数）、底部导航。",
+      "viewing_environment": "早高峰出门前在手机上快速浏览。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "橙色预警横幅展示真实标准文案『3小时内降雨量将达50毫米以上』且标注来源", "method": "逐字核对渲染文本" },
+        { "id": "C2", "condition": "6 个积水点的水深/风险色与 b05_data 完全一致，禁止通行点排首位", "method": "数据驱动生成 + 看图核对" },
+        { "id": "C3", "condition": "顶部统计计数 n_blocked/n_detour/n_caution/n_open 与点位一致", "method": "断言 + 看图" },
+        { "id": "C4", "condition": "目标尺寸下点位名/水深/风险标签清晰可读无裁剪", "method": "整图实看" },
+        { "id": "C5", "condition": "底部导航 5 项作用可解释，非装饰死按钮", "method": "内容审查" }
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "水点详情 · 滨江路下穿隧道",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（详情页）",
+      "dimensions": [780, 1688],
+      "user_goal": "看清这个下穿隧道当前水深、是否还在涨、为何禁止通行、以及替代方案。",
+      "content_scope": "水位刻度尺主视觉（32cm 且上升，红色禁止通行）、趋势 sparkline、传感器+众包双来源标注、通行判定卡、替代建议（解放路地道 8cm 可通行）、更新时间戳。",
+      "viewing_environment": "在地图点开某一点后查看。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "刻度尺水位高度与 32cm 数值成正比（几何准确）", "method": "计算 + 看图" },
+        { "id": "C2", "condition": "趋势为『上升』且有趋势曲线佐证", "method": "数据驱动 + 看图" },
+        { "id": "C3", "condition": "传感器 WL-BJ-001 与众包 4 条双来源明确标注", "method": "核对文本" },
+        { "id": "C4", "condition": "替代建议引用真实存在的 P4（8cm 可通行）", "method": "数据一致性断言" },
+        { "id": "C5", "condition": "禁止通行判定醒目且无文字遮挡/溢出", "method": "整图实看" }
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "避水路线规划",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（路线对比）",
+      "dimensions": [780, 1688],
+      "user_goal": "比较最短路线与避水路线，选一条不涉禁止通行点的路，并理解为何绕行值得。",
+      "content_scope": "3 条路线卡（最短12min 经禁止点 / 避水17min 推荐 / 地面辅路21min）、途经点位与风险、+5分钟收益说明、车型离地间隙切换提示。",
+      "viewing_environment": "出发前在手机上选路线。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "推荐路线为避水路线且不途经禁止通行点 P1（与 ROUTES 一致）", "method": "断言 + 看图" },
+        { "id": "C2", "condition": "三条路线耗时 12/17/21 与数据一致，标注途经风险", "method": "数据驱动 + 看图" },
+        { "id": "C3", "condition": "离地间隙提示与 140mm 真实判定一致（P1 32cm 不可过）", "method": "断言 + 看图" },
+        { "id": "C4", "condition": "推荐卡视觉突出且理由清晰", "method": "整图实看" },
+        { "id": "C5", "condition": "每张路线卡可解释其选择/不选原因", "method": "内容审查" }
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "骑行横屏导航",
+      "persona": "外卖骑手 · 阿杰（电动车）",
+      "device": "手机横屏（电动车支架导航）",
+      "dimensions": [1688, 780],
+      "user_goal": "骑行中一眼看清前方各积水点对『行人/电动车』是否可过（阈值与汽车不同），并保持接单效率。",
+      "content_scope": "横屏大字导航、行人/电动车分级（ped 阈值：5/10cm）、前方 2 个点位的通过性大字判定、到达 ETA、语音播报状态条。",
+      "viewing_environment": "骑行中支架上横屏查看（需极简大字、强对比）。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "使用 ped 分级而非汽车分级，阈值 5/10cm 与 ped_risk_of 一致", "method": "断言 + 看图" },
+        { "id": "C2", "condition": "横屏形态适配：大字、少信息、强对比、可快速扫读", "method": "整图实看" },
+        { "id": "C3", "condition": "点位通过性与深度一致（如 P4 8cm 注意 / P3 15cm 绕行）", "method": "数据驱动 + 看图" },
+        { "id": "C4", "condition": "ETA 与接单效率信息可解释", "method": "内容审查" },
+        { "id": "C5", "condition": "语音播报状态条明确（骑手场景必要反馈）", "method": "整图实看" }
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "上报积水",
+      "persona": "市民 · 林岚（众包）",
+      "device": "手机竖屏（上报流程）",
+      "dimensions": [780, 1688],
+      "user_goal": "目击新积水后快速上报：估水深（按参照物）、选点位、设可信度、提交并看到提交状态。",
+      "content_scope": "取景占位（DSL 构图，不外链图片）、参照物估深（台阶第二级≈15cm）、可信度滑条、点位选择、提交按钮与『待复核』状态反馈。",
+      "viewing_environment": "现场用手机边拍边报。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "参照物估深逻辑清晰（水面到台阶第二级 → 约 26cm，与 REPORT 一致）", "method": "数据驱动 + 看图" },
+        { "id": "C2", "condition": "可信度用滑条/刻度表达且数值 0.8 呈现", "method": "整图实看" },
+        { "id": "C3", "condition": "提交后状态『待复核』有明确反馈", "method": "看图 + 与 case-08 队列一致" },
+        { "id": "C4", "condition": "上报点位 P6 站前广场地下通道 与世界数据一致", "method": "断言" },
+        { "id": "C5", "condition": "取景框为 DSL 构图，未外链真实照片，作用可解释", "method": "内容审查" }
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "预警与通知中心（锁屏）",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（锁屏推送堆叠）",
+      "dimensions": [780, 1688],
+      "user_goal": "不解锁即可看到最紧急的三条：橙色预警、某点禁止通行、避水路线已生成。",
+      "content_scope": "锁屏时钟+日期、三张通知卡（真实橙色预警 / 滨江路禁止通行 / 避水路线就绪）、优先级排序、展开/折叠态区分。",
+      "viewing_environment": "手机在口袋震动后掏出看锁屏。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "三条通知优先级正确（预警>禁止通行>路线）且文案与世界一致", "method": "数据驱动 + 看图" },
+        { "id": "C2", "condition": "锁屏形态可辨（时钟/日期/通知堆叠），非普通列表页", "method": "整图实看" },
+        { "id": "C3", "condition": "橙色预警文案为真实标准", "method": "逐字核对" },
+        { "id": "C4", "condition": "通知卡间层级清晰、无遮挡", "method": "整图实看" },
+        { "id": "C5", "condition": "每条通知动作可解释（查看/改道/了解）", "method": "内容审查" }
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "车机 · 驾驶避水提醒",
+      "persona": "车主 · 林岚（私家车 140mm）",
+      "device": "车载中控（16:9 大字 glanceable）",
+      "dimensions": [1280, 720],
+      "user_goal": "驾驶中被告知前方下穿禁止通行、为何（32cm>离地间隙）、并已自动改道，无需低头细读。",
+      "content_scope": "大字禁行横幅、离地间隙对比可视化（32cm vs 140mm）、改道确认、简明 ETA、副屏次要信息。",
+      "viewing_environment": "雨天驾驶中扫视车机（强对比、大字、信息极简）。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "32cm 与 140mm 的对比关系可视化且判定『不可过』与 car_passable 一致", "method": "断言 + 看图" },
+        { "id": "C2", "condition": "车载形态适配：大字、强对比、可驾驶中扫读", "method": "整图实看" },
+        { "id": "C3", "condition": "改道动作与结果（走避水路线）明确反馈", "method": "看图 + 与 case-03 一致" },
+        { "id": "C4", "condition": "禁行原因一句话可解释", "method": "内容审查" },
+        { "id": "C5", "condition": "次要信息不干扰主告警", "method": "整图实看" }
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "排水运维值守台",
+      "persona": "运维员 · 城南排水班组",
+      "device": "桌面端（值守工位）",
+      "dimensions": [1440, 900],
+      "user_goal": "值守员掌握传感器在线率、泵站运行、未处置事件，并复核市民上报队列。",
+      "content_scope": "传感器在线 46/52、3 座泵站状态（运行/运行/检修）、未处置事件 3、上报复核队列（含 case-05 的 #1042 待复核）、处置按钮。",
+      "viewing_environment": "值班室桌面显示器长时间值守。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "复核队列含 #1042 站前广场 26cm 待复核，与 case-05 提交一致", "method": "断言 + 看图" },
+        { "id": "C2", "condition": "传感器/泵站/事件计数与 OPS 一致", "method": "数据驱动 + 看图" },
+        { "id": "C3", "condition": "桌面形态信息密度合理、分区清晰", "method": "整图实看" },
+        { "id": "C4", "condition": "复核动作（采纳/驳回）可解释且状态色与全局一致", "method": "内容审查" },
+        { "id": "C5", "condition": "无文字溢出/重叠，长队列可读", "method": "整图实看" }
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "市级防汛指挥大屏",
+      "persona": "应急指挥席",
+      "device": "指挥中心大屏（16:9 远距离）",
+      "dimensions": [1920, 1080],
+      "user_goal": "远距离掌握全市风险分布、关键指标与处置时间线，快速下达调度。",
+      "content_scope": "城市水情示意（6 点分布+风险色）、核心指标（预警等级/禁止点/在线率/在岗）、升级处置时间线（08:00→08:14）、调度建议。",
+      "viewing_environment": "指挥中心大屏，数米外观看。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "6 点风险分布与全系数据一致，风险色正确", "method": "断言 + 看图" },
+        { "id": "C2", "condition": "时间线节点与 ESCALATION 一致且时序递增", "method": "数据驱动 + 看图" },
+        { "id": "C3", "condition": "大屏形态适配：远距离可读、指标醒目、层级分明", "method": "整图实看" },
+        { "id": "C4", "condition": "调度建议可解释且与运维/上报闭环呼应", "method": "内容审查" },
+        { "id": "C5", "condition": "整体构图有张力且不拥挤、无裁剪", "method": "整图实看" }
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "雨后个人周报",
+      "persona": "通勤族 · 林岚",
+      "device": "手机竖屏（个人复盘）",
+      "dimensions": [780, 1688],
+      "user_goal": "雨后回看这周水线帮我避开了多少风险、贡献了多少上报，获得成就感并愿意继续用。",
+      "content_scope": "本周避水绕行 5 次、累计节省 40 分钟、上报 3 采纳 2、逐日雨量柱状 + 避水次数、贡献徽章、下周提示。",
+      "viewing_environment": "周末闲暇在手机上回顾。",
+      "completion_criteria": [
+        { "id": "C1", "condition": "周报数值（5/40min/3/2/6点）与 WEEK 一致", "method": "数据驱动 + 看图" },
+        { "id": "C2", "condition": "逐日雨量柱状与 rain_mm 成正比（几何准确）", "method": "计算 + 看图" },
+        { "id": "C3", "condition": "个人复盘形态（而非运营视角）清晰", "method": "整图实看" },
+        { "id": "C4", "condition": "贡献徽章与上报闭环（case-05/08）呼应", "method": "内容审查" },
+        { "id": "C5", "condition": "无裁剪/遮挡，柱状标签可读", "method": "整图实看" }
+      ]
+    }
+  ],
+  "journey_summary": "总览(01)→点详情(02)→路线决策(03)→骑行模式(04)→众包上报(05)→锁屏预警(06)→车机驾驶(07)→运维复核(08)→防汛指挥(09)→个人复盘(10)。市民/骑手/车主/运维/指挥 五类角色，跨手机竖屏/横屏/车机/桌面/大屏五种设备形态，统一水位刻度尺视觉语言。",
+  "assumptions_and_limits": [
+    "未做真实用户验证，所有为概念设计与演示；不声称已部署或有真实客户。",
+    "水深数据、传感器、车辆离地间隙、上报等均为虚构演示；风险分级为产品自定演示规则，非官方标准。",
+    "仅暴雨预警信号四级分级为真实标准（CMA）。",
+    "静态画面，不实现前端运行程序。"
+  ]
+}

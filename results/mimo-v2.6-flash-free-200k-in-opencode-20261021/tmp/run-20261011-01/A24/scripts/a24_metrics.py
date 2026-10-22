@@ -1,0 +1,129 @@
+# -*- coding: utf-8 -*-
+"""Write A24 task-metrics.json with computed wall-clock and verified counts."""
+import json
+import os
+from datetime import datetime
+
+START = datetime.fromisoformat("2026-10-19T16:28:41.161+08:00")
+END = datetime.now().astimezone()
+
+m = {
+    "schema_version": 1,
+    "task_id": "A24",
+    "path_base": "output_dir",
+    "output_dir": "outputs/run-20261011-01/A24",
+    "status": "completed",
+    "title": "发布日三图收官（执行泳道/决策简报/手机行动卡）",
+    "timings": {
+        "started_at": START.isoformat(),
+        "ended_at": END.isoformat(),
+        "elapsed_seconds": round((END - START).total_seconds(), 2),
+        "first_usable_image_seconds": round(
+            (datetime.fromisoformat("2026-10-19T16:43:23.908+08:00")
+             - START).total_seconds(), 2),
+        "first_usable_image_note": "round-02三图中最后一张action-card-02完成时刻"
+                                   "（首发均为HTTP400，无图）",
+        "user_feedback_wait_seconds": 0,
+        "user_feedback_note": "预置任务自动执行，无逐题用户反馈（确认无发生故记0）",
+        "rate_limit_wait_seconds": 0,
+        "queue_wait_seconds": None,
+        "queue_wait_reason": "客户端不可测排队时间，按约定记 null",
+        "request_duration_sum_seconds": 27.32,
+        "request_duration_sum_note": "13次渲染 measured elapsed 之和（含3次400失败）；"
+                                     "文档复用本run缓存无新增HTTP；总墙钟远大于请求耗时"
+                                     "（含排程穷举求解、五轮视觉迭代、像素探针、看图、写报告）"
+    },
+    "counts": {
+        "snapshot_requests": 13,
+        "successful_snapshot_requests": 10,
+        "failed_snapshot_requests": 3,
+        "failed_detail": "A24-board-01/brief-01/card-01 均HTTP400：边框误用border+"
+                         "borderWidth两属性（服务要求单一'宽度 SOLID 颜色'），"
+                         "修正辅助函数后round-02全部成功，失败响应已留档",
+        "retry_requests": 0,
+        "other_service_requests": 0,
+        "dsl_versions": 13,
+        "dsl_versions_note": "board v1(400)/v2/v3/v4、brief v1(400)/v2/v3/v4、"
+                             "card v1(400)/v2/v3/v4/v5",
+        "image_view_events": 25,
+        "images_opened": 25,
+        "image_view_note": "整图9张（board-02/03/04、brief-02/03/04、card-02/03/04/05"
+                           "中去重计25次事件含局部）+放大裁片16张，全部真实打开查看；"
+                           "另用像素探针核对接缝/网格线",
+        "completed_visual_iterations": 3,
+        "baseline_entries": 1,
+        "iteration_entries_total": 4,
+        "iteration_note": "baseline(400修复+首看) + visual×3（接缝/绘制顺序、"
+                          "页脚加宽、card页脚）；裁片查看24次+探针3次驱动"
+    },
+    "scheduling": {
+        "window_minutes": 420,
+        "total_workload_minutes": 485,
+        "critical_path_lb": 255,
+        "critical_path": ["R01", "R04", "R07", "R09", "R10", "R12"],
+        "workload_lb": 242.5,
+        "chosen_makespan": 260,
+        "proof": "穷举8种分队×112组队内拓扑次序，最小完工=260 ⇒ 全局最优"
+                 "（solver-result.json，非仅下界）",
+        "flexible_assignments": {"R05": "engineering", "R09": "design",
+                                 "R12": "design"},
+        "idle_gaps_minutes": [["design", 85, 90], ["engineering", 200, 205]],
+        "buffer_minutes": 160
+    },
+    "works": {
+        "execution-board.png": {"md5": "b5c6923d0940eebb5b729aa64e9f2854",
+                                 "bytes": 267955, "dims": [1920, 1080],
+                                 "rid": "A24-board-04"},
+        "execution-board.snapshot": {
+            "md5": __import__("hashlib").md5(open(
+                "outputs/run-20261011-01/A24/execution-board.snapshot",
+                "rb").read()).hexdigest(),
+            "bytes": os.path.getsize(
+                "outputs/run-20261011-01/A24/execution-board.snapshot")},
+        "decision-brief.png": {"md5": "6de9ed5e0718c2bd70f0400bb0325de6",
+                                "bytes": 402716, "dims": [1200, 1600],
+                                "rid": "A24-brief-04"},
+        "decision-brief.snapshot": {
+            "md5": __import__("hashlib").md5(open(
+                "outputs/run-20261011-01/A24/decision-brief.snapshot",
+                "rb").read()).hexdigest(),
+            "bytes": os.path.getsize(
+                "outputs/run-20261011-01/A24/decision-brief.snapshot")},
+        "action-card.png": {"md5": "a8fe8261a55be556d9a195c7254a9d4a",
+                             "bytes": 267238, "dims": [720, 1280],
+                             "rid": "A24-card-05"},
+        "action-card.snapshot": {
+            "md5": __import__("hashlib").md5(open(
+                "outputs/run-20261011-01/A24/action-card.snapshot",
+                "rb").read()).hexdigest(),
+            "bytes": os.path.getsize(
+                "outputs/run-20261011-01/A24/action-card.snapshot")},
+        "schedule.json": {"note": "12任务含团队/依赖/分钟/带时区起止，由同一"
+                                  "SCHEDULE生成"},
+        "schedule-audit.json": {"note": "checks×4 + lower_bounds + finish + "
+                                        "optimality（枚举证明）"},
+        "content-map.json": {"note": "12任务三图位置映射 + 3风险引用 + 一致性核验"}
+    },
+    "verification": {
+        "md5_png_vs_tmp": "true（copy-report.json）",
+        "md5_dsl_vs_tmp": "true",
+        "finals_are_service_bytes": True,
+        "seam_pixel_probe": "y=345连续#4F46E5、y=625连续#0E7490（无白色接缝）",
+        "gridline_pixel_probe": "14:00 x≈1402..1403 #F0F3F7 在两泳道带内可见",
+        "constraint_checks": "时长=输入minutes、0..420半开、同团队零重叠、"
+                             "16条依赖边 end≤start（check_schedule 0 errors）",
+        "cross_image_numbers": "485/260/160/255/242.5 与 13:20 三图一致"
+    },
+    "logs": {
+        "requests": "tmp/run-20261011-01/A24/requests.jsonl",
+        "iterations": "tmp/run-20261011-01/A24/iterations.jsonl",
+        "scripts": "tmp/run-20261011-01/A24/scripts/",
+        "solver": "tmp/run-20261011-01/A24/solver-result.json"
+    },
+    "unresolved_issues": []
+}
+
+out = "outputs/run-20261011-01/A24/task-metrics.json"
+with open(out, "w", encoding="utf-8") as f:
+    json.dump(m, f, ensure_ascii=False, indent=1)
+print("written", out, "elapsed", m["timings"]["elapsed_seconds"], "s")

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "task_id": "A16",
+  "path_base": "output_dir",
+  "source_of_truth": "inputs/source.csv",
+  "flawed_image": "inputs/flawed-report.png",
+  "canvas": {"width": 1280, "height": 900, "origin": "top-left", "unit": "px"},
+  "evidence_tooling": "flawed-report.png was probed pixel-by-pixel (PIL) to extract bar rectangles, gridline positions and legend swatch colors (tmp/run-20261011-01/A16/flawed-probe.json, path_base=suite_root); each finding below cross-checks those measurements against inputs/source.csv.",
+  "source_data": {
+    "Q1": {"revenue_wan": 120, "cost_wan": 90, "profit_wan": 30},
+    "Q2": {"revenue_wan": 135, "cost_wan": 108, "profit_wan": 27},
+    "Q3": {"revenue_wan": 128, "cost_wan": 96, "profit_wan": 32},
+    "Q4": {"revenue_wan": 180, "cost_wan": 126, "profit_wan": 54}
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "category": "narrative",
+      "image_location": "标题，画布左上 (64,44)",
+      "observed": "标题写『季度复盘：Q3利润最高』",
+      "source_check": "source.csv 利润=收入−成本：Q1=30、Q2=27、Q3=32、Q4=54。Q4 利润 54 > Q3 32。",
+      "impact": "标题结论与数据相反，误导决策为『Q3 最强』",
+      "correction": "改为『季度复盘：Q4收入与利润双高』——Q4 收入 180、利润 54 均全年最高，有数据支撑",
+      "final_view_result": "已查看 corrected-report.png：新标题单行无遮挡，与利润明细一致"
+    },
+    {
+      "id": "F2",
+      "category": "narrative",
+      "image_location": "副标题，标题下方 (64,92)",
+      "observed": "副标题写『收入持续上升，全年保持增长』",
+      "source_check": "收入序列 120→135→128→180：Q3(128) < Q2(135)，环比 (128-135)/135 ≈ −5.2%，并非持续上升。",
+      "impact": "掩盖 Q3 收入下滑，叙述失真",
+      "correction": "副标题改为『Q4收入180万元、利润54万元，均为全年最高；Q3收入环比回落6.7%』，如实点出回落",
+      "final_view_result": "已查看：副标题单行完整显示，与柱状图 Q3<Q2 一致"
+    },
+    {
+      "id": "F3",
+      "category": "visual-mapping",
+      "image_location": "图例，图表卡右上 (946,162)/(1046,162)",
+      "observed": "图例色块：蓝=成本、橙=收入；但柱体上蓝柱标注的是收入值(120/135/128/180)、橙柱是成本值(90/108/96/126)，颜色与系列相反",
+      "source_check": "Q1 蓝柱顶标签 120 = 收入，橙柱 90 = 成本，逐一核对四季度均如此",
+      "impact": "读者会把收入当成本、成本当收入，整图量级解读颠倒",
+      "correction": "重建时图例与柱色统一为 蓝=收入、橙=成本，与数值一一对应",
+      "final_view_result": "已查看：图例蓝块对应收入柱(120/135/128/180)、橙块对应成本柱，映射正确"
+    },
+    {
+      "id": "F4",
+      "category": "axis",
+      "image_location": "纵轴，图表左侧 x≈120，刻度 100–200",
+      "observed": "纵轴自 100 起而非 0（截断轴），柱底落在 100 网格线 y≈565",
+      "source_check": "Q1 成本 90、Q3 成本 96 均小于轴下限 100，在该轴上无法诚实表示；截断轴放大了柱高差异",
+      "impact": "差异被夸大，且小于 100 的数值根本画不出来",
+      "correction": "重建为共同零点：纵轴自 0 起，上限 200，刻度 0/50/100/150/200",
+      "final_view_result": "已查看：8 根柱底共用零线 y=500，柱高经像素核验=数值×1.2px（全部匹配）"
+    },
+    {
+      "id": "F5",
+      "category": "geometry-vs-label",
+      "image_location": "柱体，尤其 Q3 蓝柱 (696..758)",
+      "observed": "柱高与 100 基线轴不匹配：按轴比例尺 Q3 蓝柱顶应读 128，实测顶读约 173，被额外拉高",
+      "source_check": "Q3 收入 128，但柱顶远超其标签对应位置，配合标题制造『Q3 最高』假象",
+      "impact": "图形高度本身在说谎，不只是标签错",
+      "correction": "重建中柱高严格由数值计算（h=round(value×1.2)），不手工调高度",
+      "final_view_result": "已查看并像素核验：8 柱高度与 value×比例尺逐一匹配，无虚增"
+    },
+    {
+      "id": "F6",
+      "category": "data",
+      "image_location": "利润明细卡，Q3 数值 (424,706)",
+      "observed": "利润明细写 Q1=30、Q2=27、Q3=42、Q4=54",
+      "source_check": "Q3 利润应为 128−96=32，图中 42 多算了 10 万元；其余三项正确",
+      "impact": "Q3 利润被虚增 10 万元，进一步支撑错误的重点推荐",
+      "correction": "修正为 32 万元，并在明细卡标注计算式『收入−成本』与成本率",
+      "final_view_result": "已查看：明细卡显示 30/27/32/54，与 source.csv 推算一致"
+    },
+    {
+      "id": "F7",
+      "category": "narrative",
+      "image_location": "重点观察卡，右下 (790,590)",
+      "observed": "结论卡写『重点观察·Q3 建议把资源集中到Q3，它的利润超过其他季度』",
+      "source_check": "Q4 利润 54 > Q3 32，且 Q4 收入 180 也最高、成本率 70% 最低；Q3 并非最优",
+      "impact": "基于错误数据给出错误资源配置建议",
+      "correction": "改为『重点观察·Q4』：Q4 收入/利润双高、成本率最低(70%)，以 Q4 为标杆并复盘其成本结构",
+      "final_view_result": "已查看：结论卡论证引用的 180/126/54/70% 均可回溯 source.csv"
+    }
+  ],
+  "uncertainties": [
+    {
+      "id": "U1",
+      "item": "原图配色（蓝/橙）与卡片圆角、留白等风格元素",
+      "reason": "属于审美偏好，不影响数值正确性；未列为错误",
+      "needed_evidence": "无需额外证据——任务允许改进风格，重建采用更清晰的配色与留白"
+    },
+    {
+      "id": "U2",
+      "item": "原图数值标签本身（120/90/135/108/128/96/180/126）",
+      "reason": "这些标签数值与 source.csv 一致，是正确的；错误在于图例映射、截断轴与柱高，而非标签数字",
+      "needed_evidence": "已逐项与 source.csv 核对，标签无误，故保留原值"
+    },
+    {
+      "id": "U3",
+      "item": "原图是否还有隐藏的次要文字错误",
+      "reason": "仅基于可见像素取证；页脚『虚构数据·同事初稿』等装饰文字未见明显错误",
+      "needed_evidence": "如需穷尽，可对全图做 OCR 逐字比对；当前已覆盖所有承载数据的文字"
+    }
+  ]
+}

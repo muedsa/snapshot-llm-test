@@ -1,0 +1,260 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "brand": "叠光 · 发布演练",
+ "release_date": "2026-11-07",
+ "timezone": "Asia/Shanghai (+08:00)",
+ "start": "2026-11-07T09:00:00+08:00",
+ "deadline": "2026-11-07T16:00:00+08:00",
+ "window_minutes": 420,
+ "convention": "半开区间 [start,end)；t=0 为 09:00；无切换成本",
+ "tasks": [
+  {
+   "id": "R01",
+   "label": "需求核对",
+   "team": "design",
+   "depends": [],
+   "start_minute": 0,
+   "end_minute": 25,
+   "duration_minutes": 25,
+   "input_minutes": 25,
+   "start_time": "2026-11-07T09:00:00+08:00",
+   "end_time": "2026-11-07T09:25:00+08:00",
+   "teams_options": [
+    "design"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R02",
+   "label": "服务与字体探测",
+   "team": "engineering",
+   "depends": [],
+   "start_minute": 0,
+   "end_minute": 20,
+   "duration_minutes": 20,
+   "input_minutes": 20,
+   "start_time": "2026-11-07T09:00:00+08:00",
+   "end_time": "2026-11-07T09:20:00+08:00",
+   "teams_options": [
+    "engineering"
+   ],
+   "risk": "K1"
+  },
+  {
+   "id": "R03",
+   "label": "数据清洗",
+   "team": "engineering",
+   "depends": [
+    "R02"
+   ],
+   "start_minute": 20,
+   "end_minute": 60,
+   "duration_minutes": 40,
+   "input_minutes": 40,
+   "start_time": "2026-11-07T09:20:00+08:00",
+   "end_time": "2026-11-07T10:00:00+08:00",
+   "teams_options": [
+    "engineering"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R04",
+   "label": "视觉系统",
+   "team": "design",
+   "depends": [
+    "R01"
+   ],
+   "start_minute": 25,
+   "end_minute": 85,
+   "duration_minutes": 60,
+   "input_minutes": 60,
+   "start_time": "2026-11-07T09:25:00+08:00",
+   "end_time": "2026-11-07T10:25:00+08:00",
+   "teams_options": [
+    "design"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R05",
+   "label": "文案审校",
+   "team": "engineering",
+   "depends": [
+    "R01"
+   ],
+   "start_minute": 60,
+   "end_minute": 90,
+   "duration_minutes": 30,
+   "input_minutes": 30,
+   "start_time": "2026-11-07T10:00:00+08:00",
+   "end_time": "2026-11-07T10:30:00+08:00",
+   "teams_options": [
+    "design",
+    "engineering"
+   ],
+   "risk": "K2"
+  },
+  {
+   "id": "R06",
+   "label": "图表计算",
+   "team": "engineering",
+   "depends": [
+    "R03"
+   ],
+   "start_minute": 90,
+   "end_minute": 135,
+   "duration_minutes": 45,
+   "input_minutes": 45,
+   "start_time": "2026-11-07T10:30:00+08:00",
+   "end_time": "2026-11-07T11:15:00+08:00",
+   "teams_options": [
+    "engineering"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R07",
+   "label": "主海报构建",
+   "team": "design",
+   "depends": [
+    "R04",
+    "R05"
+   ],
+   "start_minute": 90,
+   "end_minute": 160,
+   "duration_minutes": 70,
+   "input_minutes": 70,
+   "start_time": "2026-11-07T10:30:00+08:00",
+   "end_time": "2026-11-07T11:40:00+08:00",
+   "teams_options": [
+    "design"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R08",
+   "label": "驾驶舱构建",
+   "team": "engineering",
+   "depends": [
+    "R04",
+    "R06"
+   ],
+   "start_minute": 135,
+   "end_minute": 200,
+   "duration_minutes": 65,
+   "input_minutes": 65,
+   "start_time": "2026-11-07T11:15:00+08:00",
+   "end_time": "2026-11-07T12:20:00+08:00",
+   "teams_options": [
+    "engineering"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R09",
+   "label": "手机适配",
+   "team": "design",
+   "depends": [
+    "R07"
+   ],
+   "start_minute": 160,
+   "end_minute": 205,
+   "duration_minutes": 45,
+   "input_minutes": 45,
+   "start_time": "2026-11-07T11:40:00+08:00",
+   "end_time": "2026-11-07T12:25:00+08:00",
+   "teams_options": [
+    "design",
+    "engineering"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R10",
+   "label": "视觉回归检查",
+   "team": "design",
+   "depends": [
+    "R07",
+    "R08",
+    "R09"
+   ],
+   "start_minute": 205,
+   "end_minute": 240,
+   "duration_minutes": 35,
+   "input_minutes": 35,
+   "start_time": "2026-11-07T12:25:00+08:00",
+   "end_time": "2026-11-07T13:00:00+08:00",
+   "teams_options": [
+    "design"
+   ],
+   "risk": "K3"
+  },
+  {
+   "id": "R11",
+   "label": "产物与数据核验",
+   "team": "engineering",
+   "depends": [
+    "R08",
+    "R09"
+   ],
+   "start_minute": 205,
+   "end_minute": 235,
+   "duration_minutes": 30,
+   "input_minutes": 30,
+   "start_time": "2026-11-07T12:25:00+08:00",
+   "end_time": "2026-11-07T12:55:00+08:00",
+   "teams_options": [
+    "engineering"
+   ],
+   "risk": null
+  },
+  {
+   "id": "R12",
+   "label": "交付归档",
+   "team": "design",
+   "depends": [
+    "R10",
+    "R11"
+   ],
+   "start_minute": 240,
+   "end_minute": 260,
+   "duration_minutes": 20,
+   "input_minutes": 20,
+   "start_time": "2026-11-07T13:00:00+08:00",
+   "end_time": "2026-11-07T13:20:00+08:00",
+   "teams_options": [
+    "design",
+    "engineering"
+   ],
+   "risk": null
+  }
+ ],
+ "finish_minute": 260,
+ "finish_time": "13:20",
+ "buffer_minutes": 160,
+ "total_workload_minutes": 485,
+ "flexible_assignments": {
+  "R05": "engineering",
+  "R09": "design",
+  "R12": "design"
+ },
+ "idle_gaps": [
+  {
+   "team": "design",
+   "start_minute": 85,
+   "end_minute": 90
+  },
+  {
+   "team": "engineering",
+   "start_minute": 200,
+   "end_minute": 205
+  }
+ ],
+ "input_source": {
+  "path_base": "suite_root",
+  "path": "tasks/A24-release-plan-capstone/inputs/release.json"
+ }
+}

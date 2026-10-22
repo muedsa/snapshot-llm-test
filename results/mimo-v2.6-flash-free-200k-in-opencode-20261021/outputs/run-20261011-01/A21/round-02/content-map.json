@@ -1,0 +1,234 @@
+{
+ "schema_version": 1,
+ "task_id": "A21",
+ "path_base": "output_dir",
+ "round": 2,
+ "entries": [
+  {
+   "id": "title",
+   "req": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+   "text": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+   "role": "主标题",
+   "portrait": {
+    "size": 48,
+    "lines": 2
+   },
+   "wide": {
+    "size": 48,
+    "lines": 2
+   },
+   "origin": "replaced-round2",
+   "status": "rendered"
+  },
+  {
+   "id": "kicker",
+   "req": "ONLINE LAUNCH",
+   "text": "ONLINE LAUNCH",
+   "role": "眉标",
+   "portrait": {
+    "size": 24,
+    "lines": 1
+   },
+   "wide": {
+    "size": 24,
+    "lines": 1
+   },
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "datetime",
+   "req": "2026.11.07 19:30",
+   "text": "2026.11.07 19:30",
+   "role": "时间",
+   "portrait": {
+    "size": 34,
+    "lines": 1
+   },
+   "wide": {
+    "size": 34,
+    "lines": 1
+   },
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "speakers",
+   "req": "讲者：林川 / 苏言",
+   "text": "讲者：林川 / 苏言",
+   "role": "讲者",
+   "portrait": {
+    "size": 30,
+    "lines": 1
+   },
+   "wide": {
+    "size": 30,
+    "lines": 1
+   },
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "url",
+   "req": "layerlight.example.org",
+   "text": "layerlight.example.org",
+   "role": "网址",
+   "portrait": {
+    "size": 26,
+    "lines": 1
+   },
+   "wide": {
+    "size": 26,
+    "lines": 1
+   },
+   "origin": "required-retained",
+   "status": "rendered"
+  },
+  {
+   "id": "sponsor",
+   "req": "Northstar Research / 云构工具",
+   "text": "Northstar Research / 云构工具",
+   "role": "赞助方",
+   "portrait": {
+    "size": 30,
+    "lines": 1
+   },
+   "wide": {
+    "size": 26,
+    "lines": 2
+   },
+   "origin": "added-round2",
+   "status": "rendered"
+  },
+  {
+   "id": "cta",
+   "req": "免费参加 · 无需报名",
+   "text": "免费参加 · 无需报名",
+   "role": "CTA",
+   "portrait": {
+    "size": 30,
+    "lines": 1
+   },
+   "wide": {
+    "size": 26,
+    "lines": 1
+   },
+   "origin": "added-round2",
+   "status": "rendered"
+  },
+  {
+   "id": "brand_pill",
+   "req": null,
+   "text": "叠光 Layerlight · 结构化呈现",
+   "role": "品牌句药丸",
+   "portrait": {
+    "size": 26,
+    "lines": 1
+   },
+   "wide": {
+    "size": 26,
+    "lines": 1
+   },
+   "origin": "added-brand",
+   "status": "rendered"
+  }
+ ],
+ "checks": [
+  {
+   "id": "title-replaced-3lines-max",
+   "passed": true,
+   "method": "标题按实测换行数与字号核对（<=3行、>=48）",
+   "evidence": {
+    "portrait_lines": 2,
+    "wide_lines": 2,
+    "size": 48,
+    "max_lines": 3
+   }
+  },
+  {
+   "id": "sponsor-and-cta-added",
+   "passed": true,
+   "method": "两图均渲染赞助方与免费参加信息",
+   "evidence": {
+    "sponsor": "Northstar Research / 云构工具",
+    "cta": "免费参加 · 无需报名",
+    "in_both": true
+   }
+  },
+  {
+   "id": "required-retained",
+   "passed": true,
+   "method": "日期时间/讲者/ONLINE LAUNCH/网址 逐条比对仍在两图",
+   "evidence": {
+    "retained": [
+     "datetime",
+     "speakers",
+     "kicker",
+     "url"
+    ],
+    "all_present_both": true
+   }
+  },
+  {
+   "id": "same-primary-and-constructs",
+   "passed": true,
+   "method": "主色十六进制一致；5构件参数与 round-01 一致（仅移动/缩放）",
+   "evidence": {
+    "primary": "#4F46E5",
+    "constructs": [
+     "prism_mark",
+     "beam_wedge",
+     "baseline_rule",
+     "tagline_pill",
+     "info_plate"
+    ],
+    "only_moved_or_scaled": true
+   }
+  },
+  {
+   "id": "sizes-unchanged",
+   "passed": true,
+   "method": "两图尺寸与 round-01 相同",
+   "evidence": {
+    "portrait": [
+     1080,
+     1350
+    ],
+    "wide": [
+     1440,
+     810
+    ]
+   }
+  },
+  {
+   "id": "no-transform-squeeze",
+   "passed": true,
+   "method": "全部文字用 Text 的 text= 属性排版，无 Transform 缩放压窄",
+   "evidence": {
+    "text_transforms": 0
+   }
+  },
+  {
+   "id": "no-collision",
+   "passed": true,
+   "method": "纵向游标堆叠 + 实测块间距（见 round2-geom.json）",
+   "evidence": {
+    "portrait_min_gap_px": 18.0,
+    "wide_min_gap_px": 18.0,
+    "threshold_px": 16
+   }
+  },
+  {
+   "id": "viewed-both",
+   "passed": true,
+   "method": "用视觉工具实际打开两图核验",
+   "evidence": {
+    "viewed": [
+     "launch-portrait-04.png",
+     "launch-wide-03.png"
+    ],
+    "conclusion": "长标题2行完整不截断；赞助方与CTA清晰；保留内容齐全；构件与主色不变；无碰撞"
+   }
+  }
+ ]
+}

@@ -1,0 +1,3123 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "seed": 20261019,
+  "seed_note": "洗牌种子；分布以 objects 实测为准（生成器断言全部通过）",
+  "algorithm": "16种颜色×形状组合各4份；每份尺寸按 SIZES[(k+组合序号)%3] 轮转（保证每种颜色、每种形状都覆盖48/64/80三种尺寸）；再以种子洗牌分配到行优先的64格，逐行校验≥3种颜色且≥3种形状，不满足则换种子重洗（本种子一次通过）",
+  "canvas": {
+    "width": 1600,
+    "height": 1600,
+    "origin": "画布左上角，x向右、y向下，单位像素"
+  },
+  "grid": {
+    "rows": 8,
+    "cols": 8,
+    "cell": [
+      200,
+      200
+    ],
+    "id_order": "row-major (left->right, top->bottom)",
+    "index_formula": "id = (row-1)*8 + col",
+    "center_formula": "(200*col+100, 200*row+100)",
+    "id_text_anchor": "cell左上角 + (10, 6)，主体外框从 cell+60 起，ID 与主体必然分离"
+  },
+  "palette": {
+    "colors": [
+      {
+        "name": "blue",
+        "hex": "#2563EB"
+      },
+      {
+        "name": "orange",
+        "hex": "#F59E0B"
+      },
+      {
+        "name": "green",
+        "hex": "#16A34A"
+      },
+      {
+        "name": "purple",
+        "hex": "#7C3AED"
+      }
+    ],
+    "shapes": [
+      {
+        "name": "circle",
+        "render": "直径=size，borderRadius=size/2"
+      },
+      {
+        "name": "square",
+        "render": "边长=size，无圆角"
+      },
+      {
+        "name": "ring",
+        "render": "外径=size，border=size/4（内径=size/2），borderRadius=size/2，无填充"
+      },
+      {
+        "name": "rounded",
+        "render": "边长=size，borderRadius=size/4"
+      }
+    ],
+    "sizes": [
+      48,
+      64,
+      80
+    ]
+  },
+  "artifacts": {
+    "png": "grid-scene.png",
+    "dsl": "grid-scene.snapshot"
+  },
+  "objects": [
+    {
+      "id": "G01",
+      "row": 1,
+      "col": 1,
+      "color": "green",
+      "shape": "ring",
+      "size": 48,
+      "center": [
+        100,
+        100
+      ],
+      "body_bbox": [
+        76,
+        76,
+        124,
+        124
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          14,
+          44,
+          29
+        ],
+        "anchor_constructed": [
+          10,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G02",
+      "row": 1,
+      "col": 2,
+      "color": "blue",
+      "shape": "square",
+      "size": 48,
+      "center": [
+        300,
+        100
+      ],
+      "body_bbox": [
+        276,
+        76,
+        324,
+        124
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          14,
+          245,
+          29
+        ],
+        "anchor_constructed": [
+          210,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G03",
+      "row": 1,
+      "col": 3,
+      "color": "orange",
+      "shape": "ring",
+      "size": 80,
+      "center": [
+        500,
+        100
+      ],
+      "body_bbox": [
+        460,
+        60,
+        540,
+        140
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          14,
+          445,
+          29
+        ],
+        "anchor_constructed": [
+          410,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G04",
+      "row": 1,
+      "col": 4,
+      "color": "purple",
+      "shape": "circle",
+      "size": 48,
+      "center": [
+        700,
+        100
+      ],
+      "body_bbox": [
+        676,
+        76,
+        724,
+        124
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          14,
+          645,
+          29
+        ],
+        "anchor_constructed": [
+          610,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G05",
+      "row": 1,
+      "col": 5,
+      "color": "green",
+      "shape": "square",
+      "size": 64,
+      "center": [
+        900,
+        100
+      ],
+      "body_bbox": [
+        868,
+        68,
+        932,
+        132
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          14,
+          845,
+          29
+        ],
+        "anchor_constructed": [
+          810,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G06",
+      "row": 1,
+      "col": 6,
+      "color": "blue",
+      "shape": "rounded",
+      "size": 48,
+      "center": [
+        1100,
+        100
+      ],
+      "body_bbox": [
+        1076,
+        76,
+        1124,
+        124
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          14,
+          1045,
+          29
+        ],
+        "anchor_constructed": [
+          1010,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G07",
+      "row": 1,
+      "col": 7,
+      "color": "blue",
+      "shape": "circle",
+      "size": 80,
+      "center": [
+        1300,
+        100
+      ],
+      "body_bbox": [
+        1260,
+        60,
+        1340,
+        140
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          14,
+          1245,
+          29
+        ],
+        "anchor_constructed": [
+          1210,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G08",
+      "row": 1,
+      "col": 8,
+      "color": "green",
+      "shape": "square",
+      "size": 48,
+      "center": [
+        1500,
+        100
+      ],
+      "body_bbox": [
+        1476,
+        76,
+        1524,
+        124
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          14,
+          1445,
+          29
+        ],
+        "anchor_constructed": [
+          1410,
+          6
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G09",
+      "row": 2,
+      "col": 1,
+      "color": "green",
+      "shape": "circle",
+      "size": 80,
+      "center": [
+        100,
+        300
+      ],
+      "body_bbox": [
+        60,
+        260,
+        140,
+        340
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          214,
+          45,
+          229
+        ],
+        "anchor_constructed": [
+          10,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G10",
+      "row": 2,
+      "col": 2,
+      "color": "green",
+      "shape": "square",
+      "size": 80,
+      "center": [
+        300,
+        300
+      ],
+      "body_bbox": [
+        260,
+        260,
+        340,
+        340
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          214,
+          245,
+          229
+        ],
+        "anchor_constructed": [
+          210,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G11",
+      "row": 2,
+      "col": 3,
+      "color": "green",
+      "shape": "ring",
+      "size": 64,
+      "center": [
+        500,
+        300
+      ],
+      "body_bbox": [
+        468,
+        268,
+        532,
+        332
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          214,
+          444,
+          229
+        ],
+        "anchor_constructed": [
+          410,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G12",
+      "row": 2,
+      "col": 4,
+      "color": "blue",
+      "shape": "ring",
+      "size": 48,
+      "center": [
+        700,
+        300
+      ],
+      "body_bbox": [
+        676,
+        276,
+        724,
+        324
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          214,
+          645,
+          229
+        ],
+        "anchor_constructed": [
+          610,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G13",
+      "row": 2,
+      "col": 5,
+      "color": "purple",
+      "shape": "ring",
+      "size": 80,
+      "center": [
+        900,
+        300
+      ],
+      "body_bbox": [
+        860,
+        260,
+        940,
+        340
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          214,
+          845,
+          229
+        ],
+        "anchor_constructed": [
+          810,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G14",
+      "row": 2,
+      "col": 6,
+      "color": "orange",
+      "shape": "square",
+      "size": 80,
+      "center": [
+        1100,
+        300
+      ],
+      "body_bbox": [
+        1060,
+        260,
+        1140,
+        340
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          214,
+          1045,
+          229
+        ],
+        "anchor_constructed": [
+          1010,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G15",
+      "row": 2,
+      "col": 7,
+      "color": "purple",
+      "shape": "ring",
+      "size": 64,
+      "center": [
+        1300,
+        300
+      ],
+      "body_bbox": [
+        1268,
+        268,
+        1332,
+        332
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          214,
+          1245,
+          229
+        ],
+        "anchor_constructed": [
+          1210,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G16",
+      "row": 2,
+      "col": 8,
+      "color": "green",
+      "shape": "rounded",
+      "size": 80,
+      "center": [
+        1500,
+        300
+      ],
+      "body_bbox": [
+        1460,
+        260,
+        1540,
+        340
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          214,
+          1445,
+          229
+        ],
+        "anchor_constructed": [
+          1410,
+          206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G17",
+      "row": 3,
+      "col": 1,
+      "color": "purple",
+      "shape": "ring",
+      "size": 48,
+      "center": [
+        100,
+        500
+      ],
+      "body_bbox": [
+        76,
+        476,
+        124,
+        524
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          414,
+          45,
+          429
+        ],
+        "anchor_constructed": [
+          10,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G18",
+      "row": 3,
+      "col": 2,
+      "color": "blue",
+      "shape": "rounded",
+      "size": 48,
+      "center": [
+        300,
+        500
+      ],
+      "body_bbox": [
+        276,
+        476,
+        324,
+        524
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          414,
+          245,
+          429
+        ],
+        "anchor_constructed": [
+          210,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G19",
+      "row": 3,
+      "col": 3,
+      "color": "purple",
+      "shape": "square",
+      "size": 64,
+      "center": [
+        500,
+        500
+      ],
+      "body_bbox": [
+        468,
+        468,
+        532,
+        532
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          414,
+          445,
+          429
+        ],
+        "anchor_constructed": [
+          410,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G20",
+      "row": 3,
+      "col": 4,
+      "color": "orange",
+      "shape": "circle",
+      "size": 64,
+      "center": [
+        700,
+        500
+      ],
+      "body_bbox": [
+        668,
+        468,
+        732,
+        532
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          414,
+          645,
+          429
+        ],
+        "anchor_constructed": [
+          610,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G21",
+      "row": 3,
+      "col": 5,
+      "color": "green",
+      "shape": "circle",
+      "size": 48,
+      "center": [
+        900,
+        500
+      ],
+      "body_bbox": [
+        876,
+        476,
+        924,
+        524
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          414,
+          844,
+          429
+        ],
+        "anchor_constructed": [
+          810,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G22",
+      "row": 3,
+      "col": 6,
+      "color": "blue",
+      "shape": "circle",
+      "size": 48,
+      "center": [
+        1100,
+        500
+      ],
+      "body_bbox": [
+        1076,
+        476,
+        1124,
+        524
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          414,
+          1045,
+          429
+        ],
+        "anchor_constructed": [
+          1010,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G23",
+      "row": 3,
+      "col": 7,
+      "color": "purple",
+      "shape": "circle",
+      "size": 48,
+      "center": [
+        1300,
+        500
+      ],
+      "body_bbox": [
+        1276,
+        476,
+        1324,
+        524
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          414,
+          1245,
+          429
+        ],
+        "anchor_constructed": [
+          1210,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G24",
+      "row": 3,
+      "col": 8,
+      "color": "green",
+      "shape": "rounded",
+      "size": 80,
+      "center": [
+        1500,
+        500
+      ],
+      "body_bbox": [
+        1460,
+        460,
+        1540,
+        540
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          414,
+          1445,
+          429
+        ],
+        "anchor_constructed": [
+          1410,
+          406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G25",
+      "row": 4,
+      "col": 1,
+      "color": "purple",
+      "shape": "circle",
+      "size": 80,
+      "center": [
+        100,
+        700
+      ],
+      "body_bbox": [
+        60,
+        660,
+        140,
+        740
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          614,
+          45,
+          629
+        ],
+        "anchor_constructed": [
+          10,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G26",
+      "row": 4,
+      "col": 2,
+      "color": "blue",
+      "shape": "ring",
+      "size": 64,
+      "center": [
+        300,
+        700
+      ],
+      "body_bbox": [
+        268,
+        668,
+        332,
+        732
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          614,
+          245,
+          629
+        ],
+        "anchor_constructed": [
+          210,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G27",
+      "row": 4,
+      "col": 3,
+      "color": "orange",
+      "shape": "rounded",
+      "size": 64,
+      "center": [
+        500,
+        700
+      ],
+      "body_bbox": [
+        468,
+        668,
+        532,
+        732
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          614,
+          445,
+          629
+        ],
+        "anchor_constructed": [
+          410,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G28",
+      "row": 4,
+      "col": 4,
+      "color": "orange",
+      "shape": "rounded",
+      "size": 80,
+      "center": [
+        700,
+        700
+      ],
+      "body_bbox": [
+        660,
+        660,
+        740,
+        740
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          614,
+          645,
+          629
+        ],
+        "anchor_constructed": [
+          610,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G29",
+      "row": 4,
+      "col": 5,
+      "color": "green",
+      "shape": "ring",
+      "size": 64,
+      "center": [
+        900,
+        700
+      ],
+      "body_bbox": [
+        868,
+        668,
+        932,
+        732
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          614,
+          845,
+          629
+        ],
+        "anchor_constructed": [
+          810,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G30",
+      "row": 4,
+      "col": 6,
+      "color": "orange",
+      "shape": "ring",
+      "size": 48,
+      "center": [
+        1100,
+        700
+      ],
+      "body_bbox": [
+        1076,
+        676,
+        1124,
+        724
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          614,
+          1045,
+          629
+        ],
+        "anchor_constructed": [
+          1010,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G31",
+      "row": 4,
+      "col": 7,
+      "color": "purple",
+      "shape": "circle",
+      "size": 64,
+      "center": [
+        1300,
+        700
+      ],
+      "body_bbox": [
+        1268,
+        668,
+        1332,
+        732
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          614,
+          1244,
+          629
+        ],
+        "anchor_constructed": [
+          1210,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G32",
+      "row": 4,
+      "col": 8,
+      "color": "orange",
+      "shape": "square",
+      "size": 48,
+      "center": [
+        1500,
+        700
+      ],
+      "body_bbox": [
+        1476,
+        676,
+        1524,
+        724
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          614,
+          1445,
+          629
+        ],
+        "anchor_constructed": [
+          1410,
+          606
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G33",
+      "row": 5,
+      "col": 1,
+      "color": "orange",
+      "shape": "ring",
+      "size": 64,
+      "center": [
+        100,
+        900
+      ],
+      "body_bbox": [
+        68,
+        868,
+        132,
+        932
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          814,
+          45,
+          829
+        ],
+        "anchor_constructed": [
+          10,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G34",
+      "row": 5,
+      "col": 2,
+      "color": "blue",
+      "shape": "ring",
+      "size": 80,
+      "center": [
+        300,
+        900
+      ],
+      "body_bbox": [
+        260,
+        860,
+        340,
+        940
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          814,
+          245,
+          829
+        ],
+        "anchor_constructed": [
+          210,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G35",
+      "row": 5,
+      "col": 3,
+      "color": "green",
+      "shape": "square",
+      "size": 48,
+      "center": [
+        500,
+        900
+      ],
+      "body_bbox": [
+        476,
+        876,
+        524,
+        924
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          814,
+          445,
+          829
+        ],
+        "anchor_constructed": [
+          410,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G36",
+      "row": 5,
+      "col": 4,
+      "color": "purple",
+      "shape": "square",
+      "size": 80,
+      "center": [
+        700,
+        900
+      ],
+      "body_bbox": [
+        660,
+        860,
+        740,
+        940
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          814,
+          645,
+          829
+        ],
+        "anchor_constructed": [
+          610,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G37",
+      "row": 5,
+      "col": 5,
+      "color": "blue",
+      "shape": "rounded",
+      "size": 80,
+      "center": [
+        900,
+        900
+      ],
+      "body_bbox": [
+        860,
+        860,
+        940,
+        940
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          814,
+          845,
+          829
+        ],
+        "anchor_constructed": [
+          810,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G38",
+      "row": 5,
+      "col": 6,
+      "color": "orange",
+      "shape": "circle",
+      "size": 64,
+      "center": [
+        1100,
+        900
+      ],
+      "body_bbox": [
+        1068,
+        868,
+        1132,
+        932
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          814,
+          1045,
+          829
+        ],
+        "anchor_constructed": [
+          1010,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G39",
+      "row": 5,
+      "col": 7,
+      "color": "orange",
+      "shape": "ring",
+      "size": 48,
+      "center": [
+        1300,
+        900
+      ],
+      "body_bbox": [
+        1276,
+        876,
+        1324,
+        924
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          814,
+          1245,
+          829
+        ],
+        "anchor_constructed": [
+          1210,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G40",
+      "row": 5,
+      "col": 8,
+      "color": "blue",
+      "shape": "square",
+      "size": 80,
+      "center": [
+        1500,
+        900
+      ],
+      "body_bbox": [
+        1460,
+        860,
+        1540,
+        940
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          814,
+          1445,
+          829
+        ],
+        "anchor_constructed": [
+          1410,
+          806
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G41",
+      "row": 6,
+      "col": 1,
+      "color": "blue",
+      "shape": "square",
+      "size": 64,
+      "center": [
+        100,
+        1100
+      ],
+      "body_bbox": [
+        68,
+        1068,
+        132,
+        1132
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          1014,
+          44,
+          1029
+        ],
+        "anchor_constructed": [
+          10,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G42",
+      "row": 6,
+      "col": 2,
+      "color": "orange",
+      "shape": "square",
+      "size": 80,
+      "center": [
+        300,
+        1100
+      ],
+      "body_bbox": [
+        260,
+        1060,
+        340,
+        1140
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          1014,
+          245,
+          1029
+        ],
+        "anchor_constructed": [
+          210,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G43",
+      "row": 6,
+      "col": 3,
+      "color": "green",
+      "shape": "circle",
+      "size": 80,
+      "center": [
+        500,
+        1100
+      ],
+      "body_bbox": [
+        460,
+        1060,
+        540,
+        1140
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          1014,
+          445,
+          1029
+        ],
+        "anchor_constructed": [
+          410,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G44",
+      "row": 6,
+      "col": 4,
+      "color": "purple",
+      "shape": "square",
+      "size": 48,
+      "center": [
+        700,
+        1100
+      ],
+      "body_bbox": [
+        676,
+        1076,
+        724,
+        1124
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          1014,
+          645,
+          1029
+        ],
+        "anchor_constructed": [
+          610,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G45",
+      "row": 6,
+      "col": 5,
+      "color": "purple",
+      "shape": "rounded",
+      "size": 48,
+      "center": [
+        900,
+        1100
+      ],
+      "body_bbox": [
+        876,
+        1076,
+        924,
+        1124
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          1014,
+          845,
+          1029
+        ],
+        "anchor_constructed": [
+          810,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G46",
+      "row": 6,
+      "col": 6,
+      "color": "orange",
+      "shape": "rounded",
+      "size": 64,
+      "center": [
+        1100,
+        1100
+      ],
+      "body_bbox": [
+        1068,
+        1068,
+        1132,
+        1132
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          1014,
+          1045,
+          1029
+        ],
+        "anchor_constructed": [
+          1010,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G47",
+      "row": 6,
+      "col": 7,
+      "color": "purple",
+      "shape": "square",
+      "size": 64,
+      "center": [
+        1300,
+        1100
+      ],
+      "body_bbox": [
+        1268,
+        1068,
+        1332,
+        1132
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          1014,
+          1245,
+          1029
+        ],
+        "anchor_constructed": [
+          1210,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G48",
+      "row": 6,
+      "col": 8,
+      "color": "purple",
+      "shape": "ring",
+      "size": 80,
+      "center": [
+        1500,
+        1100
+      ],
+      "body_bbox": [
+        1460,
+        1060,
+        1540,
+        1140
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          1014,
+          1445,
+          1029
+        ],
+        "anchor_constructed": [
+          1410,
+          1006
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G49",
+      "row": 7,
+      "col": 1,
+      "color": "purple",
+      "shape": "rounded",
+      "size": 80,
+      "center": [
+        100,
+        1300
+      ],
+      "body_bbox": [
+        60,
+        1260,
+        140,
+        1340
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          1214,
+          45,
+          1229
+        ],
+        "anchor_constructed": [
+          10,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G50",
+      "row": 7,
+      "col": 2,
+      "color": "blue",
+      "shape": "circle",
+      "size": 48,
+      "center": [
+        300,
+        1300
+      ],
+      "body_bbox": [
+        276,
+        1276,
+        324,
+        1324
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          1214,
+          245,
+          1229
+        ],
+        "anchor_constructed": [
+          210,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G51",
+      "row": 7,
+      "col": 3,
+      "color": "blue",
+      "shape": "ring",
+      "size": 80,
+      "center": [
+        500,
+        1300
+      ],
+      "body_bbox": [
+        460,
+        1260,
+        540,
+        1340
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          1214,
+          444,
+          1229
+        ],
+        "anchor_constructed": [
+          410,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G52",
+      "row": 7,
+      "col": 4,
+      "color": "orange",
+      "shape": "square",
+      "size": 64,
+      "center": [
+        700,
+        1300
+      ],
+      "body_bbox": [
+        668,
+        1268,
+        732,
+        1332
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          1214,
+          645,
+          1229
+        ],
+        "anchor_constructed": [
+          610,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G53",
+      "row": 7,
+      "col": 5,
+      "color": "blue",
+      "shape": "circle",
+      "size": 64,
+      "center": [
+        900,
+        1300
+      ],
+      "body_bbox": [
+        868,
+        1268,
+        932,
+        1332
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          1214,
+          845,
+          1229
+        ],
+        "anchor_constructed": [
+          810,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G54",
+      "row": 7,
+      "col": 6,
+      "color": "green",
+      "shape": "rounded",
+      "size": 48,
+      "center": [
+        1100,
+        1300
+      ],
+      "body_bbox": [
+        1076,
+        1276,
+        1124,
+        1324
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          1214,
+          1045,
+          1229
+        ],
+        "anchor_constructed": [
+          1010,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G55",
+      "row": 7,
+      "col": 7,
+      "color": "orange",
+      "shape": "circle",
+      "size": 80,
+      "center": [
+        1300,
+        1300
+      ],
+      "body_bbox": [
+        1260,
+        1260,
+        1340,
+        1340
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          1214,
+          1245,
+          1229
+        ],
+        "anchor_constructed": [
+          1210,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G56",
+      "row": 7,
+      "col": 8,
+      "color": "orange",
+      "shape": "circle",
+      "size": 48,
+      "center": [
+        1500,
+        1300
+      ],
+      "body_bbox": [
+        1476,
+        1276,
+        1524,
+        1324
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          1214,
+          1445,
+          1229
+        ],
+        "anchor_constructed": [
+          1410,
+          1206
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G57",
+      "row": 8,
+      "col": 1,
+      "color": "green",
+      "shape": "circle",
+      "size": 64,
+      "center": [
+        100,
+        1500
+      ],
+      "body_bbox": [
+        68,
+        1468,
+        132,
+        1532
+      ],
+      "id_text_box": {
+        "measured": [
+          12,
+          1414,
+          45,
+          1429
+        ],
+        "anchor_constructed": [
+          10,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G58",
+      "row": 8,
+      "col": 2,
+      "color": "orange",
+      "shape": "rounded",
+      "size": 48,
+      "center": [
+        300,
+        1500
+      ],
+      "body_bbox": [
+        276,
+        1476,
+        324,
+        1524
+      ],
+      "id_text_box": {
+        "measured": [
+          212,
+          1414,
+          245,
+          1429
+        ],
+        "anchor_constructed": [
+          210,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          245,
+          158,
+          11
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G59",
+      "row": 8,
+      "col": 3,
+      "color": "blue",
+      "shape": "rounded",
+      "size": 64,
+      "center": [
+        500,
+        1500
+      ],
+      "body_bbox": [
+        468,
+        1468,
+        532,
+        1532
+      ],
+      "id_text_box": {
+        "measured": [
+          412,
+          1414,
+          445,
+          1429
+        ],
+        "anchor_constructed": [
+          410,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G60",
+      "row": 8,
+      "col": 4,
+      "color": "blue",
+      "shape": "square",
+      "size": 64,
+      "center": [
+        700,
+        1500
+      ],
+      "body_bbox": [
+        668,
+        1468,
+        732,
+        1532
+      ],
+      "id_text_box": {
+        "measured": [
+          612,
+          1414,
+          645,
+          1429
+        ],
+        "anchor_constructed": [
+          610,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          37,
+          99,
+          235
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G61",
+      "row": 8,
+      "col": 5,
+      "color": "purple",
+      "shape": "rounded",
+      "size": 48,
+      "center": [
+        900,
+        1500
+      ],
+      "body_bbox": [
+        876,
+        1476,
+        924,
+        1524
+      ],
+      "id_text_box": {
+        "measured": [
+          812,
+          1414,
+          844,
+          1429
+        ],
+        "anchor_constructed": [
+          810,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G62",
+      "row": 8,
+      "col": 6,
+      "color": "green",
+      "shape": "rounded",
+      "size": 64,
+      "center": [
+        1100,
+        1500
+      ],
+      "body_bbox": [
+        1068,
+        1468,
+        1132,
+        1532
+      ],
+      "id_text_box": {
+        "measured": [
+          1012,
+          1414,
+          1045,
+          1429
+        ],
+        "anchor_constructed": [
+          1010,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G63",
+      "row": 8,
+      "col": 7,
+      "color": "purple",
+      "shape": "rounded",
+      "size": 64,
+      "center": [
+        1300,
+        1500
+      ],
+      "body_bbox": [
+        1268,
+        1468,
+        1332,
+        1532
+      ],
+      "id_text_box": {
+        "measured": [
+          1212,
+          1414,
+          1245,
+          1429
+        ],
+        "anchor_constructed": [
+          1210,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          124,
+          58,
+          237
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    },
+    {
+      "id": "G64",
+      "row": 8,
+      "col": 8,
+      "color": "green",
+      "shape": "ring",
+      "size": 80,
+      "center": [
+        1500,
+        1500
+      ],
+      "body_bbox": [
+        1460,
+        1460,
+        1540,
+        1540
+      ],
+      "id_text_box": {
+        "measured": [
+          1412,
+          1414,
+          1445,
+          1429
+        ],
+        "anchor_constructed": [
+          1410,
+          1406
+        ],
+        "method": "对交付PNG逐格像素测量（文本色#334155容差50）"
+      },
+      "render_verification": {
+        "body_pixel_rgb": [
+          22,
+          163,
+          74
+        ],
+        "color_ok": true,
+        "bbox_matches_constructed": true,
+        "id_text_present": true,
+        "id_outside_body": true
+      }
+    }
+  ],
+  "distribution": {
+    "color_freq": {
+      "blue": 16,
+      "orange": 16,
+      "green": 16,
+      "purple": 16
+    },
+    "shape_freq": {
+      "circle": 16,
+      "square": 16,
+      "ring": 16,
+      "rounded": 16
+    },
+    "size_freq": {
+      "48": 22,
+      "64": 21,
+      "80": 21
+    },
+    "combo_coverage": {
+      "covered": 16,
+      "total": 16,
+      "each_count": 4,
+      "detail": {
+        "blue x circle": 4,
+        "blue x square": 4,
+        "blue x ring": 4,
+        "blue x rounded": 4,
+        "orange x circle": 4,
+        "orange x square": 4,
+        "orange x ring": 4,
+        "orange x rounded": 4,
+        "green x circle": 4,
+        "green x square": 4,
+        "green x ring": 4,
+        "green x rounded": 4,
+        "purple x circle": 4,
+        "purple x square": 4,
+        "purple x ring": 4,
+        "purple x rounded": 4
+      }
+    },
+    "color_size_coverage": {
+      "blue": [
+        48,
+        64,
+        80
+      ],
+      "orange": [
+        48,
+        64,
+        80
+      ],
+      "green": [
+        48,
+        64,
+        80
+      ],
+      "purple": [
+        48,
+        64,
+        80
+      ]
+    },
+    "shape_size_coverage": {
+      "circle": [
+        48,
+        64,
+        80
+      ],
+      "square": [
+        48,
+        64,
+        80
+      ],
+      "ring": [
+        48,
+        64,
+        80
+      ],
+      "rounded": [
+        48,
+        64,
+        80
+      ]
+    },
+    "row_counts": [
+      {
+        "row": 1,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 3,
+          "orange": 1,
+          "green": 3,
+          "purple": 1
+        },
+        "shape_freq": {
+          "circle": 2,
+          "square": 3,
+          "ring": 2,
+          "rounded": 1
+        }
+      },
+      {
+        "row": 2,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 1,
+          "orange": 1,
+          "green": 4,
+          "purple": 2
+        },
+        "shape_freq": {
+          "circle": 1,
+          "square": 2,
+          "ring": 4,
+          "rounded": 1
+        }
+      },
+      {
+        "row": 3,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 2,
+          "orange": 1,
+          "green": 2,
+          "purple": 3
+        },
+        "shape_freq": {
+          "circle": 4,
+          "square": 1,
+          "ring": 1,
+          "rounded": 2
+        }
+      },
+      {
+        "row": 4,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 1,
+          "orange": 4,
+          "green": 1,
+          "purple": 2
+        },
+        "shape_freq": {
+          "circle": 2,
+          "square": 1,
+          "ring": 3,
+          "rounded": 2
+        }
+      },
+      {
+        "row": 5,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 3,
+          "orange": 3,
+          "green": 1,
+          "purple": 1
+        },
+        "shape_freq": {
+          "circle": 1,
+          "square": 3,
+          "ring": 3,
+          "rounded": 1
+        }
+      },
+      {
+        "row": 6,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 1,
+          "orange": 2,
+          "green": 1,
+          "purple": 4
+        },
+        "shape_freq": {
+          "circle": 1,
+          "square": 4,
+          "ring": 1,
+          "rounded": 2
+        }
+      },
+      {
+        "row": 7,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 3,
+          "orange": 3,
+          "green": 1,
+          "purple": 1
+        },
+        "shape_freq": {
+          "circle": 4,
+          "square": 1,
+          "ring": 1,
+          "rounded": 2
+        }
+      },
+      {
+        "row": 8,
+        "distinct_colors": 4,
+        "distinct_shapes": 4,
+        "color_freq": {
+          "blue": 2,
+          "orange": 1,
+          "green": 3,
+          "purple": 2
+        },
+        "shape_freq": {
+          "circle": 1,
+          "square": 1,
+          "ring": 1,
+          "rounded": 5
+        }
+      }
+    ],
+    "checks": [
+      {
+        "id": "color-16-each",
+        "method": "生成期断言+交付PNG逐对象颜色像素核验（64/64通过）",
+        "evidence": {
+          "blue": 16,
+          "orange": 16,
+          "green": 16,
+          "purple": 16
+        },
+        "passed": true
+      },
+      {
+        "id": "shape-16-each",
+        "method": "生成期断言（形状由发射器按shape字段决定）",
+        "evidence": {
+          "circle": 16,
+          "square": 16,
+          "ring": 16,
+          "rounded": 16
+        },
+        "passed": true
+      },
+      {
+        "id": "all-16-combos",
+        "method": "生成期断言：16种颜色×形状组合各计数4",
+        "evidence": "combo_coverage.detail",
+        "passed": true
+      },
+      {
+        "id": "every-color-and-shape-in-3-sizes",
+        "method": "生成期断言：每种颜色/每种形状的尺寸集合=={48,64,80}",
+        "evidence": {
+          "color": {
+            "blue": [
+              48,
+              64,
+              80
+            ],
+            "orange": [
+              48,
+              64,
+              80
+            ],
+            "green": [
+              48,
+              64,
+              80
+            ],
+            "purple": [
+              48,
+              64,
+              80
+            ]
+          },
+          "shape": {
+            "circle": [
+              48,
+              64,
+              80
+            ],
+            "square": [
+              48,
+              64,
+              80
+            ],
+            "ring": [
+              48,
+              64,
+              80
+            ],
+            "rounded": [
+              48,
+              64,
+              80
+            ]
+          }
+        },
+        "passed": true
+      },
+      {
+        "id": "row-3-colors-3-shapes",
+        "method": "生成期断言：8行的distinct_colors/distinct_shapes均≥3",
+        "evidence": [
+          {
+            "row": 1,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          },
+          {
+            "row": 2,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          },
+          {
+            "row": 3,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          },
+          {
+            "row": 4,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          },
+          {
+            "row": 5,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          },
+          {
+            "row": 6,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          },
+          {
+            "row": 7,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          },
+          {
+            "row": 8,
+            "distinct_colors": 4,
+            "distinct_shapes": 4
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "render-geometry-verify",
+        "method": "对交付PNG逐格测量主体颜色像素、主体外接框（±2px抗锯齿）与ID文字盒；并确认ID在主体之外",
+        "evidence": {
+          "verified": 64,
+          "failed": 0
+        },
+        "passed": true
+      }
+    ]
+  }
+}

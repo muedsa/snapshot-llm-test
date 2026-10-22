@@ -1,0 +1,1157 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B06",
+  "run_id": "run-20261011-01",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets（本题实际全部纯 DSL 完成，无嵌入素材；政策允许的局部辅助素材未使用）",
+  "curatorial_statement": "十件作品对应十个互不相同的日常信息难题：用药时刻的相对位置、营养标签的份量换算、阶梯账单的涨幅归因、化验单箭头丢失的幅度、分期『0 手续费』的真实年化、降水概率的概念误读、地铁换乘的距离—时间差、航班延误后的当前节点、积分榜的逐级判定链、停车费率的阶跃决策。策展逻辑是：每件先回答『用户原本卡在哪里』，再让视觉隐喻承担论证——最有效的三件（case-02 的上下括号、case-03 的台阶面积、case-06 的 100 格）其隐喻本身就是证明，不需要读者信任任何数字；case-05 与 case-10 的说服力完全来自比例的正确性，因此各自做了独立的数值闭合检验；case-07 与 case-09 最依赖观看环境假设（行走中扫读、3–5 米大屏），是本作品集最薄弱的一环，已在 design-review.md §3 明确列出未经验证。十件的媒介、尺寸与色系各异，没有同版式换色或缩放裁切。",
+  "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（established_before_first_render=true，路径 tmp/run-20261011-01/B06/plan-v1.json）",
+  "criteria_change_note": "plan-v1 的 C1–C5 为约束性标准，全题未删除、未放宽、未修改任何一条；十个用例的 criteria_history 均为空。",
+  "honesty_bounds": [
+    "除 SRC-01/SRC-02 明确标注的真实制度与定义外，全部数据为自拟演示数据",
+    "未做现场调研，也未做用户实验；可读性判断基于目标尺寸下的实际渲染检查与像素量测",
+    "每件作品在图上与元数据中同时标明真实/演示边界"
+  ],
+  "research": [
+    {
+      "id": "SRC-01",
+      "topic": "降水概率定义",
+      "path": "tmp/run-20261011-01/B06/research/SRC-01-precipitation-probability.txt",
+      "status": "fetched",
+      "url": "https://zh.wikipedia.org/wiki/降水概率",
+      "fetched_at": "2026-10-21T13:41:00+08:00"
+    },
+    {
+      "id": "SRC-02",
+      "topic": "GB 28050 预包装食品营养标签",
+      "path": "tmp/run-20261011-01/B06/research/SRC-02-gb28050-nutrition-label.txt",
+      "status": "fetched",
+      "url": "https://zh.wikipedia.org/wiki/营养标签",
+      "fetched_at": "2026-10-21T13:42:00+08:00"
+    },
+    {
+      "id": "SRC-03",
+      "topic": "居民阶梯电价三档",
+      "path": "tmp/run-20261011-01/B06/research/SRC-03-tiered-electricity-price.txt",
+      "status": "not_fetched_404",
+      "note": "正文未取得，仅作制度背景，具体档位与单价一律标为示例演示，不逐字引用"
+    }
+  ],
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "服药钟面 · 一天四次用药的 24 小时时间轴",
+      "audience": "长期服用 4 种药的老年人及其照护者",
+      "use_context": "室内手持手机约 1.5 臂距离，老年视力，字号偏大，一屏完成",
+      "user_goal": "一眼知道今天这 4 种药各在几点吃、哪两种不能同时吃",
+      "content_scope": "4 种演示用药、各自的服药时刻、至少 1 条药物相互作用警示及其处理建议、漏服提示",
+      "viewing_environment": "室内手持手机约 1.5 臂距离，老年视力，字号偏大，一屏完成",
+      "content_basis": "药物名称、剂量、服药时刻、相互作用与漏服处理均为自拟演示数据；不构成用药建议",
+      "visual_intent": "把一天变成一个环：24 小时钟面作为唯一主图，药点按真实时刻落位，角度差即时间差；已完成勾标与下次读数叠加在环上。",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "case_md": "case-01/case.md",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v3",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "24 小时环面几何（角度由时刻派生）",
+        "arc 着色带与镜像区",
+        "多字号/色/行高 Text",
+        "高对比药点 + 形状双重编码",
+        "独立警示卡层",
+        "页脚边界声明"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "每种药与其服药时刻一一对应，由数据派生而非手绘定位",
+          "method": "数据驱动断言 + 看图"
+        },
+        {
+          "id": "C2",
+          "condition": "24 小时钟面刻度准确：12 个主刻度、0/6/12/18/23 时标正确",
+          "method": "几何断言 + 看图"
+        },
+        {
+          "id": "C3",
+          "condition": "至少 1 条药物相互作用警示，含明确处理建议而非仅告警",
+          "method": "内容审查 + 看图"
+        },
+        {
+          "id": "C4",
+          "condition": "漏服处理提示可解释（间隔多久内可补服）",
+          "method": "内容审查"
+        },
+        {
+          "id": "C5",
+          "condition": "正文可读性达标（主要信息 ≥28px），无文字裁切或遮挡",
+          "method": "整图实看 + 宽度断言"
+        }
+      ],
+      "visual_review": "v1 实看：页脚首行超宽 736.9>688、第二行溢出画布下缘被裁；环内三处文案压在刻度与数字 12 上；环下说明与刻度 12 重叠。v2 实看：环内已清爽，但环下说明仍压 12 标签，页脚只剩 26px 余量。v3 实看：12 标签与环下说明分离，4 个药点/勾标/针/中心读数/药列表/相互作用/漏服/页脚均无遮挡裁剪。_verify01.py 量测通过。交付审查复看：勾标位于 ①(07:30) 右下方语义正确，② 擦过其左缘约 3px，勾标字形完全可读，判定可接受并保留（07:30 与 08:00 在 24h 环上仅差 7.5°）。",
+      "request_ids": [
+        "B06-req-0001",
+        "B06-req-0002",
+        "B06-req-0003"
+      ],
+      "accepted_request_id": "B06-req-0003",
+      "iteration_ids": [
+        "B06-case-01-v1-baseline",
+        "B06-case-01-v2-visual_iteration",
+        "B06-case-01-v3-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "每种药与其服药时刻一一对应，由数据派生而非手绘定位",
+          "result": "pass",
+          "method": "数据驱动断言 + 看图",
+          "evidence": "四个药点由时刻派生，_verify01.py 量测质心偏移 ≤9.9px、角度漂移 ≤2.84°；07:30/08:00/18:00/21:30 落位正确，v1–v3 整图实看确认"
+        },
+        {
+          "id": "C2",
+          "condition": "24 小时钟面刻度准确：12 个主刻度、0/6/12/18/23 时标正确",
+          "result": "pass",
+          "method": "几何断言 + 看图",
+          "evidence": "4 个主刻度全部在位；着色带 −6°..116°（接缝外溢 ≤6°，属 arc 切线矩形固有），镜像区 37/37 保持深色轨；00/06/12/18 时标与环下说明「外圈刻度=每 2 小时」一致"
+        },
+        {
+          "id": "C3",
+          "condition": "至少 1 条药物相互作用警示，含明确处理建议而非仅告警",
+          "result": "pass",
+          "method": "内容审查 + 看图",
+          "evidence": "相互作用提醒卡含 ③ 华法林钠片 与 ④ 阿托伐他汀钙片，处理建议「两者间隔 ≥2 小时，并按医嘱复查凝血指标」——是处置方案而非仅告警"
+        },
+        {
+          "id": "C4",
+          "condition": "漏服处理提示可解释（间隔多久内可补服）",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "漏服卡「距下次服药 ≥4 小时可补服一次；不足 4 小时跳过，勿服双份」给出可解释的间隔阈值与两种情形"
+        },
+        {
+          "id": "C5",
+          "condition": "正文可读性达标（主要信息 ≥28px），无文字裁切或遮挡",
+          "result": "pass",
+          "method": "整图实看 + 宽度断言",
+          "evidence": "v1 的超宽与下缘裁切在 v3 修复，余量由 26px 回到 36px；中心读数 08:00 与 0 小时 15 分钟后由页面时间 07:45 派生自洽；交付复看无遮挡裁剪"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-01"
+    },
+    {
+      "id": "case-02",
+      "title": "一瓶不等于一份 · 营养标签的份量陷阱换算",
+      "audience": "在便利店看饮料标签的普通消费者",
+      "use_context": "货架前手持手机，3–5 秒快速扫读",
+      "user_goal": "知道喝完这一整瓶，实际摄入多少糖、多少钠",
+      "content_scope": "GB 28050「1+4」强制标示项（能量/蛋白质/脂肪/碳水化合物/钠）、每份量与净含量、整瓶换算、糖的量化可视化",
+      "viewing_environment": "货架前手持手机，3–5 秒快速扫读",
+      "content_basis": "真实锚点为 GB 28050 强制标示「1+4」项（SRC-02，已取得）；净含量、每份量、产品数值与 NRV% 均为自拟演示数据",
+      "visual_intent": "把瓶子切成五份：净含量与每份量的关系变成瓶身物理分段，倍率链 10.0 g →×5→ 50.0 g 因此有形；右侧 10 块方糖把克数翻译成可数对象，块数与克数严格成正比。",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "case_md": "case-02/case.md",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "瓶身 5 段参数化分段",
+        "倍率链文本",
+        "4 列对齐表格 + 行高亮",
+        "NRV% 由数据派生",
+        "方糖阵列（等宽等距）",
+        "上下双括号标注"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "强制标示项与 GB 28050「1+4」完全一致，不多不少",
+          "method": "与 SRC-02 逐项比对"
+        },
+        {
+          "id": "C2",
+          "condition": "份数倍率 = 净含量 ÷ 每份量，计算正确",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C3",
+          "condition": "整瓶数值 = 每份数值 × 份数，与图上数值一致",
+          "method": "断言 + 看图"
+        },
+        {
+          "id": "C4",
+          "condition": "糖的量化可视化（方糖块数）与克数成正比",
+          "method": "几何断言 + 像素量测"
+        },
+        {
+          "id": "C5",
+          "condition": "真实制度与演示数据边界在图上标明，无裁剪遮挡",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看四处缺陷：(1)「你喝掉 = 5 段」越出 hero 面板下缘 4px；(2) 方糖下括号标签被裁成「标签每 100 mL =」缺「2 块」（FIT-WARN 198>154）；(3) 页脚首行估宽 818>688；(4) 瓶身缺段号 1。v2 实看四处全修。_verify02.py 量测通过：10 块方糖全为 46px 宽、螺距 68px 完全均匀，琥珀 2/10 = 0.200 精确，上下括号 658px/114px。交付复看：2:10 比例与 10.0 g:50.0 g 严格对应。",
+      "request_ids": [
+        "B06-req-0004",
+        "B06-req-0005"
+      ],
+      "accepted_request_id": "B06-req-0005",
+      "iteration_ids": [
+        "B06-case-02-v1-baseline",
+        "B06-case-02-v2-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "强制标示项与 GB 28050「1+4」完全一致，不多不少",
+          "result": "pass",
+          "method": "与 SRC-02 逐项比对",
+          "evidence": "表中恰为 能量/蛋白质/脂肪/碳水化合物/钠 五项，不多不少；糖行另以「自愿」胶囊标出，与「1+4 强制 + 糖自愿」的制度区分一致"
+        },
+        {
+          "id": "C2",
+          "condition": "份数倍率 = 净含量 ÷ 每份量，计算正确",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "份数 = 500 ÷ 100 = 5，图上标注「份数 = 500 ÷ 100 = 5」，瓶身分段数 1–5 与之一致"
+        },
+        {
+          "id": "C3",
+          "condition": "整瓶数值 = 每份数值 × 份数，与图上数值一致",
+          "result": "pass",
+          "method": "断言 + 看图",
+          "evidence": "碳水 10.0 g/100mL × 5 = 50.0 g，表中一整瓶列与 hero 结论一致；能量 176→880 kJ、钠 12→60 mg 同样闭合"
+        },
+        {
+          "id": "C4",
+          "condition": "糖的量化可视化（方糖块数）与克数成正比",
+          "result": "pass",
+          "method": "几何断言 + 像素量测",
+          "evidence": "10 块方糖等宽 46px、等距 68px；琥珀 2 块，实心占比 2/10 = 0.200 精确；上括号 658px 对齐 10 块、下括号 114px 对齐 2 块"
+        },
+        {
+          "id": "C5",
+          "condition": "真实制度与演示数据边界在图上标明，无裁剪遮挡",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "真实锚点以独立卡片（GB 28050）与页脚双重标明，边界清楚；v1 四处裁剪/越界全部修复，交付复看无裁剪遮挡"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-02"
+    },
+    {
+      "id": "case-03",
+      "title": "这个月为什么贵了 · 阶梯电费账单解剖",
+      "audience": "收到电费账单后不明白涨幅从何而来的住户",
+      "use_context": "居家查看手机账单页，安静可细看",
+      "user_goal": "知道本月电费由哪几档构成、涨的钱落在哪一档",
+      "content_scope": "三档结构、本月与上月用电量、各档电量与单价、各档电费、增量归因",
+      "viewing_environment": "居家查看手机账单页，安静可细看",
+      "content_basis": "三档结构为制度背景；SRC-03 正文 HTTP 404 未取得，档位电量、单价、用电量与金额一律标为示例演示，不逐字引用",
+      "visual_intent": "把单价变成高度、电量变成宽度：台阶高 = 该档单价，宽 = 该档电量，面积 = 该档电费；「这个月为什么贵了」变成「多出来的面积长在哪一级」。补纵轴与 0.4/0.6/0.8 刻度使高度可读。",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "case_md": "case-03/case.md",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "阶梯面积图（面积 ∝ 单价×电量）",
+        "纵轴刻度与轴题",
+        "月度竖线与分档虚线",
+        "4 列分档明细表 + 合计条",
+        "增量归因卡",
+        "来源边界卡"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "三档结构清晰呈现，档位电量与单价标注为示例/演示",
+          "method": "内容审查"
+        },
+        {
+          "id": "C2",
+          "condition": "分档电量累加不重叠且合计等于总用电量",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C3",
+          "condition": "各档电费 = 档内电量 × 档内单价，三档合计等于账单总额",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C4",
+          "condition": "与上月对比可解释：增量明确归因到具体档位",
+          "method": "数据驱动断言 + 看图"
+        },
+        {
+          "id": "C5",
+          "condition": "台阶/柱形几何与电量数值成正比",
+          "method": "几何断言 + 看图"
+        }
+      ],
+      "visual_review": "v1 实看三处缺陷：(1) 第三档价签右缘 x=806 超出 780 画布，末字「度」被裁；(2) 上月青线 x=452 从价签文字中间穿过；(3) 纵轴无刻度无标题，图上半部留白且高度含义不可读。v2 三处全修：重排绘制顺序、价签加同色不透明底衬并改右缘对齐 PX1=700、新增纵轴 + 三刻度 + 轴题。_verify03.py 量测通过。留痕事故：v1 DSL 曾被生成器覆盖，已用 case03_v1.py 重建重渲，md5 614bf75b94c488e21632cb8a49d5e104 与原图一致（B06-req-0008）。交付复看：180×0.52=93.60、186×0.57=106.02、合计 199.62；(366−258)×0.57=61.56 与 +¥61.56 一致；400−366=34 与「距第三档还剩 34 度」一致。",
+      "request_ids": [
+        "B06-req-0006",
+        "B06-req-0007",
+        "B06-req-0008"
+      ],
+      "accepted_request_id": "B06-req-0007",
+      "iteration_ids": [
+        "B06-case-03-v1-baseline",
+        "B06-case-03-v2-visual_iteration",
+        "B06-case-03-v1-probe"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "三档结构清晰呈现，档位电量与单价标注为示例/演示",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "三档结构完整呈现，面板标注「示例档位 · 演示数据」，页脚「数据与来源边界」明确「三档电量 180/400 度与单价 0.52/0.57/0.82 元为示例演示」并说明 SRC-03 抓取 404 未取得正文"
+        },
+        {
+          "id": "C2",
+          "condition": "分档电量累加不重叠且合计等于总用电量",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "180 + 186 + 0 = 366 度，与 hero「366 度」及合计行一致，三档不重叠"
+        },
+        {
+          "id": "C3",
+          "condition": "各档电费 = 档内电量 × 档内单价，三档合计等于账单总额",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "93.60 + 106.02 + 0.00 = 199.62 元；各档 = 档内电量 × 档内单价 逐档闭合，交付复算再次确认"
+        },
+        {
+          "id": "C4",
+          "condition": "与上月对比可解释：增量明确归因到具体档位",
+          "result": "pass",
+          "method": "数据驱动断言 + 看图",
+          "evidence": "增量归因卡明确「涨价来自用量，不是单价」：两月同落第二档，108 度 × 0.57 = 61.56 元即全部增量，与 +¥61.56 自洽；并给出「距第三档还剩 34 度」的前瞻"
+        },
+        {
+          "id": "C5",
+          "condition": "台阶/柱形几何与电量数值成正比",
+          "result": "pass",
+          "method": "几何断言 + 看图",
+          "evidence": "_verify03.py 量测：一档填充右缘 349（期望 350.8）、二档 589（期望 591.4）、三档台阶顶 457（期望 457.2）、上月线 451（期望 451.7）、本月线 591（期望 591.4）、400 度虚线均值 635.0（期望 635.3）且确为断续虚线；宽度比 1.0304 ≈ 186/180、高度比 1.0973 ≈ 0.57/0.52"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-03"
+    },
+    {
+      "id": "case-04",
+      "title": "箭头之外 · 检验报告的参考区间定位",
+      "audience": "拿到化验单、只看到 ↑↓ 箭头而焦虑的患者",
+      "use_context": "A4 打印或手机查看，近距离细读，允许更高信息密度",
+      "user_goal": "知道自己偏离参考区间多少、偏离方向，以及这是否等于有病",
+      "content_scope": "若干检验项目（含正常项与异常项）、每项的结果/单位/参考区间、偏离幅度、口径说明",
+      "viewing_environment": "A4 打印或手机查看，近距离细读，允许更高信息密度",
+      "content_basis": "项目名与参考区间为常见检验项目的通用表述；具体结果数值为自拟演示数据，不代表任何真实检验报告",
+      "visual_intent": "把点放回带子里：参考区间是一条带，结果是落在带内或带外的位置，偏离量是带外彩色段的长度；方向由位置承担而非颜色单独承担。",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "case_md": "case-04/case.md",
+      "dimensions": [
+        1240,
+        1754
+      ],
+      "accepted_version": "v1",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "7 行参考区间带（各自独立标尺）",
+        "带外彩色段长度 ∝ 偏离量",
+        "三级视觉层次（带内竖线/左蓝/右红）",
+        "界值数字定位",
+        "图例层",
+        "演示数据红章"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "每个项目包含 项目名/结果/单位/参考区间 四要素",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C2",
+          "condition": "参考区间带上的标记位置与数值成正比（含区间外的位置）",
+          "method": "几何断言 + 像素量测"
+        },
+        {
+          "id": "C3",
+          "condition": "超出项标注偏离方向与幅度（相对参考区间边界的差值）",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C4",
+          "condition": "单位与参考区间口径一致，不混用单位",
+          "method": "断言"
+        },
+        {
+          "id": "C5",
+          "condition": "标明演示数据边界并说明箭头不等于诊断，无裁剪遮挡",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "单版本首版达标，经整图实看 + 像素核验后接受，未制造无意义修改。_verify04.py 量测全部通过：7 条带左右缘与期望完全一致（470..703，ALT 因下限截断 412..684），标记落点误差 ≤0.7px，落点比例最大偏差 0.008。交付复看：TC 与 K 同为偏离 0.2，两段色块都很短且长度相近；UA 偏离 58，红段明显长得多——三种量纲被统一到「偏离多远」这一个可比维度。",
+      "request_ids": [
+        "B06-req-0009"
+      ],
+      "accepted_request_id": "B06-req-0009",
+      "iteration_ids": [
+        "B06-case-04-v1-baseline"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "每个项目包含 项目名/结果/单位/参考区间 四要素",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "7 个项目各含 项目名+缩写 / 结果+单位 / 参考区间 / 偏离量，含正常项（GLU/ALT/HbA1c）与异常项（HGB/TC/UA/K）"
+        },
+        {
+          "id": "C2",
+          "condition": "参考区间带上的标记位置与数值成正比（含区间外的位置）",
+          "result": "pass",
+          "method": "几何断言 + 像素量测",
+          "evidence": "标记落点误差 ≤0.7px，落点比例最大偏差 0.008；区间外位置按同一标尺延伸（UA 486 落在带右长红段末端）"
+        },
+        {
+          "id": "C3",
+          "condition": "超出项标注偏离方向与幅度（相对参考区间边界的差值）",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "超出项均标注方向与幅度：HGB 偏离 ↓12 g/L、TC ↑0.2 mmol/L、UA ↑58 µmol/L、K ↓0.2 mmol/L；正常项标「在参考区间内」"
+        },
+        {
+          "id": "C4",
+          "condition": "单位与参考区间口径一致，不混用单位",
+          "result": "pass",
+          "method": "断言",
+          "evidence": "每行单位与参考区间口径一致（g/L、mmol/L、U/L、μmol/L、%），无混用；界值数字分别落在各自带端下方"
+        },
+        {
+          "id": "C5",
+          "condition": "标明演示数据边界并说明箭头不等于诊断，无裁剪遮挡",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "演示数据红章「非真实报告」+ 读法与边界卡「↑↓ 只表示与参考区间的关系，不等于诊断」；交付复看无裁剪遮挡，μ 与 ↑↓ 均正常渲染无豆腐块"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-04"
+    },
+    {
+      "id": "case-05",
+      "title": "「0 手续费」的真实成本 · 分期现金流解剖",
+      "audience": "被分期页面「0 手续费 / 每期仅 83.3 元」吸引的消费者",
+      "use_context": "购物结算页手持手机，决策时刻，注意力有限",
+      "user_goal": "知道分期 12 期实际付出的年化成本，以及与一次性付清差多少",
+      "content_scope": "本金、名义手续费率、每期还款、总还款额、实际年化利率(IRR)、一次性付清对比",
+      "viewing_environment": "购物结算页手持手机，决策时刻，注意力有限",
+      "content_basis": "本金 1000 元、12 期、每期名义费率 0.60% 为自拟演示数据；IRR 按等额本息现金流实际求解（300 次二分法收敛），非估算",
+      "visual_intent": "把一条现金流拆成堆叠柱：每期还款拆为本金段与手续费段，总还款与本金的差额成为可见的一段颜色；剩余本金逐期递减，使「本金在减少但手续费不变」不言自明——这正是名义利率与 IRR 分道扬镳的原因。",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "case_md": "case-05/case.md",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "同一比例尺费率条（40px/百分点）",
+        "12 期堆叠柱（本金+手续费）",
+        "剩余本金递减柱",
+        "零截距最小二乘拟合校验",
+        "占比条 12 倍对比",
+        "算法与边界注记"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "名义费率与实际年化利率同时呈现，IRR 由现金流真实求解",
+          "method": "数值断言（二分法求根）"
+        },
+        {
+          "id": "C2",
+          "condition": "现金流逐期呈现且本金余额逐期递减",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C3",
+          "condition": "总还款额 = 本金 + 手续费合计，与逐期之和相等",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C4",
+          "condition": "与一次性付清的差额明确可比",
+          "method": "数据驱动断言 + 看图"
+        },
+        {
+          "id": "C5",
+          "condition": "几何条与金额成正比，无裁剪遮挡",
+          "method": "几何断言 + 看图"
+        }
+      ],
+      "visual_review": "v1 实看：右下角尾差注记「末期本金 83.37 补尾差」与「12 期」轴标签同排，字形互相穿插。v2 实看：尾差注记移至每期还款小标题行右端（末期 89.37 补尾差），与轴标签完全分离，穿插消失；首末两根柱同时高亮。_verify05.py 量测 + 数值核对通过。交付复看：每期 89.33 = 83.33 + 6.00；11×89.33 = 982.63，1072 − 982.63 = 89.37 与图上一致；1072.00 = 1000.00 + 72.00。",
+      "request_ids": [
+        "B06-req-0010",
+        "B06-req-0011"
+      ],
+      "accepted_request_id": "B06-req-0011",
+      "iteration_ids": [
+        "B06-case-05-v1-baseline",
+        "B06-case-05-v2-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "名义费率与实际年化利率同时呈现，IRR 由现金流真实求解",
+          "result": "pass",
+          "method": "数值断言（二分法求根）",
+          "evidence": "三费率并列呈现：名义月 0.60%、名义年化 7.20%、实际年化 IRR 13.84%；IRR 月 1.086185% 对 12 期现金流现值 = 1000.00 精确闭合"
+        },
+        {
+          "id": "C2",
+          "condition": "现金流逐期呈现且本金余额逐期递减",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "12 根剩余本金柱高 112→9px 严格递减，零截距最小二乘拟合 k = 0.112025（期望 0.112000）、截距 −0.01px，证明柱高正比于剩余本金；12 根还款柱本金 112px / 手续费 8px 全等"
+        },
+        {
+          "id": "C3",
+          "condition": "总还款额 = 本金 + 手续费合计，与逐期之和相等",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "总还款 1072.00 = 本金 1000.00 + 手续费 72.00（6.00 × 12 期），与逐期之和相等；末期 89.37 补尾差由 1072 − 11×89.33 派生"
+        },
+        {
+          "id": "C4",
+          "condition": "与一次性付清的差额明确可比",
+          "result": "pass",
+          "method": "数据驱动断言 + 看图",
+          "evidence": "一次性付清 1000.00 与分期总还款 1072.00 并列，差额 +72.00 元（本金的 7.20%）；总额条 522/560 = 1072/1000，差段按比例呈现"
+        },
+        {
+          "id": "C5",
+          "condition": "几何条与金额成正比，无裁剪遮挡",
+          "result": "pass",
+          "method": "几何断言 + 看图",
+          "evidence": "三费率条宽 24/288/553px = 40px 每百分点，名义月比恰 12.00 倍、实际/名义 1.920 ≈ 1.9225；占比条 46/560 = 12 倍；v1 字形穿插在 v2 修复，交付复看无裁剪遮挡"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-05"
+    },
+    {
+      "id": "case-06",
+      "title": "70% 不是 70% 的时间 · 降水概率解读",
+      "audience": "看到「降水概率 70%」却不知要不要带伞的市民",
+      "use_context": "出门前查看天气页，3–5 秒决策；浅色天空主题，符合户外光照",
+      "user_goal": "正确理解降水概率的含义，不再把它读成下雨时长",
+      "content_scope": "降水概率定义（预报区域/36 小时/0.01mm 门槛）、100 格概率阵列、三类常见误读及纠正",
+      "viewing_environment": "出门前查看天气页，3–5 秒决策；浅色天空主题，符合户外光照",
+      "content_basis": "定义逐字取自 SRC-01（维基百科「降水概率」条目，CC BY-SA 4.0），繁体原文照录并标注；天气数值为演示数据",
+      "visual_intent": "把概率画成 100 个可能：100 格阵列而非柱状图。格子没有轴，只能被读成份数，从而在几何上排除「70% 的时间」这种读法。7 行满着色 + 3 行留白使边界清晰到不需要数。",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "case_md": "case-06/case.md",
+      "dimensions": [
+        780,
+        1688
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "100 格参数化阵列（逐格中心色可量测）",
+        "逐字引文面板 + 原文照录标注",
+        "三要素 chips",
+        "误读/纠正对照层",
+        "出处与边界卡"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "定义三要素（预报区域/36 小时/0.01mm）与 SRC-01 一致",
+          "method": "与 SRC-01 逐字比对"
+        },
+        {
+          "id": "C2",
+          "condition": "100 格阵列中着色格数等于降水概率数值",
+          "method": "数据驱动断言 + 像素量测"
+        },
+        {
+          "id": "C3",
+          "condition": "三类误读（降水时间/降雨量/降雨面积）逐条纠正",
+          "method": "与 SRC-01 比对"
+        },
+        {
+          "id": "C4",
+          "condition": "不把概率换算成『会下多久』或『雨有多大』",
+          "method": "内容审查"
+        },
+        {
+          "id": "C5",
+          "condition": "几何与数值成正比，无裁剪遮挡",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看：定义引文为繁体原文照录，面板标题未说明，简体读者可能误认为用字错误。v2 实看：面板标题追加「（原文照录）」，其余与 v1 一致，全图无其他变化——判定 v1 的其余部分已达标，不制造额外迭代。_verify06.py 像素核验通过：100 格逐格取中心色，行计数 [10×7, 0×3] 合计 70 格。交付复看：格子阵列无横轴，几何上无法读成时长；引文三要素逐项在原文内命中。",
+      "request_ids": [
+        "B06-req-0012",
+        "B06-req-0013"
+      ],
+      "accepted_request_id": "B06-req-0013",
+      "iteration_ids": [
+        "B06-case-06-v1-baseline",
+        "B06-case-06-v2-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "定义三要素（预报区域/36 小时/0.01mm）与 SRC-01 一致",
+          "result": "pass",
+          "method": "与 SRC-01 逐字比对",
+          "evidence": "定义引文「預報區域在36小時內，出現0.01mm或以上降水的機率。」在 SRC-01 原文中逐字命中；三要素 chips（预报区域/36 小时内/0.01mm 或以上）逐项在引文内"
+        },
+        {
+          "id": "C2",
+          "condition": "100 格阵列中着色格数等于降水概率数值",
+          "result": "pass",
+          "method": "数据驱动断言 + 像素量测",
+          "evidence": "_verify06.py 逐格取中心色，行计数 [10×7, 0×3] 合计 70 格 = 降水概率 70%；网格左右留白各 54px 居中、格间空隙留白未被填"
+        },
+        {
+          "id": "C3",
+          "condition": "三类误读（降水时间/降雨量/降雨面积）逐条纠正",
+          "result": "pass",
+          "method": "与 SRC-01 比对",
+          "evidence": "三类误读逐条纠正：降水时间（与降水时间无关）、降雨量（门槛只是 0.01mm 或以上是否达到）、降雨面积（说的是预报区域出现降水的机率）；与引文原句「和降水時間、降雨量、降雨面積無關」对应"
+        },
+        {
+          "id": "C4",
+          "condition": "不把概率换算成『会下多久』或『雨有多大』",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "对 31 条渲染文本做「时长/雨量/面积」换算审查通过——全图没有把概率换算成会下多久或雨有多大；页脚亦声明「不把概率换算成时长或雨量」"
+        },
+        {
+          "id": "C5",
+          "condition": "几何与数值成正比，无裁剪遮挡",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "定义引文墨迹 x=83..570 未越右 margin 710；四面板左右边缘齐备且横向 46..733 在画布内；三枚 chips 数值右缘 275/492/709 均在各自边界内；上下边缘为背景色未被裁剪"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-06"
+    },
+    {
+      "id": "case-07",
+      "title": "换乘 500 米是几分钟 · 地铁换乘时间轴",
+      "audience": "在换乘站赶时间的通勤者",
+      "use_context": "行走中单手横持手机，视线在屏幕与通道间切换，需快速扫读大字",
+      "user_goal": "知道这次换乘实际要花几分钟、其中有多少是垂直移动",
+      "content_scope": "换乘步行距离与步速假设、分段耗时、无障碍/电梯路径、末班车余量",
+      "viewing_environment": "行走中单手横持手机，视线在屏幕与通道间切换，需快速扫读大字",
+      "content_basis": "站点、线路、距离为自拟演示数据；步速 1.2 m/s 在图上明确标注为演示假设，并注明楼梯/电梯按段计时",
+      "visual_intent": "把换乘铺成两条并排轨道：段长 = 段耗时，谁长谁短是看出来的；橙 = 楼梯、绿 = 电梯、蓝 = 步行，垂直移动因此在颜色上被单独认出。轨道外的刻度轴把分钟数锚定在几何上。",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "case_md": "case-07/case.md",
+      "dimensions": [
+        1688,
+        780
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "双轨分段条（段长 = 秒数 × 固定比例）",
+        "0..8 分钟刻度轴",
+        "段内 mm:ss + 段下算法式",
+        "颜色编码垂直/水平移动",
+        "三张汇总卡",
+        "步速假设面板"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "步行时间 = 距离 ÷ 步速，且步速假设在图上标明",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C2",
+          "condition": "时间轴几何长度与分钟数成正比",
+          "method": "几何断言 + 看图"
+        },
+        {
+          "id": "C3",
+          "condition": "换乘环节完整，含电梯/无障碍路径及其耗时",
+          "method": "内容审查"
+        },
+        {
+          "id": "C4",
+          "condition": "末班车余量信息可解释（当前时刻到末班的余量）",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C5",
+          "condition": "横屏大字可读，无裁剪遮挡",
+          "method": "整图实看 + 宽度断言"
+        }
+      ],
+      "visual_review": "v1 实看四处缺陷：(1) 刻度标签与页脚 FAINT #5B7183 在深底上对比约 3.5:1 偏低；(2) 段下算法式 12px 偏小不利横屏速读；(3) 末班卡第三行「扣换乘 6 分 35 秒后仍有」悬空指代；(4) 步速面板未说明楼梯/电梯不按步速计。v2 四处全修：FAINT 提亮为 #6E8798（约 5.8:1）、12→13px、改为「已扣除换乘 6 分 35 秒」、追加「楼梯/电梯按段计时」。_verify07.py 全部通过。交付复算：60+75+150+70+40 = 395s = 6分35秒；60+85+180+75+40 = 440s = 7分20秒；1680 − 395 = 1285s = 21分25秒。",
+      "request_ids": [
+        "B06-req-0014",
+        "B06-req-0015"
+      ],
+      "accepted_request_id": "B06-req-0015",
+      "iteration_ids": [
+        "B06-case-07-v1-baseline",
+        "B06-case-07-v2-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "步行时间 = 距离 ÷ 步速，且步速假设在图上标明",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "步行时间 = 距离 ÷ 步速逐段闭合（72÷1.2=60s、180÷1.2=150s、216÷1.2=180s、48÷1.2=40s）；步速假设在图上右上面板标明为演示，并注明「楼梯/电梯按段计时」"
+        },
+        {
+          "id": "C2",
+          "condition": "时间轴几何长度与分钟数成正比",
+          "result": "pass",
+          "method": "几何断言 + 看图",
+          "evidence": "实测每段像素宽 = 秒数 × 2.6417px/s（蓝 60s=158px、橙 75s=198px、绿 85s=225px）；轨总长 1044px 与 1163px 分别正比于 395s 与 440s；9 个分钟刻度实测 [379,538,696,855,1013,1172,1330,1489,1647] 与 380+i×60×2.6417 逐一吻合（±3px）"
+        },
+        {
+          "id": "C3",
+          "condition": "换乘环节完整，含电梯/无障碍路径及其耗时",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "两条路径各 5 段完整：常规含 2 段橙色楼梯（75s/70s），无障碍含 2 段绿色电梯（85s/75s）与 3 段步行；电梯段标注「等候 40 + 运行 45」等构成"
+        },
+        {
+          "id": "C4",
+          "condition": "末班车余量信息可解释（当前时刻到末班的余量）",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "末班余量 1680s（23:12→23:40 = 28 分钟）− 换乘 395s = 1285s = 21 分 25 秒，大数字墨迹 232×44px 渲染到位，卡内注明「已扣除换乘 6 分 35 秒」"
+        },
+        {
+          "id": "C5",
+          "condition": "横屏大字可读，无裁剪遮挡",
+          "result": "pass",
+          "method": "整图实看 + 宽度断言",
+          "evidence": "60 条文本全部通过宽度断言，无 FIT-WARN；四周边距逐像素扫描零越界，步速面板右缘恰在 1648"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-07"
+    },
+    {
+      "id": "case-08",
+      "title": "登机前一小时在做什么 · 登机牌与状态时间轴",
+      "audience": "遇到航班延误、不确定还要等多久的旅客",
+      "use_context": "候机厅笔记本或大屏，2–3 米距离，横屏",
+      "user_goal": "知道当前处于哪个环节、延误原因、以及登机口是否变更",
+      "content_scope": "登机牌要素（航班号/日期/登机口/座位/登机时间）、状态时间轴、延误原因与新的预计时间",
+      "viewing_environment": "候机厅笔记本或大屏，2–3 米距离，横屏",
+      "content_basis": "航班号、时刻、登机口、座位均为自拟演示数据，不指向任何真实航班；条码为示意图形并标注非真实值机码",
+      "visual_intent": "把两种证件叠在同一屏：左侧是静态不变的事实（登机口、座位没变），右侧是正在变化的状态（延误、新时刻、时间轴）。左右分区本身传达「改的是时间，不是位置」；时间轴的关键不是节点而是「你在这里」。",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "case_md": "case-08/case.md",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "accepted_version": "v2",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "登机牌卡片版式 + 大号高亮格",
+        "示意条码",
+        "红色延误状态块 + 强调条",
+        "五节点状态时间轴（四色圆点）",
+        "当前节点高亮带 + 药丸",
+        "派生时刻（延误由相减得出）"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "登机牌五要素齐全（航班号/日期/登机口/座位/登机时间）",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C2",
+          "condition": "状态时间轴各节点时刻严格递增",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C3",
+          "condition": "延误状态明确，含原因与新的预计时间",
+          "method": "内容审查"
+        },
+        {
+          "id": "C4",
+          "condition": "登机口与座位在登机牌与状态区保持一致",
+          "method": "断言"
+        },
+        {
+          "id": "C5",
+          "condition": "演示数据边界标明，无裁剪遮挡",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看：用户目标是「知道现在处于哪个环节」，但时间轴上当前节点（18:32）没有显式标记，读者需自行拿当前时间比对。v2 实看：18:32 节点后加淡橙高亮带（744-1386×572-637）与「现在」药丸，标题与说明框 440→340 让出药丸位，框宽 340 内无溢出。_verify08.py 全部通过。交付复看：19:35 − 18:40 = 55 分钟与「延误 55 分钟」一致；登机时间 19:15（新预计）与时间轴第 4 节点一致；A15/32C 在四处出现且一致。",
+      "request_ids": [
+        "B06-req-0016",
+        "B06-req-0017"
+      ],
+      "accepted_request_id": "B06-req-0017",
+      "iteration_ids": [
+        "B06-case-08-v1-baseline",
+        "B06-case-08-v2-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "登机牌五要素齐全（航班号/日期/登机口/座位/登机时间）",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "五要素各自渲染且位于独立浅蓝高亮格：航班号 XA 2049 墨迹 1186px、日期 10 月 26 日 1548px、登机时间 19:15（新预计）2205px、登机口 A15 1157px（大字 32px 字高）、座位 32C 1218px"
+        },
+        {
+          "id": "C2",
+          "condition": "状态时间轴各节点时刻严格递增",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "五时刻墨迹 bbox 由上而下严格递增（y 450/520/590/660/730）且逐一右对齐至 x=874；圆点颜色依次 绿/红/橙/蓝/蓝 对应 已完成/已延误/当前/待办；四段连接线齐备"
+        },
+        {
+          "id": "C3",
+          "condition": "延误状态明确，含原因与新的预计时间",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "延误块含原因（目的地机场雷雨绕飞，非本场天气）与新预计时间（19:35）；延误 55 分钟由 19:35 减 18:40 派生而非硬编码；红色强调条 + 4649px 红色墨迹"
+        },
+        {
+          "id": "C4",
+          "condition": "登机口与座位在登机牌与状态区保持一致",
+          "result": "pass",
+          "method": "断言",
+          "evidence": "登机口与座位在 登机牌两格、状态块（登机口 A15（未变）· 座位 32C）、时间轴说明（18:10 与 19:15 两行）共四处全部呈现且一致"
+        },
+        {
+          "id": "C5",
+          "condition": "演示数据边界标明，无裁剪遮挡",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "边界说明、页头「演示数据 · 非真实航班」与登机牌「自拟演示数据」药丸均在；四周边距逐像素扫描零越界，条码墨迹限于卡片内 x64–675"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-08"
+    },
+    {
+      "id": "case-09",
+      "title": "为什么它排第一 · 联赛积分榜的净胜球规则",
+      "audience": "看联赛积分榜却分不清同分球队排序依据的球迷",
+      "use_context": "客厅大屏，3–5 米距离，字号与对比必须强；球迷会逐队核对",
+      "user_goal": "知道两队同分时按什么规则排出先后",
+      "content_scope": "若干球队的赛/胜/平/负/进/失/净胜球/积分、排序规则逐级判定、净胜球几何可视化",
+      "viewing_environment": "客厅大屏，3–5 米距离，字号与对比必须强；球迷会逐队核对",
+      "content_basis": "球队名称与战绩为自拟演示数据（虚构联赛，已在图上标注），8 队全部 14 场共 56 场；判定规则为通行的 积分→净胜球→进球",
+      "visual_intent": "把三档规则变成一条看得见的判定链 + 一根零轴：规则链面板给出判定顺序，双向零轴让净胜球成为「从中间往哪边长、长多远」。同分组用一整条连续色带（而非三个分离高亮块），因为规则说的是「这三队同分」。",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "case_md": "case-09/case.md",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "accepted_version": "v3",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "11 列积分榜（九列对齐核验）",
+        "双向零轴比例条（正右负左）",
+        "连续同分色带",
+        "逐级判定链面板",
+        "并列连接线 + 标注",
+        "数据自洽断言（联赛级）"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "排序按 积分→净胜球→进球 逐级判定，且由数据派生",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C2",
+          "condition": "积分 = 胜×3 + 平×1，与赛/胜/平数自洽",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C3",
+          "condition": "净胜球 = 进球 − 失球，与进失球自洽",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C4",
+          "condition": "净胜球以几何条呈现，条长与数值成正比（含正负方向）",
+          "method": "几何断言 + 看图"
+        },
+        {
+          "id": "C5",
+          "condition": "大屏 3-5 米可读，无裁剪遮挡",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看两处缺陷：(1) 同分组用三个独立圆角色块，块间 6px 缝隙使其读作「三行各自高亮」而非「一个同分整体」；(2) 云岭与沁水同为 +10 这一第 2 级关键事实只能靠肉眼比对条长。v2 实看：连续色带 + 连接线 + 「+10」标注已生效，但**同分色带 #E8F2FB 与页面底色 #EDF1F5 在蓝绿通道仅差 5/255、1/255，3–5 米对比过弱，且验证时两者不可靠区分**——这是唯一一处「验证手段本身失效」。v3 加深为 #D9E8F6（差 20/255）并把并列标注 15→17px。_verify09.py 全部通过。交付复算：八队胜平负之和均 14，积分 = 胜×3+平 与净胜球 = 进−失 逐队闭合，联赛级 总胜 40 = 总负 40、总平 32 偶数、总进球 120 = 总失球 120。",
+      "request_ids": [
+        "B06-req-0018",
+        "B06-req-0019",
+        "B06-req-0020"
+      ],
+      "accepted_request_id": "B06-req-0020",
+      "iteration_ids": [
+        "B06-case-09-v1-baseline",
+        "B06-case-09-v2-visual_iteration",
+        "B06-case-09-v3-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "排序按 积分→净胜球→进球 逐级判定，且由数据派生",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "排序由 (−积分, −净胜球, −进球) 从数据派生；第 2 级生效（云岭与沁水同 24 分同 +10）与第 3 级生效（进球 22 对 19）均被断言；规则链面板在图上显式给出三级顺序"
+        },
+        {
+          "id": "C2",
+          "condition": "积分 = 胜×3 + 平×1，与赛/胜/平数自洽",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "8 队 胜+平+负 = 赛 逐队闭合（均 14 场）；积分 = 胜×3+平 逐队闭合（24/24/24/22/19/16/12/11）；同分三队积分墨迹尺寸完全一致（47×29）"
+        },
+        {
+          "id": "C3",
+          "condition": "净胜球 = 进球 − 失球，与进失球自洽",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "净胜球 = 进球 − 失球 逐队闭合（+10/+10/+6/+3/−1/−5/−11/−12）；联赛级总胜 = 总负 = 40、总平 32 为偶数、总进球 = 总失球 = 120、共 56 场，数据自洽"
+        },
+        {
+          "id": "C4",
+          "condition": "净胜球以几何条呈现，条长与数值成正比（含正负方向）",
+          "result": "pass",
+          "method": "几何断言 + 看图",
+          "evidence": "八条比例条实测 249/249/150/75/25/125/275/300px = |净胜球|×25px/球（取整误差 ≤1px）；正条左端恒在零轴 x=1560、负条右端恒在零轴，条高均 34px；并列两队条长像素级完全相等（249 = 249），苍梧条恰短 100px 即 4 球差；零轴自 334 至 952 连续 478 行；并列连接线 x=1810 贯穿 355–479 共 125 行；同分色带 342–569 共 228px 恰覆盖前三行，第 4 行起完全未着色"
+        },
+        {
+          "id": "C5",
+          "condition": "大屏 3-5 米可读，无裁剪遮挡",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "九列对齐核验：球队列左对齐 x≈150，其余八列右对齐至 547/637/717/797/877/977/1077/1207；积分字高 29px 明显大于统计列 20px 满足大屏层级；v2→v3 把色带与底色差值由 5/255 提到 20/255；表格元素无一越过 1880 内容列，四周边距逐像素扫描零越界"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-09"
+    },
+    {
+      "id": "case-10",
+      "title": "再停 20 分钟会多多少钱 · 停车计费分段曲线",
+      "audience": "在商场地下车库、不确定要不要再停一会儿的车主",
+      "use_context": "车内或车库入口查看，中距离，注意力在「要不要再逛一会儿」",
+      "user_goal": "知道当前已停时长的费用、以及再停多久会跨档多花钱",
+      "content_scope": "分段费率规则（首小时 + 后续每半小时）、当前时长与费用、费用-时间曲线、跨档临界时刻提示",
+      "viewing_environment": "车内或车库入口查看，中距离，注意力在「要不要再逛一会儿」",
+      "content_basis": "费率与场所均为自拟演示数据，不指向任何真实停车场或收费政策；计费模型 cost(t) = 6 if t≤60 else 6 + ceil((t−60)/30)×4",
+      "visual_intent": "把费率画成一段段爬升的楼梯：水平段 = 这段时间费用不变，竖直攀升 = 跨档瞬间。「什么时候跳价」从解不等式变成曲线上三根一眼可指的虚线。关键在于必须画出攀升本身——只有水平段的话，读者看到的是四个互不相关的高度。",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "case_md": "case-10/case.md",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "accepted_version": "v4",
+      "supporting_assets": [],
+      "asset_note": "无嵌入素材，纯 DSL；本题 asset_policy 为 dsl_primary_with_supporting_assets，允许局部辅助素材但未使用",
+      "dsl_capabilities": [
+        "右连续阶梯曲线（段长 ∝ 分钟，段高 ∝ 元）",
+        "跨档橙色虚线 + 时刻标注",
+        "当前标记 + 派生时刻",
+        "生成期重叠/越界断言",
+        "左栏三面板",
+        "答案条 + 边界声明"
+      ],
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "分段费率规则明确（首小时与后续单价分别标注）",
+          "method": "内容审查"
+        },
+        {
+          "id": "C2",
+          "condition": "费用 = 分段累加，各段金额与费率自洽",
+          "method": "数据驱动断言"
+        },
+        {
+          "id": "C3",
+          "condition": "费用-时间曲线几何与计算结果成正比（逐点校验）",
+          "method": "几何断言 + 像素量测"
+        },
+        {
+          "id": "C4",
+          "condition": "跨档临界时刻明确提示（再停多久会多花钱）",
+          "method": "数据驱动断言 + 看图"
+        },
+        {
+          "id": "C5",
+          "condition": "演示数据边界标明，无裁剪遮挡",
+          "method": "整图实看"
+        }
+      ],
+      "visual_review": "v1 实看：四档水平线与三面板正常，几何初测与推导吻合；但**三处跨档竖向攀升线只调用未 append 入图层**，曲线只画出四条水平档位、看不出价格在何处跳升——该缺陷由 _probe10.py 定点扫描发现（三处橙色像素计数为 0），若无探针，「渲染成功 + 整图看起来正常」会掩盖它。v2 实看：攀升线已绘出，但当前点标注（右对齐 x789–1009，y470–496）正落在 t=61 攀升线的 440–520 区间内，橙色虚线从「现在 88」几个字中间穿过；移至标记线右侧并建立生成期碰撞断言。v3 实看：91 与 121 带时刻标注而 61 没有，不一致会被读成遗漏；补上同格式标注并纳入既有断言。v4 实看：三处攀升全部带标注，47 条文本通过宽度断言，版面止于 888/900。交付独立复测（重新取像素，不引用原断言）：标记中心 x=1021（期望 1021.1）、三处攀升 x=874/1038/1202（期望 873.5/1037.5/1201.5），偏差均 ≤1.5px；计费模型独立复算 cost(88)=10、next_jump=91、cost(108)=14、cost(121)=18 全部一致。",
+      "request_ids": [
+        "B06-req-0021",
+        "B06-req-0022",
+        "B06-req-0023",
+        "B06-req-0024"
+      ],
+      "accepted_request_id": "B06-req-0024",
+      "iteration_ids": [
+        "B06-case-10-v1-baseline",
+        "B06-case-10-v2-visual_iteration",
+        "B06-case-10-v3-visual_iteration",
+        "B06-case-10-v4-visual_iteration"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "plan-v1 2026-10-21T13:45:00+08:00（tmp/run-20261011-01/B06/plan-v1.json，established_before_first_render=true）",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "condition": "分段费率规则明确（首小时与后续单价分别标注）",
+          "result": "pass",
+          "method": "内容审查",
+          "evidence": "费率规则面板分层标注：首 60 分钟（含）¥6 一口价、之后每 30 分钟 ¥4 / 30 分钟、不足 30 分钟按 30 分钟计；曲线四档上方另标单价（首 60 分钟 ¥6 / 每 30 分钟 ¥4 ×3），卡片与曲线上分别标注两个费率；首档价格墨迹 28px、后续 30px 明显高于标签 ≤20px"
+        },
+        {
+          "id": "C2",
+          "condition": "费用 = 分段累加，各段金额与费率自洽",
+          "result": "pass",
+          "method": "数据驱动断言",
+          "evidence": "以公式法与逐段累加法两种独立实现对 1–150 分钟逐分钟断言计费一致；并断言 88→¥10、91/120→¥14、108→¥14、121→¥18；左栏拆解三行（首 60 分钟 ¥6 / 之后 28 分钟→1 个 30 分钟 ¥4 / 当前费用 ¥10），总额 ¥10 墨迹 28px 压过单段 ¥6 的 19px 达 9px，分隔线 350px 连续"
+        },
+        {
+          "id": "C3",
+          "condition": "费用-时间曲线几何与计算结果成正比（逐点校验）",
+          "result": "pass",
+          "method": "几何断言 + 像素量测",
+          "evidence": "四档水平线实测中线 y=519.5/439.5/359.5/279.5，反算费用 6.025/10.025/14.025/18.025（取整误差 0.025 元），档间落差均恰为 80px 即 20px/元；横向 536–872/870–1036/1034–1200/1198–1359 与推导边界 540/873.5/1037.5/1201.5/1360 吻合；**13 个采样时刻**（0/30/59/60/61/75/90/91/105/120/121/135/150 分钟）逐一验证其对应档位确为蓝色曲线像素；横轴 806px、纵轴 375/375px 完整"
+        },
+        {
+          "id": "C4",
+          "condition": "跨档临界时刻明确提示（再停多久会多花钱）",
+          "result": "pass",
+          "method": "数据驱动断言 + 看图",
+          "evidence": "三段攀升各 39 行橙色像素，分别跨越 451–519/371–439/291–359 且两端接到上下档；当前标记中心 x=1021.1 与推导 1021.07 吻合，297 个红像素自 436 贯穿至 639 落到横轴；图上 61/91/121/现在 四处标注齐备；答案主句「再停 20 分钟：¥10 → ¥14，多花 ¥4」墨迹 4226、高 32px，解释行指出下一次跳价在 91 分钟（再停 3 分钟），到 108 分钟已跨过这一档，若停到 121 分钟才会再跳到 ¥18"
+        },
+        {
+          "id": "C5",
+          "condition": "演示数据边界标明，无裁剪遮挡",
+          "result": "pass",
+          "method": "整图实看",
+          "evidence": "边界声明框 (42,864,502,878) 与演示徽标 (1180,34,1399,77) 均在；五个面板均在画布内；四周边距逐像素扫描零越界，内容区外无深色墨迹"
+        }
+      ],
+      "problem_evidence_ref": "problem-evidence.json#PE-10"
+    }
+  ],
+  "final_collection_review": {
+    "reviewed_at": "2026-10-21T17:45:00+08:00",
+    "method": "全部十件定版打包完成后，在交付尺寸下逐张重新打开最终 PNG 重新判断，不引用迭代期结论；同时对关键几何主张用独立脚本重新取像素复测（不引用 _verifyNN.py 的原断言），对数据主张做独立重算。",
+    "checks": [
+      "十张 final.png 全部实际打开查看，无一以文件存在或渲染成功代替",
+      "case-01 放大复看勾标归属：勾标位于 ①(07:30) 右下方，语义正确；② 擦过左缘约 3px，勾标字形完全可读，判定可接受并保留",
+      "case-03 / case-05 / case-06 / case-07 / case-09 / case-10 图上所有派生数字独立重算，全部闭合",
+      "case-10 用独立脚本复测：标记中心 x=1021（期望 1021.1），三处攀升 x=874/1038/1202（期望 873.5/1037.5/1201.5），偏差 ≤1.5px",
+      "十件尺寸/内容/数据/几何/效果逐项核对，无遮挡、裁剪、豆腐块或内容缺失",
+      "十张最终 PNG 均为 open-snapshot 服务原始响应字节，md5 与源响应一致，未做任何后处理"
+    ],
+    "independence": {
+      "verdict": "独立",
+      "detail": "十件分属十个不同的日常信息问题，没有两件解决同一类内容/状态/媒介/任务。同为 780×1688 的五件（case-01/02/03/05/06）主结构完全不同：24 小时环面 /5 段瓶身 / 台阶面积 / 堆叠现金流 / 100 格阵列，不存在同版式换色或缩放裁切。尺寸分布：780×1688 ×5、1240×1754 ×1、1688×780 ×1、1440×900 ×2、1920×1080 ×1。"
+    },
+    "visual_claims_that_held": [
+      "case-06 的 100 格阵列：格子没有时间轴，『70% 的时间』在几何上无从读起——隐喻本身就是论证",
+      "case-02 的上下双括号：既是标注也是量度，2:10 的比例由方糖块数保证",
+      "case-03 的台阶面积：单价 × 电量 = 电费，三个量同时可见，乘法无需信任",
+      "case-04 的带外段长：三种量纲被统一到『偏离多远』这一个可比维度",
+      "case-08 的左右分区：在读到文字之前就已传达『改的是时间，不是位置』"
+    ],
+    "claims_revised_during_work": [
+      "case-09 同分色带对比度：#E8F2FB 与底色 #EDF1F5 仅差 5/255，验证时本身不可靠区分；v3 加深至 #D9E8F6（差 20/255）",
+      "case-09 同分组版式：三个独立色块（块间 6px 缝隙）读作『三行各自高亮』而非『一个同分整体』；v2 改为一条连续色带",
+      "case-10 三处攀升线：v1 只调用未 append，曲线只画出四条水平档位——由像素探针发现；v2 补线后『跳价』才真正可见",
+      "case-08 当前节点：v1 无显式标记，读者需自行比对时间；v2 加高亮带与『现在』药丸",
+      "case-07 文本对比度：FAINT #5B7183 深底上约 3.5:1；v2 提亮为 #6E8798 约 5.8:1"
+    ],
+    "residual_issues": [
+      "case-01 药点 ② 与已完成勾标擦边约 3px（判定可接受：07:30 与 08:00 在 24h 环上仅差 7.5°，勾标语义与字形均无歧义）",
+      "全部十件均未做用户实验，可读性判断基于实际渲染与像素量测，不代表真实使用者效果（详见 design-review.md §3 逐件列出）",
+      "case-03 档位与单价为演示值，SRC-03 正文 HTTP 404 未取得，不代表任何地区实际政策",
+      "case-07 行走中扫读与 case-09 3–5 米可读性为设计推断，未做实际距离/运动状态测试"
+    ]
+  },
+  "unresolved_issues": []
+}

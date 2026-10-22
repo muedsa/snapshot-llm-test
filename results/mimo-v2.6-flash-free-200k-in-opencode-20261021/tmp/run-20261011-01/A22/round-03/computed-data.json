@@ -1,0 +1,319 @@
+{
+ "schema_version": 1,
+ "task_id": "A22",
+ "path_base": "output_dir",
+ "round": 3,
+ "source": {
+  "path_base": "suite_root",
+  "path": "tasks/A22-staged-data-correction/inputs/monthly.csv",
+  "note": "输入CSV未修改；更正/新增仅作用于本轮计算与显示"
+ },
+ "formulas": {
+  "net_revenue": "gross_revenue - refund_amount",
+  "operating_profit": "net_revenue - operating_cost",
+  "refund_rate": "refund_amount / gross_revenue",
+  "monthly_conversion": "orders / sessions",
+  "overall_conversion": "sum(orders) / sum(sessions)",
+  "overall_refund_rate": "sum(refund_amount) / sum(gross_revenue)"
+ },
+ "precision": {
+  "amount": "整数元（原金额整数保留）",
+  "percent": "两位小数，十进制四舍五入（半单位绝对值增大）",
+  "kpi_amount": "整数元，千分位分隔",
+  "note": "汇总/差额/柱高比例均用未舍入值计算，最后一步才格式化"
+ },
+ "applied_changes": [
+  {
+   "action": "correction",
+   "field": "refund_amount",
+   "month": "2026-08",
+   "old": 15048,
+   "new": 25048,
+   "source": "tasks/A22-staged-data-correction/rounds/round-02.md",
+   "input_csv_modified": false
+  },
+  {
+   "action": "correction",
+   "field": "operating_cost",
+   "month": "2026-09",
+   "old": 138000,
+   "new": 208000,
+   "source": "tasks/A22-staged-data-correction/rounds/round-02.md",
+   "input_csv_modified": false
+  },
+  {
+   "action": "append_month",
+   "field": "row",
+   "month": "2026-10",
+   "old": null,
+   "new": {
+    "orders": 640,
+    "gross_revenue": 224000,
+    "refund_amount": 11200,
+    "operating_cost": 142000,
+    "sessions": 5900
+   },
+   "source": "tasks/A22-staged-data-correction/rounds/round-03.md",
+   "input_csv_modified": false
+  }
+ ],
+ "months": [
+  {
+   "month": "2026-04",
+   "orders": 420,
+   "gross_revenue": 126000,
+   "refund_amount": 6300,
+   "operating_cost": 82000,
+   "sessions": 3500,
+   "net_revenue": 119700,
+   "operating_profit": 37700,
+   "net_revenue_display": "119,700",
+   "operating_profit_display": "37,700",
+   "refund_rate": {
+    "numerator": 6300,
+    "denominator": 126000,
+    "value": 0.05,
+    "display": "5.00%"
+   },
+   "conversion": {
+    "numerator": 420,
+    "denominator": 3500,
+    "value": 0.12,
+    "display": "12.00%"
+   }
+  },
+  {
+   "month": "2026-05",
+   "orders": 460,
+   "gross_revenue": 142600,
+   "refund_amount": 7130,
+   "operating_cost": 93500,
+   "sessions": 4100,
+   "net_revenue": 135470,
+   "operating_profit": 41970,
+   "net_revenue_display": "135,470",
+   "operating_profit_display": "41,970",
+   "refund_rate": {
+    "numerator": 7130,
+    "denominator": 142600,
+    "value": 0.05,
+    "display": "5.00%"
+   },
+   "conversion": {
+    "numerator": 460,
+    "denominator": 4100,
+    "value": 0.11219512195121951,
+    "display": "11.22%"
+   }
+  },
+  {
+   "month": "2026-06",
+   "orders": 445,
+   "gross_revenue": 137950,
+   "refund_amount": 11036,
+   "operating_cost": 99000,
+   "sessions": 4200,
+   "net_revenue": 126914,
+   "operating_profit": 27914,
+   "net_revenue_display": "126,914",
+   "operating_profit_display": "27,914",
+   "refund_rate": {
+    "numerator": 11036,
+    "denominator": 137950,
+    "value": 0.08,
+    "display": "8.00%"
+   },
+   "conversion": {
+    "numerator": 445,
+    "denominator": 4200,
+    "value": 0.10595238095238095,
+    "display": "10.60%"
+   }
+  },
+  {
+   "month": "2026-07",
+   "orders": 530,
+   "gross_revenue": 169600,
+   "refund_amount": 8480,
+   "operating_cost": 112000,
+   "sessions": 4700,
+   "net_revenue": 161120,
+   "operating_profit": 49120,
+   "net_revenue_display": "161,120",
+   "operating_profit_display": "49,120",
+   "refund_rate": {
+    "numerator": 8480,
+    "denominator": 169600,
+    "value": 0.05,
+    "display": "5.00%"
+   },
+   "conversion": {
+    "numerator": 530,
+    "denominator": 4700,
+    "value": 0.1127659574468085,
+    "display": "11.28%"
+   }
+  },
+  {
+   "month": "2026-08",
+   "orders": 570,
+   "gross_revenue": 188100,
+   "refund_amount": 25048,
+   "operating_cost": 132000,
+   "sessions": 5200,
+   "net_revenue": 163052,
+   "operating_profit": 31052,
+   "net_revenue_display": "163,052",
+   "operating_profit_display": "31,052",
+   "refund_rate": {
+    "numerator": 25048,
+    "denominator": 188100,
+    "value": 0.1331632110579479,
+    "display": "13.32%"
+   },
+   "conversion": {
+    "numerator": 570,
+    "denominator": 5200,
+    "value": 0.10961538461538461,
+    "display": "10.96%"
+   }
+  },
+  {
+   "month": "2026-09",
+   "orders": 620,
+   "gross_revenue": 210800,
+   "refund_amount": 8432,
+   "operating_cost": 208000,
+   "sessions": 5600,
+   "net_revenue": 202368,
+   "operating_profit": -5632,
+   "net_revenue_display": "202,368",
+   "operating_profit_display": "-5,632",
+   "refund_rate": {
+    "numerator": 8432,
+    "denominator": 210800,
+    "value": 0.04,
+    "display": "4.00%"
+   },
+   "conversion": {
+    "numerator": 620,
+    "denominator": 5600,
+    "value": 0.11071428571428571,
+    "display": "11.07%"
+   }
+  },
+  {
+   "month": "2026-10",
+   "orders": 640,
+   "gross_revenue": 224000,
+   "refund_amount": 11200,
+   "operating_cost": 142000,
+   "sessions": 5900,
+   "net_revenue": 212800,
+   "operating_profit": 70800,
+   "net_revenue_display": "212,800",
+   "operating_profit_display": "70,800",
+   "refund_rate": {
+    "numerator": 11200,
+    "denominator": 224000,
+    "value": 0.05,
+    "display": "5.00%"
+   },
+   "conversion": {
+    "numerator": 640,
+    "denominator": 5900,
+    "value": 0.10847457627118644,
+    "display": "10.85%"
+   }
+  }
+ ],
+ "totals": {
+  "period_start": "2026-04",
+  "period_end": "2026-10",
+  "months": 7,
+  "gross_revenue_sum": 1199050,
+  "refund_amount_sum": 77626,
+  "operating_cost_sum": 868500,
+  "net_revenue_sum": 1121424,
+  "operating_profit_sum": 252924,
+  "orders_sum": 3685,
+  "sessions_sum": 33200,
+  "net_revenue_sum_display": "1,121,424",
+  "operating_profit_sum_display": "252,924",
+  "overall_conversion": {
+   "numerator": 3685,
+   "denominator": 33200,
+   "value": 0.11099397590361446,
+   "display": "11.10%"
+  },
+  "overall_refund_rate": {
+   "numerator": 77626,
+   "denominator": 1199050,
+   "value": 0.06473958550519161,
+   "display": "6.47%"
+  }
+ },
+ "axes": {
+  "type": "净收入/经营利润共用比例零起点分组柱图",
+  "unit": "元",
+  "min": -30000,
+  "max": 240000,
+  "span": 270000,
+  "ticks": [
+   -30000,
+   0,
+   60000,
+   120000,
+   180000,
+   240000
+  ],
+  "tick_step": 60000,
+  "zero_based": true,
+  "negative_axis_added": true,
+  "plot_box": [
+   150,
+   350,
+   920,
+   730
+  ],
+  "zero_line_y": 687.7778,
+  "px_per_unit": 0.0014074074074074073,
+  "label_format": "千分位整数元（十进制四舍五入）",
+  "scale_from_unrounded": true
+ },
+ "conclusion": {
+  "title": "主结论",
+  "display_text": "2026-04至2026-10累计净收入1,121,424元、经营利润252,924元，总订单3,685笔、总体转化率11.10%（3,685÷33,200）。2026-10单月净收入212,800元、经营利润70,800元均为期间最高；2026-08退款率13.32%、2026-09经营成本208,000元使该月利润-5,632元，两项更正继续生效。",
+  "claims": [
+   {
+    "claim": "7个月累计净收入1,121,424元、经营利润252,924元",
+    "cited": {
+     "net_revenue_sum": 1121424,
+     "operating_profit_sum": 252924
+    }
+   },
+   {
+    "claim": "总体转化率11.10%=3,685÷33,200（加权）",
+    "cited": {
+     "orders": 3685,
+     "sessions": 33200,
+     "value": 0.11099397590361446
+    }
+   },
+   {
+    "claim": "2026-10净收入212,800元、利润70,800元均为期间最高",
+    "cited": {
+     "net": 212800,
+     "profit": 70800
+    }
+   },
+   {
+    "claim": "2026-09利润-5,632元（成本208,000元更正），2026-08退款率13.32%为期间峰值",
+    "cited": {
+     "2026-09": -5632,
+     "refund_2026-08": 0.1331632110579479
+    }
+   }
+  ]
+ }
+}
