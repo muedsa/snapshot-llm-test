@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A01",
+  "track": "A",
+  "status": "completed",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "started_at": "2026-10-14T17:15:43+08:00",
+  "ended_at": "2026-10-14T20:29:05+08:00",
+  "elapsed_seconds": 11602,
+  "elapsed_note": "墙钟时间（started_at 取本题首个 DSL 草稿落盘时间 17:15:43；ended_at 取最后一轮像素自检 20:29:05）。墙钟不等于请求耗时之和，中间含看图、改代码与两次 Bash 分类器不可用等待。",
+  "counts": {
+    "final_pngs": 1,
+    "final_dsl": 1,
+    "snapshot_requests": 12,
+    "successful_snapshot_requests": 8,
+    "failed_snapshot_requests": 4,
+    "retry_requests": 0,
+    "document_requests": 0,
+    "other_service_requests": 0,
+    "dsl_texts_attempted": 13,
+    "dsl_versions_rendered": 6,
+    "iterations_recorded": 11,
+    "visual_iterations": 5,
+    "pixel_checks": 40,
+    "pixel_failures": 0,
+    "crop_images": 11,
+    "image_views": 12
+  },
+  "failed_request_breakdown": {
+    "http_403_waf": 1,
+    "http_400_parse_error": 3,
+    "note": "403 为 Cloudflare WAF error 1010（User-Agent: Python-urllib/3.11），改浏览器 UA 后同一服务放行；3 次 400 PARSE_ERROR 为 DSL 结构错误，均在服务返回的位置信息上定位修复。无 429/503，故无 Retry-After 重试。"
+  },
+  "timing": {
+    "request_elapsed_ms_total": 49329,
+    "request_elapsed_ms_first": 1109,
+    "request_elapsed_ms_last": 4500,
+    "request_elapsed_ms_max": 7672,
+    "request_first_started_at": "2026-10-14T17:18:09+08:00",
+    "request_last_ended_at": "2026-10-14T20:28:37+08:00",
+    "log_sources": [
+      "tmp/r20261014T1536+0800-5f11da/A01/requests.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A01/iterations.jsonl"
+    ]
+  },
+  "artifacts": {
+    "png": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A01/operations.png",
+      "bytes": 301309,
+      "sha256_16": "cace12ad6feb1207",
+      "size": [1600, 1000]
+    },
+    "snapshot": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A01/operations.snapshot",
+      "bytes": 42497,
+      "sha256_16": "823ae14e57738030",
+      "matches_rendered_dsl": true
+    },
+    "computed_data": "outputs/r20261014T1536+0800-5f11da/A01/computed-data.json",
+    "usage_report": "outputs/r20261014T1536+0800-5f11da/A01/snapshot-usage.md",
+    "metrics": "outputs/r20261014T1536+0800-5f11da/A01/task-metrics.json",
+    "evidence": {
+      "requests_log": "tmp/r20261014T1536+0800-5f11da/A01/requests.jsonl",
+      "iterations_log": "tmp/r20261014T1536+0800-5f11da/A01/iterations.jsonl",
+      "raw_dsl_per_request": "tmp/r20261014T1536+0800-5f11da/A01/req-*.snapshot（13 份，含失败尝试）",
+      "raw_responses": "tmp/r20261014T1536+0800-5f11da/A01/responses/",
+      "response_headers": "tmp/r20261014T1536+0800-5f11da/A01/req-*.snapshot.headers.txt",
+      "self_check_report": "tmp/r20261014T1536+0800-5f11da/A01/inspect-report.json",
+      "crops": "tmp/r20261014T1536+0800-5f11da/A01/crops/",
+      "generator": "tmp/r20261014T1536+0800-5f11da/A01/gen/a01_build.py",
+      "self_check_script": "tmp/r20261014T1536+0800-5f11da/A01/gen/a01_inspect.py",
+      "font_calibration_script": "tmp/r20261014T1536+0800-5f11da/A01/gen/a01_measure.py"
+    }
+  },
+  "visual_review": [
+    {
+      "version": "v1",
+      "action": "整幅目检 + 40 项像素自检",
+      "result": "基线可用，发现 KPI 文本被紧约束盒裁切"
+    },
+    {
+      "version": "v2",
+      "action": "k1_kpi_row / z3_kpi_values 裁图",
+      "result": "定位 Positioned width 紧约束为裁切根因"
+    },
+    {
+      "version": "v3",
+      "action": "k4_mini_right / z2_mini_conversion 裁图",
+      "result": "定位 ClipPath 路径用了面板 body 坐标而非 viewBox 坐标"
+    },
+    {
+      "version": "v4",
+      "action": "k6_conclusion 裁图",
+      "result": "结论第 2 条尾部被裁；wrap_text 加 safety=0.94"
+    },
+    {
+      "version": "v5",
+      "action": "k6_conclusion / z3_kpi_values 裁图",
+      "result": "发现行首孤立「：」与强调条压字两处缺陷"
+    },
+    {
+      "version": "v6",
+      "action": "整幅目检 + 11 张裁图 + 40 项像素自检",
+      "result": "FAIL 0/40，逐图确认无裁切、无遮挡、无越界、无贴字"
+    }
+  ],
+  "quality_gates": {
+    "pixel_checks_pass": "40/40",
+    "bar_tops_within": "±1.5px",
+    "text_ink_ratio_min": 0.92,
+    "margins_verified": "上/下 ≥28px，左右 ≥40px 内无正文",
+    "no_post_processing": "最终 PNG 为服务响应字节直存，未做任何像素后处理",
+    "reproducible": "同一 DSL 二次渲染产出字节级相同 PNG（sha256_16 cace12ad6feb1207）"
+  },
+  "unresolved_issues": []
+}

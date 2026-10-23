@@ -1,0 +1,243 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A15",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "status": "completed",
+  "stop_reason": null,
+  "requirement_checks": {
+    "summary": {
+      "total": 17,
+      "passed": 17,
+      "failed": 0
+    },
+    "checks": [
+      {
+        "id": "r1",
+        "requirement": "输出 1440×900，与参考图同尺寸",
+        "passed": true
+      },
+      {
+        "id": "r2",
+        "requirement": "主体是纯 Snapshot DSL 构造，禁止直接嵌入参考图或裁块当素材",
+        "passed": true
+      },
+      {
+        "id": "r3",
+        "requirement": "重建布局、背景、侧栏、卡片、图表、表格、状态标签和主要装饰",
+        "passed": true
+      },
+      {
+        "id": "r4",
+        "requirement": "保持参考图整体设计语言，不改成自己的新设计",
+        "passed": true
+      },
+      {
+        "id": "r5",
+        "requirement": "至少记录 12 个视觉锚点的参考估计与重建坐标（实际 19 个）",
+        "passed": true
+      },
+      {
+        "id": "r6",
+        "requirement": "锚点覆盖画布四象限、图表区和表格区；原点左上、像素单位、边界项记 x 或 y、点项记 (x,y)、矩形项记四边外轮廓",
+        "passed": true
+      },
+      {
+        "id": "r7",
+        "requirement": "每个锚点对应分量绝对误差均 ≤8 px，矩形四边分别比较、不做平均抵消（实际 19/19 通过，最大分量 4 px，13 个误差为 0）",
+        "passed": true
+      },
+      {
+        "id": "r8",
+        "requirement": "颜色采用原尺寸及相同背景下的人工并排判断，不设置未公开的 RGB/色差硬阈值",
+        "passed": true
+      },
+      {
+        "id": "r9",
+        "requirement": "不能只写「颜色一致」：逐色彩角色记录角色、双侧采样与残余差异（47 个角色归 22 个 token，45/47 逐位相同，2 处残余已说明原因）",
+        "passed": true
+      },
+      {
+        "id": "r10",
+        "requirement": "几何容差合格不替代对图表比例、全部文字、状态编码和整体视觉的检查",
+        "passed": true
+      },
+      {
+        "id": "r11",
+        "requirement": "交付 reconstructed.png、reconstructed.snapshot、reconstruction-audit.json、comparison.md、snapshot-usage.md、task-metrics.json",
+        "passed": true
+      },
+      {
+        "id": "r12",
+        "requirement": "reconstructed.png 是服务返回的原始响应字节，未做任何后处理",
+        "passed": true
+      },
+      {
+        "id": "r13",
+        "requirement": "必须实际打开最终图并依视觉反馈持续修改（11 张对照图逐张实际打开，看图发现并修掉 3 个像素统计发现不了的缺陷）",
+        "passed": true
+      },
+      {
+        "id": "r14",
+        "requirement": "路径可迁移：不写死盘符、用户目录、仓库位置或 UNC 路径；相对路径或目录环境变量",
+        "passed": true
+      },
+      {
+        "id": "r15",
+        "requirement": "失败响应、草稿、脚本、资料、预览保留在临时目录，不清理、不覆盖尝试，不保存密钥",
+        "passed": true
+      },
+      {
+        "id": "r16",
+        "requirement": "不宣称 DSL 树与参考来源一致，不宣称逐像素完全复刻",
+        "passed": true
+      },
+      {
+        "id": "r17",
+        "requirement": "不可判定项如实说明（字重与字体来源无法从参考位图唯一判定；探针 a15_diag11.py 已写好但本轮未运行，不宣称判定出参考字重）",
+        "passed": true
+      }
+    ]
+  },
+  "pairing": [
+    {
+      "object": "reconstructed",
+      "png": "reconstructed.png",
+      "png_bytes": 119427,
+      "dsl": "reconstructed.snapshot",
+      "dsl_bytes": 19657,
+      "dsl_line_count": 196,
+      "request_id": "req-a15-reconstructed-032fdf",
+      "http_status": 200,
+      "response_bytes": 119427,
+      "response_archive": "tmp/r20261014T1536+0800-5f11da/A15/responses/req-a15-reconstructed-032fdf.png",
+      "png_byte_identical_to_service_response": true,
+      "render_elapsed_ms": 474.3,
+      "audit": "reconstruction-audit.json"
+    }
+  ],
+  "counts": {
+    "snapshot_requests": 17,
+    "successful_snapshot_requests": 9,
+    "failed_snapshot_requests": 8,
+    "failed_breakdown": {
+      "parse_error_400": 3,
+      "read_timeout_180s": 3,
+      "remote_disconnected": 2
+    },
+    "retry_requests": 7,
+    "retry_note": "7 次是逐字节相同 DSL 的重发；8 次失败中的第 3 次 PARSE_ERROR 之后改的是生成器而不是重发（v3→v4），那一次不算 retry",
+    "verify_rendeterminism_requests": 1,
+    "probe_requests": 5,
+    "final_render_requests": 12,
+    "dsl_files_archived": 17,
+    "distinct_dsl_texts": 9,
+    "dsl_note": "17 次请求各落盘一份 DSL、重试不覆盖；去重后 9 份不同文本（7 份重建 DSL + 2 份探针 DSL）。5 次重发是逐字节相同的：3 份坏探针 DSL 连发、2 份小字号校准版 DSL 连发（diff 均为 0 行）",
+    "final_render_versions": 7,
+    "image_views": 11,
+    "image_views_detail": "review/ 下 11 张对照图全部用视觉工具实际打开：00-thumbnail、01-page、02-kpi-row、03-chart、04-activity、05-table、06-sidebar、07-title、08-bars、09-bar-top、10-yaxis。review/00-thumbnail-ref.png 已生成但未单独打开（它是 00-thumbnail 的参考半幅）。探针图 preview/a15-probe.png 是用脚本读像素测量 EM_INK_TOP 的，不计入视觉查看",
+    "visual_iterations": 6,
+    "visual_iteration_note": "type=visual-iteration 的完整视觉迭代（看旧图→改→再渲染→看图比较）：v10 logo 与锚点、v11 y 轴倒轴、v14 小字号第一轮回标、v15 字号反比校准、v16 表头带与分隔线宽度、v17 胶囊垂直位置与副标题第四轮。语法修复与重试另计",
+    "defects_found_by_viewing": 3,
+    "defects_note": "只有看图才发现、像素统计发现不了的 3 个：y 轴倒轴（语义缺陷，锚点只测零线端点）、logo 画成 44×28 圆角矩形环（形状错）、表头带与分隔线多画 25 px（1× 看不出的宽度差，且审计窗口越过卡片右缘时误差恒为 0）",
+    "pre_render_check_problems": 0,
+    "verification_checks": 19,
+    "verification_failures": 0,
+    "anchor_note": "19 个题面规定锚点，全部在 ±8 px 内，其中 13 个误差为 0，最大分量 4 px（zero_line 的 x）",
+    "glyph_boxes": 36,
+    "glyph_max_component_delta_px": 3,
+    "glyph_ink_width_exact": 27,
+    "glyph_ink_height_exact": 34,
+    "color_roles_sampled": 47,
+    "color_roles_exact_on_both_sides": 45,
+    "color_tokens_grouped": 22,
+    "color_roles_with_residual_delta": 2,
+    "visual_reviews": 11,
+    "final_images": 1,
+    "requirement_checks_failed": 0
+  },
+  "timings": {
+    "started_at": "2026-10-18T21:37:13+08:00",
+    "ended_at": "2026-10-19T04:35:13+08:00",
+    "elapsed_seconds": 25080,
+    "first_usable_image_at": "2026-10-18T22:02:44+08:00",
+    "first_usable_image_note": "探针页成功渲染（108107 B）；首版重建图在 2026-10-18T22:40:37+08:00",
+    "final_render_at": "2026-10-19T03:54:31+08:00",
+    "request_elapsed_sum_ms": 697311,
+    "queue_wait_ms": null,
+    "user_wait_seconds": 0,
+    "timezone": "Asia/Shanghai (UTC+08:00)",
+    "timing_note": "墙钟 25080 s 跨了隔夜，包含两段与 A15 无关的间隙（22:47→00:18、01:15→03:47，是处理其他题目的时间）和上下文压缩等待，不能当成 A15 的净工作量。实际服务耗时见 request_elapsed_sum_ms（697311 ms）：其中 8 次失败占掉 647906 ms（92.9%），3 次 180 s 读超时与 2 次远端断连是主因；9 次成功渲染实际只花 49405 ms。请求耗时之和 697311 ms ≈ 11.6 min，与 25080 s 墙钟相差 22 倍，两者不可相加也不能互换。题面未给时间预算，本报告不以其为缩短工作的理由"
+  },
+  "logs": {
+    "requests": "tmp/r20261014T1536+0800-5f11da/A15/requests.jsonl",
+    "iterations": "tmp/r20261014T1536+0800-5f11da/A15/iterations.jsonl",
+    "dsl_archive": "tmp/r20261014T1536+0800-5f11da/A15/dsl/",
+    "response_archive": "tmp/r20261014T1536+0800-5f11da/A15/responses/",
+    "probe_response": "tmp/r20261014T1536+0800-5f11da/A15/preview/a15-probe.png",
+    "probe_measurement": "tmp/r20261014T1536+0800-5f11da/A15/gen/probe.meta.json",
+    "layout_plan": "tmp/r20261014T1536+0800-5f11da/A15/gen/layout.json",
+    "color_samples": "tmp/r20261014T1536+0800-5f11da/A15/gen/color-samples.json",
+    "crops": "tmp/r20261014T1536+0800-5f11da/A15/gen/crops/",
+    "finals_log": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_finals.log",
+    "audit_logs": [
+      "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_audit_run5.log",
+      "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_audit_run6.log",
+      "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_audit_run7.log"
+    ],
+    "audit_logs_note": "run6 是表头带缺陷修复**前**的状态：17 个锚点、header_band FAIL 误差 25，正是这次跑出 25 px 才定位到「审计窗口越界 + 宽度画错」两个叠加原因。run7 是最终审计，输出「锚点：19/19 在 ±8 px 内」。run7 重跑后 reconstruction-audit.json 的 sha256 与重跑前逐位相同（f2274774b247a011ec930ebfb6173ca9d066b9b7f6f46f7eca8b41516861e33d），即审计器对本任务的输入是确定性的，报告数字可复现",
+    "generator": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_pages.py",
+    "auditor": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_audit.py",
+    "diagnostics": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_diag*.py、a15_measure.py、a15_probe_read.py",
+    "tables": [
+      "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_anchor_table.md",
+      "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_glyph_table.md",
+      "tmp/r20261014T1536+0800-5f11da/_suite/gen/a15_tables.md"
+    ]
+  },
+  "outputs": [
+    "reconstructed.png",
+    "reconstructed.snapshot",
+    "reconstruction-audit.json",
+    "comparison.md",
+    "snapshot-usage.md",
+    "task-metrics.json",
+    "review/00-thumbnail.png",
+    "review/00-thumbnail-ref.png",
+    "review/01-page-pair.png",
+    "review/02-kpi-row-pair.png",
+    "review/03-chart-pair.png",
+    "review/04-activity-pair.png",
+    "review/05-table-pair.png",
+    "review/06-sidebar-pair.png",
+    "review/07-title-pair.png",
+    "review/08-bars-pair.png",
+    "review/09-bar-top-pair.png",
+    "review/10-yaxis-pair.png"
+  ],
+  "unresolved_issues": [
+    {
+      "id": "u1",
+      "severity": "minor",
+      "issue": "字重与字体来源无法从参考位图唯一判定",
+      "detail": "参考是位图，不含字体元数据。若按 Inter Regular 对齐，参考小字号普遍比本服务的 Inter Regular 渲染窄约 7.5%（Projects 参考墨宽 72 vs 本服务 19 px 渲染 88）；若参考是 Inter Medium，本服务的 Medium 应更宽，与观测相反——两个假设互相矛盾。已按本服务实际渲染墨宽逐项校准字号，残余 ±1–2 px 归为字体度量差异，不宣称判定出参考字重",
+      "impact": "小字号文字可能有 1–2 px 的宽度差，远小于题面 8 px 容差；在目标观看尺寸下是最容易被看出「字体不太一样」的地方",
+      "recovery": "字重归因探针 tmp/.../A15/../_suite/gen/a15_diag11.py 已写好但本轮未运行；补跑它即可给出字重渲染证据，不影响已交付结论"
+    },
+    {
+      "id": "u2",
+      "severity": "minor",
+      "issue": "两处小字号文字色采样残余",
+      "detail": "y 轴刻度 (99,116,143)→(105,121,147) 差 (6,5,4)、月份标签 (99,116,143)→(100,117,144) 差 (1,1,1)。核心像素法取窗口内相对底色差值最大的像素，但 13 px 小字没有满覆盖率体素，取到的是 token 与底色的过渡色。并排看色相明暗一致；同一 token 下 17 px 以上角色采样逐位相同可印证",
+      "impact": "无可见差异；题面未设色差阈值，仅记录并说明，不据此判定合格"
+    },
+    {
+      "id": "u3",
+      "severity": "informational",
+      "issue": "未做逐像素差异图",
+      "detail": "题面不要求。参考位图的抗锯齿与字体度量差异会让逐像素差异图充满噪声，反而掩盖真正的位置与比例问题",
+      "impact": "无",
+      "recovery": "若需要，可直接对两图做 absdiff 并叠色；但预期以字体度量噪声为主"
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "suite_root",
+ "path_note": "路径相对总任务根",
+ "gates": [
+  {
+   "id": "board-04",
+   "check": "依赖索引表 12 行齐全且编号与输入一致",
+   "passed": true,
+   "detail": "rows=12"
+  },
+  {
+   "id": "board-05",
+   "check": "每个任务的时间标签都在块内或块外标签行落位",
+   "passed": true,
+   "detail": "{'design': 6, 'engineering': 6}"
+  },
+  {
+   "id": "board-06",
+   "check": "时间轴比例一致（1 分钟 = 4 像素）",
+   "passed": true,
+   "detail": "ppm=4"
+  },
+  {
+   "id": "board-07",
+   "check": "关键路径 6 个任务全部在表内并有描边",
+   "passed": true,
+   "detail": "cp=R01→R04→R07→R09→R10→R12"
+  },
+  {
+   "id": "board-08",
+   "check": "图上『已全枚举 / 未触发安全阀』与审计的搜索记录一致",
+   "passed": true,
+   "detail": "combos=8 nodes=1032 exhausted=True node_cap=4000000 hit=False"
+  },
+  {
+   "id": "board-09",
+   "check": "等待列的等待只出现在 R07 与 R11，各 5 分钟",
+   "passed": true,
+   "detail": "等待合计 10 分钟：R07 等 R05 5 分钟（在关键路径上）、R11 等 R09 5 分钟（在关键路径之外，不改变完工时刻）；关键路径空档合计 5 分钟，两处同源于 R05 被挤出 design 的 5 分钟资源延迟"
+  },
+  {
+   "id": "board-01",
+   "check": "所有文字框在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "board-02",
+   "check": "同层文字框互不重叠",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "board-03",
+   "check": "正文字号 ≥ 20",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "brief-04",
+   "check": "依赖概览覆盖 12 个任务",
+   "passed": true,
+   "detail": "rows=12"
+  },
+  {
+   "id": "brief-05",
+   "check": "三个风险 K1/K2/K3 均出现且各指向一个任务",
+   "passed": true,
+   "detail": "K1→R02 K2→R05 K3→R10"
+  },
+  {
+   "id": "brief-06",
+   "check": "简报的完工/缓冲/下界与 schedule.json 一致",
+   "passed": true,
+   "detail": "finish=260 buffer=160 cp=255"
+  },
+  {
+   "id": "brief-07",
+   "check": "排程依据的对比数字与穷举结果一致",
+   "passed": true,
+   "detail": "285 / 300 / 260 全部命中：design/design→285 · design/engineering→285 · engineering/design→260 · engineering/engineering→300"
+  },
+  {
+   "id": "brief-08",
+   "check": "关键路径上的空档只有 R04→R07 一处且等于 5 分钟",
+   "passed": true,
+   "detail": "[{\"task\": \"R07\", \"after\": \"R04\", \"idle_minutes\": 5, \"start\": 90, \"cause\": {\"kind\": \"绑定前驱 R05（结束 90 分钟）撑开\", \"binding_task\": \"R05\", \"binding_task_on_critical_path\": false}}]"
+  },
+  {
+   "id": "brief-01",
+   "check": "所有文字框在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "brief-02",
+   "check": "同层文字框互不重叠",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "brief-03",
+   "check": "正文字号 ≥ 24",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "card-04",
+   "check": "手机卡列出 12 个任务且按开始时间升序",
+   "passed": true,
+   "detail": "rows=12"
+  },
+  {
+   "id": "card-05",
+   "check": "三个风险提醒均带指向任务",
+   "passed": true,
+   "detail": "K1→R02 K2→R05 K3→R10"
+  },
+  {
+   "id": "card-01",
+   "check": "所有文字框在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "card-02",
+   "check": "同层文字框互不重叠",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "card-03",
+   "check": "正文字号 ≥ 20",
+   "passed": true,
+   "detail": ""
+  }
+ ],
+ "passed": 22,
+ "total": 22
+}

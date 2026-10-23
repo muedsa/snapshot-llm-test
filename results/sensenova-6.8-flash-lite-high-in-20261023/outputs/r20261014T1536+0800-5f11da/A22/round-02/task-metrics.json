@@ -1,0 +1,376 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A22",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": 2,
+ "round_of": 3,
+ "status": "completed",
+ "stop_reason": "round-02.md 需求满足：两项财务更正已重算并传播到每月/汇总/KPI/图表/表格/结论；干跑门禁 28/28、像素审计 12/12、9 次实际看图复核通过；已归档",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A22/round-02",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A22",
+ "spec_source": "tasks/A22-staged-data-correction/rounds/round-02.md",
+ "timings": {
+  "started_at": "2026-10-20T15:06:53+08:00",
+  "ended_at": "2026-10-20T16:57:03+08:00",
+  "elapsed_seconds": 6550.0,
+  "elapsed_note": "墙钟从本轮首条（也是唯一一条）快照请求到归档完成。它含数据层加两项更正、构造器加负轴与负柱、干跑门禁、看图、像素审计、审计脚本的三次自修与自检脚本编写、以及写本报告；也含上下文压缩与平台中断造成的停顿。本轮复用 round-01 的构造器/门禁/渲染代码，没有前置 DSL 草稿时间，所以下界比 round-01 更接近真实工作量。墙钟远大于 request_duration_sum_seconds，两者不可相加、不可互相替代。",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "timestamp_precision": "requests.jsonl 的 started_at / ended_at 精确到秒；亚秒分量由 elapsed_ms 还原，故 derived 字段的绝对不确定度为 ±1 s",
+  "first_usable_image_seconds": 5.0,
+  "first_usable_image_note": "首次成功取得可打开的 PNG（req-a22-r02-dashboard-aea7c6，2026-10-20T15:06:58+08:00 结束，HTTP 200，245,010 字节）；本轮首版即成功，无失败重试",
+  "first_delivered_image_seconds": 5.0,
+  "first_delivered_image_note": "唯一一版即交付版本，比首次可用图不早于它、也不晚于它（两者是同一张图）",
+  "request_duration_sum_seconds": 5.016,
+  "request_duration_sum_note": "本轮 1 条请求记录的 elapsed_ms（5016 ms）；不等于任务耗时，墙钟里的看图、审计与写报告时间不在这 5.016 s 里",
+  "service_stall_seconds": 0,
+  "service_stall_note": "http_status 为 None 的请求 0 条：唯一一条记录是 200，服务端回传了 image/png 与 server-timing",
+  "rate_limit_wait_seconds": 0,
+  "rate_limit_wait_note": "本轮未出现 429/503，retry_after 为 null",
+  "queue_wait_seconds": null,
+  "queue_wait_null_reason": "服务端不可观测排队，未取得该数据",
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_wait_note": "预置轮次模式，不等待外部反馈；round-03 的需求文件在 tasks/A22-staged-data-correction/rounds/ 内，本轮归档后直接读取",
+  "server_timing_source": "本轮唯一请求的 server_timing 为 \"render;dur=2025.7, total;dur=2034.5\"，request_id_header 为 8f4287a0-f652-4a5d-be8a-9ab901847930；服务端自报总耗时 2.035 s，本地实测 5.016 s，差值 2.98 s 为网络往返与本地处理，计时口径仍以本地 elapsed_ms 为准"
+ },
+ "counts": {
+  "snapshot_requests": 1,
+  "snapshot_request_note": "requests.jsonl 中 round=2 的记录条数，对应 1 次 render() 调用",
+  "http_requests": 1,
+  "http_requests_note": "实际发出的 POST /snapshot 次数 = 1（attempts=1），与记录条数一致",
+  "successful_snapshot_requests": 1,
+  "failed_snapshot_requests": 0,
+  "failed_snapshot_request_detail": null,
+  "retry_requests": 0,
+  "retry_note": "本轮没有重试。round-01 里浪费 3 次的确定性语法错误（gradientBegin=\"50% 0%\"）已被干跑门禁离线拦截，本轮门禁 28/28 在提交前全部通过",
+  "syntax_fix_resubmits": 0,
+  "syntax_fix_resubmits_note": "无 400，不需要语法修复重交",
+  "other_service_requests": 0,
+  "other_service_note": "服务指南与 DSL 文档、fonts 查询在本轮之前已取得并缓存于 tmp/r20261014T1536+0800-5f11da/_suite/docs/，本轮复用未新增 HTTP",
+  "dsl_versions": 1,
+  "dsl_versions_breakdown": [
+   {
+    "version": "v1",
+    "request_id": "req-a22-r02-dashboard-aea7c6",
+    "request_bytes": 24946,
+    "request_sha256": "62a8a0b1d61ac4a8bc188b5499ccf6eab8905ca9a9d75c15ff402dd33b68dbfc",
+    "response_bytes": 245010,
+    "response_sha256": "359d5e6afb3aa94ad068cc05771fde268598c688e54d032232ebdf16b7b83ced",
+    "outcome": "HTTP 200，负轴与负柱一次成型，即交付版本",
+    "preserved": "已交付：dashboard.snapshot 与 dashboard.png；tmp/…/A22/dsl/r02-dashboard.attempt-01.snapshot 未被后续版本覆盖，正文可复原"
+   }
+  ],
+  "image_views": 9,
+  "image_views_note": "按**实际打开并读到内容**的次数记录：whole / conclusion / kpi / chart_bottom / table / chart / header / footer_left / footer_right 共 9 张。另加 footer 整条裁切（3008×64，47:1）被图像查看接口拒收 1 次，未计入 image_views，单列在 image_views_rejected_by_api",
+  "image_view_events_logged": 10,
+  "image_view_events_logged_note": "viewing-evidence.json 的 rounds[\"2\"] 共 10 条事件（8 条来自 views-manifest.json + 2 条 footer 半宽补充视图）；其中 1 条指向被拒收的 footer.png，已用 notes 批注标注「未真正打开」，原事件保留不改（只增不改）",
+  "image_views_rejected_by_api": 1,
+  "image_views_rejected_detail": "preview/round-02/footer.png（[48,932,1552,964]×2.0 = 3008×64，宽高比 47:1）被 Read 的图像接口拒收（media removed — rejected by API），本轮实际重试一次确认；与 round-01 是同一平台限制。footer 可读性由 footer_left / footer_right（各 752×60，12.5:1）与 whole 1:1 确认",
+  "completed_visual_iterations": 0,
+  "completed_visual_iterations_note": "本轮没有任何图像层面的视觉迭代：数据更正是一次性重算，首版渲染即满足全部 28 项干跑门禁与 12 项像素审计，9 次看图未发现影响交付的缺陷。不为凑次数制造迭代",
+  "incomplete_visual_iterations": 0,
+  "audit_fixes": 3,
+  "audit_fixes_note": "改的是审计脚本本身而不是图，所以不计入 visual_iterations，也不触发重渲：(1) 索引漏减 PLOT[\"left\"]，把子图里别处的柱体算进标签框，报出 482 个柱像素；(2) 改成「先挖掉标签墨迹外接框」后柱像素计数 366→366 一模一样——修复是空操作，根因是切片下标基准写错一层（any_bar 是子图、block 是子图里再切一层的小数组）；(3) ink-bbox 方案有结构性漏报盲区（柱体比标签框大且落在框内时柱体被当成墨迹挖掉），整个方案作废，换成「柱体列窗口内实心行段 ≥4 行」的判定。前两次都是改审计算法而非调松阈值",
+  "audit_selftests_added": 1,
+  "audit_selftests_detail": "新增 tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_selftest_label_gate.py：7 张合成图反测像素审计第 6 项，覆盖「不报」4 例（纯背景、只压 3 行、柱在上方、空框）与「必须报」3 例（压 21 行、同色压柱、柱体比框高），全部通过；阈值 75%/4 行由压 21 行必报、压 3 行不报、柱比框高必报三个用例夹住边界",
+  "audit_reruns_due_to_checker_change": 2,
+  "audit_reruns_detail": "第 6 项算法改写后，round-01 与 round-02 的 change-audit.json 及 stdout 副本都用新算法重跑刷新，两者仍 12/12；round-01 报告的判定表述保持旧写法，差异已在 round-01 报告尾部补轮后说明（见 disclosers[D10]）",
+  "dryrun_gates_total": 28,
+  "dryrun_gates_passed": 28,
+  "pixel_audit_checks_total": 12,
+  "pixel_audit_checks_passed": 12,
+  "text_elements": 83,
+  "geometry_elements": 50,
+  "elements_total": 133
+ },
+ "counting_notes": [
+  "snapshot_requests=1 与 http_requests=1 在本轮一致（attempts=1）；round-01 是两个口径不同（3 条记录 / 5 个 POST），两轮的口径定义都写在各自 task-metrics 里",
+  "image_views=9 只算真正打开并读到内容的视图；被接口拒收的 1 次单列，不并计入 image_views，避免把「记了事件」当成「看过图」",
+  "completed_visual_iterations=0 不是漏记：本轮首版即达标。audit_fixes=3 是改检查器，没有改图也没有重渲，单独计，不与视觉迭代混算",
+  "初次生成与查看计为基线，不计为改进迭代；改进迭代必须是「实际看图 → 修改 → 重渲 → 再实际看图比较」的完整闭环",
+  "A22 三轮共用一套构造器、门禁与渲染代码（tmp/r20261014T1536+0800-5f11da/_suite/gen/ 的 a22_build.py、a22_data.py、a22_log.py、a22_view_footer.py），dryrun 与 audit 各按 round 参数跑一遍，本轮门禁报告在 gate-reports/round-02.json 单独留档"
+ ],
+ "data": {
+  "source_csv": "tasks/A22-staged-data-correction/inputs/monthly.csv",
+  "source_csv_modified": false,
+  "source_csv_note": "原始 CSV 只读；两项更正只在计算层 _apply(2) 生效，每月 csv_original 保留 CSV 原值，旧值与新值始终可追溯",
+  "months": 6,
+  "period": "2026-04 至 2026-09",
+  "applied_changes": [
+   {
+    "month": "2026-08",
+    "field": "refund_amount",
+    "old": 15048,
+    "new": 25048,
+    "delta": 10000,
+    "propagation": "2026-08 净收入 173,052→163,052；利润 41,052→31,052；退款率 8.00%→13.32%；转化率不变；期间净收入与期间利润各 −10,000；KPI1/KPI2 更新，KPI3/KPI4 不变；表格该 3 格变化；图表该组两柱同缩"
+   },
+   {
+    "month": "2026-09",
+    "field": "operating_cost",
+    "old": 138000,
+    "new": 208000,
+    "delta": 70000,
+    "propagation": "2026-09 净收入不变；利润 64,368→−5,632 由正转负；轴 −30,000 扩底、零线 y852→817；该柱改绘零线下方 7 px 并改负色渐变，标签 −5,632 置于柱下并加粗；KPI2 改负色；图例新增「负利润」；表格该格改负值加粗；结论标题重写"
+   }
+  ],
+  "unchanged_by_design": [
+   "2026-04 至 2026-07 四个月的 CSV 原值与全部派生值（净收入、利润、退款率、转化率）",
+   "全部 6 个月的 orders 与 sessions（两项更正都不涉及它们），故 KPI3 总订单 3,045 与 KPI4 总体转化率 11.15% 与第一轮完全一致"
+  ],
+  "cross_check_passed": true,
+  "cross_check_method": "由汇总回推明细：sum(各月净收入)==总净收入、sum(各月利润)==总利润、逐月比率按分子分母重算并与显示文本比对；负值月独立验算 operating_cost − net_revenue == |profit|（208,000 − 202,368 = 5,632）",
+  "totals": {
+   "gross_revenue": 975050,
+   "refund_amount": 66426,
+   "operating_cost": 726500,
+   "net_revenue": 908624,
+   "profit": 182124,
+   "orders": 3045,
+   "sessions": 27300,
+   "total_conversion_rate": "11.15%",
+   "total_refund_rate": "6.81%",
+   "profit_margin": "20.04%"
+  },
+  "totals_note": "期间汇总 = 各月明细分别求和，与 computed-data.json 的 totals 逐字段一致（已交叉验算：sum(各月净收入)==908,624、sum(各月利润)==182,124）。口径是「先分别求和」，不是各月百分比的平均：总体转化率 = 3,045 ÷ 27,300 = 11.15%，总体退款率 = 66,426 ÷ 975,050 = 6.81%，利润率 = 182,124 ÷ 908,624 = 20.04%。所有汇总与差额用未舍入 Decimal 算完才格式化",
+  "delta_vs_round_01": {
+   "period_net_revenue": {"round_01": 918624, "round_02": 908624, "delta": -10000, "cause": "更正 1 的退款 +10,000"},
+   "period_profit": {"round_01": 262124, "round_02": 182124, "delta": -80000, "cause": "更正 1 的 −10,000 + 更正 2 的 −70,000；结论标题里的「80,000 元」就是这个和"},
+   "total_orders": {"round_01": 3045, "round_02": 3045, "delta": 0},
+   "total_conversion_rate": {"round_01": "11.15%", "round_02": "11.15%", "delta_pp": 0.0},
+   "total_refund_rate": {"round_01": "5.79%", "round_02": "6.81%", "delta_pp": 1.02},
+   "profit_margin": {"round_01": "28.53%", "round_02": "20.04%", "delta_pp": -8.49}
+  },
+  "axes": {
+   "unit": "元",
+   "min": -30000,
+   "max": 240000,
+   "step": 60000,
+   "gridlines": [-30000, 0, 60000, 120000, 180000, 240000],
+   "negative_axis": true,
+   "zero_y_px": 816.9,
+   "zero_y_px_measured": 817,
+   "scale_px_per_yuan": 0.001170,
+   "scale_prev_round": 0.001317,
+   "scale_note": "净收入与经营利润共用同一线性比例与同一零线。负轴把量程从 240,000 扩到 270,000，比例由 0.001317 变松到 0.001170，因此 12 根柱等比例变矮 11.2%——这是负轴的必要代价，若保持原像素高就等于谎称比例没变。绘图区框 [152,536,860,852] 与 chart 区域边界一字未动，零线下方只占 30,000 元 = 35 px",
+   "negative_axis_allowed_by_spec": "round-02.md：允许因实际负利润在原图表区域内增加负轴范围"
+  },
+  "table": {
+   "columns": 5,
+   "rows": 6,
+   "cells": 30,
+   "row_h_px": 62.33,
+   "rule_ys": [542, 604, 667, 729, 791, 854, 916]
+  },
+  "chart": {
+   "plot": [152, 536, 860, 852],
+   "plot_w_px": 708,
+   "plot_h_px": 316,
+   "group_slot_w_px": 118.0,
+   "bar_w_px": 30,
+   "bar_gap_px": 6,
+   "group_w_px": 66,
+   "bars": 12,
+   "labelled_bars": 7,
+   "labelled_breakdown": "净收入柱 6 根带柱顶标签 + 零线下方负值柱 1 根（2026-09 利润 −5,632，标签置于柱下方并加粗）",
+   "labelled_note": "正值经营利润柱 5 根仍不标注（其标签会落进同组更高的净收入柱体），逐月数值由右侧明细表承载；干跑门禁「标签与柱体不相交」与像素审计第 7 项「未标注值必须在表格中逐月可查」两条兜底仍生效",
+   "bar_heights_px": {
+    "net_revenue": [140, 159, 149, 189, 191, 237],
+    "profit": [44, 49, 33, 57, 36, null],
+    "negative_profit": [null, null, null, null, null, 7]
+   },
+   "bar_heights_note": "全部与未舍入计算值差 ≤1 px（审计第 4 项），零线 y=817；负柱上边界 = 零线、下边界越过零线，未裁掉、未画成正值、未放大隐藏"
+  },
+  "typography": {
+   "font_family": "Noto Sans CJK SC,Inter",
+   "font_sizes_px": [22, 24, 26, 32, 42],
+   "body_min_px": 22,
+   "body_min_note": "TASK.md 要求正文 ≥22；标题类与 KPI 数值（42 px）不在此限",
+   "contrast_min": 4.552,
+   "contrast_min_location": "数值标签 × KPI chip 文字色，对各自实际背景",
+   "contrast_min_note": "11 组配色对全部 ≥4.5:1；本轮新增「面板白 × 负利润色 #C2410C」为 5.178",
+   "contrast_threshold": 4.5,
+   "contrast_method": "8 位 sRGB 先除以 255 再按 WCAG 线性化，L=0.2126R+0.7152G+0.0722B，对比度=(max+0.05)/(min+0.05)，用未舍入值判阈值"
+  }
+ },
+ "quality_gates": {
+  "dryrun": {
+   "gate": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_build.py dryrun 2",
+   "report": "tmp/r20261014T1536+0800-5f11da/A22/gate-reports/round-02.json",
+   "passed": 28,
+   "total": 28,
+   "all_passed": true,
+   "written_at": "2026-10-20T15:06:53+08:00",
+   "note": "无网络干跑：构造 DSL → 校验属性合法 → 校验文本 advance 不超盒宽 → 校验月份/结论引用数值 → 校验柱体与标签几何 → 逐区域校验越界。written_at 与渲染请求 started_at 同秒，门禁确实先于提交全通过"
+  },
+  "pixel_audit": {
+   "gate": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_build.py audit 2 1",
+   "report": "outputs/r20261014T1536+0800-5f11da/A22/round-02/change-audit.json",
+   "passed": 12,
+   "total": 12,
+   "all_passed": true,
+   "stdout_copy": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_audit_r2.out.json",
+   "note": "对交付 PNG 做像素级复核：尺寸读 IHDR、柱高按通道优势族沿中心列量边界、负柱额外验上边界不低于零线与下边界越过零线、标签用「柱体列窗口内实心行段 ≥4 行」判压柱、文字墨迹按底色差分取外接框；报告同时承载 changes（2 项更正传播）、preserved（5 项未改内容）、regression（12 项）与 layout_map_comparison（6 区域框分量差 0 px）",
+   "selftest": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_selftest_label_gate.py",
+   "selftest_cases": 7,
+   "selftest_passed": 7
+  },
+  "visual_review": {
+   "method": "Read 工具实际打开预览图（整图 1:1 + 5 个区域放大裁切 + 零线负柱 2× 局部 + footer 两半 12.5:1）",
+   "evidence": "tmp/r20261014T1536+0800-5f11da/A22/viewing-evidence.json",
+   "events": 9,
+   "events_logged": 10,
+   "notes": 1,
+   "result": "2026-08 行 163,052 / 31,052 / 13.32%（加粗）与 2026-09 行 202,368 / −5,632（红字加粗）/ 4.00% 均与 computed-data 一致；KPI 908,624 元 / 182,124 元（红）/ 3,045 笔 / 11.15%；结论标题与副标题标注正确；零线与负柱清晰可见、轴刻度 −30,000→240,000 步长一致。层级、对齐、遮挡与裁剪、图形效果、文字可读性全部通过；无已知影响交付的缺陷",
+   "rejected_view": "preview/round-02/footer.png（3008×64，47:1）被图像接口拒收，已重试一次确认，以 notes 批注标注该事件未真正打开"
+  }
+ },
+ "delivery_map": [
+  {
+   "artifact": "dashboard",
+   "png": "round-02/dashboard.png",
+   "png_bytes": 245010,
+   "png_sha256": "359d5e6afb3aa94ad068cc05771fde268598c688e54d032232ebdf16b7b83ced",
+   "dsl": "round-02/dashboard.snapshot",
+   "dsl_bytes": 24946,
+   "dsl_sha256": "62a8a0b1d61ac4a8bc188b5499ccf6eab8905ca9a9d75c15ff402dd33b68dbfc",
+   "source_request_id": "req-a22-r02-dashboard-aea7c6",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 比对一致（359d5e6a…）；交付 DSL 与当前构造器重建结果逐字节一致（审计第 2 项）",
+   "post_processing": "无，PNG 为服务返回的原始字节"
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-02/dashboard.png",
+   "bytes": 245010,
+   "sha256": "359d5e6afb3aa94ad068cc05771fde268598c688e54d032232ebdf16b7b83ced",
+   "role": "交付成品图（1600x1000 PNG）"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-02/dashboard.snapshot",
+   "bytes": 24946,
+   "sha256": "62a8a0b1d61ac4a8bc188b5499ccf6eab8905ca9a9d75c15ff402dd33b68dbfc",
+   "role": "交付 DSL 原文，与 PNG 同名配对"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-02/computed-data.json",
+   "bytes": 12799,
+   "sha256": "cc3fd698212b60a0461ebfce84e89a5adf03470b8cca5f6469b68156ca7e6e54",
+   "role": "两项更正后的逐月与期间汇总计算结果、公式表、传播链与交叉验算结论"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-02/layout-map.json",
+   "bytes": 39649,
+   "sha256": "9276f7db0b5b5f410a8966544a711ad648f650abe7196539b93a4e748cc0102c",
+   "role": "6 个区域与 133 个元素的坐标、样式与角色；comparison 6 项全部 0 px"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-02/change-audit.json",
+   "bytes": 21134,
+   "sha256": "56ee5802ef809730c3235f02bacefae0d0b15c55c00d33a90bfc6d4b5f588fa3",
+   "role": "2 项更正传播 + 5 项未改内容 + 12 项像素回归 + 6 项区域框对比"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-02/snapshot-usage.md",
+   "role": "本轮的 DSL 与工具使用说明、负轴设计决策、审计脚本三次自修的经过、踩坑与遗留"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-02/task-metrics.json",
+   "role": "本文件"
+  }
+ ],
+ "evidence_files": [
+  "tmp/r20261014T1536+0800-5f11da/A22/requests.jsonl",
+  "tmp/r20261014T1536+0800-5f11da/A22/iterations.jsonl",
+  "tmp/r20261014T1536+0800-5f11da/A22/viewing-evidence.json",
+  "tmp/r20261014T1536+0800-5f11da/A22/gate-reports/round-02.json",
+  "tmp/r20261014T1536+0800-5f11da/A22/dsl/r02-dashboard.attempt-01.snapshot",
+  "tmp/r20261014T1536+0800-5f11da/A22/responses/req-a22-r02-dashboard-aea7c6.png",
+  "tmp/r20261014T1536+0800-5f11da/A22/preview/round-02/views-manifest.json",
+  "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_audit_r2.out.json",
+  "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_audit_r2b.out.json",
+  "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_dbg.out.txt",
+  "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_dbg.err.txt",
+  "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_selftest_label_gate.py"
+ ],
+ "disclosers": [
+  {
+   "id": "D1",
+   "severity": "informational",
+   "item": "requests.jsonl 的记录条数与实际 HTTP 请求次数在不同轮次可能不同",
+   "detail": "round-01 是 3 条记录 / 5 个 POST（400 那一条内部重试 3 次）；round-02 是 1 条记录 / 1 个 POST，一致。两个口径都保留在 counts 里，互不替代"
+  },
+  {
+   "id": "D2",
+   "severity": "not_applicable_this_round",
+   "item": "失败请求的前两次尝试没有独立时间戳与响应留痕",
+   "detail": "该问题只出现在 round-01 的 400 请求上；round-02 无失败请求，不适用"
+  },
+  {
+   "id": "D3",
+   "severity": "not_applicable_this_round",
+   "item": "旧版本 DSL 正文不可复原",
+   "detail": "round-01 的 v0/v1 正文已被后续版本覆盖（只剩字节数与 sha256）。round-02 只有 1 个版本且已交付，tmp/…/A22/dsl/r02-dashboard.attempt-01.snapshot 未被覆盖，正文可复原；审计第 2 项逐字节比对通过"
+  },
+  {
+   "id": "D4",
+   "severity": "minor",
+   "item": "迭代与看图记录的写入时刻不等于发生时刻",
+   "detail": "viewing-evidence.json 的 opened_at 是日志写入时刻（a22_log.py views 2 的运行时刻），不是图像真正打开的时刻；本轮看图集中在归档前的十几分钟内，偏差小得多，但不声称与工具调用时刻逐秒对应。改动本身的证据链以 requests.jsonl 的时间序列与 responses/ 的字节为准"
+  },
+  {
+   "id": "D5",
+   "severity": "minor",
+   "item": "footer 细条裁切被图像查看 API 拒收（round-01 与 round-02 各发生一次）",
+   "detail": "preview/round-02/footer.png（[48,932,1552,964]×2.0 = 3008×64，宽高比 47:1）被 Read 的图像接口拒收，本轮实际重试一次确认仍被拒收，与 round-01 是同一平台限制。改用带上下留白的两半各 752×60（12.5:1，与能正常显示的 header 裁切 14.75:1 同量级）并实际打开，footer 的四条公式说明在 whole 1:1 下也已确认。viewing_events_rejected_by_api=1，未计入 image_views"
+  },
+  {
+   "id": "D6",
+   "severity": "informational",
+   "item": "requests.jsonl 的字段命名与本套件前几题不同",
+   "detail": "本题用 request_bytes / response_bytes / request_sha256 / response_sha256 / request_file / response_file；A19/A20 用 dsl_bytes / response_path，A21 用 request_path / response_sha256。同一 run 内多套字段名并存，跨题统计按各题实际键读取。所有记录都不含密钥"
+  },
+  {
+   "id": "D7",
+   "severity": "informational",
+   "item": "正值经营利润柱不带数值标签是刻意的设计决策",
+   "detail": "708 px 绘图区放 6 组、每组 2 根柱，22 px 数值标签宽 74–86 px 而组宽仅 66 px；短柱的标签若放在自己柱顶上方，墨迹必然落进同组更高的净收入柱体。按选择性直标处理：净收入柱标注、零线下方负值柱标注、正值利润柱由右侧明细表承载，图表说明写明口径，并有两条兜底检查（标签与柱体不相交、未标注值必须在表格中逐月可查）。round-02 标签数为 7（6 净收入 + 1 负值利润），该决策未变。这是设计选择，不是漏标"
+  },
+  {
+   "id": "D8",
+   "severity": "informational",
+   "item": "墙钟是不含前置设计时间的下界，且含平台停顿",
+   "detail": "timings.started_at 取首条快照请求（15:06:53）。本轮复用 round-01 的构造器/门禁/渲染代码，没有需要另计的前置 DSL 草稿时间，但数据层加两项更正、构造器加负轴与负柱的代码改动发生在首条请求之前、没有独立时间戳，仍未计入。墙钟同样包含上下文压缩与平台中断造成的停顿，因此它既可能是下界，又明显大于纯工作时间"
+  },
+  {
+   "id": "D9",
+   "severity": "minor",
+   "item": "round-02 的 10 条看图事件里，1 条指向的视图未真正打开",
+   "detail": "a22-r02-view-footer-010 指向被拒收的 footer.png。已在 viewing-evidence.json 的 rounds[\"2\"].notes 里追加一条批注说明「该事件未真正看到内容、可读性由哪些视图确认」，原事件字段一字未改（留痕只增不改）。与 round-01 的 D5 处理方式一致"
+  },
+  {
+   "id": "D10",
+   "severity": "minor",
+   "item": "像素审计第 6 项的算法在 round-02 被改写了三次，round-01 的报告是旧表述",
+   "detail": "round-01 的 snapshot-usage.md 第 4.2 节按旧算法描述第 6 项（「墨迹后面没有任何柱体填充 / 6 个标签全部落在纯背景上」）。新算法的结论（标签未压在柱体上）与旧表述一致，差异只在判定方式。round-01 的 change-audit.json 与 a22_audit_r1.out.json 已用新算法重跑刷新，仍 12/12（结果「6 标签 × 12 柱 = 72 对；最近间距 4.0 px；0 对相交」）。历史报告正文不回写，改在 round-01 报告尾部补一条轮后说明"
+  },
+  {
+   "id": "D11",
+   "severity": "informational",
+   "item": "0 次视觉迭代与 3 次审计脚本修复必须分开统计",
+   "detail": "审计脚本修复没有改图、没有重渲、没有产生新交付件，不属于「看图 → 修改 → 重渲 → 再看图比较」的视觉迭代闭环，因此 completed_visual_iterations=0，audit_fixes=3 单列。如果把它们混进迭代数，就会用「改检查器」冒充「改作品」，掩盖首版即达标这个真实情况"
+  },
+  {
+   "id": "D12",
+   "severity": "minor",
+   "item": "change-audit.json 的 viewing.viewing_events 在审计时刻是 1，归档后实际是 10",
+   "detail": "审计在只看图 1 张时就运行了，当时写入 viewing_events=1。归档时回写为 10，并保留 audited_at_event_count=1 与 viewing_events_updated_at 时间戳，两个数字都在，不抹掉审计时刻的真实状态。round-01 的 change-audit.json 同样处理（1 → 10）"
+  },
+  {
+   "id": "D13",
+   "severity": "informational",
+   "item": "本轮没有发生图面缺陷修复，因此没有对应的迭代留痕",
+   "detail": "iterations.jsonl 中 round=2 的条目为 0 条，这是「首版即达标」的证据而不是缺失：28/28 干跑门禁 + 12/12 像素审计 + 9 次实际看图都没发现需要改图的缺陷。按 AGENTS.md「达到标准的首版可以交付，不为凑次数制造迭代」处理，不补造迭代记录"
+  }
+ ]
+}

@@ -1,0 +1,136 @@
+{
+ "case_id": "case-05",
+ "at": "2026-10-22T17:10:33+08:00",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "note": "首版：12×8 街区网格双时相声场 + 单源 65 dB 影响半径 + 去掉工地的反事实分布与户数对比",
+ "gates_total": 21,
+ "gates_failed": 0,
+ "gates": [
+  {
+   "id": "case-05-c01",
+   "check": "网格 12×8 = 96 格，每格 120 m，覆盖 1440×960 m",
+   "passed": true,
+   "detail": "96 格 · 1440×960 m · 格 51.7 px（等比）"
+  },
+  {
+   "id": "case-05-c02",
+   "check": "多源按非相干声能相加：3 个 80 dB 源 = 84.77 dB；dB 线性相加 240 dB 被拒绝",
+   "passed": true,
+   "detail": "能量和 84.77 · 线性 240 · 差 155 dB"
+  },
+  {
+   "id": "case-05-c03",
+   "check": "单源衰减 L0 − 20·log10(max(d,10)÷10) 对 6 源 × 96 格复算一致",
+   "passed": true,
+   "detail": "576 次复算最大偏差 0.00e+00"
+  },
+  {
+   "id": "case-05-c04",
+   "check": "全部格值落在物理合理区间 [30, 95] dB(A)",
+   "passed": true,
+   "detail": "min 50.3 · max 71.6 dB(A)"
+  },
+  {
+   "id": "case-05-c05",
+   "check": "四档分级单调且边界一致（<55 / 55-59 / 60-64 / ≥65）",
+   "passed": true,
+   "detail": "0/55/59.99/60/64.99/65 → [0, 1, 1, 2, 2, 3]"
+  },
+  {
+   "id": "case-05-c06",
+   "check": "单源 65 dB 影响半径 = 10^((L0−65)÷20)·10 m，逐源复算回代 65.00 dB",
+   "passed": true,
+   "detail": "工地 141 m; 物流 100 m; 学校 71 m; 地铁 112 m; 夜市 89 m; 餐厅 56 m"
+  },
+  {
+   "id": "case-05-c07",
+   "check": "早高峰活跃声源 4 个 / 深夜 3 个，地铁两时段都在",
+   "passed": true,
+   "detail": "早 4 个 · 夜 3 个"
+  },
+  {
+   "id": "case-05-c08",
+   "check": "去掉工地后 08:00 每一格声压级都不高于现状（只减不增），全网格能量总和下降，且超标格数确实减少",
+   "passed": true,
+   "detail": "超标 11 → 8（−3）· 峰值格 71.6 → 67.5 dB"
+  },
+  {
+   "id": "case-05-c09",
+   "check": "户数由确定性伪随机逐格求和，超标户数与格数同向变化",
+   "passed": true,
+   "detail": "全街区 23,814 户 · 超标 2,355 → 1,790 户（11 → 8 格）"
+  },
+  {
+   "id": "case-05-c10",
+   "check": "四个 KPI 印出的数字与脚本算出值逐一对应",
+   "passed": true,
+   "detail": "72 dB / 11 / 96 / 8 / 96 / −565 户"
+  },
+  {
+   "id": "case-05-c11",
+   "check": "四类色为同色相单色渐变（亮度单调），格内文字对比 ≥ 4.5",
+   "passed": true,
+   "detail": "亮度 0.876>0.596>0.288>0.081 · 对比 14.08, 9.83, 5.14, 8.03"
+  },
+  {
+   "id": "case-05-c12",
+   "check": "65 dB 环线在 CL1-CL3 上图形对比 ≥ 3.0；超标描边与标记对比达标",
+   "passed": true,
+   "detail": "环线 8.67/6.05/3.17 · 描边 7.50 · 标记 15.17"
+  },
+  {
+   "id": "case-05-c13",
+   "check": "96 格 × 2 时段 = 192 个格值全部印出（颜色不是唯一通道）",
+   "passed": true,
+   "detail": "192 个整数 dB 已印"
+  },
+  {
+   "id": "case-05-c14",
+   "check": "六个声源单字标记无重字，且都出现在图上",
+   "passed": true,
+   "detail": "工 物 学 地 夜 餐"
+  },
+  {
+   "id": "case-05-cbr",
+   "check": "类别色对色盲可分（deutan/tritan ≥ 12, normal ≥ 14）",
+   "passed": true,
+   "detail": "#F7F0E2↔#ECC67A d=13.6 t=12.1 n=14.1; #ECC67A↔#C98329 d=17.3 t=17.9 n=18.1; #C98329↔#8E3210 d=22.3 t=22.8 n=23.1"
+  },
+  {
+   "id": "case-05-01",
+   "check": "所有文字框在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-05-02",
+   "check": "同层文字框互不重叠",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-05-03",
+   "check": "文字字号 ≥ 16 px",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-05-04",
+   "check": "片段数 ≤ 9000（控制渲染负载与可复现性）",
+   "passed": true,
+   "detail": "parts=1106"
+  },
+  {
+   "id": "case-05-05",
+   "check": "所有形状在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-05-06",
+   "check": "文字不含 < > & （DSL 不做实体解码，会原样印出）",
+   "passed": true,
+   "detail": ""
+  }
+ ]
+}

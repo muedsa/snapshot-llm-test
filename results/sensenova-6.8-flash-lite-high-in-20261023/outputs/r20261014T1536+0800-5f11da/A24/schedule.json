@@ -1,0 +1,310 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "timezone": "Asia/Shanghai (+08:00)",
+ "start": "2026-11-07T09:00+08:00",
+ "deadline": "2026-11-07T16:00+08:00",
+ "window_minutes": 420,
+ "minute_zero_meaning": "0 分钟 = 2026-11-07T09:00+08:00；end_minute 相对 09:00 的偏移",
+ "window_rule": "09:00–16:00 连续 420 分钟工作窗口，不另扣午休或其他休息，不跨天；所有 start ≥ 0 且 end ≤ 420；16:00 整完成允许，之后不允许",
+ "teams": [
+  "design",
+  "engineering"
+ ],
+ "team_capacity": "各 1 个，同团队不可并行、不可抢占；团队切换无额外耗时",
+ "task_count": 12,
+ "flexible_tasks": [
+  "R05",
+  "R09",
+  "R12"
+ ],
+ "tasks": [
+  {
+   "id": "R02",
+   "label": "服务与字体探测",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [],
+   "minutes": 20,
+   "start_minute": 0,
+   "end_minute": 20,
+   "start": "2026-11-07T09:00+08:00",
+   "end": "2026-11-07T09:20+08:00",
+   "interval_notation": "[0,20)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R01",
+   "label": "需求核对",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [],
+   "minutes": 25,
+   "start_minute": 0,
+   "end_minute": 25,
+   "start": "2026-11-07T09:00+08:00",
+   "end": "2026-11-07T09:25+08:00",
+   "interval_notation": "[0,25)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R03",
+   "label": "数据清洗",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [
+    "R02"
+   ],
+   "minutes": 40,
+   "start_minute": 20,
+   "end_minute": 60,
+   "start": "2026-11-07T09:20+08:00",
+   "end": "2026-11-07T10:00+08:00",
+   "interval_notation": "[20,60)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R04",
+   "label": "视觉系统",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [
+    "R01"
+   ],
+   "minutes": 60,
+   "start_minute": 25,
+   "end_minute": 85,
+   "start": "2026-11-07T09:25+08:00",
+   "end": "2026-11-07T10:25+08:00",
+   "interval_notation": "[25,85)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R05",
+   "label": "文案审校",
+   "team": "engineering",
+   "eligible_teams": [
+    "design",
+    "engineering"
+   ],
+   "eligible_note": "两项表示任选其一，本排程选 engineering，不占用两个团队",
+   "depends": [
+    "R01"
+   ],
+   "minutes": 30,
+   "start_minute": 60,
+   "end_minute": 90,
+   "start": "2026-11-07T10:00+08:00",
+   "end": "2026-11-07T10:30+08:00",
+   "interval_notation": "[60,90)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R06",
+   "label": "图表计算",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [
+    "R03"
+   ],
+   "minutes": 45,
+   "start_minute": 90,
+   "end_minute": 135,
+   "start": "2026-11-07T10:30+08:00",
+   "end": "2026-11-07T11:15+08:00",
+   "interval_notation": "[90,135)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R07",
+   "label": "主海报构建",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [
+    "R04",
+    "R05"
+   ],
+   "minutes": 70,
+   "start_minute": 90,
+   "end_minute": 160,
+   "start": "2026-11-07T10:30+08:00",
+   "end": "2026-11-07T11:40+08:00",
+   "interval_notation": "[90,160)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R08",
+   "label": "驾驶舱构建",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [
+    "R04",
+    "R06"
+   ],
+   "minutes": 65,
+   "start_minute": 135,
+   "end_minute": 200,
+   "start": "2026-11-07T11:15+08:00",
+   "end": "2026-11-07T12:20+08:00",
+   "interval_notation": "[135,200)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R09",
+   "label": "手机适配",
+   "team": "design",
+   "eligible_teams": [
+    "design",
+    "engineering"
+   ],
+   "eligible_note": "两项表示任选其一，本排程选 design，不占用两个团队",
+   "depends": [
+    "R07"
+   ],
+   "minutes": 45,
+   "start_minute": 160,
+   "end_minute": 205,
+   "start": "2026-11-07T11:40+08:00",
+   "end": "2026-11-07T12:25+08:00",
+   "interval_notation": "[160,205)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R11",
+   "label": "产物与数据核验",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [
+    "R08",
+    "R09"
+   ],
+   "minutes": 30,
+   "start_minute": 205,
+   "end_minute": 235,
+   "start": "2026-11-07T12:25+08:00",
+   "end": "2026-11-07T12:55+08:00",
+   "interval_notation": "[205,235)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R10",
+   "label": "视觉回归检查",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "eligible_note": "唯一可选",
+   "depends": [
+    "R07",
+    "R08",
+    "R09"
+   ],
+   "minutes": 35,
+   "start_minute": 205,
+   "end_minute": 240,
+   "start": "2026-11-07T12:25+08:00",
+   "end": "2026-11-07T13:00+08:00",
+   "interval_notation": "[205,240)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  },
+  {
+   "id": "R12",
+   "label": "交付归档",
+   "team": "design",
+   "eligible_teams": [
+    "design",
+    "engineering"
+   ],
+   "eligible_note": "两项表示任选其一，本排程选 design，不占用两个团队",
+   "depends": [
+    "R10",
+    "R11"
+   ],
+   "minutes": 20,
+   "start_minute": 240,
+   "end_minute": 260,
+   "start": "2026-11-07T13:00+08:00",
+   "end": "2026-11-07T13:20+08:00",
+   "interval_notation": "[240,260)",
+   "occupancy_unit": "minute，占 [start,end) 左闭右开，end-start 严格等于 minutes"
+  }
+ ],
+ "finish_minute": 260,
+ "finish_time": "2026-11-07T13:20+08:00",
+ "buffer_minutes": 160,
+ "workload_minutes": {
+  "design": 255,
+  "engineering": 230,
+  "total": 485
+ },
+ "idle_minutes": {
+  "design": 5,
+  "engineering": 30
+ },
+ "idle_ranges": {
+  "design": [
+   [
+    85,
+    90
+   ]
+  ],
+  "engineering": [
+   [
+    200,
+    205
+   ],
+   [
+    235,
+    260
+   ]
+  ]
+ },
+ "feasible": true,
+ "verification": {
+  "checked_by": "a24_sched.audit()，独立于求解过程复算",
+  "path_base": "suite_root",
+  "script": {
+   "path": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a24_sched.py",
+   "path_base": "suite_root"
+  },
+  "errors": [],
+  "checks": [
+   "duration_exact",
+   "start>=0",
+   "end<=420",
+   "resource_no_overlap_halfopen",
+   "dependency_end_le_start",
+   "team_eligible"
+  ]
+ },
+ "source": {
+  "path": "tasks\\A24-release-plan-capstone/inputs/release.json",
+  "path_base": "suite_root",
+  "note": "任务时长、依赖、候选团队、风险全部照抄输入，未改依赖、未缩时、未删检查环节"
+ }
+}

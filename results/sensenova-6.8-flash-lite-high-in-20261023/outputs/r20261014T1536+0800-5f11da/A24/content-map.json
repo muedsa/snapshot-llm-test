@@ -1,0 +1,4658 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "path_base_note": "路径相对 outputs/<run_id>/A24/；跨目录引用时前缀 ../",
+ "generated_at": "2026-10-21T20:18:44+08:00",
+ "generated_by": {
+  "path": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a24_map.py",
+  "path_base": "suite_root",
+  "note": "坐标取自 a24_pages.Doc 构造片段时同步记录的 texts 与 rects，与三张 PNG 来自同一次构建"
+ },
+ "source_of_truth": {
+  "schedule": {
+   "path": "schedule.json",
+   "path_base": "output_dir",
+   "note": "12 任务的精确分钟偏移、带时区起止、团队与依赖"
+  },
+  "audit": {
+   "path": "schedule-audit.json",
+   "path_base": "output_dir"
+  },
+  "input": {
+   "path": "tasks/A24-release-plan-capstone/inputs/release.json",
+   "path_base": "suite_root",
+   "note": "时长、依赖、候选团队、风险的唯一来源"
+  }
+ },
+ "geometry": {
+  "origin": "左上角",
+  "x": "向右为正",
+  "y": "向下为正",
+  "unit": "px",
+  "box_format": "[left, top, right, bottom]",
+  "text_width_estimator": "a24_pages.tw()：CJK/全角 1em、ASCII 0.56em、空格 0.3em；所有文字按自算 x 左对齐放置，故框宽为估算值，误差只影响观感不影响裁切",
+  "text_height_semantics": "Text height=1.0 是行高倍数不是像素；本图所有文字框 高 = fontSize × 1.2，字形在 1em 盒内，故行距 ≥ 1em 不撞字",
+  "board_time_scale": "1 分钟 = 4 像素，x = 206 + minute × 4；16:00 截止线在 x=1886"
+ },
+ "fonts": {
+  "family": "Noto Sans CJK SC,Inter",
+  "family_note": "逗号后不留空格，全 run 统一写法",
+  "min_body_px": {
+   "execution-board": 20.0,
+   "decision-brief": 24.0,
+   "action-card": 20.0
+  },
+  "min_body_px_note": "题设：横屏正文 ≥20、竖页 ≥24、手机 ≥20；标题可更大"
+ },
+ "images": [
+  {
+   "id": "execution-board",
+   "file": "execution-board.png",
+   "snapshot": "execution-board.snapshot",
+   "path_base": "output_dir",
+   "role": "1920×1080 横屏执行泳道",
+   "brand": "叠光 · 发布演练",
+   "width": 1920,
+   "height": 1080,
+   "png_ihdr_size": [
+    1920,
+    1080
+   ],
+   "bytes": 411103,
+   "png_sha256": "1b8421119daff6867cb227980c75981cc9cd7f29f2d87129122ca858a7db4a19",
+   "response_sha256": "1b8421119daff6867cb227980c75981cc9cd7f29f2d87129122ca858a7db4a19",
+   "bytes_unchanged": true,
+   "request_id": "req-a24-execution-board-4deee3",
+   "http_status": 200,
+   "response_elapsed_ms": 4468.0,
+   "response_at": "2026-10-21T13:48:23+08:00",
+   "render_history": [
+    {
+     "request_id": "req-a24-execution-board-17efd8",
+     "response_at": "2026-10-21T12:42:40+08:00",
+     "elapsed_ms": 9984.0,
+     "response_bytes": 411103,
+     "response_sha256": "1b8421119daff6867cb227980c75981cc9cd7f29f2d87129122ca858a7db4a19"
+    },
+    {
+     "request_id": "req-a24-execution-board-4deee3",
+     "response_at": "2026-10-21T13:48:23+08:00",
+     "elapsed_ms": 4468.0,
+     "response_bytes": 411103,
+     "response_sha256": "1b8421119daff6867cb227980c75981cc9cd7f29f2d87129122ca858a7db4a19"
+    }
+   ],
+   "dsl_bytes": 49556,
+   "dsl_sha256": "7662afd24e885b367b093dfdf9be60e2291c3b3a02fdbb8b10f1bb5dfb0d3bbb",
+   "dsl_line_ending": "crlf",
+   "dsl_normalized_sha256": "c060877d8d20b5af94a1154a5f0ca109695afb4fcb8dabdebb937dbde0ce84f7",
+   "dsl_rebuild_sha256": "c060877d8d20b5af94a1154a5f0ca109695afb4fcb8dabdebb937dbde0ce84f7",
+   "dsl_matches_current_builder": false,
+   "dsl_matches_current_builder_normalized": true,
+   "dsl_line_ending_note": "落盘的 .snapshot 是客户端按 Windows 默认换行写出的请求体（CRLF），当前构建器生成 LF；两者去掉换行差异后逐字节相同，所以 dsl_matches_current_builder 为 false 而 dsl_matches_current_builder_normalized 为 true。落盘文件保持原样，因为它就是真正发给服务并被服务渲染的那份字节",
+   "dsl_rebuild_sha256_note": "把 .snapshot 落盘字节与当前构建器重新生成的 DSL 文本哈希比对，确认交付图来自仍存在的代码路径；比对分两种口径：原始字节（受换行符影响）与换行归一化后",
+   "fragments": 293,
+   "text_elements": 172,
+   "rect_elements": 121,
+   "min_font_px": 20,
+   "min_font_floor": 20.0,
+   "palette": {
+    "design": "#1D4ED8",
+    "design_soft": "#E7EEFC",
+    "engineering": "#0E9F6E",
+    "engineering_soft": "#DCF3E9",
+    "warning": "#B54708",
+    "danger": "#D92D20",
+    "ink": "#0F172A",
+    "ink2": "#3D4A5C",
+    "ink3": "#667085",
+    "background": "#F5F7FA",
+    "panel": "#FFFFFF",
+    "note": "两个团队色经色盲校验（deutan ΔE 27.6 / tritan ΔE 13.3 / normal ΔE 30.8），warning 与 danger 一律带文字标签"
+   }
+  },
+  {
+   "id": "decision-brief",
+   "file": "decision-brief.png",
+   "snapshot": "decision-brief.snapshot",
+   "path_base": "output_dir",
+   "role": "1200×1600 竖版决策简报",
+   "brand": "叠光 · 发布演练",
+   "width": 1200,
+   "height": 1600,
+   "png_ihdr_size": [
+    1200,
+    1600
+   ],
+   "bytes": 484497,
+   "png_sha256": "d7a124e4db407ceff41ae144d31ce2f62e71c691550777a618fd268f77e30c72",
+   "response_sha256": "d7a124e4db407ceff41ae144d31ce2f62e71c691550777a618fd268f77e30c72",
+   "bytes_unchanged": true,
+   "request_id": "req-a24-decision-brief-c7590d",
+   "http_status": 200,
+   "response_elapsed_ms": 3610.0,
+   "response_at": "2026-10-21T13:48:27+08:00",
+   "render_history": [
+    {
+     "request_id": "req-a24-decision-brief-432409",
+     "response_at": "2026-10-21T12:42:46+08:00",
+     "elapsed_ms": 5797.0,
+     "response_bytes": 473980,
+     "response_sha256": "44fec7536cc9a4640929e400155733f342717b45f8f043f9744c0e42692ea16d"
+    },
+    {
+     "request_id": "req-a24-decision-brief-c7590d",
+     "response_at": "2026-10-21T13:48:27+08:00",
+     "elapsed_ms": 3610.0,
+     "response_bytes": 484497,
+     "response_sha256": "d7a124e4db407ceff41ae144d31ce2f62e71c691550777a618fd268f77e30c72"
+    }
+   ],
+   "dsl_bytes": 30889,
+   "dsl_sha256": "796dbf2d85bf392ac8bdddeea4408b7ac93b108551750b253ec245097d974bb4",
+   "dsl_line_ending": "crlf",
+   "dsl_normalized_sha256": "050531839501b3969677d39174483db6826f6793e0b9e19ae3db92b6326054f9",
+   "dsl_rebuild_sha256": "050531839501b3969677d39174483db6826f6793e0b9e19ae3db92b6326054f9",
+   "dsl_matches_current_builder": false,
+   "dsl_matches_current_builder_normalized": true,
+   "dsl_line_ending_note": "落盘的 .snapshot 是客户端按 Windows 默认换行写出的请求体（CRLF），当前构建器生成 LF；两者去掉换行差异后逐字节相同，所以 dsl_matches_current_builder 为 false 而 dsl_matches_current_builder_normalized 为 true。落盘文件保持原样，因为它就是真正发给服务并被服务渲染的那份字节",
+   "dsl_rebuild_sha256_note": "把 .snapshot 落盘字节与当前构建器重新生成的 DSL 文本哈希比对，确认交付图来自仍存在的代码路径；比对分两种口径：原始字节（受换行符影响）与换行归一化后",
+   "fragments": 155,
+   "text_elements": 107,
+   "rect_elements": 48,
+   "min_font_px": 24,
+   "min_font_floor": 24.0,
+   "palette": {
+    "design": "#1D4ED8",
+    "design_soft": "#E7EEFC",
+    "engineering": "#0E9F6E",
+    "engineering_soft": "#DCF3E9",
+    "warning": "#B54708",
+    "danger": "#D92D20",
+    "ink": "#0F172A",
+    "ink2": "#3D4A5C",
+    "ink3": "#667085",
+    "background": "#F5F7FA",
+    "panel": "#FFFFFF",
+    "note": "两个团队色经色盲校验（deutan ΔE 27.6 / tritan ΔE 13.3 / normal ΔE 30.8），warning 与 danger 一律带文字标签"
+   }
+  },
+  {
+   "id": "action-card",
+   "file": "action-card.png",
+   "snapshot": "action-card.snapshot",
+   "path_base": "output_dir",
+   "role": "720×1280 手机行动卡",
+   "brand": "叠光 · 发布演练",
+   "width": 720,
+   "height": 1280,
+   "png_ihdr_size": [
+    720,
+    1280
+   ],
+   "bytes": 265676,
+   "png_sha256": "1ad47c515d7214c09b87d01d3269cbd8360144e141cb537f2d7359977aa7745d",
+   "response_sha256": "1ad47c515d7214c09b87d01d3269cbd8360144e141cb537f2d7359977aa7745d",
+   "bytes_unchanged": true,
+   "request_id": "req-a24-action-card-ab9c3a",
+   "http_status": 200,
+   "response_elapsed_ms": 4079.0,
+   "response_at": "2026-10-21T13:48:31+08:00",
+   "render_history": [
+    {
+     "request_id": "req-a24-action-card-9719a7",
+     "response_at": "2026-10-21T12:42:54+08:00",
+     "elapsed_ms": 8547.0,
+     "response_bytes": 265676,
+     "response_sha256": "1ad47c515d7214c09b87d01d3269cbd8360144e141cb537f2d7359977aa7745d"
+    },
+    {
+     "request_id": "req-a24-action-card-ab9c3a",
+     "response_at": "2026-10-21T13:48:31+08:00",
+     "elapsed_ms": 4079.0,
+     "response_bytes": 265676,
+     "response_sha256": "1ad47c515d7214c09b87d01d3269cbd8360144e141cb537f2d7359977aa7745d"
+    }
+   ],
+   "dsl_bytes": 20141,
+   "dsl_sha256": "5ac172b4a2fefc3c60dc95800fabc88b5d02b506209fdfc12f2edbf8d4955185",
+   "dsl_line_ending": "crlf",
+   "dsl_normalized_sha256": "a0730d4cc1df334ce43d501b11febc7095e85af416d3bacc1ae109ef7c216743",
+   "dsl_rebuild_sha256": "a0730d4cc1df334ce43d501b11febc7095e85af416d3bacc1ae109ef7c216743",
+   "dsl_matches_current_builder": false,
+   "dsl_matches_current_builder_normalized": true,
+   "dsl_line_ending_note": "落盘的 .snapshot 是客户端按 Windows 默认换行写出的请求体（CRLF），当前构建器生成 LF；两者去掉换行差异后逐字节相同，所以 dsl_matches_current_builder 为 false 而 dsl_matches_current_builder_normalized 为 true。落盘文件保持原样，因为它就是真正发给服务并被服务渲染的那份字节",
+   "dsl_rebuild_sha256_note": "把 .snapshot 落盘字节与当前构建器重新生成的 DSL 文本哈希比对，确认交付图来自仍存在的代码路径；比对分两种口径：原始字节（受换行符影响）与换行归一化后",
+   "fragments": 110,
+   "text_elements": 64,
+   "rect_elements": 46,
+   "min_font_px": 20,
+   "min_font_floor": 20.0,
+   "palette": {
+    "design": "#1D4ED8",
+    "design_soft": "#E7EEFC",
+    "engineering": "#0E9F6E",
+    "engineering_soft": "#DCF3E9",
+    "warning": "#B54708",
+    "danger": "#D92D20",
+    "ink": "#0F172A",
+    "ink2": "#3D4A5C",
+    "ink3": "#667085",
+    "background": "#F5F7FA",
+    "panel": "#FFFFFF",
+    "note": "两个团队色经色盲校验（deutan ΔE 27.6 / tritan ΔE 13.3 / normal ΔE 30.8），warning 与 danger 一律带文字标签"
+   }
+  }
+ ],
+ "tasks": [
+  {
+   "id": "R02",
+   "label": "服务与字体探测",
+   "minutes": 20,
+   "start_minute": 0,
+   "end_minute": 20,
+   "interval": "[0,20)",
+   "start": "2026-11-07T09:00+08:00",
+   "end": "2026-11-07T09:20+08:00",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "depends": [],
+   "on_critical_path": false,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       206.0,
+       432.0,
+       286.0,
+       512.0
+      ],
+      "scale_note": "块宽 = 80 像素 = 20 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "engineering",
+       "y": 396.0,
+       "box": [
+        206.0,
+        396.0,
+        1896.0,
+        554.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       730.0,
+       81.6,
+       754.0
+      ],
+      "block_id_box": [
+       225.84,
+       440.0,
+       266.16,
+       468.8
+      ],
+      "label_in_block_box": null,
+      "strip_box": [
+       206.0,
+       516.0,
+       501.2,
+       540.0
+      ],
+      "strip_text": "服务与字体探测 · 09:00-09:20",
+      "strip_slot": "lower（块下方 y=516）",
+      "label_placement_note": "块宽 80 px < 标签宽 140 px，标签放不下块内，块外标签行给「标签 · 起止」",
+      "time_text_in_block": null,
+      "time_text_in_strip": "09:00-09:20",
+      "on_critical_path": false,
+      "table_row": {
+       "index": 1,
+       "y": 730.0,
+       "box": [
+        40.0,
+        718.0,
+        1560.0,
+        742.0
+       ],
+       "id_box": [
+        48.0,
+        730.0,
+        81.6,
+        754.0
+       ],
+       "label_box": [
+        140.0,
+        730.0,
+        280.0,
+        754.0
+       ],
+       "team_box": [
+        470.0,
+        730.0,
+        570.0,
+        754.0
+       ],
+       "time_box": [
+        660.0,
+        730.0,
+        795.2,
+        754.0
+       ],
+       "depends_box": [
+        1070.0,
+        730.0,
+        1081.2,
+        754.0
+       ],
+       "depends_text": "—"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       48.0,
+       465.0,
+       594.0,
+       509.0
+      ],
+      "column": 1,
+      "column_order": [
+       "R01",
+       "R02",
+       "R03",
+       "R04",
+       "R05",
+       "R06"
+      ],
+      "row_index_in_column": 1,
+      "id_box": [
+       72.0,
+       472.0,
+       112.32,
+       500.8
+      ],
+      "label_box": [
+       126.0,
+       472.0,
+       294.0,
+       500.8
+      ],
+      "depends_box": [
+       304.0,
+       472.0,
+       396.64,
+       500.8
+      ],
+      "depends_text": "— 无依赖",
+      "start_box": [
+       520.8,
+       472.0,
+       588.0,
+       500.8
+      ],
+      "start_text": "09:00",
+      "critical_path_pill_box": null,
+      "team_pill": "非关键路径，无底块",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 1,
+      "box": [
+       28.0,
+       210.0,
+       692.0,
+       268.0
+      ],
+      "border": "2 SOLID #E3E8EF",
+      "line1_box": [
+       46.0,
+       216.0,
+       243.56,
+       242.4
+      ],
+      "line1_text": "R02 服务与字体探测",
+      "time_box": [
+       552.8,
+       220.0,
+       676.0,
+       244.0
+      ],
+      "time_text": "09:00-09:20",
+      "line2_box": [
+       66.0,
+       244.0,
+       398.8,
+       268.0
+      ],
+      "line2_text": "engineering · 20 分钟 · — 无依赖",
+      "depends_text": "— 无依赖",
+      "on_critical_path": false,
+      "cp_mark_box": null
+     }
+    }
+   }
+  },
+  {
+   "id": "R01",
+   "label": "需求核对",
+   "minutes": 25,
+   "start_minute": 0,
+   "end_minute": 25,
+   "interval": "[0,25)",
+   "start": "2026-11-07T09:00+08:00",
+   "end": "2026-11-07T09:25+08:00",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "depends": [],
+   "on_critical_path": true,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       206.0,
+       272.0,
+       306.0,
+       352.0
+      ],
+      "scale_note": "块宽 = 100 像素 = 25 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "design",
+       "y": 236.0,
+       "box": [
+        206.0,
+        236.0,
+        1896.0,
+        394.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       706.0,
+       81.6,
+       730.0
+      ],
+      "block_id_box": [
+       235.84,
+       280.0,
+       276.16,
+       308.8
+      ],
+      "label_in_block_box": [
+       216.0,
+       318.0,
+       296.0,
+       342.0
+      ],
+      "strip_box": [
+       206.0,
+       356.0,
+       329.2,
+       380.0
+      ],
+      "strip_text": "09:00-09:25",
+      "strip_slot": "lower（块下方 y=356）",
+      "label_placement_note": "块宽 100 px ≥ 标签宽 80 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "09:00-09:25",
+      "on_critical_path": true,
+      "table_row": {
+       "index": 0,
+       "y": 706.0,
+       "box": [
+        40.0,
+        694.0,
+        1560.0,
+        718.0
+       ],
+       "id_box": [
+        48.0,
+        706.0,
+        81.6,
+        730.0
+       ],
+       "label_box": [
+        140.0,
+        706.0,
+        220.0,
+        730.0
+       ],
+       "team_box": [
+        470.0,
+        706.0,
+        570.0,
+        730.0
+       ],
+       "time_box": [
+        660.0,
+        706.0,
+        795.2,
+        730.0
+       ],
+       "depends_box": [
+        1070.0,
+        706.0,
+        1081.2,
+        730.0
+       ],
+       "depends_text": "—"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       42.0,
+       427.0,
+       594.0,
+       471.0
+      ],
+      "column": 1,
+      "column_order": [
+       "R01",
+       "R02",
+       "R03",
+       "R04",
+       "R05",
+       "R06"
+      ],
+      "row_index_in_column": 0,
+      "id_box": [
+       72.0,
+       434.0,
+       112.32,
+       462.8
+      ],
+      "label_box": [
+       126.0,
+       434.0,
+       222.0,
+       462.8
+      ],
+      "depends_box": [
+       304.0,
+       434.0,
+       396.64,
+       462.8
+      ],
+      "depends_text": "— 无依赖",
+      "start_box": [
+       520.8,
+       434.0,
+       588.0,
+       462.8
+      ],
+      "start_text": "09:00",
+      "critical_path_pill_box": [
+       42.0,
+       427.0,
+       594.0,
+       471.0
+      ],
+      "team_pill": "虚底块用执行团队色底，表示该任务在关键路径上",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 0,
+      "box": [
+       28.0,
+       148.0,
+       692.0,
+       206.0
+      ],
+      "border": "2 SOLID #1D4ED8",
+      "line1_box": [
+       46.0,
+       154.0,
+       177.56,
+       180.4
+      ],
+      "line1_text": "R01 需求核对",
+      "time_box": [
+       552.8,
+       158.0,
+       676.0,
+       182.0
+      ],
+      "time_text": "09:00-09:25",
+      "line2_box": [
+       66.0,
+       182.0,
+       342.8,
+       206.0
+      ],
+      "line2_text": "design · 25 分钟 · — 无依赖",
+      "depends_text": "— 无依赖",
+      "on_critical_path": true,
+      "cp_mark_box": [
+       596.0,
+       182.0,
+       676.0,
+       206.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "R03",
+   "label": "数据清洗",
+   "minutes": 40,
+   "start_minute": 20,
+   "end_minute": 60,
+   "interval": "[20,60)",
+   "start": "2026-11-07T09:20+08:00",
+   "end": "2026-11-07T10:00+08:00",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "depends": [
+    "R02"
+   ],
+   "on_critical_path": false,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       286.0,
+       432.0,
+       446.0,
+       512.0
+      ],
+      "scale_note": "块宽 = 160 像素 = 40 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "engineering",
+       "y": 396.0,
+       "box": [
+        206.0,
+        396.0,
+        1896.0,
+        554.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       754.0,
+       81.6,
+       778.0
+      ],
+      "block_id_box": [
+       345.84,
+       440.0,
+       386.16,
+       468.8
+      ],
+      "label_in_block_box": [
+       326.0,
+       478.0,
+       406.0,
+       502.0
+      ],
+      "strip_box": [
+       286.0,
+       400.0,
+       409.2,
+       424.0
+      ],
+      "strip_text": "09:20-10:00",
+      "strip_slot": "upper（泳道上方 y=400）",
+      "label_placement_note": "块宽 160 px ≥ 标签宽 80 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "09:20-10:00",
+      "on_critical_path": false,
+      "table_row": {
+       "index": 2,
+       "y": 754.0,
+       "box": [
+        40.0,
+        742.0,
+        1560.0,
+        766.0
+       ],
+       "id_box": [
+        48.0,
+        754.0,
+        81.6,
+        778.0
+       ],
+       "label_box": [
+        140.0,
+        754.0,
+        220.0,
+        778.0
+       ],
+       "team_box": [
+        470.0,
+        754.0,
+        570.0,
+        778.0
+       ],
+       "time_box": [
+        660.0,
+        754.0,
+        795.2,
+        778.0
+       ],
+       "depends_box": [
+        1070.0,
+        754.0,
+        1129.6,
+        778.0
+       ],
+       "depends_text": "← R02"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       48.0,
+       503.0,
+       594.0,
+       547.0
+      ],
+      "column": 1,
+      "column_order": [
+       "R01",
+       "R02",
+       "R03",
+       "R04",
+       "R05",
+       "R06"
+      ],
+      "row_index_in_column": 2,
+      "id_box": [
+       72.0,
+       510.0,
+       112.32,
+       538.8
+      ],
+      "label_box": [
+       126.0,
+       510.0,
+       222.0,
+       538.8
+      ],
+      "depends_box": [
+       304.0,
+       510.0,
+       375.52,
+       538.8
+      ],
+      "depends_text": "← R02",
+      "start_box": [
+       520.8,
+       510.0,
+       588.0,
+       538.8
+      ],
+      "start_text": "09:20",
+      "critical_path_pill_box": null,
+      "team_pill": "非关键路径，无底块",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 2,
+      "box": [
+       28.0,
+       272.0,
+       692.0,
+       330.0
+      ],
+      "border": "2 SOLID #E3E8EF",
+      "line1_box": [
+       46.0,
+       278.0,
+       177.56,
+       304.4
+      ],
+      "line1_text": "R03 数据清洗",
+      "time_box": [
+       552.8,
+       282.0,
+       676.0,
+       306.0
+      ],
+      "time_text": "09:20-10:00",
+      "line2_box": [
+       66.0,
+       306.0,
+       381.2,
+       330.0
+      ],
+      "line2_text": "engineering · 40 分钟 · ← R02",
+      "depends_text": "← R02",
+      "on_critical_path": false,
+      "cp_mark_box": null
+     }
+    }
+   }
+  },
+  {
+   "id": "R04",
+   "label": "视觉系统",
+   "minutes": 60,
+   "start_minute": 25,
+   "end_minute": 85,
+   "interval": "[25,85)",
+   "start": "2026-11-07T09:25+08:00",
+   "end": "2026-11-07T10:25+08:00",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "depends": [
+    "R01"
+   ],
+   "on_critical_path": true,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       306.0,
+       272.0,
+       546.0,
+       352.0
+      ],
+      "scale_note": "块宽 = 240 像素 = 60 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "design",
+       "y": 236.0,
+       "box": [
+        206.0,
+        236.0,
+        1896.0,
+        394.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       778.0,
+       81.6,
+       802.0
+      ],
+      "block_id_box": [
+       405.84,
+       280.0,
+       446.16,
+       308.8
+      ],
+      "label_in_block_box": [
+       386.0,
+       318.0,
+       466.0,
+       342.0
+      ],
+      "strip_box": [
+       306.0,
+       240.0,
+       429.2,
+       264.0
+      ],
+      "strip_text": "09:25-10:25",
+      "strip_slot": "upper（泳道上方 y=240）",
+      "label_placement_note": "块宽 240 px ≥ 标签宽 80 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "09:25-10:25",
+      "on_critical_path": true,
+      "table_row": {
+       "index": 3,
+       "y": 778.0,
+       "box": [
+        40.0,
+        766.0,
+        1560.0,
+        790.0
+       ],
+       "id_box": [
+        48.0,
+        778.0,
+        81.6,
+        802.0
+       ],
+       "label_box": [
+        140.0,
+        778.0,
+        220.0,
+        802.0
+       ],
+       "team_box": [
+        470.0,
+        778.0,
+        570.0,
+        802.0
+       ],
+       "time_box": [
+        660.0,
+        778.0,
+        795.2,
+        802.0
+       ],
+       "depends_box": [
+        1070.0,
+        778.0,
+        1129.6,
+        802.0
+       ],
+       "depends_text": "← R01"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       42.0,
+       541.0,
+       594.0,
+       585.0
+      ],
+      "column": 1,
+      "column_order": [
+       "R01",
+       "R02",
+       "R03",
+       "R04",
+       "R05",
+       "R06"
+      ],
+      "row_index_in_column": 3,
+      "id_box": [
+       72.0,
+       548.0,
+       112.32,
+       576.8
+      ],
+      "label_box": [
+       126.0,
+       548.0,
+       222.0,
+       576.8
+      ],
+      "depends_box": [
+       304.0,
+       548.0,
+       375.52,
+       576.8
+      ],
+      "depends_text": "← R01",
+      "start_box": [
+       520.8,
+       548.0,
+       588.0,
+       576.8
+      ],
+      "start_text": "09:25",
+      "critical_path_pill_box": [
+       42.0,
+       541.0,
+       594.0,
+       585.0
+      ],
+      "team_pill": "虚底块用执行团队色底，表示该任务在关键路径上",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 3,
+      "box": [
+       28.0,
+       334.0,
+       692.0,
+       392.0
+      ],
+      "border": "2 SOLID #1D4ED8",
+      "line1_box": [
+       46.0,
+       340.0,
+       177.56,
+       366.4
+      ],
+      "line1_text": "R04 视觉系统",
+      "time_box": [
+       552.8,
+       344.0,
+       676.0,
+       368.0
+      ],
+      "time_text": "09:25-10:25",
+      "line2_box": [
+       66.0,
+       368.0,
+       325.2,
+       392.0
+      ],
+      "line2_text": "design · 60 分钟 · ← R01",
+      "depends_text": "← R01",
+      "on_critical_path": true,
+      "cp_mark_box": [
+       596.0,
+       368.0,
+       676.0,
+       392.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "R05",
+   "label": "文案审校",
+   "minutes": 30,
+   "start_minute": 60,
+   "end_minute": 90,
+   "interval": "[60,90)",
+   "start": "2026-11-07T10:00+08:00",
+   "end": "2026-11-07T10:30+08:00",
+   "team": "engineering",
+   "eligible_teams": [
+    "design",
+    "engineering"
+   ],
+   "depends": [
+    "R01"
+   ],
+   "on_critical_path": false,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       446.0,
+       432.0,
+       566.0,
+       512.0
+      ],
+      "scale_note": "块宽 = 120 像素 = 30 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "engineering",
+       "y": 396.0,
+       "box": [
+        206.0,
+        396.0,
+        1896.0,
+        554.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       802.0,
+       81.6,
+       826.0
+      ],
+      "block_id_box": [
+       485.84,
+       440.0,
+       526.16,
+       468.8
+      ],
+      "label_in_block_box": [
+       466.0,
+       478.0,
+       546.0,
+       502.0
+      ],
+      "strip_box": [
+       446.0,
+       400.0,
+       569.2,
+       424.0
+      ],
+      "strip_text": "10:00-10:30",
+      "strip_slot": "upper（泳道上方 y=400）",
+      "label_placement_note": "块宽 120 px ≥ 标签宽 80 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "10:00-10:30",
+      "on_critical_path": false,
+      "table_row": {
+       "index": 4,
+       "y": 802.0,
+       "box": [
+        40.0,
+        790.0,
+        1560.0,
+        814.0
+       ],
+       "id_box": [
+        48.0,
+        802.0,
+        81.6,
+        826.0
+       ],
+       "label_box": [
+        140.0,
+        802.0,
+        220.0,
+        826.0
+       ],
+       "team_box": [
+        470.0,
+        802.0,
+        570.0,
+        826.0
+       ],
+       "time_box": [
+        660.0,
+        802.0,
+        795.2,
+        826.0
+       ],
+       "depends_box": [
+        1070.0,
+        802.0,
+        1129.6,
+        826.0
+       ],
+       "depends_text": "← R01"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       48.0,
+       579.0,
+       594.0,
+       623.0
+      ],
+      "column": 1,
+      "column_order": [
+       "R01",
+       "R02",
+       "R03",
+       "R04",
+       "R05",
+       "R06"
+      ],
+      "row_index_in_column": 4,
+      "id_box": [
+       72.0,
+       586.0,
+       112.32,
+       614.8
+      ],
+      "label_box": [
+       126.0,
+       586.0,
+       222.0,
+       614.8
+      ],
+      "depends_box": [
+       304.0,
+       586.0,
+       375.52,
+       614.8
+      ],
+      "depends_text": "← R01",
+      "start_box": [
+       520.8,
+       586.0,
+       588.0,
+       614.8
+      ],
+      "start_text": "10:00",
+      "critical_path_pill_box": null,
+      "team_pill": "非关键路径，无底块",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 4,
+      "box": [
+       28.0,
+       396.0,
+       692.0,
+       454.0
+      ],
+      "border": "2 SOLID #E3E8EF",
+      "line1_box": [
+       46.0,
+       402.0,
+       177.56,
+       428.4
+      ],
+      "line1_text": "R05 文案审校",
+      "time_box": [
+       552.8,
+       406.0,
+       676.0,
+       430.0
+      ],
+      "time_text": "10:00-10:30",
+      "line2_box": [
+       66.0,
+       430.0,
+       381.2,
+       454.0
+      ],
+      "line2_text": "engineering · 30 分钟 · ← R01",
+      "depends_text": "← R01",
+      "on_critical_path": false,
+      "cp_mark_box": null
+     }
+    }
+   }
+  },
+  {
+   "id": "R06",
+   "label": "图表计算",
+   "minutes": 45,
+   "start_minute": 90,
+   "end_minute": 135,
+   "interval": "[90,135)",
+   "start": "2026-11-07T10:30+08:00",
+   "end": "2026-11-07T11:15+08:00",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "depends": [
+    "R03"
+   ],
+   "on_critical_path": false,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       566.0,
+       432.0,
+       746.0,
+       512.0
+      ],
+      "scale_note": "块宽 = 180 像素 = 45 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "engineering",
+       "y": 396.0,
+       "box": [
+        206.0,
+        396.0,
+        1896.0,
+        554.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       826.0,
+       81.6,
+       850.0
+      ],
+      "block_id_box": [
+       635.84,
+       440.0,
+       676.16,
+       468.8
+      ],
+      "label_in_block_box": [
+       616.0,
+       478.0,
+       696.0,
+       502.0
+      ],
+      "strip_box": [
+       566.0,
+       516.0,
+       689.2,
+       540.0
+      ],
+      "strip_text": "10:30-11:15",
+      "strip_slot": "lower（块下方 y=516）",
+      "label_placement_note": "块宽 180 px ≥ 标签宽 80 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "10:30-11:15",
+      "on_critical_path": false,
+      "table_row": {
+       "index": 5,
+       "y": 826.0,
+       "box": [
+        40.0,
+        814.0,
+        1560.0,
+        838.0
+       ],
+       "id_box": [
+        48.0,
+        826.0,
+        81.6,
+        850.0
+       ],
+       "label_box": [
+        140.0,
+        826.0,
+        220.0,
+        850.0
+       ],
+       "team_box": [
+        470.0,
+        826.0,
+        570.0,
+        850.0
+       ],
+       "time_box": [
+        660.0,
+        826.0,
+        795.2,
+        850.0
+       ],
+       "depends_box": [
+        1070.0,
+        826.0,
+        1129.6,
+        850.0
+       ],
+       "depends_text": "← R03"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       48.0,
+       617.0,
+       594.0,
+       661.0
+      ],
+      "column": 1,
+      "column_order": [
+       "R01",
+       "R02",
+       "R03",
+       "R04",
+       "R05",
+       "R06"
+      ],
+      "row_index_in_column": 5,
+      "id_box": [
+       72.0,
+       624.0,
+       112.32,
+       652.8
+      ],
+      "label_box": [
+       126.0,
+       624.0,
+       222.0,
+       652.8
+      ],
+      "depends_box": [
+       304.0,
+       624.0,
+       375.52,
+       652.8
+      ],
+      "depends_text": "← R03",
+      "start_box": [
+       520.8,
+       624.0,
+       588.0,
+       652.8
+      ],
+      "start_text": "10:30",
+      "critical_path_pill_box": null,
+      "team_pill": "非关键路径，无底块",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 5,
+      "box": [
+       28.0,
+       458.0,
+       692.0,
+       516.0
+      ],
+      "border": "2 SOLID #E3E8EF",
+      "line1_box": [
+       46.0,
+       464.0,
+       177.56,
+       490.4
+      ],
+      "line1_text": "R06 图表计算",
+      "time_box": [
+       552.8,
+       468.0,
+       676.0,
+       492.0
+      ],
+      "time_text": "10:30-11:15",
+      "line2_box": [
+       66.0,
+       492.0,
+       381.2,
+       516.0
+      ],
+      "line2_text": "engineering · 45 分钟 · ← R03",
+      "depends_text": "← R03",
+      "on_critical_path": false,
+      "cp_mark_box": null
+     }
+    }
+   }
+  },
+  {
+   "id": "R07",
+   "label": "主海报构建",
+   "minutes": 70,
+   "start_minute": 90,
+   "end_minute": 160,
+   "interval": "[90,160)",
+   "start": "2026-11-07T10:30+08:00",
+   "end": "2026-11-07T11:40+08:00",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "depends": [
+    "R04",
+    "R05"
+   ],
+   "on_critical_path": true,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       566.0,
+       272.0,
+       846.0,
+       352.0
+      ],
+      "scale_note": "块宽 = 280 像素 = 70 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "design",
+       "y": 236.0,
+       "box": [
+        206.0,
+        236.0,
+        1896.0,
+        394.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       850.0,
+       81.6,
+       874.0
+      ],
+      "block_id_box": [
+       685.84,
+       280.0,
+       726.16,
+       308.8
+      ],
+      "label_in_block_box": [
+       656.0,
+       318.0,
+       756.0,
+       342.0
+      ],
+      "strip_box": [
+       566.0,
+       356.0,
+       689.2,
+       380.0
+      ],
+      "strip_text": "10:30-11:40",
+      "strip_slot": "lower（块下方 y=356）",
+      "label_placement_note": "块宽 280 px ≥ 标签宽 100 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "10:30-11:40",
+      "on_critical_path": true,
+      "table_row": {
+       "index": 6,
+       "y": 850.0,
+       "box": [
+        40.0,
+        838.0,
+        1560.0,
+        862.0
+       ],
+       "id_box": [
+        48.0,
+        850.0,
+        81.6,
+        874.0
+       ],
+       "label_box": [
+        140.0,
+        850.0,
+        240.0,
+        874.0
+       ],
+       "team_box": [
+        470.0,
+        850.0,
+        570.0,
+        874.0
+       ],
+       "time_box": [
+        660.0,
+        850.0,
+        795.2,
+        874.0
+       ],
+       "depends_box": [
+        1070.0,
+        850.0,
+        1180.4,
+        874.0
+       ],
+       "depends_text": "← R04, R05"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       602.0,
+       427.0,
+       1154.0,
+       471.0
+      ],
+      "column": 2,
+      "column_order": [
+       "R07",
+       "R08",
+       "R09",
+       "R10",
+       "R11",
+       "R12"
+      ],
+      "row_index_in_column": 0,
+      "id_box": [
+       632.0,
+       434.0,
+       672.32,
+       462.8
+      ],
+      "label_box": [
+       686.0,
+       434.0,
+       806.0,
+       462.8
+      ],
+      "depends_box": [
+       864.0,
+       434.0,
+       996.48,
+       462.8
+      ],
+      "depends_text": "← R04, R05",
+      "start_box": [
+       1080.8,
+       434.0,
+       1148.0,
+       462.8
+      ],
+      "start_text": "10:30",
+      "critical_path_pill_box": [
+       602.0,
+       427.0,
+       1154.0,
+       471.0
+      ],
+      "team_pill": "虚底块用执行团队色底，表示该任务在关键路径上",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 6,
+      "box": [
+       28.0,
+       520.0,
+       692.0,
+       578.0
+      ],
+      "border": "2 SOLID #1D4ED8",
+      "line1_box": [
+       46.0,
+       526.0,
+       199.56,
+       552.4
+      ],
+      "line1_text": "R07 主海报构建",
+      "time_box": [
+       552.8,
+       530.0,
+       676.0,
+       554.0
+      ],
+      "time_text": "10:30-11:40",
+      "line2_box": [
+       66.0,
+       554.0,
+       376.0,
+       578.0
+      ],
+      "line2_text": "design · 70 分钟 · ← R04, R05",
+      "depends_text": "← R04, R05",
+      "on_critical_path": true,
+      "cp_mark_box": [
+       596.0,
+       554.0,
+       676.0,
+       578.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "R08",
+   "label": "驾驶舱构建",
+   "minutes": 65,
+   "start_minute": 135,
+   "end_minute": 200,
+   "interval": "[135,200)",
+   "start": "2026-11-07T11:15+08:00",
+   "end": "2026-11-07T12:20+08:00",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "depends": [
+    "R04",
+    "R06"
+   ],
+   "on_critical_path": false,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       746.0,
+       432.0,
+       1006.0,
+       512.0
+      ],
+      "scale_note": "块宽 = 260 像素 = 65 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "engineering",
+       "y": 396.0,
+       "box": [
+        206.0,
+        396.0,
+        1896.0,
+        554.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       874.0,
+       81.6,
+       898.0
+      ],
+      "block_id_box": [
+       855.84,
+       440.0,
+       896.16,
+       468.8
+      ],
+      "label_in_block_box": [
+       826.0,
+       478.0,
+       926.0,
+       502.0
+      ],
+      "strip_box": [
+       746.0,
+       516.0,
+       869.2,
+       540.0
+      ],
+      "strip_text": "11:15-12:20",
+      "strip_slot": "lower（块下方 y=516）",
+      "label_placement_note": "块宽 260 px ≥ 标签宽 100 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "11:15-12:20",
+      "on_critical_path": false,
+      "table_row": {
+       "index": 7,
+       "y": 874.0,
+       "box": [
+        40.0,
+        862.0,
+        1560.0,
+        886.0
+       ],
+       "id_box": [
+        48.0,
+        874.0,
+        81.6,
+        898.0
+       ],
+       "label_box": [
+        140.0,
+        874.0,
+        240.0,
+        898.0
+       ],
+       "team_box": [
+        470.0,
+        874.0,
+        570.0,
+        898.0
+       ],
+       "time_box": [
+        660.0,
+        874.0,
+        795.2,
+        898.0
+       ],
+       "depends_box": [
+        1070.0,
+        874.0,
+        1180.4,
+        898.0
+       ],
+       "depends_text": "← R04, R06"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       608.0,
+       465.0,
+       1154.0,
+       509.0
+      ],
+      "column": 2,
+      "column_order": [
+       "R07",
+       "R08",
+       "R09",
+       "R10",
+       "R11",
+       "R12"
+      ],
+      "row_index_in_column": 1,
+      "id_box": [
+       632.0,
+       472.0,
+       672.32,
+       500.8
+      ],
+      "label_box": [
+       686.0,
+       472.0,
+       806.0,
+       500.8
+      ],
+      "depends_box": [
+       864.0,
+       472.0,
+       996.48,
+       500.8
+      ],
+      "depends_text": "← R04, R06",
+      "start_box": [
+       1080.8,
+       472.0,
+       1148.0,
+       500.8
+      ],
+      "start_text": "11:15",
+      "critical_path_pill_box": null,
+      "team_pill": "非关键路径，无底块",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 7,
+      "box": [
+       28.0,
+       582.0,
+       692.0,
+       640.0
+      ],
+      "border": "2 SOLID #E3E8EF",
+      "line1_box": [
+       46.0,
+       588.0,
+       199.56,
+       614.4
+      ],
+      "line1_text": "R08 驾驶舱构建",
+      "time_box": [
+       552.8,
+       592.0,
+       676.0,
+       616.0
+      ],
+      "time_text": "11:15-12:20",
+      "line2_box": [
+       66.0,
+       616.0,
+       432.0,
+       640.0
+      ],
+      "line2_text": "engineering · 65 分钟 · ← R04, R06",
+      "depends_text": "← R04, R06",
+      "on_critical_path": false,
+      "cp_mark_box": null
+     }
+    }
+   }
+  },
+  {
+   "id": "R09",
+   "label": "手机适配",
+   "minutes": 45,
+   "start_minute": 160,
+   "end_minute": 205,
+   "interval": "[160,205)",
+   "start": "2026-11-07T11:40+08:00",
+   "end": "2026-11-07T12:25+08:00",
+   "team": "design",
+   "eligible_teams": [
+    "design",
+    "engineering"
+   ],
+   "depends": [
+    "R07"
+   ],
+   "on_critical_path": true,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       846.0,
+       272.0,
+       1026.0,
+       352.0
+      ],
+      "scale_note": "块宽 = 180 像素 = 45 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "design",
+       "y": 236.0,
+       "box": [
+        206.0,
+        236.0,
+        1896.0,
+        394.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       898.0,
+       81.6,
+       922.0
+      ],
+      "block_id_box": [
+       915.84,
+       280.0,
+       956.16,
+       308.8
+      ],
+      "label_in_block_box": [
+       896.0,
+       318.0,
+       976.0,
+       342.0
+      ],
+      "strip_box": [
+       846.0,
+       356.0,
+       969.2,
+       380.0
+      ],
+      "strip_text": "11:40-12:25",
+      "strip_slot": "lower（块下方 y=356）",
+      "label_placement_note": "块宽 180 px ≥ 标签宽 80 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "11:40-12:25",
+      "on_critical_path": true,
+      "table_row": {
+       "index": 8,
+       "y": 898.0,
+       "box": [
+        40.0,
+        886.0,
+        1560.0,
+        910.0
+       ],
+       "id_box": [
+        48.0,
+        898.0,
+        81.6,
+        922.0
+       ],
+       "label_box": [
+        140.0,
+        898.0,
+        220.0,
+        922.0
+       ],
+       "team_box": [
+        470.0,
+        898.0,
+        570.0,
+        922.0
+       ],
+       "time_box": [
+        660.0,
+        898.0,
+        795.2,
+        922.0
+       ],
+       "depends_box": [
+        1070.0,
+        898.0,
+        1129.6,
+        922.0
+       ],
+       "depends_text": "← R07"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       602.0,
+       503.0,
+       1154.0,
+       547.0
+      ],
+      "column": 2,
+      "column_order": [
+       "R07",
+       "R08",
+       "R09",
+       "R10",
+       "R11",
+       "R12"
+      ],
+      "row_index_in_column": 2,
+      "id_box": [
+       632.0,
+       510.0,
+       672.32,
+       538.8
+      ],
+      "label_box": [
+       686.0,
+       510.0,
+       782.0,
+       538.8
+      ],
+      "depends_box": [
+       864.0,
+       510.0,
+       935.52,
+       538.8
+      ],
+      "depends_text": "← R07",
+      "start_box": [
+       1080.8,
+       510.0,
+       1148.0,
+       538.8
+      ],
+      "start_text": "11:40",
+      "critical_path_pill_box": [
+       602.0,
+       503.0,
+       1154.0,
+       547.0
+      ],
+      "team_pill": "虚底块用执行团队色底，表示该任务在关键路径上",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 8,
+      "box": [
+       28.0,
+       644.0,
+       692.0,
+       702.0
+      ],
+      "border": "2 SOLID #1D4ED8",
+      "line1_box": [
+       46.0,
+       650.0,
+       177.56,
+       676.4
+      ],
+      "line1_text": "R09 手机适配",
+      "time_box": [
+       552.8,
+       654.0,
+       676.0,
+       678.0
+      ],
+      "time_text": "11:40-12:25",
+      "line2_box": [
+       66.0,
+       678.0,
+       325.2,
+       702.0
+      ],
+      "line2_text": "design · 45 分钟 · ← R07",
+      "depends_text": "← R07",
+      "on_critical_path": true,
+      "cp_mark_box": [
+       596.0,
+       678.0,
+       676.0,
+       702.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "R11",
+   "label": "产物与数据核验",
+   "minutes": 30,
+   "start_minute": 205,
+   "end_minute": 235,
+   "interval": "[205,235)",
+   "start": "2026-11-07T12:25+08:00",
+   "end": "2026-11-07T12:55+08:00",
+   "team": "engineering",
+   "eligible_teams": [
+    "engineering"
+   ],
+   "depends": [
+    "R08",
+    "R09"
+   ],
+   "on_critical_path": false,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       1026.0,
+       432.0,
+       1146.0,
+       512.0
+      ],
+      "scale_note": "块宽 = 120 像素 = 30 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "engineering",
+       "y": 396.0,
+       "box": [
+        206.0,
+        396.0,
+        1896.0,
+        554.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       946.0,
+       81.6,
+       970.0
+      ],
+      "block_id_box": [
+       1065.84,
+       440.0,
+       1106.16,
+       468.8
+      ],
+      "label_in_block_box": null,
+      "strip_box": [
+       1026.0,
+       516.0,
+       1321.2,
+       540.0
+      ],
+      "strip_text": "产物与数据核验 · 12:25-12:55",
+      "strip_slot": "lower（块下方 y=516）",
+      "label_placement_note": "块宽 120 px < 标签宽 140 px，标签放不下块内，块外标签行给「标签 · 起止」",
+      "time_text_in_block": null,
+      "time_text_in_strip": "12:25-12:55",
+      "on_critical_path": false,
+      "table_row": {
+       "index": 10,
+       "y": 946.0,
+       "box": [
+        40.0,
+        934.0,
+        1560.0,
+        958.0
+       ],
+       "id_box": [
+        48.0,
+        946.0,
+        81.6,
+        970.0
+       ],
+       "label_box": [
+        140.0,
+        946.0,
+        280.0,
+        970.0
+       ],
+       "team_box": [
+        470.0,
+        946.0,
+        570.0,
+        970.0
+       ],
+       "time_box": [
+        660.0,
+        946.0,
+        795.2,
+        970.0
+       ],
+       "depends_box": [
+        1070.0,
+        946.0,
+        1180.4,
+        970.0
+       ],
+       "depends_text": "← R08, R09"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       608.0,
+       579.0,
+       1154.0,
+       623.0
+      ],
+      "column": 2,
+      "column_order": [
+       "R07",
+       "R08",
+       "R09",
+       "R10",
+       "R11",
+       "R12"
+      ],
+      "row_index_in_column": 4,
+      "id_box": [
+       632.0,
+       586.0,
+       672.32,
+       614.8
+      ],
+      "label_box": [
+       686.0,
+       586.0,
+       854.0,
+       614.8
+      ],
+      "depends_box": [
+       864.0,
+       586.0,
+       996.48,
+       614.8
+      ],
+      "depends_text": "← R08, R09",
+      "start_box": [
+       1080.8,
+       586.0,
+       1148.0,
+       614.8
+      ],
+      "start_text": "12:25",
+      "critical_path_pill_box": null,
+      "team_pill": "非关键路径，无底块",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 10,
+      "box": [
+       28.0,
+       768.0,
+       692.0,
+       826.0
+      ],
+      "border": "2 SOLID #E3E8EF",
+      "line1_box": [
+       46.0,
+       774.0,
+       243.56,
+       800.4
+      ],
+      "line1_text": "R11 产物与数据核验",
+      "time_box": [
+       552.8,
+       778.0,
+       676.0,
+       802.0
+      ],
+      "time_text": "12:25-12:55",
+      "line2_box": [
+       66.0,
+       802.0,
+       432.0,
+       826.0
+      ],
+      "line2_text": "engineering · 30 分钟 · ← R08, R09",
+      "depends_text": "← R08, R09",
+      "on_critical_path": false,
+      "cp_mark_box": null
+     }
+    }
+   }
+  },
+  {
+   "id": "R10",
+   "label": "视觉回归检查",
+   "minutes": 35,
+   "start_minute": 205,
+   "end_minute": 240,
+   "interval": "[205,240)",
+   "start": "2026-11-07T12:25+08:00",
+   "end": "2026-11-07T13:00+08:00",
+   "team": "design",
+   "eligible_teams": [
+    "design"
+   ],
+   "depends": [
+    "R07",
+    "R08",
+    "R09"
+   ],
+   "on_critical_path": true,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       1026.0,
+       272.0,
+       1166.0,
+       352.0
+      ],
+      "scale_note": "块宽 = 140 像素 = 35 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "design",
+       "y": 236.0,
+       "box": [
+        206.0,
+        236.0,
+        1896.0,
+        394.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       922.0,
+       81.6,
+       946.0
+      ],
+      "block_id_box": [
+       1075.84,
+       280.0,
+       1116.16,
+       308.8
+      ],
+      "label_in_block_box": [
+       1036.0,
+       318.0,
+       1156.0,
+       342.0
+      ],
+      "strip_box": [
+       1026.0,
+       356.0,
+       1149.2,
+       380.0
+      ],
+      "strip_text": "12:25-13:00",
+      "strip_slot": "lower（块下方 y=356）",
+      "label_placement_note": "块宽 140 px ≥ 标签宽 120 px，标签放块内（白字），块外标签行只给起止",
+      "time_text_in_block": null,
+      "time_text_in_strip": "12:25-13:00",
+      "on_critical_path": true,
+      "table_row": {
+       "index": 9,
+       "y": 922.0,
+       "box": [
+        40.0,
+        910.0,
+        1560.0,
+        934.0
+       ],
+       "id_box": [
+        48.0,
+        922.0,
+        81.6,
+        946.0
+       ],
+       "label_box": [
+        140.0,
+        922.0,
+        260.0,
+        946.0
+       ],
+       "team_box": [
+        470.0,
+        922.0,
+        570.0,
+        946.0
+       ],
+       "time_box": [
+        660.0,
+        922.0,
+        795.2,
+        946.0
+       ],
+       "depends_box": [
+        1070.0,
+        922.0,
+        1231.2,
+        946.0
+       ],
+       "depends_text": "← R07, R08, R09"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       602.0,
+       541.0,
+       1154.0,
+       585.0
+      ],
+      "column": 2,
+      "column_order": [
+       "R07",
+       "R08",
+       "R09",
+       "R10",
+       "R11",
+       "R12"
+      ],
+      "row_index_in_column": 3,
+      "id_box": [
+       632.0,
+       548.0,
+       672.32,
+       576.8
+      ],
+      "label_box": [
+       686.0,
+       548.0,
+       830.0,
+       576.8
+      ],
+      "depends_box": [
+       864.0,
+       548.0,
+       1057.44,
+       576.8
+      ],
+      "depends_text": "← R07, R08, R09",
+      "start_box": [
+       1080.8,
+       548.0,
+       1148.0,
+       576.8
+      ],
+      "start_text": "12:25",
+      "critical_path_pill_box": [
+       602.0,
+       541.0,
+       1154.0,
+       585.0
+      ],
+      "team_pill": "虚底块用执行团队色底，表示该任务在关键路径上",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 9,
+      "box": [
+       28.0,
+       706.0,
+       692.0,
+       764.0
+      ],
+      "border": "2 SOLID #1D4ED8",
+      "line1_box": [
+       46.0,
+       712.0,
+       221.56,
+       738.4
+      ],
+      "line1_text": "R10 视觉回归检查",
+      "time_box": [
+       552.8,
+       716.0,
+       676.0,
+       740.0
+      ],
+      "time_text": "12:25-13:00",
+      "line2_box": [
+       66.0,
+       740.0,
+       426.8,
+       764.0
+      ],
+      "line2_text": "design · 35 分钟 · ← R07, R08, R09",
+      "depends_text": "← R07, R08, R09",
+      "on_critical_path": true,
+      "cp_mark_box": [
+       596.0,
+       740.0,
+       676.0,
+       764.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "R12",
+   "label": "交付归档",
+   "minutes": 20,
+   "start_minute": 240,
+   "end_minute": 260,
+   "interval": "[240,260)",
+   "start": "2026-11-07T13:00+08:00",
+   "end": "2026-11-07T13:20+08:00",
+   "team": "design",
+   "eligible_teams": [
+    "design",
+    "engineering"
+   ],
+   "depends": [
+    "R10",
+    "R11"
+   ],
+   "on_critical_path": true,
+   "rendered_in": {
+    "execution-board": {
+     "element": {
+      "kind": "lane_block",
+      "box": [
+       1166.0,
+       272.0,
+       1246.0,
+       352.0
+      ],
+      "scale_note": "块宽 = 80 像素 = 20 分钟 × 4 px/分钟，与时间轴同尺度",
+      "lane": {
+       "team": "design",
+       "y": 236.0,
+       "box": [
+        206.0,
+        236.0,
+        1896.0,
+        394.0
+       ]
+      },
+      "id_box": [
+       48.0,
+       970.0,
+       81.6,
+       994.0
+      ],
+      "block_id_box": [
+       1185.84,
+       280.0,
+       1226.16,
+       308.8
+      ],
+      "label_in_block_box": null,
+      "strip_box": [
+       1166.0,
+       356.0,
+       1401.2,
+       380.0
+      ],
+      "strip_text": "交付归档 · 13:00-13:20",
+      "strip_slot": "lower（块下方 y=356）",
+      "label_placement_note": "块宽 80 px < 标签宽 80 px，标签放不下块内，块外标签行给「标签 · 起止」",
+      "time_text_in_block": null,
+      "time_text_in_strip": "13:00-13:20",
+      "on_critical_path": true,
+      "table_row": {
+       "index": 11,
+       "y": 970.0,
+       "box": [
+        40.0,
+        958.0,
+        1560.0,
+        982.0
+       ],
+       "id_box": [
+        48.0,
+        970.0,
+        81.6,
+        994.0
+       ],
+       "label_box": [
+        140.0,
+        970.0,
+        220.0,
+        994.0
+       ],
+       "team_box": [
+        470.0,
+        970.0,
+        570.0,
+        994.0
+       ],
+       "time_box": [
+        660.0,
+        970.0,
+        795.2,
+        994.0
+       ],
+       "depends_box": [
+        1070.0,
+        970.0,
+        1180.4,
+        994.0
+       ],
+       "depends_text": "← R10, R11"
+      }
+     }
+    },
+    "decision-brief": {
+     "element": {
+      "kind": "dep_row",
+      "box": [
+       602.0,
+       617.0,
+       1154.0,
+       661.0
+      ],
+      "column": 2,
+      "column_order": [
+       "R07",
+       "R08",
+       "R09",
+       "R10",
+       "R11",
+       "R12"
+      ],
+      "row_index_in_column": 5,
+      "id_box": [
+       632.0,
+       624.0,
+       672.32,
+       652.8
+      ],
+      "label_box": [
+       686.0,
+       624.0,
+       782.0,
+       652.8
+      ],
+      "depends_box": [
+       864.0,
+       624.0,
+       996.48,
+       652.8
+      ],
+      "depends_text": "← R10, R11",
+      "start_box": [
+       1080.8,
+       624.0,
+       1148.0,
+       652.8
+      ],
+      "start_text": "13:00",
+      "critical_path_pill_box": [
+       602.0,
+       617.0,
+       1154.0,
+       661.0
+      ],
+      "team_pill": "虚底块用执行团队色底，表示该任务在关键路径上",
+      "shows_time_range": false,
+      "shows_time_range_note": "依赖概览行只给开始时刻；完整起止在任务索引与手机卡"
+     }
+    },
+    "action-card": {
+     "element": {
+      "kind": "time_row",
+      "order_index": 11,
+      "box": [
+       28.0,
+       830.0,
+       692.0,
+       888.0
+      ],
+      "border": "2 SOLID #1D4ED8",
+      "line1_box": [
+       46.0,
+       836.0,
+       177.56,
+       862.4
+      ],
+      "line1_text": "R12 交付归档",
+      "time_box": [
+       552.8,
+       840.0,
+       676.0,
+       864.0
+      ],
+      "time_text": "13:00-13:20",
+      "line2_box": [
+       66.0,
+       864.0,
+       376.0,
+       888.0
+      ],
+      "line2_text": "design · 20 分钟 · ← R10, R11",
+      "depends_text": "← R10, R11",
+      "on_critical_path": true,
+      "cp_mark_box": [
+       596.0,
+       864.0,
+       676.0,
+       888.0
+      ]
+     }
+    }
+   }
+  }
+ ],
+ "risks": [
+  {
+   "id": "K1",
+   "task": "R02",
+   "task_label": "服务与字体探测",
+   "impact": "服务限流导致等待",
+   "mitigation": "保留响应并依据 Retry-After 重试",
+   "time_window": "09:00 - 09:20 · engineering",
+   "counts_toward_durations": false,
+   "counts_note": "按题设风险说明只用于解释返工/等待可能消耗缓冲，不加到固定时长",
+   "rendered_in": {
+    "execution-board": {
+     "element": null,
+     "note": "执行泳道不含风险条目；板上的「等待 5 分钟」是资源延迟，不是风险项"
+    },
+    "decision-brief": {
+     "element": {
+      "box": [
+       48.0,
+       1316.0,
+       1152.0,
+       1388.0
+      ],
+      "badge_box": [
+       76.56,
+       1338.0,
+       128.56,
+       1366.0
+      ],
+      "badge_text": "K1",
+      "title_box": [
+       130.0,
+       1326.0,
+       322.0,
+       1354.8
+      ],
+      "title_text": "服务限流导致等待",
+      "mitigation_box": [
+       130.0,
+       1356.0,
+       580.24,
+       1384.8
+      ],
+      "mitigation_text": "对策：保留响应并依据 Retry-After 重试",
+      "impact_box": [
+       1040.48,
+       1326.0,
+       1136.0,
+       1354.8
+      ],
+      "impact_text": "影响 R02",
+      "time_window_box": [
+       801.92,
+       1356.0,
+       1136.0,
+       1384.8
+      ],
+      "time_window_text": "09:00-09:20 · engineering"
+     }
+    },
+    "action-card": {
+     "element": {
+      "box": [
+       28.0,
+       950.0,
+       692.0,
+       1012.0
+      ],
+      "badge_text": "K1",
+      "badge_box": [
+       46.0,
+       956.0,
+       70.64,
+       982.4
+      ],
+      "title_box": [
+       92.0,
+       956.0,
+       252.0,
+       980.0
+      ],
+      "mitigation_box": [
+       92.0,
+       984.0,
+       407.2,
+       1008.0
+      ],
+      "impact_text": "→ R02",
+      "impact_box": [
+       610.44,
+       958.0,
+       676.0,
+       984.4
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "K2",
+   "task": "R05",
+   "task_label": "文案审校",
+   "impact": "长文案导致版式回归",
+   "mitigation": "冻结文案后再完成适配",
+   "time_window": "10:00 - 10:30 · engineering",
+   "counts_toward_durations": false,
+   "counts_note": "按题设风险说明只用于解释返工/等待可能消耗缓冲，不加到固定时长",
+   "rendered_in": {
+    "execution-board": {
+     "element": null,
+     "note": "执行泳道不含风险条目；板上的「等待 5 分钟」是资源延迟，不是风险项"
+    },
+    "decision-brief": {
+     "element": {
+      "box": [
+       48.0,
+       1394.0,
+       1152.0,
+       1466.0
+      ],
+      "badge_box": [
+       76.56,
+       1416.0,
+       128.56,
+       1444.0
+      ],
+      "badge_text": "K2",
+      "title_box": [
+       130.0,
+       1404.0,
+       346.0,
+       1432.8
+      ],
+      "title_text": "长文案导致版式回归",
+      "mitigation_box": [
+       130.0,
+       1434.0,
+       442.0,
+       1462.8
+      ],
+      "mitigation_text": "对策：冻结文案后再完成适配",
+      "impact_box": [
+       1040.48,
+       1404.0,
+       1136.0,
+       1432.8
+      ],
+      "impact_text": "影响 R05",
+      "time_window_box": [
+       801.92,
+       1434.0,
+       1136.0,
+       1462.8
+      ],
+      "time_window_text": "10:00-10:30 · engineering"
+     }
+    },
+    "action-card": {
+     "element": {
+      "box": [
+       28.0,
+       1018.0,
+       692.0,
+       1080.0
+      ],
+      "badge_text": "K2",
+      "badge_box": [
+       46.0,
+       1024.0,
+       70.64,
+       1050.4
+      ],
+      "title_box": [
+       92.0,
+       1024.0,
+       272.0,
+       1048.0
+      ],
+      "mitigation_box": [
+       92.0,
+       1052.0,
+       292.0,
+       1076.0
+      ],
+      "impact_text": "→ R05",
+      "impact_box": [
+       610.44,
+       1026.0,
+       676.0,
+       1052.4
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "K3",
+   "task": "R10",
+   "task_label": "视觉回归检查",
+   "impact": "实际图像暴露裁剪或比例错误",
+   "mitigation": "预留返工缓冲，不跳过看图",
+   "time_window": "12:25 - 13:00 · design",
+   "counts_toward_durations": false,
+   "counts_note": "按题设风险说明只用于解释返工/等待可能消耗缓冲，不加到固定时长",
+   "rendered_in": {
+    "execution-board": {
+     "element": null,
+     "note": "执行泳道不含风险条目；板上的「等待 5 分钟」是资源延迟，不是风险项"
+    },
+    "decision-brief": {
+     "element": {
+      "box": [
+       48.0,
+       1472.0,
+       1152.0,
+       1544.0
+      ],
+      "badge_box": [
+       76.56,
+       1494.0,
+       128.56,
+       1522.0
+      ],
+      "badge_text": "K3",
+      "title_box": [
+       130.0,
+       1482.0,
+       442.0,
+       1510.8
+      ],
+      "title_text": "实际图像暴露裁剪或比例错误",
+      "mitigation_box": [
+       130.0,
+       1512.0,
+       490.0,
+       1540.8
+      ],
+      "mitigation_text": "对策：预留返工缓冲，不跳过看图",
+      "impact_box": [
+       1040.48,
+       1482.0,
+       1136.0,
+       1510.8
+      ],
+      "impact_text": "影响 R10",
+      "time_window_box": [
+       869.12,
+       1512.0,
+       1136.0,
+       1540.8
+      ],
+      "time_window_text": "12:25-13:00 · design"
+     }
+    },
+    "action-card": {
+     "element": {
+      "box": [
+       28.0,
+       1086.0,
+       692.0,
+       1148.0
+      ],
+      "badge_text": "K3",
+      "badge_box": [
+       46.0,
+       1092.0,
+       70.64,
+       1118.4
+      ],
+      "title_box": [
+       92.0,
+       1092.0,
+       352.0,
+       1116.0
+      ],
+      "mitigation_box": [
+       92.0,
+       1120.0,
+       332.0,
+       1144.0
+      ],
+      "impact_text": "→ R10",
+      "impact_box": [
+       610.44,
+       1094.0,
+       676.0,
+       1120.4
+      ]
+     }
+    }
+   }
+  }
+ ],
+ "claims": [
+  {
+   "id": "C01",
+   "claim": "全部 12 任务的完工时刻",
+   "value": "13:20（第 260 分钟）",
+   "basis": "schedule.json.finish_minute / finish_time，且 = max(全部任务 end_minute)",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "13:20",
+      "第 260 分钟"
+     ],
+     "boxes": [
+      [
+       70.0,
+       122.0,
+       159.6,
+       160.4
+      ],
+      [
+       534.0,
+       162.0,
+       669.2,
+       186.0
+      ],
+      [
+       1166.0,
+       356.0,
+       1401.2,
+       380.0
+      ],
+      [
+       1448.0,
+       328.0,
+       1684.0,
+       352.0
+      ],
+      [
+       40.0,
+       590.0,
+       1188.0,
+       614.0
+      ],
+      [
+       40.0,
+       614.0,
+       806.0,
+       638.0
+      ],
+      [
+       660.0,
+       970.0,
+       795.2,
+       994.0
+      ],
+      [
+       70.0,
+       162.0,
+       175.6,
+       186.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "13:20",
+      "第 260 分钟"
+     ],
+     "boxes": [
+      [
+       78.0,
+       218.0,
+       190.0,
+       266.0
+      ],
+      [
+       358.0,
+       268.0,
+       520.24,
+       296.8
+      ],
+      [
+       560.0,
+       864.0,
+       857.12,
+       892.8
+      ],
+      [
+       78.0,
+       268.0,
+       204.72,
+       296.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": [
+      "完工 13:20",
+      "完工 13:20（第 260 分钟），缓冲 160 分钟，截止 16:00。"
+     ],
+     "boxes": [
+      [
+       40.0,
+       102.0,
+       142.0,
+       126.0
+      ],
+      [
+       28.0,
+       1168.0,
+       563.2,
+       1192.0
+      ],
+      [
+       28.0,
+       1168.0,
+       563.2,
+       1192.0
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "id": "C02",
+   "claim": "剩余缓冲",
+   "value": "160 分钟",
+   "basis": "schedule.json.buffer_minutes = 420 - 260 = 160",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "剩余缓冲",
+      "160 分钟",
+      "剩余缓冲 160 分钟",
+      "13:20 完工 → 16:00 截止"
+     ],
+     "boxes": [
+      [
+       534.0,
+       122.0,
+       661.36,
+       160.4
+      ],
+      [
+       1450.08,
+       292.0,
+       1681.92,
+       325.6
+      ],
+      [
+       1450.08,
+       292.0,
+       1681.92,
+       325.6
+      ],
+      [
+       1448.0,
+       328.0,
+       1684.0,
+       352.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "160 分钟",
+      "13:20 - 16:00"
+     ],
+     "boxes": [
+      [
+       358.0,
+       218.0,
+       517.2,
+       266.0
+      ],
+      [
+       560.0,
+       864.0,
+       857.12,
+       892.8
+      ],
+      [
+       48.0,
+       983.6,
+       630.24,
+       1012.4
+      ],
+      [
+       358.0,
+       268.0,
+       520.24,
+       296.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": [
+      "缓冲 160 分钟"
+     ],
+     "boxes": [
+      [
+       174.0,
+       102.0,
+       299.6,
+       126.0
+      ],
+      [
+       28.0,
+       1168.0,
+       563.2,
+       1192.0
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "id": "C03",
+   "claim": "总工作量与团队分工",
+   "value": "485 分钟（design 255 · engineering 230）",
+   "basis": "schedule.json.workload_minutes；逐任务 minutes 按团队求和复算",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "485 分钟",
+      "design 255 · eng 230",
+      "design 255 分钟",
+      "engineering 230 分钟"
+     ],
+     "boxes": [
+      [
+       998.0,
+       122.0,
+       1125.36,
+       160.4
+      ],
+      [
+       998.0,
+       162.0,
+       1210.0,
+       186.0
+      ],
+      [
+       230.0,
+       566.0,
+       382.8,
+       590.0
+      ],
+      [
+       436.8,
+       566.0,
+       645.6,
+       590.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "485 分钟",
+      "design 255 · eng 230"
+     ],
+     "boxes": [
+      [
+       638.0,
+       218.0,
+       797.2,
+       266.0
+      ],
+      [
+       560.0,
+       814.0,
+       777.44,
+       842.8
+      ],
+      [
+       638.0,
+       268.0,
+       892.4,
+       296.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": null,
+     "boxes": [],
+     "note": "手机卡逐任务给分钟数，不汇总总量；12 行相加等于 485 分钟"
+    }
+   }
+  },
+  {
+   "id": "C04",
+   "claim": "关键路径下界（忽略资源约束）",
+   "value": "R01→R04→R07→R09→R10→R12 = 255 分钟",
+   "basis": "schedule-audit.json.lower_bounds.dependency_critical_path；路径任务 minutes 相加复算 25 + 60 + 70 + 45 + 35 + 20 = 255",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "关键路径下界",
+      "255 分钟",
+      "黑色竖条 = 关键路径 R01→R04→R07→R09→R10→R12"
+     ],
+     "boxes": [
+      [
+       1462.0,
+       122.0,
+       1589.36,
+       160.4
+      ],
+      [
+       54.0,
+       342.0,
+       133.6,
+       366.0
+      ],
+      [
+       230.0,
+       566.0,
+       382.8,
+       590.0
+      ],
+      [
+       40.0,
+       1002.0,
+       1525.6,
+       1026.0
+      ],
+      [
+       1389.2,
+       646.0,
+       1880.0,
+       670.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "关键路径：R01→R04→R07→R09→R10→R12 = 255 分钟",
+      "R01→R04→R07→R09→R10→R12，忽略资源约束",
+      "255 分钟"
+     ],
+     "boxes": [
+      [
+       66.0,
+       380.0,
+       671.28,
+       408.8
+      ],
+      [
+       918.0,
+       218.0,
+       1077.2,
+       266.0
+      ],
+      [
+       877.44,
+       325.0,
+       1152.0,
+       353.8
+      ],
+      [
+       66.0,
+       380.0,
+       671.28,
+       408.8
+      ],
+      [
+       340.0,
+       764.0,
+       435.52,
+       792.8
+      ],
+      [
+       48.0,
+       1012.4,
+       777.6,
+       1041.2
+      ],
+      [
+       74.0,
+       1112.0,
+       1021.52,
+       1140.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": null,
+     "boxes": [],
+     "note": "手机卡不用数字下界，改用 6 行「关键路径」标记表达同一条链"
+    }
+   }
+  },
+  {
+   "id": "C05",
+   "claim": "资源工作量下界",
+   "value": "242.5 分钟（485 分钟 ÷ 2 个团队，保留小数、不提前取整）",
+   "basis": "schedule-audit.json.lower_bounds.workload_divided_by_teams",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "工作量下界 242.5"
+     ],
+     "boxes": [
+      [
+       1462.0,
+       162.0,
+       1624.0,
+       186.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "242.5 分钟",
+      "485 分钟 ÷ 2 个团队",
+      "工作量下界 242.5"
+     ],
+     "boxes": [
+      [
+       340.0,
+       814.0,
+       462.4,
+       842.8
+      ],
+      [
+       560.0,
+       814.0,
+       777.44,
+       842.8
+      ],
+      [
+       918.0,
+       268.0,
+       1112.4,
+       296.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": null,
+     "boxes": [],
+     "note": "手机卡不显示下界"
+    }
+   }
+  },
+  {
+   "id": "C06",
+   "claim": "时间窗口",
+   "value": "09:00-16:00 连续 420 分钟，09:00 = 第 0 分钟",
+   "basis": "inputs/release.json 的 start/deadline 推导，assert window == 420",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "2026-11-07 09:00-16:00 · 连续 420 分钟 · 12 个任务全部执行",
+      "1 分钟 = 4 像素等比 · 占 [start,end) 左闭右开"
+     ],
+     "boxes": [
+      [
+       252.0,
+       50.0,
+       851.2,
+       74.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "2026-11-07 09:00-16:00 · 连续 420 分钟 · 12 个任务 · design 与 engineering 各 1 个团队"
+     ],
+     "boxes": [
+      [
+       48.0,
+       124.0,
+       1107.36,
+       152.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": [
+      "截止 16:00",
+      "占 [start,end) 左闭右开，上一任务结束时可立即衔接，不跨天。"
+     ],
+     "boxes": [
+      [
+       331.6,
+       102.0,
+       433.6,
+       126.0
+      ],
+      [
+       28.0,
+       1168.0,
+       563.2,
+       1192.0
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "id": "C07",
+   "claim": "任务总数",
+   "value": "12（不新增、不删除、检查环节保留）",
+   "basis": "schedule.json.task_count == 12 且任务集合与输入集合相等（审计 A06）",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "12 个任务全部执行"
+     ],
+     "boxes": [
+      [
+       252.0,
+       50.0,
+       851.2,
+       74.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "12 个任务"
+     ],
+     "boxes": [
+      [
+       48.0,
+       124.0,
+       1107.36,
+       152.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": [
+      "12 个任务 · 按时间序"
+     ],
+     "boxes": [
+      [
+       200.0,
+       60.0,
+       400.4,
+       84.0
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "id": "C08",
+   "claim": "最优性声明",
+   "value": "260 分钟为已核验的全局最优：R05/R09/R12 共 2³ = 8 种指派全部枚举、1032 个分支定界节点、未触发安全阀",
+   "basis": "schedule-audit.json.optimality.search；search_exhausted=true 且 aborted_by_node_cap=false",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "8 种团队指派已全枚举、1032 个分支定界节点、未触发安全阀"
+     ],
+     "boxes": [
+      [
+       40.0,
+       1026.0,
+       1447.6,
+       1050.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "最优性：R05、R09、R12 是唯三双团队任务（各 2 选 1），共 2³ = 8 种指派已全部枚举。",
+      "每种指派再逐个分支定界，搜索 1032 个节点、未触发安全阀。",
+      "结论：260 分钟是已核验的全局最优，缓冲 160 分钟。"
+     ],
+     "boxes": [
+      [
+       48.0,
+       983.6,
+       630.24,
+       1012.4
+      ]
+     ]
+    },
+    "action-card": {
+     "text": null,
+     "boxes": [],
+     "note": "手机卡面向执行，不重复最优性论证"
+    }
+   }
+  },
+  {
+   "id": "C09",
+   "claim": "任务等待分钟",
+   "value": "只有 R07 等 5 分钟（等 R05）、R11 等 5 分钟（等 R09）",
+   "basis": "schedule-audit.json.gap_analysis.binding_constraints；由 schedule.json 复算 start - max(同团队上一任务 end)",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "5 分钟（等 R05）",
+      "5 分钟（等 R09）"
+     ],
+     "boxes": [
+      [
+       1540.0,
+       850.0,
+       1696.8,
+       874.0
+      ],
+      [
+       1540.0,
+       946.0,
+       1696.8,
+       970.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": [
+      "于是 R07 比关键路径下界晚 5 分钟开工，260 与 255 的差距全部来自这里。"
+     ],
+     "boxes": [
+      [
+       74.0,
+       1172.0,
+       882.8,
+       1200.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": null,
+     "boxes": [],
+     "note": "手机卡不显示等待，避免把资源延迟读成风险"
+    }
+   }
+  },
+  {
+   "id": "C10",
+   "claim": "团队空档",
+   "value": "design [85,90]、engineering [200,205] 与 [235,260]，合计 35 分钟 = 520 - 485",
+   "basis": "schedule.json.idle_ranges；520 = 两团队在 09:00-13:20 的可用分钟",
+   "shown_in": {
+    "execution-board": {
+     "text": [
+      "空档 5 分钟",
+      "空档 25 分钟",
+      "合计 35 分钟，等于 520 - 485（两团队在 09:00-13:20 的可用分钟减去总工作量）。"
+     ],
+     "boxes": [
+      [
+       546.0,
+       240.0,
+       649.2,
+       264.0
+      ],
+      [
+       1006.0,
+       400.0,
+       1109.2,
+       424.0
+      ],
+      [
+       1146.0,
+       400.0,
+       1260.4,
+       424.0
+      ],
+      [
+       40.0,
+       614.0,
+       806.0,
+       638.0
+      ]
+     ]
+    },
+    "decision-brief": {
+     "text": null,
+     "boxes": [],
+     "note": "简报不画空档，改给下界与依据"
+    },
+    "action-card": {
+     "text": null,
+     "boxes": [],
+     "note": "手机卡不显示空档"
+    }
+   }
+  },
+  {
+   "id": "C11",
+   "claim": "风险与任务的映射",
+   "value": "K1→R02、K2→R05、K3→R10",
+   "basis": "inputs/release.json 的 risks[].task",
+   "shown_in": {
+    "execution-board": {
+     "text": null,
+     "boxes": [],
+     "note": "执行泳道不含风险条目"
+    },
+    "decision-brief": {
+     "text": [
+      "影响 R02",
+      "影响 R05",
+      "影响 R10"
+     ],
+     "boxes": [
+      [
+       1040.48,
+       1326.0,
+       1136.0,
+       1354.8
+      ],
+      [
+       1040.48,
+       1404.0,
+       1136.0,
+       1432.8
+      ],
+      [
+       1040.48,
+       1482.0,
+       1136.0,
+       1510.8
+      ]
+     ]
+    },
+    "action-card": {
+     "text": [
+      "→ R02",
+      "→ R05",
+      "→ R10"
+     ],
+     "boxes": [
+      [
+       610.44,
+       958.0,
+       676.0,
+       984.4
+      ],
+      [
+       610.44,
+       1026.0,
+       676.0,
+       1052.4
+      ],
+      [
+       610.44,
+       1094.0,
+       676.0,
+       1120.4
+      ]
+     ]
+    }
+   }
+  }
+ ],
+ "consistency_checks": [
+  {
+   "id": "CM-01",
+   "check": "三图各渲染全部 12 个任务，任务集合相同",
+   "passed": true,
+   "detail": "12 个任务 × 3 图 = 36 处定位全部命中，任务集合与 schedule.json 相同"
+  },
+  {
+   "id": "CM-02",
+   "check": "分钟偏移与带时区钟表时间换算一致（09:00 = 第 0 分钟，+08:00）",
+   "passed": true,
+   "detail": "12/12 任务的 start_minute 与 end_minute 换算后等于 schedule.json 的 start/end 钟表时间"
+  },
+  {
+   "id": "CM-03",
+   "check": "三图标注的执行团队与 schedule.json 一致",
+   "passed": true,
+   "detail": "执行泳道任务索引表 12/12 行团队文本正确；手机卡 12/12 行次行团队前缀正确；简报依赖概览不列团队列，改用执行团队色的编号圆点区分（12/12 行的圆点色核对通过）"
+  },
+  {
+   "id": "CM-04",
+   "check": "三图的依赖索引与 schedule.json 的 depends 逐任务一致",
+   "passed": true,
+   "detail": "12/12 任务编号索引一致"
+  },
+  {
+   "id": "CM-05",
+   "check": "三图给出的完工时刻一致",
+   "passed": true,
+   "detail": "泳道 KPI 13:20、简报 KPI 13:20、手机卡「完工 13:20」与结论行 13:20；均 = 第 260 分钟"
+  },
+  {
+   "id": "CM-06",
+   "check": "三图给出的剩余缓冲一致",
+   "passed": true,
+   "detail": "三图均写 160 分钟；420 - 260 = 160 复算一致"
+  },
+  {
+   "id": "CM-07",
+   "check": "关键路径链一致",
+   "passed": true,
+   "detail": "R01→R04→R07→R09→R10→R12；泳道图例与底部下界行、简报关键路径条与下界表均同串；手机卡用 6 行「关键路径」标记表达同一集合"
+  },
+  {
+   "id": "CM-08",
+   "check": "三图的关键路径标记集合一致且等于审计的关键路径",
+   "passed": true,
+   "detail": "泳道白描边块 ['R01', 'R04', 'R07', 'R09', 'R10', 'R12']、简报虚底行 ['R01', 'R04', 'R07', 'R09', 'R10', 'R12']、手机卡「关键路径」标记 ['R01', 'R04', 'R07', 'R09', 'R10', 'R12']，均等于 ['R01', 'R04', 'R07', 'R09', 'R10', 'R12']"
+  },
+  {
+   "id": "CM-09",
+   "check": "总工作量与团队分工在图上与审计一致",
+   "passed": true,
+   "detail": "按 schedule.json 逐任务求和复算 design 255 + engineering 230 = 485 分钟，与审计 workload_minutes 完全一致"
+  },
+  {
+   "id": "CM-10",
+   "check": "两个下界数值一致且未提前取整",
+   "passed": true,
+   "detail": "关键路径 25+60+70+45+35+20 = 255 分钟；总工作量 485 ÷ 2 = 242.5 分钟（保留 .5，图上写 242.5 而不是 243 或 242）"
+  },
+  {
+   "id": "CM-11",
+   "check": "风险→任务映射在三图与输入一致",
+   "passed": true,
+   "detail": "inputs/release.json 的 risks 映射 {'K1': 'R02', 'K2': 'R05', 'K3': 'R10'}；简报「影响 R0x」与手机卡「→ R0x」一致；三张图都没有把风险计入固定时长"
+  },
+  {
+   "id": "CM-12",
+   "check": "风险卡上的时窗与团队等于该任务在 schedule.json 里的排程",
+   "passed": true,
+   "detail": "K1→R02 时窗 09:00-09:20 · engineering；K2→R05 时窗 10:00-10:30 · engineering；K3→R10 时窗 12:25-13:00 · design"
+  },
+  {
+   "id": "CM-13",
+   "check": "等待列只在 R07 与 R11 非零，各 5 分钟",
+   "passed": true,
+   "detail": "12/12 任务在审计里都有约束记录；非零等待仅 R07=5, R11=5，各 5 分钟（合计 10）；泳道表等待列逐行文字与复算结果一致"
+  },
+  {
+   "id": "CM-14",
+   "check": "执行泳道展示空档与 16:00 截止线，且位置与数据一致",
+   "passed": true,
+   "detail": "截止线在 x=1886（= 206 + 420×4）；缓冲带从 x=1246（第 260 分钟）到 1886，宽 640 px = 160 分钟 × 4；design 空档 5 分钟与 engineering 空档 5 + 25 分钟均有标注"
+  },
+  {
+   "id": "CM-15",
+   "check": "正文最小字号满足题设下限",
+   "passed": true,
+   "detail": "实测最小：泳道 20 ≥ 20、简报 24 ≥ 24、手机卡 20 ≥ 20"
+  },
+  {
+   "id": "CM-16",
+   "check": "三张交付 PNG 字节与服务原始响应完全一致，尺寸正确",
+   "passed": true,
+   "detail": "execution-board 1920×1080 411103 B sha256 前 8 位 1b842111 = 响应 1b842111；decision-brief 1200×1600 484497 B sha256 前 8 位 d7a124e4 = 响应 d7a124e4；action-card 720×1280 265676 B sha256 前 8 位 1ad47c51 = 响应 1ad47c51"
+  }
+ ],
+ "text_normalization": [
+  {
+   "id": "TN-01",
+   "location": "决策简报风险卡 K1 对策、手机行动卡风险提醒 K1",
+   "input_text": "保留响应并依据Retry-After重试",
+   "rendered_text": "保留响应并依据 Retry-After 重试",
+   "change": "在拉丁词 Retry-After 两侧各加一个半角空格（中文排版惯例）",
+   "semantics_changed": false,
+   "note": "三个词序与含义完全不变，只在中西文交界处加了排版空格；其余 11 处风险文案逐字照抄"
+  },
+  {
+   "id": "TN-02",
+   "location": "决策简报依赖概览两列行",
+   "input_text": "start/end 的带时区时间",
+   "rendered_text": "只显示开始时刻（如 10:30）",
+   "change": "简报依赖概览行只给开始时刻，不给起止区间",
+   "semantics_changed": false,
+   "note": "完整起止在决策简报没有别处承载，但执行泳道任务索引表与手机行动卡都给了「HH:MM-HH:MM」，所以不是信息缺失；本条专门记录，避免被读成三图不一致"
+  },
+  {
+   "id": "TN-03",
+   "location": "决策简报风险卡右侧时窗",
+   "input_text": "2026-11-07T09:00+08:00 / T09:20+08:00",
+   "rendered_text": "09:00-09:20 · engineering",
+   "change": "去掉日期与时区前缀，改用发布日当日钟表区间加团队",
+   "semantics_changed": false,
+   "note": "发布日与 09:00-16:00 窗口在简报副标题统一声明一次，风险卡不再重复日期"
+  }
+ ],
+ "extras": {
+  "execution-board": {
+   "time_axis": {
+    "origin_pixel_x": 206.0,
+    "scale": "1 分钟 = 4 像素",
+    "range_minutes": [
+     0,
+     420
+    ],
+    "hours_box": [
+     178.0,
+     206.0,
+     1888.0,
+     230.0
+    ]
+   },
+   "team_blocks": {
+    "design": {
+     "box": [
+      44.0,
+      280.0,
+      184.0,
+      350.0
+     ],
+     "busy_minutes": 255
+    },
+    "engineering": {
+     "box": [
+      44.0,
+      440.0,
+      184.0,
+      510.0
+     ],
+     "busy_minutes": 230
+    }
+   },
+   "idle_marks": {
+    "by_team": {
+     "design": {
+      "ranges": [
+       {
+        "box": [
+         546.0,
+         272.0,
+         566.0,
+         352.0
+        ],
+        "minutes_range": [
+         85,
+         90
+        ],
+        "minutes": 5,
+        "width_px": 20.0,
+        "scale_check": "20 px = 5 分钟 × 4 px/分钟"
+       }
+      ],
+      "labels": [
+       {
+        "box": [
+         546.0,
+         240.0,
+         649.2,
+         264.0
+        ],
+        "text": "空档 5 分钟"
+       }
+      ],
+      "minutes": 5
+     },
+     "engineering": {
+      "ranges": [
+       {
+        "box": [
+         1006.0,
+         432.0,
+         1026.0,
+         512.0
+        ],
+        "minutes_range": [
+         200,
+         205
+        ],
+        "minutes": 5,
+        "width_px": 20.0,
+        "scale_check": "20 px = 5 分钟 × 4 px/分钟"
+       },
+       {
+        "box": [
+         1146.0,
+         432.0,
+         1246.0,
+         512.0
+        ],
+        "minutes_range": [
+         235,
+         260
+        ],
+        "minutes": 25,
+        "width_px": 100.0,
+        "scale_check": "100 px = 25 分钟 × 4 px/分钟"
+       }
+      ],
+      "labels": [
+       {
+        "box": [
+         1006.0,
+         400.0,
+         1109.2,
+         424.0
+        ],
+        "text": "空档 5 分钟"
+       },
+       {
+        "box": [
+         1146.0,
+         400.0,
+         1260.4,
+         424.0
+        ],
+        "text": "空档 25 分钟"
+       }
+      ],
+      "minutes": 30
+     }
+    },
+    "total_idle_minutes": 35,
+    "note": "空档 = 520 - 485 = 35 分钟；斜纹填充在时间块高度 80 px 内，标注放在所在泳道的上部标签行"
+   },
+   "deadline_lines": [
+    [
+     1884.5,
+     236.0,
+     1887.5,
+     394.0
+    ],
+    [
+     1884.5,
+     396.0,
+     1887.5,
+     554.0
+    ]
+   ],
+   "deadline_x": 1886.0,
+   "deadline_scale_check": "x = 206 + 420 × 4 = 1886，正好落在画布内容右边界",
+   "buffer_bands": [
+    [
+     1246.0,
+     236.0,
+     1886.0,
+     394.0
+    ],
+    [
+     1246.0,
+     396.0,
+     1886.0,
+     554.0
+    ]
+   ],
+   "buffer_width_px": 640.0,
+   "buffer_scale_check": "缓冲带宽 640 px = 160 分钟 × 4 px/分钟",
+   "buffer_text_box": [
+    1450.08,
+    292.0,
+    1681.92,
+    325.6
+   ],
+   "table": {
+    "header_y": 676,
+    "row_pitch": 24,
+    "rows": [
+     "R01",
+     "R02",
+     "R03",
+     "R04",
+     "R05",
+     "R06",
+     "R07",
+     "R08",
+     "R09",
+     "R10",
+     "R11",
+     "R12"
+    ],
+    "column_x": {
+     "任务": 48,
+     "标签": 140,
+     "团队": 470,
+     "起-止": 660,
+     "分钟": 970,
+     "依赖": 1070,
+     "等待": 1540
+    },
+    "footers_y": [
+     1002,
+     1026,
+     1050
+    ]
+   }
+  },
+  "decision-brief": {
+   "kpis": {
+    "完工时间": {
+     "box": [
+      78.0,
+      182.0,
+      342.0,
+      298.0
+     ],
+     "label_box": [
+      78.0,
+      182.0,
+      174.0,
+      210.8
+     ],
+     "value_box": [
+      78.0,
+      218.0,
+      190.0,
+      266.0
+     ],
+     "value_text": "13:20",
+     "sub_box": [
+      78.0,
+      268.0,
+      204.72,
+      296.8
+     ],
+     "sub_text": "第 260 分钟"
+    },
+    "剩余缓冲": {
+     "box": [
+      358.0,
+      182.0,
+      622.0,
+      298.0
+     ],
+     "label_box": [
+      358.0,
+      182.0,
+      454.0,
+      210.8
+     ],
+     "value_box": [
+      358.0,
+      218.0,
+      517.2,
+      266.0
+     ],
+     "value_text": "160 分钟",
+     "sub_box": [
+      358.0,
+      268.0,
+      520.24,
+      296.8
+     ],
+     "sub_text": "13:20 - 16:00"
+    },
+    "总工作量": {
+     "box": [
+      638.0,
+      182.0,
+      902.0,
+      298.0
+     ],
+     "label_box": [
+      638.0,
+      182.0,
+      734.0,
+      210.8
+     ],
+     "value_box": [
+      638.0,
+      218.0,
+      797.2,
+      266.0
+     ],
+     "value_text": "485 分钟",
+     "sub_box": [
+      638.0,
+      268.0,
+      892.4,
+      296.8
+     ],
+     "sub_text": "design 255 · eng 230"
+    },
+    "关键路径下界": {
+     "box": [
+      918.0,
+      182.0,
+      1182.0,
+      298.0
+     ],
+     "label_box": [
+      918.0,
+      182.0,
+      1062.0,
+      210.8
+     ],
+     "value_box": [
+      918.0,
+      218.0,
+      1077.2,
+      266.0
+     ],
+     "value_text": "255 分钟",
+     "sub_box": [
+      918.0,
+      268.0,
+      1112.4,
+      296.8
+     ],
+     "sub_text": "工作量下界 242.5"
+    }
+   },
+   "critical_path_bar_box": [
+    48.0,
+    380.0,
+    1152.0,
+    428.0
+   ],
+   "critical_path_text_box": [
+    66.0,
+    380.0,
+    671.28,
+    408.8
+   ],
+   "critical_path_text": "关键路径：R01→R04→R07→R09→R10→R12 = 255 分钟",
+   "lower_bound_rows": [
+    {
+     "label": "依赖关键路径",
+     "value": "255 分钟",
+     "meaning": "R01→R04→R07→R09→R10→R12，忽略资源约束",
+     "row_box": [
+      48.0,
+      764.0,
+      1152.0,
+      814.0
+     ],
+     "label_box": [
+      48.0,
+      764.0,
+      340.0,
+      792.0
+     ],
+     "value_box": [
+      340.0,
+      764.0,
+      560.0,
+      792.0
+     ],
+     "meaning_box": [
+      560.0,
+      764.0,
+      1104.0,
+      792.0
+     ]
+    },
+    {
+     "label": "总工作量 ÷ 2",
+     "value": "242.5 分钟",
+     "meaning": "485 分钟 ÷ 2 个团队",
+     "row_box": [
+      48.0,
+      814.0,
+      1152.0,
+      864.0
+     ],
+     "label_box": [
+      48.0,
+      814.0,
+      340.0,
+      842.0
+     ],
+     "value_box": [
+      340.0,
+      814.0,
+      560.0,
+      842.0
+     ],
+     "meaning_box": [
+      560.0,
+      814.0,
+      1104.0,
+      842.0
+     ]
+    },
+    {
+     "label": "本排程实际",
+     "value": "260 分钟",
+     "meaning": "13:20 完成，缓冲 160 分钟",
+     "row_box": [
+      48.0,
+      864.0,
+      1152.0,
+      914.0
+     ],
+     "label_box": [
+      48.0,
+      864.0,
+      340.0,
+      892.0
+     ],
+     "value_box": [
+      340.0,
+      864.0,
+      560.0,
+      892.0
+     ],
+     "meaning_box": [
+      560.0,
+      864.0,
+      1104.0,
+      892.0
+     ]
+    }
+   ],
+   "optimality_lines": [
+    {
+     "text": "最优性：R05、R09、R12 是唯三双团队任务（各 2 选 1），共 2³ = 8 种指派已全部枚举。",
+     "box": [
+      48.0,
+      926.0,
+      1003.2,
+      954.8
+     ]
+    },
+    {
+     "text": "每种指派再逐个分支定界，搜索 1032 个节点、未触发安全阀。",
+     "box": [
+      48.0,
+      954.8,
+      716.16,
+      983.6
+     ]
+    },
+    {
+     "text": "结论：260 分钟是已核验的全局最优，缓冲 160 分钟。",
+     "box": [
+      48.0,
+      983.6,
+      630.24,
+      1012.4
+     ]
+    },
+    {
+     "text": "关键路径下界 255 分钟不紧：实际多 5 分钟，全在 R04→R07 之间。",
+     "box": [
+      48.0,
+      1012.4,
+      777.6,
+      1041.2
+     ]
+    }
+   ],
+   "rationale_lines": [
+    {
+     "text": "关键路径 R01→R04→R07→R09→R10→R12 = 255 分钟，整条排在 design 一个团队上。",
+     "box": [
+      74.0,
+      1112.0,
+      1021.52,
+      1140.8
+     ]
+    },
+    {
+     "text": "R05 若留在 design，整体退到 285 分钟；design 也装不下 R04+R05 共 90 分钟。",
+     "box": [
+      74.0,
+      1142.0,
+      957.68,
+      1170.8
+     ]
+    },
+    {
+     "text": "于是 R07 比关键路径下界晚 5 分钟开工，260 与 255 的差距全部来自这里。",
+     "box": [
+      74.0,
+      1172.0,
+      882.8,
+      1200.8
+     ]
+    },
+    {
+     "text": "R09 换到 engineering 会让整体退到 300 分钟，所以留在 design。",
+     "box": [
+      74.0,
+      1202.0,
+      810.32,
+      1230.8
+     ]
+    },
+    {
+     "text": "R11 排在 engineering 12:25-12:55，紧跟 R08 之后，不占用 design。",
+     "box": [
+      74.0,
+      1232.0,
+      862.16,
+      1260.8
+     ]
+    }
+   ],
+   "risk_cards": {
+    "K1": {
+     "box": [
+      48.0,
+      1316.0,
+      1152.0,
+      1388.0
+     ],
+     "badge_box": [
+      76.56,
+      1338.0,
+      128.56,
+      1366.0
+     ],
+     "badge_text": "K1",
+     "title_box": [
+      130.0,
+      1326.0,
+      322.0,
+      1354.8
+     ],
+     "title_text": "服务限流导致等待",
+     "mitigation_box": [
+      130.0,
+      1356.0,
+      580.24,
+      1384.8
+     ],
+     "mitigation_text": "对策：保留响应并依据 Retry-After 重试",
+     "impact_box": [
+      1040.48,
+      1326.0,
+      1136.0,
+      1354.8
+     ],
+     "impact_text": "影响 R02",
+     "time_window_box": [
+      801.92,
+      1356.0,
+      1136.0,
+      1384.8
+     ],
+     "time_window_text": "09:00-09:20 · engineering"
+    },
+    "K2": {
+     "box": [
+      48.0,
+      1394.0,
+      1152.0,
+      1466.0
+     ],
+     "badge_box": [
+      76.56,
+      1416.0,
+      128.56,
+      1444.0
+     ],
+     "badge_text": "K2",
+     "title_box": [
+      130.0,
+      1404.0,
+      346.0,
+      1432.8
+     ],
+     "title_text": "长文案导致版式回归",
+     "mitigation_box": [
+      130.0,
+      1434.0,
+      442.0,
+      1462.8
+     ],
+     "mitigation_text": "对策：冻结文案后再完成适配",
+     "impact_box": [
+      1040.48,
+      1404.0,
+      1136.0,
+      1432.8
+     ],
+     "impact_text": "影响 R05",
+     "time_window_box": [
+      801.92,
+      1434.0,
+      1136.0,
+      1462.8
+     ],
+     "time_window_text": "10:00-10:30 · engineering"
+    },
+    "K3": {
+     "box": [
+      48.0,
+      1472.0,
+      1152.0,
+      1544.0
+     ],
+     "badge_box": [
+      76.56,
+      1494.0,
+      128.56,
+      1522.0
+     ],
+     "badge_text": "K3",
+     "title_box": [
+      130.0,
+      1482.0,
+      442.0,
+      1510.8
+     ],
+     "title_text": "实际图像暴露裁剪或比例错误",
+     "mitigation_box": [
+      130.0,
+      1512.0,
+      490.0,
+      1540.8
+     ],
+     "mitigation_text": "对策：预留返工缓冲，不跳过看图",
+     "impact_box": [
+      1040.48,
+      1482.0,
+      1136.0,
+      1510.8
+     ],
+     "impact_text": "影响 R10",
+     "time_window_box": [
+      869.12,
+      1512.0,
+      1136.0,
+      1540.8
+     ],
+     "time_window_text": "12:25-13:00 · design"
+    }
+   },
+   "footer_y": 1554
+  },
+  "action-card": {
+   "chips_y": 96,
+   "risk_header_y": 906,
+   "risk_rows": {
+    "K1": {
+     "box": [
+      28.0,
+      950.0,
+      692.0,
+      1012.0
+     ],
+     "badge_text": "K1",
+     "badge_box": [
+      46.0,
+      956.0,
+      70.64,
+      982.4
+     ],
+     "title_box": [
+      92.0,
+      956.0,
+      252.0,
+      980.0
+     ],
+     "mitigation_box": [
+      92.0,
+      984.0,
+      407.2,
+      1008.0
+     ],
+     "impact_text": "→ R02",
+     "impact_box": [
+      610.44,
+      958.0,
+      676.0,
+      984.4
+     ]
+    },
+    "K2": {
+     "box": [
+      28.0,
+      1018.0,
+      692.0,
+      1080.0
+     ],
+     "badge_text": "K2",
+     "badge_box": [
+      46.0,
+      1024.0,
+      70.64,
+      1050.4
+     ],
+     "title_box": [
+      92.0,
+      1024.0,
+      272.0,
+      1048.0
+     ],
+     "mitigation_box": [
+      92.0,
+      1052.0,
+      292.0,
+      1076.0
+     ],
+     "impact_text": "→ R05",
+     "impact_box": [
+      610.44,
+      1026.0,
+      676.0,
+      1052.4
+     ]
+    },
+    "K3": {
+     "box": [
+      28.0,
+      1086.0,
+      692.0,
+      1148.0
+     ],
+     "badge_text": "K3",
+     "badge_box": [
+      46.0,
+      1092.0,
+      70.64,
+      1118.4
+     ],
+     "title_box": [
+      92.0,
+      1092.0,
+      352.0,
+      1116.0
+     ],
+     "mitigation_box": [
+      92.0,
+      1120.0,
+      332.0,
+      1144.0
+     ],
+     "impact_text": "→ R10",
+     "impact_box": [
+      610.44,
+      1094.0,
+      676.0,
+      1120.4
+     ]
+    }
+   },
+   "conclusion_lines": [
+    {
+     "text": "完工 13:20（第 260 分钟），缓冲 160 分钟，截止 16:00。",
+     "box": [
+      28.0,
+      1168.0,
+      563.2,
+      1192.0
+     ]
+    },
+    {
+     "text": "风险会消耗缓冲，但按题设不加到固定时长；详见 schedule.json。",
+     "box": [
+      28.0,
+      1196.0,
+      639.6,
+      1220.0
+     ]
+    },
+    {
+     "text": "占 [start,end) 左闭右开，上一任务结束时可立即衔接，不跨天。",
+     "box": [
+      28.0,
+      1224.0,
+      623.2,
+      1248.0
+     ]
+    }
+   ],
+   "order_rule": "按 (start_minute, id) 升序；同刻开始的按编号排序"
+  }
+ }
+}

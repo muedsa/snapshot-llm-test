@@ -1,0 +1,106 @@
+{
+  "note": "众数为 2 级量化值，与理论值允许 ±2 通道误差",
+  "background": [
+    11,
+    18,
+    32
+  ],
+  "cases": [
+    {
+      "source": "inputs/broken.snapshot L10",
+      "dsl_attribute": "color=\"#33FFFFFF\"",
+      "intent": "白色 20% 不透明度卡体（Flutter 0x33FFFFFF 习惯）",
+      "dsl_actual_parse": {
+        "form": "#RRGGBBAA",
+        "R": 51,
+        "G": 255,
+        "B": 255,
+        "A": 255,
+        "meaning": "不透明青色，alpha 被当作 R 通道"
+      },
+      "measured_mode": [
+        50,
+        254,
+        254
+      ],
+      "mode_share": 0.5582,
+      "verdict": "不是白色；青色与白色相差 222 通道，需求「白底不透明度 20%」未实现"
+    },
+    {
+      "source": "inputs/broken.snapshot L11",
+      "dsl_attribute": "color=\"#FFFFFF44\"",
+      "intent": "半透明白底说明卡",
+      "backdrop": [
+        15,
+        23,
+        42
+      ],
+      "alpha_pct": 26.67,
+      "measured_mode": [
+        78,
+        84,
+        98
+      ],
+      "mode_share": 0.2488,
+      "expected_for_that_alpha": [
+        79,
+        85,
+        99
+      ],
+      "channel_delta": [
+        1,
+        1,
+        1
+      ],
+      "verdict": "alpha=26.7% 与测量一致，但仍不是题目要求的 20%"
+    },
+    {
+      "source": "system-pulse.snapshot（修复后 REVIEW）",
+      "dsl_attribute": "color=\"#FFFFFF33\"",
+      "alpha_pct": 20.0,
+      "measured_mode": [
+        58,
+        64,
+        76
+      ],
+      "mode_share": 0.8122,
+      "expected_for_that_alpha": [
+        60,
+        65,
+        77
+      ],
+      "channel_delta": [
+        2,
+        1,
+        1
+      ],
+      "verdict": "与白色 20% 的理论值一致（容差内）"
+    }
+  ],
+  "probe5_t4_review_mask_bbox": [
+    909,
+    552,
+    1074,
+    615
+  ],
+  "probe5_t4_review_mask_size": [
+    166,
+    64
+  ],
+  "probe5_t4_review_expected_size": [
+    167,
+    78
+  ],
+  "probe5_t4_card_bbox": [
+    734,
+    616,
+    1245,
+    768
+  ],
+  "probe5_t4_card_sample_region": [
+    744,
+    626,
+    814,
+    686
+  ]
+}

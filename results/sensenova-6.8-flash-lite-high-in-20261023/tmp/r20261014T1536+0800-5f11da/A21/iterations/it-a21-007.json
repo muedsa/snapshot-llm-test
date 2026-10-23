@@ -1,0 +1,77 @@
+{
+ "iteration_id": "it-a21-007",
+ "parent": "it-a21-006",
+ "type": "baseline",
+ "round": 2,
+ "phase": "delivery",
+ "spec_source": "tasks/A21-staged-launch-change/rounds/round-02.md",
+ "requests": [
+  {
+   "request_id": "req-a21-r02-launch-portrait-34bd30",
+   "attempt": 1,
+   "http_status": null,
+   "elapsed_ms": 924282.0,
+   "error": "TimeoutError: The read operation timed out",
+   "note": "服务端在读到响应体阶段挂起 924 s，未返回任何字节；无响应文件可留痕"
+  },
+  {
+   "request_id": "req-a21-r02-launch-portrait-c3535d",
+   "attempt": 2,
+   "http_status": null,
+   "elapsed_ms": 417859.0,
+   "error": "TimeoutError: The read operation timed out",
+   "note": "重试后再次挂起 418 s；snapshot_request 的内部重试只覆盖 429/503 与 URLError，不覆盖读取超时"
+  },
+  {
+   "request_id": "req-a21-r02-launch-portrait-3d7048",
+   "attempt": 3,
+   "http_status": 200,
+   "elapsed_ms": 14172.0,
+   "server_timing": "render;dur=1525.1, total;dur=1531.2",
+   "note": "同一份 DSL 原样第三次提交，成功；交付字节 sha256 421c3c4e2c9d73c5…"
+  },
+  {
+   "request_id": "req-a21-r02-launch-wide-cf6641",
+   "attempt": 1,
+   "http_status": 200,
+   "elapsed_ms": 13313.0,
+   "server_timing": "render;dur=1546.2, total;dur=1554.4",
+   "note": "首次提交即成功；交付字节 sha256 9f0d4bc1e90f4596…"
+  }
+ ],
+ "started_at": "2026-10-19T21:22:58+08:00",
+ "started_at_note": "由 attempt 1 的 started_at(21:38:26) 减去其 elapsed_ms(924282) 还原；驱动脚本异常路径把 started_at 记为异常发生时刻，即结束时刻",
+ "ended_at": "2026-10-19T22:09:30+08:00",
+ "elapsed_note": "墙钟 2832 s，其中 1342 s 是两次服务端读取超时的挂起；实际计算+看图+审计约 15 分钟",
+ "image": {
+  "path_base": "suite_root",
+  "path": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.png",
+  "size": [1080, 1350],
+  "png_bytes": 284930,
+  "png_sha256": "421c3c4e2c9d73c561fa1a701fa0ed461ea31d90c6a3d15496e174744ebafc4b",
+  "dsl": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.snapshot"
+ },
+ "image_wide": {
+  "path_base": "suite_root",
+  "path": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.png",
+  "size": [1440, 810],
+  "png_bytes": 247193,
+  "png_sha256": "9f0d4bc1e90f45964d2aaeefce165a7ef7f46a602925cf75558693449b8f1fe9",
+  "dsl": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.snapshot"
+ },
+ "viewed_at": "2026-10-19T21:48:00+08:00",
+ "viewed_at_precision": "minute-level；14 次打开事件的逐条时刻见 viewing-evidence.json 的 round 2 块",
+ "changes": [
+  "文案：主标题由「让复杂信息变得清晰」（10 字）替换为「当所有信息都想成为标题：让复杂信息变得清晰的结构化方法」（27 字）；竖版分 3 行（12/9/6 字），横版分 2 行（12/15 字），两处分行拼接都与 title_full 逐字一致",
+  "字号：主标题 132/116 → 66/52（均 ≥48）；日期 56/44 → 48/36、讲者 34/30 → 30/28、网址 32/28 → 30/28 按同比例下压以保持层级；眉标与字标不变；最小字号仍为 28（≥24）",
+  "新增：赞助方「Northstar Research / 云构工具」30/28px 灰色一行；报名状态牌「免费参加 · 无需报名」做成牌子族的新实例（竖版 404x62、横版 400x46），边框用主色以与网址牌的中性蓝区分——不新增品牌构件，构件数仍为 6",
+  "装饰位移缩放：竖版发光球半径 130→165 并下移到 (905,800) 填补 3 行标题留下的右下空区；横版发光球半径 190→175 并右移到 (1190,400)；球内光带随半径等比缩放（条数、层级、圆头收口不变）；角部水印 300→288 并外移；主标记 76/58 → 72/52；竖版网址牌 632→560 宽以与球体外环留出净距",
+  "横版信息区：由第一轮的横排（日期｜竖分隔线｜讲者）改为纯竖排 5 行（日期→讲者→网址牌→赞助方→报名状态牌），并删除那根竖分隔线 rule 元素",
+  "生成脚本：a21_layouts.py 追加 BUILDERS_R2 与 default_cfg_r2；a21_round.py 按轮次分发构造器与裁切窗口（新增 footer 窗口专查两条新增信息）；a21_audit.py 改为按轮次取必需文案与字号下限（48 替代 56，属需求变化而非放松标准），并新增「标题最多 3 行」与「不得用变形压窄文字」两项检查"
+ ],
+ "pre_render_gate": "提交前先跑无网络干跑（a21_dryrun_r2.py）：构造 DSL → 断言合法 → 打印元素表 → 校验每行标题 advance 不超出文本盒宽度（防折行）→ 校验标题墨迹右缘与球体净距含 y 带判断 → 校验顶部/底部扩展空间与最小字号 → 校验两处分行拼接 == title_full。这一步发现并修掉一个真实内容缺陷：横版原本循环 (title_1, title_2)，而 title_2 是竖版用的「让复杂信息变得清晰」，会导致横版静默丢掉「的结构化方法」；改为新增 title_2w 存放横版整句第 2 行后才提交",
+ "verified": "两图实际打开查看 14 次（整图 1:1 四次 + 放大裁切 10 次，含归档前复查），逐张核对结论见 viewing-evidence.json 的 round 2 块。像素级审计（a21_audit.py 2）全部通过：8 项必需文案在两图均逐字匹配；主标题 66/52 ≥48、其余最小 28 ≥24；文字墨迹两两交集面积为 0；文字与 orb_core 净距最小 141px（横版第 2 行），全部 >0；标题行数 3/2 均 ≤3；交付 .snapshot 中 0 个 <Text> 带 transform/matrix；上下扩展空间 112/153 与 74/110 均 ≥70；无占位词。content-map.json 的 all_passed 为 true",
+ "viewing_outcome": "首版即通过，未产生改进迭代——12 个查看视图中没有发现需要返工的缺陷，故不追加视觉迭代记录，也不为重试而重渲",
+ "remaining": "两次服务端读取超时（合计 1342 s）拉长了本轮墙钟与 request_duration_sum_seconds；驱动脚本异常路径的 started_at 记法有缺陷，本轮指标改由 elapsed_ms 还原真实起点，脚本本身未回改",
+ "status": "completed"
+}

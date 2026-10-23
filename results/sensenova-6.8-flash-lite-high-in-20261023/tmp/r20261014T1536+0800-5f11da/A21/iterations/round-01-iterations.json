@@ -1,0 +1,161 @@
+[
+ {
+  "iteration_id": "it-a21-001",
+  "parent": null,
+  "type": "baseline",
+  "round": 1,
+  "phase": "research",
+  "request_id": "req-a21-probe1-capabilities-ab094e",
+  "started_at": "2026-10-19T18:40:30+08:00",
+  "ended_at": "2026-10-19T18:40:36+08:00",
+  "elapsed_ms": 6531.0,
+  "http_status": 200,
+  "image": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-probe1-capabilities-ab094e.png"
+  },
+  "viewed_at": "2026-10-19T18:44:00+08:00",
+  "viewed_at_precision": "minute-level estimate（该图在本轮上下文压缩前的会话中实际打开）",
+  "observed": "能力探针1（1600x1200）实际查看：gradientType LINEAR/RADIAL 与 gradientColors/gradientStops/gradientBegin/gradientEnd/gradientCenter/gradientRadius 全部生效；<Opacity> 对子树透明度生效；Text 的 letterSpacing、height、softWrap、maxLines、textAlign、fontStyle BOLD、decoration UNDERLINE、textShadow 全部生效；嵌套 Text 可在同一行内混色，但子 span 的前导空白被裁掉（探针 I 行「叠光 Layerlight」渲染为「叠光Layerlight」）",
+  "change": "确认渐变、Opacity 与文本扩展属性可用于版式题，据此放开视觉手段；同时记录「嵌套 Text 裁空白」这一限制，字标排版需另行处理",
+  "status": "completed"
+ },
+ {
+  "iteration_id": "it-a21-002",
+  "parent": "it-a21-001",
+  "type": "syntax-fix",
+  "round": 1,
+  "phase": "research",
+  "request_id": "req-a21-probe2-transform-5cf9fa",
+  "started_at": "2026-10-19T18:40:36+08:00",
+  "ended_at": "2026-10-19T18:40:37+08:00",
+  "elapsed_ms": 1047.0,
+  "http_status": 400,
+  "error": "PARSE_ERROR 属性值无效 [transform]，元素 <Container>；格式：(m0,m1,…,m15)；16 个有限浮点数，列优先排列，逗号分隔且不含空白",
+  "image": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-probe2-transform-5cf9fa.png"
+  },
+  "viewed_at": null,
+  "viewed_at_null_reason": "400 错误响应（232B JSON），无图像可查看",
+  "observed": "首次提交把 4x4 矩阵写成不带括号的 16 个浮点数，被服务端拒绝；服务端 diagnostic 直接给出了属性的精确格式要求",
+  "change": "rot_matrix() 改为输出带括号的 (m0,...,m15)、无空白；据此修正 A20 得出的「属性值一律禁止 (」为过严结论——矩阵类属性恰恰要求括号。assert_dsl_wellformed() 改为白名单（transform/matrix/origin 放行括号），其余属性值仍禁止 <、&、(",
+  "status": "completed"
+ },
+ {
+  "iteration_id": "it-a21-003",
+  "parent": "it-a21-002",
+  "type": "baseline",
+  "round": 1,
+  "phase": "research",
+  "request_id": "req-a21-probe2-transform-624a90",
+  "started_at": "2026-10-19T18:43:13+08:00",
+  "ended_at": "2026-10-19T18:43:16+08:00",
+  "elapsed_ms": 3187.0,
+  "http_status": 200,
+  "image": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-probe2-transform-624a90.png"
+  },
+  "viewed_at": "2026-10-19T18:47:00+08:00",
+  "viewed_at_precision": "minute-level estimate（该图在本轮上下文压缩前的会话中实际打开）",
+  "observed": "能力探针2（1600x1080）实际查看：Container 的 transform 属性与 <Transform matrix origin alignment> 均可旋转且 24 度角度正确；boxShadow 生效；origin 偏移旋转生效。品牌图形三个候选中：候选一「发光球 + 水平光带叠层 + 外环」立体感成立；候选二「同心叠层 + 亮核」识别度高；候选三「旋转光带 5 层放射」读作射线而非叠层，与「叠光」语义不符",
+  "change": "品牌图形定为候选二（叠层主标记，3 张板材 + 亮核）+ 候选一（发光球 + 3 条光带 + 外环），两图共用；候选三弃用并记录理由。另记录负结论：给 radial 渐变加 gradientFocal 会把亮点推出可见范围导致球体发平，故发光球使用居心 radial、不加 focal",
+  "status": "completed"
+ },
+ {
+  "iteration_id": "it-a21-004",
+  "parent": "it-a21-003",
+  "type": "syntax-fix",
+  "round": 1,
+  "phase": "delivery",
+  "request_ids": [
+   "req-a21-r01-launch-portrait-b817ac",
+   "req-a21-r01-launch-wide-b55ddc"
+  ],
+  "started_at": "2026-10-19T18:54:50+08:00",
+  "ended_at": "2026-10-19T18:54:54+08:00",
+  "elapsed_ms": [
+   2406.0,
+   1360.0
+  ],
+  "http_status": 400,
+  "error": "PARSE_ERROR Attr [borderRadius] can not be used with shape CIRCLE（两图同一错误；网址牌圆点同时给了 shape=\"CIRCLE\" 与 borderRadius）",
+  "image": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-r01-launch-portrait-b817ac.png"
+  },
+  "viewed_at": null,
+  "viewed_at_null_reason": "400 错误响应（232B JSON），无图像可查看",
+  "observed": "两图在完全相同的位置解析失败，说明是构造器层面的冲突而非版式数据问题",
+  "change": "Canvas.box() 中 shape 与 borderRadius 改为互斥（elif）：圆形本身等角，无需圆角属性。该约束在本地防呆与文档中固化，后续轮次不再触发",
+  "status": "completed"
+ },
+ {
+  "iteration_id": "it-a21-005",
+  "parent": "it-a21-004",
+  "type": "baseline",
+  "round": 1,
+  "phase": "delivery",
+  "request_ids": [
+   "req-a21-r01-launch-portrait-cf8a74",
+   "req-a21-r01-launch-wide-eb0d6f"
+  ],
+  "started_at": "2026-10-19T18:55:48+08:00",
+  "ended_at": "2026-10-19T18:55:57+08:00",
+  "elapsed_ms": [
+   4640.0,
+   4313.0
+  ],
+  "http_status": 200,
+  "image": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-r01-launch-portrait-cf8a74.png",
+   "note": "该图即本轮 v1 交付的 launch-portrait.png 原始服务字节（sha256 fe64da1a3410d9c5…，216749B）；同轮 v2 视觉迭代后，outputs/round-01/ 下的交付 PNG 已被 v2 覆盖，v1 字节以此响应文件为准"
+  },
+  "image_wide": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-r01-launch-wide-eb0d6f.png",
+   "note": "该图即本轮 v1 交付的 launch-wide.png 原始服务字节（sha256 62114c08523dad9f…，231371B）；v1 字节以此响应文件为准"
+  },
+  "viewed_at": "2026-10-19T19:06:00+08:00",
+  "viewed_at_precision": "minute-level",
+  "observed": "两图首次交付，实际打开查看。整体成立：叠层主标记清晰、发光球有立体感、主标题 132/116px 醒目、日期橙色与讲者灰色层级明确、网址牌完整、顶部与底部均有扩展空间。发现三处缺陷：(1) 字标渲染为「叠光Layerlight」，中英之间没有空格——嵌套 Text 裁掉了前导空白，像素实测 advance 间隙仅约 2px；(2) 竖版右上象限（约 x640-1080、y90-400）大面积空白，构图左重右轻；(3) 竖版主标题下先有一条 156x6 主色强调条、66px 后又有一条 320x2 灰细线，长度不一且间距过近，读起来像误留的笔画",
+  "change": "决定做一次视觉迭代：字标改为两段独立 <Text> 并显式给出间距；竖版右上加线叠层角部水印；删除竖版灰细线并重排信息栈节奏",
+  "status": "completed"
+ },
+ {
+  "iteration_id": "it-a21-006",
+  "parent": "it-a21-005",
+  "type": "visual",
+  "round": 1,
+  "phase": "delivery",
+  "variant_tag": "v2",
+  "request_ids": [
+   "req-a21-r01-launch-portrait.v2-f82591",
+   "req-a21-r01-launch-wide.v2-dd43b3"
+  ],
+  "started_at": "2026-10-19T19:14:06+08:00",
+  "ended_at": "2026-10-19T19:14:16+08:00",
+  "elapsed_ms": [
+   5172.0,
+   4000.0
+  ],
+  "http_status": 200,
+  "image": {
+   "path_base": "suite_root",
+   "path": "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-portrait.png"
+  },
+  "viewed_at": "2026-10-19T19:21:00+08:00",
+  "viewed_at_precision": "minute-level",
+  "changes": [
+   "字标：由嵌套 Text 混色改为「叠光」与「Layerlight」两段独立 <Text>，英文起点 = 中文起点 + size*len(cn) + gap（竖版 gap=14、横版 gap=12）。CJK 全角字 advance 按 1em 计算，与像素实测墨迹相符",
+   "竖版：右上新增线叠层角部水印——3 个 300px 圆角方框（圆角 90）、偏移 50，仅描边无填充，色 #16385E/#1E5688/#2E7FB8，不透明度 0.45/0.62/0.80，出血到画布外。填补右上空白，并与左下氛围 wash 形成对角重量；用纯描边以区别于左上实心主标记",
+   "竖版：删除主标题下的灰细线（320x2），只保留 156x6 主色强调条；信息栈改为 强调条→日期(+74)→讲者→网址牌(+72)，底部扩展空间由约 188px 增至 207px",
+   "生成脚本：render() 增加 tag 参数，attempt 文件名与请求 ID 带 .v2，避免覆盖同轮上一版的真实尝试；日志改为在写入 delivered 映射之后再落盘"
+  ],
+  "verified": "两图重新渲染并实际打开查看（竖版 whole/header/orb/info 四视图，横版 whole/header 两视图）。像素复核：竖版「叠光」墨迹 224-291、「Layerlight」墨迹自 312 起，advance 间隙 16px（v1 约 2px）；横版「叠光」墨迹 198-254、「Layerlight」自 271 起，advance 间隙 13px。水印不压任何文字，信息栈无遮挡，字号与层级未变",
+  "remaining": "横版右下（约 x800-1440、y700-810）为深色背景、无图形元素，属底部扩展空间的一部分，未作处理",
+  "status": "completed"
+ }
+]

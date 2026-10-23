@@ -1,0 +1,635 @@
+{
+ "schema_version": 1,
+ "task_id": "A17",
+ "path_base": "output_dir",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "generated_at": "2026-10-19T11:29:41+08:00",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "example_count": 4,
+ "examples": [
+  {
+   "page_id": 1,
+   "example_id": "A17-E1",
+   "title": "服务调用契约：输入、输出与错误响应对照",
+   "purpose": "把请求、成功响应与错误响应三条分支画成一张对照图，说明输入是文本、输出是二进制、失败是 JSON",
+   "paths": {
+    "full_dsl": "example-01.snapshot",
+    "rendered_png": "example-01.png",
+    "handbook_page_png": "handbook-01.png",
+    "handbook_page_dsl": "handbook-01.snapshot",
+    "path_base": "output_dir"
+   },
+   "size_px": {
+    "width": 400,
+    "height": 240
+   },
+   "size_verified": {
+    "method": "读取交付 PNG 的 IHDR（offset 16 起大端 32 位宽高）",
+    "width": 400,
+    "height": 240
+   },
+   "core_subtree": {
+    "core_line_count": 26,
+    "in_example_dsl_lines": [
+     3,
+     28
+    ],
+    "in_handbook_dsl_lines": [
+     83,
+     108
+    ],
+    "byte_identical_in_both": true,
+    "location_method": "在两份交付 .snapshot 中查找同一核心子树文本，取其首行与末行的 1-based 行号"
+   },
+   "wrapper_differences": [
+    "独立示例：Snapshot 根 + 400×240 Container + Stack 三层有界包装",
+    "教学页：同一核心子树外包 424×264 描边外框，平移到版面居中位置",
+    "差异仅限外层包装、平移与外框；核心子树的文字、属性值、子节点顺序、滤镜作用范围与相对几何均未改动",
+    "核心子树在 400×240 逻辑区域内 1:1 展示，未改字号、相对坐标或滤镜参数"
+   ],
+   "printed_segments": [
+    {
+     "range": [
+      3,
+      15
+     ],
+     "range_core_relative": [
+      1,
+      13
+     ],
+     "text": "<Container width=\"400\" height=\"240\" color=\"#F8FAFC\" padding=\"(16,14)\">\n    <Column width=\"368\" height=\"212\" mainAxisAlignment=\"SPACE_BETWEEN\"\n            crossAxisAlignment=\"STRETCH\">\n        <Container width=\"368\" color=\"#0F172A\" borderRadius=\"8\" padding=\"(11,14)\">\n            <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"12\" color=\"#7DD3FC\"\n                  text=\"POST /snapshot  text/plain; charset=utf-8\"/>\n        </Container>\n        <Container width=\"368\" height=\"46\">\n            <Row width=\"368\" height=\"46\" crossAxisAlignment=\"STRETCH\">\n                <Expanded><Container width=\"178\" height=\"46\" color=\"#ECFDF5\"\n                        borderRadius=\"8\" padding=\"(6,10)\" alignment=\"CENTER\">\n                    <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"12\" color=\"#047857\"\n                          text=\"200 image/png\"/></Container></Expanded>"
+    },
+    {
+     "range": [
+      23,
+      25
+     ],
+     "range_core_relative": [
+      21,
+      23
+     ],
+     "text": "        <Container width=\"368\" color=\"#F1F5F9\" borderRadius=\"8\" padding=\"(11,14)\">\n            <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"11\" color=\"#334155\">\n                <![CDATA[{\"code\":\"PARSE_ERROR\",\"message\":\"...\"}]]></Text>"
+    }
+   ],
+   "printed_line_count": 16,
+   "ellipsis_lines": [
+    "…… 省略 Snapshot 根与 400×240 有界容器（example-01.snapshot 第 1–2 行）……",
+    "…… 省略第二个响应的对称写法与闭合标签（example-01.snapshot 第 16–22 行）……",
+    "…… 省略容器与 Snapshot 的闭合标签（example-01.snapshot 第 26–30 行）……"
+   ],
+   "line_range_note": "印刷行号以独立示例 example-01.snapshot 为基准（1-based，可多段，保持原顺序）；range_core_relative 是同一区间在核心子树内的相对行号。省略提示为独立行，不插入实际执行源码",
+   "response_evidence": {
+    "request_id": "req-a17-example-01-9115a9",
+    "http_status": 200,
+    "content_type": "image/png",
+    "response_bytes": 10178,
+    "elapsed_ms": 1484.0,
+    "response_path": {
+     "path_base": "suite_root",
+     "path": "tmp/r20261014T1536+0800-5f11da/A17/responses/req-a17-example-01-9115a9.png"
+    },
+    "handbook_page_request_id": "req-a17-handbook-01-646467",
+    "handbook_page_elapsed_ms": 3453.0,
+    "png_byte_identical_to_service_response": true,
+    "verified_at": "2026-10-19T10:39:31+08:00"
+   },
+   "viewing_evidence": {
+    "opened_with": "视觉工具 Read（逐图实际打开）",
+    "example_viewed": true,
+    "handbook_page_viewed": true,
+    "zoom_crops": "tmp/r20261014T1536+0800-5f11da/A17/preview/",
+    "note": "第 4 页另做 2×/3× 局部放大与 PIL 像素行采样，确认毛玻璃面板内的模糊区域无未覆盖的源色块"
+   }
+  },
+  {
+   "page_id": 2,
+   "example_id": "A17-E2",
+   "title": "有界 Row/Column/Expanded 与 Stack 定位对照",
+   "purpose": "同一有界容器内并排放 Row（STRETCH + Expanded + 固定宽度子项）与 Stack（left/top 与 right/bottom 两种 Positioned 写法），对照主轴分配、交叉轴拉伸与定位",
+   "paths": {
+    "full_dsl": "example-02.snapshot",
+    "rendered_png": "example-02.png",
+    "handbook_page_png": "handbook-02.png",
+    "handbook_page_dsl": "handbook-02.snapshot",
+    "path_base": "output_dir"
+   },
+   "size_px": {
+    "width": 400,
+    "height": 240
+   },
+   "size_verified": {
+    "method": "读取交付 PNG 的 IHDR（offset 16 起大端 32 位宽高）",
+    "width": 400,
+    "height": 240
+   },
+   "core_subtree": {
+    "core_line_count": 34,
+    "in_example_dsl_lines": [
+     3,
+     36
+    ],
+    "in_handbook_dsl_lines": [
+     83,
+     116
+    ],
+    "byte_identical_in_both": true,
+    "location_method": "在两份交付 .snapshot 中查找同一核心子树文本，取其首行与末行的 1-based 行号"
+   },
+   "wrapper_differences": [
+    "独立示例：Snapshot 根 + 400×240 Container + Stack 三层有界包装",
+    "教学页：同一核心子树外包 424×264 描边外框，平移到版面居中位置",
+    "差异仅限外层包装、平移与外框；核心子树的文字、属性值、子节点顺序、滤镜作用范围与相对几何均未改动",
+    "核心子树在 400×240 逻辑区域内 1:1 展示，未改字号、相对坐标或滤镜参数"
+   ],
+   "printed_segments": [
+    {
+     "range": [
+      3,
+      10
+     ],
+     "range_core_relative": [
+      1,
+      8
+     ],
+     "text": "<Container width=\"400\" height=\"240\" color=\"#F8FAFC\" padding=\"(14,12)\">\n    <Column width=\"372\" height=\"216\" mainAxisAlignment=\"SPACE_BETWEEN\"\n            crossAxisAlignment=\"STRETCH\">\n        <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"10\" color=\"#64748B\"\n              text=\"parent constraint 400 x 240, finite\"/>\n        <Container width=\"372\" height=\"60\">\n            <Row width=\"372\" height=\"60\" crossAxisAlignment=\"STRETCH\">\n                <Expanded flex=\"2\"><Container width=\"284\" height=\"60\""
+    },
+    {
+     "range": [
+      20,
+      27
+     ],
+     "range_core_relative": [
+      18,
+      25
+     ],
+     "text": "        <Stack width=\"372\" height=\"62\">\n            <Container width=\"372\" height=\"62\" color=\"#E2E8F0\" borderRadius=\"8\"/>\n            <Positioned left=\"10\" top=\"10\" width=\"128\" height=\"20\">\n                <Container width=\"128\" height=\"20\" color=\"#8B5CF6\" borderRadius=\"6\"\n                       alignment=\"CENTER\">\n                    <Text fontFamily=\"Inter\" fontSize=\"10\" color=\"#FFFFFF\"\n                          text=\"left=10  top=10\"/></Container>\n            </Positioned>"
+    }
+   ],
+   "printed_line_count": 16,
+   "ellipsis_lines": [
+    "…… 省略 Snapshot 根与 400×240 有界容器（example-02.snapshot 第 1–2 行）……",
+    "…… 省略 Expanded 的收尾、fixed 子项与 Row 闭合（example-02.snapshot 第 11–19 行）……",
+    "…… 省略 right/bottom 定位与闭合标签（example-02.snapshot 第 28–38 行）……"
+   ],
+   "line_range_note": "印刷行号以独立示例 example-02.snapshot 为基准（1-based，可多段，保持原顺序）；range_core_relative 是同一区间在核心子树内的相对行号。省略提示为独立行，不插入实际执行源码",
+   "response_evidence": {
+    "request_id": "req-a17-example-02-2e03d1",
+    "http_status": 200,
+    "content_type": "image/png",
+    "response_bytes": 8064,
+    "elapsed_ms": 5235.0,
+    "response_path": {
+     "path_base": "suite_root",
+     "path": "tmp/r20261014T1536+0800-5f11da/A17/responses/req-a17-example-02-2e03d1.png"
+    },
+    "handbook_page_request_id": "req-a17-handbook-02-69c8ab",
+    "handbook_page_elapsed_ms": 3765.0,
+    "png_byte_identical_to_service_response": true,
+    "verified_at": "2026-10-19T10:39:31+08:00"
+   },
+   "viewing_evidence": {
+    "opened_with": "视觉工具 Read（逐图实际打开）",
+    "example_viewed": true,
+    "handbook_page_viewed": true,
+    "zoom_crops": "tmp/r20261014T1536+0800-5f11da/A17/preview/",
+    "note": "第 4 页另做 2×/3× 局部放大与 PIL 像素行采样，确认毛玻璃面板内的模糊区域无未覆盖的源色块"
+   }
+  },
+  {
+   "page_id": 3,
+   "example_id": "A17-E3",
+   "title": "CDATA 原样输出、Raw 保留空白与尾部 alpha 对照",
+   "purpose": "三行对照：CDATA 内原样输出 a < b && b > a、RichText 局部 span、Raw 保留首尾空格、深色底上 #38BDF8 与 #38BDF880 的尾部 alpha 差异",
+   "paths": {
+    "full_dsl": "example-03.snapshot",
+    "rendered_png": "example-03.png",
+    "handbook_page_png": "handbook-03.png",
+    "handbook_page_dsl": "handbook-03.snapshot",
+    "path_base": "output_dir"
+   },
+   "size_px": {
+    "width": 400,
+    "height": 240
+   },
+   "size_verified": {
+    "method": "读取交付 PNG 的 IHDR（offset 16 起大端 32 位宽高）",
+    "width": 400,
+    "height": 240
+   },
+   "core_subtree": {
+    "core_line_count": 33,
+    "in_example_dsl_lines": [
+     3,
+     35
+    ],
+    "in_handbook_dsl_lines": [
+     89,
+     121
+    ],
+    "byte_identical_in_both": true,
+    "location_method": "在两份交付 .snapshot 中查找同一核心子树文本，取其首行与末行的 1-based 行号"
+   },
+   "wrapper_differences": [
+    "独立示例：Snapshot 根 + 400×240 Container + Stack 三层有界包装",
+    "教学页：同一核心子树外包 424×264 描边外框，平移到版面居中位置",
+    "差异仅限外层包装、平移与外框；核心子树的文字、属性值、子节点顺序、滤镜作用范围与相对几何均未改动",
+    "核心子树在 400×240 逻辑区域内 1:1 展示，未改字号、相对坐标或滤镜参数"
+   ],
+   "printed_segments": [
+    {
+     "range": [
+      7,
+      13
+     ],
+     "range_core_relative": [
+      5,
+      11
+     ],
+     "text": "            <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"11\" color=\"#E2E8F0\">\n                <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"10\" color=\"#94A3B8\"\n                      text=\"CDATA + span: \"/>\n                <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"11\" color=\"#7DD3FC\"\n                      ><![CDATA[a < b && b > a]]></Text>\n            </Text>\n        </Container>"
+    },
+    {
+     "range": [
+      18,
+      20
+     ],
+     "range_core_relative": [
+      16,
+      18
+     ],
+     "text": "                <Raw>   keep spaces   </Raw>\n            </Text>\n        </Container>"
+    },
+    {
+     "range": [
+      27,
+      31
+     ],
+     "range_core_relative": [
+      25,
+      29
+     ],
+     "text": "                <SizedBox width=\"14\"/>\n                <Expanded><Container height=\"50\" color=\"#38BDF880\" borderRadius=\"6\"\n                        alignment=\"CENTER\">\n                    <Text fontFamily=\"DejaVu Sans Mono\" fontSize=\"9\" color=\"#FFFFFF\"\n                          text=\"#38BDF880\"/></Container></Expanded>"
+    }
+   ],
+   "printed_line_count": 15,
+   "ellipsis_lines": [
+    "…… 省略 Snapshot 根、400×240 容器与第一个深色面板的外壳（example-03.snapshot 第 1–6 行）……",
+    "…… 省略 Raw 所在容器的外壳（example-03.snapshot 第 14–17 行）……",
+    "…… 省略不透明的第一个色块 #38BDF8（example-03.snapshot 第 21–26 行）……",
+    "…… 省略 Row、容器与 Snapshot 的闭合标签（example-03.snapshot 第 32–37 行）……"
+   ],
+   "line_range_note": "印刷行号以独立示例 example-03.snapshot 为基准（1-based，可多段，保持原顺序）；range_core_relative 是同一区间在核心子树内的相对行号。省略提示为独立行，不插入实际执行源码",
+   "response_evidence": {
+    "request_id": "req-a17-example-03-5e60d8",
+    "http_status": 200,
+    "content_type": "image/png",
+    "response_bytes": 6865,
+    "elapsed_ms": 6500.0,
+    "response_path": {
+     "path_base": "suite_root",
+     "path": "tmp/r20261014T1536+0800-5f11da/A17/responses/req-a17-example-03-5e60d8.png"
+    },
+    "handbook_page_request_id": "req-a17-handbook-03-702872",
+    "handbook_page_elapsed_ms": 17187.0,
+    "png_byte_identical_to_service_response": true,
+    "verified_at": "2026-10-19T10:39:31+08:00"
+   },
+   "viewing_evidence": {
+    "opened_with": "视觉工具 Read（逐图实际打开）",
+    "example_viewed": true,
+    "handbook_page_viewed": true,
+    "zoom_crops": "tmp/r20261014T1536+0800-5f11da/A17/preview/",
+    "note": "第 4 页另做 2×/3× 局部放大与 PIL 像素行采样，确认毛玻璃面板内的模糊区域无未覆盖的源色块"
+   }
+  },
+  {
+   "page_id": 4,
+   "example_id": "A17-E4",
+   "title": "BackdropFilter / ImageFiltered / ColorFiltered 对照",
+   "purpose": "上层毛玻璃面板叠在彩色纹理上验证 BackdropFilter，下层并排 ImageFiltered 模糊与 ColorFiltered MULTIPLY，右侧卡片标注像素采样位置",
+   "paths": {
+    "full_dsl": "example-04.snapshot",
+    "rendered_png": "example-04.png",
+    "handbook_page_png": "handbook-04.png",
+    "handbook_page_dsl": "handbook-04.snapshot",
+    "path_base": "output_dir"
+   },
+   "size_px": {
+    "width": 400,
+    "height": 240
+   },
+   "size_verified": {
+    "method": "读取交付 PNG 的 IHDR（offset 16 起大端 32 位宽高）",
+    "width": 400,
+    "height": 240
+   },
+   "core_subtree": {
+    "core_line_count": 54,
+    "in_example_dsl_lines": [
+     3,
+     56
+    ],
+    "in_handbook_dsl_lines": [
+     77,
+     130
+    ],
+    "byte_identical_in_both": true,
+    "location_method": "在两份交付 .snapshot 中查找同一核心子树文本，取其首行与末行的 1-based 行号"
+   },
+   "wrapper_differences": [
+    "独立示例：Snapshot 根 + 400×240 Container + Stack 三层有界包装",
+    "教学页：同一核心子树外包 424×264 描边外框，平移到版面居中位置",
+    "差异仅限外层包装、平移与外框；核心子树的文字、属性值、子节点顺序、滤镜作用范围与相对几何均未改动",
+    "核心子树在 400×240 逻辑区域内 1:1 展示，未改字号、相对坐标或滤镜参数"
+   ],
+   "printed_segments": [
+    {
+     "range": [
+      30,
+      46
+     ],
+     "range_core_relative": [
+      28,
+      44
+     ],
+     "text": "                <Positioned left=\"104\" top=\"6\" width=\"196\" height=\"96\">\n                    <ClipRRect borderRadius=\"12\">\n                        <BackdropFilter sigmaX=\"9\" sigmaY=\"9\" tileMode=\"CLAMP\">\n                            <Container width=\"196\" height=\"96\" color=\"#FFFFFF66\"/>\n                        </BackdropFilter>\n                    </ClipRRect>\n                </Positioned>\n            </Stack>\n            <Container width=\"372\" height=\"64\">\n                <Row width=\"372\" height=\"64\" crossAxisAlignment=\"STRETCH\">\n                    <Expanded><ImageFiltered sigmaX=\"5\" sigmaY=\"5\" tileMode=\"CLAMP\">\n                        <Container width=\"128\" height=\"56\" color=\"#38BDF8\"\n                               borderRadius=\"8\"/></ImageFiltered></Expanded>\n                    <SizedBox width=\"12\"/>\n                    <Expanded><ColorFiltered color=\"#7C3AED\" blendMode=\"MULTIPLY\">\n                        <Container width=\"128\" height=\"56\" color=\"#38BDF8\"\n                               borderRadius=\"8\"/></ColorFiltered></Expanded>"
+    }
+   ],
+   "printed_line_count": 17,
+   "ellipsis_lines": [
+    "…… 省略 Snapshot 根、400×240 容器与纹理层（example-04.snapshot 第 1–29 行）……",
+    "…… 省略取样卡片与闭合标签（example-04.snapshot 第 47–58 行）……"
+   ],
+   "line_range_note": "印刷行号以独立示例 example-04.snapshot 为基准（1-based，可多段，保持原顺序）；range_core_relative 是同一区间在核心子树内的相对行号。省略提示为独立行，不插入实际执行源码",
+   "response_evidence": {
+    "request_id": "req-a17-example-04-0f4e38",
+    "http_status": 200,
+    "content_type": "image/png",
+    "response_bytes": 18582,
+    "elapsed_ms": 4765.0,
+    "response_path": {
+     "path_base": "suite_root",
+     "path": "tmp/r20261014T1536+0800-5f11da/A17/responses/req-a17-example-04-0f4e38.png"
+    },
+    "handbook_page_request_id": "req-a17-handbook-04-5f859e",
+    "handbook_page_elapsed_ms": 11672.0,
+    "png_byte_identical_to_service_response": true,
+    "verified_at": "2026-10-19T10:39:31+08:00"
+   },
+   "viewing_evidence": {
+    "opened_with": "视觉工具 Read（逐图实际打开）",
+    "example_viewed": true,
+    "handbook_page_viewed": true,
+    "zoom_crops": "tmp/r20261014T1536+0800-5f11da/A17/preview/",
+    "note": "第 4 页另做 2×/3× 局部放大与 PIL 像素行采样，确认毛玻璃面板内的模糊区域无未覆盖的源色块"
+   }
+  }
+ ],
+ "technical_claims": [
+  {
+   "claim": "请求体是 UTF-8 编码的纯文本 DSL，Content-Type 用 text/plain; charset=utf-8，不是 JSON 端点",
+   "evidence": [
+    {
+     "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+     "request_id": "req-61b29698b623",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/ai-guide.md",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "第 1 页示例把 Content-Type 文字直接画进深色调用条",
+     "example_id": "A17-E1"
+    }
+   ]
+  },
+  {
+   "claim": "成功返回图片二进制，后缀要与实际编码一致；失败返回带 code、message、requestId 的 JSON，不要把错误 JSON 存成 .png",
+   "evidence": [
+    {
+     "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+     "request_id": "req-61b29698b623",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/ai-guide.md",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "示例内 200 image/png 与 PARSE_ERROR JSON 两个分支并排",
+     "example_id": "A17-E1"
+    }
+   ]
+  },
+  {
+   "claim": "400 PARSE_ERROR 的 message 给出出错行列，按行列修正后重发即可",
+   "evidence": [
+    {
+     "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+     "request_id": "req-61b29698b623",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "实测 req-a17-handbook-03-8730d7 报 PARSE_ERROR Unexpected character ' ' in input state [TAG_OPEN] at position 8064",
+     "request_id": "req-a17-handbook-03-8730d7",
+     "example_id": "A17-E3"
+    }
+   ]
+  },
+  {
+   "claim": "根标签 Snapshot 本身不声明画布宽高；父节点向下传递 BoxConstraints，设置 width/height 就是在收紧约束",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/guides/layout/",
+     "request_id": "req-8233e63401ef",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/guides-layout.html.md.txt",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "示例第一行标注 parent constraint 400 x 240, finite",
+     "example_id": "A17-E2"
+    }
+   ]
+  },
+  {
+   "claim": "Row/Column 用 mainAxisAlignment 分主轴；crossAxisAlignment=STRETCH 才填满交叉轴；Expanded 等价 Flexible fit=TIGHT，且只能是 Flex 的直接子节点",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/guides/layout/",
+     "request_id": "req-8233e63401ef",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "示例中 Expanded flex=2 与 fixed 88 同排对照",
+     "example_id": "A17-E2"
+    }
+   ]
+  },
+  {
+   "claim": "Stack 先布局普通子节点（默认 TOP_LEFT），再按 left/top/right/bottom 放 Positioned；Positioned 必须是 Stack 的直接子节点",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/guides/layout/",
+     "request_id": "req-8233e63401ef",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "实测 req-a17-handbook-03-edc061 报 PARSE_ERROR Tag Positioned only can have one child",
+     "request_id": "req-a17-handbook-03-edc061",
+     "example_id": "A17-E2"
+    }
+   ]
+  },
+  {
+   "claim": "解析器不做 HTML 实体解码；文本要包含 < 或 > 必须写 CDATA",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/guides/parser/",
+     "request_id": "req-a17-docs-parser-0948",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/guides-parser.html.md.txt",
+     "quote": "解析器不做 HTML 实体解码。文本中要包含 < 或 > 时，使用 CDATA",
+     "section": "文本与 CDATA（缓存文件第 184–195 行）",
+     "shared_or_task": "task"
+    },
+    {
+     "note": "示例打印 CDATA + span: a < b && b > a",
+     "request_id": "req-a17-handbook-03-8730d7",
+     "example_id": "A17-E3"
+    }
+   ]
+  },
+  {
+   "claim": "Text 会 trim 首尾空白而 Raw 不 trim；未设置字段继承祖先",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/guides/parser/",
+     "request_id": "req-a17-docs-parser-0948",
+     "shared_or_task": "task"
+    },
+    {
+     "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+     "request_id": "req-564b0093540f",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "示例中 <Raw>  keep spaces  </Raw> 保留前导空格",
+     "example_id": "A17-E3"
+    }
+   ]
+  },
+  {
+   "claim": "嵌套 Text 构成富文本，子 Span 只覆盖自己声明的样式，其余继承父级",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/guides/media-text/",
+     "request_id": "req-66c9f3bfe175",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/guides-media-text.html.md.txt",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "示例第一行深色面板里 'a < b && b > a' 单独换色加粗",
+     "example_id": "A17-E3"
+    }
+   ]
+  },
+  {
+   "claim": "8 位颜色 #RRGGBBAA 的最后两位是透明度，#38BDF880 约为 50% 透明",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+     "request_id": "req-564b0093540f",
+     "shared_or_task": "shared"
+    },
+    {
+     "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+     "request_id": "req-61b29698b623",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "示例深色底上并排 #38BDF8 与 #38BDF880，右侧明显变暗",
+     "example_id": "A17-E3"
+    }
+   ]
+  },
+  {
+   "claim": "BackdropFilter 只模糊已经绘制在其背后的内容，背后是纯色时看不出效果，通常要用 ClipRRect 限定区域",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+     "request_id": "req-564b0093540f",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt",
+     "quote": "BackdropFilter sigmaX 、 sigmaY tileMode=\"CLAMP\" 、 blendMode=\"SRC_OVER\"",
+     "shared_or_task": "shared"
+    },
+    {
+     "note": "探针 req-a17-probe-dd116f 用纯色背景看不出模糊，req-a17-probe2-80cf1a 换成纹理背景后才可见",
+     "request_ids": [
+      "req-a17-probe-dd116f",
+      "req-a17-probe2-80cf1a"
+     ],
+     "example_id": "A17-E4"
+    }
+   ]
+  },
+  {
+   "claim": "ImageFiltered / ColorFiltered 作用在子树结果上；BlurTileMode 取值 CLAMP / REPEAT / MIRROR / DECAL",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+     "request_id": "req-564b0093540f",
+     "shared_or_task": "shared"
+    },
+    {
+     "url": "https://snapshot.muedsa.com/guides/testing/",
+     "request_id": "req-a17-docs-testing-8297",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/enums.html.md.txt",
+     "quote": "FilterTileMode CLAMP 、 REPEAT 、 MIRROR 、 DECAL",
+     "shared_or_task": "a11",
+     "cache_note": "由 A11 取得并缓存，本题复用缓存，未重复发起 HTTP 请求"
+    },
+    {
+     "note": "示例下层并排 ImageFiltered 模糊块与 ColorFiltered MULTIPLY 块",
+     "example_id": "A17-E4"
+    }
+   ]
+  },
+  {
+   "claim": "服务实测约束：Container 与 Positioned 只允许一个子元素（否则 400 PARSE_ERROR）",
+   "evidence": [
+    {
+     "note": "首版四页手册全部 400：req-a17-handbook-01-2d8a0e、-02-abf31e、-03-edc061、-04-a7f169",
+     "request_ids": [
+      "req-a17-handbook-01-2d8a0e",
+      "req-a17-handbook-02-abf31e",
+      "req-a17-handbook-03-edc061",
+      "req-a17-handbook-04-a7f169"
+     ],
+     "example_id": "ALL"
+    }
+   ]
+  },
+  {
+   "claim": "服务实测约束：根 <Stack> 不能直接做 <Snapshot> 的子节点，拿到无限约束会报 RENDER_ERROR Layout size is infinite；必须外包一层显式尺寸的 Container",
+   "evidence": [
+    {
+     "note": "req-a17-handbook-01..04 六次 RENDER_ERROR；定位探针 P-A（外包 Container）200、P-B/P-C（旧根结构）400",
+     "request_ids": [
+      "req-a17-probe-A-root-container-3889eb",
+      "req-a17-probe-B-skeleton-e6fcdb",
+      "req-a17-probe-C-codeblock-e9a400"
+     ],
+     "example_id": "ALL"
+    }
+   ]
+  },
+  {
+   "claim": "自检顺序：布局数值断言 > 像素采样 > Golden > Artifact；Artifact 不是断言；可复现需固定字体与颜色空间",
+   "evidence": [
+    {
+     "url": "https://snapshot.muedsa.com/guides/testing/",
+     "request_id": "req-a17-docs-testing-8297",
+     "cache": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/guides-testing.html.md.txt",
+     "shared_or_task": "task"
+    },
+    {
+     "note": "A17 自身按此顺序执行：a17_check.py 离线断言 → PIL 像素采样 → 逐图人工查看",
+     "example_id": "A17-E4"
+    }
+   ]
+  }
+ ]
+}

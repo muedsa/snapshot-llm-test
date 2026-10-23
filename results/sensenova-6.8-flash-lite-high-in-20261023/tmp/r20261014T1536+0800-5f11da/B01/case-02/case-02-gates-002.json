@@ -1,0 +1,118 @@
+{
+ "case_id": "case-02",
+ "at": "2026-10-22T14:35:45+08:00",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "note": "首版：VPD 折线 + 决策线 + 每日决策图元 + 风速条形",
+ "gates_total": 18,
+ "gates_failed": 0,
+ "gates": [
+  {
+   "id": "case-02-01",
+   "check": "图上 VPD 值与 Magnus-Tetens 公式复算一致",
+   "passed": true,
+   "detail": "10-22=1.026 10-23=1.084 10-24=0.321 10-25=0.295 10-26=0.113 10-27=0.107 10-28=0.668"
+  },
+  {
+   "id": "case-02-02",
+   "check": "状态由单一判据唯一确定（雨水优先，再比 VPD 与风）",
+   "passed": true,
+   "detail": "morn morn eve eve rain rain eve"
+  },
+  {
+   "id": "case-02-03",
+   "check": "三档都被数据走到（晨2 / 傍晚3 / 不浇2），今日为晨浇",
+   "passed": true,
+   "detail": "morn=2 eve=3 rain=2"
+  },
+  {
+   "id": "case-02-04",
+   "check": "今日每盆水量与七日总水量均由公式复算",
+   "passed": true,
+   "detail": "今日=14.12 L 七日=49.7 L"
+  },
+  {
+   "id": "case-02-05",
+   "check": "水量随盆径单调不减（同耐旱系数）",
+   "passed": true,
+   "detail": "1.041 → 5.581"
+  },
+  {
+   "id": "case-02-06",
+   "check": "水量随 VPD 单调递增（越干浇得越多）",
+   "passed": true,
+   "detail": "干日 1.08 → 5.836 L；湿日 0.11 → 0.913 L"
+  },
+  {
+   "id": "case-02-07",
+   "check": "三档行动色与白色面板对比 ≥ 3.0",
+   "passed": true,
+   "detail": "4.0 3.4 10.2"
+  },
+  {
+   "id": "case-02-08",
+   "check": "三档行动都以文字标签印刷（不只靠颜色）",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-02-09",
+   "check": "阈值与最近数据点间隔 ≥ 0.05 kPa（不是照数据反推）",
+   "passed": true,
+   "detail": "最近 0.126"
+  },
+  {
+   "id": "case-02-10",
+   "check": "页脚/正文关于 22 °C 对应相对湿度约 66 % 的说法可复算",
+   "passed": true,
+   "detail": "66.0%"
+  },
+  {
+   "id": "case-02-11",
+   "check": "纵轴 0-1.2 kPa 单调映射，右轴条形 0-20 km/h 单调",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-02-cbr",
+   "check": "类别色对色盲可分（deutan/tritan ≥ 12, normal ≥ 18）",
+   "passed": true,
+   "detail": "#0E8AA8↔#C87A12 d=22.4 t=20.7 n=24.8; #0E8AA8↔#2F4450 d=21.2 t=21.9 n=22.5; #C87A12↔#2F4450 d=33.3 t=31.5 n=32.5"
+  },
+  {
+   "id": "case-02-01",
+   "check": "所有文字框在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-02-02",
+   "check": "同层文字框互不重叠",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-02-03",
+   "check": "文字字号 ≥ 15 px",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-02-04",
+   "check": "片段数 ≤ 9000（控制渲染负载与可复现性）",
+   "passed": true,
+   "detail": "parts=932"
+  },
+  {
+   "id": "case-02-05",
+   "check": "所有形状在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-02-06",
+   "check": "文字不含 < > & （DSL 不做实体解码，会原样印出）",
+   "passed": true,
+   "detail": ""
+  }
+ ]
+}

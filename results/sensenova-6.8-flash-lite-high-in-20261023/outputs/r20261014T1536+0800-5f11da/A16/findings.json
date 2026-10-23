@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "task_id": "A16",
+  "path_base": "output_dir",
+  "source_of_truth": {
+    "path": "tasks/A16-visual-data-forensics/inputs/source.csv",
+    "note": "唯一可信原始数据；findings 中所有数值核对均以此为准"
+  },
+  "original_image": {
+    "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+    "size": [1280, 900]
+  },
+  "coordinate_system": "画布左上原点，x 向右、y 向下，像素单位；框为 [left, top, right, bottom]，右/下边界为含末像素的闭区间",
+  "evidence_base": [
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag1.json",
+     "content": "整图结构、色板、卡片与绘图区基础测量"},
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag2.json",
+     "content": "柱顶数值标签定位与网格线初测"},
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag3.json",
+     "content": "8 根柱高度、零截距/OLS 比例性检验、轴刻度定义"},
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag4.json",
+     "content": "20 处文本墨迹框与图例色块填色"},
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag5.json",
+     "content": "放宽窗口后的文本框复核（含 clipped 标志）、利润明细列切分"},
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag6.json",
+     "content": "卡片外轮廓、面板像素计数、WCAG 对比度"},
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag7.json",
+     "content": "竖线/横线扫描定出的面板边界与四列利润位置"},
+    {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag8.json",
+     "content": "在最终交付图 corrected-report.png 上实测的柱高比例、柱底零点、"
+               "标签墨迹框与对比度（核验 findings 的修正结果）"}
+  ],
+  "findings": [
+    {
+      "id": "F-01",
+      "category": "axis",
+      "title": "纵轴被截断，柱体没有共同零起点",
+      "original_position": {
+        "description": "柱图绘图区与 y 轴刻度",
+        "y_axis_ticks_ink_bbox": [109, 287, 134, 567],
+        "gridline_rows": [295, 349, 403, 457, 511, 565],
+        "gridline_labels_top_to_bottom": [200, 180, 160, 140, 120, 100],
+        "bar_base_y_all_bars": 564,
+        "bar_base_minus_lowest_gridline_px": -1
+      },
+      "observation": "只有 6 条网格线，标签自上而下 200/180/160/140/120/100，间距恒为 54px，最低刻度是 100，没有 0 线。8 根柱的柱底全部落在 y=564，正好压在最低那条（100）刻度线上，即柱长表示的是「数值减 100」而不是「数值」。",
+      "source_data_check": "source.csv 的 8 个数值为 120/90/135/108/128/96/180/126。其中 Q1 成本 90 与 Q3 成本 96 都低于轴最低刻度 100：若轴真按「从 100 起算」读，这两根柱应有的高度是 (90−100)×2.7 = −27.0px 与 (96−100)×2.7 = −10.8px（负值，即不应该存在），但图上分别画成了 110px 与 128px。",
+      "impact": "柱长不再表示数值大小。图上最大差异是 Q4 收入 180 对 Q3 收入 128（差 52 万元），视觉只有 48px；Q2 收入 135 对 Q1 收入 120（差 15 万元）视觉 22px。读者无法判断相对规模，也无法比较「收入高于成本多少」，只能去读数字标签——而题面明确不能只靠标签成立。",
+      "fix_applied": "纵轴改为 0–200 万元、步长 40、6 条网格线含 0 基线，比例 1.4 px/万元，8 根柱共用 y=530 的共同零点；柱底与 0 网格线重合。",
+      "final_view_result": "查看 corrected-report.png：0 网格线存在且明显，8 根柱底齐平落在同一基线上，最大柱（Q4 收入 252px）与最小柱（Q1 成本 126px）高度比为 2.00，与数值比 180/90 = 2.00 一致。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag3.json",
+         "fields": ["axis_claimed", "per_bar.height_px", "per_bar.base_y", "per_bar.expected_h_if_base_is_100"]},
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/crop-07-chart-full.png",
+         "note": "3× 放大整图，可见最低刻度为 100 且柱底压线"}
+      ]
+    },
+    {
+      "id": "F-02",
+      "category": "encoding",
+      "title": "柱高与数值不成比例：小值被画得更高",
+      "original_position": {
+        "description": "8 根柱的柱体区域",
+        "bars": [
+          {"quarter": "Q1", "series": "revenue", "value_wan": 120, "x_range": [224, 287], "height_px": 150},
+          {"quarter": "Q1", "series": "cost", "value_wan": 90, "x_range": [300, 363], "height_px": 110},
+          {"quarter": "Q2", "series": "revenue", "value_wan": 135, "x_range": [460, 523], "height_px": 172},
+          {"quarter": "Q2", "series": "cost", "value_wan": 108, "x_range": [536, 599], "height_px": 135},
+          {"quarter": "Q3", "series": "revenue", "value_wan": 128, "x_range": [696, 759], "height_px": 198},
+          {"quarter": "Q3", "series": "cost", "value_wan": 96, "x_range": [772, 835], "height_px": 128},
+          {"quarter": "Q4", "series": "revenue", "value_wan": 180, "x_range": [932, 995], "height_px": 246},
+          {"quarter": "Q4", "series": "cost", "value_wan": 126, "x_range": [1008, 1071], "height_px": 165}
+        ]
+      },
+      "observation": "用柱中央列 ±8 列测「自柱底向上连续同色像素长度」，8 根柱高度都是整数精确值（每根 height_min == height_max），分别是 150/110/172/135/198/128/246/165。零截距拟合 h = 1.3337·V，R² = 0.9138，最大绝对残差 27.28px 出现在 Q3 收入柱（z = +2.15）。最直接的证据：Q3 收入柱（值 128）高 198px，Q2 收入柱（值 135）高 172px——数值更小的柱比数值更大的柱高 26px。height/value 比在 1.2222–1.5469 之间波动。",
+      "source_data_check": "source.csv 中 Q2 revenue 135 > Q3 revenue 128。图上 Q3 收入柱反而更高。同样 Q1 收入 120 的柱（150px）比 Q1 成本 90 的柱（110px）高 36.4%，而数值差是 33.3%，比例被放大了。",
+      "impact": "这是整张图最危险的错误：不读标签、只凭柱高，会得到「Q3 收入高于 Q2」这个与事实相反的结论，而且看起来完全合理。任何用这张图做趋势判断的人都会被带偏。",
+      "fix_applied": "全部柱用同一比例 1.4 px/万元绘制：120→168px、90→126px、135→189px、108→151.2px、128→179.2px、96→134.4px、180→252px、126→176.4px。修正后零截距拟合残差为 0。",
+      "final_view_result": "查看 corrected-report.png：Q3 收入柱（179.2px）明显低于 Q2 收入柱（189px），Q4 收入柱最高且约为 Q1 成本柱的两倍；柱高排序与数值排序完全一致。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag3.json",
+         "fields": ["proportional_test_zero_intercept", "per_bar.zscore", "per_bar.height_per_value_ratio"]},
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/crop-07-chart-full.png",
+         "note": "3× 放大后可直接目视 Q3 蓝柱高于 Q2 蓝柱"}
+      ]
+    },
+    {
+      "id": "F-03",
+      "category": "axis",
+      "title": "轴刻度比例与柱高比例互相矛盾（图上有两套刻度）",
+      "original_position": {
+        "description": "整个绘图区",
+        "gridline_gap_px": 54,
+        "gridline_value_step_wan": 20,
+        "lowest_to_highest_gridline_px": 270,
+        "lowest_to_highest_gridline_value_wan": 100
+      },
+      "observation": "网格线间距 54px 对应 20 万元，即轴标称 2.7 px/万元（最低到最高 270px 对应 100 万元 = 2.70 px/万元，内部自洽）；但 8 根柱高按零截距拟合只有 1.3337 px/万元，约为轴标称值的 49%。",
+      "source_data_check": "以轴的比例读柱：Q4 收入柱 246px 除以 2.7 px/万元 = 91.1 万元，再加柱底所在的 100 起点 = 191.1 万元，而真实值是 180 万元。以柱的比例读轴：246px 柱除以 1.3337 = 184.5 万元，而柱顶距离轴顶 200 刻度线还差 29px。两种读法都算不出正确数字。",
+      "impact": "读者无论选择「按轴读柱」还是「按柱读轴」都会得到错误数值，且两种读法的误差方向不同，无法自洽校验。这让前面两项问题无法通过「换个读数方法」救回来。",
+      "fix_applied": "柱与轴统一到同一比例 1.4 px/万元：轴 0–200 万元跨 280px，柱高 = 值 × 1.4。轴刻度标签位置由同一比例反算。",
+      "final_view_result": "查看 corrected-report.png：Q4 收入柱顶（y=278）到 0 基线（y=530）为 252px，252/1.4 = 180 万元，与柱顶标签和 source.csv 三方一致；轴刻度 200 正好落在 y=250，250 到 530 为 280px = 200×1.4。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag3.json",
+         "fields": ["axis_claimed.px_per_wan", "proportional_test_zero_intercept.k_px_per_wan"]},
+        {"path_base": "suite_root", "path": "outputs/r20261014T1536+0800-5f11da/A16/corrected-data.json",
+         "fields": ["axes.px_per_wan", "axes.bars"]}
+      ]
+    },
+    {
+      "id": "F-04",
+      "category": "legend",
+      "title": "图例颜色与柱体映射颠倒",
+      "original_position": {
+        "description": "柱图卡片右上角图例",
+        "swatch_blue_bbox": [877, 183, 896, 202],
+        "swatch_blue_fill_rgb": [36, 92, 228],
+        "label_next_to_blue_ink_bbox": [908, 185, 943, 203],
+        "swatch_orange_bbox": [1056, 183, 1075, 202],
+        "swatch_orange_fill_rgb": [232, 142, 53],
+        "label_next_to_orange_ink_bbox": [1087, 185, 1122, 203]
+      },
+      "observation": "图例把蓝色块标注为「成本」、橙色块标注为「收入」。而 8 根柱顶的数字标签里，蓝柱为 120/135/128/180、橙柱为 90/108/96/126。",
+      "source_data_check": "source.csv 逐季 revenue/cost 为 120/90、135/108、128/96、180/126——revenue 一律大于 cost。因此蓝柱（120/135/128/180）是收入、橙柱（90/108/96/126）是成本，与图例标注正好相反。",
+      "impact": "读图者会把收入当成本、成本当收入，整份报告的盈亏方向被反转：按图例读，每季「成本」都高于「收入」，即四季全部亏损，与源数据（四季全部盈利、全年利润 143 万元）完全相反。",
+      "fix_applied": "图例改为 蓝=收入、橙=成本，与柱顶标签和源数据一致；蓝橙仍保持原有色相，只纠正映射方向。",
+      "final_view_result": "查看 corrected-report.png：图例蓝色块右侧为「收入」、橙色块右侧为「成本」，与四组柱体（每组左侧蓝、右侧橙）及柱顶数值一致。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag4.json",
+         "fields": ["legend_swatch_blue", "legend_swatch_orange", "legend_label_cost", "legend_label_revenue"]},
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/crop-02-legend.png",
+         "note": "图例区 3× 放大，用于字形辨认「成本」/「收入」"}
+      ]
+    },
+    {
+      "id": "F-05",
+      "category": "computation",
+      "title": "Q3 利润计算错误（42 应为 32）",
+      "original_position": {
+        "description": "利润明细卡片第三列",
+        "column_ink_bbox": [439, 711, 528, 781],
+        "quarter_label_bbox": [439, 711, 466, 733],
+        "value_label_bbox": [439, 751, 528, 781]
+      },
+      "observation": "利润明细显示 Q3 为「42 万元」。",
+      "source_data_check": "source.csv：Q3 revenue 128 − cost 96 = 32 万元。图上多算 10 万元，相对误差 +31.3%。同页其余三季核对正确：Q1 120−90=30 ✓、Q2 135−108=27 ✓、Q4 180−126=54 ✓。",
+      "impact": "Q3 利润被高估 10 万元；更严重的是它掩盖了 Q3 是全年利润最低点这一事实（32 万元，最低；其余为 30/27/54）。若按 42 万元做预算或季度对比，会误判 Q3 表现尚可。",
+      "fix_applied": "改为 32 万元，并补出利润率 25.0%（32/128），四列均附利润率以便对比。",
+      "final_view_result": "查看 corrected-report.png：利润明细四列依次为 30 万元（25.0%）、27 万元（20.0%）、32 万元（25.0%）、54 万元（30.0%），与 source.csv 逐一吻合。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag5.json",
+         "fields": ["profit_columns"]},
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/crop-15-profit-left.png",
+         "note": "利润明细 3× 放大"}
+      ]
+    },
+    {
+      "id": "F-06",
+      "category": "narrative",
+      "title": "主标题「Q3 利润最高」与同页数据、源数据均矛盾",
+      "original_position": {
+        "description": "页标题",
+        "ink_bbox": [56, 46, 428, 81],
+        "ink_w": 373,
+        "ink_h": 36,
+        "clipped": [false, false, false, false]
+      },
+      "observation": "页标题为「Q3 利润最高」（裁图 crop-01 中已逐字辨认）。",
+      "source_data_check": "图上自己的利润明细就写着 Q4 54 万元 > Q3 42 万元，标题与同页数据自相矛盾。按 source.csv 重算：Q4 利润 54 万元为四季最高，Q3 32 万元为四季最低，标题方向完全相反。",
+      "impact": "这是标题级错误：读者只看标题就会把资源投向 Q3。标题、同页数据、源数据三者互相冲突时，报告整体失去可信度。",
+      "fix_applied": "标题改为「季度复盘：Q4 利润最高（54 万元）」，保留「季度复盘」主题，结论由数据直接支撑。",
+      "final_view_result": "查看 corrected-report.png：标题为「季度复盘：Q4 利润最高（54 万元）」，与下方利润明细第 4 列、重点观察框一致。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag5.json",
+         "fields": ["regions[page_title]"]},
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/crop-01-title.png"}
+      ]
+    },
+    {
+      "id": "F-07",
+      "category": "narrative",
+      "title": "副标题「收入持续上升」不成立：Q2→Q3 出现回落",
+      "original_position": {
+        "description": "页标题下方的副标题",
+        "ink_bbox": [56, 105, 326, 121],
+        "note": "底边贴搜索窗，最右端可能未完全测到，见 uncertainties U-02"
+      },
+      "observation": "副标题称「收入持续上升」（并含「全年保持增长」表述）。",
+      "source_data_check": "source.csv revenue 序列 120 → 135 → 128 → 180。Q2→Q3 下降 7 万元（−5.2%），非单调上升，「持续」不成立。全年首尾对比 Q4 180 对 Q1 120 为 +50.0%，这部分是成立的。",
+      "impact": "把一次回落说成持续趋势会掩盖季节波动；据此外推 Q4 会高估（Q4 是从 Q3 低点反弹，而非持续增长）。",
+      "fix_applied": "副标题改为「Q3 收入环比回落 7 万元（−5.2%），Q4 回升至全年最高 180 万元」，把「回落」与「反弹」分开陈述，不掩盖波动。",
+      "final_view_result": "查看 corrected-report.png：副标题两句均可回查 source.csv（135→128 为 −7/−5.2%；180 为四季最高）。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag5.json",
+         "fields": ["regions[page_subtitle]"]},
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/crop-01-title.png"}
+      ]
+    },
+    {
+      "id": "F-08",
+      "category": "narrative",
+      "title": "重点观察指向 Q3，但 Q3 没有一项指标处于高位",
+      "original_position": {
+        "description": "右下角米色重点提示框",
+        "panel_bbox": [843, 650, 1224, 821],
+        "panel_fill_rgb": [255, 241, 217],
+        "panel_pixels": 59677,
+        "title_ink_bbox": [950, 677, 1014, 699],
+        "body_ink_bbox": [950, 718, 1072, 766]
+      },
+      "observation": "提示框把 Q3 作为重点观察对象，语气积极。",
+      "source_data_check": "Q3 收入 128 为四季次低（仅高于 Q1 120）；Q3 利润 32 为四季最低；Q3 利润率 25.0% 与 Q1 并列、低于 Q4 的 30.0%。没有任何指标使 Q3 值得作为「重点」。相反，Q4 利润 54 万元与利润率 30.0% 双双为四季最高。",
+      "impact": "重点观察指向全年最差的季度却用积极语气，读者会得出「Q3 值得加码」的错误结论；而 Q3 实际是成本相对收入压力最大的季度（利润率最低）。",
+      "fix_applied": "重点观察改为 Q4，标题「重点观察 · Q4」，正文三行均可回查：Q4 利润 54 万元；利润率 30.0%，两项均四季最高；Q3 利润 32 万元为四季最低。反面对照如实写出，不掩盖弱点。",
+      "final_view_result": "查看 corrected-report.png：提示框标题与正文三行逐条与 source.csv 及利润明细列一致。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag6.json",
+         "fields": ["cream_box_bbox", "callout_title", "callout_body"]},
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/crop-16-callout-right.png"}
+      ]
+    },
+    {
+      "id": "F-09",
+      "category": "readability",
+      "title": "重点提示框正文对比度 2.44，远低于可读门槛",
+      "original_position": {
+        "description": "米色提示框正文",
+        "ink_bbox": [950, 718, 1072, 766],
+        "text_core_rgb": [178, 153, 118],
+        "background_rgb": [255, 241, 217]
+      },
+      "observation": "正文文字核心色 [178,153,118]（浅棕）落在米色底 [255,241,217] 上。按 WCAG 2.1 相对亮度公式计算，对比度为 2.44。",
+      "source_data_check": "不适用（视觉可读性问题，不涉及数值）。",
+      "impact": "对比度 2.44 低于正文 AA 门槛 4.5，也低于大字门槛 3.0。这是全图最需要被读到的结论区域，却是最难辨认的；正常阅读距离下几乎无法看清。",
+      "fix_applied": "正文色改为 #5C4A2E，字号 22。同底重算对比度约 7.6，高于 AA 4.5。",
+      "final_view_result": "查看 corrected-report.png：提示框正文清晰锐利，无需放大即可辨认。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag6.json",
+         "fields": ["contrast.callout_body_on_cream"]}
+      ]
+    },
+    {
+      "id": "F-10",
+      "category": "readability",
+      "title": "橙色成本柱对白底对比度 2.51，低于图形对象门槛",
+      "original_position": {
+        "description": "8 根橙色柱体",
+        "fill_rgb": [232, 142, 53],
+        "background_rgb": [255, 255, 255]
+      },
+      "observation": "橙色柱填充 [232,142,53] 对白色卡片底，WCAG 对比度 2.51。作为参考，蓝色柱 [36,92,228] 对底为 5.64。",
+      "source_data_check": "不适用（视觉可读性问题，不涉及数值）。",
+      "impact": "2.51 低于 WCAG 1.4.11 图形对象 3.0 门槛，成本柱在白底上边界发虚；在图例被颠倒（F-04）的前提下进一步加剧误读，打印或低对比显示器下更难区分两色。",
+      "fix_applied": "成本柱改为 #C96F1E（更深的琥珀色），对白底对比度 3.64；柱宽 64px、圆角仅顶部 6px，保持与蓝柱一致的形状语言。",
+      "final_view_result": "查看 corrected-report.png：橙柱边界清晰，与蓝柱区分明确，无需依赖图例也能分辨两组。",
+      "confidence": "confirmed",
+      "evidence": [
+        {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag6.json",
+         "fields": ["contrast.bar_orange_vs_card_white", "contrast.bar_blue_vs_card_white"]}
+      ]
+    }
+  ],
+  "final_verification": {
+    "image": {
+      "path": "corrected-report.png",
+      "size": [1280, 900],
+      "version": "v03-corrected-report",
+      "render_request_id": "req-a16-v03-corrected-report-42341d"
+    },
+    "evidence": {
+      "path_base": "suite_root",
+      "path": "tmp/r20261014T1536+0800-5f11da/A16/gen/a16/diag8.json",
+      "note": "在最终交付图上实测，不只核对 DSL 与 HTTP 状态"
+    },
+    "checks": [
+      {"id": "C-01", "for": "F-01", "item": "共同零起点",
+       "measured": "8 根柱的柱底行集合 = {529}，全部落在同一行；0 网格线存在于该行",
+       "verdict": "pass"},
+      {"id": "C-02", "for": "F-02/F-03", "item": "柱高与数值成同一比例",
+       "measured": "零截距设计值 1.4 px/万元；实测 8 根柱高度与设计值偏差 ≤0.4px，"
+                   "换算 ≤0.29 万元；最大柱（Q4 收入 180）252px、最小柱（Q1 成本 90）126px，"
+                   "高度比 2.00 = 180/90",
+       "verdict": "pass"},
+      {"id": "C-03", "for": "F-04", "item": "图例与柱色映射",
+       "measured": "图例蓝色块（[36,92,228]）右侧标签墨迹框 [1019,172,1103,192]；"
+                   "橙色块（[201,111,30]）右侧标签墨迹框 [1157,173,1194,192]；"
+                   "四组柱体均左蓝右橙，与柱顶标签 120/135/128/180（收入）、"
+                   "90/108/96/126（成本）一致",
+       "verdict": "pass"},
+      {"id": "C-04", "for": "F-05", "item": "利润明细数值",
+       "measured": "利润卡四列墨迹框 [88,696,201,779] / [260,695,373,779] / "
+                   "[432,696,545,779] / [604,696,717,779]，文字为 "
+                   "30 万元 25.0% / 27 万元 20.0% / 32 万元 25.0% / 54 万元 30.0%，"
+                   "与 source.csv 逐季一致",
+       "verdict": "pass"},
+      {"id": "C-05", "for": "F-06/F-07", "item": "标题与副标题",
+       "measured": "标题墨迹框 [57,51,577,87]；副标题墨迹框 [57,103,690,125]，"
+                   "clipped 均为全 False，文字完整可读",
+       "verdict": "pass"},
+      {"id": "C-06", "for": "F-09/F-10", "item": "对比度",
+       "measured": "提示框正文 #5C4A2E on #FFF1D9 = 7.61（原图 2.44）；"
+                   "橙柱 #C96F1E on 白 = 3.64（原图 2.51，门槛 3.0）；"
+                   "页脚 #5B6B80 on 画布 = 5.03（迭代中修掉的原缺陷 4.38）；"
+                   "白底标注 #63748F on 白 = 4.75；正文类全部 ≥4.5",
+       "verdict": "pass"},
+      {"id": "C-07", "for": "全部", "item": "标签无裁切",
+       "measured": "8 个柱标签、4 个 x 轴季度标签、6 个 y 轴刻度标签的 ink 框 "
+                   "clipped 均为 [False,False,False,False]，数字完整"
+                   "（120/90/135/108/128/96/180/126、Q1–Q4、0/40/80/120/160/200）",
+       "verdict": "pass"},
+      {"id": "C-08", "for": "全部", "item": "字号下限",
+       "measured": "正文（标题 34、副标题 22、提示框正文 22）≥22；"
+                   "标注（单位 18、y 轴 18、季度 18、利润率 18、页脚 18）≥18；"
+                   "柱标签 19、图例 20、x 轴 20",
+       "verdict": "pass"}
+    ]
+  },
+  "uncertainties": [
+    {
+      "id": "U-01",
+      "item": "图例标签字形的辨认方向",
+      "reason": "蓝色块右侧标签墨迹框 [908,185,943,203]（36×19）、橙色块右侧 [1087,185,1122,203]（36×19），宽度与「两字 @ fontSize 18」一致，可在 3× 放大裁图 crop-02 中辨认字形；辨认结果为蓝块右「成本」、橙块右「收入」。但柱顶数字标签是作者手写，理论上也可能同时写错。",
+      "needed_evidence": "原始 DSL 或作图脚本（题面明确不提供旧 DSL）。现有间接证据支持「图例错、柱对」：8 个柱顶标签与 source.csv 逐一吻合，且每季 revenue > cost。",
+      "effect_on_conclusion": "若归因方向反过来（柱标签错、图例对），F-04 与 F-02/F-05 的结论不变，仅归因对象互换。修正方案（图例与柱色按源数据统一）在两种假设下都成立。"
+    },
+    {
+      "id": "U-02",
+      "item": "副标题完整文字未逐字复核",
+      "reason": "副标题墨迹框 [56,105,326,121] 的底边仍贴着搜索窗（diag5 的 clipped 标志为真），最右端可能未被完全测到。已确认「收入持续上升」与「全年保持增长」两处表述，但未逐字确认整条副标题的全部字词。",
+      "needed_evidence": "更宽的搜索窗重测，或原始 DSL 文本。",
+      "effect_on_conclusion": "不影响 F-07：「持续上升」这一表述本身已被确认，且与源数据的 −5.2% 回落直接冲突。"
+    },
+    {
+      "id": "U-03",
+      "item": "柱高误差的成因（刻意手绘 vs 绘图工具误算）",
+      "reason": "8 根柱高度都是整数精确值（height_min == height_max），说明是程序化或逐根手工指定的，不是抗锯齿噪声；残差呈系统性（Q3 残差 +27.28px，其余多在 ±10px），无法区分作者是按错误公式生成还是逐根目测调整。",
+      "needed_evidence": "原始作图脚本或 DSL。",
+      "effect_on_conclusion": "不影响修正方案：等比重绘在两种成因下都是正确做法。"
+    },
+    {
+      "id": "U-04",
+      "item": "柱底与最低刻度线相差 1px 的测量不确定性",
+      "reason": "最低网格线测得 y=565，8 根柱底测得 y=564，差 1px。可能是 1px 抗锯齿采样偏差，也可能是作者真的把柱底放在刻度线上方 1px。",
+      "needed_evidence": "亚像素级渲染，或原始 DSL 坐标。",
+      "effect_on_conclusion": "不影响 F-01：无论差 0 还是 1px，柱底都落在「100」刻度附近而非 0，共同零起点缺失的结论不变。"
+    },
+    {
+      "id": "U-05",
+      "item": "页脚完整文字未逐字复核",
+      "reason": "页脚墨迹框 [56,858,276,873]（221×16）较窄，字号小；未逐字辨认全部字词。",
+      "needed_evidence": "更大倍数的局部裁图，或原始 DSL 文本。",
+      "effect_on_conclusion": "页脚不影响数值与叙事结论，未列入 findings。"
+    },
+    {
+      "id": "U-06",
+      "item": "是否存在图上未出现的数据缺失",
+      "reason": "source.csv 为 4 行 × 3 列（quarter/revenue_wan/cost_wan），图上四个季度齐全、每季收入/成本/利润均有呈现，未发现缺项。",
+      "needed_evidence": "已核对完毕，无缺项；此项仅作记录，不作为未解决问题。",
+      "effect_on_conclusion": "无。"
+    },
+    {
+      "id": "U-07",
+      "item": "原图字号的精确值不可知",
+      "reason": "只能通过墨迹高度反推（如页标题 ink_h=36 → 约 fontSize 34），存在 ±1–2px 误差；原图各文本字号的精确设置值不可从像素还原。",
+      "needed_evidence": "原始 DSL。",
+      "effect_on_conclusion": "不影响 findings：可读性问题由对比度与字号下限共同判定，原图正文（副标题 ink_h 约 16px）明显低于题面要求的 22px 正文下限，该判断不依赖字号的精确值。"
+    }
+  ]
+}

@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A12",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "四断点内容完整、字号/边距/重叠/裁切全部实测通过，发现并已修复 1 处真实裁切缺陷（stage 标题丢字）后复渲并复核",
+  "output_dir": "outputs/r20261014T1536+0800-5f11da/A12",
+  "temp_dir": "tmp/r20261014T1536+0800-5f11da/A12",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "requirement_checks": {
+    "summary": "14/14",
+    "checks": [
+      {
+        "id": "req-four-canvases",
+        "requirement": "四尺寸 360×800 / 768×1024 / 1440×900 / 1920×1080 各一张",
+        "passed": true,
+        "evidence": "content-map.json -> canvases（4 条，尺寸与 task.json required_outputs 逐项一致）；a12_verify.json -> canvases[*].size_px"
+      },
+      {
+        "id": "check-content-fidelity",
+        "requirement": "title/subtitle/date/time/location/cta/website 与六卡 title+detail 在四张上一字不丢",
+        "passed": true,
+        "evidence": "a12_pages.check() 逐字段比对 inputs/content.json 原串，四画布 0 缺失；a12_verify.json 136 条条目全部「墨迹存在」（无空白未渲染）"
+      },
+      {
+        "id": "check-no-abbreviation",
+        "requirement": "不使用省略号、缩写、改写或删句；小屏内容不省略",
+        "passed": true,
+        "evidence": "content-map.json entries 每条 original == displayed 且无省略号字符；20 组跨断点同串墨宽÷字号比值离散 ≤2.1%，即四画布渲染的是同一条完整字符串（丢字会让该比值塌陷，旧版裁切 stage 实测 5.19 对比值 8.4 可证）"
+      },
+      {
+        "id": "check-type-floors",
+        "requirement": "手机正文≥16、卡标题≥18；其余正文≥20、主标题≥40",
+        "passed": true,
+        "evidence": "a12_verify.json -> canvases[*].measured_entries（font_size 逐条）；mobile 正文 16 / 卡标题 18，tablet 正文 22 / 标题 46，desktop 正文 24 / 标题 50，stage 正文 26 / 标题 64，0 违规"
+      },
+      {
+        "id": "check-safe-margin",
+        "requirement": "安全边距手机 16、其他 32",
+        "passed": true,
+        "evidence": "canvases[*].margin = 16 / 32 / 32 / 32；a12_verify.json 安全边距项 0 违规（所有实测墨迹在边距内）"
+      },
+      {
+        "id": "check-no-box-overlap",
+        "requirement": "实际文字盒不能重叠",
+        "passed": true,
+        "evidence": "a12_pages.check() 声明盒两两重叠 0；a12_verify.json 实测墨迹两两相交 0（含文字×装饰序号，另计也为 0）"
+      },
+      {
+        "id": "check-no-clip",
+        "requirement": "无折行裁切",
+        "passed": true,
+        "evidence": "a12_verify.json：折行能力项 0 违规（136 条 est_lines ≤ capable_lines）、纵向余量项 0 违规；a12_pages.check() 新增「墨宽估算 > 盒宽 92 %」硬校验后重跑 0 问题。该缺陷曾真实发生：第一版 stage 72 px 标题折两行、盒只够一行，「Vision」被裁（旧版墨宽 374 vs 完整版 539）"
+      },
+      {
+        "id": "check-unified-system",
+        "requirement": "所有尺寸统一色彩、形态与层级，装饰构件可重排",
+        "passed": true,
+        "evidence": "design-tokens.json colors 16 项四画布共用不变；components（顶部色条/网址方块/元信息表/CTA 强调带/分组标签/卡片/大序号）四画布同族，仅随断点缩放尺寸与排列（手机单列、平板 2×3、桌面深底面板+2×3、大屏 hero+3×2）"
+      },
+      {
+        "id": "check-generator-provenance",
+        "requirement": "可用生成器从一份内容与设计参数生成四个完整 DSL，但每张仍须实际渲染并查看",
+        "passed": true,
+        "evidence": "tmp/<rid>/_suite/gen/a12_pages.py 单源生成四份 DSL；8 次真实 /snapshot 请求（两轮 ×4），无一张以其他方式产出；四张最终图逐张实际打开查看"
+      },
+      {
+        "id": "check-design-tokens",
+        "requirement": "design-tokens.json 含颜色/字号/间距/组件规则",
+        "passed": true,
+        "evidence": "outputs/<rid>/A12/design-tokens.json：colors 16 项（含 hex 与用途）、typography（字体族/行高 1.45/Latin 0.47 em/四画布字号表/字号下限/标题折行余量）、spacing（边距/卡片/行列间距）、components 7 类"
+      },
+      {
+        "id": "check-content-map",
+        "requirement": "content-map.json 记每必显字段在四画布的坐标区域与保留情况、卡片 ID 对应关系",
+        "passed": true,
+        "evidence": "outputs/<rid>/A12/content-map.json：entries 136 条逐条含 original/displayed/box(左右上下)/font_size/family/align/decorative/complete；card_id_map 登记 C1–C6 → 卡标题；notes 说明装饰文字与内容分离"
+      },
+      {
+        "id": "check-artifact-pairing",
+        "requirement": "每张指定 PNG 有同名 .snapshot，且 PNG 为服务原始响应字节",
+        "passed": true,
+        "evidence": "本轮字节级核对（见 task-metrics.json pairing）：四张最终 PNG 与 tmp/<rid>/A12/responses/ 中同名 request_id 的响应 PNG 完全等值，四个 .snapshot 与归档 DSL 文本完全等值"
+      },
+      {
+        "id": "check-viewing-evidence",
+        "requirement": "完成时依据实际图像自检",
+        "passed": true,
+        "evidence": "8 次实际查看：probe1-wrap / probe2-lineheight / mobile / tablet / desktop / stage（第一版，发现裁切）/ stage（修复版复核）/ desktop（修复版复核）；裁切发现即源于逐图查看而非仅靠脚本"
+      },
+      {
+        "id": "check-cta-text-only",
+        "requirement": "CTA 是文字，不需要生成二维码",
+        "passed": true,
+        "evidence": "四张 CTA 均为 <Text> 渲染的「免费参加 · 扫码方式详见官网」，无二维码、无 Image 标签；DSL 全文无 <Image"
+      }
+    ]
+  },
+  "pairing": [
+    {
+      "canvas": "mobile",
+      "final_png": "mobile.png",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-mobile-e59c83.png",
+      "request_id": "req-a12-mobile-e59c83",
+      "bytes": 73502,
+      "sha256_12": "71bb45949dd6",
+      "png_is_raw_response_bytes": true,
+      "snapshot_present": true,
+      "snapshot_matches_dsl_archive": true
+    },
+    {
+      "canvas": "tablet",
+      "final_png": "tablet.png",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-tablet-2d55a3.png",
+      "request_id": "req-a12-tablet-2d55a3",
+      "bytes": 102418,
+      "sha256_12": "dcfabae14a82",
+      "png_is_raw_response_bytes": true,
+      "snapshot_present": true,
+      "snapshot_matches_dsl_archive": true
+    },
+    {
+      "canvas": "desktop",
+      "final_png": "desktop.png",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-desktop-3a24a8.png",
+      "request_id": "req-a12-desktop-3a24a8",
+      "bytes": 126146,
+      "sha256_12": "ab3710556f2e",
+      "png_is_raw_response_bytes": true,
+      "snapshot_present": true,
+      "snapshot_matches_dsl_archive": true
+    },
+    {
+      "canvas": "stage",
+      "final_png": "stage.png",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-stage-8351db.png",
+      "request_id": "req-a12-stage-8351db",
+      "bytes": 155792,
+      "sha256_12": "cdc345b60eb1",
+      "png_is_raw_response_bytes": true,
+      "snapshot_present": true,
+      "snapshot_matches_dsl_archive": true
+    }
+  ],
+  "superseded_versions_kept": [
+    {
+      "canvas": "mobile",
+      "request_id": "req-a12-mobile-addab3",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-mobile-addab3.png",
+      "bytes": 73502,
+      "note": "第一版，因 stage 标题折行裁切缺陷被第二轮取代；原件保留"
+    },
+    {
+      "canvas": "tablet",
+      "request_id": "req-a12-tablet-f60597",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-tablet-f60597.png",
+      "bytes": 102418,
+      "note": "第一版，因 stage 标题折行裁切缺陷被第二轮取代；原件保留"
+    },
+    {
+      "canvas": "desktop",
+      "request_id": "req-a12-desktop-741919",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-desktop-741919.png",
+      "bytes": 127296,
+      "note": "第一版，因 stage 标题折行裁切缺陷被第二轮取代；原件保留"
+    },
+    {
+      "canvas": "stage",
+      "request_id": "req-a12-stage-977fe8",
+      "response_file": "tmp/r20261014T1536+0800-5f11da/A12/responses/req-a12-stage-977fe8.png",
+      "bytes": 152197,
+      "note": "第一版，因 stage 标题折行裁切缺陷被第二轮取代；原件保留"
+    }
+  ],
+  "timings": {
+    "started_at": "2026-10-16T11:50:46+08:00",
+    "ended_at": "2026-10-16T13:25:39+08:00",
+    "elapsed_seconds": 5693.5,
+    "request_duration_sum_seconds": 31.36,
+    "request_duration_sum_records": 10,
+    "render_duration_sum_seconds": 31.36,
+    "first_render_seconds": 345.0,
+    "defect_found_at": "第一版四画布渲染完成后（stage 标题看图发现），于第二轮重渲修复",
+    "wall_clock_note": "墙钟含探针设计、像素量测、逐图查看与文档撰写，不等于请求耗时之和",
+    "started_at_source": "tmp/r20261014T1536+0800-5f11da/_suite/events.jsonl -> task_started[A12].ts",
+    "server_timing_source": "requests.jsonl 每条 elapsed_ms（本地实测往返）"
+  },
+  "counts": {
+    "snapshot_requests": 10,
+    "successful_snapshot_requests": 10,
+    "failed_snapshot_requests": 0,
+    "retry_requests": 0,
+    "dsl_files": 10,
+    "response_files": {
+      "png": 10,
+      "error_json": 0
+    },
+    "final_pngs": 4,
+    "final_snapshots": 4,
+    "probe_renders": 2,
+    "final_renders": 8,
+    "dsl_versions_by_canvas": {
+      "mobile": 2,
+      "tablet": 2,
+      "desktop": 2,
+      "stage": 2
+    },
+    "iterations_total": 7,
+    "iterations_by_phase": {
+      "build": 1,
+      "diagnostic": 3,
+      "fix": 1,
+      "review": 2
+    },
+    "image_views": 8,
+    "image_views_breakdown": {
+      "probe_phase_views": 2,
+      "first_version_views": 4,
+      "fixed_version_reviews": 2
+    },
+    "canvas_entries": 136,
+    "canvas_entries_by_canvas": {
+      "mobile": 30,
+      "tablet": 30,
+      "desktop": 38,
+      "stage": 38
+    },
+    "verification_measured_entries": 136,
+    "verification_failures": 0,
+    "verification_warnings": 16,
+    "ratio_groups_checked": 20,
+    "ratio_groups_failed": 0,
+    "real_defects_found_and_fixed": 1,
+    "known_delivery_defects": 0
+  },
+  "logs": {
+    "requests": "tmp/r20261014T1536+0800-5f11da/A12/requests.jsonl",
+    "iterations": "tmp/r20261014T1536+0800-5f11da/A12/iterations.jsonl",
+    "generator": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a12_pages.py",
+    "measure_utility": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a12_measure.py",
+    "verifier": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a12_verify.py",
+    "finalize": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a12_finalize.py",
+    "gen_artifacts": "tmp/r20261014T1536+0800-5f11da/A12/gen",
+    "iteration_seq_repair": "iterations.jsonl 首次写入时 7 条记录共用 seq=1（构造记录与追加写入分处两个循环，算序号时文件仍为空）。该文件为本回合刚创建、未进入任何 checkpoint，已就地重编号为 seq 1–7；id/seq 之外内容未改"
+  },
+  "outputs": [
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/content-map.json",
+      "exists": true,
+      "bytes": 79059
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/design-tokens.json",
+      "exists": true,
+      "bytes": 7076
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/desktop.png",
+      "exists": true,
+      "bytes": 126146
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/desktop.snapshot",
+      "exists": true,
+      "bytes": 12558
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/mobile.png",
+      "exists": true,
+      "bytes": 73502
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/mobile.snapshot",
+      "exists": true,
+      "bytes": 9852
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/stage.png",
+      "exists": true,
+      "bytes": 155792
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/stage.snapshot",
+      "exists": true,
+      "bytes": 12598
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/tablet.png",
+      "exists": true,
+      "bytes": 102418
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/tablet.snapshot",
+      "exists": true,
+      "bytes": 10881
+    },
+    {
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/task-metrics.json",
+      "exists": true,
+      "bytes": 14894
+    }
+  ],
+  "evidence": [
+    {
+      "what": "四张最终图（服务原始响应字节）与同名完整 DSL",
+      "path_base": "suite_root",
+      "path": "outputs/r20261014T1536+0800-5f11da/A12"
+    },
+    {
+      "what": "设计令牌：16 色 / 四画布字号 / 间距 / 7 类组件规则",
+      "path_base": "suite_root",
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/design-tokens.json"
+    },
+    {
+      "what": "内容映射：136 条逐字段原文/显示/坐标/字号 + C1–C6 映射 + 14 项检查",
+      "path_base": "suite_root",
+      "path": "outputs/r20261014T1536+0800-5f11da/A12/content-map.json"
+    },
+    {
+      "what": "像素核验报告：136 条墨迹盒、裁切/重叠/边距/字号下限/跨断点一致性",
+      "path_base": "suite_root",
+      "path": "tmp/r20261014T1536+0800-5f11da/A12/gen/a12_verify.json"
+    },
+    {
+      "what": "探针与量测：折行契约、行距、裁切行为、标题字宽、裁切版反证",
+      "path_base": "suite_root",
+      "path": "tmp/r20261014T1536+0800-5f11da/A12/gen"
+    },
+    {
+      "what": "请求级留痕（10 条，全部 HTTP 200）与迭代留痕（7 条）",
+      "path_base": "suite_root",
+      "path": "tmp/r20261014T1536+0800-5f11da/A12/requests.jsonl"
+    }
+  ],
+  "quality_summary": {
+    "requirement_checks": "14/14 passed",
+    "final_images_verified_by_viewing": true,
+    "final_images_verified_count": 4,
+    "final_pngs_are_raw_service_bytes": true,
+    "final_snapshots_match_archive": true,
+    "known_delivery_defects": 0,
+    "real_defects_found_and_fixed": 1,
+    "defect_detail": "第一版 stage 72 px 标题墨宽外推 608 px > 600 盒宽，折两行而盒只够一行，「Vision」被裁（实测旧版墨宽 374、墨宽÷字号 5.19，完整应为 8.4）；stage 降至 64 px、desktop 由 56 降至 50 px 消除同类临界，并把折行预判做成 check() 硬校验"
+  },
+  "issues": [
+    {
+      "id": "a12-i1",
+      "issue": "第一版生成器只校验声明盒，未校验实际渲染墨迹；stage 72 px 标题真实墨宽 608 px > 600 盒宽，折成两行而盒只够一行，「Vision」被裁。看图时发现，脚本检查未发现",
+      "status": "fixed",
+      "how": "stage 标题降至 64 px、desktop 由 56 降至 50 px 消除同类临界；est_w 的 Latin 系数由 0.55 em 改为实测 0.47 em；check() 新增「墨宽估算 > 盒宽 92 %」折行硬校验；另建 a12_verify.py 做 136 条实际墨迹核验与跨断点墨宽÷字号一致性判定；用存档的裁切版反证（旧版墨宽 374、比值 5.19；新版 539、8.42）"
+    },
+    {
+      "id": "a12-i2",
+      "issue": "a12_verify.py 第一版把「墨迹贴盒左边」判为裁切，误报 108 项。左对齐 CJK 首字的左字腔≈0，贴边是常态不是裁切；真正的丢字裁切在几何上看不出来（单行 72 px 墨高本就小于 104 px 盒高）",
+      "status": "fixed",
+      "how": "裁切判据改为纵向余量 + 折行能力 + 跨断点墨宽÷字号比值三条独立证据；对齐产生的横向贴边不再报；重跑后 0 失败 / 16 警告（均为单行盒 1–2 px 纵向余量，lh 安全上界所致，非缺陷）"
+    },
+    {
+      "id": "a12-i3",
+      "issue": "iterations.jsonl 首次写入时 7 条记录共用 seq=1（构造记录与追加写入分处两个循环，算序号时文件仍为空）。该文件为本回合刚创建、未进入任何 checkpoint，已就地重编号为 seq 1–7；id/seq 之外内容未改",
+      "status": "corrected",
+      "how": "已把 seq 分配从构造阶段移到追加阶段（it_rec 不再自算序号）；重跑本脚本会因 label 幂等检查而跳过重复追加"
+    }
+  ],
+  "unresolved_issues": [],
+  "rounds": [],
+  "rounds_note": "非多轮任务，无轮次"
+}

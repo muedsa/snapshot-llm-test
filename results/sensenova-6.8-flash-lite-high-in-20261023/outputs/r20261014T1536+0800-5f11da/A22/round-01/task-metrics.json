@@ -1,0 +1,301 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A22",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": 1,
+ "round_of": 3,
+ "status": "completed",
+ "stop_reason": "TASK.md 第一轮需求满足：干跑门禁 28/28、像素审计 12/12、10 次实际看图复核通过；已归档",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A22/round-01",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A22",
+ "timings": {
+  "started_at": "2026-10-20T12:24:03+08:00",
+  "ended_at": "2026-10-20T14:45:09+08:00",
+  "elapsed_seconds": 8466.0,
+  "elapsed_note": "墙钟从首条快照请求（2026-10-20T12:24:03+08:00，首次提交即 400 PARSE_ERROR）到本轮归档完成。它含失败诊断、门禁补强、看图、像素审计、视觉迭代与写本报告，也含上下文压缩与平台中断造成的停顿；因此远大于 request_duration_sum_seconds，两者不可相加、不可互相替代。此前编写数据层 a22_data.py、构造器与干跑门禁、以及首轮 DSL 草稿的时间没有独立时间戳，未计入本墙钟，所以这是一个下界。",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "timestamp_precision": "requests.jsonl 的 started_at / ended_at 精确到秒；亚秒分量由 elapsed_ms 还原，故 derived 字段的绝对不确定度为 ±1 s",
+  "first_usable_image_seconds": 889.0,
+  "first_usable_image_note": "首次成功取得可打开的 PNG（v1，req-a22-r01-dashboard-8102fe，2026-10-20T12:38:52+08:00 结束）；此前 2026-10-20T12:24:03–12:24:04 的那次提交返回 400 PARSE_ERROR，785 字节 JSON，未产出图像",
+  "first_delivered_image_seconds": 5023.0,
+  "first_delivered_image_note": "首次成功取得交付尺寸的成品图（v2，req-a22-r01-dashboard-b0f6f2，2026-10-20T13:53:46+08:00 结束）；比 v1 晚 4431 s，这段时间用于像素审计发现「经营利润标签压在净收入柱上」并修复后重渲",
+  "request_duration_sum_seconds": 17.923,
+  "request_duration_sum_note": "本轮 3 条请求记录的 elapsed_ms 之和（1172 + 8688 + 8063 ms）；400 那条记录的 elapsed_ms 只覆盖它的第 3 次尝试，见 disclosers[D2]。不等于任务耗时，墙钟里的看图与设计时间不在这 17.923 s 里",
+  "service_stall_seconds": 0,
+  "service_stall_note": "http_status 为 None 的请求 0 条：3 条记录里 2 条 200、1 条 400，服务端对 400 也正常返回了 785 字节响应体，没有读取超时或连接挂起",
+  "rate_limit_wait_seconds": 0,
+  "rate_limit_wait_note": "本轮未出现 429/503，retry_after 全为 null",
+  "queue_wait_seconds": null,
+  "queue_wait_null_reason": "服务端不可观测排队，未取得该数据",
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_wait_note": "预置轮次模式，不等待外部反馈；round-02/round-03 的需求文件在 tasks/A22-staged-data-correction/rounds/ 内，本轮归档后直接读取",
+  "server_timing_source": "本轮 3 条请求的 server_timing 字段全为 null（响应头未回传 x-request-id 与 server-timing），因此没有服务端自报计时可引用；计时口径以本地 elapsed_ms 为准"
+ },
+ "counts": {
+  "snapshot_requests": 3,
+  "snapshot_request_note": "requests.jsonl 的记录条数，对应 3 次 render() 调用，不是 HTTP 请求条数",
+  "http_requests": 5,
+  "http_requests_note": "实际发出的 POST /snapshot 次数 = 3（400 那一条的同一份 DSL 内部重试 3 次）+ 1 + 1。requests.jsonl 只按 render() 调用各记一条，attempts 字段给出该条内的尝试次数",
+  "successful_snapshot_requests": 2,
+  "failed_snapshot_requests": 1,
+  "failed_snapshot_request_detail": "req-a22-r01-dashboard-61c533：HTTP 400 PARSE_ERROR，响应 785 字节 JSON 原文保留在 tmp/r20261014T1536+0800-5f11da/A22/responses/req-a22-r01-dashboard-61c533.png；根因是 gradientBegin=\"50% 0%\"，服务端只接受 9 个对齐关键字或 (x,y) 元组",
+  "retry_requests": 3,
+  "retry_note": "同一份 DSL 原样重发的次数，即 400 那一条的 attempts=3。这次重试是无谓的——确定性语法错误重发必然同样失败；发现后已在干跑门禁加入「渐变端点取服务端支持的对齐关键字或 (x,y) 元组」一项离线拦截，同类错误不再消耗请求",
+  "syntax_fix_resubmits": 1,
+  "syntax_fix_resubmits_note": "v1（24866 字节）修正 v0 的 gradientBegin 取值后重新提交；v2（23771 字节）是视觉迭代不是语法修复，另计在 completed_visual_iterations",
+  "other_service_requests": 0,
+  "other_service_note": "服务指南与 DSL 文档、fonts 查询在本轮之前已取得并缓存于 tmp/r20261014T1536+0800-5f11da/_suite/docs/，本轮复用未新增 HTTP",
+  "dsl_versions": 3,
+  "dsl_versions_breakdown": [
+   {
+    "version": "v0",
+    "request_id": "req-a22-r01-dashboard-61c533",
+    "request_bytes": 24758,
+    "request_sha256": "35945a26913bbc832814ccda6589ad9d39a19ba0bbac06d99efb8e74f24c1d1d",
+    "outcome": "HTTP 400 PARSE_ERROR（未产出图像）",
+    "preserved": "仅记录字节数与 sha256；DSL 正文已被后续版本覆盖，不可复原"
+   },
+   {
+    "version": "v1",
+    "request_id": "req-a22-r01-dashboard-8102fe",
+    "request_bytes": 24866,
+    "request_sha256": "672ba466ed0873a0ac6f63f640e21af3b1ae14dc9749cd27e432566c61c5c502",
+    "response_bytes": 237428,
+    "response_sha256": "ab3aa582e80e95456a4c0c75c7dd0b35237a3118a08f26a66f54e9b434e7aba2",
+    "outcome": "HTTP 200，12 根柱全部带数值标签",
+    "preserved": "响应字节（服务原始 PNG）保留在 tmp/r20261014T1536+0800-5f11da/A22/responses/req-a22-r01-dashboard-8102fe.png；DSL 正文已被 v2 覆盖，仅记录字节数与 sha256"
+   },
+   {
+    "version": "v2",
+    "request_id": "req-a22-r01-dashboard-b0f6f2",
+    "request_bytes": 23771,
+    "request_sha256": "a19a2a55c14afba116be09770d91d35638b3ddc90d262e6e3810007299dd5423",
+    "response_bytes": 235614,
+    "response_sha256": "654ab60e963a09572e326f49474dde9d564108b40f2472b906f269805f6a9802",
+    "outcome": "HTTP 200，选择性直标（净收入柱与零线下方负值柱标注）",
+    "preserved": "已交付：dashboard.snapshot 与 dashboard.png"
+   }
+  ],
+  "image_views": 10,
+  "image_views_note": "按实际打开次数记录，同一张交付图的不同视图（整图、区域放大裁切）不合并：whole / header / conclusion / kpi / chart / chart_bottom / table / footer 8 条来自 views-manifest.json，另加 footer_left / footer_right 2 条补充视图（见 disclosers[D5]）",
+  "completed_visual_iterations": 1,
+  "incomplete_visual_iterations": 0,
+  "visual_iteration_detail": "v1→v2（a22-r01-visual-140122）：像素审计发现 2026-06 净收入柱实测 113 px、计算应为 167 px；定位到同组经营利润数值标签的墨迹压在净收入柱体内。修复为选择性直标，重渲后 12 根柱高度与计算值 ±1 px 一致",
+  "dryrun_gates_total": 28,
+  "dryrun_gates_passed": 28,
+  "pixel_audit_checks_total": 12,
+  "pixel_audit_checks_passed": 12,
+  "text_elements": 80,
+  "geometry_elements": 46,
+  "elements_total": 126
+ },
+ "counting_notes": [
+  "snapshot_requests=3 是记录条数，http_requests=5 是实际请求次数，两个口径都保留，不互相替代",
+  "初次生成与查看计为基线，不计为改进迭代；改进迭代必须是「实际看图 → 修改 → 重渲 → 再实际看图比较」的完整闭环",
+  "image_views 按实际打开次数记录，不因是同一张图的不同视图而合并",
+  "syntax_fix_resubmits=1 只计语法修复类重交（v1 修 v0 的 400），视觉迭代另计",
+  "A22 三轮共用一套构造器、门禁与渲染代码（tmp/r20261014T1536+0800-5f11da/_suite/gen/ 的 a22_build.py、a22_data.py、a22_log.py、a22_view_footer.py），round-01 的干跑门禁与像素审计对 round-01/02/03 三个参数各跑一遍，故 round-01 的门禁报告在 gate-reports/round-01.json 单独留档"
+ ],
+ "data": {
+  "source_csv": "tasks/A22-staged-data-correction/inputs/monthly.csv",
+  "source_csv_modified": false,
+  "months": 6,
+  "period": "2026-04 至 2026-09",
+  "applied_changes": [],
+  "cross_check_passed": true,
+  "totals": {
+   "gross_revenue": 975050,
+   "refund_amount": 56426,
+   "operating_cost": 656500,
+   "net_revenue": 918624,
+   "profit": 262124,
+   "orders": 3045,
+   "sessions": 27300,
+   "total_conversion_rate": "11.15%",
+   "total_refund_rate": "5.79%",
+   "profit_margin": "28.53%"
+  },
+  "totals_note": "期间汇总 = 各月明细分别求和，与 computed-data.json 的 totals 逐字段一致（已交叉验算：sum(各月净收入)==918,624、sum(各月利润)==262,124）。口径是「先分别求和」，不是各月百分比的平均：总体转化率 = 3,045 ÷ 27,300 = 11.15%，总体退款率 = 56,426 ÷ 975,050 = 5.79%，利润率 = 262,124 ÷ 918,624 = 28.53%。显示口径（千位分隔、两位小数）见 computed-data.json 的 display 字段",
+  "axes": {
+   "unit": "元",
+   "min": 0,
+   "max": 240000,
+   "step": 60000,
+   "gridlines": [0, 60000, 120000, 180000, 240000],
+   "negative_axis": false,
+   "zero_y_px": 852,
+   "scale_px_per_yuan": 0.00131667,
+   "scale_note": "净收入与经营利润共用同一线性比例与同一零点；第一轮全部为正值，零点即绘图区底边"
+  },
+  "table": {
+   "columns": 5,
+   "rows": 6,
+   "cells": 30,
+   "row_h_px": 62.33
+  },
+  "chart": {
+   "plot": [152, 536, 860, 852],
+   "plot_w_px": 708,
+   "plot_h_px": 316,
+   "group_slot_w_px": 118.0,
+   "bar_w_px": 30,
+   "bar_gap_px": 6,
+   "group_w_px": 66,
+   "bars": 12,
+   "labelled_bars": 6,
+   "labelled_note": "净收入柱 6 根带柱顶数值标签；经营利润柱 6 根不标注（其标签会落进同组更高的净收入柱体），逐月数值由右侧明细表承载，图表说明已写明"
+  },
+  "typography": {
+   "font_family": "Noto Sans CJK SC,Inter",
+   "font_sizes_px": [22, 24, 26, 32, 42],
+   "body_min_px": 22,
+   "body_min_note": "TASK.md 要求正文 ≥22；标题类与 KPI 数值（42 px）不在此限",
+   "contrast_min": 4.552,
+   "contrast_min_location": "数值标签（ink2 #233245）× KPI chip 文字色，对各自实际背景",
+   "contrast_threshold": 4.5,
+   "contrast_method": "8 位 sRGB 先除以 255 再按 WCAG 线性化，L=0.2126R+0.7152G+0.0722B，对比度=(max+0.05)/(min+0.05)，用未舍入值判阈值"
+  }
+ },
+ "quality_gates": {
+  "dryrun": {
+   "gate": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_build.py dryrun 1",
+   "report": "tmp/r20261014T1536+0800-5f11da/A22/gate-reports/round-01.json",
+   "passed": 28,
+   "total": 28,
+   "all_passed": true,
+   "note": "无网络干跑：构造 DSL → 校验属性合法 → 校验文本 advance 不超盒宽 → 校验月份/结论引用数值 → 校验柱体与标签几何 → 逐区域校验越界"
+  },
+  "pixel_audit": {
+   "gate": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_build.py audit 1",
+   "report": "tmp/r20261014T1536+0800-5f11da/A22/round-01/change-audit.json",
+   "passed": 12,
+   "total": 12,
+   "all_passed": true,
+   "note": "对交付 PNG 做像素级复核：尺寸读 IHDR、柱高按通道优势族沿中心列量边界、标签框内统计柱色像素占比、文字墨迹按底色差分取外接框；change-audit.json 的 comparison 为空数组（第一轮无上一轮可比）",
+   "stdout_copy": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_audit_r1.out.json"
+  },
+  "visual_review": {
+   "method": "Read 工具实际打开预览图（整图 1:1 + 7 个区域放大裁切 + 2 个 footer 补充裁切）",
+   "evidence": "tmp/r20261014T1536+0800-5f11da/A22/viewing-evidence.json",
+   "events": 10,
+   "result": "层级、对齐、遮挡与裁剪、图形效果、文字可读性全部通过；无已知影响交付的缺陷"
+  }
+ },
+ "delivery_map": [
+  {
+   "artifact": "dashboard",
+   "png": "round-01/dashboard.png",
+   "png_bytes": 235614,
+   "png_sha256": "654ab60e963a09572e326f49474dde9d564108b40f2472b906f269805f6a9802",
+   "dsl": "round-01/dashboard.snapshot",
+   "dsl_bytes": 23771,
+   "dsl_sha256": "a19a2a55c14afba116be09770d91d35638b3ddc90d262e6e3810007299dd5423",
+   "source_request_id": "req-a22-r01-dashboard-b0f6f2",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 比对一致；交付 DSL 与当前构造器重建结果逐字节一致（审计第 2 项）",
+   "post_processing": "无，PNG 为服务返回的原始字节"
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-01/dashboard.png",
+   "bytes": 235614,
+   "sha256": "654ab60e963a09572e326f49474dde9d564108b40f2472b906f269805f6a9802",
+   "role": "交付成品图（1600x1000 PNG）"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-01/dashboard.snapshot",
+   "bytes": 23771,
+   "sha256": "a19a2a55c14afba116be09770d91d35638b3ddc90d262e6e3810007299dd5423",
+   "role": "交付 DSL 原文，与 PNG 同名配对"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-01/computed-data.json",
+   "bytes": 11777,
+   "sha256": "95d215e8c08a09c4a80afafd383663ecac81b0018b860d40fada7645df635869",
+   "role": "逐月与期间汇总的完整计算结果、公式表、交叉验算结论"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-01/layout-map.json",
+   "bytes": 35470,
+   "sha256": "0179182fd577c0339ceca94ee9caa6321a1bd5f00d37c31c1222a7552ab8e506",
+   "role": "6 个区域与 126 个元素的坐标、样式与角色；comparison 为空数组（第一轮无上一轮可比）"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-01/change-audit.json",
+   "bytes": 14921,
+   "sha256": "13dde697fa611910f20726a391c479e19c05404427c701788f16a1f11ab52015",
+   "role": "12 项像素级审计检查的结果与方法说明"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-01/snapshot-usage.md",
+   "role": "本轮的 DSL 与工具使用说明、视觉决策、踩坑与遗留"
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A22/round-01/task-metrics.json",
+   "role": "本文件"
+  }
+ ],
+ "evidence_files": [
+  "tmp/r20261014T1536+0800-5f11da/A22/requests.jsonl",
+  "tmp/r20261014T1536+0800-5f11da/A22/iterations.jsonl",
+  "tmp/r20261014T1536+0800-5f11da/A22/viewing-evidence.json",
+  "tmp/r20261014T1536+0800-5f11da/A22/gate-reports/round-01.json",
+  "tmp/r20261014T1536+0800-5f11da/A22/dsl/r01-dashboard.attempt-01.snapshot",
+  "tmp/r20261014T1536+0800-5f11da/A22/responses/req-a22-r01-dashboard-61c533.png",
+  "tmp/r20261014T1536+0800-5f11da/A22/responses/req-a22-r01-dashboard-8102fe.png",
+  "tmp/r20261014T1536+0800-5f11da/A22/responses/req-a22-r01-dashboard-b0f6f2.png",
+  "tmp/r20261014T1536+0800-5f11da/A22/preview/round-01/views-manifest.json",
+  "tmp/r20261014T1536+0800-5f11da/_suite/gen/a22_audit_r1.out.json"
+ ],
+ "disclosers": [
+  {
+   "id": "D1",
+   "severity": "minor",
+   "item": "requests.jsonl 的记录条数与实际 HTTP 请求次数不同",
+   "detail": "只有 3 条记录（每次 render() 一条），但实际发出 5 个 POST：400 那一条是同一份 DSL 的内部重试（attempts=3），另外两条各 1 次。计数口径见 counts.snapshot_requests 与 counts.http_requests，两者都保留"
+  },
+  {
+   "id": "D2",
+   "severity": "minor",
+   "item": "400 请求的前两次尝试没有独立时间戳与响应留痕",
+   "detail": "记录里的 started_at / ended_at / elapsed_ms（12:24:03 → 12:24:04，1172 ms）是第 3 次尝试的 meta；前两次尝试发生在 1172 ms 之内、没有单独的时间戳，也只有第 3 次的 785 字节响应体被保存"
+  },
+  {
+   "id": "D3",
+   "severity": "minor",
+   "item": "v0 与 v1 的 DSL 正文不可复原",
+   "detail": "tmp/r20261014T1536+0800-5f11da/A22/dsl/r01-dashboard.attempt-01.snapshot 每次 render 都被覆盖，现在只剩 v2 正文；v0（24758 字节）与 v1（24866 字节）的原文没有单独留档，只能靠 requests.jsonl 里的 request_bytes / request_sha256 核验存在过。v1 的服务响应字节完整保留在 responses/req-a22-r01-dashboard-8102fe.png（237428 字节，sha256 ab3aa582…），所以视觉效果可回溯，DSL 文本不可"
+  },
+  {
+   "id": "D4",
+   "severity": "minor",
+   "item": "迭代与看图记录的写入时刻不等于发生时刻",
+   "detail": "iterations.jsonl 与 viewing-evidence.json 是在交付渲染完成之后才建立的，recorded_at（14:01:22）与 opened_at（14:01:07）是日志写入时刻，不是改动发生或图像打开的时刻；两者与实际发生时刻相差数分钟到一小时，不声称与工具调用时刻逐秒对应。改动本身的证据链是 requests.jsonl 的时间序列（v1 12:38、v2 13:53）与 responses/ 的字节"
+  },
+  {
+   "id": "D5",
+   "severity": "minor",
+   "item": "footer 细条裁切被图像查看 API 拒收",
+   "detail": "viewing-evidence.json 的 a22-r01-view-footer-008 指向 preview/round-01/footer.png（[48,932,1552,964]×2.0 = 3008×64，宽高比 47:1），Read 的图像接口因宽高比过窄拒收，该视图未能真正打开。改用带上下留白的两半各 752×60（12.5:1，与能正常显示的 header 裁切 14.75:1 同量级）并实际打开，作为 a22-r01-view-footer_left-009 与 a22-r01-view-footer_right-010 追加记录；原事件保留不改（留痕只增不改）。footer 的完整可读性在 whole 视图 1:1 下也已确认"
+  },
+  {
+   "id": "D6",
+   "severity": "informational",
+   "item": "requests.jsonl 的字段命名与本套件前几题不同",
+   "detail": "本题用 request_bytes / response_bytes / request_sha256 / response_sha256 / request_file / response_file；A19/A20 用 dsl_bytes / response_path，A21 用 request_path / response_sha256。同一 run 内三套字段名并存，跨题统计时按各题记录的实际键读取。所有记录都不含密钥"
+  },
+  {
+   "id": "D7",
+   "severity": "informational",
+   "item": "正值经营利润柱不带数值标签是刻意的设计决策",
+   "detail": "708 px 绘图区放 6 组、每组 2 根柱，22 px 数值标签宽 74–86 px 而组宽仅 66 px；短柱（利润 27,914–64,368 元，高 37–85 px）的标签若放在自己柱顶上方，墨迹必然落进同组更高的净收入柱体。TASK.md 未要求逐柱标注，故按选择性直标处理：净收入柱标注、零线下方负值柱标注、正值利润柱由右侧明细表承载，图表说明写明该口径，并新增两条门禁（标签与柱体不相交、未标注值必须在表格中逐月可查）防止信息凭空消失。这是设计选择，不是漏标"
+  },
+  {
+   "id": "D8",
+   "severity": "informational",
+   "item": "本轮墙钟是不含前置设计时间的下界",
+   "detail": "timings.started_at 取首条快照请求（12:24:03）；此前编写 a22_data.py、a22_build.py 与首轮 DSL 草稿的时间没有独立时间戳，未计入 elapsed_seconds。墙钟同样包含上下文压缩与平台中断造成的停顿，因此它既可能是下界（缺前置设计时间），又明显大于纯工作时间"
+  }
+ ]
+}

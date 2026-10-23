@@ -1,0 +1,812 @@
+{
+ "schema_version": 1,
+ "task_id": "A22",
+ "path_base": "output_dir",
+ "round": 3,
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A22/round-03",
+ "baseline": {
+  "round": 2,
+  "dashboard": "outputs/r20261014T1536+0800-5f11da/A22/round-02/dashboard.png",
+  "computed_data": "outputs/r20261014T1536+0800-5f11da/A22/round-02/computed-data.json",
+  "note": "第二轮以第一轮归档件为基线；第三轮以第二轮归档件为基线并保留其两项更正"
+ },
+ "changes": [
+  {
+   "id": "a22-r3-c1",
+   "source": "rounds/round-03.md 第 1–2 行",
+   "field": "新增 2026-10 整行",
+   "old": null,
+   "new": {
+    "orders": 640,
+    "gross_revenue": 224000,
+    "refund_amount": 11200,
+    "operating_cost": 142000,
+    "sessions": 5900
+   },
+   "derived": {
+    "net_revenue": 212800,
+    "profit": 70800,
+    "refund_rate": "5.00%",
+    "conversion_rate": "10.85%"
+   },
+   "propagation": [
+    "月份数 6 → 7，柱组槽宽由 118.00 px 变为 101.14 px，柱宽 30 与组内间距 6 不变",
+    "柱图与表格各新增一组/一行；表格行高由 62.33 px 变为 53.43 px",
+    "2026-10 净收入 212,800 与经营利润 70,800 成为全期最高柱",
+    "KPI1 总净收入 908,624 → 1,121,424；KPI2 总经营利润 182,124 → 252,924",
+    "KPI3 总订单 3,045 → 3,685；KPI4 总体转化率 11.15% → 11.10%",
+    "总体退款率 6.81% → 6.47%",
+    "2026-09 的 −5,632 仍为唯一亏损月（负轴与负色保持不变）"
+   ],
+   "geometry": {
+    "prev": {
+     "months": 6,
+     "group_slot_px": 118.0,
+     "row_height": 62.33
+    },
+    "current": {
+     "months": 7,
+     "group_slot_px": 101.14,
+     "row_height": 53.43
+    }
+   },
+   "actual_output_location": "round-03/dashboard.png：柱图第 7 组、表格第 7 行、全部四张 KPI、结论区"
+  },
+  {
+   "id": "a22-r3-c2",
+   "source": "rounds/round-03.md 第 3 行「两项第二轮更正继续有效」",
+   "field": "2026-08 refund_amount / 2026-09 operating_cost",
+   "old": "沿用第二轮：25048 / 208000",
+   "new": "未恢复 CSV 旧值",
+   "propagation": [
+    "2026-08 净收入仍为 163,052、退款率仍为 13.32%",
+    "2026-09 经营利润仍为 −5,632，仍绘于零线下方",
+    "轴仍保留 -30000 的负范围"
+   ],
+   "actual_output_location": "round-03/dashboard.png 的 2026-08/2026-09 两组柱体与表格两行"
+  }
+ ],
+ "preserved": [
+  {
+   "id": "a22-r3-p1",
+   "item": "画布 1600×1000 与六个主区域边界",
+   "evidence": "layout-map.json 的 comparison：各区域分量差 0px，容差 ±2px"
+  },
+  {
+   "id": "a22-r3-p2",
+   "item": "主字体与视觉系统（面板白 #FFFFFF、描边 #D9E1EC、标题面板 #0E1B2E、结论面板 #EAF2FB、正色 #1F6FBF/#1F8A63、负色 #C2410C、正文字体 Noto Sans CJK SC,Inter、最小字号 22）",
+   "evidence": "layout-map.json 的 regions[].style 逐轮比对；对比度表 11 组全部 ≥4.5:1"
+  },
+  {
+   "id": "a22-r3-p3",
+   "item": "柱图共享零起点、同一线性比例；柱宽 30px、组内间距 6px、圆角 2",
+   "evidence": "audit 的 bar_geometry：每根柱的像素高度与未舍入计算值差 ≤1px"
+  },
+  {
+   "id": "a22-r3-p4",
+   "item": "2026-04 至 2026-07 四个月的原始数据与派生值（净收入、利润、退款率、转化率）",
+   "evidence": "computed-data.json 的 months[].csv_original 与派生值逐月比对，未被本轮更正触及的月份一字未变"
+  }
+ ],
+ "regression": {
+  "checks": [
+   {
+    "name": "交付 PNG 为真 PNG 且尺寸 1600x1000",
+    "passed": true,
+    "method": "读取 PNG IHDR 的 width/height",
+    "result": "实测 1600x1000"
+   },
+   {
+    "name": "交付 DSL 与当前构造器重建结果逐字节一致",
+    "passed": true,
+    "method": "重建 DSL 后与交付 .snapshot 逐字节比对",
+    "result": "一致"
+   },
+   {
+    "name": "轴刻度线落在计算位置（柱体压过的部分允许不匹配）",
+    "passed": true,
+    "method": "在每条刻度线的 y 坐标整行扫描；柱体与数值标签会遮住一段，所以判定用「与线色一致的像素总数 ≥200 且存在 ≥20px 连续段」，而不是整行匹配",
+    "result": "6 条刻度线全部命中，零线 y=817"
+   },
+   {
+    "name": "每根柱的实际像素高度等于计算高度（同一比例、同一零点）",
+    "passed": true,
+    "method": "沿柱体中心列扫描同族颜色像素，量出上下边界与高度，与未舍入计算值按 ±1px 比对",
+    "result": "14 根柱全部通过（净收入 7 + 经营利润 7）"
+   },
+   {
+    "name": "负值没有被裁掉、没有被画成正值、也没有只改数字不改柱高",
+    "passed": true,
+    "method": "负柱必须同时满足：像素高度等于计算高度（没有只改数字）、上边界不低于零线（没有画成正值）、下边界越过零线（没有被裁掉）",
+    "result": "零线 y=817；负柱 1 根：['-5,632']"
+   },
+   {
+    "name": "数值标签没有压在任何柱体上",
+    "passed": true,
+    "method": "对每个标签与每根柱，取两矩形交集，在柱体自身的列窗口内按通道优势判定统计柱族像素；某一行填满比例 ≥ 75% 算「实心行」，连续 ≥ 4 行即判为标签压在柱体上。柱体是实心块所以能填满，文字笔画 1–3 px 宽填不满；不用「矩形内是否有柱色像素」是因为负值标签与负柱同色，会自证有罪。这是第二道防线，第一道是干跑门禁「标签矩形与任何柱体矩形不相交」（用模型精确几何、无盲区），第三道是柱高实测（被压的柱体会量不准）；判定的活性由 a22_selftest_label_gate.py 用合成图反测",
+    "result": "8 个标签 × 14 根柱 = 112 对；不相交的标签与柱体最近间距 4.0 px；0 对矩形相交，其中柱体实心行段最长 0 行（阈值 4 行）"
+   },
+   {
+    "name": "经营利润柱未标注时，其数值确实出现在右侧明细表中",
+    "passed": true,
+    "method": "凡是不在柱图标注的经营利润值，必须能在表格「利润」列逐月找到",
+    "result": "7 个月的利润值全部能在表格「利润」列找到"
+   },
+   {
+    "name": "每段文字都在其预期框内产生了墨迹",
+    "passed": true,
+    "method": "逐段取该框内像素众数作为底色（自动适配页面底/白面板/浅蓝结论面板/浅灰表头底），再与底色做阈值 40 的差分并取墨迹外接框",
+    "result": "90 段文字全部检出"
+   },
+   {
+    "name": "除标题与 KPI 数值外的文字均 ≥22px",
+    "passed": true,
+    "method": "收集交付布局模型中每段文字的 fontSize",
+    "result": "正文最小 22（全部字号档位 [22, 24, 26, 32, 42]）"
+   },
+   {
+    "name": "全部文字色对背景对比度 ≥4.5:1",
+    "passed": true,
+    "method": "8 位 sRGB 先 c/255 再线性化（c≤0.04045 取 c/12.92，否则((c+0.055)/1.055)^2.4），L=0.2126R+0.7152G+0.0722B，对比度=(max+0.05)/(min+0.05)，用未舍入值判阈值",
+    "result": "最小 4.552（标签 × chip_text）"
+   },
+   {
+    "name": "所有月份原样出现、未省略首月、末月正确",
+    "passed": true,
+    "method": "比对计算结果与 CSV 原值 + 轮次声明的新增月份",
+    "result": "7 个月，2026-04 → 2026-10"
+   },
+   {
+    "name": "表格 5 列 × 7 行与 computed-data 逐格一致",
+    "passed": true,
+    "method": "逐格比对表格渲染文本与 computed-data 的显示值",
+    "result": "35 格全部一致"
+   }
+  ],
+  "all_passed": true,
+  "n_checks": 12,
+  "bar_geometry": [
+   {
+    "month": "2026-04",
+    "metric": "net_revenue",
+    "value": 119700,
+    "display": "119,700",
+    "below_zero": false,
+    "x": 170,
+    "width": 30,
+    "expected": {
+     "y_top": 677,
+     "height_px": 140,
+     "height_px_unrounded": 140.093
+    },
+    "measured": {
+     "y_top": 677,
+     "y_bottom": 817,
+     "height_px": 140
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 119620,
+    "passed": true
+   },
+   {
+    "month": "2026-04",
+    "metric": "profit",
+    "value": 37700,
+    "display": "37,700",
+    "below_zero": false,
+    "x": 206,
+    "width": 30,
+    "expected": {
+     "y_top": 773,
+     "height_px": 44,
+     "height_px_unrounded": 44.123
+    },
+    "measured": {
+     "y_top": 773,
+     "y_bottom": 817,
+     "height_px": 44
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 37595,
+    "passed": true
+   },
+   {
+    "month": "2026-05",
+    "metric": "net_revenue",
+    "value": 135470,
+    "display": "135,470",
+    "below_zero": false,
+    "x": 271,
+    "width": 30,
+    "expected": {
+     "y_top": 658,
+     "height_px": 159,
+     "height_px_unrounded": 158.55
+    },
+    "measured": {
+     "y_top": 658,
+     "y_bottom": 817,
+     "height_px": 159
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 135854,
+    "passed": true
+   },
+   {
+    "month": "2026-05",
+    "metric": "profit",
+    "value": 41970,
+    "display": "41,970",
+    "below_zero": false,
+    "x": 307,
+    "width": 30,
+    "expected": {
+     "y_top": 768,
+     "height_px": 49,
+     "height_px_unrounded": 49.12
+    },
+    "measured": {
+     "y_top": 768,
+     "y_bottom": 817,
+     "height_px": 49
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 41867,
+    "passed": true
+   },
+   {
+    "month": "2026-06",
+    "metric": "net_revenue",
+    "value": 126914,
+    "display": "126,914",
+    "below_zero": false,
+    "x": 372,
+    "width": 30,
+    "expected": {
+     "y_top": 668,
+     "height_px": 149,
+     "height_px_unrounded": 148.536
+    },
+    "measured": {
+     "y_top": 668,
+     "y_bottom": 817,
+     "height_px": 149
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 127310,
+    "passed": true
+   },
+   {
+    "month": "2026-06",
+    "metric": "profit",
+    "value": 27914,
+    "display": "27,914",
+    "below_zero": false,
+    "x": 408,
+    "width": 30,
+    "expected": {
+     "y_top": 784,
+     "height_px": 33,
+     "height_px_unrounded": 32.67
+    },
+    "measured": {
+     "y_top": 784,
+     "y_bottom": 817,
+     "height_px": 33
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 28196,
+    "passed": true
+   },
+   {
+    "month": "2026-07",
+    "metric": "net_revenue",
+    "value": 161120,
+    "display": "161,120",
+    "below_zero": false,
+    "x": 473,
+    "width": 30,
+    "expected": {
+     "y_top": 628,
+     "height_px": 189,
+     "height_px_unrounded": 188.57
+    },
+    "measured": {
+     "y_top": 628,
+     "y_bottom": 817,
+     "height_px": 189
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 161487,
+    "passed": true
+   },
+   {
+    "month": "2026-07",
+    "metric": "profit",
+    "value": 49120,
+    "display": "49,120",
+    "below_zero": false,
+    "x": 509,
+    "width": 30,
+    "expected": {
+     "y_top": 759,
+     "height_px": 57,
+     "height_px_unrounded": 57.489
+    },
+    "measured": {
+     "y_top": 759,
+     "y_bottom": 816,
+     "height_px": 57
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 48703,
+    "passed": true
+   },
+   {
+    "month": "2026-08",
+    "metric": "net_revenue",
+    "value": 163052,
+    "display": "163,052",
+    "below_zero": false,
+    "x": 574,
+    "width": 30,
+    "expected": {
+     "y_top": 626,
+     "height_px": 191,
+     "height_px_unrounded": 190.831
+    },
+    "measured": {
+     "y_top": 626,
+     "y_bottom": 817,
+     "height_px": 191
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 163196,
+    "passed": true
+   },
+   {
+    "month": "2026-08",
+    "metric": "profit",
+    "value": 31052,
+    "display": "31,052",
+    "below_zero": false,
+    "x": 610,
+    "width": 30,
+    "expected": {
+     "y_top": 781,
+     "height_px": 36,
+     "height_px_unrounded": 36.342
+    },
+    "measured": {
+     "y_top": 781,
+     "y_bottom": 817,
+     "height_px": 36
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 30759,
+    "passed": true
+   },
+   {
+    "month": "2026-09",
+    "metric": "net_revenue",
+    "value": 202368,
+    "display": "202,368",
+    "below_zero": false,
+    "x": 675,
+    "width": 30,
+    "expected": {
+     "y_top": 580,
+     "height_px": 237,
+     "height_px_unrounded": 236.846
+    },
+    "measured": {
+     "y_top": 580,
+     "y_bottom": 817,
+     "height_px": 237
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 202500,
+    "passed": true
+   },
+   {
+    "month": "2026-09",
+    "metric": "profit",
+    "value": -5632,
+    "display": "-5,632",
+    "below_zero": true,
+    "x": 711,
+    "width": 30,
+    "expected": {
+     "y_top": 817,
+     "height_px": 7,
+     "height_px_unrounded": 6.592
+    },
+    "measured": {
+     "y_top": 817,
+     "y_bottom": 824,
+     "height_px": 7
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 5981,
+    "passed": true
+   },
+   {
+    "month": "2026-10",
+    "metric": "net_revenue",
+    "value": 212800,
+    "display": "212,800",
+    "below_zero": false,
+    "x": 776,
+    "width": 30,
+    "expected": {
+     "y_top": 568,
+     "height_px": 249,
+     "height_px_unrounded": 249.055
+    },
+    "measured": {
+     "y_top": 568,
+     "y_bottom": 817,
+     "height_px": 249
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 212753,
+    "passed": true
+   },
+   {
+    "month": "2026-10",
+    "metric": "profit",
+    "value": 70800,
+    "display": "70,800",
+    "below_zero": false,
+    "x": 812,
+    "width": 30,
+    "expected": {
+     "y_top": 734,
+     "height_px": 83,
+     "height_px_unrounded": 82.862
+    },
+    "measured": {
+     "y_top": 734,
+     "y_bottom": 817,
+     "height_px": 83
+    },
+    "delta_height_px": 0,
+    "delta_y_top_px": 0,
+    "scale_px_per_yuan": 0.00117,
+    "implied_value_from_px": 70918,
+    "passed": true
+   }
+  ],
+  "contrast": [
+   {
+    "pair": "页面底 × ink",
+    "foreground": "#F1F4F9",
+    "background": "#0E1B2E",
+    "contrast": 15.679
+   },
+   {
+    "pair": "页面底 × ink2",
+    "foreground": "#F1F4F9",
+    "background": "#33475F",
+    "contrast": 8.63
+   },
+   {
+    "pair": "页面底 × muted",
+    "foreground": "#F1F4F9",
+    "background": "#5C6E88",
+    "contrast": 4.714
+   },
+   {
+    "pair": "面板白 × ink",
+    "foreground": "#FFFFFF",
+    "background": "#0E1B2E",
+    "contrast": 17.285
+   },
+   {
+    "pair": "面板白 × ink2",
+    "foreground": "#FFFFFF",
+    "background": "#33475F",
+    "contrast": 9.514
+   },
+   {
+    "pair": "面板白 × muted",
+    "foreground": "#FFFFFF",
+    "background": "#5C6E88",
+    "contrast": 5.197
+   },
+   {
+    "pair": "结论面板 × ink2",
+    "foreground": "#EAF2FB",
+    "background": "#33475F",
+    "contrast": 8.423
+   },
+   {
+    "pair": "标题面板 × header_muted",
+    "foreground": "#0E1B2E",
+    "background": "#9FB3CC",
+    "contrast": 8.062
+   },
+   {
+    "pair": "标题面板 × header_ink",
+    "foreground": "#0E1B2E",
+    "background": "#FFFFFF",
+    "contrast": 17.285
+   },
+   {
+    "pair": "标签 × chip_text",
+    "foreground": "#EAF2FB",
+    "background": "#1F6FBF",
+    "contrast": 4.552
+   },
+   {
+    "pair": "面板白 × 负利润色",
+    "foreground": "#FFFFFF",
+    "background": "#C2410C",
+    "contrast": 5.178
+   }
+  ],
+  "gridlines": [
+   {
+    "value": -30000,
+    "y": 852,
+    "matched": true,
+    "longest_run_px": 708,
+    "matched_px": 708,
+    "row_width_px": 708
+   },
+   {
+    "value": 0,
+    "y": 817,
+    "matched": true,
+    "longest_run_px": 559,
+    "matched_px": 678,
+    "row_width_px": 708
+   },
+   {
+    "value": 60000,
+    "y": 747,
+    "matched": true,
+    "longest_run_px": 71,
+    "matched_px": 468,
+    "row_width_px": 708
+   },
+   {
+    "value": 120000,
+    "y": 676,
+    "matched": true,
+    "longest_run_px": 119,
+    "matched_px": 528,
+    "row_width_px": 708
+   },
+   {
+    "value": 180000,
+    "y": 606,
+    "matched": true,
+    "longest_run_px": 523,
+    "matched_px": 648,
+    "row_width_px": 708
+   },
+   {
+    "value": 240000,
+    "y": 536,
+    "matched": true,
+    "longest_run_px": 708,
+    "matched_px": 708,
+    "row_width_px": 708
+   }
+  ],
+  "layout_map_comparison": [
+   {
+    "id": "header",
+    "previous_round": 2,
+    "previous_box": [
+     48,
+     40,
+     1552,
+     142
+    ],
+    "current_box": [
+     48,
+     40,
+     1552,
+     142
+    ],
+    "delta": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "abs_delta_max_px": 0,
+    "within_tolerance_px": 2,
+    "passed": true,
+    "note": "主区域边界为同一组常量，本轮只在区域内部重排刻度/行距"
+   },
+   {
+    "id": "conclusion",
+    "previous_round": 2,
+    "previous_box": [
+     48,
+     158,
+     1552,
+     278
+    ],
+    "current_box": [
+     48,
+     158,
+     1552,
+     278
+    ],
+    "delta": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "abs_delta_max_px": 0,
+    "within_tolerance_px": 2,
+    "passed": true,
+    "note": "主区域边界为同一组常量，本轮只在区域内部重排刻度/行距"
+   },
+   {
+    "id": "kpi",
+    "previous_round": 2,
+    "previous_box": [
+     48,
+     294,
+     1552,
+     434
+    ],
+    "current_box": [
+     48,
+     294,
+     1552,
+     434
+    ],
+    "delta": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "abs_delta_max_px": 0,
+    "within_tolerance_px": 2,
+    "passed": true,
+    "note": "主区域边界为同一组常量，本轮只在区域内部重排刻度/行距"
+   },
+   {
+    "id": "chart",
+    "previous_round": 2,
+    "previous_box": [
+     48,
+     450,
+     876,
+     916
+    ],
+    "current_box": [
+     48,
+     450,
+     876,
+     916
+    ],
+    "delta": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "abs_delta_max_px": 0,
+    "within_tolerance_px": 2,
+    "passed": true,
+    "note": "主区域边界为同一组常量，本轮只在区域内部重排刻度/行距"
+   },
+   {
+    "id": "table",
+    "previous_round": 2,
+    "previous_box": [
+     892,
+     450,
+     1552,
+     916
+    ],
+    "current_box": [
+     892,
+     450,
+     1552,
+     916
+    ],
+    "delta": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "abs_delta_max_px": 0,
+    "within_tolerance_px": 2,
+    "passed": true,
+    "note": "主区域边界为同一组常量，本轮只在区域内部重排刻度/行距"
+   },
+   {
+    "id": "footer",
+    "previous_round": 2,
+    "previous_box": [
+     48,
+     932,
+     1552,
+     964
+    ],
+    "current_box": [
+     48,
+     932,
+     1552,
+     964
+    ],
+    "delta": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "abs_delta_max_px": 0,
+    "within_tolerance_px": 2,
+    "passed": true,
+    "note": "主区域边界为同一组常量，本轮只在区域内部重排刻度/行距"
+   }
+  ],
+  "viewing": {
+   "image": "outputs/r20261014T1536+0800-5f11da/A22/round-03/dashboard.png",
+   "dsl": "outputs/r20261014T1536+0800-5f11da/A22/round-03/dashboard.snapshot",
+   "png_sha256": "b041c03b0783267c0b7c0b51a670cd33559eb22cf4dd97cdadcf5e613e17f716",
+   "viewing_events": 2,
+   "views_manifest": "tmp/r20261014T1536+0800-5f11da/A22/preview/round-03/views-manifest.json"
+  }
+ },
+ "evidence": {
+  "deliverable_png": {
+   "path_base": "output_dir",
+   "path": "dashboard.png"
+  },
+  "deliverable_dsl": {
+   "path_base": "output_dir",
+   "path": "dashboard.snapshot"
+  },
+  "attempts": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A22/responses/"
+  },
+  "requests_log": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A22/requests.jsonl"
+  },
+  "viewing_log": {
+   "path_base": "suite_root",
+   "path": "tmp/r20261014T1536+0800-5f11da/A22/viewing-evidence.json"
+  }
+ }
+}

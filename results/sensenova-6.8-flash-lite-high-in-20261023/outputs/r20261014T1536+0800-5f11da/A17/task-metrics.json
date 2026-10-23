@@ -1,0 +1,387 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A17",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": "1",
+ "status": "completed",
+ "stop_reason": "题面全部要求满足：8 件指定交付（4 页手册 + 4 个 400×240 独立示例）均为真实服务 200 响应、尺寸与字节经核验，印刷代码与运行代码同源，逐图实际查看完成；未遇时限、用户停止或环境阻塞",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A17/",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A17/",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "timings": {
+  "started_at": "2026-10-19T06:30:50+08:00",
+  "started_at_source": "本题最早可核实请求：2026-10-19T06:30:50+08:00（共享日志 _suite/requests.jsonl）",
+  "ended_at": "2026-10-19T11:29:41+08:00",
+  "ended_at_source": "task-metrics.json 生成时刻",
+  "elapsed_seconds": 17931,
+  "first_usable_image_seconds": 602,
+  "first_usable_image_request": "req-a17-probe-dd116f",
+  "first_usable_image_note": "首张可用图为语法探针 req-a17-probe-dd116f（200），用于确认构件契约，不是交付件",
+  "first_deliverable_image_seconds": 11960,
+  "first_deliverable_image_request": "req-a17-handbook-01-646467",
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_note": "单轮任务，未向用户请求反馈，未发生等待",
+  "rate_limit_wait_seconds": 0,
+  "rate_limit_note": "全部请求未收到 429/503，未出现 Retry-After；4 次 status=0 是本地读超时或连接中断，不是限流",
+  "queue_wait_seconds": null,
+  "queue_wait_note": "服务端排队不可观测，如实记 null",
+  "request_duration_sum_seconds": 152.107,
+  "request_duration_note": "仅含 42 条带 elapsed_ms 的请求（本地墙钟 time.monotonic，含网络往返）；4 条 status=0 的超时请求 elapsed_ms 为 null，不可用落盘时间反推",
+  "wall_clock_note": "elapsed_seconds 是墙钟跨度，包含文档阅读、探针、看图、离线断言、写报告与等待本地分类器超时重试的时间，不等于请求耗时之和",
+  "server_timing_source": "本地墙钟计时经 tools/suite.py 的 snapshot_request meta.elapsed_ms 记录；服务未返回 Server-Timing 头"
+ },
+ "counts": {
+  "snapshot_requests": 42,
+  "successful_snapshot_requests": 28,
+  "failed_snapshot_requests": 14,
+  "failed_breakdown": {
+   "http_400": 11,
+   "timeout_or_disconnect": 3
+  },
+  "probe_requests": 4,
+  "probe_note": "4 组根结构定位探针（P-A 外包 Container=200，P-B 骨架=400，P-C 代码块=400，P-D 要点块=超时），把根因收敛到「根 Stack 缺外层有界容器」",
+  "retry_requests": 4,
+  "retry_detail": "req-a17-handbook-01-b9c0f6；req-a17-handbook-04-ad445e；req-a17-probe-D-keys-98bd1a；req-a17-example-04-806a05；均为 status=0 的网络失败后重发同一 DSL",
+  "other_service_requests": 2,
+  "other_service_note": "本题新增 2 次文档请求（guides/parser、guides/testing），记录在共享日志。ai-guide.md、DSL 索引、fonts、openapi.yaml、guides/layout、guides/painting、guides/media-text、guides/widgets、reference/parser-tags 在共享准备阶段取得（_suite/requests.jsonl）；reference/parser-text、text-layout、text-style、enums 由 A11 取得（A11/requests.jsonl）；四份均缓存于 tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/，本题只复用缓存，按约定不重复计为新 HTTP 请求",
+  "document_requests": 2,
+  "dsl_versions": 42,
+  "dsl_versions_note": "每次渲染对应一份唯一 request_id 命名的 DSL，保留在 tmp/r20261014T1536+0800-5f11da/A17/dsl/",
+  "image_views": 13,
+  "image_views_list": [
+   "outputs/r20261014T1536+0800-5f11da/A17/handbook-01.png（首轮逐图自检：版面、字号、代码块与插图对应）",
+   "outputs/r20261014T1536+0800-5f11da/A17/example-01.png（首轮逐图自检：400×240 独立示例）",
+   "outputs/r20261014T1536+0800-5f11da/A17/handbook-02.png（首轮逐图自检）",
+   "outputs/r20261014T1536+0800-5f11da/A17/example-02.png（首轮逐图自检）",
+   "outputs/r20261014T1536+0800-5f11da/A17/handbook-03.png（首轮逐图自检）",
+   "outputs/r20261014T1536+0800-5f11da/A17/example-03.png（首轮逐图自检：尾部 alpha 差异可见）",
+   "outputs/r20261014T1536+0800-5f11da/A17/handbook-04.png（首轮逐图自检：发现毛玻璃面板未覆盖两个源色块）",
+   "outputs/r20261014T1536+0800-5f11da/A17/example-04.png（首轮逐图自检：同上）",
+   "tmp/r20261014T1536+0800-5f11da/A17/preview/hb4-illus.png（2× 放大：确认缺陷位置）",
+   "tmp/r20261014T1536+0800-5f11da/A17/preview/ex4-glass.png（3× 放大：确认面板左缘有未模糊的源色块与文字）",
+   "outputs/r20261014T1536+0800-5f11da/A17/example-04.png（修复后复看：面板已完整覆盖两个色块）",
+   "tmp/r20261014T1536+0800-5f11da/A17/preview/hb4-glass.png（修复后 3× 放大复看）",
+   "outputs/r20261014T1536+0800-5f11da/A17/handbook-04.png（修复后复看：印刷代码与插图一致）"
+  ],
+  "image_views_note": "只统计本次记录到的查看事件。在此之前的上下文压缩前曾完成过一轮等价的 8 件逐图核验，其确切时间戳不可恢复，故不计入本数",
+  "final_deliverables": 8,
+  "minimum_final_pngs": 8,
+  "final_deliverable_sizes": [
+   [
+    400,
+    240
+   ],
+   [
+    1200,
+    1600
+   ]
+  ],
+  "handbook_pages": 4,
+  "independent_examples": 4,
+  "completed_visual_iterations": 1,
+  "incomplete_visual_iterations": 0,
+  "syntax_fix_iterations": 3,
+  "baseline_iterations": 1,
+  "iteration_note": "baseline：4 组语法探针 + 首版 8 件渲染与首次看图。syntax-fix 3 次：①Container 多子元素 → ②Positioned 多子元素与属性值含 < → ③根 Stack 无限约束。visual 1 次：第 4 页毛玻璃面板未覆盖源色块 → 加宽面板 → 重渲 → 像素采样与 3× 放大复核。未为凑次数制造迭代",
+  "requirements_checked": "20/20",
+  "requirements_list": [
+   {
+    "id": "R1",
+    "requirement": "阅读服务指南与相关官方 DSL 文档",
+    "verdict": "通过",
+    "evidence": "15 次文档请求全部有日志与缓存，见 sources.md 第 1 节"
+   },
+   {
+    "id": "R2",
+    "requirement": "四张 1200×1600 教学页，主题分四页排布",
+    "verdict": "通过",
+    "evidence": "handbook-01..04.png 经 IHDR 核验均为 1200×1600"
+   },
+   {
+    "id": "R3",
+    "requirement": "每页至少 8–18 行小型 DSL 示例代码",
+    "verdict": "通过",
+    "evidence": "实际印刷行数 16/16/15/17，均在 8–18 内；a17_check.py 断言"
+   },
+   {
+    "id": "R4",
+    "requirement": "教学插图由同一页 DSL 构件直接画，不用 Image 嵌入预渲染整图",
+    "verdict": "通过",
+    "evidence": "handbook-0d.snapshot 全文无 <Image 标签，插图=核心子树"
+   },
+   {
+    "id": "R5",
+    "requirement": "每页一例 400×240 完整示例 DSL + 独立真实渲染 PNG，共 4 例",
+    "verdict": "通过",
+    "evidence": "example-01..04，IHDR 核验均为 400×240，均为服务 200 响应字节"
+   },
+   {
+    "id": "R6",
+    "requirement": "印刷代码与独立运行代码同源，不能两套",
+    "verdict": "通过",
+    "evidence": "a17_check.py 逐字节比对：印刷片段 == 核心子树片段 == 独立 DSL 对应行"
+   },
+   {
+    "id": "R7",
+    "requirement": "根尺寸来自布局，避免描述为 HTML",
+    "verdict": "通过",
+    "evidence": "第 2 页讲 BoxConstraints 收紧与 400×240 有界父容器，全文不出现 CSS/HTML 属性对照"
+   },
+   {
+    "id": "R8",
+    "requirement": "手册页只印关键 8–18 行，省略位置明确标识",
+    "verdict": "通过",
+    "evidence": "省略提示共 12 行，逐条标注独立 DSL 的被省行号区间；不插入执行源码"
+   },
+   {
+    "id": "R9",
+    "requirement": "正文 ≥24px、代码 ≥24→≥20px、安全边距 48",
+    "verdict": "通过",
+    "evidence": "BODY=24、CODE=20、MARGIN=48，a17_check.py 断言要点区底沿 ≤1552"
+   },
+   {
+    "id": "R10",
+    "requirement": "以页码/章节/短说明组织，正文不微缩",
+    "verdict": "通过",
+    "evidence": "每页顶部「第 N 页 / 章节名 + 一句话导语」，正文最小 24px"
+   },
+   {
+    "id": "R11",
+    "requirement": "教学插图与独立示例的核心子树在文字、属性值、子节点顺序、效果作用范围、相对几何上一致",
+    "verdict": "通过",
+    "evidence": "同一 CORE 字符串逐字复用；a17_check.py 校验 handbook-0d 逐字包含 CORE"
+   },
+   {
+    "id": "R12",
+    "requirement": "允许差异仅限外层包装（Snapshot 根、有界容器、外框、平移），且 1:1、不改字号/相对坐标/滤镜参数",
+    "verdict": "通过",
+    "evidence": "a17_check.py 比对 illustration_frame(...) 与交付 DSL 逐字一致"
+   },
+   {
+    "id": "R13",
+    "requirement": "附 sources.md，每条关键技术结论指向实际阅读页面与例子",
+    "verdict": "通过",
+    "evidence": "sources.md 15 条结论，各带 request_id、缓存路径与示例 ID"
+   },
+   {
+    "id": "R14",
+    "requirement": "附 examples.json，记录完整示例 DSL 路径、核心子树定位、教学页对应定位、外层包装差异、印刷片段 1-based 行号与逐字原文、真实响应",
+    "verdict": "通过",
+    "evidence": "examples.json 4 条 example 记录，行号与原文由文件内实测 index() 得出"
+   },
+   {
+    "id": "R15",
+    "requirement": "展示用 XML 转义可还原原文，省略号不插入执行源码",
+    "verdict": "通过",
+    "evidence": "逐字原文存于 examples.json，转义还原后与 .snapshot 字节相同；省略提示为独立行"
+   },
+   {
+    "id": "R16",
+    "requirement": "印刷片段、教学插图、独立渲染三者都须核对",
+    "verdict": "通过",
+    "evidence": "a17_check.py 三方比对 + a17_report.py 审计 + 逐图实际打开"
+   },
+   {
+    "id": "R17",
+    "requirement": "可共享生成函数，但不能只凭函数名声称一致",
+    "verdict": "通过",
+    "evidence": "生成函数共享 CORE 字符串，一致性由文件字节比对与实测行号证明"
+   },
+   {
+    "id": "R18",
+    "requirement": "手册 4 页与 4 个示例都要实际查看",
+    "verdict": "通过",
+    "evidence": "13 次记录在案的查看事件（含 2×/3× 放大），见 task-metrics.json"
+   },
+   {
+    "id": "R19",
+    "requirement": "所有指定最终 PNG 是服务真实响应且有同名 .snapshot",
+    "verdict": "通过",
+    "evidence": "audit-trace.json pairing_ok=true，8/8 与 200 响应字节一致"
+   },
+   {
+    "id": "R20",
+    "requirement": "第 4 页覆盖背景滤镜/子树滤镜、视觉自检与可复现交付",
+    "verdict": "通过",
+    "evidence": "BackdropFilter+ClipRRect、ImageFiltered、ColorFiltered、自检顺序与固定字体/颜色空间要点均在第 4 页正文与示例中"
+   }
+  ],
+  "offline_checks": {
+   "script": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a17_check.py",
+   "verdict": "ok=true",
+   "rules": "印刷行数 8–18、行宽 ≤86、印刷片段逐字等于核心子树与独立 DSL、省略提示行号不重不漏、Container 单孩子、属性值无 < 与 &、Raw 无元素子节点、Positioned 父为 Stack、Expanded/Flexible 父为 Row/Column、标签配对、教学页逐字包含核心子树、要点区不越过 1600-48"
+  },
+  "trace_audit": {
+   "report": "tmp/r20261014T1536+0800-5f11da/A17/audit-trace.json",
+   "pairing_ok": true
+  }
+ },
+ "logs": {
+  "requests": "tmp/r20261014T1536+0800-5f11da/A17/requests.jsonl",
+  "iterations": "tmp/r20261014T1536+0800-5f11da/A17/iterations.jsonl",
+  "build_manifest": "tmp/r20261014T1536+0800-5f11da/A17/build-manifest.json",
+  "trace_audit": "tmp/r20261014T1536+0800-5f11da/A17/audit-trace.json",
+  "shared_doc_log": "tmp/r20261014T1536+0800-5f11da/_suite/requests.jsonl（本题 2 次文档请求 req-a17-docs-parser-0948、req-a17-docs-testing-8297 记录在此，见 A17-03）"
+ },
+ "outputs": [
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-01.png",
+   "role": "教学第 1 页 1200×1600，服务返回的原始 PNG 字节，未做后处理",
+   "size_px": [
+    1200,
+    1600
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-02.png",
+   "role": "教学第 2 页 1200×1600，服务返回的原始 PNG 字节，未做后处理",
+   "size_px": [
+    1200,
+    1600
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-03.png",
+   "role": "教学第 3 页 1200×1600，服务返回的原始 PNG 字节，未做后处理",
+   "size_px": [
+    1200,
+    1600
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-04.png",
+   "role": "教学第 4 页 1200×1600，服务返回的原始 PNG 字节，未做后处理",
+   "size_px": [
+    1200,
+    1600
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-01.snapshot",
+   "role": "第 1 页完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-02.snapshot",
+   "role": "第 2 页完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-03.snapshot",
+   "role": "第 3 页完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/handbook-04.snapshot",
+   "role": "第 4 页完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-01.png",
+   "role": "第 1 页可运行示例 400×240",
+   "size_px": [
+    400,
+    240
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-02.png",
+   "role": "第 2 页可运行示例 400×240",
+   "size_px": [
+    400,
+    240
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-03.png",
+   "role": "第 3 页可运行示例 400×240",
+   "size_px": [
+    400,
+    240
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-04.png",
+   "role": "第 4 页可运行示例 400×240",
+   "size_px": [
+    400,
+    240
+   ],
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-01.snapshot",
+   "role": "第 1 页可运行示例完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-02.snapshot",
+   "role": "第 2 页可运行示例完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-03.snapshot",
+   "role": "第 3 页可运行示例完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/example-04.snapshot",
+   "role": "第 4 页可运行示例完整 DSL",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/sources.md",
+   "role": "每条关键技术结论 → 实际阅读的文档页与示例",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/examples.json",
+   "role": "4 个完整示例、核心子树定位、印刷片段逐字原文与真实响应",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/snapshot-usage.md",
+   "role": "使用报告",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/task-metrics.json",
+   "role": "本题指标",
+   "bytes": null
+  },
+  {
+   "path": "outputs/r20261014T1536+0800-5f11da/A17/promotion-manifest.json",
+   "role": "交付件来源 request_id 与字节级一致性记录",
+   "bytes": null
+  }
+ ],
+ "unresolved_issues": [
+  {
+   "id": "A17-01",
+   "item": "1 次探针请求未写入 requests.jsonl",
+   "detail": "定位根结构问题时首次运行 a17_probe.py 前未设置 SNAPSHOT_RUN_ID / SNAPSHOT_TASK_ROOT，log_request 写盘失败抛出 FileNotFoundError；该次请求产生了诊断 PNG tmp/r20261014T1536+0800-5f11da/A17/responses/req-a17-probe-A-root-container-b38ed6.png 但没有对应日志条目。另有早期探针响应 probe4-crop-cdata.png 也无对应条目。两处已在 audit-trace.json 的 orphan_response_files 中如实列出，不补造日志",
+   "status": "已披露；生成脚本已修复（注入两个环境变量）"
+  },
+  {
+   "id": "A17-02",
+   "item": "build-manifest.json 只含最后一次调用的请求",
+   "detail": "a17_build.py 每次运行覆盖 build-manifest.json，当前文件只记录最后一次（example-04 重试）的 1 条请求。printed_spec、core_line_counts、core_segments 是确定性重算结果，仍准确。完整且只增不覆盖的渲染/探针历史在 requests.jsonl",
+   "status": "已披露；完整记录以 requests.jsonl 为准"
+  },
+  {
+   "id": "A17-03",
+   "item": "A17 新增的 2 次文档请求记录在共享日志而非题内日志",
+   "detail": "guides/parser（req-a17-docs-parser-0948）与 guides/testing（req-a17-docs-testing-8297）通过 suite.log_request 记录到 tmp/r20261014T1536+0800-5f11da/_suite/requests.jsonl，而不是 tmp/r20261014T1536+0800-5f11da/A17/requests.jsonl；因此题内 requests.jsonl 只有 46 条渲染/探针请求，文档请求需到共享日志按 request_id 检索。已确认 15 个文档请求全部有日志条目：9 条在 _suite/requests.jsonl（共享准备阶段）、4 条在 tmp/r20261014T1536+0800-5f11da/A11/requests.jsonl（req-7cc7ee4bc175 parser-text、req-7fd3c89fdf10 text-layout、req-8e4ef03e2474 text-style、req-852e662461c5 enums）、2 条为 A17 新增（同上两条）",
+   "status": "已披露；不存在无日志的文档缓存文件"
+  }
+ ],
+ "rounds": []
+}

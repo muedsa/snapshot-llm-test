@@ -1,0 +1,983 @@
+{
+ "data": {
+  "start": "2026-11-07T09:00:00+08:00",
+  "deadline": "2026-11-07T16:00:00+08:00",
+  "window_minutes": 420,
+  "tasks": [
+   {
+    "id": "R01",
+    "label": "需求核对",
+    "minutes": 25,
+    "teams": [
+     "design"
+    ],
+    "depends": []
+   },
+   {
+    "id": "R02",
+    "label": "服务与字体探测",
+    "minutes": 20,
+    "teams": [
+     "engineering"
+    ],
+    "depends": []
+   },
+   {
+    "id": "R03",
+    "label": "数据清洗",
+    "minutes": 40,
+    "teams": [
+     "engineering"
+    ],
+    "depends": [
+     "R02"
+    ]
+   },
+   {
+    "id": "R04",
+    "label": "视觉系统",
+    "minutes": 60,
+    "teams": [
+     "design"
+    ],
+    "depends": [
+     "R01"
+    ]
+   },
+   {
+    "id": "R05",
+    "label": "文案审校",
+    "minutes": 30,
+    "teams": [
+     "design",
+     "engineering"
+    ],
+    "depends": [
+     "R01"
+    ]
+   },
+   {
+    "id": "R06",
+    "label": "图表计算",
+    "minutes": 45,
+    "teams": [
+     "engineering"
+    ],
+    "depends": [
+     "R03"
+    ]
+   },
+   {
+    "id": "R07",
+    "label": "主海报构建",
+    "minutes": 70,
+    "teams": [
+     "design"
+    ],
+    "depends": [
+     "R04",
+     "R05"
+    ]
+   },
+   {
+    "id": "R08",
+    "label": "驾驶舱构建",
+    "minutes": 65,
+    "teams": [
+     "engineering"
+    ],
+    "depends": [
+     "R04",
+     "R06"
+    ]
+   },
+   {
+    "id": "R09",
+    "label": "手机适配",
+    "minutes": 45,
+    "teams": [
+     "design",
+     "engineering"
+    ],
+    "depends": [
+     "R07"
+    ]
+   },
+   {
+    "id": "R10",
+    "label": "视觉回归检查",
+    "minutes": 35,
+    "teams": [
+     "design"
+    ],
+    "depends": [
+     "R07",
+     "R08",
+     "R09"
+    ]
+   },
+   {
+    "id": "R11",
+    "label": "产物与数据核验",
+    "minutes": 30,
+    "teams": [
+     "engineering"
+    ],
+    "depends": [
+     "R08",
+     "R09"
+    ]
+   },
+   {
+    "id": "R12",
+    "label": "交付归档",
+    "minutes": 20,
+    "teams": [
+     "design",
+     "engineering"
+    ],
+    "depends": [
+     "R10",
+     "R11"
+    ]
+   }
+  ],
+  "risks": [
+   {
+    "id": "K1",
+    "task": "R02",
+    "impact": "服务限流导致等待",
+    "mitigation": "保留响应并依据Retry-After重试"
+   },
+   {
+    "id": "K2",
+    "task": "R05",
+    "impact": "长文案导致版式回归",
+    "mitigation": "冻结文案后再完成适配"
+   },
+   {
+    "id": "K3",
+    "task": "R10",
+    "impact": "实际图像暴露裁剪或比例错误",
+    "mitigation": "预留返工缓冲，不跳过看图"
+   }
+  ]
+ },
+ "result": {
+  "input": {
+   "path": "tasks/A24-release-plan-capstone/inputs/release.json",
+   "path_base": "suite_root",
+   "start": "2026-11-07T09:00:00+08:00",
+   "deadline": "2026-11-07T16:00:00+08:00",
+   "window_minutes": 420,
+   "teams": [
+    "design",
+    "engineering"
+   ],
+   "task_count": 12,
+   "flexible_tasks": [
+    "R05",
+    "R09",
+    "R12"
+   ]
+  },
+  "critical_path": {
+   "lower_bound_minutes": 255,
+   "path": [
+    "R01",
+    "R04",
+    "R07",
+    "R09",
+    "R10",
+    "R12"
+   ],
+   "path_minutes": [
+    25,
+    60,
+    70,
+    45,
+    35,
+    20
+   ],
+   "start_float": {
+    "R01": 0.0,
+    "R02": 0.0,
+    "R04": 25.0,
+    "R05": 25.0,
+    "R03": 20.0,
+    "R07": 85.0,
+    "R06": 60.0,
+    "R09": 155.0,
+    "R08": 105.0,
+    "R10": 200.0,
+    "R11": 200.0,
+    "R12": 235.0
+   },
+   "end_float": {
+    "R01": 25.0,
+    "R02": 20.0,
+    "R04": 85.0,
+    "R05": 55.0,
+    "R03": 60.0,
+    "R07": 155.0,
+    "R06": 105.0,
+    "R09": 200.0,
+    "R08": 170.0,
+    "R10": 235.0,
+    "R11": 230.0,
+    "R12": 255.0
+   },
+   "method": "拓扑序最早开始/最早完成，忽略资源约束；end - start 严格等于输入 minutes，不提前取整"
+  },
+  "work_lower_bound": {
+   "total_minutes": 485,
+   "teams": 2,
+   "lower_bound_minutes": 242.5,
+   "method": "总工作量 / 团队数；两团队合计可用分钟数必须覆盖总工作量"
+  },
+  "lower_bound_binding": {
+   "minutes": 255,
+   "binding": "dependency_critical_path",
+   "note": "max(关键路径 255, 总工作量/2 242.5)；关键路径下界只依赖依赖与固定时长，与团队分配无关，因此是任何可行排程的下界"
+  },
+  "exact_search": {
+   "flexible_tasks": [
+    "R05",
+    "R09",
+    "R12"
+   ],
+   "fixed_tasks": {
+    "R01": "design",
+    "R02": "engineering",
+    "R03": "engineering",
+    "R04": "design",
+    "R06": "engineering",
+    "R07": "design",
+    "R08": "engineering",
+    "R10": "design",
+    "R11": "engineering"
+   },
+   "assignments_enumerated": 8,
+   "method": "2^3=8 种指派全枚举；每种用分支定界枚举全部开始顺序，下界为 max(两团队已占时刻, 每个未完成任务的最早可能开始 + 其向前的最长剩余依赖链)",
+   "global_best_finish": 260,
+   "search_exhausted": true,
+   "aborted_by_node_cap": false,
+   "node_cap": 4000000,
+   "total_nodes": 1032,
+   "all_combinations": [
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "design",
+      "R09": "design",
+      "R12": "design"
+     },
+     "flexible_choice": {
+      "R05": "design",
+      "R09": "design",
+      "R12": "design"
+     },
+     "found": true,
+     "finish": 285,
+     "nodes": 47,
+     "pruned_by_lower_bound": 24,
+     "search_exhausted": true
+    },
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "design",
+      "R09": "design",
+      "R12": "engineering"
+     },
+     "flexible_choice": {
+      "R05": "design",
+      "R09": "design",
+      "R12": "engineering"
+     },
+     "found": true,
+     "finish": 285,
+     "nodes": 47,
+     "pruned_by_lower_bound": 24,
+     "search_exhausted": true
+    },
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "design",
+      "R09": "engineering",
+      "R12": "design"
+     },
+     "flexible_choice": {
+      "R05": "design",
+      "R09": "engineering",
+      "R12": "design"
+     },
+     "found": true,
+     "finish": 285,
+     "nodes": 47,
+     "pruned_by_lower_bound": 24,
+     "search_exhausted": true
+    },
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "design",
+      "R09": "engineering",
+      "R12": "engineering"
+     },
+     "flexible_choice": {
+      "R05": "design",
+      "R09": "engineering",
+      "R12": "engineering"
+     },
+     "found": true,
+     "finish": 285,
+     "nodes": 47,
+     "pruned_by_lower_bound": 24,
+     "search_exhausted": true
+    },
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "engineering",
+      "R09": "design",
+      "R12": "design"
+     },
+     "flexible_choice": {
+      "R05": "engineering",
+      "R09": "design",
+      "R12": "design"
+     },
+     "found": true,
+     "finish": 260,
+     "nodes": 38,
+     "pruned_by_lower_bound": 19,
+     "search_exhausted": true
+    },
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "engineering",
+      "R09": "design",
+      "R12": "engineering"
+     },
+     "flexible_choice": {
+      "R05": "engineering",
+      "R09": "design",
+      "R12": "engineering"
+     },
+     "found": true,
+     "finish": 260,
+     "nodes": 38,
+     "pruned_by_lower_bound": 19,
+     "search_exhausted": true
+    },
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "engineering",
+      "R09": "engineering",
+      "R12": "design"
+     },
+     "flexible_choice": {
+      "R05": "engineering",
+      "R09": "engineering",
+      "R12": "design"
+     },
+     "found": true,
+     "finish": 300,
+     "nodes": 384,
+     "pruned_by_lower_bound": 190,
+     "search_exhausted": true
+    },
+    {
+     "assignment": {
+      "R01": "design",
+      "R02": "engineering",
+      "R03": "engineering",
+      "R04": "design",
+      "R06": "engineering",
+      "R07": "design",
+      "R08": "engineering",
+      "R10": "design",
+      "R11": "engineering",
+      "R05": "engineering",
+      "R09": "engineering",
+      "R12": "engineering"
+     },
+     "flexible_choice": {
+      "R05": "engineering",
+      "R09": "engineering",
+      "R12": "engineering"
+     },
+     "found": true,
+     "finish": 300,
+     "nodes": 384,
+     "pruned_by_lower_bound": 190,
+     "search_exhausted": true
+    }
+   ]
+  },
+  "schedule": {
+   "R01": {
+    "team": "design",
+    "start": 0,
+    "end": 25,
+    "start_minute": 0,
+    "end_minute": 25
+   },
+   "R02": {
+    "team": "engineering",
+    "start": 0,
+    "end": 20,
+    "start_minute": 0,
+    "end_minute": 20
+   },
+   "R03": {
+    "team": "engineering",
+    "start": 20,
+    "end": 60,
+    "start_minute": 20,
+    "end_minute": 60
+   },
+   "R04": {
+    "team": "design",
+    "start": 25,
+    "end": 85,
+    "start_minute": 25,
+    "end_minute": 85
+   },
+   "R05": {
+    "team": "engineering",
+    "start": 60,
+    "end": 90,
+    "start_minute": 60,
+    "end_minute": 90
+   },
+   "R06": {
+    "team": "engineering",
+    "start": 90,
+    "end": 135,
+    "start_minute": 90,
+    "end_minute": 135
+   },
+   "R07": {
+    "team": "design",
+    "start": 90,
+    "end": 160,
+    "start_minute": 90,
+    "end_minute": 160
+   },
+   "R08": {
+    "team": "engineering",
+    "start": 135,
+    "end": 200,
+    "start_minute": 135,
+    "end_minute": 200
+   },
+   "R09": {
+    "team": "design",
+    "start": 160,
+    "end": 205,
+    "start_minute": 160,
+    "end_minute": 205
+   },
+   "R10": {
+    "team": "design",
+    "start": 205,
+    "end": 240,
+    "start_minute": 205,
+    "end_minute": 240
+   },
+   "R11": {
+    "team": "engineering",
+    "start": 205,
+    "end": 235,
+    "start_minute": 205,
+    "end_minute": 235
+   },
+   "R12": {
+    "team": "design",
+    "start": 240,
+    "end": 260,
+    "start_minute": 240,
+    "end_minute": 260
+   }
+  },
+  "audit": {
+   "feasible": true,
+   "errors": [],
+   "finish": 260,
+   "buffer_minutes": 160,
+   "workload_minutes": {
+    "design": 255,
+    "engineering": 230,
+    "total": 485
+   },
+   "idle_minutes": {
+    "design": 5,
+    "engineering": 30
+   },
+   "idle_ranges": {
+    "design": [
+     [
+      85,
+      90
+     ]
+    ],
+    "engineering": [
+     [
+      200,
+      205
+     ],
+     [
+      235,
+      260
+     ]
+    ]
+   },
+   "intervals": {
+    "design": [
+     [
+      0,
+      25,
+      "R01"
+     ],
+     [
+      25,
+      85,
+      "R04"
+     ],
+     [
+      90,
+      160,
+      "R07"
+     ],
+     [
+      160,
+      205,
+      "R09"
+     ],
+     [
+      205,
+      240,
+      "R10"
+     ],
+     [
+      240,
+      260,
+      "R12"
+     ]
+    ],
+    "engineering": [
+     [
+      0,
+      20,
+      "R02"
+     ],
+     [
+      20,
+      60,
+      "R03"
+     ],
+     [
+      60,
+      90,
+      "R05"
+     ],
+     [
+      90,
+      135,
+      "R06"
+     ],
+     [
+      135,
+      200,
+      "R08"
+     ],
+     [
+      205,
+      235,
+      "R11"
+     ]
+    ]
+   }
+  },
+  "optimality": {
+   "finish_minutes": 260,
+   "finish_time": "2026-11-07T13:20+08:00",
+   "buffer_minutes": 160,
+   "lower_bound_minutes": 255,
+   "matches_lower_bound": false,
+   "search_exhausted": true,
+   "provably_globally_optimal": true,
+   "proof": "穷举覆盖 8 种团队指派（R05/R09/R12 各 2 个候选，其余 9 个团队唯一），每种再对「下一条开始的任务」做完整的分支定界枚举，搜索节点合计 1032，未触发 4000000 节点安全阀——所有可能被排出来的开始顺序都被真实展开过，不是启发式采样。因此 260 分钟是这个任务集的最小完工时间，这是可核验的全局最优，不是找到的最好方案。另有独立下界互相印证：完工时间 ≥ 忽略资源约束的最长依赖路径 = 255 分钟（路径 R01→R04→R07→R09→R10→R12，逐任务时长 25+60+70+45+35+20；链上任务互为后继、不可并行，时长由输入固定、不可缩短，故这条下界对**任何**合法团队指派都成立），也 ≥ 总工作量/团队数 = 485/2 = 242.5 分钟。两个下界的较大者是 255 分钟；本排程 260 分钟 ≥ 255 分钟，与下界相容。关键路径下界 255 分钟在这里不是紧的——实际多了 5 分钟，原因是关键路径下界 255 分钟（路径 R01→R04→R07→R09→R10→R12）只依赖依赖关系与固定时长，与团队分配无关，因此任何可行排程都不低于它。本排程完工 260 分钟，比下界多 5 分钟，完全来自资源竞争：R05（文案审校，30 分钟）必须赶在 R07 开始之前完成，而 design 团队要同时装下 R04（60 分钟）与 R05（30 分钟）共 90 分钟，窗口只有 R01 结束的 25 分钟到 R07 开始的时刻，装不下，所以 R05 只能放到 engineering，排在 R03 之后，结束于 90 分钟，比 R04 结束的 85 分钟晚 5 分钟；R07 只能等它，关键路径上 R04→R07 之间出现 5 分钟空档，后续 R07→R09→R10→R12 整体顺延 5 分钟。逐任务绑定约束见 binding_constraints，关键路径上的空档逐条见 critical_path_chain_idle。。逐指派最优完工：R05=design R09=design R12=design=285、R05=design R09=design R12=engineering=285、R05=design R09=engineering R12=design=285、R05=design R09=engineering R12=engineering=285、R05=engineering R09=design R12=design=260、R05=engineering R09=design R12=engineering=260、R05=engineering R09=engineering R12=design=300、R05=engineering R09=engineering R12=engineering=300"
+  },
+  "clocks": {
+   "R01": {
+    "start": "2026-11-07T09:00+08:00",
+    "end": "2026-11-07T09:25+08:00"
+   },
+   "R02": {
+    "start": "2026-11-07T09:00+08:00",
+    "end": "2026-11-07T09:20+08:00"
+   },
+   "R03": {
+    "start": "2026-11-07T09:20+08:00",
+    "end": "2026-11-07T10:00+08:00"
+   },
+   "R04": {
+    "start": "2026-11-07T09:25+08:00",
+    "end": "2026-11-07T10:25+08:00"
+   },
+   "R05": {
+    "start": "2026-11-07T10:00+08:00",
+    "end": "2026-11-07T10:30+08:00"
+   },
+   "R06": {
+    "start": "2026-11-07T10:30+08:00",
+    "end": "2026-11-07T11:15+08:00"
+   },
+   "R07": {
+    "start": "2026-11-07T10:30+08:00",
+    "end": "2026-11-07T11:40+08:00"
+   },
+   "R08": {
+    "start": "2026-11-07T11:15+08:00",
+    "end": "2026-11-07T12:20+08:00"
+   },
+   "R09": {
+    "start": "2026-11-07T11:40+08:00",
+    "end": "2026-11-07T12:25+08:00"
+   },
+   "R10": {
+    "start": "2026-11-07T12:25+08:00",
+    "end": "2026-11-07T13:00+08:00"
+   },
+   "R11": {
+    "start": "2026-11-07T12:25+08:00",
+    "end": "2026-11-07T12:55+08:00"
+   },
+   "R12": {
+    "start": "2026-11-07T13:00+08:00",
+    "end": "2026-11-07T13:20+08:00"
+   }
+  },
+  "gap_analysis": {
+   "critical_path_minutes": 255,
+   "actual_finish_minutes": 260,
+   "resource_delay_minutes": 5,
+   "binding_constraints": [
+    {
+     "task": "R01",
+     "team": "design",
+     "start": 0,
+     "end": 25,
+     "minutes": 25,
+     "label": "需求核对",
+     "lane_free_since": 0,
+     "lane_previous_task": null,
+     "predecessor_ends": {},
+     "predecessor_max_end": 0,
+     "forced_by": [],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R02",
+     "team": "engineering",
+     "start": 0,
+     "end": 20,
+     "minutes": 20,
+     "label": "服务与字体探测",
+     "lane_free_since": 0,
+     "lane_previous_task": null,
+     "predecessor_ends": {},
+     "predecessor_max_end": 0,
+     "forced_by": [],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R03",
+     "team": "engineering",
+     "start": 20,
+     "end": 60,
+     "minutes": 40,
+     "label": "数据清洗",
+     "lane_free_since": 20,
+     "lane_previous_task": "R02",
+     "predecessor_ends": {
+      "R02": 20
+     },
+     "predecessor_max_end": 20,
+     "forced_by": [
+      "R02"
+     ],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R04",
+     "team": "design",
+     "start": 25,
+     "end": 85,
+     "minutes": 60,
+     "label": "视觉系统",
+     "lane_free_since": 25,
+     "lane_previous_task": "R01",
+     "predecessor_ends": {
+      "R01": 25
+     },
+     "predecessor_max_end": 25,
+     "forced_by": [
+      "R01"
+     ],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R05",
+     "team": "engineering",
+     "start": 60,
+     "end": 90,
+     "minutes": 30,
+     "label": "文案审校",
+     "lane_free_since": 60,
+     "lane_previous_task": "R03",
+     "predecessor_ends": {
+      "R01": 25
+     },
+     "predecessor_max_end": 25,
+     "forced_by": [],
+     "bound_by": "lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 35
+    },
+    {
+     "task": "R06",
+     "team": "engineering",
+     "start": 90,
+     "end": 135,
+     "minutes": 45,
+     "label": "图表计算",
+     "lane_free_since": 90,
+     "lane_previous_task": "R05",
+     "predecessor_ends": {
+      "R03": 60
+     },
+     "predecessor_max_end": 60,
+     "forced_by": [],
+     "bound_by": "lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 30
+    },
+    {
+     "task": "R07",
+     "team": "design",
+     "start": 90,
+     "end": 160,
+     "minutes": 70,
+     "label": "主海报构建",
+     "lane_free_since": 85,
+     "lane_previous_task": "R04",
+     "predecessor_ends": {
+      "R04": 85,
+      "R05": 90
+     },
+     "predecessor_max_end": 90,
+     "forced_by": [
+      "R05"
+     ],
+     "bound_by": "dependency",
+     "wait_minutes": 5,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R08",
+     "team": "engineering",
+     "start": 135,
+     "end": 200,
+     "minutes": 65,
+     "label": "驾驶舱构建",
+     "lane_free_since": 135,
+     "lane_previous_task": "R06",
+     "predecessor_ends": {
+      "R04": 85,
+      "R06": 135
+     },
+     "predecessor_max_end": 135,
+     "forced_by": [
+      "R06"
+     ],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R09",
+     "team": "design",
+     "start": 160,
+     "end": 205,
+     "minutes": 45,
+     "label": "手机适配",
+     "lane_free_since": 160,
+     "lane_previous_task": "R07",
+     "predecessor_ends": {
+      "R07": 160
+     },
+     "predecessor_max_end": 160,
+     "forced_by": [
+      "R07"
+     ],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R10",
+     "team": "design",
+     "start": 205,
+     "end": 240,
+     "minutes": 35,
+     "label": "视觉回归检查",
+     "lane_free_since": 205,
+     "lane_previous_task": "R09",
+     "predecessor_ends": {
+      "R07": 160,
+      "R08": 200,
+      "R09": 205
+     },
+     "predecessor_max_end": 205,
+     "forced_by": [
+      "R09"
+     ],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R11",
+     "team": "engineering",
+     "start": 205,
+     "end": 235,
+     "minutes": 30,
+     "label": "产物与数据核验",
+     "lane_free_since": 200,
+     "lane_previous_task": "R08",
+     "predecessor_ends": {
+      "R08": 200,
+      "R09": 205
+     },
+     "predecessor_max_end": 205,
+     "forced_by": [
+      "R09"
+     ],
+     "bound_by": "dependency",
+     "wait_minutes": 5,
+     "dep_delay_minutes": 0
+    },
+    {
+     "task": "R12",
+     "team": "design",
+     "start": 240,
+     "end": 260,
+     "minutes": 20,
+     "label": "交付归档",
+     "lane_free_since": 240,
+     "lane_previous_task": "R10",
+     "predecessor_ends": {
+      "R10": 240,
+      "R11": 235
+     },
+     "predecessor_max_end": 240,
+     "forced_by": [
+      "R10"
+     ],
+     "bound_by": "dependency_and_lane",
+     "wait_minutes": 0,
+     "dep_delay_minutes": 0
+    }
+   ],
+   "critical_path_chain_idle": [
+    {
+     "task": "R07",
+     "after": "R04",
+     "idle_minutes": 5,
+     "start": 90,
+     "cause": {
+      "kind": "绑定前驱 R05（结束 90 分钟）撑开",
+      "binding_task": "R05",
+      "binding_task_on_critical_path": false
+     }
+    }
+   ],
+   "total_idle_minutes": {
+    "design": 5,
+    "engineering": 30
+   },
+   "explanation": "关键路径下界 255 分钟（路径 R01→R04→R07→R09→R10→R12）只依赖依赖关系与固定时长，与团队分配无关，因此任何可行排程都不低于它。本排程完工 260 分钟，比下界多 5 分钟，完全来自资源竞争：R05（文案审校，30 分钟）必须赶在 R07 开始之前完成，而 design 团队要同时装下 R04（60 分钟）与 R05（30 分钟）共 90 分钟，窗口只有 R01 结束的 25 分钟到 R07 开始的时刻，装不下，所以 R05 只能放到 engineering，排在 R03 之后，结束于 90 分钟，比 R04 结束的 85 分钟晚 5 分钟；R07 只能等它，关键路径上 R04→R07 之间出现 5 分钟空档，后续 R07→R09→R10→R12 整体顺延 5 分钟。逐任务绑定约束见 binding_constraints，关键路径上的空档逐条见 critical_path_chain_idle。"
+  }
+ }
+}

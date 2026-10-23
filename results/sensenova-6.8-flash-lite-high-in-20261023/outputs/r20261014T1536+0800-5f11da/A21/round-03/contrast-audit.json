@@ -1,0 +1,2549 @@
+{
+ "task_id": "A21",
+ "round": 3,
+ "run_id": "r20261014T1536+0800-5f11da",
+ "path_base": "suite_root",
+ "created_at": "2026-10-20T09:45:32+08:00",
+ "requirement": {
+  "source": "tasks/A21-staged-launch-change/rounds/round-03.md",
+  "quote": "改浅色主题，所有普通文字与实际合成背景的对比度≥4.5:1；每图至少6处详细样本只是展示证据，不替代全量检查；样本必须包含最差位置；未检查项不能预填通过"
+ },
+ "scope": {
+  "plain_text_definition": "两张图中所有承担阅读信息的文字：主标题、日期、讲者、ONLINE LAUNCH、网址、赞助方、参加方式、品牌字标、新增英语短句",
+  "threshold_applies_regardless_of_size": true,
+  "foreground_source": "design token（交付 DSL 的 text color 属性）",
+  "background_source": "去文字辅助渲染的实际合成像素（含全部透明叠层与效果）",
+  "worst_case_rule": "渐变/纹理背景按字形覆盖区内最差对比度判定",
+  "auxiliary_render_temp_only": true
+ },
+ "formula": {
+  "source": "round-03.md「普通文字与对比度检查」逐字规定",
+  "normalize": "c = channel / 255",
+  "linearize": "c <= 0.04045 -> c / 12.92 ; 否则 ((c + 0.055) / 1.055) ** 2.4",
+  "luminance": "L = 0.2126*R_lin + 0.7152*G_lin + 0.0722*B_lin",
+  "contrast": "(max(L_fg,L_bg) + 0.05) / (min(L_fg,L_bg) + 0.05)",
+  "rounding": "阈值判定使用未舍入结果，JSON 里另行给出 4 位小数的展示值"
+ },
+ "method_evidence": {
+  "launch-portrait": {
+   "delivered_dsl_bytes": 6373,
+   "aux_dsl_bytes": 3893,
+   "delivered_text_nodes": 12,
+   "aux_text_nodes": 0,
+   "delivered_positioned": 31,
+   "aux_positioned": 19,
+   "positioned_delta_equals_text_nodes": true,
+   "delivered_snapshot_sha256": "cec1c5d623a907146c2bffed8d615cac47b5533f81c5aa2ce4f35be37c39bd25",
+   "aux_snapshot_path": "tmp/r20261014T1536+0800-5f11da/A21/dsl/r03-launch-portrait.notext.attempt-01.snapshot",
+   "same_builder": true,
+   "only_difference": "Canvas.text(record_text=False)：只关掉 <Text> 的输出，layout 模型不变，其余节点（氛围 wash、角部水印、发光球辉光/外环/光带、板材与亮核、网址牌与状态牌）全部照常输出",
+   "text_has_no_shadow": true,
+   "text_has_no_shadow_note": "round-03 的 12/11 段文字均未设置 textShadow（竖版/横版分别 grep 确认），因此 交付图 - 背景图 的差值只可能是字形墨迹本身，不会混入阴影。前两轮主标题有青色 textShadow，本轮按浅底可读性改为无阴影。"
+  },
+  "launch-wide": {
+   "delivered_dsl_bytes": 5401,
+   "aux_dsl_bytes": 3118,
+   "delivered_text_nodes": 11,
+   "aux_text_nodes": 0,
+   "delivered_positioned": 26,
+   "aux_positioned": 15,
+   "positioned_delta_equals_text_nodes": true,
+   "delivered_snapshot_sha256": "266639379a81b28922e68a4eb9fdd13e19ad71ed25799f3d4b4e0641e435f2db",
+   "aux_snapshot_path": "tmp/r20261014T1536+0800-5f11da/A21/dsl/r03-launch-wide.notext.attempt-01.snapshot",
+   "same_builder": true,
+   "only_difference": "Canvas.text(record_text=False)：只关掉 <Text> 的输出，layout 模型不变，其余节点（氛围 wash、角部水印、发光球辉光/外环/光带、板材与亮核、网址牌与状态牌）全部照常输出",
+   "text_has_no_shadow": true,
+   "text_has_no_shadow_note": "round-03 的 12/11 段文字均未设置 textShadow（竖版/横版分别 grep 确认），因此 交付图 - 背景图 的差值只可能是字形墨迹本身，不会混入阴影。前两轮主标题有青色 textShadow，本轮按浅底可读性改为无阴影。"
+  }
+ },
+ "images": [
+  {
+   "image": "launch-portrait",
+   "png": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.png",
+   "png_sha256": "8dce3bf596f0fd3c7ae9a4f01fffc549d2207ac2a791c1ad6196b8f09660c524",
+   "size": [
+    1080,
+    1350
+   ],
+   "snapshot": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.snapshot",
+   "status": "checked",
+   "method_sanity": {
+    "check": "去文字辅助渲染与交付图必须除墨迹外逐字节同源，否则背景取样无效",
+    "max_absolute_channel_difference_outside_ink": 12.0,
+    "passes": true,
+    "ink_pixel_count_total": 79979
+   },
+   "threshold": 4.5,
+   "formula": {
+    "source": "round-03.md「普通文字与对比度检查」逐字规定",
+    "normalize": "c = channel / 255",
+    "linearize": "c <= 0.04045 -> c / 12.92 ; 否则 ((c + 0.055) / 1.055) ** 2.4",
+    "luminance": "L = 0.2126*R_lin + 0.7152*G_lin + 0.0722*B_lin",
+    "contrast": "(max(L_fg,L_bg) + 0.05) / (min(L_fg,L_bg) + 0.05)",
+    "rounding": "阈值判定使用未舍入结果，JSON 里另行给出 4 位小数的展示值"
+   },
+   "n_text_segments": 12,
+   "n_checked": 12,
+   "n_not_checked": 0,
+   "minimum_contrast_across_all_text": 4.8616,
+   "minimum_contrast_across_all_text_unrounded": 4.861573385783012,
+   "worst_segment": "date",
+   "all_text_meets_threshold": true,
+   "not_plain_text_excluded": {
+    "note": "以下构件是纯几何品牌装饰，不承担阅读信息，按 round-03.md 不计入文字对比度检查；此处不是“通过”，而是明确不在检查对象内",
+    "items": [
+     "叠层板材 sheets",
+     "板材描边",
+     "板材亮核",
+     "发光球（径向渐变 + 光带 + 外环）",
+     "主色强调条",
+     "网址牌左侧圆点",
+     "角部线叠层水印",
+     "氛围 wash"
+    ]
+   },
+   "samples": [
+    {
+     "role": "date",
+     "text": "2026.11.07 19:30",
+     "fontSize": 48,
+     "box": [
+      96,
+      735,
+      816,
+      795
+     ],
+     "sample_point": {
+      "x": 399,
+      "y": 736
+     },
+     "foreground_hex": "#C2410C",
+     "foreground_luminance": 0.152765,
+     "background_hex": "#F5F8FC",
+     "background_luminance": 0.935756,
+     "contrast": 4.861573385783012,
+     "contrast_display": 4.8616,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.53947949,
+       "G": 0.05286065,
+       "B": 0.00367651
+      },
+      "background_linear": {
+       "R": 0.91309865,
+       "G": 0.93868573,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.15276472,
+      "background_luminance_full": 0.93575556,
+      "contrast_full": 4.861573385783012,
+      "step": "((0.93575556 + 0.05) / (0.15276472 + 0.05)) = 4.86157339"
+     },
+     "is_worst_of_image": true,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-date-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-date-bg.png"
+     }
+    },
+    {
+     "role": "brand_cn",
+     "text": "叠光",
+     "fontSize": 36,
+     "box": [
+      218,
+      122,
+      290,
+      174
+     ],
+     "sample_point": {
+      "x": 270,
+      "y": 120
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#F5F8FC",
+     "background_luminance": 0.935756,
+     "contrast": 5.117999951362301,
+     "contrast_display": 5.118,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 0.91309865,
+       "G": 0.93868573,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 0.93575556,
+      "contrast_full": 5.117999951362301,
+      "step": "((0.93575556 + 0.05) / (0.14260562 + 0.05)) = 5.11799995"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_cn-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_cn-bg.png"
+     }
+    },
+    {
+     "role": "kicker",
+     "text": "ONLINE LAUNCH",
+     "fontSize": 32,
+     "box": [
+      126,
+      288,
+      766,
+      340
+     ],
+     "sample_point": {
+      "x": 133,
+      "y": 290
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#F5F8FC",
+     "background_luminance": 0.935756,
+     "contrast": 5.117999951362301,
+     "contrast_display": 5.118,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 0.91309865,
+       "G": 0.93868573,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 0.93575556,
+      "contrast_full": 5.117999951362301,
+      "step": "((0.93575556 + 0.05) / (0.14260562 + 0.05)) = 5.11799995"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-kicker-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-kicker-bg.png"
+     }
+    },
+    {
+     "role": "clarity_en",
+     "text": "Clarity through structure",
+     "fontSize": 28,
+     "box": [
+      96,
+      889,
+      776,
+      925
+     ],
+     "sample_point": {
+      "x": 396,
+      "y": 896
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#F7F9FC",
+     "background_luminance": 0.945538,
+     "contrast": 5.168789731913048,
+     "contrast_display": 5.1688,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 0.93011086,
+       "G": 0.94730654,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 0.94553795,
+      "contrast_full": 5.168789731913048,
+      "step": "((0.94553795 + 0.05) / (0.14260562 + 0.05)) = 5.16878973"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-clarity_en-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-clarity_en-bg.png"
+     }
+    },
+    {
+     "role": "url",
+     "text": "layerlight.example.org",
+     "fontSize": 30,
+     "box": [
+      160,
+      961,
+      640,
+      1005
+     ],
+     "sample_point": {
+      "x": 162,
+      "y": 960
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#FFFFFF",
+     "background_luminance": 1.0,
+     "contrast": 5.451554307166649,
+     "contrast_display": 5.4516,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 1.0,
+       "G": 1.0,
+       "B": 1.0
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 1.0,
+      "contrast_full": 5.451554307166649,
+      "step": "((1.00000000 + 0.05) / (0.14260562 + 0.05)) = 5.45155431"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-url-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-url-bg.png"
+     }
+    },
+    {
+     "role": "brand_en",
+     "text": "Layerlight",
+     "fontSize": 36,
+     "box": [
+      304,
+      122,
+      504,
+      174
+     ],
+     "sample_point": {
+      "x": 400,
+      "y": 121
+     },
+     "foreground_hex": "#4A5A72",
+     "foreground_luminance": 0.099831,
+     "background_hex": "#F5F8FC",
+     "background_luminance": 0.935756,
+     "contrast": 6.579125088853929,
+     "contrast_display": 6.5791,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.06847817,
+       "G": 0.10224173,
+       "B": 0.1682694
+      },
+      "background_linear": {
+       "R": 0.91309865,
+       "G": 0.93868573,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.0998308,
+      "background_luminance_full": 0.93575556,
+      "contrast_full": 6.579125088853929,
+      "step": "((0.93575556 + 0.05) / (0.09983080 + 0.05)) = 6.57912509"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_en-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_en-bg.png"
+     }
+    }
+   ],
+   "segments": [
+    {
+     "role": "brand_cn",
+     "text": "叠光",
+     "fontSize": 36,
+     "bold": false,
+     "box": [
+      218,
+      122,
+      290,
+      174
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 1018,
+      "core_coverage_ge_0.85": 549
+     },
+     "status": "checked",
+     "minimum_contrast": 5.118,
+     "minimum_contrast_unrounded": 5.117999951362301,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.618,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 270,
+       "y": 120
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 5.117999951362301,
+       "step": "((0.93575556 + 0.05) / (0.14260562 + 0.05)) = 5.11799995"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.118,
+       "contrast_vs_bg_luminance_min": 5.118
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.118,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_cn-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_cn-bg.png"
+     }
+    },
+    {
+     "role": "brand_en",
+     "text": "Layerlight",
+     "fontSize": 36,
+     "bold": false,
+     "box": [
+      304,
+      122,
+      504,
+      174
+     ],
+     "foreground": {
+      "hex": "#4A5A72",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       74,
+       90,
+       114
+      ],
+      "luminance": 0.0998307971072252,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 1681,
+      "core_coverage_ge_0.85": 1059
+     },
+     "status": "checked",
+     "minimum_contrast": 6.5791,
+     "minimum_contrast_unrounded": 6.579125088853929,
+     "meets_threshold": true,
+     "headroom_over_4_5": 2.0791,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 400,
+       "y": 121
+      },
+      "foreground_hex": "#4A5A72",
+      "foreground_luminance": 0.099831,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.06847817,
+        "G": 0.10224173,
+        "B": 0.1682694
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0998308,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 6.579125088853929,
+       "step": "((0.93575556 + 0.05) / (0.09983080 + 0.05)) = 6.57912509"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 6.579125,
+       "contrast_vs_bg_luminance_min": 6.579125
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 6.579125,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_en-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-brand_en-bg.png"
+     }
+    },
+    {
+     "role": "kicker",
+     "text": "ONLINE LAUNCH",
+     "fontSize": 32,
+     "bold": false,
+     "box": [
+      126,
+      288,
+      766,
+      340
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 2235,
+      "core_coverage_ge_0.85": 1217
+     },
+     "status": "checked",
+     "minimum_contrast": 5.118,
+     "minimum_contrast_unrounded": 5.117999951362301,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.618,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 133,
+       "y": 290
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 5.117999951362301,
+       "step": "((0.93575556 + 0.05) / (0.14260562 + 0.05)) = 5.11799995"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.118,
+       "contrast_vs_bg_luminance_min": 5.118
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.118,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-kicker-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-kicker-bg.png"
+     }
+    },
+    {
+     "role": "title_line1",
+     "text": "当所有信息都想成为标题：",
+     "fontSize": 66,
+     "bold": true,
+     "box": [
+      96,
+      350,
+      956,
+      429
+     ],
+     "foreground": {
+      "hex": "#0B1B33",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       11,
+       27,
+       51
+      ],
+      "luminance": 0.010940296883263255,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 24239,
+      "core_coverage_ge_0.85": 19534
+     },
+     "status": "checked",
+     "minimum_contrast": 16.1758,
+     "minimum_contrast_unrounded": 16.17575900917308,
+     "meets_threshold": true,
+     "headroom_over_4_5": 11.6758,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 124,
+       "y": 346
+      },
+      "foreground_hex": "#0B1B33",
+      "foreground_luminance": 0.01094,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00334654,
+        "G": 0.01096009,
+        "B": 0.03310477
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0109403,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 16.17575900917308,
+       "step": "((0.93575556 + 0.05) / (0.01094030 + 0.05)) = 16.17575901"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 16.175759,
+       "contrast_vs_bg_luminance_min": 16.175759
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 16.175759,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-title_line1-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-title_line1-bg.png"
+     }
+    },
+    {
+     "role": "title_line2",
+     "text": "让复杂信息变得清晰",
+     "fontSize": 66,
+     "bold": true,
+     "box": [
+      96,
+      435,
+      956,
+      514
+     ],
+     "foreground": {
+      "hex": "#0B1B33",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       11,
+       27,
+       51
+      ],
+      "luminance": 0.010940296883263255,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 19166,
+      "core_coverage_ge_0.85": 15116
+     },
+     "status": "checked",
+     "minimum_contrast": 16.1758,
+     "minimum_contrast_unrounded": 16.17575900917308,
+     "meets_threshold": true,
+     "headroom_over_4_5": 11.6758,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 178,
+       "y": 431
+      },
+      "foreground_hex": "#0B1B33",
+      "foreground_luminance": 0.01094,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00334654,
+        "G": 0.01096009,
+        "B": 0.03310477
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0109403,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 16.17575900917308,
+       "step": "((0.93575556 + 0.05) / (0.01094030 + 0.05)) = 16.17575901"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 16.175759,
+       "contrast_vs_bg_luminance_min": 16.175759
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 16.175759,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-title_line2-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-title_line2-bg.png"
+     }
+    },
+    {
+     "role": "title_line3",
+     "text": "的结构化方法",
+     "fontSize": 66,
+     "bold": true,
+     "box": [
+      96,
+      520,
+      956,
+      599
+     ],
+     "foreground": {
+      "hex": "#0B1B33",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       11,
+       27,
+       51
+      ],
+      "luminance": 0.010940296883263255,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 11965,
+      "core_coverage_ge_0.85": 9548
+     },
+     "status": "checked",
+     "minimum_contrast": 16.1758,
+     "minimum_contrast_unrounded": 16.17575900917308,
+     "meets_threshold": true,
+     "headroom_over_4_5": 11.6758,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 110,
+       "y": 516
+      },
+      "foreground_hex": "#0B1B33",
+      "foreground_luminance": 0.01094,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00334654,
+        "G": 0.01096009,
+        "B": 0.03310477
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0109403,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 16.17575900917308,
+       "step": "((0.93575556 + 0.05) / (0.01094030 + 0.05)) = 16.17575901"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 16.175759,
+       "contrast_vs_bg_luminance_min": 16.175759
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 16.175759,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-title_line3-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-title_line3-bg.png"
+     }
+    },
+    {
+     "role": "date",
+     "text": "2026.11.07 19:30",
+     "fontSize": 48,
+     "bold": true,
+     "box": [
+      96,
+      735,
+      816,
+      795
+     ],
+     "foreground": {
+      "hex": "#C2410C",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       194,
+       65,
+       12
+      ],
+      "luminance": 0.15276471794374874,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 6269,
+      "core_coverage_ge_0.85": 4910
+     },
+     "status": "checked",
+     "minimum_contrast": 4.8616,
+     "minimum_contrast_unrounded": 4.861573385783012,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.3616,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 399,
+       "y": 736
+      },
+      "foreground_hex": "#C2410C",
+      "foreground_luminance": 0.152765,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.53947949,
+        "G": 0.05286065,
+        "B": 0.00367651
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.15276472,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 4.861573385783012,
+       "step": "((0.93575556 + 0.05) / (0.15276472 + 0.05)) = 4.86157339"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 4.912954,
+       "contrast_vs_bg_luminance_min": 4.861573
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 4.861573,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-date-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-date-bg.png"
+     }
+    },
+    {
+     "role": "speakers",
+     "text": "讲者：林川 / 苏言",
+     "fontSize": 30,
+     "bold": false,
+     "box": [
+      96,
+      829,
+      816,
+      868
+     ],
+     "foreground": {
+      "hex": "#4A5A72",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       74,
+       90,
+       114
+      ],
+      "luminance": 0.0998307971072252,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 2038,
+      "core_coverage_ge_0.85": 1123
+     },
+     "status": "checked",
+     "minimum_contrast": 6.6444,
+     "minimum_contrast_unrounded": 6.644414718133792,
+     "meets_threshold": true,
+     "headroom_over_4_5": 2.1444,
+     "worst_case": {
+      "background_hex": "#F7F9FC",
+      "background_rgb": [
+       247,
+       249,
+       252
+      ],
+      "background_luminance": 0.945538,
+      "pixel": {
+       "x": 111,
+       "y": 827
+      },
+      "foreground_hex": "#4A5A72",
+      "foreground_luminance": 0.099831,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.06847817,
+        "G": 0.10224173,
+        "B": 0.1682694
+       },
+       "background_linear": {
+        "R": 0.93011086,
+        "G": 0.94730654,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0998308,
+       "background_luminance_full": 0.94553795,
+       "contrast_full": 6.644414718133792,
+       "step": "((0.94553795 + 0.05) / (0.09983080 + 0.05)) = 6.64441472"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 6.690028,
+       "contrast_vs_bg_luminance_min": 6.644415
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 6.644415,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-speakers-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-speakers-bg.png"
+     }
+    },
+    {
+     "role": "clarity_en",
+     "text": "Clarity through structure",
+     "fontSize": 28,
+     "bold": false,
+     "box": [
+      96,
+      889,
+      776,
+      925
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 2467,
+      "core_coverage_ge_0.85": 1207
+     },
+     "status": "checked",
+     "minimum_contrast": 5.1688,
+     "minimum_contrast_unrounded": 5.168789731913048,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.6688,
+     "worst_case": {
+      "background_hex": "#F7F9FC",
+      "background_rgb": [
+       247,
+       249,
+       252
+      ],
+      "background_luminance": 0.945538,
+      "pixel": {
+       "x": 396,
+       "y": 896
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 0.93011086,
+        "G": 0.94730654,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 0.94553795,
+       "contrast_full": 5.168789731913048,
+       "step": "((0.94553795 + 0.05) / (0.14260562 + 0.05)) = 5.16878973"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.213738,
+       "contrast_vs_bg_luminance_min": 5.16879
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.16879,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-clarity_en-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-clarity_en-bg.png"
+     }
+    },
+    {
+     "role": "url",
+     "text": "layerlight.example.org",
+     "fontSize": 30,
+     "bold": false,
+     "box": [
+      160,
+      961,
+      640,
+      1005
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 2677,
+      "core_coverage_ge_0.85": 1416
+     },
+     "status": "checked",
+     "minimum_contrast": 5.4516,
+     "minimum_contrast_unrounded": 5.451554307166649,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.9516,
+     "worst_case": {
+      "background_hex": "#FFFFFF",
+      "background_rgb": [
+       255,
+       255,
+       255
+      ],
+      "background_luminance": 1.0,
+      "pixel": {
+       "x": 162,
+       "y": 960
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 1.0,
+       "contrast_full": 5.451554307166649,
+       "step": "((1.00000000 + 0.05) / (0.14260562 + 0.05)) = 5.45155431"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.451554,
+       "contrast_vs_bg_luminance_min": 5.451554
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.451554,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-url-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-url-bg.png"
+     }
+    },
+    {
+     "role": "sponsors",
+     "text": "Northstar Research / 云构工具",
+     "fontSize": 30,
+     "bold": false,
+     "box": [
+      96,
+      1097,
+      856,
+      1136
+     ],
+     "foreground": {
+      "hex": "#4A5A72",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       74,
+       90,
+       114
+      ],
+      "luminance": 0.0998307971072252,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 3455,
+      "core_coverage_ge_0.85": 1852
+     },
+     "status": "checked",
+     "minimum_contrast": 6.7022,
+     "minimum_contrast_unrounded": 6.702194990856542,
+     "meets_threshold": true,
+     "headroom_over_4_5": 2.2022,
+     "worst_case": {
+      "background_hex": "#F8FAFD",
+      "background_rgb": [
+       248,
+       250,
+       253
+      ],
+      "background_luminance": 0.954195,
+      "pixel": {
+       "x": 426,
+       "y": 1095
+      },
+      "foreground_hex": "#4A5A72",
+      "foreground_luminance": 0.099831,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.06847817,
+        "G": 0.10224173,
+        "B": 0.1682694
+       },
+       "background_linear": {
+        "R": 0.93868573,
+        "G": 0.95597335,
+        "B": 0.98225055
+       },
+       "foreground_luminance_full": 0.0998308,
+       "background_luminance_full": 0.95419522,
+       "contrast_full": 6.702194990856542,
+       "step": "((0.95419522 + 0.05) / (0.09983080 + 0.05)) = 6.70219499"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 6.756017,
+       "contrast_vs_bg_luminance_min": 6.702195
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 6.702195,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-sponsors-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-sponsors-bg.png"
+     }
+    },
+    {
+     "role": "badge",
+     "text": "免费参加 · 无需报名",
+     "fontSize": 30,
+     "bold": false,
+     "box": [
+      126,
+      1180,
+      470,
+      1216
+     ],
+     "foreground": {
+      "hex": "#0B1B33",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       11,
+       27,
+       51
+      ],
+      "luminance": 0.010940296883263255,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "aux_sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 3002,
+      "core_coverage_ge_0.85": 1413
+     },
+     "status": "checked",
+     "minimum_contrast": 17.23,
+     "minimum_contrast_unrounded": 17.22997841660292,
+     "meets_threshold": true,
+     "headroom_over_4_5": 12.73,
+     "worst_case": {
+      "background_hex": "#FFFFFF",
+      "background_rgb": [
+       255,
+       255,
+       255
+      ],
+      "background_luminance": 1.0,
+      "pixel": {
+       "x": 136,
+       "y": 1178
+      },
+      "foreground_hex": "#0B1B33",
+      "foreground_luminance": 0.01094,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00334654,
+        "G": 0.01096009,
+        "B": 0.03310477
+       },
+       "background_linear": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0
+       },
+       "foreground_luminance_full": 0.0109403,
+       "background_luminance_full": 1.0,
+       "contrast_full": 17.22997841660292,
+       "step": "((1.00000000 + 0.05) / (0.01094030 + 0.05)) = 17.22997842"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 17.229978,
+       "contrast_vs_bg_luminance_min": 17.229978
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 17.229978,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-badge-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-badge-bg.png"
+     }
+    }
+   ]
+  },
+  {
+   "image": "launch-wide",
+   "png": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.png",
+   "png_sha256": "b42d9bbf25e9a24a9a96b26e3c99bb192036100fb387f4428ae4d499dce9c575",
+   "size": [
+    1440,
+    810
+   ],
+   "snapshot": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.snapshot",
+   "status": "checked",
+   "method_sanity": {
+    "check": "去文字辅助渲染与交付图必须除墨迹外逐字节同源，否则背景取样无效",
+    "max_absolute_channel_difference_outside_ink": 12.0,
+    "passes": true,
+    "ink_pixel_count_total": 54482
+   },
+   "threshold": 4.5,
+   "formula": {
+    "source": "round-03.md「普通文字与对比度检查」逐字规定",
+    "normalize": "c = channel / 255",
+    "linearize": "c <= 0.04045 -> c / 12.92 ; 否则 ((c + 0.055) / 1.055) ** 2.4",
+    "luminance": "L = 0.2126*R_lin + 0.7152*G_lin + 0.0722*B_lin",
+    "contrast": "(max(L_fg,L_bg) + 0.05) / (min(L_fg,L_bg) + 0.05)",
+    "rounding": "阈值判定使用未舍入结果，JSON 里另行给出 4 位小数的展示值"
+   },
+   "n_text_segments": 11,
+   "n_checked": 11,
+   "n_not_checked": 0,
+   "minimum_contrast_across_all_text": 4.9098,
+   "minimum_contrast_across_all_text_unrounded": 4.909818451773984,
+   "worst_segment": "date",
+   "all_text_meets_threshold": true,
+   "not_plain_text_excluded": {
+    "note": "以下构件是纯几何品牌装饰，不承担阅读信息，按 round-03.md 不计入文字对比度检查；此处不是“通过”，而是明确不在检查对象内",
+    "items": [
+     "叠层板材 sheets",
+     "板材描边",
+     "板材亮核",
+     "发光球（径向渐变 + 光带 + 外环）",
+     "主色强调条",
+     "网址牌左侧圆点",
+     "角部线叠层水印",
+     "氛围 wash"
+    ]
+   },
+   "samples": [
+    {
+     "role": "date",
+     "text": "2026.11.07 19:30",
+     "fontSize": 36,
+     "box": [
+      96,
+      374,
+      596,
+      419
+     ],
+     "sample_point": {
+      "x": 378,
+      "y": 376
+     },
+     "foreground_hex": "#C2410C",
+     "foreground_luminance": 0.152765,
+     "background_hex": "#F7F9FC",
+     "background_luminance": 0.945538,
+     "contrast": 4.909818451773984,
+     "contrast_display": 4.9098,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.53947949,
+       "G": 0.05286065,
+       "B": 0.00367651
+      },
+      "background_linear": {
+       "R": 0.93011086,
+       "G": 0.94730654,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.15276472,
+      "background_luminance_full": 0.94553795,
+      "contrast_full": 4.909818451773984,
+      "step": "((0.94553795 + 0.05) / (0.15276472 + 0.05)) = 4.90981845"
+     },
+     "is_worst_of_image": true,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-date-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-date-bg.png"
+     }
+    },
+    {
+     "role": "kicker",
+     "text": "ONLINE LAUNCH",
+     "fontSize": 30,
+     "box": [
+      124,
+      150,
+      744,
+      194
+     ],
+     "sample_point": {
+      "x": 131,
+      "y": 152
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#F7F9FC",
+     "background_luminance": 0.945538,
+     "contrast": 5.168789731913048,
+     "contrast_display": 5.1688,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 0.93011086,
+       "G": 0.94730654,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 0.94553795,
+      "contrast_full": 5.168789731913048,
+      "step": "((0.94553795 + 0.05) / (0.14260562 + 0.05)) = 5.16878973"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-kicker-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-kicker-bg.png"
+     }
+    },
+    {
+     "role": "clarity_en",
+     "text": "Clarity through structure",
+     "fontSize": 26,
+     "box": [
+      96,
+      473,
+      776,
+      506
+     ],
+     "sample_point": {
+      "x": 115,
+      "y": 473
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#F7F9FC",
+     "background_luminance": 0.945538,
+     "contrast": 5.168789731913048,
+     "contrast_display": 5.1688,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 0.93011086,
+       "G": 0.94730654,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 0.94553795,
+      "contrast_full": 5.168789731913048,
+      "step": "((0.94553795 + 0.05) / (0.14260562 + 0.05)) = 5.16878973"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-clarity_en-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-clarity_en-bg.png"
+     }
+    },
+    {
+     "role": "brand_cn",
+     "text": "叠光",
+     "fontSize": 30,
+     "box": [
+      188,
+      79,
+      248,
+      121
+     ],
+     "sample_point": {
+      "x": 232,
+      "y": 77
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#F8FAFD",
+     "background_luminance": 0.954195,
+     "contrast": 5.213737871519898,
+     "contrast_display": 5.2137,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 0.93868573,
+       "G": 0.95597335,
+       "B": 0.98225055
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 0.95419522,
+      "contrast_full": 5.213737871519898,
+      "step": "((0.95419522 + 0.05) / (0.14260562 + 0.05)) = 5.21373787"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-brand_cn-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-brand_cn-bg.png"
+     }
+    },
+    {
+     "role": "url",
+     "text": "layerlight.example.org",
+     "fontSize": 28,
+     "box": [
+      154,
+      527,
+      614,
+      557
+     ],
+     "sample_point": {
+      "x": 156,
+      "y": 526
+     },
+     "foreground_hex": "#0A6FA8",
+     "foreground_luminance": 0.142606,
+     "background_hex": "#FFFFFF",
+     "background_luminance": 1.0,
+     "contrast": 5.451554307166649,
+     "contrast_display": 5.4516,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.00303527,
+       "G": 0.15896084,
+       "B": 0.39157248
+      },
+      "background_linear": {
+       "R": 1.0,
+       "G": 1.0,
+       "B": 1.0
+      },
+      "foreground_luminance_full": 0.14260562,
+      "background_luminance_full": 1.0,
+      "contrast_full": 5.451554307166649,
+      "step": "((1.00000000 + 0.05) / (0.14260562 + 0.05)) = 5.45155431"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-url-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-url-bg.png"
+     }
+    },
+    {
+     "role": "sponsors",
+     "text": "Northstar Research / 云构工具",
+     "fontSize": 28,
+     "box": [
+      96,
+      606,
+      796,
+      642
+     ],
+     "sample_point": {
+      "x": 462,
+      "y": 605
+     },
+     "foreground_hex": "#4A5A72",
+     "foreground_luminance": 0.099831,
+     "background_hex": "#F5F8FC",
+     "background_luminance": 0.935756,
+     "contrast": 6.579125088853929,
+     "contrast_display": 6.5791,
+     "meets_threshold": true,
+     "calculation": {
+      "foreground_linear": {
+       "R": 0.06847817,
+       "G": 0.10224173,
+       "B": 0.1682694
+      },
+      "background_linear": {
+       "R": 0.91309865,
+       "G": 0.93868573,
+       "B": 0.97344529
+      },
+      "foreground_luminance_full": 0.0998308,
+      "background_luminance_full": 0.93575556,
+      "contrast_full": 6.579125088853929,
+      "step": "((0.93575556 + 0.05) / (0.09983080 + 0.05)) = 6.57912509"
+     },
+     "is_worst_of_image": false,
+     "evidence_paths": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-sponsors-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-sponsors-bg.png"
+     }
+    }
+   ],
+   "segments": [
+    {
+     "role": "brand_cn",
+     "text": "叠光",
+     "fontSize": 30,
+     "bold": false,
+     "box": [
+      188,
+      79,
+      248,
+      121
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 804,
+      "core_coverage_ge_0.85": 372
+     },
+     "status": "checked",
+     "minimum_contrast": 5.2137,
+     "minimum_contrast_unrounded": 5.213737871519898,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.7137,
+     "worst_case": {
+      "background_hex": "#F8FAFD",
+      "background_rgb": [
+       248,
+       250,
+       253
+      ],
+      "background_luminance": 0.954195,
+      "pixel": {
+       "x": 232,
+       "y": 77
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 0.93868573,
+        "G": 0.95597335,
+        "B": 0.98225055
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 0.95419522,
+       "contrast_full": 5.213737871519898,
+       "step": "((0.95419522 + 0.05) / (0.14260562 + 0.05)) = 5.21373787"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.213738,
+       "contrast_vs_bg_luminance_min": 5.213738
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.213738,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-brand_cn-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-brand_cn-bg.png"
+     }
+    },
+    {
+     "role": "brand_en",
+     "text": "Layerlight",
+     "fontSize": 30,
+     "bold": false,
+     "box": [
+      260,
+      79,
+      460,
+      121
+     ],
+     "foreground": {
+      "hex": "#4A5A72",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       74,
+       90,
+       114
+      ],
+      "luminance": 0.0998307971072252,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 1231,
+      "core_coverage_ge_0.85": 663
+     },
+     "status": "checked",
+     "minimum_contrast": 6.6858,
+     "minimum_contrast_unrounded": 6.685784765493742,
+     "meets_threshold": true,
+     "headroom_over_4_5": 2.1858,
+     "worst_case": {
+      "background_hex": "#F7FAFC",
+      "background_rgb": [
+       247,
+       250,
+       252
+      ],
+      "background_luminance": 0.951736,
+      "pixel": {
+       "x": 375,
+       "y": 79
+      },
+      "foreground_hex": "#4A5A72",
+      "foreground_luminance": 0.099831,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.06847817,
+        "G": 0.10224173,
+        "B": 0.1682694
+       },
+       "background_linear": {
+        "R": 0.93011086,
+        "G": 0.95597335,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0998308,
+       "background_luminance_full": 0.95173646,
+       "contrast_full": 6.685784765493742,
+       "step": "((0.95173646 + 0.05) / (0.09983080 + 0.05)) = 6.68578477"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 6.702195,
+       "contrast_vs_bg_luminance_min": 6.685785
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 6.685785,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-brand_en-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-brand_en-bg.png"
+     }
+    },
+    {
+     "role": "kicker",
+     "text": "ONLINE LAUNCH",
+     "fontSize": 30,
+     "bold": false,
+     "box": [
+      124,
+      150,
+      744,
+      194
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 1938,
+      "core_coverage_ge_0.85": 1121
+     },
+     "status": "checked",
+     "minimum_contrast": 5.1688,
+     "minimum_contrast_unrounded": 5.168789731913048,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.6688,
+     "worst_case": {
+      "background_hex": "#F7F9FC",
+      "background_rgb": [
+       247,
+       249,
+       252
+      ],
+      "background_luminance": 0.945538,
+      "pixel": {
+       "x": 131,
+       "y": 152
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 0.93011086,
+        "G": 0.94730654,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 0.94553795,
+       "contrast_full": 5.168789731913048,
+       "step": "((0.94553795 + 0.05) / (0.14260562 + 0.05)) = 5.16878973"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.223254,
+       "contrast_vs_bg_luminance_min": 5.16879
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.16879,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-kicker-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-kicker-bg.png"
+     }
+    },
+    {
+     "role": "title_line1",
+     "text": "当所有信息都想成为标题：",
+     "fontSize": 52,
+     "bold": true,
+     "box": [
+      96,
+      212,
+      956,
+      274
+     ],
+     "foreground": {
+      "hex": "#0B1B33",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       11,
+       27,
+       51
+      ],
+      "luminance": 0.010940296883263255,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 15588,
+      "core_coverage_ge_0.85": 11787
+     },
+     "status": "checked",
+     "minimum_contrast": 16.1758,
+     "minimum_contrast_unrounded": 16.17575900917308,
+     "meets_threshold": true,
+     "headroom_over_4_5": 11.6758,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 798,
+       "y": 275
+      },
+      "foreground_hex": "#0B1B33",
+      "foreground_luminance": 0.01094,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00334654,
+        "G": 0.01096009,
+        "B": 0.03310477
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0109403,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 16.17575900917308,
+       "step": "((0.93575556 + 0.05) / (0.01094030 + 0.05)) = 16.17575901"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 16.50842,
+       "contrast_vs_bg_luminance_min": 16.175759
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 16.175759,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-title_line1-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-title_line1-bg.png"
+     }
+    },
+    {
+     "role": "title_line2",
+     "text": "让复杂信息变得清晰的结构化方法",
+     "fontSize": 52,
+     "bold": true,
+     "box": [
+      96,
+      279,
+      956,
+      341
+     ],
+     "foreground": {
+      "hex": "#0B1B33",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       11,
+       27,
+       51
+      ],
+      "luminance": 0.010940296883263255,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 19600,
+      "core_coverage_ge_0.85": 14788
+     },
+     "status": "checked",
+     "minimum_contrast": 16.1758,
+     "minimum_contrast_unrounded": 16.17575900917308,
+     "meets_threshold": true,
+     "headroom_over_4_5": 11.6758,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 798,
+       "y": 275
+      },
+      "foreground_hex": "#0B1B33",
+      "foreground_luminance": 0.01094,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00334654,
+        "G": 0.01096009,
+        "B": 0.03310477
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0109403,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 16.17575900917308,
+       "step": "((0.93575556 + 0.05) / (0.01094030 + 0.05)) = 16.17575901"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 16.478345,
+       "contrast_vs_bg_luminance_min": 16.175759
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 16.175759,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-title_line2-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-title_line2-bg.png"
+     }
+    },
+    {
+     "role": "date",
+     "text": "2026.11.07 19:30",
+     "fontSize": 36,
+     "bold": true,
+     "box": [
+      96,
+      374,
+      596,
+      419
+     ],
+     "foreground": {
+      "hex": "#C2410C",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       194,
+       65,
+       12
+      ],
+      "luminance": 0.15276471794374874,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 3615,
+      "core_coverage_ge_0.85": 2631
+     },
+     "status": "checked",
+     "minimum_contrast": 4.9098,
+     "minimum_contrast_unrounded": 4.909818451773984,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.4098,
+     "worst_case": {
+      "background_hex": "#F7F9FC",
+      "background_rgb": [
+       247,
+       249,
+       252
+      ],
+      "background_luminance": 0.945538,
+      "pixel": {
+       "x": 378,
+       "y": 376
+      },
+      "foreground_hex": "#C2410C",
+      "foreground_luminance": 0.152765,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.53947949,
+        "G": 0.05286065,
+        "B": 0.00367651
+       },
+       "background_linear": {
+        "R": 0.93011086,
+        "G": 0.94730654,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.15276472,
+       "background_luminance_full": 0.94553795,
+       "contrast_full": 4.909818451773984,
+       "step": "((0.94553795 + 0.05) / (0.15276472 + 0.05)) = 4.90981845"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 4.940388,
+       "contrast_vs_bg_luminance_min": 4.909818
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 4.909818,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-date-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-date-bg.png"
+     }
+    },
+    {
+     "role": "speakers",
+     "text": "讲者：林川 / 苏言",
+     "fontSize": 28,
+     "bold": false,
+     "box": [
+      96,
+      439,
+      556,
+      475
+     ],
+     "foreground": {
+      "hex": "#4A5A72",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       74,
+       90,
+       114
+      ],
+      "luminance": 0.0998307971072252,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 1922,
+      "core_coverage_ge_0.85": 1032
+     },
+     "status": "checked",
+     "minimum_contrast": 6.6444,
+     "minimum_contrast_unrounded": 6.644414718133792,
+     "meets_threshold": true,
+     "headroom_over_4_5": 2.1444,
+     "worst_case": {
+      "background_hex": "#F7F9FC",
+      "background_rgb": [
+       247,
+       249,
+       252
+      ],
+      "background_luminance": 0.945538,
+      "pixel": {
+       "x": 110,
+       "y": 436
+      },
+      "foreground_hex": "#4A5A72",
+      "foreground_luminance": 0.099831,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.06847817,
+        "G": 0.10224173,
+        "B": 0.1682694
+       },
+       "background_linear": {
+        "R": 0.93011086,
+        "G": 0.94730654,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0998308,
+       "background_luminance_full": 0.94553795,
+       "contrast_full": 6.644414718133792,
+       "step": "((0.94553795 + 0.05) / (0.09983080 + 0.05)) = 6.64441472"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 6.685785,
+       "contrast_vs_bg_luminance_min": 6.644415
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 6.644415,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-speakers-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-speakers-bg.png"
+     }
+    },
+    {
+     "role": "clarity_en",
+     "text": "Clarity through structure",
+     "fontSize": 26,
+     "bold": false,
+     "box": [
+      96,
+      473,
+      776,
+      506
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 2120,
+      "core_coverage_ge_0.85": 980
+     },
+     "status": "checked",
+     "minimum_contrast": 5.1688,
+     "minimum_contrast_unrounded": 5.168789731913048,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.6688,
+     "worst_case": {
+      "background_hex": "#F7F9FC",
+      "background_rgb": [
+       247,
+       249,
+       252
+      ],
+      "background_luminance": 0.945538,
+      "pixel": {
+       "x": 115,
+       "y": 473
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 0.93011086,
+        "G": 0.94730654,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 0.94553795,
+       "contrast_full": 5.168789731913048,
+       "step": "((0.94553795 + 0.05) / (0.14260562 + 0.05)) = 5.16878973"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.16879,
+       "contrast_vs_bg_luminance_min": 5.16879
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.16879,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-clarity_en-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-clarity_en-bg.png"
+     }
+    },
+    {
+     "role": "url",
+     "text": "layerlight.example.org",
+     "fontSize": 28,
+     "bold": false,
+     "box": [
+      154,
+      527,
+      614,
+      557
+     ],
+     "foreground": {
+      "hex": "#0A6FA8",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       10,
+       111,
+       168
+      ],
+      "luminance": 0.1426056204960965,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 2431,
+      "core_coverage_ge_0.85": 1184
+     },
+     "status": "checked",
+     "minimum_contrast": 5.4516,
+     "minimum_contrast_unrounded": 5.451554307166649,
+     "meets_threshold": true,
+     "headroom_over_4_5": 0.9516,
+     "worst_case": {
+      "background_hex": "#FFFFFF",
+      "background_rgb": [
+       255,
+       255,
+       255
+      ],
+      "background_luminance": 1.0,
+      "pixel": {
+       "x": 156,
+       "y": 526
+      },
+      "foreground_hex": "#0A6FA8",
+      "foreground_luminance": 0.142606,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00303527,
+        "G": 0.15896084,
+        "B": 0.39157248
+       },
+       "background_linear": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0
+       },
+       "foreground_luminance_full": 0.14260562,
+       "background_luminance_full": 1.0,
+       "contrast_full": 5.451554307166649,
+       "step": "((1.00000000 + 0.05) / (0.14260562 + 0.05)) = 5.45155431"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 5.451554,
+       "contrast_vs_bg_luminance_min": 5.451554
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 5.451554,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-url-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-url-bg.png"
+     }
+    },
+    {
+     "role": "sponsors",
+     "text": "Northstar Research / 云构工具",
+     "fontSize": 28,
+     "bold": false,
+     "box": [
+      96,
+      606,
+      796,
+      642
+     ],
+     "foreground": {
+      "hex": "#4A5A72",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       74,
+       90,
+       114
+      ],
+      "luminance": 0.0998307971072252,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 3102,
+      "core_coverage_ge_0.85": 1568
+     },
+     "status": "checked",
+     "minimum_contrast": 6.5791,
+     "minimum_contrast_unrounded": 6.579125088853929,
+     "meets_threshold": true,
+     "headroom_over_4_5": 2.0791,
+     "worst_case": {
+      "background_hex": "#F5F8FC",
+      "background_rgb": [
+       245,
+       248,
+       252
+      ],
+      "background_luminance": 0.935756,
+      "pixel": {
+       "x": 462,
+       "y": 605
+      },
+      "foreground_hex": "#4A5A72",
+      "foreground_luminance": 0.099831,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.06847817,
+        "G": 0.10224173,
+        "B": 0.1682694
+       },
+       "background_linear": {
+        "R": 0.91309865,
+        "G": 0.93868573,
+        "B": 0.97344529
+       },
+       "foreground_luminance_full": 0.0998308,
+       "background_luminance_full": 0.93575556,
+       "contrast_full": 6.579125088853929,
+       "step": "((0.93575556 + 0.05) / (0.09983080 + 0.05)) = 6.57912509"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 6.636556,
+       "contrast_vs_bg_luminance_min": 6.579125
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 6.579125,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-sponsors-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-sponsors-bg.png"
+     }
+    },
+    {
+     "role": "badge",
+     "text": "免费参加 · 无需报名",
+     "fontSize": 28,
+     "bold": false,
+     "box": [
+      126,
+      653,
+      466,
+      689
+     ],
+     "foreground": {
+      "hex": "#0B1B33",
+      "source": "design-token / 交付 DSL 的 text color 属性（layout 模型同源）",
+      "rgb": [
+       11,
+       27,
+       51
+      ],
+      "luminance": 0.010940296883263255,
+      "note": "抗锯齿边缘的部分覆盖像素未取作前景色"
+     },
+     "background": {
+      "source": "去文字辅助渲染在字形覆盖区的实际像素",
+      "aux_render": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "aux_sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "glyph_pixels": {
+      "ink_including_antialias": 2560,
+      "core_coverage_ge_0.85": 1166
+     },
+     "status": "checked",
+     "minimum_contrast": 17.23,
+     "minimum_contrast_unrounded": 17.22997841660292,
+     "meets_threshold": true,
+     "headroom_over_4_5": 12.73,
+     "worst_case": {
+      "background_hex": "#FFFFFF",
+      "background_rgb": [
+       255,
+       255,
+       255
+      ],
+      "background_luminance": 1.0,
+      "pixel": {
+       "x": 135,
+       "y": 650
+      },
+      "foreground_hex": "#0B1B33",
+      "foreground_luminance": 0.01094,
+      "calculation": {
+       "foreground_linear": {
+        "R": 0.00334654,
+        "G": 0.01096009,
+        "B": 0.03310477
+       },
+       "background_linear": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0
+       },
+       "foreground_luminance_full": 0.0109403,
+       "background_luminance_full": 1.0,
+       "contrast_full": 17.22997841660292,
+       "step": "((1.00000000 + 0.05) / (0.01094030 + 0.05)) = 17.22997842"
+      },
+      "also_checked_at_opposite_extreme": {
+       "contrast_vs_bg_luminance_max": 17.229978,
+       "contrast_vs_bg_luminance_min": 17.229978
+      },
+      "core_region_agreement": {
+       "worst_contrast_in_core_only": 17.229978,
+       "note": "高覆盖核心像素区域的最差值与含抗锯齿边缘的最差值一致，说明取色未被边缘污染"
+      },
+      "method": "字形覆盖区 = |交付图 - 去文字背景图| > 12 的像素且落在本段文本盒外扩 4 px 内；对该区域内全部背景像素求相对亮度极值两端，分别用未舍入公式算对比度后取更小者"
+     },
+     "evidence": {
+      "delivered_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-badge-ink.png",
+      "background_local": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-wide-badge-bg.png"
+     }
+    }
+   ]
+  }
+ ],
+ "overall": {
+  "n_images_checked": 2,
+  "n_images_not_checked": 0,
+  "n_text_segments_checked": 23,
+  "n_text_segments_not_checked": 0,
+  "global_minimum_contrast_unrounded": 4.861573385783012,
+  "all_plain_text_meets_threshold": true,
+  "not_checked_items": []
+ }
+}

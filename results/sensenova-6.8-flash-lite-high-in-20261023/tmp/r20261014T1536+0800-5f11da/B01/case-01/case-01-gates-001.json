@@ -1,0 +1,112 @@
+{
+ "case_id": "case-01",
+ "at": "2026-10-22T13:35:55+08:00",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "note": "第二版（最终交付）：加入右侧处置队列、修复实体转义、队列门禁",
+ "gates_total": 17,
+ "gates_failed": 0,
+ "gates": [
+  {
+   "id": "case-01-06",
+   "check": "剩余分钟 = 允许 - 已等，逐人复算",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-07",
+   "check": "仪表弧长比例 = min(1, 已等/允许)",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-08",
+   "check": "分级人数合计等于总人数 14",
+   "passed": true,
+   "detail": "{1: 2, 2: 3, 3: 4, 4: 3, 5: 2}"
+  },
+  {
+   "id": "case-01-09",
+   "check": "KPI 与逐人数据复算一致（超时1/现在行动4/即将超时3/ESI1-2 共5）",
+   "passed": true,
+   "detail": "overdue=1 now=4 soon=3 crit=5"
+  },
+  {
+   "id": "case-01-10",
+   "check": "紧急状态按剩余分钟阈值唯一确定",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-11",
+   "check": "严重度不依赖颜色：每行都印出 ESI 编号与允许等待分钟",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-12",
+   "check": "三档紧急色与面板背景对比 ≥ 3.0",
+   "passed": true,
+   "detail": "4.2 9.2 6.0"
+  },
+  {
+   "id": "case-01-13",
+   "check": "处置队列前 7 名按剩余分钟严格升序",
+   "passed": true,
+   "detail": "-2 1 2 5 6 7 11"
+  },
+  {
+   "id": "case-01-14",
+   "check": "队列恰好覆盖现在行动 + 即将超时全部患者",
+   "passed": true,
+   "detail": "queue=7 now+soon=7"
+  },
+  {
+   "id": "case-01-15",
+   "check": "相对稳定区间端点与逐人数据一致",
+   "passed": true,
+   "detail": "start=18 end=87"
+  },
+  {
+   "id": "case-01-cbr",
+   "check": "类别色对色盲可分（deutan/tritan ≥ 18, normal ≥ 25）",
+   "passed": true,
+   "detail": "#F43F5E↔#FBBF24 d=20.3 t=25 n=28.9; #FBBF24↔#60A5FA d=34.2 t=25.3 n=33; #F43F5E↔#60A5FA d=22.8 t=27.5 n=32.3"
+  },
+  {
+   "id": "case-01-01",
+   "check": "所有文字框在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-02",
+   "check": "同层文字框互不重叠",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-03",
+   "check": "文字字号 ≥ 18 px",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-04",
+   "check": "片段数 ≤ 9000（控制渲染负载与可复现性）",
+   "passed": true,
+   "detail": "parts=4099"
+  },
+  {
+   "id": "case-01-05",
+   "check": "所有形状在画布内",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "id": "case-01-06",
+   "check": "文字不含 < > & （DSL 不做实体解码，会原样印出）",
+   "passed": true,
+   "detail": ""
+  }
+ ]
+}

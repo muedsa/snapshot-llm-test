@@ -1,0 +1,377 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "path_base_note": "总任务根目录，即 outputs/ 与 tmp/ 的父目录",
+ "task_id": "A24",
+ "task_name": "release-plan-capstone",
+ "task_kind": "A（排程计算 + 三尺寸交付 + 跨图一致性）",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": null,
+ "round_of": null,
+ "rounds_total": null,
+ "execution_mode": "单轮：本题不是预置多轮题；两轮渲染是视觉迭代，不是预置轮次",
+ "status": "completed",
+ "stop_reason": "TASK.md 逐项核对全部满足：1920×1080 执行泳道 + 1200×1600 决策简报 + 720×1280 手机行动卡，三图均由 Schedule 数据渲染且字节等于服务原始响应；schedule.json / schedule-audit.json / content-map.json 齐备；8/8 排程审计、22/22 干跑门禁、16/16 跨图一致性检查通过；两轮逐件实际看图，第一轮发现的 5 处文字缺陷已在第二轮消除",
+ "timings": {
+  "work_started_at": "2026-10-21T10:26:34+08:00",
+  "work_started_at_note": "本题最早的产物 a24_sched.py 的 mtime，代表求解与审计阶段开始；它不是请求时间戳，所以不参与 elapsed_seconds 的计算",
+  "started_at": "2026-10-21T12:42:30+08:00",
+  "started_at_note": "取本题首条快照请求（req-a24-execution-board-17efd8）；此前写求解器、穷举搜索与两份审计 JSON 的时间没有独立时间戳，所以 elapsed_seconds 是下界而不是准确值",
+  "ended_at": "2026-10-21T21:04:32+08:00",
+  "ended_at_note": "取 task-metrics.json 的生成时刻，即题目层交付件全部写完",
+  "generated_at": "2026-10-21T21:04:32+08:00",
+  "elapsed_seconds": 30122.0,
+  "elapsed_note": "从首条请求（2026-10-21T12:42:30+08:00）到题目层交付件写完（2026-10-21T21:04:32+08:00）的墙钟。首条请求之前还有 2026-10-21T10:26:34+08:00～2026-10-21T10:47:23+08:00 的求解与审计工作，未计入",
+  "total_wall_seconds": 38278.0,
+  "total_wall_note": "从最早产物 mtime（2026-10-21T10:26:34+08:00）到交付件写完的墙钟，包含首条请求之前的求解与审计阶段；这是本题实际占用的时间",
+  "first_usable_image_seconds": 10.0,
+  "first_usable_image_note": "首条请求即成功取得可打开的 PNG，无失败重发",
+  "first_delivered_image_seconds": 3953.0,
+  "last_delivered_image_seconds": 3961.0,
+  "image_window_note": "最终交付的 3 张图都来自第二轮渲染（2026-10-21T13:48:19+08:00～2026-10-21T13:48:31+08:00），第一轮 3 张响应当时全部保留在 tmp/<run>/A24/responses/ 未被覆盖",
+  "request_duration_sum_seconds": 36.485,
+  "transport_read_timeout_seconds": 0,
+  "rate_limit_wait_seconds": 0,
+  "queue_wait_seconds": null,
+  "queue_wait_null_reason": "服务端不可观测排队，未取得该数据；不记 0，因为 0 表示「确认没有发生」",
+  "user_feedback_wait_seconds": 0,
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "timestamp_precision": "requests.jsonl 的 started_at / ended_at 精确到秒，亚秒分量由 elapsed_ms 还原；文件 mtime 精确到秒",
+  "phase_wall_seconds": {
+   "phase_1_schedule_and_audit": 1249.0,
+   "phase_2_pages_and_first_render": 6931.0,
+   "phase_3_visual_review_and_revision": 3925.0,
+   "phase_4_gates_and_rerender": 12.0,
+   "phase_5_recheck_and_instrument": 2042.0,
+   "phase_6_cross_image_map": 21371.0,
+   "phase_7_delivery_evidence_and_metrics": 2748.0
+  },
+  "phase_wall_note": "7 个阶段在时间上互不重叠，之和 38278.0 s 大于 elapsed_seconds（30122.0 s）：phase_1 与 phase_2 的前半段发生在首条请求之前，所以阶段之和对应的是 total_wall_seconds 而非 elapsed_seconds。两者都保留、不互相凑平"
+ },
+ "counts": {
+  "http_requests": 6,
+  "http_requests_note": "实际发出的 POST /snapshot 次数 = requests.jsonl 的记录条数；6 条都是 render、都是首次尝试即成功（无 -a2/-a3 后缀的重复尝试）",
+  "by_kind": {
+   "render": 6
+  },
+  "by_http_status": {
+   "200": 6
+  },
+  "successful_requests": 6,
+  "failed_requests": 0,
+  "by_error": {},
+  "server_rejected": 0,
+  "server_rejected_note": "0：两轮 6 次请求全部 HTTP 200，没有服务端 400/5xx，没有重试同一份 DSL 的必要",
+  "submission_groups": 6,
+  "submission_groups_ok": 6,
+  "retry_requests": 0,
+  "retry_after_used": 0,
+  "rate_limit_wait_seconds": 0,
+  "rate_limit_wait_note": "全程无 429/503，6 条记录的 retry_after 全部为 null",
+  "transport_read_timeout_seconds": 0,
+  "transport_read_timeout_note": "无读超时；本题未遇到传输层失败",
+  "queue_wait_seconds": null,
+  "queue_wait_null_reason": "服务端不可观测排队，未取得该数据；不记 0，因为 0 表示「确认没有发生」",
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_wait_note": "非预置轮次题，不等待外部反馈",
+  "request_duration_sum_seconds": 36.485,
+  "request_duration_sum_note": "只统计真 HTTP 往返的本地 elapsed_ms 之和（6 条，36485 ms）。与 elapsed_seconds 不同口径、不可相加",
+  "image_views": 9,
+  "image_views_note": "两轮各看三件共 6 次响应级视图 + 交付版 3 次；第一轮三件与第二轮另两件的打开时刻未实时记录，只给区间并标 retroactive=true",
+  "completed_visual_iterations": 1,
+  "completed_visual_iterations_note": "1 次：第一轮看图在决策简报文字层发现 5 处缺陷，改写后重渲 3 张图。泳道与手机卡两轮字节恒等，说明本轮没有为它们制造改动",
+  "defects_found": 5,
+  "defects_found_note": "5 处全部在决策简报的论证文字层，全部由第一轮实际看图发现、第二轮重渲后消除；见 viewing-evidence.json.defects_found",
+  "gates_added": 4,
+  "gates_added_note": "4 条门禁（board-08 / board-09 / brief-07 / brief-08）是当轮看图之后为守住被纠正的量化声明而新增，不是为凑迭代数",
+  "dryrun_gates_total": 22,
+  "dryrun_gates_passed": 22,
+  "dryrun_gates_note": "3 图 × 3 项通用门禁（画布内 / 同层不重叠 / 字号下限）+ 泳道 6 项 + 简报 5 项 + 手机卡 2 项专项门禁，每次渲染前重跑，失败即拒绝渲染",
+  "schedule_audit_checks_total": 8,
+  "schedule_audit_checks_passed": 8,
+  "cross_image_checks_total": 16,
+  "cross_image_checks_passed": 16,
+  "cross_image_checks_note": "content-map.json 的 CM-01～CM-16：三图任务集合、分钟与时钟换算、团队、依赖索引、完工、缓冲、关键路径链、关键路径标记集合、工作量、两个下界不取整、风险映射与风险时窗、等待列、空档与截止线、字号下限、字节恒等与 IHDR 尺寸",
+  "report_generator_fixes": 11,
+  "report_generator_fixes_note": "a24_map.py 的定位器 bug 共 11 处（含 must1 参数个数写错、子串与整串匹配混淆、循环变量泄漏、下界键名写成 lower_bound_minutes、关键路径标记把两层矩形只取第一层、简报双列的列偏移写错、任务集合比较漏了 total 键、cp_str 未定义、以及 dsl_matches_current_builder 与自身比较的无效断言）。改的是报告生成器，不影响任何已交付的PNG 或 .snapshot；其中 dsl_matches_current_builder 改为与 doc.build() 的真实哈希比较后才具备判定力",
+  "iterations_total": 13,
+  "iterations_note": "iterations.jsonl 共 13 条 = 6 条渲染请求 + 2 条看图轮次 + 2 条改稿与门禁 + 1 条门禁复跑 + 1 条跨图审计 + 2 条交付前复核。第一轮看图与前两轮渲染的时刻取自 requests.jsonl 的真实时间；阶段之间的阅读与改代码时间没有独立时间戳",
+  "final_images": 3,
+  "final_images_required": 3,
+  "final_images_note": "3 件 = 1920×1080 执行泳道 + 1200×1600 决策简报 + 720×1280 手机行动卡；PNG IHDR 实测尺寸一致；全部是服务返回的原始字节、未做后处理",
+  "json_artifacts": 7,
+  "json_artifacts_note": "schedule.json、schedule-audit.json、content-map.json、delivery-manifest.json、viewing-evidence.json、task-metrics.json（outputs）+ solve-result.json（tmp，求解器完整结果，便于复算）",
+  "report_artifacts": 1,
+  "report_artifacts_note": "snapshot-usage.md",
+  "events_logged": 1,
+  "events_logged_note": "a24_state.py 归档时追加 1 条 events.jsonl（A24 task_completed）。本题在 tasks_detail 里只有一条汇总记录，两轮渲染与四次看图不重复计入套级指标"
+ },
+ "schedule_result": {
+  "window_minutes": 420,
+  "origin": "2026-11-07T09:00+08:00",
+  "deadline": "2026-11-07T16:00+08:00",
+  "task_count": 12,
+  "flexible_tasks": [
+   "R05",
+   "R09",
+   "R12"
+  ],
+  "workload_minutes": {
+   "design": 255,
+   "engineering": 230,
+   "total": 485
+  },
+  "finish_minute": 260,
+  "finish_time": "2026-11-07T13:20+08:00",
+  "buffer_minutes": 160,
+  "critical_path_lower_bound_minutes": 255,
+  "critical_path": "R01→R04→R07→R09→R10→R12",
+  "workload_lower_bound_minutes": 242.5,
+  "workload_lower_bound_note": "485 / 2 = 242.5，保留小数、不提前取整",
+  "binding_lower_bound": {
+   "minutes": 255,
+   "which": "dependency_critical_path",
+   "note": "max(关键路径 255, 总工作量/2 242.5)；关键路径下界只依赖依赖与固定时长，与团队分配无关，因此是任何可行排程的下界"
+  },
+  "provably_globally_optimal": true,
+  "assignments_enumerated": 8,
+  "search_nodes": 1032,
+  "search_exhausted": true,
+  "aborted_by_node_cap": false,
+  "gap_to_lower_bound_minutes": 5,
+  "gap_note": "比关键路径下界多 5 分钟，全部在 R04→R07 之间：R07 等它的前驱 R05，而 R05 必须排在 engineering，design 装不下 R04+R05 共 90 分钟",
+  "idle_minutes": {
+   "design": 5,
+   "engineering": 30
+  },
+  "idle_minutes_note": "35 分钟 = 520 - 485（两团队在 09:00-13:20 的可用分钟减去总工作量）；按团队分布见 idle_minutes，区间见 idle_ranges",
+  "idle_ranges": {
+   "design": [
+    [
+     85,
+     90
+    ]
+   ],
+   "engineering": [
+    [
+     200,
+     205
+    ],
+    [
+     235,
+     260
+    ]
+   ]
+  },
+  "claim_wording": "声明的是「已核验的全局最优」（穷举证据），不是由下界推出；关键路径下界 255 分钟不紧，最优性不来自下界"
+ },
+ "counting_notes": [
+  "http_requests（6）与 successful_requests（6）是同一个口径，按 requests.jsonl 记录条数",
+  "request_duration_sum_seconds（36.485 s）与 elapsed_seconds（30122.0 s）不同口径、不可相加；前者是本地实测往返，后者是墙钟",
+  "phase_wall_seconds 之和大于 elapsed_seconds，因为它包含首条请求之前的求解与审计阶段；total_wall_seconds 才是覆盖全部工作的墙钟",
+  "completed_visual_iterations（1）与 report_generator_fixes（11）分开统计：前者改图并重渲，后者只改报告生成器、不影响任何已交付字节",
+  "queue_wait_seconds 为 null（不可观测），不是 0；rate_limit_wait_seconds 为 0 是因为确认全程没有 429/503 且 retry_after 全为 null",
+  "events_logged 在归档时由 a24_state.py 置 1；本题在 tasks_detail 里只记一条汇总，不把两轮渲染与四次看图重复计入套级指标"
+ ],
+ "capability_boundary": {
+  "source_docs": {
+   "path_base": "suite_root",
+   "paths": [
+    "tmp/r20261014T1536+0800-5f11da/_suite/docs/ai-guide.md",
+    "tmp/r20261014T1536+0800-5f11da/_suite/docs/openapi.yaml",
+    "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/"
+   ],
+   "fetched_at": "2026-10-14T15:14:10 GMT（见同目录 *.headers.txt 的 date 头）",
+   "note": "本题没有新增文档 HTTP 请求，只读已缓存的文档"
+  },
+  "requests_vs_support": [
+   {
+    "request": "Gantt / 泳道图",
+    "supported": true,
+    "how": "class-DOM DSL 的 Positioned + Container 手工排版，1 分钟 = 4 像素等比",
+    "evidence": "三张图全部由 a24_pages.py 用同一套 Doc 构造器生成，干跑门禁 board-06 复算 ppm=4"
+   },
+   {
+    "request": "时间轴等比 + 截止线",
+    "supported": true,
+    "how": "09:00 起点 206 px、4 px/min，16:00 截止线落在 1886 px",
+    "evidence": "content-map.json 的 CM-14 复算 P.px(420) == 1886.0 且缓冲带宽度等于 160 分钟 × 4"
+   },
+   {
+    "request": "可编辑矢量图（SVG）",
+    "supported": false,
+    "substitution": "PNG + 同名完整 .snapshot DSL",
+    "evidence": "服务 /snapshot 的 200 响应只有 image/png|jpeg|webp；可编辑性由交付的 .snapshot 承担"
+   },
+   {
+    "request": "甘特依赖箭头交叉连线",
+    "supported": true,
+    "how": "不用交叉线，改用编号索引（← R04, R05）表达依赖，避免连线盖住时间块",
+    "evidence": "TASK.md 允许「依赖可以用编号索引表达，不要画满交叉线盖住时间块」；CM-04 逐任务核对三图依赖索引与 schedule.json 一致"
+   },
+   {
+    "request": "全局最优证明",
+    "supported": true,
+    "how": "8 种指派全枚举 + 每种分支定界，1032 个节点、未触发安全阀",
+    "evidence": "schedule-audit.json.optimality.search：search_exhausted=true、aborted_by_node_cap=false"
+   }
+  ]
+ },
+ "deliverables": {
+  "path_base": "output_dir",
+  "images": [
+   {
+    "file": "execution-board.png",
+    "label": "execution-board",
+    "role": "1920×1080 横屏执行泳道",
+    "size": [
+     1920,
+     1080
+    ],
+    "bytes": 411103,
+    "png_sha256": "1b8421119daff6867cb227980c75981cc9cd7f29f2d87129122ca858a7db4a19",
+    "request_id": "req-a24-execution-board-4deee3",
+    "bytes_unchanged": true,
+    "render_rounds": 2
+   },
+   {
+    "file": "decision-brief.png",
+    "label": "decision-brief",
+    "role": "1200×1600 发布演练决策简报",
+    "size": [
+     1200,
+     1600
+    ],
+    "bytes": 484497,
+    "png_sha256": "d7a124e4db407ceff41ae144d31ce2f62e71c691550777a618fd268f77e30c72",
+    "request_id": "req-a24-decision-brief-c7590d",
+    "bytes_unchanged": true,
+    "render_rounds": 2
+   },
+   {
+    "file": "action-card.png",
+    "label": "action-card",
+    "role": "720×1280 手机行动卡",
+    "size": [
+     720,
+     1280
+    ],
+    "bytes": 265676,
+    "png_sha256": "1ad47c515d7214c09b87d01d3269cbd8360144e141cb537f2d7359977aa7745d",
+    "request_id": "req-a24-action-card-ab9c3a",
+    "bytes_unchanged": true,
+    "render_rounds": 2
+   }
+  ],
+  "snapshots": [
+   {
+    "file": "execution-board.snapshot",
+    "bytes": 49556,
+    "snapshot_sha256": "7662afd24e885b367b093dfdf9be60e2291c3b3a02fdbb8b10f1bb5dfb0d3bbb",
+    "line_ending": "crlf",
+    "matches_current_source": false,
+    "matches_current_source_normalized": true,
+    "matches_current_source_note": "落盘 .snapshot 用 CRLF（客户端按 Windows 默认换行写出的请求体），当前构建器生成 LF；换行归一化后逐字节相同，所以原始字节口径为 false、归一化口径为 true",
+    "fragments": 293,
+    "text_elements": 172,
+    "rect_elements": 121
+   },
+   {
+    "file": "decision-brief.snapshot",
+    "bytes": 30889,
+    "snapshot_sha256": "796dbf2d85bf392ac8bdddeea4408b7ac93b108551750b253ec245097d974bb4",
+    "line_ending": "crlf",
+    "matches_current_source": false,
+    "matches_current_source_normalized": true,
+    "matches_current_source_note": "落盘 .snapshot 用 CRLF（客户端按 Windows 默认换行写出的请求体），当前构建器生成 LF；换行归一化后逐字节相同，所以原始字节口径为 false、归一化口径为 true",
+    "fragments": 155,
+    "text_elements": 107,
+    "rect_elements": 48
+   },
+   {
+    "file": "action-card.snapshot",
+    "bytes": 20141,
+    "snapshot_sha256": "5ac172b4a2fefc3c60dc95800fabc88b5d02b506209fdfc12f2edbf8d4955185",
+    "line_ending": "crlf",
+    "matches_current_source": false,
+    "matches_current_source_normalized": true,
+    "matches_current_source_note": "落盘 .snapshot 用 CRLF（客户端按 Windows 默认换行写出的请求体），当前构建器生成 LF；换行归一化后逐字节相同，所以原始字节口径为 false、归一化口径为 true",
+    "fragments": 110,
+    "text_elements": 64,
+    "rect_elements": 46
+   }
+  ],
+  "json": [
+   {
+    "file": "schedule.json",
+    "bytes": 7832,
+    "sha256": "5806a710c3f1061e0c01f94b2571a27dca01a0365f52053a49f97bcece9a3e06",
+    "note": "排程：12 任务精确起止 / 团队 / 依赖，带时区钟表时间"
+   },
+   {
+    "file": "schedule-audit.json",
+    "bytes": 36527,
+    "sha256": "c7cb7ca1adbc1100aeb0bb94a5e770b08adb6b6756fc0ee80c98cb4a5b559ac3",
+    "note": "审计：8 项约束检查、两个下界、完工与缓冲、最优性搜索"
+   },
+   {
+    "file": "content-map.json",
+    "bytes": 98680,
+    "sha256": "1f470b8e06f7e350c2e76e0b61367ec20f78f8cfbefa7298e344e1f1bec81204",
+    "note": "跨图内容映射、11 条声明与 16 项一致性检查"
+   },
+   {
+    "file": "delivery-manifest.json",
+    "bytes": 6694,
+    "sha256": "dd568deb0d621e242379b5c023ccb0f4056ecd3dfcdc1daddb1550e63bd507f9",
+    "note": "交付清单：字节、哈希、请求与渲染历史"
+   },
+   {
+    "file": "viewing-evidence.json",
+    "bytes": 14706,
+    "sha256": "6ae9b21acf75ca335168e43d250bf5df67cc45a58c8d4eec063becd5244fa217",
+    "note": "实际看图事件、当轮发现与门禁变更"
+   },
+   {
+    "file": "task-metrics.json",
+    "bytes": null,
+    "sha256": null,
+    "note": "本文件自身，写入后不自算哈希"
+   },
+   {
+    "file": "solve-result.json",
+    "path_base": "tmp",
+    "bytes": 23166,
+    "sha256": "1945c96a228d6db120b5d3079203e855cdbdc7f122a75115077b4a1e7bb71237",
+    "note": "求解器完整结果（含 8 种指派的每指派最优），便于复算"
+   }
+  ],
+  "reports": []
+ },
+ "unresolved_issues": [
+  {
+   "id": "a24-u1",
+   "issue": "关键路径下界 255 分钟不紧，排程比下界多 5 分钟",
+   "why": "R05 若留在 design 会与 R04 共占 90 分钟，design 一个团队装不下；把它移到 engineering 后，R07 只能等 R05 到第 90 分钟开工，比关键路径下界的第 85 分钟晚 5 分钟",
+   "impact": "完工 13:20 而不是 13:15，缓冲 160 分钟而不是 165 分钟；仍在 420 分钟窗口内，不改变任何结论",
+   "mitigation": "这是资源约束与依赖共同决定的结果，已穷举证明 260 分钟不可再压；三张图都把这 5 分钟的来源写出来（执行泳道图例说明、简报排程依据第 3 条、schedule-audit.json 的 gap_analysis），不把它隐藏成「达到下界」",
+   "status": "disclosed"
+  },
+  {
+   "id": "a24-u2",
+   "issue": "第一轮看图与前两轮渲染的时刻没有独立的事件时间戳",
+   "why": "本题的逐条看图留痕是在上下文压缩后按 requests.jsonl 的真实请求时刻重建的，逐件打开的具体时刻没有实时记录",
+   "impact": "viewing-evidence.json 里第一轮的 6 次视图只给 opened_after 区间并标 retroactive=true，不能给出精确到分钟的打开时刻",
+   "mitigation": "每条视图都写出实际读到的内容与发现，时间只给区间不回填精确值；交付前最后 3 次视图是本窗口内实际发生并有记录的",
+   "status": "disclosed"
+  },
+  {
+   "id": "a24-u3",
+   "issue": "风险文案有一处排版归一化，不是逐字照抄",
+   "why": "inputs/release.json 的 K1 对策是「保留响应并依据Retry-After重试」，三张图渲染成「保留响应并依据 Retry-After 重试」",
+   "impact": "词序与含义完全不变，只在中西文交界处各加一个半角空格；机器比对会显示字符串不相等",
+   "mitigation": "content-map.json 的 text_normalization TN-01 明确记录原文、渲染文本、差异与「语义未变」，其余 11 处风险文案逐字照抄",
+   "status": "disclosed"
+  }
+ ]
+}

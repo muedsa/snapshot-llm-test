@@ -1,0 +1,5681 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "A09",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "title": "A09 十二变换图谱 · 几何与像素审计",
+  "artifacts": {
+    "png": "transform-atlas.png",
+    "dsl": "transform-atlas.snapshot",
+    "generator": "tmp/r20261014T1536+0800-5f11da/A09/gen/a09_atlas.py",
+    "pixel_tool": "tmp/r20261014T1536+0800-5f11da/A09/gen/a09_atlas_check.py",
+    "prediction_dump": "tmp/r20261014T1536+0800-5f11da/A09/atlas-meta.json",
+    "measurement_dump": "tmp/r20261014T1536+0800-5f11da/A09/atlas-result.json",
+    "requests": "tmp/r20261014T1536+0800-5f11da/A09/requests.jsonl"
+  },
+  "units": {
+    "length": "px",
+    "angle": "deg",
+    "matrix": "列主序 4×4，16 个有限数"
+  },
+  "coordinate_system": {
+    "source_local": "印章左上角为原点，x 向右、y 向下，0..120 px（inputs/stamp.json）",
+    "pivot_local": [
+      60.0,
+      60.0
+    ],
+    "canvas": {
+      "size": [
+        1600.0,
+        1200.0
+      ],
+      "orientation": "x 向右、y 向下，故「顺时针」为图像（屏幕）方向"
+    },
+    "local_to_canvas": "先施加组合变换 M 得局部坐标，再加本格印章盒左上角 box_origin_canvas",
+    "grid": {
+      "origin": [
+        152.0,
+        193.0
+      ],
+      "cell": [
+        300.0,
+        250.0
+      ],
+      "gap": 32.0,
+      "cols": 4,
+      "rows": 3,
+      "width": 1296.0,
+      "height": 814.0,
+      "margin_left": 152.0,
+      "margin_right": 152.0,
+      "margin_top": 193.0,
+      "margin_bottom": 193.0,
+      "col_centers": [
+        302.0,
+        634.0,
+        966.0,
+        1298.0
+      ],
+      "row_centers": [
+        318.0,
+        600.0,
+        882.0
+      ]
+    },
+    "rotation_convention": "rotCW(90) 把 (120,60) 送到 (60,120)，即右→下→左→上",
+    "composition_order": "M = M_n ∘ … ∘ M_1，列表先出现的操作先施加"
+  },
+  "source_stamp": {
+    "size": [
+      120,
+      120
+    ],
+    "pivot": [
+      60,
+      60
+    ],
+    "rectangles": [
+      {
+        "xywh": [
+          8,
+          8,
+          28,
+          92
+        ],
+        "color": "#E54B4B"
+      },
+      {
+        "xywh": [
+          36,
+          72,
+          68,
+          28
+        ],
+        "color": "#2364DB"
+      },
+      {
+        "xywh": [
+          64,
+          8,
+          40,
+          28
+        ],
+        "color": "#EAB53B"
+      }
+    ],
+    "dot": {
+      "center": [
+        91,
+        49
+      ],
+      "radius": 8,
+      "color": "#111111"
+    },
+    "asymmetry_note": "圆点 (91,49) 使印章无对称轴，任何真变换都能从圆点位置读出方向"
+  },
+  "transform_contract_measured": {
+    "attribute": "matrix（必填，16 个有限数，外层圆括号、无空格）",
+    "parsing": "rendering 端只取 2×2 线性部分与 alignment；matrix 的 tx/ty 无论 alignment 取值都被丢弃",
+    "pivot_source": "alignment=CENTER → 子盒中心；省略 → 子盒左上角",
+    "final_form_used": "alignment=\"CENTER\" + 完整仿射矩阵（含 tx/ty）",
+    "why": "对以 (60,60) 为轴的变换，2×2 线性部分即正确，而 matrix 属性字面等于「以局部 (60,60) 为轴的最终组合变换」，满足题面「必须用 Transform.matrix 表示」；已在本文件 transforms 全部 12 个矩阵上逐形状验证（见 verification）",
+    "probe_evidence": [
+      "tmp/r20261014T1536+0800-5f11da/A09/probe-result.json",
+      "tmp/r20261014T1536+0800-5f11da/A09/probe3-result.json",
+      "tmp/r20261014T1536+0800-5f11da/A09/probe4-result.json"
+    ]
+  },
+  "verification": {
+    "criterion": "每形状 |形心预测 − 形心实测| ≤ 1.5 px 判 PASS；1.5–2.2 px 判 PASS_AA（反走样例外，仅出现在 30° 旋转与 0.75/1.25 非整数缩放的栅格化边缘）；> 2.2 px 判 FAIL",
+    "anti_aliasing_exception": "斜边与非整数缩放把墨迹摊到相邻像素，bbox 与形心会有 ≤1 px 的半像素级偏移；这类形状按 PASS_AA 记录并列出，不虚报为严格 PASS",
+    "method": [
+      "1) 用 a09_geom.py 从 inputs 的 3 个矩形与圆点算出每格的组合矩阵 M，逐形得到局部预测点集（矩形四角、圆周边界 72 点采样）；",
+      "2) 预测画布坐标 = 局部像 + 该格印章盒左上角（120×120 参考框左上）；",
+      "3) 解码最终 PNG（outputs/<run_id>/A09/transform-atlas.png）的未预乘 8 位 RGBA，在每格舞台中心 ±100 的 200×200 窗口内按形状颜色做掩码，取该形状的实测 bbox 与形心；窗口完整覆盖该格变换后的全部墨迹，且不包含任何深色说明文字（INK #0F172A 与圆点 #111111 距离仅 25.7）；",
+      "4) 逐形比较并记录分量误差；同时对整图实际打开查看（含放大裁切）做视觉复核，确认 T07≠T08、T11≠T12、T10 圆点为椭圆、刻度与十字齐全；",
+      "5) 预测值与实测值不互相修正，也不对最终 PNG 做任何像素后处理。"
+    ],
+    "shapes_checked": 48,
+    "shapes_pass": 42,
+    "shapes_pass_anti_aliasing": 6,
+    "shapes_fail": 0,
+    "max_component_error_px": 0.121,
+    "cells_verdict": {
+      "PASS": 8,
+      "PASS_AA": 4,
+      "FAIL": 0,
+      "NO_INK": 0
+    },
+    "visual_check": {
+      "opened_full_image": true,
+      "opened_crops": [
+        "note2-line",
+        "note1-line",
+        "label-T07-T08",
+        "label-T11-T12",
+        "legend-footer",
+        "stage-T11",
+        "stage-T10",
+        "stage-T07-T08"
+      ],
+      "crop_dir": "tmp/r20261014T1536+0800-5f11da/A09/preview/crops-final/",
+      "crop_dir_v1_defect": "tmp/r20261014T1536+0800-5f11da/A09/preview/crops-v1-defect/",
+      "crops_tool": "tmp/r20261014T1536+0800-5f11da/A09/gen/a09_crops.py"
+    }
+  },
+  "algebra_cross_checks": {
+    "T07_then_T08": "T07 ∘ T08 = rotate180（实测 [-1,0,0,-1,120,120]），故 T07 与 T08 相差 180° 旋转，不是互为镜像",
+    "det": {
+      "T07": -1,
+      "T08": -1,
+      "T11": 1,
+      "T12": -1
+    },
+    "note": "图例尾注按此结论书写；核验脚本 tmp/r20261014T1536+0800-5f11da/A09/gen/a09_algebra_check.py"
+  },
+  "transforms": [
+    {
+      "id": "T01",
+      "index": 1,
+      "row": 1,
+      "col": 1,
+      "operations_input_order": [
+        [
+          "rotate_clockwise_deg",
+          0
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "rotate_clockwise_deg",
+          0
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": 1.0,
+        "b": 0.0,
+        "e": 0.0,
+        "f": 1.0,
+        "tx": 0.0,
+        "ty": 0.0
+      },
+      "determinant": 1.0,
+      "kind": "纯旋转（等距）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        152.0,
+        193.0
+      ],
+      "cell_center_canvas": [
+        302.0,
+        318.0
+      ],
+      "stamp_box_origin_canvas": [
+        242.0,
+        283.0
+      ],
+      "stamp_box_center_canvas": [
+        302.0,
+        343.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              250.0,
+              291.0
+            ],
+            [
+              278.0,
+              291.0
+            ],
+            [
+              278.0,
+              383.0
+            ],
+            [
+              250.0,
+              383.0
+            ]
+          ],
+          "bbox_local_after": [
+            8.0,
+            8.0,
+            36.0,
+            100.0
+          ],
+          "bbox_canvas": [
+            250.0,
+            291.0,
+            278.0,
+            383.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              278.0,
+              355.0
+            ],
+            [
+              346.0,
+              355.0
+            ],
+            [
+              346.0,
+              383.0
+            ],
+            [
+              278.0,
+              383.0
+            ]
+          ],
+          "bbox_local_after": [
+            36.0,
+            72.0,
+            104.0,
+            100.0
+          ],
+          "bbox_canvas": [
+            278.0,
+            355.0,
+            346.0,
+            383.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              306.0,
+              291.0
+            ],
+            [
+              346.0,
+              291.0
+            ],
+            [
+              346.0,
+              319.0
+            ],
+            [
+              306.0,
+              319.0
+            ]
+          ],
+          "bbox_local_after": [
+            64.0,
+            8.0,
+            104.0,
+            36.0
+          ],
+          "bbox_canvas": [
+            306.0,
+            291.0,
+            346.0,
+            319.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          91.0,
+          49.0
+        ],
+        "center_canvas": [
+          333.0,
+          332.0
+        ],
+        "equivalent_radii_after_x_y": [
+          8.0,
+          8.0
+        ],
+        "bbox_local_after": [
+          83.0,
+          41.0,
+          99.0,
+          57.0
+        ],
+        "bbox_canvas": [
+          325.0,
+          324.0,
+          341.0,
+          340.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        0.0,
+        0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        242.0,
+        283.0,
+        362.0,
+        403.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        202,
+        243,
+        402,
+        443
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            250.0,
+            291.0,
+            278.0,
+            383.0
+          ],
+          "measured_bbox_canvas": [
+            250.0,
+            291.0,
+            277.0,
+            382.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            278.0,
+            355.0,
+            346.0,
+            383.0
+          ],
+          "measured_bbox_canvas": [
+            278.0,
+            355.0,
+            345.0,
+            382.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            306.0,
+            291.0,
+            346.0,
+            319.0
+          ],
+          "measured_bbox_canvas": [
+            306.0,
+            291.0,
+            345.0,
+            318.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            325.0,
+            324.0,
+            341.0,
+            340.0
+          ],
+          "measured_bbox_canvas": [
+            325.0,
+            324.0,
+            340.0,
+            339.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        250.0,
+        291.0,
+        346.0,
+        383.0
+      ],
+      "bbox_measured_canvas": [
+        250.0,
+        291.0,
+        345.0,
+        382.0
+      ]
+    },
+    {
+      "id": "T02",
+      "index": 2,
+      "row": 1,
+      "col": 2,
+      "operations_input_order": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(0.0000000,1.0000000,0.0000000,0.0000000,-1.0000000,0.0000000,0.0000000,0.0000000,120.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        120.0,
+        -0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": 0.0,
+        "b": -1.0,
+        "e": 1.0,
+        "f": 0.0,
+        "tx": 120.0,
+        "ty": -0.0
+      },
+      "determinant": 1.0,
+      "kind": "纯旋转（等距）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        484.0,
+        193.0
+      ],
+      "cell_center_canvas": [
+        634.0,
+        318.0
+      ],
+      "stamp_box_origin_canvas": [
+        574.0,
+        283.0
+      ],
+      "stamp_box_center_canvas": [
+        634.0,
+        343.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              112.0,
+              8.0
+            ],
+            [
+              112.0,
+              36.0
+            ],
+            [
+              20.0,
+              36.0
+            ],
+            [
+              20.0,
+              8.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              686.0,
+              291.0
+            ],
+            [
+              686.0,
+              319.0
+            ],
+            [
+              594.0,
+              319.0
+            ],
+            [
+              594.0,
+              291.0
+            ]
+          ],
+          "bbox_local_after": [
+            20.0,
+            8.0,
+            112.0,
+            36.0
+          ],
+          "bbox_canvas": [
+            594.0,
+            291.0,
+            686.0,
+            319.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              48.0,
+              36.0
+            ],
+            [
+              48.0,
+              104.0
+            ],
+            [
+              20.0,
+              104.0
+            ],
+            [
+              20.0,
+              36.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              622.0,
+              319.0
+            ],
+            [
+              622.0,
+              387.0
+            ],
+            [
+              594.0,
+              387.0
+            ],
+            [
+              594.0,
+              319.0
+            ]
+          ],
+          "bbox_local_after": [
+            20.0,
+            36.0,
+            48.0,
+            104.0
+          ],
+          "bbox_canvas": [
+            594.0,
+            319.0,
+            622.0,
+            387.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              112.0,
+              64.0
+            ],
+            [
+              112.0,
+              104.0
+            ],
+            [
+              84.0,
+              104.0
+            ],
+            [
+              84.0,
+              64.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              686.0,
+              347.0
+            ],
+            [
+              686.0,
+              387.0
+            ],
+            [
+              658.0,
+              387.0
+            ],
+            [
+              658.0,
+              347.0
+            ]
+          ],
+          "bbox_local_after": [
+            84.0,
+            64.0,
+            112.0,
+            104.0
+          ],
+          "bbox_canvas": [
+            658.0,
+            347.0,
+            686.0,
+            387.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          71.0,
+          91.0
+        ],
+        "center_canvas": [
+          645.0,
+          374.0
+        ],
+        "equivalent_radii_after_x_y": [
+          0.0,
+          0.0
+        ],
+        "bbox_local_after": [
+          21.0,
+          63.0,
+          37.0,
+          79.0
+        ],
+        "bbox_canvas": [
+          595.0,
+          346.0,
+          611.0,
+          362.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        0.0,
+        -0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        574.0,
+        283.0,
+        694.0,
+        403.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        534,
+        243,
+        734,
+        443
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            594.0,
+            291.0,
+            686.0,
+            319.0
+          ],
+          "measured_bbox_canvas": [
+            594.0,
+            291.0,
+            685.0,
+            318.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            594.0,
+            319.0,
+            622.0,
+            387.0
+          ],
+          "measured_bbox_canvas": [
+            594.0,
+            319.0,
+            621.0,
+            386.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            658.0,
+            347.0,
+            686.0,
+            387.0
+          ],
+          "measured_bbox_canvas": [
+            658.0,
+            347.0,
+            685.0,
+            386.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            637.0,
+            366.0,
+            653.0,
+            382.0
+          ],
+          "measured_bbox_canvas": [
+            637.0,
+            366.0,
+            652.0,
+            381.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        594.0,
+        291.0,
+        686.0,
+        387.0
+      ],
+      "bbox_measured_canvas": [
+        594.0,
+        291.0,
+        685.0,
+        386.0
+      ]
+    },
+    {
+      "id": "T03",
+      "index": 3,
+      "row": 1,
+      "col": 3,
+      "operations_input_order": [
+        [
+          "rotate_clockwise_deg",
+          180
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "rotate_clockwise_deg",
+          180
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(-1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,-1.0000000,0.0000000,0.0000000,120.0000000,120.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        -1.0,
+        0.0,
+        0.0,
+        120.0,
+        120.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": -1.0,
+        "b": -0.0,
+        "e": 0.0,
+        "f": -1.0,
+        "tx": 120.0,
+        "ty": 120.0
+      },
+      "determinant": 1.0,
+      "kind": "纯旋转（等距）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        816.0,
+        193.0
+      ],
+      "cell_center_canvas": [
+        966.0,
+        318.0
+      ],
+      "stamp_box_origin_canvas": [
+        906.0,
+        283.0
+      ],
+      "stamp_box_center_canvas": [
+        966.0,
+        343.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              112.0,
+              112.0
+            ],
+            [
+              84.0,
+              112.0
+            ],
+            [
+              84.0,
+              20.0
+            ],
+            [
+              112.0,
+              20.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1018.0,
+              395.0
+            ],
+            [
+              990.0,
+              395.0
+            ],
+            [
+              990.0,
+              303.0
+            ],
+            [
+              1018.0,
+              303.0
+            ]
+          ],
+          "bbox_local_after": [
+            84.0,
+            20.0,
+            112.0,
+            112.0
+          ],
+          "bbox_canvas": [
+            990.0,
+            303.0,
+            1018.0,
+            395.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              84.0,
+              48.0
+            ],
+            [
+              16.0,
+              48.0
+            ],
+            [
+              16.0,
+              20.0
+            ],
+            [
+              84.0,
+              20.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              990.0,
+              331.0
+            ],
+            [
+              922.0,
+              331.0
+            ],
+            [
+              922.0,
+              303.0
+            ],
+            [
+              990.0,
+              303.0
+            ]
+          ],
+          "bbox_local_after": [
+            16.0,
+            20.0,
+            84.0,
+            48.0
+          ],
+          "bbox_canvas": [
+            922.0,
+            303.0,
+            990.0,
+            331.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              56.0,
+              112.0
+            ],
+            [
+              16.0,
+              112.0
+            ],
+            [
+              16.0,
+              84.0
+            ],
+            [
+              56.0,
+              84.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              962.0,
+              395.0
+            ],
+            [
+              922.0,
+              395.0
+            ],
+            [
+              922.0,
+              367.0
+            ],
+            [
+              962.0,
+              367.0
+            ]
+          ],
+          "bbox_local_after": [
+            16.0,
+            84.0,
+            56.0,
+            112.0
+          ],
+          "bbox_canvas": [
+            922.0,
+            367.0,
+            962.0,
+            395.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          29.0,
+          71.0
+        ],
+        "center_canvas": [
+          935.0,
+          354.0
+        ],
+        "equivalent_radii_after_x_y": [
+          8.0,
+          8.0
+        ],
+        "bbox_local_after": [
+          83.0,
+          41.0,
+          99.0,
+          57.0
+        ],
+        "bbox_canvas": [
+          989.0,
+          324.0,
+          1005.0,
+          340.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        0.0,
+        -0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        906.0,
+        283.0,
+        1026.0,
+        403.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        866,
+        243,
+        1066,
+        443
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            990.0,
+            303.0,
+            1018.0,
+            395.0
+          ],
+          "measured_bbox_canvas": [
+            990.0,
+            303.0,
+            1017.0,
+            394.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            922.0,
+            303.0,
+            990.0,
+            331.0
+          ],
+          "measured_bbox_canvas": [
+            922.0,
+            303.0,
+            989.0,
+            330.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            922.0,
+            367.0,
+            962.0,
+            395.0
+          ],
+          "measured_bbox_canvas": [
+            922.0,
+            367.0,
+            961.0,
+            394.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            927.0,
+            346.0,
+            943.0,
+            362.0
+          ],
+          "measured_bbox_canvas": [
+            927.0,
+            346.0,
+            942.0,
+            361.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        922.0,
+        303.0,
+        1018.0,
+        395.0
+      ],
+      "bbox_measured_canvas": [
+        922.0,
+        303.0,
+        1017.0,
+        394.0
+      ]
+    },
+    {
+      "id": "T04",
+      "index": 4,
+      "row": 1,
+      "col": 4,
+      "operations_input_order": [
+        [
+          "rotate_clockwise_deg",
+          270
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "rotate_clockwise_deg",
+          270
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(0.0000000,-1.0000000,0.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,120.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        -0.0,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        -0.0,
+        0.0,
+        0.0,
+        0.0,
+        120.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": -0.0,
+        "b": 1.0,
+        "e": -1.0,
+        "f": -0.0,
+        "tx": 0.0,
+        "ty": 120.0
+      },
+      "determinant": 1.0,
+      "kind": "纯旋转（等距）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        1148.0,
+        193.0
+      ],
+      "cell_center_canvas": [
+        1298.0,
+        318.0
+      ],
+      "stamp_box_origin_canvas": [
+        1238.0,
+        283.0
+      ],
+      "stamp_box_center_canvas": [
+        1298.0,
+        343.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              8.0,
+              112.0
+            ],
+            [
+              8.0,
+              84.0
+            ],
+            [
+              100.0,
+              84.0
+            ],
+            [
+              100.0,
+              112.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              395.0
+            ],
+            [
+              1246.0,
+              367.0
+            ],
+            [
+              1338.0,
+              367.0
+            ],
+            [
+              1338.0,
+              395.0
+            ]
+          ],
+          "bbox_local_after": [
+            8.0,
+            84.0,
+            100.0,
+            112.0
+          ],
+          "bbox_canvas": [
+            1246.0,
+            367.0,
+            1338.0,
+            395.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              72.0,
+              84.0
+            ],
+            [
+              72.0,
+              16.0
+            ],
+            [
+              100.0,
+              16.0
+            ],
+            [
+              100.0,
+              84.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1310.0,
+              367.0
+            ],
+            [
+              1310.0,
+              299.0
+            ],
+            [
+              1338.0,
+              299.0
+            ],
+            [
+              1338.0,
+              367.0
+            ]
+          ],
+          "bbox_local_after": [
+            72.0,
+            16.0,
+            100.0,
+            84.0
+          ],
+          "bbox_canvas": [
+            1310.0,
+            299.0,
+            1338.0,
+            367.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              8.0,
+              56.0
+            ],
+            [
+              8.0,
+              16.0
+            ],
+            [
+              36.0,
+              16.0
+            ],
+            [
+              36.0,
+              56.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              339.0
+            ],
+            [
+              1246.0,
+              299.0
+            ],
+            [
+              1274.0,
+              299.0
+            ],
+            [
+              1274.0,
+              339.0
+            ]
+          ],
+          "bbox_local_after": [
+            8.0,
+            16.0,
+            36.0,
+            56.0
+          ],
+          "bbox_canvas": [
+            1246.0,
+            299.0,
+            1274.0,
+            339.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          49.0,
+          29.0
+        ],
+        "center_canvas": [
+          1287.0,
+          312.0
+        ],
+        "equivalent_radii_after_x_y": [
+          0.0,
+          0.0
+        ],
+        "bbox_local_after": [
+          21.0,
+          63.0,
+          37.0,
+          79.0
+        ],
+        "bbox_canvas": [
+          1259.0,
+          346.0,
+          1275.0,
+          362.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        -0.0,
+        -0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        1238.0,
+        283.0,
+        1358.0,
+        403.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        1198,
+        243,
+        1398,
+        443
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            1246.0,
+            367.0,
+            1338.0,
+            395.0
+          ],
+          "measured_bbox_canvas": [
+            1246.0,
+            367.0,
+            1337.0,
+            394.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            1310.0,
+            299.0,
+            1338.0,
+            367.0
+          ],
+          "measured_bbox_canvas": [
+            1310.0,
+            299.0,
+            1337.0,
+            366.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            1246.0,
+            299.0,
+            1274.0,
+            339.0
+          ],
+          "measured_bbox_canvas": [
+            1246.0,
+            299.0,
+            1273.0,
+            338.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            1279.0,
+            304.0,
+            1295.0,
+            320.0
+          ],
+          "measured_bbox_canvas": [
+            1279.0,
+            304.0,
+            1294.0,
+            319.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        1246.0,
+        299.0,
+        1338.0,
+        395.0
+      ],
+      "bbox_measured_canvas": [
+        1246.0,
+        299.0,
+        1337.0,
+        394.0
+      ]
+    },
+    {
+      "id": "T05",
+      "index": 5,
+      "row": 2,
+      "col": 1,
+      "operations_input_order": [
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(-1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000,0.0000000,0.0000000,120.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        120.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": -1.0,
+        "b": 0.0,
+        "e": 0.0,
+        "f": 1.0,
+        "tx": 120.0,
+        "ty": 0.0
+      },
+      "determinant": -1.0,
+      "kind": "反射（定向反转）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        152.0,
+        475.0
+      ],
+      "cell_center_canvas": [
+        302.0,
+        600.0
+      ],
+      "stamp_box_origin_canvas": [
+        242.0,
+        565.0
+      ],
+      "stamp_box_center_canvas": [
+        302.0,
+        625.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              112.0,
+              8.0
+            ],
+            [
+              84.0,
+              8.0
+            ],
+            [
+              84.0,
+              100.0
+            ],
+            [
+              112.0,
+              100.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              354.0,
+              573.0
+            ],
+            [
+              326.0,
+              573.0
+            ],
+            [
+              326.0,
+              665.0
+            ],
+            [
+              354.0,
+              665.0
+            ]
+          ],
+          "bbox_local_after": [
+            84.0,
+            8.0,
+            112.0,
+            100.0
+          ],
+          "bbox_canvas": [
+            326.0,
+            573.0,
+            354.0,
+            665.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              84.0,
+              72.0
+            ],
+            [
+              16.0,
+              72.0
+            ],
+            [
+              16.0,
+              100.0
+            ],
+            [
+              84.0,
+              100.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              326.0,
+              637.0
+            ],
+            [
+              258.0,
+              637.0
+            ],
+            [
+              258.0,
+              665.0
+            ],
+            [
+              326.0,
+              665.0
+            ]
+          ],
+          "bbox_local_after": [
+            16.0,
+            72.0,
+            84.0,
+            100.0
+          ],
+          "bbox_canvas": [
+            258.0,
+            637.0,
+            326.0,
+            665.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              56.0,
+              8.0
+            ],
+            [
+              16.0,
+              8.0
+            ],
+            [
+              16.0,
+              36.0
+            ],
+            [
+              56.0,
+              36.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              298.0,
+              573.0
+            ],
+            [
+              258.0,
+              573.0
+            ],
+            [
+              258.0,
+              601.0
+            ],
+            [
+              298.0,
+              601.0
+            ]
+          ],
+          "bbox_local_after": [
+            16.0,
+            8.0,
+            56.0,
+            36.0
+          ],
+          "bbox_canvas": [
+            258.0,
+            573.0,
+            298.0,
+            601.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          29.0,
+          49.0
+        ],
+        "center_canvas": [
+          271.0,
+          614.0
+        ],
+        "equivalent_radii_after_x_y": [
+          8.0,
+          8.0
+        ],
+        "bbox_local_after": [
+          83.0,
+          41.0,
+          99.0,
+          57.0
+        ],
+        "bbox_canvas": [
+          325.0,
+          606.0,
+          341.0,
+          622.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        0.0,
+        0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        242.0,
+        565.0,
+        362.0,
+        685.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        202,
+        525,
+        402,
+        725
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            326.0,
+            573.0,
+            354.0,
+            665.0
+          ],
+          "measured_bbox_canvas": [
+            326.0,
+            573.0,
+            353.0,
+            664.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            258.0,
+            637.0,
+            326.0,
+            665.0
+          ],
+          "measured_bbox_canvas": [
+            258.0,
+            637.0,
+            325.0,
+            664.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            258.0,
+            573.0,
+            298.0,
+            601.0
+          ],
+          "measured_bbox_canvas": [
+            258.0,
+            573.0,
+            297.0,
+            600.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            263.0,
+            606.0,
+            279.0,
+            622.0
+          ],
+          "measured_bbox_canvas": [
+            263.0,
+            606.0,
+            278.0,
+            621.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        258.0,
+        573.0,
+        354.0,
+        665.0
+      ],
+      "bbox_measured_canvas": [
+        258.0,
+        573.0,
+        353.0,
+        664.0
+      ]
+    },
+    {
+      "id": "T06",
+      "index": 6,
+      "row": 2,
+      "col": 2,
+      "operations_input_order": [
+        [
+          "mirror_vertical",
+          true
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "mirror_vertical",
+          true
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,-1.0000000,0.0000000,0.0000000,0.0000000,120.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        120.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": 1.0,
+        "b": 0.0,
+        "e": 0.0,
+        "f": -1.0,
+        "tx": 0.0,
+        "ty": 120.0
+      },
+      "determinant": -1.0,
+      "kind": "反射（定向反转）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        484.0,
+        475.0
+      ],
+      "cell_center_canvas": [
+        634.0,
+        600.0
+      ],
+      "stamp_box_origin_canvas": [
+        574.0,
+        565.0
+      ],
+      "stamp_box_center_canvas": [
+        634.0,
+        625.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              8.0,
+              112.0
+            ],
+            [
+              36.0,
+              112.0
+            ],
+            [
+              36.0,
+              20.0
+            ],
+            [
+              8.0,
+              20.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              582.0,
+              677.0
+            ],
+            [
+              610.0,
+              677.0
+            ],
+            [
+              610.0,
+              585.0
+            ],
+            [
+              582.0,
+              585.0
+            ]
+          ],
+          "bbox_local_after": [
+            8.0,
+            20.0,
+            36.0,
+            112.0
+          ],
+          "bbox_canvas": [
+            582.0,
+            585.0,
+            610.0,
+            677.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              36.0,
+              48.0
+            ],
+            [
+              104.0,
+              48.0
+            ],
+            [
+              104.0,
+              20.0
+            ],
+            [
+              36.0,
+              20.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              610.0,
+              613.0
+            ],
+            [
+              678.0,
+              613.0
+            ],
+            [
+              678.0,
+              585.0
+            ],
+            [
+              610.0,
+              585.0
+            ]
+          ],
+          "bbox_local_after": [
+            36.0,
+            20.0,
+            104.0,
+            48.0
+          ],
+          "bbox_canvas": [
+            610.0,
+            585.0,
+            678.0,
+            613.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              64.0,
+              112.0
+            ],
+            [
+              104.0,
+              112.0
+            ],
+            [
+              104.0,
+              84.0
+            ],
+            [
+              64.0,
+              84.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              638.0,
+              677.0
+            ],
+            [
+              678.0,
+              677.0
+            ],
+            [
+              678.0,
+              649.0
+            ],
+            [
+              638.0,
+              649.0
+            ]
+          ],
+          "bbox_local_after": [
+            64.0,
+            84.0,
+            104.0,
+            112.0
+          ],
+          "bbox_canvas": [
+            638.0,
+            649.0,
+            678.0,
+            677.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          91.0,
+          71.0
+        ],
+        "center_canvas": [
+          665.0,
+          636.0
+        ],
+        "equivalent_radii_after_x_y": [
+          8.0,
+          8.0
+        ],
+        "bbox_local_after": [
+          83.0,
+          41.0,
+          99.0,
+          57.0
+        ],
+        "bbox_canvas": [
+          657.0,
+          606.0,
+          673.0,
+          622.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        0.0,
+        0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        574.0,
+        565.0,
+        694.0,
+        685.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        534,
+        525,
+        734,
+        725
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            582.0,
+            585.0,
+            610.0,
+            677.0
+          ],
+          "measured_bbox_canvas": [
+            582.0,
+            585.0,
+            609.0,
+            676.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            610.0,
+            585.0,
+            678.0,
+            613.0
+          ],
+          "measured_bbox_canvas": [
+            610.0,
+            585.0,
+            677.0,
+            612.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            638.0,
+            649.0,
+            678.0,
+            677.0
+          ],
+          "measured_bbox_canvas": [
+            638.0,
+            649.0,
+            677.0,
+            676.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            657.0,
+            628.0,
+            673.0,
+            644.0
+          ],
+          "measured_bbox_canvas": [
+            657.0,
+            628.0,
+            672.0,
+            643.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        582.0,
+        585.0,
+        678.0,
+        677.0
+      ],
+      "bbox_measured_canvas": [
+        582.0,
+        585.0,
+        677.0,
+        676.0
+      ]
+    },
+    {
+      "id": "T07",
+      "index": 7,
+      "row": 2,
+      "col": 3,
+      "operations_input_order": [
+        [
+          "mirror_horizontal",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "mirror_horizontal",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          90
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(0.0000000,-1.0000000,0.0000000,0.0000000,-1.0000000,0.0000000,0.0000000,0.0000000,120.0000000,120.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        -0.0,
+        -1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        120.0,
+        120.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": -0.0,
+        "b": -1.0,
+        "e": -1.0,
+        "f": 0.0,
+        "tx": 120.0,
+        "ty": 120.0
+      },
+      "determinant": -1.0,
+      "kind": "反射（定向反转）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        816.0,
+        475.0
+      ],
+      "cell_center_canvas": [
+        966.0,
+        600.0
+      ],
+      "stamp_box_origin_canvas": [
+        906.0,
+        565.0
+      ],
+      "stamp_box_center_canvas": [
+        966.0,
+        625.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              112.0,
+              112.0
+            ],
+            [
+              112.0,
+              84.0
+            ],
+            [
+              20.0,
+              84.0
+            ],
+            [
+              20.0,
+              112.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1018.0,
+              677.0
+            ],
+            [
+              1018.0,
+              649.0
+            ],
+            [
+              926.0,
+              649.0
+            ],
+            [
+              926.0,
+              677.0
+            ]
+          ],
+          "bbox_local_after": [
+            20.0,
+            84.0,
+            112.0,
+            112.0
+          ],
+          "bbox_canvas": [
+            926.0,
+            649.0,
+            1018.0,
+            677.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              48.0,
+              84.0
+            ],
+            [
+              48.0,
+              16.0
+            ],
+            [
+              20.0,
+              16.0
+            ],
+            [
+              20.0,
+              84.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              954.0,
+              649.0
+            ],
+            [
+              954.0,
+              581.0
+            ],
+            [
+              926.0,
+              581.0
+            ],
+            [
+              926.0,
+              649.0
+            ]
+          ],
+          "bbox_local_after": [
+            20.0,
+            16.0,
+            48.0,
+            84.0
+          ],
+          "bbox_canvas": [
+            926.0,
+            581.0,
+            954.0,
+            649.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              112.0,
+              56.0
+            ],
+            [
+              112.0,
+              16.0
+            ],
+            [
+              84.0,
+              16.0
+            ],
+            [
+              84.0,
+              56.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1018.0,
+              621.0
+            ],
+            [
+              1018.0,
+              581.0
+            ],
+            [
+              990.0,
+              581.0
+            ],
+            [
+              990.0,
+              621.0
+            ]
+          ],
+          "bbox_local_after": [
+            84.0,
+            16.0,
+            112.0,
+            56.0
+          ],
+          "bbox_canvas": [
+            990.0,
+            581.0,
+            1018.0,
+            621.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          71.0,
+          29.0
+        ],
+        "center_canvas": [
+          977.0,
+          594.0
+        ],
+        "equivalent_radii_after_x_y": [
+          0.0,
+          0.0
+        ],
+        "bbox_local_after": [
+          83.0,
+          41.0,
+          99.0,
+          57.0
+        ],
+        "bbox_canvas": [
+          989.0,
+          606.0,
+          1005.0,
+          622.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        0.0,
+        0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        906.0,
+        565.0,
+        1026.0,
+        685.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        866,
+        525,
+        1066,
+        725
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            926.0,
+            649.0,
+            1018.0,
+            677.0
+          ],
+          "measured_bbox_canvas": [
+            926.0,
+            649.0,
+            1017.0,
+            676.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            926.0,
+            581.0,
+            954.0,
+            649.0
+          ],
+          "measured_bbox_canvas": [
+            926.0,
+            581.0,
+            953.0,
+            648.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            990.0,
+            581.0,
+            1018.0,
+            621.0
+          ],
+          "measured_bbox_canvas": [
+            990.0,
+            581.0,
+            1017.0,
+            620.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            969.0,
+            586.0,
+            985.0,
+            602.0
+          ],
+          "measured_bbox_canvas": [
+            969.0,
+            586.0,
+            984.0,
+            601.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        926.0,
+        581.0,
+        1018.0,
+        677.0
+      ],
+      "bbox_measured_canvas": [
+        926.0,
+        581.0,
+        1017.0,
+        676.0
+      ]
+    },
+    {
+      "id": "T08",
+      "index": 8,
+      "row": 2,
+      "col": 4,
+      "operations_input_order": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ],
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "rotate_clockwise_deg",
+          90
+        ],
+        [
+          "mirror_horizontal",
+          true
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(0.0000000,1.0000000,0.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        -0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": -0.0,
+        "b": 1.0,
+        "e": 1.0,
+        "f": 0.0,
+        "tx": 0.0,
+        "ty": -0.0
+      },
+      "determinant": -1.0,
+      "kind": "反射（定向反转）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        1148.0,
+        475.0
+      ],
+      "cell_center_canvas": [
+        1298.0,
+        600.0
+      ],
+      "stamp_box_origin_canvas": [
+        1238.0,
+        565.0
+      ],
+      "stamp_box_center_canvas": [
+        1298.0,
+        625.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              8.0,
+              36.0
+            ],
+            [
+              100.0,
+              36.0
+            ],
+            [
+              100.0,
+              8.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              573.0
+            ],
+            [
+              1246.0,
+              601.0
+            ],
+            [
+              1338.0,
+              601.0
+            ],
+            [
+              1338.0,
+              573.0
+            ]
+          ],
+          "bbox_local_after": [
+            8.0,
+            8.0,
+            100.0,
+            36.0
+          ],
+          "bbox_canvas": [
+            1246.0,
+            573.0,
+            1338.0,
+            601.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              72.0,
+              36.0
+            ],
+            [
+              72.0,
+              104.0
+            ],
+            [
+              100.0,
+              104.0
+            ],
+            [
+              100.0,
+              36.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1310.0,
+              601.0
+            ],
+            [
+              1310.0,
+              669.0
+            ],
+            [
+              1338.0,
+              669.0
+            ],
+            [
+              1338.0,
+              601.0
+            ]
+          ],
+          "bbox_local_after": [
+            72.0,
+            36.0,
+            100.0,
+            104.0
+          ],
+          "bbox_canvas": [
+            1310.0,
+            601.0,
+            1338.0,
+            669.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              8.0,
+              64.0
+            ],
+            [
+              8.0,
+              104.0
+            ],
+            [
+              36.0,
+              104.0
+            ],
+            [
+              36.0,
+              64.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1246.0,
+              629.0
+            ],
+            [
+              1246.0,
+              669.0
+            ],
+            [
+              1274.0,
+              669.0
+            ],
+            [
+              1274.0,
+              629.0
+            ]
+          ],
+          "bbox_local_after": [
+            8.0,
+            64.0,
+            36.0,
+            104.0
+          ],
+          "bbox_canvas": [
+            1246.0,
+            629.0,
+            1274.0,
+            669.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          49.0,
+          91.0
+        ],
+        "center_canvas": [
+          1287.0,
+          656.0
+        ],
+        "equivalent_radii_after_x_y": [
+          0.0,
+          0.0
+        ],
+        "bbox_local_after": [
+          83.0,
+          41.0,
+          99.0,
+          57.0
+        ],
+        "bbox_canvas": [
+          1321.0,
+          606.0,
+          1337.0,
+          622.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        -0.0,
+        -0.0,
+        120.0,
+        120.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        1238.0,
+        565.0,
+        1358.0,
+        685.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        1198,
+        525,
+        1398,
+        725
+      ],
+      "cell_verdict": "PASS",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            1246.0,
+            573.0,
+            1338.0,
+            601.0
+          ],
+          "measured_bbox_canvas": [
+            1246.0,
+            573.0,
+            1337.0,
+            600.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            1310.0,
+            601.0,
+            1338.0,
+            669.0
+          ],
+          "measured_bbox_canvas": [
+            1310.0,
+            601.0,
+            1337.0,
+            668.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            1246.0,
+            629.0,
+            1274.0,
+            669.0
+          ],
+          "measured_bbox_canvas": [
+            1246.0,
+            629.0,
+            1273.0,
+            668.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            1279.0,
+            648.0,
+            1295.0,
+            664.0
+          ],
+          "measured_bbox_canvas": [
+            1279.0,
+            648.0,
+            1294.0,
+            663.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        1246.0,
+        573.0,
+        1338.0,
+        669.0
+      ],
+      "bbox_measured_canvas": [
+        1246.0,
+        573.0,
+        1337.0,
+        668.0
+      ]
+    },
+    {
+      "id": "T09",
+      "index": 9,
+      "row": 3,
+      "col": 1,
+      "operations_input_order": [
+        [
+          "scale_uniform",
+          0.75
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "scale_uniform",
+          0.75
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(0.7500000,0.0000000,0.0000000,0.0000000,0.0000000,0.7500000,0.0000000,0.0000000,15.0000000,15.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        0.75,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.75,
+        0.0,
+        0.0,
+        15.0,
+        15.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": 0.75,
+        "b": 0.0,
+        "e": 0.0,
+        "f": 0.75,
+        "tx": 15.0,
+        "ty": 15.0
+      },
+      "determinant": 0.5625,
+      "kind": "定向保持的缩放/旋转",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        152.0,
+        757.0
+      ],
+      "cell_center_canvas": [
+        302.0,
+        882.0
+      ],
+      "stamp_box_origin_canvas": [
+        242.0,
+        847.0
+      ],
+      "stamp_box_center_canvas": [
+        302.0,
+        907.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              21.0,
+              21.0
+            ],
+            [
+              42.0,
+              21.0
+            ],
+            [
+              42.0,
+              90.0
+            ],
+            [
+              21.0,
+              90.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              263.0,
+              868.0
+            ],
+            [
+              284.0,
+              868.0
+            ],
+            [
+              284.0,
+              937.0
+            ],
+            [
+              263.0,
+              937.0
+            ]
+          ],
+          "bbox_local_after": [
+            21.0,
+            21.0,
+            42.0,
+            90.0
+          ],
+          "bbox_canvas": [
+            263.0,
+            868.0,
+            284.0,
+            937.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              42.0,
+              69.0
+            ],
+            [
+              93.0,
+              69.0
+            ],
+            [
+              93.0,
+              90.0
+            ],
+            [
+              42.0,
+              90.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              284.0,
+              916.0
+            ],
+            [
+              335.0,
+              916.0
+            ],
+            [
+              335.0,
+              937.0
+            ],
+            [
+              284.0,
+              937.0
+            ]
+          ],
+          "bbox_local_after": [
+            42.0,
+            69.0,
+            93.0,
+            90.0
+          ],
+          "bbox_canvas": [
+            284.0,
+            916.0,
+            335.0,
+            937.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              63.0,
+              21.0
+            ],
+            [
+              93.0,
+              21.0
+            ],
+            [
+              93.0,
+              42.0
+            ],
+            [
+              63.0,
+              42.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              305.0,
+              868.0
+            ],
+            [
+              335.0,
+              868.0
+            ],
+            [
+              335.0,
+              889.0
+            ],
+            [
+              305.0,
+              889.0
+            ]
+          ],
+          "bbox_local_after": [
+            63.0,
+            21.0,
+            93.0,
+            42.0
+          ],
+          "bbox_canvas": [
+            305.0,
+            868.0,
+            335.0,
+            889.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          83.25,
+          51.75
+        ],
+        "center_canvas": [
+          325.25,
+          898.75
+        ],
+        "equivalent_radii_after_x_y": [
+          6.0,
+          6.0
+        ],
+        "bbox_local_after": [
+          72.9375,
+          49.3125,
+          81.9375,
+          58.3125
+        ],
+        "bbox_canvas": [
+          314.9375,
+          896.3125,
+          323.9375,
+          905.3125
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        15.0,
+        15.0,
+        105.0,
+        105.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        257.0,
+        862.0,
+        347.0,
+        952.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        202,
+        807,
+        402,
+        1007
+      ],
+      "cell_verdict": "PASS_AA",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            263.0,
+            868.0,
+            284.0,
+            937.0
+          ],
+          "measured_bbox_canvas": [
+            263.0,
+            868.0,
+            283.0,
+            936.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            284.0,
+            916.0,
+            335.0,
+            937.0
+          ],
+          "measured_bbox_canvas": [
+            284.0,
+            916.0,
+            334.0,
+            936.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            305.0,
+            868.0,
+            335.0,
+            889.0
+          ],
+          "measured_bbox_canvas": [
+            305.0,
+            868.0,
+            334.0,
+            888.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            319.25,
+            892.75,
+            331.25,
+            904.75
+          ],
+          "measured_bbox_canvas": [
+            320.0,
+            893.0,
+            330.0,
+            903.0
+          ],
+          "centroid_error_px": [
+            0.06,
+            -0.06
+          ],
+          "max_component_error_px": 0.06,
+          "verdict": "PASS_AA"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        263.0,
+        868.0,
+        335.0,
+        937.0
+      ],
+      "bbox_measured_canvas": [
+        263.0,
+        868.0,
+        334.0,
+        936.0
+      ]
+    },
+    {
+      "id": "T10",
+      "index": 10,
+      "row": 3,
+      "col": 2,
+      "operations_input_order": [
+        [
+          "scale_xy",
+          [
+            1.25,
+            0.75
+          ]
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "scale_xy",
+          [
+            1.25,
+            0.75
+          ]
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(1.2500000,0.0000000,0.0000000,0.0000000,0.0000000,0.7500000,0.0000000,0.0000000,-15.0000000,15.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        1.25,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.75,
+        0.0,
+        0.0,
+        -15.0,
+        15.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": 1.25,
+        "b": 0.0,
+        "e": 0.0,
+        "f": 0.75,
+        "tx": -15.0,
+        "ty": 15.0
+      },
+      "determinant": 0.9375,
+      "kind": "定向保持的缩放/旋转",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        484.0,
+        757.0
+      ],
+      "cell_center_canvas": [
+        634.0,
+        882.0
+      ],
+      "stamp_box_origin_canvas": [
+        574.0,
+        847.0
+      ],
+      "stamp_box_center_canvas": [
+        634.0,
+        907.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              -5.0,
+              21.0
+            ],
+            [
+              30.0,
+              21.0
+            ],
+            [
+              30.0,
+              90.0
+            ],
+            [
+              -5.0,
+              90.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              569.0,
+              868.0
+            ],
+            [
+              604.0,
+              868.0
+            ],
+            [
+              604.0,
+              937.0
+            ],
+            [
+              569.0,
+              937.0
+            ]
+          ],
+          "bbox_local_after": [
+            -5.0,
+            21.0,
+            30.0,
+            90.0
+          ],
+          "bbox_canvas": [
+            569.0,
+            868.0,
+            604.0,
+            937.0
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              30.0,
+              69.0
+            ],
+            [
+              115.0,
+              69.0
+            ],
+            [
+              115.0,
+              90.0
+            ],
+            [
+              30.0,
+              90.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              604.0,
+              916.0
+            ],
+            [
+              689.0,
+              916.0
+            ],
+            [
+              689.0,
+              937.0
+            ],
+            [
+              604.0,
+              937.0
+            ]
+          ],
+          "bbox_local_after": [
+            30.0,
+            69.0,
+            115.0,
+            90.0
+          ],
+          "bbox_canvas": [
+            604.0,
+            916.0,
+            689.0,
+            937.0
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              65.0,
+              21.0
+            ],
+            [
+              115.0,
+              21.0
+            ],
+            [
+              115.0,
+              42.0
+            ],
+            [
+              65.0,
+              42.0
+            ]
+          ],
+          "corners_canvas": [
+            [
+              639.0,
+              868.0
+            ],
+            [
+              689.0,
+              868.0
+            ],
+            [
+              689.0,
+              889.0
+            ],
+            [
+              639.0,
+              889.0
+            ]
+          ],
+          "bbox_local_after": [
+            65.0,
+            21.0,
+            115.0,
+            42.0
+          ],
+          "bbox_canvas": [
+            639.0,
+            868.0,
+            689.0,
+            889.0
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          98.75,
+          51.75
+        ],
+        "center_canvas": [
+          672.75,
+          898.75
+        ],
+        "equivalent_radii_after_x_y": [
+          10.0,
+          6.0
+        ],
+        "bbox_local_after": [
+          95.9375,
+          49.3125,
+          120.9375,
+          58.3125
+        ],
+        "bbox_canvas": [
+          669.9375,
+          896.3125,
+          694.9375,
+          905.3125
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        -15.0,
+        15.0,
+        135.0,
+        105.0
+      ],
+      "bbox_whole_stamp_canvas": [
+        559.0,
+        862.0,
+        709.0,
+        952.0
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        534,
+        807,
+        734,
+        1007
+      ],
+      "cell_verdict": "PASS_AA",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            569.0,
+            868.0,
+            604.0,
+            937.0
+          ],
+          "measured_bbox_canvas": [
+            569.0,
+            868.0,
+            603.0,
+            936.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            604.0,
+            916.0,
+            689.0,
+            937.0
+          ],
+          "measured_bbox_canvas": [
+            604.0,
+            916.0,
+            688.0,
+            936.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            639.0,
+            868.0,
+            689.0,
+            889.0
+          ],
+          "measured_bbox_canvas": [
+            639.0,
+            868.0,
+            688.0,
+            888.0
+          ],
+          "centroid_error_px": [
+            0.0,
+            0.0
+          ],
+          "max_component_error_px": 0.0,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            662.75,
+            892.75,
+            682.75,
+            904.75
+          ],
+          "measured_bbox_canvas": [
+            663.0,
+            893.0,
+            681.0,
+            903.0
+          ],
+          "centroid_error_px": [
+            -0.026,
+            -0.121
+          ],
+          "max_component_error_px": 0.121,
+          "verdict": "PASS_AA"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        569.0,
+        868.0,
+        689.0,
+        937.0
+      ],
+      "bbox_measured_canvas": [
+        569.0,
+        868.0,
+        688.0,
+        936.0
+      ]
+    },
+    {
+      "id": "T11",
+      "index": 11,
+      "row": 3,
+      "col": 3,
+      "operations_input_order": [
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(0.8660254,0.5000000,0.0000000,0.0000000,-0.5000000,0.8660254,0.0000000,0.0000000,38.0384758,-21.9615242,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        0.8660254,
+        0.5,
+        0.0,
+        0.0,
+        -0.5,
+        0.8660254,
+        0.0,
+        0.0,
+        38.0384758,
+        -21.9615242,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": 0.866,
+        "b": -0.5,
+        "e": 0.5,
+        "f": 0.866,
+        "tx": 38.0385,
+        "ty": -21.9615
+      },
+      "determinant": 1.0,
+      "kind": "定向保持的缩放/旋转",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        816.0,
+        757.0
+      ],
+      "cell_center_canvas": [
+        966.0,
+        882.0
+      ],
+      "stamp_box_origin_canvas": [
+        906.0,
+        847.0
+      ],
+      "stamp_box_center_canvas": [
+        966.0,
+        907.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              40.9667,
+              -11.0333
+            ],
+            [
+              65.2154,
+              2.9667
+            ],
+            [
+              19.2154,
+              82.641
+            ],
+            [
+              -5.0333,
+              68.641
+            ]
+          ],
+          "corners_canvas": [
+            [
+              946.9667,
+              835.9667
+            ],
+            [
+              971.2154,
+              849.9667
+            ],
+            [
+              925.2154,
+              929.641
+            ],
+            [
+              900.9667,
+              915.641
+            ]
+          ],
+          "bbox_local_after": [
+            -5.0333,
+            -11.0333,
+            65.2154,
+            82.641
+          ],
+          "bbox_canvas": [
+            900.9667,
+            835.9667,
+            971.2154,
+            929.641
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              33.2154,
+              58.3923
+            ],
+            [
+              92.1051,
+              92.3923
+            ],
+            [
+              78.1051,
+              116.641
+            ],
+            [
+              19.2154,
+              82.641
+            ]
+          ],
+          "corners_canvas": [
+            [
+              939.2154,
+              905.3923
+            ],
+            [
+              998.1051,
+              939.3923
+            ],
+            [
+              984.1051,
+              963.641
+            ],
+            [
+              925.2154,
+              929.641
+            ]
+          ],
+          "bbox_local_after": [
+            19.2154,
+            58.3923,
+            92.1051,
+            116.641
+          ],
+          "bbox_canvas": [
+            925.2154,
+            905.3923,
+            998.1051,
+            963.641
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              89.4641,
+              16.9667
+            ],
+            [
+              124.1051,
+              36.9667
+            ],
+            [
+              110.1051,
+              61.2154
+            ],
+            [
+              75.4641,
+              41.2154
+            ]
+          ],
+          "corners_canvas": [
+            [
+              995.4641,
+              863.9667
+            ],
+            [
+              1030.1051,
+              883.9667
+            ],
+            [
+              1016.1051,
+              908.2154
+            ],
+            [
+              981.4641,
+              888.2154
+            ]
+          ],
+          "bbox_local_after": [
+            75.4641,
+            16.9667,
+            124.1051,
+            61.2154
+          ],
+          "bbox_canvas": [
+            981.4641,
+            863.9667,
+            1030.1051,
+            908.2154
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          92.3468,
+          65.9737
+        ],
+        "center_canvas": [
+          998.3468,
+          912.9737
+        ],
+        "equivalent_radii_after_x_y": [
+          6.9282,
+          6.9282
+        ],
+        "bbox_local_after": [
+          77.0263,
+          73.3468,
+          93.0263,
+          89.3468
+        ],
+        "bbox_canvas": [
+          983.0263,
+          920.3468,
+          999.0263,
+          936.3468
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        -21.9615,
+        -21.9615,
+        141.9615,
+        141.9615
+      ],
+      "bbox_whole_stamp_canvas": [
+        884.0385,
+        825.0385,
+        1047.9615,
+        988.9615
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        866,
+        807,
+        1066,
+        1007
+      ],
+      "cell_verdict": "PASS_AA",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            900.9667,
+            835.9667,
+            971.2154,
+            929.641
+          ],
+          "measured_bbox_canvas": [
+            901.0,
+            837.0,
+            970.0,
+            928.0
+          ],
+          "centroid_error_px": [
+            0.002,
+            0.046
+          ],
+          "max_component_error_px": 0.046,
+          "verdict": "PASS_AA"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            925.2154,
+            905.3923,
+            998.1051,
+            963.641
+          ],
+          "measured_bbox_canvas": [
+            926.0,
+            906.0,
+            997.0,
+            962.0
+          ],
+          "centroid_error_px": [
+            0.021,
+            0.114
+          ],
+          "max_component_error_px": 0.114,
+          "verdict": "PASS_AA"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            981.4641,
+            863.9667,
+            1030.1051,
+            908.2154
+          ],
+          "measured_bbox_canvas": [
+            982.0,
+            864.0,
+            1029.0,
+            907.0
+          ],
+          "centroid_error_px": [
+            -0.003,
+            0.021
+          ],
+          "max_component_error_px": 0.021,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            990.3468,
+            904.9737,
+            1006.3468,
+            920.9737
+          ],
+          "measured_bbox_canvas": [
+            991.0,
+            905.0,
+            1005.0,
+            920.0
+          ],
+          "centroid_error_px": [
+            0.061,
+            -0.047
+          ],
+          "max_component_error_px": 0.061,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        900.9667,
+        835.9667,
+        1030.1051,
+        963.641
+      ],
+      "bbox_measured_canvas": [
+        901.0,
+        837.0,
+        1029.0,
+        962.0
+      ]
+    },
+    {
+      "id": "T12",
+      "index": 12,
+      "row": 3,
+      "col": 4,
+      "operations_input_order": [
+        [
+          "mirror_vertical",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "operations_applied_order": [
+        [
+          "mirror_vertical",
+          true
+        ],
+        [
+          "rotate_clockwise_deg",
+          30
+        ]
+      ],
+      "composition": "M = M_n ∘ … ∘ M_1（列表先出现的操作先施加，故在最右）",
+      "matrix_dsl_attribute": "(0.8660254,0.5000000,0.0000000,0.0000000,0.5000000,-0.8660254,0.0000000,0.0000000,-21.9615242,81.9615242,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)",
+      "matrix_4x4_column_major": [
+        0.8660254,
+        0.5,
+        0.0,
+        0.0,
+        0.5,
+        -0.8660254,
+        0.0,
+        0.0,
+        -21.9615242,
+        81.9615242,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "matrix_affine_2x3": {
+        "a": 0.866,
+        "b": 0.5,
+        "e": 0.5,
+        "f": -0.866,
+        "tx": -21.9615,
+        "ty": 81.9615
+      },
+      "determinant": -1.0,
+      "kind": "反射（定向反转）",
+      "pivot_local": [
+        60.0,
+        60.0
+      ],
+      "cell_origin_canvas": [
+        1148.0,
+        757.0
+      ],
+      "cell_center_canvas": [
+        1298.0,
+        882.0
+      ],
+      "stamp_box_origin_canvas": [
+        1238.0,
+        847.0
+      ],
+      "stamp_box_center_canvas": [
+        1298.0,
+        907.0
+      ],
+      "rectangles": [
+        {
+          "index": 1,
+          "key": "rect1",
+          "color": "#E54B4B",
+          "local_xywh": [
+            8.0,
+            8.0,
+            28.0,
+            92.0
+          ],
+          "corners_local": [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              36.0,
+              8.0
+            ],
+            [
+              36.0,
+              100.0
+            ],
+            [
+              8.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              -11.0333,
+              79.0333
+            ],
+            [
+              13.2154,
+              93.0333
+            ],
+            [
+              59.2154,
+              13.359
+            ],
+            [
+              34.9667,
+              -0.641
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1226.9667,
+              926.0333
+            ],
+            [
+              1251.2154,
+              940.0333
+            ],
+            [
+              1297.2154,
+              860.359
+            ],
+            [
+              1272.9667,
+              846.359
+            ]
+          ],
+          "bbox_local_after": [
+            -11.0333,
+            -0.641,
+            59.2154,
+            93.0333
+          ],
+          "bbox_canvas": [
+            1226.9667,
+            846.359,
+            1297.2154,
+            940.0333
+          ]
+        },
+        {
+          "index": 2,
+          "key": "rect2",
+          "color": "#2364DB",
+          "local_xywh": [
+            36.0,
+            72.0,
+            68.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              36.0,
+              72.0
+            ],
+            [
+              104.0,
+              72.0
+            ],
+            [
+              104.0,
+              100.0
+            ],
+            [
+              36.0,
+              100.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              45.2154,
+              37.6077
+            ],
+            [
+              104.1051,
+              71.6077
+            ],
+            [
+              118.1051,
+              47.359
+            ],
+            [
+              59.2154,
+              13.359
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1283.2154,
+              884.6077
+            ],
+            [
+              1342.1051,
+              918.6077
+            ],
+            [
+              1356.1051,
+              894.359
+            ],
+            [
+              1297.2154,
+              860.359
+            ]
+          ],
+          "bbox_local_after": [
+            45.2154,
+            13.359,
+            118.1051,
+            71.6077
+          ],
+          "bbox_canvas": [
+            1283.2154,
+            860.359,
+            1356.1051,
+            918.6077
+          ]
+        },
+        {
+          "index": 3,
+          "key": "rect3",
+          "color": "#EAB53B",
+          "local_xywh": [
+            64.0,
+            8.0,
+            40.0,
+            28.0
+          ],
+          "corners_local": [
+            [
+              64.0,
+              8.0
+            ],
+            [
+              104.0,
+              8.0
+            ],
+            [
+              104.0,
+              36.0
+            ],
+            [
+              64.0,
+              36.0
+            ]
+          ],
+          "corners_local_after": [
+            [
+              37.4641,
+              107.0333
+            ],
+            [
+              72.1051,
+              127.0333
+            ],
+            [
+              86.1051,
+              102.7846
+            ],
+            [
+              51.4641,
+              82.7846
+            ]
+          ],
+          "corners_canvas": [
+            [
+              1275.4641,
+              954.0333
+            ],
+            [
+              1310.1051,
+              974.0333
+            ],
+            [
+              1324.1051,
+              949.7846
+            ],
+            [
+              1289.4641,
+              929.7846
+            ]
+          ],
+          "bbox_local_after": [
+            37.4641,
+            82.7846,
+            86.1051,
+            127.0333
+          ],
+          "bbox_canvas": [
+            1275.4641,
+            929.7846,
+            1324.1051,
+            974.0333
+          ]
+        }
+      ],
+      "dot": {
+        "color": "#111111",
+        "local_center": [
+          91.0,
+          49.0
+        ],
+        "local_radius": 8.0,
+        "center_local_after": [
+          81.3468,
+          85.0263
+        ],
+        "center_canvas": [
+          1319.3468,
+          932.0263
+        ],
+        "equivalent_radii_after_x_y": [
+          6.9282,
+          6.9282
+        ],
+        "bbox_local_after": [
+          83.0,
+          41.0,
+          99.0,
+          57.0
+        ],
+        "bbox_canvas": [
+          1321.0,
+          888.0,
+          1337.0,
+          904.0
+        ]
+      },
+      "bbox_whole_stamp_local_after": [
+        -21.9615,
+        -21.9615,
+        141.9615,
+        141.9615
+      ],
+      "bbox_whole_stamp_canvas": [
+        1216.0385,
+        825.0385,
+        1379.9615,
+        988.9615
+      ],
+      "within_cell": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "measure_window_canvas": [
+        1198,
+        807,
+        1398,
+        1007
+      ],
+      "cell_verdict": "PASS_AA",
+      "shapes_verified": [
+        {
+          "shape": "rect1",
+          "predicted_bbox_canvas": [
+            1226.9667,
+            846.359,
+            1297.2154,
+            940.0333
+          ],
+          "measured_bbox_canvas": [
+            1227.0,
+            847.0,
+            1296.0,
+            938.0
+          ],
+          "centroid_error_px": [
+            -0.043,
+            -0.038
+          ],
+          "max_component_error_px": 0.043,
+          "verdict": "PASS_AA"
+        },
+        {
+          "shape": "rect2",
+          "predicted_bbox_canvas": [
+            1283.2154,
+            860.359,
+            1356.1051,
+            918.6077
+          ],
+          "measured_bbox_canvas": [
+            1284.0,
+            861.0,
+            1355.0,
+            917.0
+          ],
+          "centroid_error_px": [
+            -0.002,
+            -0.105
+          ],
+          "max_component_error_px": 0.105,
+          "verdict": "PASS_AA"
+        },
+        {
+          "shape": "rect3",
+          "predicted_bbox_canvas": [
+            1275.4641,
+            929.7846,
+            1324.1051,
+            974.0333
+          ],
+          "measured_bbox_canvas": [
+            1276.0,
+            930.0,
+            1323.0,
+            973.0
+          ],
+          "centroid_error_px": [
+            -0.0,
+            -0.039
+          ],
+          "max_component_error_px": 0.039,
+          "verdict": "PASS"
+        },
+        {
+          "shape": "dot",
+          "predicted_bbox_canvas": [
+            1311.3468,
+            924.0263,
+            1327.3468,
+            940.0263
+          ],
+          "measured_bbox_canvas": [
+            1312.0,
+            924.0,
+            1326.0,
+            939.0
+          ],
+          "centroid_error_px": [
+            0.061,
+            -0.099
+          ],
+          "max_component_error_px": 0.099,
+          "verdict": "PASS"
+        }
+      ],
+      "bbox_predicted_canvas": [
+        1226.9667,
+        846.359,
+        1356.1051,
+        974.0333
+      ],
+      "bbox_measured_canvas": [
+        1227.0,
+        847.0,
+        1355.0,
+        973.0
+      ]
+    }
+  ]
+}

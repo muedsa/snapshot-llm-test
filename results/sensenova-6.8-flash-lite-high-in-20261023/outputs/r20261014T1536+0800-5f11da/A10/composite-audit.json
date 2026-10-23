@@ -1,0 +1,675 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "A10",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "title": "A10 透明合成与滤镜语义实验板 · 像素审计",
+  "artifacts": [
+    {
+      "path": "compositing-lab.png",
+      "type": "final_image",
+      "size_px": [1440, 1100],
+      "source": "POST /snapshot 的 200 响应体，原始字节未做任何像素后处理",
+      "request_id": "req-a10-board-v3-ad440b",
+      "elapsed_ms": 5047
+    },
+    {
+      "path": "compositing-lab.snapshot",
+      "type": "dsl",
+      "bytes": 22710,
+      "chars": 22142,
+      "source": "tmp/<run_id>/A10/dsl/board-v3.snapshot，与最终 PNG 同源同次渲染",
+      "note": "字节数 22710 与字符数 22142 不同，因为 DSL 的审计面板文案含中文"
+    },
+    {
+      "path": "composite-audit.json",
+      "type": "audit",
+      "source": "本文件"
+    }
+  ],
+
+  "canvas": {
+    "width": 1440,
+    "height": 1100,
+    "background": "#E9EEF5",
+    "title_text": "看到差异，才能说用对了",
+    "title_font_size": 34,
+    "grid": {"columns": 3, "rows": 2, "area_size": [320, 240], "inter_area_gap_px": 32},
+    "origin_column_x": [208, 560, 912],
+    "row_y": [154, 534],
+    "gap_check": "560-208-320=32，912-560-320=32，满足「区与区之间至少 32 像素」",
+    "labels_outside_area": "每格编号标签在实验区上方 y=116/496，说明在下方 y=402/782，均在区外",
+    "description_font_size": 20,
+    "description_font_size_requirement": "≥20，实际 20，达标"
+  },
+
+  "coordinate_conventions": {
+    "canvas_origin": "画布左上角 (0,0)，x 向右，y 向下，单位 px",
+    "local_origin": "每个 320×240 实验区的左上外边界；局部 (x,y) 对应画布 (origin_x+x, origin_y+y)",
+    "area_origins_canvas_integer": [
+      [208, 154], [560, 154], [912, 154], [208, 534], [560, 534], [912, 534]
+    ],
+    "all_origins_are_integers": true,
+    "sample_index_convention": "解码 PNG 后按 0 起索引取第 (origin_x+180, origin_y+100) 个像素，不对截图或缩略图取样",
+    "sampling_method": "PIL Image.open(png).convert('RGBA').getpixel((x,y))；原始 PNG 模式 RGBA，通道未预乘、8 位",
+    "sampling_script": {
+      "path_base": "suite_root",
+      "path": "tmp/<run_id>/A10/gen/a10_sample.py"
+    },
+    "sample_records": [
+      {"path_base": "suite_root", "path": "tmp/<run_id>/A10/sampled-v3.json"},
+      {"path_base": "suite_root", "path": "tmp/<run_id>/A10/sampled-v2.json"},
+      {"path_base": "suite_root", "path": "tmp/<run_id>/A10/sampled-v1.json"}
+    ]
+  },
+
+  "panels": [
+    {
+      "index": 1,
+      "label": "① 两个矩形各自 50% alpha",
+      "canvas_origin": [208, 154],
+      "local_origin": "实验区左上外边界",
+      "area_size": [320, 240],
+      "area_background": "#FFFFFF",
+      "scene": {
+        "rect_red": {"xywh_local": [40, 40, 160, 120], "color": "#FF000080",
+                     "rgb": [255, 0, 0], "alpha": "128/255 = 0.5019607843"},
+        "rect_blue": {"xywh_local": [120, 80, 160, 120], "color": "#0000FF80",
+                      "rgb": [0, 0, 255], "alpha": "128/255 = 0.5019607843"},
+        "layer_order": "白底 → 红 → 蓝（蓝在上层）",
+        "overlap_box_local": [120, 80, 200, 160],
+        "sample_point_local": [180, 100],
+        "sample_point_inside_overlap": true,
+        "sample_marker": "四段 16×2 px 刻线，位于距采样点中心 14 px 处；不经过 (180,100) 本身"
+      },
+      "effect_node": {
+        "dsl": "两个 Container 各自带 8 位 alpha 颜色，无滤镜、无分组透明度",
+        "semantics": "alpha 施加在每一个矩形自身，蓝在下一次合成时才与红的合成结果混合"
+      }
+    },
+    {
+      "index": 2,
+      "label": "② 不透明矩形放进 Opacity 0.5 组",
+      "canvas_origin": [560, 154],
+      "local_origin": "实验区左上外边界",
+      "area_size": [320, 240],
+      "area_background": "#FFFFFF",
+      "scene": {
+        "rect_red": {"xywh_local": [40, 40, 160, 120], "color": "#FF0000", "alpha": "1（不透明）"},
+        "rect_blue": {"xywh_local": [120, 80, 160, 120], "color": "#0000FF", "alpha": "1（不透明）"},
+        "layer_order": "白底 → Opacity 组（红 → 蓝，蓝在上层）",
+        "overlap_box_local": [120, 80, 200, 160],
+        "sample_point_local": [180, 100],
+        "sample_point_inside_overlap": true,
+        "sample_marker": "同 ① 的四段刻线，位置相同"
+      },
+      "effect_node": {
+        "dsl": "<Opacity opacity=\"0.5\"> 包裹 <Stack> 内含两个不透明矩形",
+        "semantics": "文档原文「Opacity 把整个子树作为一层合成透明度」：先让红蓝在不透明状态下合成出纯蓝，再对整个子树统一施加 0.5"
+      }
+    },
+    {
+      "index": 3,
+      "label": "③ 仅卡片下的背景模糊",
+      "canvas_origin": [912, 154],
+      "local_origin": "实验区左上外边界",
+      "area_size": [320, 240],
+      "area_background": "#FFFFFF",
+      "scene": {"shared_with": "④", "see": "paired_scenes[0]"},
+      "effect_node": {
+        "dsl": "<Positioned 40,40,240,160><Stack> → <ClipRRect borderRadius=20 clipBehavior=ANTI_ALIAS><BackdropFilter sigmaX=6 sigmaY=6 tileMode=CLAMP><Container 240×160/></BackdropFilter></ClipRRect> → 卡底 #FFFFFF80 → 文字 → 前景</Stack></Positioned>",
+        "semantics": "文档原文「BackdropFilter 对已经绘制在当前内容背后的区域应用滤镜」「BackdropFilter 读取已有背景，通常需要 ClipRect 或 ClipRRect 限定区域」。卡底/文字/前景画在模糊层之上，因此保持清晰"
+      }
+    },
+    {
+      "index": 4,
+      "label": "④ 卡片内文字与形状一起模糊",
+      "canvas_origin": [208, 534],
+      "local_origin": "实验区左上外边界",
+      "area_size": [320, 240],
+      "area_background": "#FFFFFF",
+      "scene": {"shared_with": "③", "see": "paired_scenes[0]"},
+      "effect_node": {
+        "dsl": "<ClipRRect borderRadius=20 clipBehavior=ANTI_ALIAS><ImageFiltered sigmaX=6 sigmaY=6 tileMode=CLAMP><Stack 240×160 clipBehavior=HARD_EDGE>{白底 → 条纹 → 卡底 → 文字 → 前景}</Stack></ImageFiltered></ClipRRect>",
+        "semantics": "文档原文「ImageFiltered 对子树结果应用 ImageFilter」。子树包含条纹、卡底、文字和前景全部节点，因此全部一起被模糊"
+      }
+    },
+    {
+      "index": 5,
+      "label": "⑤ MULTIPLY 着色后子树模糊",
+      "canvas_origin": [560, 534],
+      "local_origin": "实验区左上外边界",
+      "area_size": [320, 240],
+      "area_background": "#FFFFFF",
+      "scene": {"shared_with": "⑥", "see": "paired_scenes[1]"},
+      "effect_node": {
+        "dsl": "<ImageFiltered sigmaX=6 sigmaY=6 tileMode=CLAMP><ColorFiltered color=#F6B94A blendMode=MULTIPLY>{SCENE56}</ColorFiltered></ImageFiltered>",
+        "semantics": "文档原文「ColorFiltered 对子树应用 ColorFilter」；且「<ImageFiltered> 会自动按 sigma 提供模糊输出边界，嵌套在 <ColorFiltered> 内时无需手动配置 outputBounds」——本题实测把 ColorFiltered 放在内层、ImageFiltered 放在外层同样成立（见 measured_dsl_contracts[6]）",
+        "extra_clip": "无"
+      }
+    },
+    {
+      "index": 6,
+      "label": "⑥ 与⑤同结果，再圆形裁剪",
+      "canvas_origin": [912, 534],
+      "local_origin": "实验区左上外边界",
+      "area_size": [320, 240],
+      "area_background": "#FFFFFF",
+      "scene": {"shared_with": "⑤", "see": "paired_scenes[1]"},
+      "effect_node": {
+        "dsl": "<Positioned 60,20,200,200><ClipOval clipBehavior=ANTI_ALIAS><Stack 200×200><Positioned -60,-20,320,240>{与 ⑤ 逐字节相同的 ImageFiltered>ColorFiltered>SCENE56}</Positioned></Stack></ClipOval></Positioned>",
+        "semantics": "文档原文「ClipOval 椭圆裁剪」。与 ⑤ 的唯一差异是最外层多一个 ClipOval，被裁剪的子树本身不改动",
+        "extra_clip": "ClipOval，圆心局部 (160,120)，半径 100"
+      }
+    }
+  ],
+
+  "paired_scenes": [
+    {
+      "pair": "③④",
+      "shared_parameters": {
+        "stripe_dark": "#1E293B",
+        "stripe_light": "#FFFFFF",
+        "stripe_bar_px": 14,
+        "stripe_gap_px": 10,
+        "stripe_period_px": 24,
+        "stripe_phase": "从区域局部 x=0 起算，条覆盖 [24k, 24k+14)，k=0..13，横跨整条 320 px 区域，因此跨过卡片左右边界",
+        "stripe_vertical_extent": [0, 240],
+        "card_xywh_local": [40, 40, 240, 160],
+        "card_border_radius": 20,
+        "card_fill": "#FFFFFF80",
+        "card_fill_decoded": "白 50% 不透明度（8 位色为 #RRGGBBAA，α 在末位）",
+        "card_text": "SHARP / BLUR",
+        "card_text_font": "Noto Sans CJK SC",
+        "card_text_size": 24,
+        "card_text_color": "#0F172A",
+        "card_text_box_card_local": [12, 14, 216, 34],
+        "card_text_align": "CENTER",
+        "foreground_dark_rect_local": [60, 116, 72, 44],
+        "foreground_dark_rect_radius": 8,
+        "foreground_dark_rect_color": "#1E293B",
+        "foreground_circle_local": {"cx": 218, "cy": 138, "r": 18},
+        "foreground_circle_color": "#B91C1C",
+        "draw_order": "白底 → 条纹 → 卡底 → 文字 → 前景形状",
+        "blur_sigma": 6,
+        "blur_tile_mode": "CLAMP"
+      },
+      "single_difference": {
+        "③": "只把「卡片覆盖处的背景」放进 <BackdropFilter>，卡底/文字/前景在模糊层之上重新绘制",
+        "④": "把「背景+卡底+文字+前景」整体放进 <ImageFiltered>"
+      },
+      "backdrop_content_identical": {
+        "note": "④ 的子树额外画了一张白底，使被模糊的画面与 ③ 的背面（白底+条纹）一致；若省略，透明像素会以 0 参与混合，同一位置算出的底色会不同",
+        "evidence_local_200_100": {"③": [168, 173, 180], "④": [169, 172, 179], "max_channel_diff": 1},
+        "evidence_local_210_100": {"③": [212, 215, 218], "④": [212, 214, 218], "max_channel_diff": 1},
+        "known_deviation_local_270_100": {
+          "③": [167, 171, 178],
+          "④": [158, 162, 170],
+          "max_channel_diff": 9,
+          "reason": "该点距卡片右缘 10 px，落在 ③ 的 ClipRRect 与 ④ 的 HARD_EDGE 边界附近；两种裁剪节点对边界外取样像素的处理不同，属于裁剪边界本身的固有差异，不影响「同一份基础场景」的成立",
+          "out_of_card_local_286_100": {"③": [255, 255, 255], "④": [255, 255, 255], "max_channel_diff": 0}
+        }
+      },
+      "stripe_coverage_note": "④ 的子树在卡片局部坐标系里画 -40..280（即区域 0..320），保证与 ③ 的背景条纹同相位、同覆盖；若只画 -40..200，卡片右侧 40 px 会缺条纹"
+    },
+    {
+      "pair": "⑤⑥",
+      "shared_parameters": {
+        "scene": [
+          {"xywh_local": [28, 40, 116, 160], "color": "#1E293B", "radius": 0,
+           "shadow": "0 6 10 0 #00000066 NORMAL"},
+          {"xywh_local": [180, 28, 112, 84], "color": "#0F172A", "radius": 10, "shadow": null},
+          {"xywh_local": [150, 148, 140, 64], "color": "#334155B3", "radius": 0, "shadow": null,
+           "note": "白 70% 的深色块，α 在末位"},
+          {"xywh_local": [196, 168, 84, 32], "color": "#F8FAFC", "radius": 6, "shadow": null}
+        ],
+        "filter_color": "#F6B94A",
+        "blend_mode": "MULTIPLY",
+        "filter_order": "先 ColorFiltered(MULTIPLY)，后 ImageFiltered(sigma=6)",
+        "blur_sigma": 6,
+        "blur_tile_mode": "CLAMP",
+        "transparent_gap_local": [160, 120],
+        "area_background": "#FFFFFF"
+      },
+      "single_difference": {
+        "⑤": "无额外裁剪",
+        "⑥": "最外层增加 <ClipOval clipBehavior=ANTI_ALIAS>"
+      },
+      "circular_clip_geometry": {
+        "center_local": [160, 120],
+        "radius": 100,
+        "bbox_local": [60, 20, 260, 220],
+        "wrapper_dsl": "Positioned(60,20,200,200) > ClipOval > Stack(200×200) > Positioned(-60,-20,320,240) > 原样子树"
+      },
+      "shapes_crossing_the_circle": [
+        "深色矩形 [28,40,116,160] 右缘 x=144 在圆内，左侧 x<60 在圆外 → 跨过圆周左侧",
+        "深色矩形 [180,28,112,84] 右缘 x=292 在圆外，x<260 部分在圆内 → 跨过圆周右侧",
+        "半透明块 [150,148,140,64] 右缘 x=290、下缘 y=212 均超出圆周 → 跨过圆周右下",
+        "浅色块 [196,168,84,32] 右缘 x=280 在圆外 → 跨过圆周右侧"
+      ],
+      "interior_pixel_identity_check": {
+        "points_local": [[100, 120], [230, 70], [160, 120], [230, 180], [160, 30]],
+        "distinct_points": 5,
+        "sampled_entries": 6,
+        "sampled_entries_note": "取样脚本对 (160,120) 记录了两次（transparent_gap 与 near_center 两个独立用例），因此是 6 条取样记录覆盖 5 个不同坐标",
+        "values_⑤": {
+          "local_100_120": [29, 30, 18],
+          "local_230_70": [15, 17, 13],
+          "local_160_120": [244, 183, 73],
+          "local_230_180": [238, 180, 73],
+          "local_160_30": [248, 204, 123]
+        },
+        "values_⑥": "与 values_⑤ 完全相同（逐通道逐点差 0）",
+        "max_channel_diff_between_⑤_and_⑥": 0,
+        "conclusion": "圆内两格逐像素完全相同，证明 ⑥ 相对 ⑤ 只多了一个裁剪，未改动被裁剪的内容"
+      },
+      "shift_invariance_note": "子树必须以原样坐标放进偏移的 Positioned，不能平移场景本体：平移会改变 ImageFiltered 的输出边界与 CLAMP 取样，实测会把局部 (230,70) 从 (15,17,13) 变成 (107,84,37)"
+    }
+  ],
+
+  "samples": [
+    {
+      "panel": 1,
+      "sample_point_local": [180, 100],
+      "canvas_origin": [208, 154],
+      "sample_pixel_canvas_0indexed": [388, 254],
+      "pixel_index_check": "208+180=388，154+100=254",
+      "compositing_order": "白底 → 红(#FF000080) source-over → 蓝(#0000FF80) source-over",
+      "alpha_used": "128/255 = 0.50196078431373（来自 8 位色 #FF000080 / #0000FF80 的 α 字节）",
+      "compositing_steps": [
+        {
+          "step": 1,
+          "operation": "红 source-over 白底",
+          "formula": "out = a·src + (1-a)·dst，a=128/255，src=(255,0,0)，dst=(255,255,255)",
+          "result_float": [255.0, 127.0, 127.0],
+          "result_rounded": [255, 127, 127]
+        },
+        {
+          "step": 2,
+          "operation": "蓝 source-over 上一步结果",
+          "formula": "a=128/255，src=(0,0,255)，dst=(255,127,127)",
+          "channel_math": {
+            "R": "0.5019607843·0 + 0.4980392157·255 = 127.0",
+            "G": "0.5019607843·0 + 0.4980392157·127 = 63.2509803922",
+            "B": "0.5019607843·255 + 0.4980392157·127 = 191.2509803922"
+          },
+          "result_float": [127.0, 63.2509803922, 191.2509803922],
+          "result_rounded": [127, 63, 191]
+        }
+      ],
+      "rounding_rule": "中间值不取整，最终 RGB 用 floor(value+0.5)：floor(63.751)=63，floor(191.751)=191",
+      "theoretical_float_rgb": [127.0, 63.2509803922, 191.2509803922],
+      "rounded_rgb": [127, 63, 191],
+      "measured_rgb": [127, 63, 191],
+      "measured_alpha": 255,
+      "alpha_is_255": true,
+      "measured_source": "tmp/<run_id>/A10/sampled-v3.json，PNG=tmp/<run_id>/A10/preview/board-v3.png",
+      "per_channel_absolute_error": [0, 0, 0],
+      "per_channel_tolerance": 3,
+      "within_tolerance": true,
+      "control_points": {
+        "red_only_local_60_60": {"measured": [255, 127, 127], "expected_from_a_128_over_255": [255, 127, 127]},
+        "blue_only_local_240_180": {"measured": [127, 127, 255], "expected_from_a_128_over_255": [127, 127, 255]}
+      }
+    },
+    {
+      "panel": 2,
+      "sample_point_local": [180, 100],
+      "canvas_origin": [560, 154],
+      "sample_pixel_canvas_0indexed": [740, 254],
+      "pixel_index_check": "560+180=740，154+100=254",
+      "compositing_order": "白底 → [不透明红 source-over 白底 → 不透明蓝 source-over 红] 作为整组 → 组不透明度 0.5 source-over 白底",
+      "alpha_used": "0.5（组 Opacity），与 ① 的 128/255 不是同一个 alpha，不可混用",
+      "compositing_steps": [
+        {
+          "step": 1,
+          "operation": "组内：不透明红 source-over 白底",
+          "result_float": [255.0, 0.0, 0.0]
+        },
+        {
+          "step": 2,
+          "operation": "组内：不透明蓝 source-over 红（a=1 完全覆盖）",
+          "result_float": [0.0, 0.0, 255.0],
+          "note": "采样点 (180,100) 落在蓝矩形内且红已被完全覆盖，组内合成结果是纯蓝"
+        },
+        {
+          "step": 3,
+          "operation": "整组 source-over 白底，a=0.5",
+          "formula": "out = 0.5·(0,0,255) + 0.5·(255,255,255)",
+          "result_float": [127.5, 127.5, 255.0],
+          "result_rounded": [128, 128, 255]
+        }
+      ],
+      "rounding_rule": "floor(127.5+0.5)=128，floor(255.5)=255",
+      "theoretical_float_rgb": [127.5, 127.5, 255.0],
+      "rounded_rgb": [128, 128, 255],
+      "measured_rgb": [126, 126, 255],
+      "measured_alpha": 255,
+      "alpha_is_255": true,
+      "measured_source": "tmp/<run_id>/A10/sampled-v3.json，PNG=tmp/<run_id>/A10/preview/board-v3.png",
+      "per_channel_absolute_error": [2, 2, 0],
+      "per_channel_tolerance": 3,
+      "within_tolerance": true,
+      "tolerance_explanation": "误差来自渲染器对组不透明度的量化，不是坐标或合成顺序错误。见 quantization_observation。",
+      "control_points": {
+        "red_only_local_60_60": {
+          "measured": [255, 126, 126],
+          "expected_if_a_exactly_0_5": [255, 128, 128],
+          "expected_if_a_is_129_over_255": [255, 126, 126]
+        },
+        "blue_only_local_240_180": {
+          "measured": [126, 126, 255],
+          "expected_if_a_exactly_0_5": [128, 128, 255],
+          "expected_if_a_is_129_over_255": [126, 126, 255]
+        }
+      }
+    }
+  ],
+
+  "quantization_observation": {
+    "finding": "渲染器把 Opacity 0.5 实际按 129/255 ≈ 0.5058824 施加，而不是精确 0.5",
+    "evidence": [
+      "② 局部 (60,60) 只有红矩形：实测 (255,126,126)。按 a=129/255 反算 0.4941176·255 = 126.00，精确吻合；按 a=0.5 反算为 127.5 → 取整 128，不符",
+      "① 局部 (60,60) 同一位置实测 (255,127,127)：按 a=128/255 反算 0.4980392·255 = 127.00，精确吻合",
+      "两处 α 只差 1 个字节，实测差 1 个通道值，说明 128/255 与 0.5 确实被当作两个不同的 alpha"
+    ]
+  },
+
+  "alpha_difference_explanation": {
+    "question": "128/255 与 0.5 有什么区别？",
+    "answer": [
+      "两者不是同一个 alpha，接收 alpha 的对象也不同：① 把 128/255 施加在每一个矩形自身，红先与白底合成、蓝再与「红+白」的合成结果合成，所以蓝区域内的红光是叠加进来的（G/B 通道残留红的贡献 127）",
+      "② 先让红蓝在不透明状态下合成出纯蓝，再对整个子树施加 0.5，所以重叠处保留的是纯蓝的色相，只降低一半强度，没有红的混入",
+      "数值上：① 的重叠处 G 通道 = 0.498·127 = 63.25（红的残留），② 的 G 通道 = 0.5·255 = 127.5（白底的贡献）。前者偏紫（蓝+少量红），后者是纯正蓝的半亮",
+      "① 的 G 通道只有 63 而 ② 有 127，这就是整块颜色看起来深浅不同的来源，也是「分别设 50%」与「整组设 50%」不能互换的原因"
+    ]
+  },
+
+  "visual_checks": [
+    {
+      "panel": 3,
+      "claim": "仅背景模糊：背景被模糊，文字与前景保持清晰，效果不外溢到卡片外",
+      "text_is_sharp": {
+        "verdict": true,
+        "evidence": "沿局部 y=70 横扫 x=90..240（穿过「SHARP / BLUR」笔画）：R 通道出现 15，即墨色 #0F172A 的 R 值；相邻像素最大跳变 168。若文字被模糊，笔画会被压平、取不到墨色原值",
+        "local_scan": {"y": 70, "x_range": [90, 240], "min_r": 15, "max_adjacent_jump": 168}
+      },
+      "background_is_blurred": {
+        "verdict": true,
+        "evidence": "卡内局部 (200,100) 与 (210,100) 分别是暗条与间隙位置，实测 (168,173,180) 与 (212,215,218)，通道差 44；而卡外同一相位处实测 (30,41,59) 与 (255,255,255)，通道差 225。对比度被压到约 20%，条纹仍是同一图案但边缘已软化",
+        "in_card": {"bar_local_200_100": [168, 173, 180], "gap_local_210_100": [212, 215, 218], "contrast_r": 44},
+        "outside_card": {"bar_local_6_100": [30, 41, 59], "gap_local_16_100": [255, 255, 255], "contrast_r": 225}
+      },
+      "foreground_is_sharp": {
+        "verdict": true,
+        "evidence": "沿局部 y=138 横扫前景深色块左缘 x=52..144：R 通道在 181 → 30 之间 1 个像素完成跳变（最大跳 157），块内全程是 (30,41,59) 原值；红色圆实测 (185,28,28) 与 #B91C1C 完全一致",
+        "local_scan": {"y": 138, "x_range": [52, 144], "max_adjacent_jump": 157}
+      },
+      "no_spill": {
+        "verdict": true,
+        "evidence": "局部 (6,100)=(30,41,59)、(16,100)=(255,255,255) 为条纹原色，且与 ④ 的同一位置完全一致；模糊被 ClipRRect(borderRadius=20) 限制在卡片圆角范围内"
+      },
+      "observed_in": [
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/board-v3.png", "note": "整图，第 3 格（右上）"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/subset-3,4.png", "note": "③④ 并排放大对照，第 1 格"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/check-subset-3,4-b.json", "note": "逐点与逐行扫描取样记录"}
+      ],
+      "dsl_node": "Positioned(40,40,240,160) > Stack > ClipRRect(borderRadius=20) > BackdropFilter(sigmaX=6,sigmaY=6,tileMode=CLAMP)；卡底/文字/前景在该 ClipRRect 之后绘制",
+      "documentation": [
+        "https://snapshot.muedsa.com/guides/painting/ ——「BackdropFilter 对已经绘制在当前内容背后的区域应用滤镜」「BackdropFilter 只有在其背后已经有内容时才有可见效果」「BackdropFilter 读取已有背景，通常需要 ClipRect 或 ClipRRect 限定区域」",
+        "https://snapshot.muedsa.com/reference/parser-tags/ ——「BackdropFilter 单个 背景高斯模糊」"
+      ]
+    },
+    {
+      "panel": 4,
+      "claim": "子树模糊：条纹、卡片、文字与前景全部一起模糊，卡片外仍为原清晰背景",
+      "text_is_blurred": {
+        "verdict": true,
+        "evidence": "同一行 y=70、同一 x 范围扫描：R 通道最小值 105、最大值 191，相邻像素最大跳变仅 8，全程在 105..191 之间连续变化，从未达到墨色原值 15。与 ③ 的同位置扫描（最小值 15、最大跳变 168）形成对照",
+        "local_scan": {"y": 70, "x_range": [90, 240], "min_r": 105, "max_r": 191, "max_adjacent_jump": 8}
+      },
+      "foreground_is_blurred": {
+        "verdict": true,
+        "evidence": "同一行 y=138 扫描前景块左缘：R 通道从 156 逐步降到 30，共跨越约 21 个像素（156→148→138→…→33→32→31→30），相邻跳变最大 14。σ=6 的高斯核 3σ ≈ 18 px，与实测的 21 px 过渡带量级一致；③ 的同位置是 181→30 的 1 个像素硬跳",
+        "local_scan": {"y": 138, "x_range": [52, 144], "max_adjacent_jump": 14, "transition_width_px": 21}
+      },
+      "background_is_blurred": {
+        "verdict": true,
+        "evidence": "卡内 (200,100)=(169,172,179)、(210,100)=(212,214,218)，与 ③ 的 (168,173,180)/(212,215,218) 通道差 ≤1，说明两格被模糊的是同一份背景",
+        "in_card": {"bar_local_200_100": [169, 172, 179], "gap_local_210_100": [212, 214, 218]}
+      },
+      "no_spill": {
+        "verdict": true,
+        "evidence": "局部 (6,100)=(30,41,59)、(16,100)=(255,255,255)，与 ③ 完全一致；模糊被 ClipRRect 限制在卡片内，未影响区外条纹"
+      },
+      "observed_in": [
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/board-v3.png", "note": "整图，第 4 格（左下）"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/subset-3,4.png", "note": "③④ 并排放大对照，第 2 格"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/check-subset-3,4-b.json", "note": "逐点与逐行扫描取样记录"}
+      ],
+      "dsl_node": "ClipRRect(borderRadius=20) > ImageFiltered(sigmaX=6,sigmaY=6,tileMode=CLAMP) > Stack(240×160, clipBehavior=HARD_EDGE){白底, 条纹, 卡底, 文字, 前景}",
+      "documentation": [
+        "https://snapshot.muedsa.com/guides/painting/ ——「ImageFiltered 对子树结果应用 ImageFilter」「ImageFiltered 的输出范围不能从 Skia 滤镜自动查询」",
+        "https://snapshot.muedsa.com/reference/parser-tags/ ——「ClipRRect 单个 圆角矩形裁剪」"
+      ]
+    },
+    {
+      "panel": 5,
+      "claim": "先 MULTIPLY 着色再子树模糊：内容整体呈滤色暖调，透明间隙也被着色，边缘柔和",
+      "multiply_applied": {
+        "verdict": true,
+        "evidence": "深色块 #1E293B=(30,41,59) 经 MULTIPLY #F6B94A=(246,185,74) 应为 (30·246/255, 41·185/255, 59·74/255)=(28.9,29.8,17.2)，实测局部 (100,120)=(29,30,18)，R≈G>B 的暖偏正是滤色结果；#0F172A 应为 (14.5,16.8,12.2)，实测 (230,70)=(15,17,13)",
+        "predicted": {"rect1": [28.94, 29.75, 17.22], "rect2": [14.47, 16.75, 12.22]},
+        "measured": {"local_100_120": [29, 30, 18], "local_230_70": [15, 17, 13]}
+      },
+      "transparent_gap_tinted": {
+        "verdict": true,
+        "evidence": "局部 (160,120) 是四个色块之间的透明间隙，MULTIPLY 作用在白底上应为 (246,185,74)，实测 (244,183,73)，偏差来自随后的 σ=6 模糊。这证明透明间隙确实被着色而不是被跳过",
+        "predicted_over_white": [246, 185, 74],
+        "measured": [244, 183, 73]
+      },
+      "blur_applied": {
+        "verdict": true,
+        "evidence": "浅块 #F8FAFC 经 MULTIPLY 应为 (239.0,181.4,73.0)，实测 (230,180)=(238,180,73)；四个矩形边界处均无 1 px 硬跳，颜色在边界两侧连续过渡，说明 MULTIPLY 之后的子树高斯模糊已生效"
+      },
+      "no_extra_clip": {"verdict": true, "evidence": "整块 320×240 区域都被着色，无任何额外裁剪边界"},
+      "observed_in": [
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/board-v3.png", "note": "整图，第 5 格（中下）"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/subset-5,6.png", "note": "⑤⑥ 并排对照，第 1 格"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/check-56-5,6.json", "note": "圆内/圆外/圆周取样记录"}
+      ],
+      "dsl_node": "ImageFiltered(sigmaX=6,sigmaY=6,tileMode=CLAMP) > ColorFiltered(color=#F6B94A, blendMode=MULTIPLY) > Stack{SCENE56 四块}",
+      "documentation": [
+        "https://snapshot.muedsa.com/guides/painting/ ——「ColorFiltered 对子树应用 ColorFilter，在绘制边界可确定时限制作用范围」「<ImageFiltered> 会自动按 sigma 提供模糊输出边界，嵌套在 <ColorFiltered> 内时无需手动配置 outputBounds」",
+        "https://snapshot.muedsa.com/reference/parser-tags/ ——「ColorFiltered 单个 颜色混合滤镜」"
+      ]
+    },
+    {
+      "panel": 6,
+      "claim": "在 ⑤ 的结果上增加圆形裁剪：圆内与 ⑤ 逐像素相同，圆外为白底，有色形状跨过圆周使边界可检查",
+      "interior_identical_to_5": {
+        "verdict": true,
+        "evidence": "圆内 5 个对照点 (100,120)、(230,70)、(160,120)、(230,180)、(160,30) 与 ⑤ 逐通道差全部为 0，最大差 0。证明最外层的裁剪没有改动被裁剪内容",
+        "points_local": [[100, 120], [230, 70], [160, 120], [230, 180], [160, 30]],
+        "max_channel_diff": 0
+      },
+      "outside_circle_is_background": {
+        "verdict": true,
+        "evidence": "局部 (16,120) ⑥ 实测 (255,255,255)、⑤ 实测 (236,183,87)；(160,225) ⑥ (255,255,255)、⑤ (250,222,170)；(16,16) ⑥ (255,255,255)、⑤ (255,253,251)；(160,5) ⑥ (255,255,255)、⑤ (255,255,255)。圆外内容确实被裁掉",
+        "points": {
+          "local_16_120": {"⑤": [236, 183, 87], "⑥": [255, 255, 255]},
+          "local_160_225": {"⑤": [250, 222, 170], "⑥": [255, 255, 255]},
+          "local_16_16": {"⑤": [255, 253, 251], "⑥": [255, 255, 255]},
+          "local_160_5": {"⑤": [255, 255, 255], "⑥": [255, 255, 255]}
+        }
+      },
+      "boundary_is_anti_aliased": {
+        "verdict": true,
+        "evidence": "圆周上局部 (60,120)（圆心 (160,120) 半径 100，正好在左缘）⑥ 实测 (36,37,25)，介于 ⑤ 的 (29,30,18) 与白底之间，是抗锯齿过渡而非硬边"
+      },
+      "shape_crosses_circle": {
+        "verdict": true,
+        "evidence": "深色矩形 [28,40,116,160] 的左半在圆外、右半在圆内，因此圆周左侧能看到该矩形的边缘被切断；⑥ 圆周附近取样即为该矩形与滤色背景的过渡"
+      },
+      "observed_in": [
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/board-v3.png", "note": "整图，第 6 格（右下）"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/preview/subset-5,6.png", "note": "⑤⑥ 并排对照，第 2 格"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/check-56-5,6.json", "note": "圆内/圆外/圆周取样记录"}
+      ],
+      "dsl_node": "Positioned(60,20,200,200) > ClipOval(clipBehavior=ANTI_ALIAS) > Stack(200×200) > Positioned(-60,-20,320,240) > ImageFiltered > ColorFiltered > Stack{SCENE56}",
+      "documentation": [
+        "https://snapshot.muedsa.com/reference/parser-tags/ ——「ClipOval 单个 椭圆裁剪」",
+        "https://snapshot.muedsa.com/guides/painting/ ——「ClipOval 与 ClipRRect」"
+      ]
+    }
+  ],
+
+  "measured_dsl_contracts": [
+    {
+      "id": 1,
+      "contract": "8 位十六进制颜色是 #RRGGBBAA，不是 #AARRGGBB",
+      "evidence": [
+        "诊断渲染：无任何滤镜、只有深灰竖条与一块 #B3FFFFFF 罩卡，罩卡内所有点解码为不透明 (179,255,255) —— 即 R=0xB3=179、G=0xFF、B=0xFF、A=0xFF。若按 #AARRGGBB 解析应为白 70%，罩卡内应随条纹在 (255,255,255) 与 (188,191,196) 之间变化",
+        "同一诊断把罩色改为 #FFFFFFB3 后，深条处实测 (188,191,196)，与 0.70196·255+0.298·(30,41,59)=(187.9,191.2,196.6) 吻合，是真正的白 70%"
+      ],
+      "impact": "本板 ③④ 的卡底原写 #B3FFFFFF（意图白 70%），实测被渲染成不透明亮青，把背后的模糊完全盖住，③ 看起来只是一块纯色卡。已改为 #FFFFFF80（白 50%）",
+      "also_affected": "SCENE56 的第三块原写 #B3334155（意图 (51,65,85) 70%），实际是 (179,51,65) 33%，已改为 #334155B3",
+      "prior_finding": {
+        "note": "该契约并非 A10 首次发现：A03 在自身迭代中已独立定位并修复过完全相同的问题，本次是独立复现与再次确认，不应记为 A10 的新发现",
+        "a03_iteration": "I-07（#33FFFFFF 渲染成不透明青色）",
+        "a03_evidence": {
+          "path_base": "suite_root",
+          "path": "tmp/<run_id>/A03/alpha-check.json",
+          "detail": "记录 #RRGGBBAA 解析结果 R=51/G=255/B=255/A=255、众数实测 (50,254,254)、占比 0.5582，判语「不是白色；青色与白色相差 222 通道，需求『白底不透明度 20%』未实现」；另记录 I-08 指出 #FFFFFF44 = 26.67% 而非题目要求的 20%，最终改用 #FFFFFF33"
+        },
+        "a03_deliverable_status": "已修复：A03 交付的 system-pulse.snapshot 只含 α 在末位的 8 位色（#00000040 ×3、#FFFFFF1A ×1、#FFFFFF33 ×1、#FFFFFF66 ×1），无 α 在首位的写法",
+        "why_a10_still_matters": "A10 的 #B3FFFFFF / #B3334155 与 A03 的 #33FFFFFF 是同一契约的不同实例；A10 的独立复现提供了第二个方向的证据（白 70% 而非白 20%），并把该契约推广到 SCENE56 的深色系"
+      },
+      "diagnostic_records": [
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/diag-results.json"},
+        {"path_base": "suite_root", "path": "tmp/<run_id>/A10/gen/a10_diag.py"}
+      ]
+    },
+    {
+      "id": 2,
+      "contract": "ClipOval 的直接子节点必须是 Stack，不能是 Positioned",
+      "evidence": "实测返回 RENDER_ERROR：renderBox.parentData must be StackParentData（req-a10-bisect-clipoval-b5e21b、req-a10-subset-6-c04a06 等 5 次 400 响应）",
+      "resolution": "改为 ClipOval > Stack(width,height) > Positioned(...)；修好后 ⑥ 在 1375 ms 内渲染成功（req-a10-subset-6-04d418）"
+    },
+    {
+      "id": 3,
+      "contract": "Positioned 只能有一个子节点",
+      "evidence": "实测返回 PARSE_ERROR：Tag Positioned only can have one child",
+      "resolution": "多个并列子节点一律改用 Stack 包裹"
+    },
+    {
+      "id": 4,
+      "contract": "Stack 接受 width/height 属性并正常渲染",
+      "evidence": "req-a10-bisect-stack-attrs-93315a 返回 200，2672 ms"
+    },
+    {
+      "id": 5,
+      "contract": "Opacity 会把整个子树压平成一个不透明度",
+      "evidence": "② 的重叠处实测 (126,126,255) 属纯蓝色相，而 ① 的同位置实测 (127,63,191) 含红的残留；文档「Opacity 把整个子树作为一层合成透明度」",
+      "related": "samples[0..1] 与 alpha_difference_explanation"
+    },
+    {
+      "id": 6,
+      "contract": "平移模糊子树会改变 ImageFiltered 的输出边界与 CLAMP 取样",
+      "evidence": "把 ⑤⑥ 的场景本体整体平移 (-60,-20) 放进圆盒后，⑥ 的局部 (230,70) 从 ⑤ 的 (15,17,13) 变成 (107,84,37)，两格不再相同",
+      "resolution": "子树保持原样坐标，改由外层 Positioned(-60,-20,320,240) 提供偏移；修好后备注见 paired_scenes[1].shift_invariance_note"
+    },
+    {
+      "id": 7,
+      "contract": "ColorFiltered 在内、ImageFiltered 在外同样成立",
+      "evidence": "⑤⑥ 实测 MULTIPLY 之后的高斯模糊按预期生效（见 visual_checks[2] 的 predicted vs measured）；文档原本提示的是反向嵌套时「嵌套在 <ColorFiltered> 内时无需手动配置 outputBounds」，本题采用的外层 ImageFiltered 未配置 outputBounds 也能正常渲染"
+    }
+  ],
+
+  "unexplained": [
+    {
+      "issue": "六格整板探针（996×508）连续 3 次读响应超时（420 s 阈值）后被本方主动中止",
+      "request_ids": [
+        "req-a10-probe1-compositing-unlogged",
+        "req-a10-probe1-compositing-d0e264",
+        "req-a10-probe1-compositing-2-246770",
+        "req-a10-probe1-compositing-3-interrupted"
+      ],
+      "observations": [
+        "同一时段极简 smoke 渲染 2422 ms 返回 200，服务整体可用",
+        "六个新构件逐个二分均 2.6–3.2 s 返回 200，两格一组的六组二分全部在 1.1–3.1 s 返回",
+        "修好 ClipOval 结构后，同一份六格探针在 2656 ms 返回 200（req-a10-probe1-compositing-dce692）",
+        "最终 1440×1100 整板分别用 4265 ms 与 5047 ms 成功"
+      ],
+      "conclusion": "挂起与构件本身没有可复现的因果关系，不能确定根因，如实记录为未解释的服务端延迟",
+      "note": "未在任何记录中把超时原因写成已确认结论"
+    },
+    {
+      "issue": "首次诊断脚本遭遇服务端未回状态行即断开连接",
+      "request_id": "req-a10-diag-noblur-ed53da",
+      "detail": "http.client.RemoteDisconnected，25.2 s 后抛错。该异常继承 http.client.HTTPException 而非 OSError，不会被 tools/suite.py 的 URLError 分支捕获，已在 A10 客户端 a10_client.py 的调用层兜住并逐次留痕",
+      "resolution": "同一请求第 2 次尝试 1953 ms 返回 200（req-a10-diag-noblur-2-9effdc）"
+    }
+  ],
+
+  "log_correction_disclosure": [
+    {
+      "record": "req-a10-probe1-compositing-unlogged",
+      "detail": "该次请求发生在 A10 客户端 a10_client.py 建立之前，未自动写日志，事后补录。补录时 started_at/ended_at/elapsed_ms 均置 null，因为无法事后重建精确时间，note 字段说明了补录性质",
+      "second_correction": "补录时曾把 elapsed_ms 填成推测的 180000，随后改回 null。这是对一条追加式日志的单行修正，如实披露"
+    }
+  ],
+
+  "cross_task_regression_check": {
+    "task_id": "A03",
+    "original_hypothesis": "A03 的 DSL 使用 #33FFFFFF 表示「白 20%」，按实测的 #RRGGBBAA 格式会被渲染成不透明亮青 (51,255,255)",
+    "status": "not_reproduced",
+    "how_it_was_verified": [
+      "A03 交付件 outputs/<run_id>/A03/system-pulse.snapshot 中 8 位色只有 4 种，全部 α 在末位：#00000040 ×3、#FFFFFF66 ×1、#FFFFFF33 ×1、#FFFFFF1A ×1；#33FFFFFF / #B3FFFFFF / #B3334155 出现次数为 0",
+      "对 A03 交付 PNG（1280×800，1894 种颜色）做全图统计：(51,255,255) 0 像素、(179,255,255) 0 像素、(179,51,65) 0 像素；且不存在任何 R<120 且 G≥200 且 B≥200 的青色颜色值",
+      "A03 自身的 alpha-check.json 已记录同一契约（I-07）：#33FFFFFF 解析为 #RRGGBBAA → R=51/G=255/B=255/A=255，众数实测 (50,254,254)，占比 0.5582，判语「不是白色；青色与白色相差 222 通道」；I-08 另指出 #FFFFFF44 = 26.67% 而非 20%，最终改用 #FFFFFF33"
+    ],
+    "why_the_hypothesis_was_wrong": "判定时只统计了 tmp/<run_id>/A03/dsl/ 与 tmp/<run_id>/A03/ 下所有 .snapshot 文件里的 8 位色，没有区分交付件与已被取代的探针草稿。#33FFFFFF ×22 全部位于 v0-original、p1..p5、probe2/3/4/5 与 req-* 等早期探针文件中，这些文件在 A03 自身的迭代里就被 v2 取代，未进入交付件。",
+    "impact_on_a03": "无。A03 交付件的颜色正确，无需重渲，无需修改 A03 的快照、指标或报告。",
+    "self_correction": "本条最初以 cross_task_regression_found / status: open 的形式写入 A10 的 composite-audit.json、task-metrics.json（unresolved_issues a10-u2）与 snapshot-usage.md §6.3，属于未经核验就把统计结论当成缺陷报告。现已全部改为 not_reproduced 并注明验证依据。",
+    "real_value_of_the_check": "虽然 A03 的交付件没有问题，这次统计仍然有价值：它确认了全套已交付件中目前只有 A10 需要按 #RRGGBBAA 修正，并已修正完毕"
+  },
+
+  "documentation_cited": [
+    {
+      "url": "https://snapshot.muedsa.com/guides/painting/",
+      "retrieved_at": "2026-10-14T23:16:03+08:00",
+      "http_status": 200,
+      "cache": {"path_base": "suite_root", "path": "tmp/<run_id>/_suite/docs/dsl/guides-painting.html.md.txt"},
+      "used_for": "BackdropFilter / ImageFiltered / ColorFiltered / Opacity 的语义与嵌套规则"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags/",
+      "retrieved_at": "2026-10-14T23:15:58+08:00",
+      "http_status": 200,
+      "cache": {"path_base": "suite_root", "path": "tmp/<run_id>/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+      "used_for": "ClipOval / ClipRRect / BackdropFilter / ColorFiltered / Opacity 标签的属性表"
+    },
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "retrieved_at": "2026-10-14T23:14:01+08:00",
+      "http_status": 200,
+      "cache": {"path_base": "suite_root", "path": "tmp/<run_id>/_suite/docs/ai-guide.md"},
+      "used_for": "请求格式、响应判定与错误处理"
+    }
+  ],
+
+  "pass_summary": {
+    "panel_1_within_tolerance": true,
+    "panel_2_within_tolerance": true,
+    "panel_3_visual_checks_all_pass": true,
+    "panel_4_visual_checks_all_pass": true,
+    "panel_5_visual_checks_all_pass": true,
+    "panel_6_visual_checks_all_pass": true,
+    "all_area_origins_integer": true,
+    "all_description_text_at_least_20px": true,
+    "final_png_is_raw_service_response": true,
+    "final_dsl_pairs_with_final_png": true
+  }
+}

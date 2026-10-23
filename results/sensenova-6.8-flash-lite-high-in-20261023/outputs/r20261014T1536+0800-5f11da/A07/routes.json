@@ -1,0 +1,1750 @@
+{
+  "schema_version": 1,
+  "task_id": "A07",
+  "path_base": "output_dir",
+  "generated_at": "2026-10-15T11:04:32+08:00",
+  "input": {
+    "path_base": "suite_root",
+    "path": "tasks/A07-transit-topology/inputs/network.json",
+    "stations": 16,
+    "lines": 3,
+    "queries": 3,
+    "undirected_edges": 16,
+    "edge_cost": "每条相邻站边代价 1（题面：所有相邻站耗时相同）"
+  },
+  "model": {
+    "path_base": "suite_root",
+    "path": "tmp/r20261014T1536+0800-5f11da/A07/model.json",
+    "schema_version": 1
+  },
+  "deliverables": [
+    {
+      "file": "network-map.png",
+      "dsl": "network-map.snapshot",
+      "width": 1600,
+      "height": 1000,
+      "purpose": "全网非地理示意图"
+    },
+    {
+      "file": "travel-card.png",
+      "dsl": "travel-card.snapshot",
+      "width": 720,
+      "height": 1280,
+      "purpose": "三条最短旅程旅行卡"
+    }
+  ],
+  "objective": "(intervals ASC, transfers ASC) 字典序；intervals = 站间边数，transfers = 换线路次数（首次上车不计）",
+  "objective_note": "换乘 = 改变乘坐线路，第一次上车不计；station_count = intervals + 1，不要把站数当区间数。",
+  "geometry": {
+    "is_geographic": false,
+    "note": "非地理示意图：站间距离与方位不代表真实空间关系",
+    "drawn_angles_deg": [
+      0.0,
+      45.0,
+      90.0
+    ],
+    "allowed_angles_deg": [
+      0,
+      45,
+      90
+    ],
+    "total_segments": 18,
+    "segments_per_line": {
+      "R": 6,
+      "B": 7,
+      "G": 5
+    },
+    "false_crossing_count": 0,
+    "same_line_crossing_count": 0,
+    "line_passes_foreign_station_count": 0,
+    "angle_rule_scope": "角度规则只约束绘图：相邻站之间的连线只用 0°/45°/90° 折线画出不代表方向；路由与边数一律按线路给出的站序，一条站间边可以跨越多个绘图折线段（例：B 线 S04→S09 是一条站间边，绘图上跨越 3 个折线段）。",
+    "transfer_stations": [
+      {
+        "id": "S04",
+        "name": "中心",
+        "lines": [
+          "R",
+          "B"
+        ],
+        "x": 480,
+        "y": 400
+      },
+      {
+        "id": "S05",
+        "name": "东桥",
+        "lines": [
+          "R",
+          "G"
+        ],
+        "x": 720,
+        "y": 400
+      },
+      {
+        "id": "S08",
+        "name": "工坊",
+        "lines": [
+          "B",
+          "G"
+        ],
+        "x": 480,
+        "y": 520
+      }
+    ]
+  },
+  "lines": {
+    "R": {
+      "letter": "R",
+      "color": "#DC2626",
+      "name": "红线",
+      "station_count": 7
+    },
+    "B": {
+      "letter": "B",
+      "color": "#2563EB",
+      "name": "蓝线",
+      "station_count": 6
+    },
+    "G": {
+      "letter": "G",
+      "color": "#16A34A",
+      "name": "绿线",
+      "station_count": 6
+    }
+  },
+  "accessibility_rule": "accessible=false 的车站可以乘车途经（不作为起点、终点或换乘站），但不能作为无障碍旅程的起点、终点或换乘站；任何查询都不得因该约束而删除线路。",
+  "queries": [
+    {
+      "query_id": "Q1",
+      "from": "S01",
+      "from_name": "松林",
+      "to": "S11",
+      "to_name": "会展",
+      "from_accessible": true,
+      "to_accessible": true,
+      "normal": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "edge_lines": [
+          {
+            "from": "S01",
+            "to": "S02",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S02",
+            "to": "S03",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S03",
+            "to": "S04",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S04",
+            "to": "S09",
+            "line": "B",
+            "line_name": "蓝线"
+          },
+          {
+            "from": "S09",
+            "to": "S10",
+            "line": "B",
+            "line_name": "蓝线"
+          },
+          {
+            "from": "S10",
+            "to": "S11",
+            "line": "B",
+            "line_name": "蓝线"
+          }
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S04"
+        ],
+        "segments": [
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "intervals": 3,
+            "color": "#DC2626",
+            "letter": "R",
+            "drawn_segments": 3,
+            "drawn_length_px": 360.0,
+            "note": "这 3 个站间边在图上由 3 段 0°/45°/90° 折线画出；一一对应。"
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "intervals": 3,
+            "color": "#2563EB",
+            "letter": "B",
+            "drawn_segments": 5,
+            "drawn_length_px": 1360.0,
+            "note": "这 3 个站间边在图上由 5 段 0°/45°/90° 折线画出；边数与折线段数不同。"
+          }
+        ],
+        "lines_used": [
+          "B",
+          "R"
+        ],
+        "station_count": 7,
+        "drawn_segments_total": 8,
+        "note": "站点数 7 ≠ 站间边数 6（站数 = 边数 + 1）；图上折线段数 8 是绘图量，既不等于站数也不等于边数。"
+      },
+      "normal_is_accessible": true,
+      "accessibility": {
+        "verdict": "可作为无障碍旅程",
+        "same_as_normal": true,
+        "reason": "起终点与换乘站全部 accessible=true，普通旅程即满足无障碍约束。"
+      },
+      "accessible": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "edge_lines": [
+          {
+            "from": "S01",
+            "to": "S02",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S02",
+            "to": "S03",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S03",
+            "to": "S04",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S04",
+            "to": "S09",
+            "line": "B",
+            "line_name": "蓝线"
+          },
+          {
+            "from": "S09",
+            "to": "S10",
+            "line": "B",
+            "line_name": "蓝线"
+          },
+          {
+            "from": "S10",
+            "to": "S11",
+            "line": "B",
+            "line_name": "蓝线"
+          }
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S04"
+        ],
+        "segments": [
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S01",
+              "S02",
+              "S03",
+              "S04"
+            ],
+            "intervals": 3,
+            "color": "#DC2626",
+            "letter": "R",
+            "drawn_segments": 3,
+            "drawn_length_px": 360.0,
+            "note": "这 3 个站间边在图上由 3 段 0°/45°/90° 折线画出；一一对应。"
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S04",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "intervals": 3,
+            "color": "#2563EB",
+            "letter": "B",
+            "drawn_segments": 5,
+            "drawn_length_px": 1360.0,
+            "note": "这 3 个站间边在图上由 5 段 0°/45°/90° 折线画出；边数与折线段数不同。"
+          }
+        ],
+        "lines_used": [
+          "B",
+          "R"
+        ],
+        "station_count": 7,
+        "drawn_segments_total": 8,
+        "note": "站点数 7 ≠ 站间边数 6（站数 = 边数 + 1）；图上折线段数 8 是绘图量，既不等于站数也不等于边数。",
+        "reason": "与普通旅程相同（无需另求）"
+      }
+    },
+    {
+      "query_id": "Q2",
+      "from": "S13",
+      "from_name": "石溪",
+      "to": "S12",
+      "to_name": "机场",
+      "from_accessible": true,
+      "to_accessible": true,
+      "normal": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "edge_lines": [
+          {
+            "from": "S13",
+            "to": "S14",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S14",
+            "to": "S08",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S08",
+            "to": "S15",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S15",
+            "to": "S05",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S05",
+            "to": "S06",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S06",
+            "to": "S12",
+            "line": "R",
+            "line_name": "红线"
+          }
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S05"
+        ],
+        "segments": [
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S13",
+              "S14",
+              "S08",
+              "S15",
+              "S05"
+            ],
+            "intervals": 4,
+            "color": "#16A34A",
+            "letter": "G",
+            "drawn_segments": 4,
+            "drawn_length_px": 649.7,
+            "note": "这 4 个站间边在图上由 4 段 0°/45°/90° 折线画出；一一对应。"
+          },
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "intervals": 2,
+            "color": "#DC2626",
+            "letter": "R",
+            "drawn_segments": 2,
+            "drawn_length_px": 289.7,
+            "note": "这 2 个站间边在图上由 2 段 0°/45°/90° 折线画出；一一对应。"
+          }
+        ],
+        "lines_used": [
+          "G",
+          "R"
+        ],
+        "station_count": 7,
+        "drawn_segments_total": 6,
+        "note": "站点数 7 ≠ 站间边数 6（站数 = 边数 + 1）；图上折线段数 6 是绘图量，既不等于站数也不等于边数。"
+      },
+      "normal_is_accessible": false,
+      "accessibility": {
+        "verdict": "不可作为无障碍旅程",
+        "same_as_normal": false,
+        "reason": "普通旅程的换乘站 S05 东桥 accessible=false，不能作为无障碍旅程的换乘站；起终点本身均可无障碍。"
+      },
+      "accessible": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "edge_lines": [
+          {
+            "from": "S13",
+            "to": "S14",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S14",
+            "to": "S08",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S08",
+            "to": "S04",
+            "line": "B",
+            "line_name": "蓝线"
+          },
+          {
+            "from": "S04",
+            "to": "S05",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S05",
+            "to": "S06",
+            "line": "R",
+            "line_name": "红线"
+          },
+          {
+            "from": "S06",
+            "to": "S12",
+            "line": "R",
+            "line_name": "红线"
+          }
+        ],
+        "intervals": 6,
+        "transfers": 2,
+        "transfer_stations": [
+          "S08",
+          "S04"
+        ],
+        "segments": [
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S13",
+              "S14",
+              "S08"
+            ],
+            "intervals": 2,
+            "color": "#16A34A",
+            "letter": "G",
+            "drawn_segments": 2,
+            "drawn_length_px": 360.0,
+            "note": "这 2 个站间边在图上由 2 段 0°/45°/90° 折线画出；一一对应。"
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S08",
+              "S04"
+            ],
+            "intervals": 1,
+            "color": "#2563EB",
+            "letter": "B",
+            "drawn_segments": 1,
+            "drawn_length_px": 120.0,
+            "note": "这 1 个站间边在图上由 1 段 0°/45°/90° 折线画出；一一对应。"
+          },
+          {
+            "line": "R",
+            "line_name": "红线",
+            "stations": [
+              "S04",
+              "S05",
+              "S06",
+              "S12"
+            ],
+            "intervals": 3,
+            "color": "#DC2626",
+            "letter": "R",
+            "drawn_segments": 3,
+            "drawn_length_px": 529.7,
+            "note": "这 3 个站间边在图上由 3 段 0°/45°/90° 折线画出；一一对应。"
+          }
+        ],
+        "lines_used": [
+          "B",
+          "G",
+          "R"
+        ],
+        "station_count": 7,
+        "drawn_segments_total": 6,
+        "note": "站点数 7 ≠ 站间边数 6（站数 = 边数 + 1）；图上折线段数 6 是绘图量，既不等于站数也不等于边数。",
+        "reason": "满足约束的最短无障碍旅程：6 个站间边 · 2 次换乘；换乘站 S08 工坊、S04 中心 均 accessible=true；途经站 S14 公园、S05 东桥虽 accessible=false，但仅乘车途经，允许。"
+      }
+    },
+    {
+      "query_id": "Q3",
+      "from": "S07",
+      "from_name": "西港",
+      "to": "S16",
+      "to_name": "研究所",
+      "from_accessible": true,
+      "to_accessible": true,
+      "normal": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "edge_lines": [
+          {
+            "from": "S07",
+            "to": "S08",
+            "line": "B",
+            "line_name": "蓝线"
+          },
+          {
+            "from": "S08",
+            "to": "S15",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S15",
+            "to": "S05",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S05",
+            "to": "S16",
+            "line": "G",
+            "line_name": "绿线"
+          }
+        ],
+        "intervals": 4,
+        "transfers": 1,
+        "transfer_stations": [
+          "S08"
+        ],
+        "segments": [
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "intervals": 1,
+            "color": "#2563EB",
+            "letter": "B",
+            "drawn_segments": 1,
+            "drawn_length_px": 169.7,
+            "note": "这 1 个站间边在图上由 1 段 0°/45°/90° 折线画出；一一对应。"
+          },
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "intervals": 3,
+            "color": "#16A34A",
+            "letter": "G",
+            "drawn_segments": 3,
+            "drawn_length_px": 409.7,
+            "note": "这 3 个站间边在图上由 3 段 0°/45°/90° 折线画出；一一对应。"
+          }
+        ],
+        "lines_used": [
+          "B",
+          "G"
+        ],
+        "station_count": 5,
+        "drawn_segments_total": 4,
+        "note": "站点数 5 ≠ 站间边数 4（站数 = 边数 + 1）；图上折线段数 4 是绘图量，既不等于站数也不等于边数。"
+      },
+      "normal_is_accessible": true,
+      "accessibility": {
+        "verdict": "可作为无障碍旅程",
+        "same_as_normal": true,
+        "reason": "起终点与换乘站全部 accessible=true，普通旅程即满足无障碍约束。"
+      },
+      "accessible": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "edge_lines": [
+          {
+            "from": "S07",
+            "to": "S08",
+            "line": "B",
+            "line_name": "蓝线"
+          },
+          {
+            "from": "S08",
+            "to": "S15",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S15",
+            "to": "S05",
+            "line": "G",
+            "line_name": "绿线"
+          },
+          {
+            "from": "S05",
+            "to": "S16",
+            "line": "G",
+            "line_name": "绿线"
+          }
+        ],
+        "intervals": 4,
+        "transfers": 1,
+        "transfer_stations": [
+          "S08"
+        ],
+        "segments": [
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "stations": [
+              "S07",
+              "S08"
+            ],
+            "intervals": 1,
+            "color": "#2563EB",
+            "letter": "B",
+            "drawn_segments": 1,
+            "drawn_length_px": 169.7,
+            "note": "这 1 个站间边在图上由 1 段 0°/45°/90° 折线画出；一一对应。"
+          },
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "stations": [
+              "S08",
+              "S15",
+              "S05",
+              "S16"
+            ],
+            "intervals": 3,
+            "color": "#16A34A",
+            "letter": "G",
+            "drawn_segments": 3,
+            "drawn_length_px": 409.7,
+            "note": "这 3 个站间边在图上由 3 段 0°/45°/90° 折线画出；一一对应。"
+          }
+        ],
+        "lines_used": [
+          "B",
+          "G"
+        ],
+        "station_count": 5,
+        "drawn_segments_total": 4,
+        "note": "站点数 5 ≠ 站间边数 4（站数 = 边数 + 1）；图上折线段数 4 是绘图量，既不等于站数也不等于边数。",
+        "reason": "与普通旅程相同（无需另求）"
+      }
+    }
+  ],
+  "accessibility": [
+    {
+      "id": "S01",
+      "name": "松林",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "role_in_accessible_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": true,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": false,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S02",
+      "name": "北门",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S03",
+      "name": "书院",
+      "accessible": false,
+      "lines": [
+        "R"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": true,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S04",
+      "name": "中心",
+      "accessible": true,
+      "lines": [
+        "R",
+        "B"
+      ],
+      "is_transfer": true,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": true,
+        "passthrough": false
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": true,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": true,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": false,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S05",
+      "name": "东桥",
+      "accessible": false,
+      "lines": [
+        "R",
+        "G"
+      ],
+      "is_transfer": true,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": true,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": true,
+        "passed": false,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S06",
+      "name": "江湾",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S07",
+      "name": "西港",
+      "accessible": true,
+      "lines": [
+        "B"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "role_in_accessible_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": true,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": false,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S08",
+      "name": "工坊",
+      "accessible": true,
+      "lines": [
+        "B",
+        "G"
+      ],
+      "is_transfer": true,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": true,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": true,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": true,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S09",
+      "name": "花园",
+      "accessible": false,
+      "lines": [
+        "B"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": true,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S10",
+      "name": "南门",
+      "accessible": true,
+      "lines": [
+        "B"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S11",
+      "name": "会展",
+      "accessible": true,
+      "lines": [
+        "B"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "role_in_accessible_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": true,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": false,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S12",
+      "name": "机场",
+      "accessible": true,
+      "lines": [
+        "R"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "role_in_accessible_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": true,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": false,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S13",
+      "name": "石溪",
+      "accessible": true,
+      "lines": [
+        "G"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "role_in_accessible_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": true,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": false,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S14",
+      "name": "公园",
+      "accessible": false,
+      "lines": [
+        "G"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": true,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S15",
+      "name": "剧院",
+      "accessible": true,
+      "lines": [
+        "G"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "role_in_accessible_routes": {
+        "endpoint": false,
+        "transfer": false,
+        "passthrough": true
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": false,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": true,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    },
+    {
+      "id": "S16",
+      "name": "研究所",
+      "accessible": true,
+      "lines": [
+        "G"
+      ],
+      "is_transfer": false,
+      "role_in_normal_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "role_in_accessible_routes": {
+        "endpoint": true,
+        "transfer": false,
+        "passthrough": false
+      },
+      "endpoint": {
+        "check": "该站是否作为某条路线的起终点",
+        "occurs": true,
+        "passed": true,
+        "method": "统计起终点角色与 accessible 字段比对"
+      },
+      "transfer": {
+        "check": "该站是否作为某条路线的换乘站",
+        "occurs": false,
+        "passed": true,
+        "method": "统计换乘站角色与 accessible 字段比对"
+      },
+      "ride_through": {
+        "check": "accessible=false 的站只能乘车途经，不得做起终点或换乘站",
+        "occurs": false,
+        "passed": false,
+        "method": "accessible=false 时要求 endpoint 与 transfer 均为 False；accessible=true 时该项不适用（恒为 True）"
+      }
+    }
+  ],
+  "accessibility_checks": [
+    {
+      "check": "无障碍旅程的起终点与换乘站均 accessible=true（计算式核验）",
+      "passed": true,
+      "method": "对每条无障碍路线，检查 stations[0]、stations[-1] 与 transfer_stations 的 accessible 字段",
+      "violations": [],
+      "evidence": "3 组查询的无障碍路线共 6 个起终点 + 4 个换乘站，全部 accessible=true。"
+    },
+    {
+      "check": "无障碍旅程中 accessible=false 的站仅作为乘车途经出现",
+      "passed": true,
+      "method": "统计各站在 3 条无障碍旅程中担任 起终点/换乘站/途经 的角色（见 accessibility[].role_in_accessible_routes）",
+      "evidence": "S03 书院、S05 东桥、S09 花园、S14 公园 从未作为任何无障碍旅程的起终点或换乘站；S14 公园、S05 东桥 仅途经。S05 东桥 仅出现在 Q2 的普通旅程中作为换乘站，这正是该普通旅程不可无障碍的原因。"
+    },
+    {
+      "check": "未因无障碍约束删除任何线路、站或站间边",
+      "passed": true,
+      "method": "对照 inputs/network.json 的站/线/边数与 model.json 的绘制数量",
+      "evidence": "输入 16 站 / 3 线 / 16 条站间边；绘制 16 站 / 3 线 / 18 段折线；全部 16 条站间边都仍在图上，未被删除或屏蔽。"
+    }
+  ],
+  "optimality": [
+    {
+      "query_id": "Q1",
+      "mode": "normal",
+      "objective": "(intervals ASC, transfers ASC) 字典序",
+      "intervals": 6,
+      "transfers": 1,
+      "transfer_stations": [
+        "S04"
+      ],
+      "method": "状态 (station, 当前线路) 的字典序 Dijkstra；无障碍变体额外要求起点/终点与每个换线站 accessible=true",
+      "edge_cost": 1,
+      "bidirectional": true,
+      "evidence": "共 7 站 / 6 个站间边 / 1 次换乘；由 (station, 当前线路) 状态空间的字典序 Dijkstra 求得。"
+    },
+    {
+      "query_id": "Q2",
+      "mode": "normal",
+      "objective": "(intervals ASC, transfers ASC) 字典序",
+      "intervals": 6,
+      "transfers": 1,
+      "transfer_stations": [
+        "S05"
+      ],
+      "method": "状态 (station, 当前线路) 的字典序 Dijkstra；无障碍变体额外要求起点/终点与每个换线站 accessible=true",
+      "edge_cost": 1,
+      "bidirectional": true,
+      "evidence": "共 7 站 / 6 个站间边 / 1 次换乘；由 (station, 当前线路) 状态空间的字典序 Dijkstra 求得。"
+    },
+    {
+      "query_id": "Q3",
+      "mode": "normal",
+      "objective": "(intervals ASC, transfers ASC) 字典序",
+      "intervals": 4,
+      "transfers": 1,
+      "transfer_stations": [
+        "S08"
+      ],
+      "method": "状态 (station, 当前线路) 的字典序 Dijkstra；无障碍变体额外要求起点/终点与每个换线站 accessible=true",
+      "edge_cost": 1,
+      "bidirectional": true,
+      "evidence": "共 5 站 / 4 个站间边 / 1 次换乘；由 (station, 当前线路) 状态空间的字典序 Dijkstra 求得。"
+    },
+    {
+      "query_id": "Q1",
+      "mode": "accessible",
+      "objective": "(intervals ASC, transfers ASC) 字典序，且起终点与换乘站均 accessible=true",
+      "intervals": 6,
+      "transfers": 1,
+      "transfer_stations": [
+        "S04"
+      ],
+      "method": "状态 (station, 当前线路) 的字典序 Dijkstra；无障碍变体额外要求起点/终点与每个换线站 accessible=true；无障碍变体额外要求起点/终点与每个换线站 accessible=true",
+      "evidence": "普通最短旅程已满足约束，无障碍最短 = 普通最短，无需增边。"
+    },
+    {
+      "query_id": "Q2",
+      "mode": "accessible",
+      "objective": "(intervals ASC, transfers ASC) 字典序，且起终点与换乘站均 accessible=true",
+      "intervals": 6,
+      "transfers": 2,
+      "transfer_stations": [
+        "S08",
+        "S04"
+      ],
+      "method": "状态 (station, 当前线路) 的字典序 Dijkstra；无障碍变体额外要求起点/终点与每个换线站 accessible=true；无障碍变体额外要求起点/终点与每个换线站 accessible=true",
+      "evidence": "普通最短为 6 边 / 1 次换乘，但换乘站 S05 东桥 不无障碍；同边数下改走无障碍换乘站需多 1 次换乘，边数仍为 6（与最短边数相同）。"
+    },
+    {
+      "query_id": "Q3",
+      "mode": "accessible",
+      "objective": "(intervals ASC, transfers ASC) 字典序，且起终点与换乘站均 accessible=true",
+      "intervals": 4,
+      "transfers": 1,
+      "transfer_stations": [
+        "S08"
+      ],
+      "method": "状态 (station, 当前线路) 的字典序 Dijkstra；无障碍变体额外要求起点/终点与每个换线站 accessible=true；无障碍变体额外要求起点/终点与每个换线站 accessible=true",
+      "evidence": "普通最短旅程已满足约束，无障碍最短 = 普通最短，无需增边。"
+    }
+  ],
+  "content_map": [
+    {
+      "query_id": "Q1",
+      "route": "normal",
+      "card_strip": {
+        "left": 80.0,
+        "top": 243.0,
+        "width": 560.0,
+        "height": 108.0,
+        "box": [
+          80.0,
+          243.0,
+          640.0,
+          351.0
+        ],
+        "bar_center_y": 301.0,
+        "station_x": [
+          80.0,
+          173.3,
+          266.7,
+          360.0,
+          453.3,
+          546.7,
+          640.0
+        ]
+      },
+      "card_panel": {
+        "left": 24.0,
+        "width": 672.0,
+        "box": [
+          24.0,
+          null,
+          696.0,
+          null
+        ],
+        "box_note": "卡片纵向范围由 frame_height 得出，此处只锁定左右边界"
+      },
+      "map_markers": [
+        {
+          "query_id": "Q1",
+          "role": "from",
+          "station_id": "S01",
+          "map_tag": {
+            "left": 47,
+            "top": 381,
+            "width": 47.1,
+            "height": 38.0,
+            "box": [
+              47,
+              381,
+              94.1,
+              419.0
+            ]
+          },
+          "map_station": {
+            "x": 120,
+            "y": 400
+          }
+        },
+        {
+          "query_id": "Q1",
+          "role": "to",
+          "station_id": "S11",
+          "map_tag": {
+            "left": 1106,
+            "top": 741,
+            "width": 47.1,
+            "height": 38.0,
+            "box": [
+              1106,
+              741,
+              1153.1,
+              779.0
+            ]
+          },
+          "map_station": {
+            "x": 1080,
+            "y": 760
+          }
+        }
+      ],
+      "map_note": "network-map.png 只标出起终点（Q1–Q3 角标），不画路线；站序与线路段在 travel-card.png 的线路条上逐段给出。",
+      "verified": true,
+      "verification": "travel-card.png 像素校验 D3/D4/D5/D6 通过：每个站间边的色条颜色 = 该段所属线路色，圆点核色 = 无障碍状态色，换乘标记只在换乘站，字母角标位于两站之间。"
+    },
+    {
+      "query_id": "Q2",
+      "route": "normal",
+      "card_strip": {
+        "left": 80.0,
+        "top": 498.0,
+        "width": 560.0,
+        "height": 108.0,
+        "box": [
+          80.0,
+          498.0,
+          640.0,
+          606.0
+        ],
+        "bar_center_y": 556.0,
+        "station_x": [
+          80.0,
+          173.3,
+          266.7,
+          360.0,
+          453.3,
+          546.7,
+          640.0
+        ]
+      },
+      "card_panel": {
+        "left": 24.0,
+        "width": 672.0,
+        "box": [
+          24.0,
+          null,
+          696.0,
+          null
+        ],
+        "box_note": "卡片纵向范围由 frame_height 得出，此处只锁定左右边界"
+      },
+      "map_markers": [
+        {
+          "query_id": "Q2",
+          "role": "from",
+          "station_id": "S13",
+          "map_tag": {
+            "left": 47,
+            "top": 501,
+            "width": 47.1,
+            "height": 38.0,
+            "box": [
+              47,
+              501,
+              94.1,
+              539.0
+            ]
+          },
+          "map_station": {
+            "x": 120,
+            "y": 520
+          }
+        },
+        {
+          "query_id": "Q2",
+          "role": "to",
+          "station_id": "S12",
+          "map_tag": {
+            "left": 887,
+            "top": 261,
+            "width": 47.1,
+            "height": 38.0,
+            "box": [
+              887,
+              261,
+              934.1,
+              299.0
+            ]
+          },
+          "map_station": {
+            "x": 960,
+            "y": 280
+          }
+        }
+      ],
+      "map_note": "network-map.png 只标出起终点（Q1–Q3 角标），不画路线；站序与线路段在 travel-card.png 的线路条上逐段给出。",
+      "verified": true,
+      "verification": "travel-card.png 像素校验 D3/D4/D5/D6 通过：每个站间边的色条颜色 = 该段所属线路色，圆点核色 = 无障碍状态色，换乘标记只在换乘站，字母角标位于两站之间。"
+    },
+    {
+      "query_id": "Q3",
+      "route": "normal",
+      "card_strip": {
+        "left": 80.0,
+        "top": 976.0,
+        "width": 560.0,
+        "height": 108.0,
+        "box": [
+          80.0,
+          976.0,
+          640.0,
+          1084.0
+        ],
+        "bar_center_y": 1034.0,
+        "station_x": [
+          80.0,
+          220.0,
+          360.0,
+          500.0,
+          640.0
+        ]
+      },
+      "card_panel": {
+        "left": 24.0,
+        "width": 672.0,
+        "box": [
+          24.0,
+          null,
+          696.0,
+          null
+        ],
+        "box_note": "卡片纵向范围由 frame_height 得出，此处只锁定左右边界"
+      },
+      "map_markers": [
+        {
+          "query_id": "Q3",
+          "role": "from",
+          "station_id": "S07",
+          "map_tag": {
+            "left": 287,
+            "top": 621,
+            "width": 47.1,
+            "height": 38.0,
+            "box": [
+              287,
+              621,
+              334.1,
+              659.0
+            ]
+          },
+          "map_station": {
+            "x": 360,
+            "y": 640
+          }
+        },
+        {
+          "query_id": "Q3",
+          "role": "to",
+          "station_id": "S16",
+          "map_tag": {
+            "left": 746,
+            "top": 261,
+            "width": 47.1,
+            "height": 38.0,
+            "box": [
+              746,
+              261,
+              793.1,
+              299.0
+            ]
+          },
+          "map_station": {
+            "x": 720,
+            "y": 280
+          }
+        }
+      ],
+      "map_note": "network-map.png 只标出起终点（Q1–Q3 角标），不画路线；站序与线路段在 travel-card.png 的线路条上逐段给出。",
+      "verified": true,
+      "verification": "travel-card.png 像素校验 D3/D4/D5/D6 通过：每个站间边的色条颜色 = 该段所属线路色，圆点核色 = 无障碍状态色，换乘标记只在换乘站，字母角标位于两站之间。"
+    },
+    {
+      "query_id": "Q2",
+      "route": "accessible",
+      "card_strip": {
+        "left": 80.0,
+        "top": 721.0,
+        "width": 560.0,
+        "height": 108.0,
+        "box": [
+          80.0,
+          721.0,
+          640.0,
+          829.0
+        ],
+        "bar_center_y": 779.0,
+        "station_x": [
+          80.0,
+          173.3,
+          266.7,
+          360.0,
+          453.3,
+          546.7,
+          640.0
+        ]
+      },
+      "card_panel": {
+        "left": 24.0,
+        "width": 672.0,
+        "box": [
+          24.0,
+          null,
+          696.0,
+          null
+        ],
+        "box_note": "与同查询的 normal 条目共用同一张卡"
+      },
+      "map_markers": [],
+      "map_note": "无障碍替代路线不出现在示意图上（示意图只标起终点）。",
+      "verified": true,
+      "verification": "同 D3/D4/D5/D6，该线路条 7 站 / 6 边 / 2 换乘标记全部通过。"
+    }
+  ],
+  "checks": [
+    {
+      "id": "geo",
+      "scope": "model.json 的绘图几何自检",
+      "checks": [
+        {
+          "check": "角度只取 0°/45°/90°",
+          "passed": true,
+          "method": "对 18 段逐一计算夹角，与允许集合比对",
+          "evidence": "实际出现角度 [0.0, 45.0, 90.0]°；共 18 段（R 6 / B 7 / G 5）"
+        },
+        {
+          "check": "普通交叉（非换乘站交叉）为 0",
+          "passed": true,
+          "method": "逐对线段求交，剔除共享端点（换乘站）",
+          "evidence": "false_crossing_count = 0；same_line_crossing_count = 0；线路经过他线车站数 = 0"
+        }
+      ]
+    },
+    {
+      "id": "map-C1..C10",
+      "passed": 10,
+      "total": 10,
+      "report": {
+        "path_base": "suite_root",
+        "path": "tmp/r20261014T1536+0800-5f11da/A07/inspect-map.json"
+      },
+      "scope": "network-map.png 的 10 项像素校验"
+    },
+    {
+      "id": "card-D1..D10",
+      "passed": 10,
+      "total": 10,
+      "report": {
+        "path_base": "suite_root",
+        "path": "tmp/r20261014T1536+0800-5f11da/A07/inspect-card.json"
+      },
+      "scope": "travel-card.png 的 10 项像素校验"
+    }
+  ]
+}

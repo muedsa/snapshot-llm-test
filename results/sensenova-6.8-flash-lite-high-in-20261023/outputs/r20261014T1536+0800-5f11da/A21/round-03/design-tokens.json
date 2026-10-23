@@ -1,0 +1,334 @@
+{
+ "schema_version": 1,
+ "task_id": "A21",
+ "round": 3,
+ "path_base": "output_dir",
+ "colors": {
+  "theme": "浅色主题（页面底 #F5F8FC / 牌子底 #FFFFFF）",
+  "theme_note": "第 3 轮改为浅色主题。文字色与形状色带一起换：深底的近白文字在浅底上不可读，所以 ink/muted/primary/accent 全部换成浅底档；亮色 glow 仍保留给板材亮核与球内光带，因为那两处压在自己所属的深色构件上",
+  "background": {
+   "bg_deep": "#F5F8FC",
+   "bg_panel": "#FFFFFF",
+   "role": "页面底与牌子底面"
+  },
+  "primary": {
+   "primary": "#0A6FA8",
+   "primary_2": "#1E86C8",
+   "primary_3": "#DCE9F4",
+   "glow": "#EAFDFF",
+   "role": "主色系：字标中文、网址、网址牌圆点、强调条、眉标、网址牌左侧圆点"
+  },
+  "accent": {
+   "accent": "#C2410C",
+   "role": "唯一暖色，只用于日期与眉标竖条"
+  },
+  "ink": {
+   "ink": "#0B1B33",
+   "muted": "#4A5A72",
+   "rule": "#C9D6E5",
+   "role": "主标题用 ink；眉标旁的英文次标、赞助方、讲者用 muted；报名状态牌文字用 ink"
+  },
+  "orb_ramp": {
+   "stops": [
+    "#5FCFF5",
+    "#1E86C8",
+    "#0B2E4E"
+   ],
+   "type": "RADIAL",
+   "gradientRadius": 0.6,
+   "gradientFocal": null,
+   "note": "探针实测：加 gradientFocal 会把亮点推出可见范围导致球体发平，故留空"
+  },
+  "halo_ramp": {
+   "stops": [
+    "#BFE4F7",
+    "#F5F8FC"
+   ],
+   "type": "RADIAL",
+   "gradientRadius": 0.72,
+   "opacity": 0.5,
+   "scale_portrait": 2.7,
+   "scale_wide": 2.75
+  },
+  "sheet_ramp": {
+   "pairs": [
+    {
+     "fill": "#123A5C",
+     "border": "#2F6C96"
+    },
+    {
+     "fill": "#17598B",
+     "border": "#3F95C8"
+    },
+    {
+     "fill": "#1E86C8",
+     "border": "#7FC9EE"
+    }
+   ],
+   "note": "由暗到亮，越靠前越亮"
+  },
+  "corner_stack": {
+   "colors": [
+    "#7FA9CB",
+    "#5A92C0",
+    "#3B7BAB"
+   ],
+   "opacities": [
+    0.55,
+    0.7,
+    0.85
+   ],
+   "applies_to": [
+    "portrait"
+   ],
+   "note": "仅竖版；纯描边无填充，以区别于左上实心主标记"
+  },
+  "url_plate": {
+   "fill": "#FFFFFF",
+   "border": "2 SOLID #C6D6E8",
+   "role": "网址牌：中性蓝边框，表示可访问地址"
+  },
+  "entry_badge": {
+   "fill": "#FFFFFF",
+   "border": "2 SOLID #0A6FA8",
+   "text_color": "#0B1B33",
+   "role": "报名状态牌（第二轮新增）：牌子族的新实例，边框用主色以与网址牌的中性蓝区分",
+   "family": "与 url-plate 同源（圆角矩形 + 边框 + 圆头内容），不新增品牌构件"
+  },
+  "mark_core": {
+   "fill": "#EAFDFF",
+   "boxShadow": "0 6 16 #1E86C840",
+   "note": "亮核压在自己所属的深色板材上，所以浅底主题也保留亮色"
+  },
+  "text_shadow": null,
+  "text_shadow_note": "第 3 轮取消主标题的青色 textShadow：浅底上加发光阴影会压暗字形边缘、降低实际合成对比度，故 12/11 段文字全部无阴影",
+  "contrast": {
+   "threshold": "所有普通文字与实际合成背景 ≥4.5:1（未舍入判定，不因字号大而放宽）",
+   "verified_in": "round-03/contrast-audit.json",
+   "global_minimum": 4.8616,
+   "worst_pair": "date #C2410C 对页面底 #F5F8FC（竖版）",
+   "method": "前景取本 token 值；背景取去文字辅助渲染在字形覆盖区的实际像素；渐变/纹理背景取字形覆盖区内最差值"
+  }
+ },
+ "typography": {
+  "fontFamily": "Noto Sans CJK SC,Inter",
+  "fontFamily_source": "文档缓存 fonts.txt 中的中文字体族名 Noto Sans CJK SC，拉丁与数字用 Inter",
+  "portrait": {
+   "title": 66,
+   "title_lines": 3,
+   "kicker": 32,
+   "date": 48,
+   "speakers": 30,
+   "url": 30,
+   "brand": 36,
+   "sponsors": 30,
+   "entry_badge": 30,
+   "clarity_en": 28
+  },
+  "wide": {
+   "title": 52,
+   "title_lines": 2,
+   "kicker": 30,
+   "date": 36,
+   "speakers": 28,
+   "url": 28,
+   "brand": 30,
+   "sponsors": 28,
+   "entry_badge": 28,
+   "clarity_en": 26
+  },
+  "line_height": 1.0,
+  "title_line_spacing": 1.3,
+  "kicker_letter_spacing_px": 8,
+  "title_bold": true,
+  "min_required": {
+   "title": 48,
+   "others": 24
+  },
+  "min_required_note": "第 1 轮需求 ≥56；第 2 轮把标题换成 27 字的长句并改为最多 3 行、≥48，下限随需求变化；第 3 轮沿用第 2 轮的长句与「最多 3 行、≥48」，另新增英语短句「Clarity through structure」要求 ≥24。本轮实际最小字号仍为 26（≥24）",
+  "text_narrowing": "不使用 transform 压窄文字；长标题通过减字号与增加行数（竖版 3 行、横版 2 行）解决，交付 .snapshot 中无 transform 属性出现在 <Text> 上"
+ },
+ "brand_geometry": [
+  {
+   "id": "stack-mark",
+   "构件": "叠层主标记",
+   "params": {
+    "sheets": 3,
+    "size_portrait": 72,
+    "size_wide": 52,
+    "offset_ratio": 0.17,
+    "corner_radius_ratio": 0.3,
+    "fills": [
+     "#123A5C",
+     "#17598B",
+     "#1E86C8"
+    ],
+    "borders": [
+     "2 SOLID #2F6C96",
+     "2 SOLID #3F95C8",
+     "2 SOLID #7FC9EE"
+    ]
+   },
+   "cross_round": "形状、叠层数与色阶关系固定；仅尺寸随版式缩放，色带随主题换档（第 3 轮浅底改为更饱和的三段蓝，以保证亮核仍读得出边界）"
+  },
+  {
+   "id": "mark-core",
+   "构件": "主标记亮核",
+   "params": {
+    "size_ratio": 0.4,
+    "corner_radius_ratio": 0.34,
+    "fill": "#EAFDFF",
+    "boxShadow": "0 6 16 #1E86C840"
+   },
+   "cross_round": "固定；与发光球共用亮色，构成「光」的呼应"
+  },
+  {
+   "id": "light-orb",
+   "构件": "发光球",
+   "params": {
+    "diameter_portrait": 300,
+    "diameter_wide": 350,
+    "radius_portrait": 150,
+    "radius_wide": 175,
+    "geometry_source": "由本轮交付 layout 的 orb_core 外接框宽度（即直径）读出，半径为其一半，非手抄配置值",
+    "center_portrait": [
+     890,
+     800
+    ],
+    "center_wide": [
+     1190,
+     400
+    ],
+    "gradient": "RADIAL #5FCFF5,#1E86C8,#0B2E4E r=0.60",
+    "ring": "直径+30，1 SOLID #1E86C8",
+    "halo": "直径 2.7r / 2.75r（竖版/横版），RADIAL #BFE4F7→#F5F8FC r=0.72，opacity 0.50"
+   },
+   "cross_round": "结构与色带关系固定；允许移动与缩放（第二轮按新标题行数重排位置与半径；第 3 轮为把辉光完全移出文字区，把半径从 3.4r 收到 2.7r/2.75r 并挪到右列）；不加 gradientFocal"
+  },
+  {
+   "id": "light-band",
+   "构件": "球内光带（叠层）",
+   "params": {
+    "count": 3,
+    "width_portrait": [
+     243,
+     192,
+     144
+    ],
+    "height_portrait": [
+     14,
+     10,
+     8
+    ],
+    "width_wide": [
+     301,
+     244,
+     182
+    ],
+    "height_wide": [
+     18,
+     12,
+     10
+    ],
+    "opacity": [
+     0.9,
+     0.58,
+     0.34
+    ],
+    "color": "#EAFDFF",
+    "cap": "两端圆角 = 高度的一半，圆头收口"
+   },
+   "cross_round": "3 条、自上而下递减宽度与亮度；横版光带略加高；随球体半径等比缩放"
+  },
+  {
+   "id": "accent-bar",
+   "构件": "主色强调条",
+   "params": {
+    "portrait": "156x6，圆角 3，标题与信息之间的唯一分隔线",
+    "wide": "5x34，圆角 2，与眉标并排",
+    "fill": "#0A6FA8"
+   },
+   "cross_round": "形状固定，随标题行数变化而在版式中的位置随之移动"
+  },
+  {
+   "id": "url-plate",
+   "构件": "牌子族（网址牌 + 报名状态牌）",
+   "params": {
+    "url_plate_portrait": "560x84，圆角 42",
+    "url_plate_wide": "540x52，圆角 26",
+    "entry_badge": "404x62 / 400x46（竖版 / 横版，第二轮新增实例）",
+    "fill": "#FFFFFF",
+    "border": "网址牌 2 SOLID #C6D6E8（中性蓝）；报名状态牌 2 SOLID #0A6FA8（主色）",
+    "dot": "shape CIRCLE，竖版 20、横版 14，fill #0A6FA8"
+   },
+   "cross_round": "形态固定（圆角矩形 + 边框 + 圆头内容）；第一轮只有网址牌一个实例，第二轮新增报名状态牌实例，以边框色区分语义；shape 与 borderRadius 互斥（实测 PARSE_ERROR 约束）"
+  }
+ ],
+ "brand_geometry_count": 6,
+ "brand_geometry_count_note": "3–6 个要求内。报名状态牌是牌子族的第二个实例而非新构件，故构件数仍为 6",
+ "compositions": {
+  "portrait": "纵向结构：顶部品牌行 → 眉标 → 主标题3行 → 强调条 → 信息栈（日期/讲者、英语短句/网址牌）→ 赞助方 → 报名状态牌；右上线叠层水印，发光球移到右中偏下填补标题与信息之间的空区；左下氛围 wash",
+  "wide": "横向分栏：左栏品牌行 + 眉标 + 主标题2行，底部日期 → 讲者 → 英语短句 → 网址牌 → 赞助方 → 报名状态牌竖排；右栏发光球大图占整栏。与竖版不是等比缩放——竖版标题 3 行、横版 2 行；竖版球在右中偏下、横版球占右侧整栏中部",
+  "composition_delta_round2": "第二轮标题由 10 字 2 行变为 27 字（竖版 3 行 / 横版 2 行），字号由 132/116 降到 66/52；新增赞助方与报名状态牌两行信息后，信息栈由 3 行扩到 5 行；发光球半径与位置随之调整以避让长标题，主色与品牌构件形态未变",
+  "composition_delta_round3": "第三轮改浅色主题：全部文字色换成浅底档（ink #0B1B33 / muted #4A5A72 / primary #0A6FA8 / accent #C2410C），主标题取消青色发光阴影；网址上方新增英语短句「Clarity through structure」（竖版 28 / 横版 26，均 ≥24），信息栈由 5 行扩到 6 行。为让每段文字的实际合成背景都落在页面底或牌子底上，发光球移到标题与信息栈之间的右列空区，外辉光半径由 3.4r 收到 2.7r（竖版）/ 2.75r（横版），并用同一构造器生成去文字辅助渲染量取字形覆盖区内的最差对比度——全部 23 段文字的最小值为 4.8616（date #C2410C 对页面底 #F5F8FC），见 round-03/contrast-audit.json。文案、字号阶梯与 6 个品牌构件的形态、层数、圆角比例、条数与递减关系均未变"
+ },
+ "changes": [
+  {
+   "id": "r03-01",
+   "requirement": "改浅色主题",
+   "change": "页面底由 #060A18 改为 #F5F8FC，牌子底面由 #0E1936 改为 #FFFFFF；ink 由 #F5F9FF 改为 #0B1B33，muted 由 #8FA3C2 改为 #4A5A72，primary 由 #5FE0FF 改为 #0A6FA8（深青蓝，浅底可读档），primary_2 保持 #1E86C8，accent 由 #FFC26B 改为 #C2410C（暖色降暗）。深底主题的近白文字与亮青在浅底上不可读，故文字档整体换档而非个别调整",
+   "why": "浅底上普通文字必须对实际合成背景 ≥4.5:1；#5FE0FF 对 #F5F8FC 只有 1.55，#F5F9FF 只有 1.06，无法保留",
+   "verified_unchanged": "色板仍是同一组语义角色（background/primary/accent/ink/rule），每个角色的用途未变：主标题 ink、赞助方与讲者 muted、网址与眉标 primary、日期与强调条 accent"
+  },
+  {
+   "id": "r03-02",
+   "requirement": "所有普通文字与实际合成背景的对比度 ≥4.5:1",
+   "change": "取消主标题的青色 textShadow（前两轮 0 8 26 #5FE0FF2E / 0 6 22 #5FE0FF2E）；发光球移到标题与信息栈之间的右列空区，外辉光半径由 3.4r 收到 2.7r（竖版）/ 2.75r（横版）；氛围 wash 由深底渐暗改为页面底到纯白的径向渐白",
+   "why": "浅底上任何深色半透明叠层都会压暗文字的实际背景；把球体与辉光的填充框移出所有文字墨迹之后，每段文字的实际合成背景就只是页面底 #F5F8FC 或牌子底 #FFFFFF，不再依赖渐变叠层的运气。渐白 wash 只会把底面提亮，对深色文字只增不减对比度",
+   "verified_unchanged": "品牌图形的形态、层数、圆角比例、光带条数与自上而下递减的关系全部未变，只换色带与收敛半径",
+   "evidence": "round-03/contrast-audit.json：两图 23 段普通文字全量检查，最小对比度 4.8616（未舍入 4.861573385783012），最差位置为竖版 date #C2410C 对页面底 #F5F8FC"
+  },
+  {
+   "id": "r03-03",
+   "requirement": "保留全部第二轮文案和品牌图形",
+   "change": "无文案删减；9 条文案（品牌字标、ONLINE LAUNCH、27 字长标题、日期、讲者、网址、赞助方、报名状态、英语短句）全部保留并逐字符比对通过。6 个品牌构件（叠层主标记、主标记亮核、发光球、球内光带、主色强调条、牌子族）全部保留",
+   "why": "本轮只在主题与可读性上做文章，不改信息架构",
+   "verified_unchanged": "content-map.json 的必需文案完整性检查 9/9 匹配；设计 token 的品牌几何 6 项参数（sheets=3、offset 0.17、圆角比 0.30/0.34、光带 3 条 0.90/0.58/0.34、牌子族同源）与第二轮一致"
+  },
+  {
+   "id": "r03-04",
+   "requirement": "另在网址上方新增英语短句 \"Clarity through structure\"",
+   "change": "新增一段文字，位于讲者与网址牌之间（网址牌之上）；竖版 28px、横版 26px，均 ≥24；颜色用 primary #0A6FA8，无字距",
+   "why": "网址是整版唯一的行动入口，英语短句作为品牌语放在它正上方，构成「口号 → 入口」的收尾对",
+   "verified_unchanged": "新增后信息栈由 5 行扩到 6 行，赞助方与报名状态牌仍在，未被挤出版面；两图的上下扩展空间仍 ≥70px"
+  },
+  {
+   "id": "r03-05",
+   "requirement": "两尺寸不变；中文长标题仍 ≤3 行、≥48",
+   "change": "无。竖版 1080x1350、横版 1440x810 未动；标题仍为竖版 3 行 66px、横版 2 行 52px",
+   "why": "第 2 轮的长标题解法（减字号 + 增行数）在浅底上依然成立，无需重排",
+   "verified_unchanged": "PNG IHDR 尺寸、title_line* 条目数、字号下限检查均通过；交付 .snapshot 中 <Text> 无 transform / matrix 属性"
+  },
+  {
+   "id": "r03-06",
+   "requirement": "不得让赞助方消失，不能只改两种颜色忽略实际叠层",
+   "change": "赞助方「Northstar Research / 云构工具」保留在网址牌之下（竖版 y=1097、横版 y=606），字号与颜色档位不变（muted）；报名状态牌一并保留",
+   "why": "浅底重排最容易牺牲的就是页脚那几行",
+   "verified_unchanged": "footer 裁切视图（1.5x / 2.0x）肉眼确认赞助方与状态牌可读；content-map 完整性检查中 sponsors 与 badge 均 match=true"
+  },
+  {
+   "id": "r03-07",
+   "requirement": "不能只改两种颜色忽略实际叠层",
+   "change": "背景取样不用主题 token，改用去文字辅助渲染：同一份 round-03 构造器关掉 <Text> 输出后重渲染一次，拿到逐像素真实的合成背景，再在字形覆盖区内取最差对比度。辅助渲染保留氛围 wash、角部水印、辉光、外环、光带、牌子底面与边框、主标记，只比交付版少 12/11 个 <Text>",
+   "why": "名义底色无法代表渐变与透明叠层的实际结果；只用 token 判读会让被叠层污染的文字误判为通过",
+   "verified_unchanged": "方法自洽性自检：两图除墨迹外的逐通道最大差为 12（即墨迹阈值边界），证明辅助渲染与交付图只差在文字；round-03 的 12/11 段文字均无 textShadow，差值不会混入阴影"
+  },
+  {
+   "id": "r03-08",
+   "requirement": "保留三轮及累计报告/指标",
+   "change": "round-01、round-02 的 PNG、.snapshot、design-tokens.json、content-map.json、task-metrics.json 与 snapshot-usage.md 均未改动；第三轮产物全部写入 round-03/ 新目录；题目根层另补一份跨三轮的 snapshot-usage.md 与 task-metrics.json 做累计汇总",
+   "why": "轮次产物不可覆盖，累计视图需与轮次视图并存",
+   "verified_unchanged": "round-01 与 round-02 目录下文件的时间戳与哈希未变"
+  }
+ ]
+}

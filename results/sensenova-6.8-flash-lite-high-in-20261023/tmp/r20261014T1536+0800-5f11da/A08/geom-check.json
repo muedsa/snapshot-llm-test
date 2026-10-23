@@ -1,0 +1,180 @@
+{
+ "path_base": "suite_root",
+ "task_id": "A08",
+ "canvas": {
+  "width": 1560.0,
+  "height": 1080.0,
+  "origin_x": 74.0,
+  "origin_y": 112.0,
+  "cell_px": 40.0
+ },
+ "routes": {
+  "R1": {
+   "vertices": 36,
+   "band_polygon_vertices": 72,
+   "dash_count": null,
+   "arrow_count": 17,
+   "half_width_px": 12.0,
+   "lateral_offset_px": 0.0,
+   "arrow_offset_px": 4.5,
+   "arrow_advance_factor": 0.24,
+   "arrow_bbox_px": [
+    139.1,
+    644.5,
+    152.6,
+    650.5
+   ],
+   "measured_band_width_px": [
+    23.9,
+    23.95
+   ]
+  },
+  "R2": {
+   "vertices": 48,
+   "band_polygon_vertices": 96,
+   "dash_count": 47,
+   "arrow_count": 23,
+   "half_width_px": 8.0,
+   "lateral_offset_px": 0.0,
+   "arrow_offset_px": -4.5,
+   "arrow_advance_factor": 0.24,
+   "arrow_bbox_px": [
+    139.1,
+    653.5,
+    152.6,
+    659.5
+   ],
+   "measured_band_width_px": [
+    15.95,
+    16.0
+   ]
+  }
+ },
+ "checks": [
+  {
+   "id": "R1:G1 描边顶点全部落在可走格区域内",
+   "passed": true,
+   "detail": "212 个顶点，越界 0 处"
+  },
+  {
+   "id": "R1:G2 带宽恒等于 2×半宽（24.0px）",
+   "passed": true,
+   "detail": "35/35 条边可测，带宽区间 23.9..23.95"
+  },
+  {
+   "id": "R1:G3 横向偏移 ≤ 单格边长 12%（4.8px）",
+   "passed": true,
+   "detail": "实测偏移 0.0px"
+  },
+  {
+   "id": "R1:G4 逻辑长度 = 步数 × 单格像素边长",
+   "passed": true,
+   "detail": "35 步 × 40px = 1400px"
+  },
+  {
+   "id": "R1:G5 虚线周期 = 单格边长（接缝落在格心，转角不留断口）",
+   "passed": true,
+   "detail": "dash 24 + gap 16 = 40px = 1 格；实线路线，虚线分段仅用于形状自校验"
+  },
+  {
+   "id": "R1:G6 方向箭头顶点落在可走格区域内",
+   "passed": true,
+   "detail": "17 个箭头，越界 0 处"
+  },
+  {
+   "id": "R1:G6b 箭头横向跨度 7.5px 落在自色带半宽 12.0px 内",
+   "passed": true,
+   "detail": "偏移 4.5px + 半宽 3.0px = 7.5px，色带半宽 12.0px"
+  },
+  {
+   "id": "R2:G1 描边顶点全部落在可走格区域内",
+   "passed": true,
+   "detail": "284 个顶点，越界 0 处"
+  },
+  {
+   "id": "R2:G2 带宽恒等于 2×半宽（16.0px）",
+   "passed": true,
+   "detail": "47/47 条边可测，带宽区间 15.95..16.0"
+  },
+  {
+   "id": "R2:G3 横向偏移 ≤ 单格边长 12%（4.8px）",
+   "passed": true,
+   "detail": "实测偏移 0.0px"
+  },
+  {
+   "id": "R2:G4 逻辑长度 = 步数 × 单格像素边长",
+   "passed": true,
+   "detail": "47 步 × 40px = 1880px"
+  },
+  {
+   "id": "R2:G5 虚线周期 = 单格边长（接缝落在格心，转角不留断口）",
+   "passed": true,
+   "detail": "dash 24 + gap 16 = 40px = 1 格；实际虚线段 47 = 步数 47"
+  },
+  {
+   "id": "R2:G6 方向箭头顶点落在可走格区域内",
+   "passed": true,
+   "detail": "23 个箭头，越界 0 处"
+  },
+  {
+   "id": "R2:G6b 箭头横向跨度 7.5px 落在自色带半宽 8.0px 内",
+   "passed": true,
+   "detail": "偏移 4.5px + 半宽 3.0px = 7.5px，色带半宽 8.0px"
+  },
+  {
+   "id": "G7 单格像素边长 ≥ 36px",
+   "passed": true,
+   "detail": "cell_px = 40px"
+  },
+  {
+   "id": "G8 两路线箭头互不遮挡且保持可辨间隙",
+   "passed": true,
+   "detail": "17×23 = 391 对三角间距，最小 3.0px（R1 seg1(143.6,647.5) ↔ R2 seg1(143.6,656.5)）；共享段并排箭头间距 3.0px"
+  },
+  {
+   "id": "G15 R2 每段虚线都是 4 顶点矩形，落在本段格心起点的 24×16 内",
+   "passed": true,
+   "detail": "47/47 段虚线，顶点数均为 [4]，水平 25 段 / 竖直 22 段"
+  },
+  {
+   "id": "G16 R2 每条虚线的四条边都在可走格区域内",
+   "passed": true,
+   "detail": "47 条虚线 × 每条 4 边 × 20 采样 = 3760 点，越界 0 处"
+  },
+  {
+   "id": "G17 R2 白色箭头整条落在本段橙色虚线内",
+   "passed": true,
+   "detail": "23 个箭头 × 3 顶点，越出虚线矩形 0 处"
+  },
+  {
+   "id": "G9 共享通道徽章 ①② 落在各自通道的实际路径格上",
+   "passed": true,
+   "detail": "① (3, 11) → px (214.0, 572.0)；② (23, 9) → px (1014.0, 492.0)"
+  },
+  {
+   "id": "G10 地标名称文字墨迹完全落在墙体格内",
+   "passed": true,
+   "detail": "逐 1px 采样 6 个名称包围盒"
+  },
+  {
+   "id": "G11 名称文字与两条路线带均有净空",
+   "passed": true,
+   "detail": "最小净空 18.1px（S 对 R1 路线带）；逐 4px 采样 90 点 × 72 条带边"
+  },
+  {
+   "id": "G12 名称文字不压任何方向箭头",
+   "passed": true,
+   "detail": "40 个箭头三角 × 6 个文字包围盒，相交 0 处"
+  },
+  {
+   "id": "G13 引导线端点不落在任何标记圆内",
+   "passed": true,
+   "detail": "12 个引导线端点 × 6 个标记圆"
+  },
+  {
+   "id": "G14 引导线不穿过其它地标的名称文字",
+   "passed": true,
+   "detail": "6 个引导线 × 6 个文字包围盒，相交 0 处"
+  }
+ ]
+}

@@ -1,0 +1,555 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "generated_at": "2026-10-19T13:39:43+08:00",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "count": 21,
+ "grid_questions": 17,
+ "occlusion_questions": 4,
+ "two_step_questions": [
+  "Q01",
+  "Q02",
+  "Q03",
+  "Q04",
+  "Q07",
+  "Q12",
+  "Q13",
+  "Q15",
+  "Q16",
+  "Q17",
+  "Q18"
+ ],
+ "two_step_count": 11,
+ "undeterminable_by_design": [
+  "Q20",
+  "Q21"
+ ],
+ "requirements_met": {
+  "grid_questions_min_12": true,
+  "occlusion_questions_min_2": true,
+  "numbering_at_least_18": true,
+  "two_step_min_4": true,
+  "undeterminable_min_1": true
+ },
+ "questions": [
+  {
+   "id": "Q01",
+   "image": "grid-scene.png",
+   "type": "复合属性检索",
+   "text": "列出所有同时满足「颜色为紫色 且 形状为圆环」的对象编号。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q02",
+   "image": "grid-scene.png",
+   "type": "复合属性检索",
+   "text": "列出所有同时满足「颜色为蓝色 且 形状为圆角方 且 尺寸为 80」的对象编号；若为空集请答“无”。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 3,
+   "note": null
+  },
+  {
+   "id": "Q03",
+   "image": "grid-scene.png",
+   "type": "复合属性检索",
+   "text": "列出所有「颜色为绿色 且 尺寸为 48」的对象编号。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q04",
+   "image": "grid-scene.png",
+   "type": "复合属性检索",
+   "text": "列出所有「颜色为橙色 且 形状属于方形族（方 或 圆角方）」的对象编号，并按编号升序列出。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q05",
+   "image": "grid-scene.png",
+   "type": "严格中心左右关系",
+   "text": "G05 的中心在 G04 中心的哪一侧？给出两者的中心坐标作为依据。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q06",
+   "image": "grid-scene.png",
+   "type": "严格中心左右关系",
+   "text": "G16 与 G09 的中心，哪一个更靠左？给出两者的中心坐标。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q07",
+   "image": "grid-scene.png",
+   "type": "严格中心左右关系",
+   "text": "比较 G33 与 G64：谁的中心更靠左，谁的中心更靠上？两步分别给出依据。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q08",
+   "image": "grid-scene.png",
+   "type": "距离",
+   "text": "求 G01 与 G64 的中心距离。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q09",
+   "image": "grid-scene.png",
+   "type": "距离",
+   "text": "求 G17 与 G21 的中心距离。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q10",
+   "image": "grid-scene.png",
+   "type": "距离",
+   "text": "求 G03 与 G19 的中心距离。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q11",
+   "image": "grid-scene.png",
+   "type": "排序",
+   "text": "把第 5 行（G33–G40）按主体尺寸从大到小排序；尺寸相同者按编号升序。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q12",
+   "image": "grid-scene.png",
+   "type": "排序",
+   "text": "先找出所有「蓝色圆形」，再按尺寸从大到小排序；尺寸相同者按编号升序。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q13",
+   "image": "grid-scene.png",
+   "type": "排序",
+   "text": "先找出所有「紫色圆角方」，再按尺寸从小到大排序；尺寸相同者按编号升序。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q14",
+   "image": "grid-scene.png",
+   "type": "包围框",
+   "text": "给出 G06 的主体包围框 [left, top, right, bottom]。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q15",
+   "image": "grid-scene.png",
+   "type": "包围框",
+   "text": "先找出所有「绿色圆环」，再给出它们的并包围框 [left, top, right, bottom]。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q16",
+   "image": "grid-scene.png",
+   "type": "颜色/形状计数",
+   "text": "先统计蓝色对象总数，再统计其中形状为圆形的数量。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q17",
+   "image": "grid-scene.png",
+   "type": "颜色/形状计数",
+   "text": "第 3 行（G17–G24）中，形状为圆环的对象有几个？颜色为紫色的对象有几个？",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+    "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+    "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+    "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+    "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+    "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+    "ring": "圆环外径 = size，内径 = size/2；主体框取外径的正方形。",
+    "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。",
+    "size_meaning": "size 对圆为直径、对方/圆角方/圆环为边长或外径。",
+    "no_rounding": "所有几何量为整数像素；距离类答案保留 4 位小数。",
+    "tolerance": {
+     "coordinate_read": "±1 px（网格线读数）",
+     "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+     "distance": "±0.001 px",
+     "set_answer": "编号集合须完全一致，顺序按编号升序"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q18",
+   "image": "occlusion.png",
+   "type": "可见前景检索",
+   "text": "在可见前景 F04–F09 中，哪些是圆环？给出编号、颜色与中心坐标。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位 px。",
+    "canvas": "800×800。",
+    "objects": "前景对象编号 F01–F09，均在可见区域；编号文字在主体下方、不属于主体。",
+    "occluder": "深色面板为不透明矩形 [40, 40, 760, 380]，其后内容不可见，也无任何虚线、描边或残影泄漏。",
+    "ring": "圆环外径与边长均为 size，内径为 size/2。",
+    "tolerance": {
+     "coordinate_read": "±1 px",
+     "set_answer": "编号集合完全一致"
+    }
+   },
+   "relation_depth": 2,
+   "note": null
+  },
+  {
+   "id": "Q19",
+   "image": "occlusion.png",
+   "type": "可见前景检索",
+   "text": "深色面板上可见的白色对象有哪些？给出编号与形状。",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位 px。",
+    "canvas": "800×800。",
+    "objects": "前景对象编号 F01–F09，均在可见区域；编号文字在主体下方、不属于主体。",
+    "occluder": "深色面板为不透明矩形 [40, 40, 760, 380]，其后内容不可见，也无任何虚线、描边或残影泄漏。",
+    "ring": "圆环外径与边长均为 size，内径为 size/2。",
+    "tolerance": {
+     "coordinate_read": "±1 px",
+     "set_answer": "编号集合完全一致"
+    }
+   },
+   "relation_depth": 1,
+   "note": null
+  },
+  {
+   "id": "Q20",
+   "image": "occlusion.png",
+   "type": "遮挡不确定性",
+   "text": "深色面板之后一共有多少个对象？",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位 px。",
+    "canvas": "800×800。",
+    "objects": "前景对象编号 F01–F09，均在可见区域；编号文字在主体下方、不属于主体。",
+    "occluder": "深色面板为不透明矩形 [40, 40, 760, 380]，其后内容不可见，也无任何虚线、描边或残影泄漏。",
+    "ring": "圆环外径与边长均为 size，内径为 size/2。",
+    "tolerance": {
+     "coordinate_read": "±1 px",
+     "set_answer": "编号集合完全一致"
+    }
+   },
+   "relation_depth": 1,
+   "note": "答案取决于使用 occlusion.png 还是 occlusion-alternative.png，两版可见像素完全相同。"
+  },
+  {
+   "id": "Q21",
+   "image": "occlusion.png",
+   "type": "遮挡不确定性",
+   "text": "深色面板之后是否存在至少一个尺寸为 80 的蓝色对象？",
+   "rules": {
+    "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位 px。",
+    "canvas": "800×800。",
+    "objects": "前景对象编号 F01–F09，均在可见区域；编号文字在主体下方、不属于主体。",
+    "occluder": "深色面板为不透明矩形 [40, 40, 760, 380]，其后内容不可见，也无任何虚线、描边或残影泄漏。",
+    "ring": "圆环外径与边长均为 size，内径为 size/2。",
+    "tolerance": {
+     "coordinate_read": "±1 px",
+     "set_answer": "编号集合完全一致"
+    }
+   },
+   "relation_depth": 1,
+   "note": "答案取决于使用哪一版。"
+  }
+ ]
+}

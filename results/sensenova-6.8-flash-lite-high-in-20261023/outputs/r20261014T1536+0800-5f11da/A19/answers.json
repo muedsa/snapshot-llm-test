@@ -1,0 +1,586 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "generated_at": "2026-10-19T13:39:43+08:00",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "count": 21,
+ "undeterminable": [
+  "Q20",
+  "Q21"
+ ],
+ "relation_definitions": {
+  "left_right": "严格比较两个主体的中心 x：x 大者在右，x 小者在左；本题所有中心 x 取值互不相同，不会并列。",
+  "up_down": "严格比较两个主体的中心 y：y 小者在上，y 大者在下。",
+  "distance": "两主体中心的欧氏距离 sqrt((x1-x2)^2+(y1-y2)^2)，单位 px，保留 4 位小数。",
+  "bounding_box": "包围框记为 [left, top, right, bottom]；主体框为以中心为心、边长等于 size 的轴对齐正方形。并包围框为集合内各主体框的 left/top 最小值与right/bottom 最大值。",
+  "coordinate_origin": "画布左上角为 (0,0)，x 向右增大，y 向下增大，单位为画布像素。",
+  "grid_mapping": "8×8 网格、每格 200×200，编号 G_{r*8+c+1} 的中心为 (200c+100, 200r+100)，r 为行号（0 起）、c 为列号（0 起）。该映射可直接由网格线位置读出。",
+  "id_exclusion": "编号文字位于主体下方、不属于主体，不计入主体框、不参与面积与包围框计算。"
+ },
+ "answers": [
+  {
+   "id": "Q01",
+   "answer": [
+    "G10",
+    "G14",
+    "G42",
+    "G46"
+   ],
+   "steps": [
+    "按颜色=紫色筛选，得 16 个",
+    "在结果中再按形状=圆环筛选"
+   ],
+   "visibility_basis": "颜色与形状都是主体自身的可见属性，编号文字清晰可读。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G10",
+    "G14",
+    "G42",
+    "G46"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q02",
+   "answer": [
+    "G47"
+   ],
+   "steps": [
+    "颜色=蓝色",
+    "形状=圆角方",
+    "size=80"
+   ],
+   "visibility_basis": "三种属性均可从主体直接读出；尺寸可由与同色同形其他对象的相对大小判定，也可由网格几何（边长 80 恰好占 200px 格宽的 40%）判定。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G47"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q03",
+   "answer": [
+    "G07",
+    "G25",
+    "G35",
+    "G45",
+    "G55"
+   ],
+   "steps": [
+    "颜色=绿色",
+    "size=48"
+   ],
+   "visibility_basis": "颜色与尺寸均可见。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G07",
+    "G25",
+    "G35",
+    "G45",
+    "G55"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q04",
+   "answer": [
+    "G02",
+    "G06",
+    "G18",
+    "G22",
+    "G34",
+    "G38",
+    "G50",
+    "G54"
+   ],
+   "steps": [
+    "颜色=橙色",
+    "形状 ∈ {square, rounded_square}"
+   ],
+   "visibility_basis": "方形族由主体是否带圆角区分，两种方形都可从主体直接判定。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G02",
+    "G06",
+    "G18",
+    "G22",
+    "G34",
+    "G38",
+    "G50",
+    "G54"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q05",
+   "answer": "右侧",
+   "steps": [
+    "G04 中心 [700, 100]",
+    "G05 中心 [900, 100]",
+    "x: 900 > 700，故 G05 在 G04 右侧"
+   ],
+   "visibility_basis": "两者同在第 1 行，中心 y 相同；编号与主体一一对应。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G04",
+    "G05"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q06",
+   "answer": "G09 更靠左",
+   "steps": [
+    "G16 中心 [1500, 300]",
+    "G09 中心 [100, 300]",
+    "x: 100 < 1500，故 G09 更靠左"
+   ],
+   "visibility_basis": "跨行比较只依据中心 x；两者中心 y 不同（G16 在 G09 上方 200px），但不影响左右判定。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G09",
+    "G16"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q07",
+   "answer": {
+    "left_of": "G33",
+    "above": "G33"
+   },
+   "steps": [
+    "第 1 步（左右）：G33 中心 [100, 900]，G64 中心 [1500, 1500]；x 100 < 1500 → G33 更靠左",
+    "第 2 步（上下）：y 900 < 1500 → G33 更靠上"
+   ],
+   "visibility_basis": "两步各自只依赖中心 x 或中心 y，互不干扰；两者均在可见网格内。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G33",
+    "G64"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q08",
+   "answer": 1979.899,
+   "steps": [
+    "G01 中心 [100, 100]",
+    "G64 中心 [1500, 1500]",
+    "Δx=1400, Δy=1400",
+    "d = sqrt(1400^2 + 1400^2) = 1979.8990 px"
+   ],
+   "visibility_basis": "两中心均落在 200px 网格交点上，可由网格线位置读出。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G01",
+    "G64"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q09",
+   "answer": 800.0,
+   "steps": [
+    "G17 中心 [100, 500]",
+    "G21 中心 [900, 500]",
+    "Δx=800, Δy=0",
+    "d = sqrt(800^2 + 0^2) = 800.0000 px"
+   ],
+   "visibility_basis": "两中心均落在 200px 网格交点上，可由网格线位置读出。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G17",
+    "G21"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q10",
+   "answer": 400.0,
+   "steps": [
+    "G03 中心 [500, 100]",
+    "G19 中心 [500, 500]",
+    "Δx=0, Δy=400",
+    "d = sqrt(0^2 + 400^2) = 400.0000 px"
+   ],
+   "visibility_basis": "两中心均落在 200px 网格交点上，可由网格线位置读出。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G03",
+    "G19"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q11",
+   "answer": [
+    "G34",
+    "G37",
+    "G40",
+    "G33",
+    "G36",
+    "G39",
+    "G35",
+    "G38"
+   ],
+   "steps": [
+    "第 5 行为 G33–G40",
+    "各尺寸: G33=64, G34=80, G35=48, G36=64, G37=80, G38=48, G39=64, G40=80",
+    "按 (-size, id) 排序"
+   ],
+   "visibility_basis": "同一行的尺寸可由主体实际大小直接比较；题目给了平局规则（编号升序），因此排序是全序、唯一。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G34",
+    "G37",
+    "G40",
+    "G33",
+    "G36",
+    "G39",
+    "G35",
+    "G38"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q12",
+   "answer": [
+    "G37",
+    "G05",
+    "G33",
+    "G01"
+   ],
+   "steps": [
+    "第 1 步：颜色=蓝色 且 形状=圆形，得 4 个",
+    "各尺寸: G01=48, G05=64, G33=64, G37=80",
+    "第 2 步：按 (-size, id) 排序"
+   ],
+   "visibility_basis": "两步都只用可见属性。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G37",
+    "G05",
+    "G33",
+    "G01"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q13",
+   "answer": [
+    "G04",
+    "G08",
+    "G36",
+    "G40"
+   ],
+   "steps": [
+    "第 1 步：颜色=紫色 且 形状=圆角方，得 4 个",
+    "各尺寸: G04=48, G08=64, G36=64, G40=80",
+    "第 2 步：按 (size, id) 排序"
+   ],
+   "visibility_basis": "两步都只用可见属性。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G04",
+    "G08",
+    "G36",
+    "G40"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q14",
+   "answer": [
+    1060,
+    60,
+    1140,
+    140
+   ],
+   "steps": [
+    "G06 中心 [1100, 100]，size=80，半边长 40",
+    "left=1100-40=1060, top=100-40=60, right=1100+40=1140, bottom=100+40=140"
+   ],
+   "visibility_basis": "主体框由中心与 size 直接得出；编号文字不参与。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G06"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q15",
+   "answer": [
+    460,
+    60,
+    1332,
+    932
+   ],
+   "steps": [
+    "第 1 步：绿色 且 圆环 → ['G03', 'G07', 'G35', 'G39']",
+    "各主体框: G03 [460, 60, 540, 140]; G07 [1276, 76, 1324, 124]; G35 [476, 876, 524, 924]; G39 [1268, 868, 1332, 932]",
+    "第 2 步：left=460, top=60, right=1332, bottom=932",
+    "并包围框尺寸 872×872 px"
+   ],
+   "visibility_basis": "并包围框只取主体框极值，编号文字不计入。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G03",
+    "G07",
+    "G35",
+    "G39"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q16",
+   "answer": {
+    "blue_total": 16,
+    "blue_circles": 4,
+    "circle_ids": [
+     "G01",
+     "G05",
+     "G33",
+     "G37"
+    ]
+   },
+   "steps": [
+    "第 1 步：颜色=蓝色 → 16 个",
+    "第 2 步：其中形状=圆形 → 4 个"
+   ],
+   "visibility_basis": "两步只依赖可见的颜色与形状。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G01",
+    "G05",
+    "G11",
+    "G15",
+    "G17",
+    "G21",
+    "G27",
+    "G31",
+    "G33",
+    "G37",
+    "G43",
+    "G47",
+    "G49",
+    "G53",
+    "G59",
+    "G63"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q17",
+   "answer": {
+    "ring_count": 2,
+    "ring_ids": [
+     "G17",
+     "G21"
+    ],
+    "purple_count": 2,
+    "purple_ids": [
+     "G20",
+     "G24"
+    ]
+   },
+   "steps": [
+    "第 3 行为 G17–G24",
+    "其中圆环: ['G17', 'G21']",
+    "其中紫色: ['G20', 'G24']"
+   ],
+   "visibility_basis": "行范围由编号与网格位置共同确定。",
+   "tolerance": {
+    "coordinate_read": "±1 px（网格线读数）",
+    "comparison": "0.5 px（用于判定左右/上下，本题不会出现并列）",
+    "distance": "±0.001 px",
+    "set_answer": "编号集合须完全一致，顺序按编号升序"
+   },
+   "citations": [
+    "G17",
+    "G21",
+    "G20",
+    "G24"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q18",
+   "answer": {
+    "F06": {
+     "hex": "#16A34A",
+     "center": [
+      560,
+      520
+     ]
+    },
+    "F08": {
+     "hex": "#F97316",
+     "center": [
+      230,
+      700
+     ]
+    }
+   },
+   "steps": [
+    "逐个查看 F04–F09 的形状",
+    "圆环为 F06、F08（中央有透明孔，孔内透出背景色）"
+   ],
+   "visibility_basis": "全部为可见前景对象，编号与主体一一对应；圆环由中央透明孔判定，不依赖任何隐藏信息。",
+   "tolerance": {
+    "coordinate_read": "±1 px",
+    "set_answer": "编号集合完全一致"
+   },
+   "citations": [
+    "F06",
+    "F08"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q19",
+   "answer": {
+    "F01": "circle",
+    "F02": "ring",
+    "F03": "rounded_square"
+   },
+   "steps": [
+    "F01–F03 位于面板矩形内、颜色为 #F8FAFC",
+    "形状分别为 圆、圆环、圆角方"
+   ],
+   "visibility_basis": "三个对象完全在深色面板区域内、颜色近白，直接可读。",
+   "tolerance": {
+    "coordinate_read": "±1 px",
+    "set_answer": "编号集合完全一致"
+   },
+   "citations": [
+    "F01",
+    "F02",
+    "F03"
+   ],
+   "undeterminable_reason": null
+  },
+  {
+   "id": "Q20",
+   "answer": "无法确定",
+   "steps": [
+    "occlusion.png 的隐藏层为 A（6 个对象），occlusion-alternative.png 的隐藏层为 B（9 个对象）",
+    "两版可见像素完全一致（equivalence.json：不同像素数 0）",
+    "仅凭可见图像无法区分当前是哪一版，故数量无法确定"
+   ],
+   "visibility_basis": "面板不透明、圆角 18px 处也不泄漏；没有任何虚线、描边、阴影或残影指向面板后方，因此可见信息对隐藏层完全无信息量。",
+   "tolerance": {
+    "coordinate_read": "±1 px",
+    "set_answer": "编号集合完全一致"
+   },
+   "citations": [
+    "occlusion.png",
+    "occlusion-alternative.png",
+    "equivalence.json"
+   ],
+   "undeterminable_reason": "两版的隐藏对象数量不同（A=6, B=9），而两版的原始 PNG 文件哈希相同、800×800 的 8 位非预乘 RGBA 逐像素比对不同像素数为 0。仅凭可见画面无法区分版本，因此无法确定面板后的对象数量。"
+  },
+  {
+   "id": "Q21",
+   "answer": "无法确定",
+   "steps": [
+    "A 版隐藏层含 H1：蓝色圆形 size=80 → 答案为“是”",
+    "B 版隐藏层的蓝色对象只有 K3（圆形 64）与 K6（圆环 48），没有尺寸为 80 的蓝色对象 → 答案为“否”",
+    "两版可见像素完全一致，无法判定当前版本，故答案无法确定"
+   ],
+   "visibility_basis": "同 Q20：面板完全覆盖隐藏层，可见信息无法区分版本。",
+   "tolerance": {
+    "coordinate_read": "±1 px",
+    "set_answer": "编号集合完全一致"
+   },
+   "citations": [
+    "occlusion.png",
+    "occlusion-alternative.png",
+    "equivalence.json"
+   ],
+   "undeterminable_reason": "两版对本题给出相反答案（A=是，B=否），而两版可见像素逐像素相等，无法从可见图像判定使用哪一版，因此本题不可判定。"
+  }
+ ],
+ "derivation": "所有答案由 tmp/r20261014T1536+0800-5f11da/_suite/gen/a19_data.py 从 scene-data.json 的同一份几何数据现算，不使用手写常量。"
+}

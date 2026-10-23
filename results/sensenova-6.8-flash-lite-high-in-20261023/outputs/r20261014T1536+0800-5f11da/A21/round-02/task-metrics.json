@@ -1,0 +1,150 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A21",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": 2,
+ "status": "completed",
+ "stop_reason": "需求满足并完成视觉自检",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A21/round-02",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A21",
+ "timings": {
+  "started_at": "2026-10-19T21:23:01+08:00",
+  "ended_at": "2026-10-19T22:44:16+08:00",
+  "elapsed_seconds": 4874.3,
+  "elapsed_note": "墙钟时间，含设计、无网络干跑、看图、审计与归档，也含 2 次服务端读取超时的挂起（合计 1342 s）；因此远大于有效请求耗时，两者不可相加或互相替代",
+  "last_recorded_activity_at": "2026-10-19T22:09:30+08:00",
+  "archive_tail_seconds": 2086.0,
+  "archive_tail_note": "墙钟终点取本指标文件生成时刻（本轮归档完成）。在案的本轮活动——迭代记录的 ended_at、看图事件的 viewed_at、成功请求的结束时刻——止于 last_recorded_activity_at；两者之差 archive_tail_seconds 是归档与记账尾段，含写本报告与指标、必要的返工与调试。它是墙钟的一部分，不能扣掉，也不能用 request_duration_sum_seconds 或service_stall_seconds 替代墙钟",
+  "service_stall_seconds": 1342.141,
+  "service_stall_note": "http_status 为 None 的 2 条请求的 elapsed_ms 之和——服务端接受了连接但在返回响应体期间挂起，最后由 socket 读取超时终止。这段时间没有产出，也不是模型或设计的时间",
+  "started_at_correction_note": "requests.jsonl 的 started_at 被驱动脚本的异常路径写成异常发生时刻（即请求结束时刻），故对本轮 2 条未返回响应的记录，真实起点只能用started_at - elapsed_ms 还原；本脚本已按此还原，逐条证据见timings.started_at_correction。驱动脚本本身未回改，旧日志不回填",
+  "started_at_correction": [
+   {
+    "request_id": "req-a21-r02-launch-portrait-34bd30",
+    "attempt": 1,
+    "logged_started_at": "2026-10-19T21:38:26+08:00",
+    "true_started_at": "2026-10-19T21:23:01+08:00",
+    "elapsed_ms": 924282.0
+   },
+   {
+    "request_id": "req-a21-r02-launch-portrait-c3535d",
+    "attempt": 2,
+    "logged_started_at": "2026-10-19T21:45:44+08:00",
+    "true_started_at": "2026-10-19T21:38:46+08:00",
+    "elapsed_ms": 417859.0
+   }
+  ],
+  "first_usable_image_seconds": 1396.454,
+  "first_usable_image_note": "本轮未提交能力探针（复用第一轮已验证的渐变/Opacity/文本扩展结论，不重复消耗请求），首次可打开图片取首次成功的渲染请求",
+  "first_delivered_image_seconds": 1396.5,
+  "first_delivered_image_note": "首次成功取得交付尺寸的成品图（launch-portrait，attempt 3）",
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_wait_note": "预置轮次模式，不等待外部反馈；第 2、3 轮需求文件在本题 rounds/ 内，前一轮归档后直接读取",
+  "rate_limit_wait_seconds": 0,
+  "rate_limit_wait_note": "本轮未出现 429/503",
+  "queue_wait_seconds": null,
+  "queue_wait_null_reason": "服务端不可观测排队，未取得该数据",
+  "request_duration_sum_seconds": 1369.626,
+  "request_duration_sum_note": "本轮 4 条快照请求的 elapsed_ms 之和，其中 1342 s 是读取超时挂起（无产出），扣掉后有效请求耗时为 27.485 s，占墙钟 0.6%，其余是设计、无网络干跑、看图、审计与归档",
+  "server_timing_source": "requests.jsonl 的 server_timing 字段：2 条成功记录均有服务端自报值，如 portrait attempt 3 'render;dur=1525.1, total;dur=1531.2'、wide 'render;dur=1546.2, total;dur=1554.4'；两次读取超时未返回响应，故无该字段。服务端自报与本地墙钟分开记录",
+  "timestamp_precision": "requests.jsonl 的 started_at / ended_at 被截断到整秒，first_usable_image_seconds 与 first_delivered_image_seconds 已用 elapsed_ms 还原亚秒分量；绝对起点仍只精确到 1 秒，故这两个字段的不确定度为 ±1 s"
+ },
+ "counts": {
+  "snapshot_requests": 4,
+  "successful_snapshot_requests": 2,
+  "failed_snapshot_requests": 2,
+  "retry_requests": 2,
+  "retry_note": "同 DSL 原样重发次数：两次失败均为服务端读取超时（无 PARSE_ERROR、无需改正文），按同一份 DSL 原样重发，故为 2；不计入语法修复",
+  "syntax_fix_resubmits": 0,
+  "other_service_requests": 0,
+  "other_service_note": "服务指南与 DSL 文档、fonts 查询在本轮之前已取得并缓存于 tmp/r20261014T1536+0800-5f11da/_suite/docs/，本轮复用未新增 HTTP",
+  "dsl_versions": 2,
+  "dsl_versions_breakdown": {
+   "artifacts": {
+    "launch-portrait": 1,
+    "launch-wide": 1
+   },
+   "probe": 0
+  },
+  "image_views": 14,
+  "completed_visual_iterations": 0,
+  "incomplete_visual_iterations": 0
+ },
+ "counting_notes": [
+  "按 requests.jsonl 的 round 字段筛选",
+  "初次生成与查看计为基线，不计为改进迭代；改进迭代必须是「实际看图 → 修改 → 重渲 → 再实际看图比较」的完整闭环",
+  "image_views 按实际打开次数记录，不因是同一张图的不同视图（整图 / 放大裁切）而合并",
+  "本轮无 400 响应，syntax_fix_resubmits = 0；两次失败均为服务端读取超时（未返回响应、无 PARSE_ERROR），按原样重发计 retry_requests = 2，两者不重叠",
+  "started_at 取本轮真实起点 2026-10-19T21:23:01+08:00：2 条读取超时记录的 started_at 被驱动脚本记为异常发生时刻（即结束时刻），本脚本用 started_at - elapsed_ms 还原，逐条见 timings.started_at_correction",
+  "request_duration_sum_seconds 与墙钟都含 2 次服务端读取超时的挂起（合计 1342 s），这两项都不是模型或设计时间的代理值；挂起之外的有效请求耗时见 timings.service_stall_seconds",
+  "本轮请求日志原生带 delivered 字段；delivery_map 仍以 sha256 逐一比对复核，双通道一致"
+ ],
+ "delivery_map": [
+  {
+   "artifact": "launch-portrait",
+   "png": "round-02/launch-portrait.png",
+   "png_bytes": 284930,
+   "png_sha256": "421c3c4e2c9d73c561fa1a701fa0ed461ea31d90c6a3d15496e174744ebafc4b",
+   "dsl": "round-02/launch-portrait.snapshot",
+   "dsl_bytes": 6244,
+   "dsl_sha256": "498a70746746810ccaf332e537428bf552f62d45482a73fab9c9bb23a7734df7",
+   "source_request_id": "req-a21-r02-launch-portrait-3d7048",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 逐一比对"
+  },
+  {
+   "artifact": "launch-wide",
+   "png": "round-02/launch-wide.png",
+   "png_bytes": 247193,
+   "png_sha256": "9f0d4bc1e90f45964d2aaeefce165a7ef7f46a602925cf75558693449b8f1fe9",
+   "dsl": "round-02/launch-wide.snapshot",
+   "dsl_bytes": 5240,
+   "dsl_sha256": "e98e1e3dde8eec9bd228707d9dcb1cc211b3bbd73e48ba4e6e1f13bdbe589169",
+   "source_request_id": "req-a21-r02-launch-wide-cf6641",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 逐一比对"
+  }
+ ],
+ "logs": {
+  "round_changes": "tmp/r20261014T1536+0800-5f11da/A21/round-02-changes.json",
+  "requests": "tmp/r20261014T1536+0800-5f11da/A21/requests.jsonl",
+  "iterations": "tmp/r20261014T1536+0800-5f11da/A21/iterations.jsonl",
+  "viewing_evidence": "tmp/r20261014T1536+0800-5f11da/A21/viewing-evidence.json",
+  "preview_manifest": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/views-manifest.json"
+ },
+ "outputs": [
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/design-tokens.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/content-map.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/snapshot-usage.md",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/task-metrics.json"
+ ],
+ "iterations": [
+  {
+   "id": "it-a21-007",
+   "type": "baseline",
+   "variant": null,
+   "status": "completed"
+  }
+ ],
+ "unresolved_issues": [
+  {
+   "id": "a21-r2-u1",
+   "issue": "launch-portrait 的前两次请求在读取响应阶段超时，未返回任何字节",
+   "why": "attempt 1 挂起 924282 ms、attempt 2 挂起 417859 ms 后由 socket 读取抛出 TimeoutError。DSL 已在提交前通过本地校验（6244 B、无非法属性），第一轮用同样风格的构造器渲染正常，故判定为服务端瞬时停顿而非请求体问题；suite.snapshot_request 的内部重试只覆盖 429/503 与 URLError，不覆盖读取超时，所以挂起时间全额计入本轮",
+   "impact": "本轮墙钟与 request_duration_sum_seconds 被 1342 s 的挂起拉长，两者都不再是模型或设计时间的代理值；两次尝试无响应文件可留痕",
+   "mitigation": "两次超时记录原样保留在 requests.jsonl（含 elapsed_ms 与错误类型），attempt 3 按同一份 DSL 原样重发，14.2 s 成功交付；不删除失败记录、不补造响应文件",
+   "status": "disclosed"
+  },
+  {
+   "id": "a21-r2-u2",
+   "issue": "驱动脚本异常路径把 started_at 记为异常发生时刻，即请求结束时刻",
+   "why": "a21_round.py 的 render() 在 except 分支用 S.now_iso() 填 started_at；对超时记录而言这是结束时刻，真实起点只能由 started_at - elapsed_ms 还原",
+   "impact": "直接取 requests.jsonl 的 started_at 最小值会把本轮起点算成 21:38:26，比真实起点 21:22:58 晚 15 分 28 秒，墙钟会被系统性低估",
+   "mitigation": "本脚本对 http_status 为 None 的记录改用 started_at - elapsed_ms 作为起点，并在 timings.started_at_correction 逐条列出；驱动脚本本身未回改，旧日志不回填",
+   "status": "disclosed"
+  }
+ ]
+}

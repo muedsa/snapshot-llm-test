@@ -1,0 +1,171 @@
+<Snapshot type="png" background="#F8FAFC">
+    <Container width="800" height="500">
+        <Stack width="800" height="500" fit="EXPAND" clipBehavior="NONE">
+            <Container width="800" height="500" color="#F8FAFC"/>
+
+            <!-- 1. Row + Expanded + STRETCH（含固定宽度子项） -->
+            <Positioned left="16" top="16" width="768" height="64">
+                <Row width="768" height="64" crossAxisAlignment="STRETCH" clipBehavior="NONE">
+                    <Expanded flex="2">
+                        <Container color="#0EA5E9" borderRadius="8" alignment="CENTER">
+                            <Text fontFamily="Noto Sans CJK SC,Inter" fontSize="15"
+                                  color="#FFFFFF" text="Row STRETCH + Expanded flex=2"/>
+                        </Container>
+                    </Expanded>
+                    <SizedBox width="8"/>
+                    <Expanded flex="1">
+                        <Container color="#6366F1" borderRadius="8" alignment="CENTER">
+                            <Text fontFamily="Inter" fontSize="15" color="#FFFFFF" text="flex=1"/>
+                        </Container>
+                    </Expanded>
+                    <SizedBox width="8"/>
+                    <Container width="120" color="#F59E0B" borderRadius="8" alignment="CENTER">
+                        <Text fontFamily="Noto Sans CJK SC,Inter" fontSize="15"
+                              color="#FFFFFF" text="固定 120"/>
+                    </Container>
+                </Row>
+            </Positioned>
+
+            <!-- 2. Column + Expanded -->
+            <Positioned left="16" top="92" width="240" height="64">
+                <Column width="240" height="64">
+                    <Expanded>
+                        <Container color="#10B981" borderRadius="8" alignment="CENTER">
+                            <Text fontFamily="Inter" fontSize="13" color="#FFFFFF"
+                                  text="Column Expanded top"/>
+                        </Container>
+                    </Expanded>
+                    <Expanded>
+                        <Container color="#14B8A6" borderRadius="8" alignment="CENTER">
+                            <Text fontFamily="Inter" fontSize="13" color="#FFFFFF"
+                                  text="Column Expanded bottom"/>
+                        </Container>
+                    </Expanded>
+                </Column>
+            </Positioned>
+
+            <!-- 3. Stack + Positioned（left/top 与 right/bottom 对照） -->
+            <Positioned left="272" top="92" width="240" height="64">
+                <Stack width="240" height="64">
+                    <Container width="240" height="64" color="#E2E8F0" borderRadius="8"/>
+                    <Positioned left="8" top="8" width="100" height="22">
+                        <Container color="#8B5CF6" borderRadius="6" alignment="CENTER">
+                            <Text fontFamily="Inter" fontSize="12" color="#FFFFFF"
+                                  text="left=8 top=8"/>
+                        </Container>
+                    </Positioned>
+                    <Positioned right="8" bottom="8" width="112" height="22">
+                        <Container color="#EC4899" borderRadius="6" alignment="CENTER">
+                            <Text fontFamily="Inter" fontSize="12" color="#FFFFFF"
+                                  text="right=8 bottom=8"/>
+                        </Container>
+                    </Positioned>
+                </Stack>
+            </Positioned>
+
+            <!-- 4. 8 位尾部 alpha + Row/Column -->
+            <Positioned left="528" top="92" width="256" height="64">
+                <Row width="256" height="64" crossAxisAlignment="CENTER">
+                    <Container width="48" height="48" color="#38BDF8" borderRadius="8"/>
+                    <Container width="48" height="48" color="#38BDF880" borderRadius="8"/>
+                    <SizedBox width="12"/>
+                    <Column>
+                        <Text fontFamily="DejaVu Sans Mono" fontSize="12" color="#334155"
+                              text="#38BDF8FF"/>
+                        <Text fontFamily="DejaVu Sans Mono" fontSize="12" color="#334155"
+                              text="#38BDF880"/>
+                    </Column>
+                </Row>
+            </Positioned>
+
+            <!-- 5. 背景滤镜：ClipRRect + BackdropFilter（需背后已有内容） -->
+            <Positioned left="16" top="168" width="380" height="120">
+                <Stack width="380" height="120">
+                    <Container width="380" height="120" color="#FFFFFF" borderRadius="8"
+                               border="1 SOLID #E2E8F0"/>
+                    <Positioned left="16" top="20" width="200" height="80">
+                        <Container color="#FB923C" borderRadius="10"/>
+                    </Positioned>
+                    <Positioned left="180" top="16" width="180" height="88">
+                        <ClipRRect borderRadius="10">
+                            <BackdropFilter sigmaX="8" sigmaY="8" tileMode="CLAMP">
+                                <Container width="180" height="88" color="#FFFFFF66"/>
+                            </BackdropFilter>
+                        </ClipRRect>
+                    </Positioned>
+                    <Positioned left="196" top="46" width="148" height="28">
+                        <Container width="148" height="28" alignment="CENTER">
+                            <Text fontFamily="Inter" fontSize="12" color="#334155"
+                                  text="BackdropFilter sigma=8"/>
+                        </Container>
+                    </Positioned>
+                </Stack>
+            </Positioned>
+
+            <!-- 6. 子树滤镜：ImageFiltered 模糊 与 ColorFiltered 混合 -->
+            <Positioned left="416" top="168" width="368" height="120">
+                <Stack width="368" height="120">
+                    <Container width="368" height="120" color="#FFFFFF" borderRadius="8"
+                               border="1 SOLID #E2E8F0"/>
+                    <Positioned left="20" top="24">
+                        <Row>
+                            <ImageFiltered sigmaX="5" sigmaY="5" tileMode="CLAMP">
+                                <Container width="40" height="40" color="#38BDF8"
+                                           borderRadius="8"/>
+                            </ImageFiltered>
+                            <SizedBox width="24"/>
+                            <ColorFiltered color="#7C3AED" blendMode="MULTIPLY">
+                                <Container width="40" height="40" color="#38BDF8"
+                                           borderRadius="8"/>
+                            </ColorFiltered>
+                        </Row>
+                    </Positioned>
+                    <Positioned left="20" top="74" width="328" height="30">
+                        <Container width="328" height="30" alignment="CENTER">
+                            <Text fontFamily="Inter" fontSize="12" color="#334155"
+                                  text="ImageFiltered sigma=5 | ColorFiltered MULTIPLY"/>
+                        </Container>
+                    </Positioned>
+                </Stack>
+            </Positioned>
+
+            <!-- 7. Text 直接含 CDATA（解析器不做 HTML 实体解码） -->
+            <Positioned left="16" top="300" width="380" height="38">
+                <Container width="380" height="38" color="#0F172A" borderRadius="8"
+                           padding="(6,12)" alignment="CENTER">
+                    <Text fontFamily="DejaVu Sans Mono" fontSize="14"
+                          color="#7DD3FC"><![CDATA[a < b && b > a]]></Text>
+                </Container>
+            </Positioned>
+
+            <!-- 8. 嵌套 Text 富文本 + Raw 取消继承装饰线 -->
+            <Positioned left="416" top="300" width="368" height="38">
+                <Container width="368" height="38" color="#0F172A" borderRadius="8"
+                           padding="(6,12)" alignment="CENTER">
+                    <Text fontFamily="Noto Sans CJK SC,Inter" fontSize="14"
+                          color="#94A3B8" decoration="UNDERLINE"
+                          decorationColor="#38BDF8"><Text fontFamily="Noto Sans CJK SC,Inter"
+                          fontSize="14" color="#38BDF8" fontStyle="BOLD">嵌套 Text</Text>
+                        <Raw decoration="NONE"> 富文本片段 </Raw></Text>
+                </Container>
+            </Positioned>
+
+            <!-- 9. Raw + CDATA：多行代码、保留缩进与换行 -->
+            <Positioned left="16" top="350" width="768" height="134">
+                <Container width="768" height="134" color="#F1F5F9" borderRadius="8"
+                           border="1 SOLID #CBD5E1" padding="(10,14)" alignment="TOP_LEFT">
+                    <Text fontFamily="DejaVu Sans Mono" fontSize="12" color="#0F172A"
+                          height="1.45"><Raw><![CDATA[<Row height="60" crossAxisAlignment="STRETCH">
+  <Expanded flex="2">
+    <Container color="#0EA5E9" borderRadius="8"/>
+  </Expanded>
+  <SizedBox width="6"/>
+  <Expanded flex="1">
+    <Container color="#6366F1" borderRadius="8"/>
+  </Expanded>
+]]></Raw></Text>
+                </Container>
+            </Positioned>
+        </Stack>
+    </Container>
+</Snapshot>

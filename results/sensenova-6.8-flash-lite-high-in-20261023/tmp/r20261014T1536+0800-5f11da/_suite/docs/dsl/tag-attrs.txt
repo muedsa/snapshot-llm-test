@@ -1,0 +1,38 @@
+Snapshot 单个 根节点、背景色、调试和图片格式
+Container 单个 尺寸、约束、间距、颜色、边框和对齐
+Border 单个 边框、圆角与阴影装饰
+Row 多个 横向 Flex
+Column 多个 纵向 Flex
+Spacer 无 占用 Flex 剩余空间
+Stack 多个 层叠布局
+Positioned 单个 Stack / IndexedStack 子节点定位
+Padding 单个 添加内边距
+Opacity 单个 整体透明度
+Transform 单个 4×4 矩阵变换
+ClipRRect 单个 圆角矩形裁剪
+ColorFiltered 单个 颜色混合滤镜
+ImageFiltered 单个 子树高斯模糊
+BackdropFilter 单个 背景高斯模糊
+Text 行内 文本与嵌套 Span
+Snapshot
+Container
+Border
+Border 支持 color 、边框、圆角、阴影、形状、背景混合模式和整组 gradient* 属性。 ColoredBox 要求 color ； DecoratedBox 支持相同的装饰属性，另可用 position="BACKGROUND" 或 "FOREGROUND" 控制绘制顺序。三者最多一个子节点；需要控制尺寸和 padding 时使用 Container 。
+Padding padding 0 使用 EdgeInsets 格式
+Row 与 Column
+Spacer flex 1 正整数，无子节点
+Stack
+Stack / IndexedStack 根据所有直接子节点的布局矩形累计越界状态，后续未越界节点不会取消已有裁剪需求。只有阴影、变换或更深子孙的绘制越界时，不一定触发裁剪；需要无条件限制在容器边界内时外包 <ClipRect> 。要允许越界绘制可设置 clipBehavior="NONE" ，但祖先的裁剪仍然生效。
+Positioned
+Positioned 必须是 Stack 或 IndexedStack 的直接子节点。
+Opacity 与 Transform
+Opacity
+Transform
+ColorFiltered color 、 blendMode 无
+ImageFiltered sigmaX 、 sigmaY tileMode="CLAMP"
+BackdropFilter sigmaX 、 sigmaY tileMode="CLAMP" 、 blendMode="SRC_OVER"
+ColorFiltered 在子树绘制边界可确定时限制颜色作用范围，保留合法溢出和阴影；部分混合模式也会给边界内的透明间隙着色。 ImageFiltered 会按 sigma 自动提供模糊输出边界，因此下面的嵌套无需配置额外边界属性：
+BackdropFilter 读取已有背景，仍建议配合 ClipRect、ClipOval 或 ClipRRect 限定区域。Kotlin DSL 的通用 ImageFiltered 边界配置见 ImageFiltered 。
+ClipRRect ANTI_ALIAS borderRadius 与四角圆角属性
+Text
+Text 可以嵌套 Text 、 Raw 、 Emoji 和 WidgetSpan 。普通文本节点会被 trim；多字体字符串不会逐项 trim，因此 "A, B" 的第二个名称会保留前导空格，建议写成 "A,B" 。 decoration 支持 UNDERLINE 、 OVERLINE 、 LINE_THROUGH ； textShadow 格式为 x y [blurSigma] [color] ； fontFeatures 支持 +liga -kern tnum=2 smcp[2:8] 等形式。详细语法见 文本属性详解 。

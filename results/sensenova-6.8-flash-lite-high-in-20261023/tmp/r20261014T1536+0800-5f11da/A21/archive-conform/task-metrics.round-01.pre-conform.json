@@ -1,0 +1,161 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A21",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": 1,
+ "status": "completed",
+ "stop_reason": "需求满足并完成视觉自检",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A21/round-01",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A21",
+ "timings": {
+  "started_at": "2026-10-19T18:40:30+08:00",
+  "ended_at": "2026-10-19T21:00:41+08:00",
+  "elapsed_seconds": 8411.1,
+  "elapsed_note": "墙钟时间，含设计、看图、审计与归档，也含本会话中段的上下文压缩与平台中断造成的停顿；因此远大于request_duration_sum_seconds，两者不可相加或互相替代",
+  "first_usable_image_seconds": 6.531,
+  "first_usable_image_note": "首次成功取得可打开图片（能力探针1）",
+  "first_delivered_image_seconds": 922.6,
+  "first_delivered_image_note": "首次成功取得交付尺寸的成品图（launch-portrait v1）",
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_wait_note": "预置轮次模式，不等待外部反馈；第 2、3 轮需求文件在本题 rounds/ 内，前一轮归档后直接读取",
+  "rate_limit_wait_seconds": 0,
+  "rate_limit_wait_note": "本轮未出现 429/503",
+  "queue_wait_seconds": null,
+  "queue_wait_null_reason": "服务端不可观测排队，未取得该数据",
+  "request_duration_sum_seconds": 32.656,
+  "request_duration_sum_note": "本轮 9 条快照请求的 elapsed_ms 之和，不等于任务总耗时；墙钟含看图与设计时间",
+  "server_timing_source": "requests.jsonl 的 server_timing 字段，如 v2 portrait 'render;dur=1339.4, total;dur=1343.4'（服务端自报，与本地墙钟分开记录）",
+  "timestamp_precision": "requests.jsonl 的 started_at / ended_at 被截断到整秒，first_usable_image_seconds 与 first_delivered_image_seconds 已用 elapsed_ms 还原亚秒分量；绝对起点仍只精确到 1 秒，故这两个字段的不确定度为 ±1 s"
+ },
+ "counts": {
+  "snapshot_requests": 9,
+  "successful_snapshot_requests": 6,
+  "failed_snapshot_requests": 3,
+  "retry_requests": 0,
+  "retry_note": "同 DSL 原样重发次数。本轮每次重交都修改了 DSL 正文（语法修复），故为 0；语法修复另计",
+  "syntax_fix_resubmits": 3,
+  "other_service_requests": 0,
+  "other_service_note": "服务指南与 DSL 文档、fonts 查询在本轮之前已取得并缓存于 tmp/r20261014T1536+0800-5f11da/_suite/docs/，本轮复用未新增 HTTP",
+  "dsl_versions": 6,
+  "dsl_versions_breakdown": {
+   "artifacts": {
+    "launch-portrait": 2,
+    "launch-wide": 2
+   },
+   "probe": 2
+  },
+  "image_views": 14,
+  "completed_visual_iterations": 1,
+  "incomplete_visual_iterations": 0
+ },
+ "counting_notes": [
+  "requests.jsonl 中 3 条能力探针记录的 round 字段为 null（记录器当时尚未写入轮次元数据），按时间归属并入第 1 轮统计",
+  "初次生成与查看计为基线，不计为改进迭代；改进迭代必须是「实际看图 → 修改 → 重渲 → 再实际看图比较」的完整闭环",
+  "image_views 按实际打开次数记录，不因是同一张图的不同视图（整图 / 放大裁切）而合并",
+  "syntax_fix_resubmits = 3，按 400 响应条数计（每条 400 都改正了 DSL 正文后重新提交），故不与 retry_requests 相加",
+  "requests.jsonl 的 9 条 round-01 记录均无 delivered 字段（驱动脚本在这些日志落盘之后才修好「先写 delivered 映射再落日志」，旧日志不回填）；请求与交付件的对应改由 sha256 比对得出，见 delivery_map"
+ ],
+ "delivery_map": [
+  {
+   "artifact": "launch-portrait",
+   "png": "round-01/launch-portrait.png",
+   "png_bytes": 223312,
+   "png_sha256": "d7fbe0229d21cf1458ca5998bbd1a80bba213fd362339f459323891b25639051",
+   "dsl": "round-01/launch-portrait.snapshot",
+   "dsl_bytes": 5381,
+   "dsl_sha256": "07461082606e73847c6791b7dc3091f67ad26fba35f9f033ad93cf3e00f8b0bf",
+   "source_request_id": "req-a21-r01-launch-portrait.v2-f82591",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 逐一比对"
+  },
+  {
+   "artifact": "launch-wide",
+   "png": "round-01/launch-wide.png",
+   "png_bytes": 231358,
+   "png_sha256": "3af59f8d277df85b4ebae207f8e8e7a1d0cb7462a07e5a38052ac31ba51e6c45",
+   "dsl": "round-01/launch-wide.snapshot",
+   "dsl_bytes": 4730,
+   "dsl_sha256": "87aa4238ca726df808bc3e033d7e45e9168af26d161b506c25f3bbfe69e2ffe3",
+   "source_request_id": "req-a21-r01-launch-wide.v2-dd43b3",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 逐一比对"
+  }
+ ],
+ "logs": {
+  "requests": "tmp/r20261014T1536+0800-5f11da/A21/requests.jsonl",
+  "iterations": "tmp/r20261014T1536+0800-5f11da/A21/iterations.jsonl",
+  "viewing_evidence": "tmp/r20261014T1536+0800-5f11da/A21/viewing-evidence.json",
+  "preview_manifest": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/views-manifest.json"
+ },
+ "outputs": [
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-portrait.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-portrait.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-wide.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-wide.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/design-tokens.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/content-map.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/snapshot-usage.md",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/task-metrics.json"
+ ],
+ "iterations": [
+  {
+   "id": "it-a21-001",
+   "type": "baseline",
+   "variant": null,
+   "status": "completed"
+  },
+  {
+   "id": "it-a21-002",
+   "type": "syntax-fix",
+   "variant": null,
+   "status": "completed"
+  },
+  {
+   "id": "it-a21-003",
+   "type": "baseline",
+   "variant": null,
+   "status": "completed"
+  },
+  {
+   "id": "it-a21-004",
+   "type": "syntax-fix",
+   "variant": null,
+   "status": "completed"
+  },
+  {
+   "id": "it-a21-005",
+   "type": "baseline",
+   "variant": null,
+   "status": "completed"
+  },
+  {
+   "id": "it-a21-006",
+   "type": "visual",
+   "variant": "v2",
+   "status": "completed"
+  }
+ ],
+ "unresolved_issues": [
+  {
+   "id": "a21-r1-u1",
+   "issue": "本轮 9 条 requests.jsonl 记录均无 delivered 字段",
+   "why": "驱动脚本在 9 条日志全部落盘之后才修好「先写 delivered 映射再落日志」；旧日志不回填，保留真实过程优先于日志整齐",
+   "impact": "无法从日志字段直接读出「哪次请求产出了交付件」",
+   "mitigation": "改由响应字节 sha256 与交付 PNG sha256 逐一比对得出，见本文件 delivery_map；第 2、3 轮日志原生带 delivered",
+   "status": "disclosed"
+  },
+  {
+   "id": "a21-r1-u2",
+   "issue": "交付目录中的 PNG 被同轮 v2 迭代原地覆盖，v1 字节不在交付目录",
+   "impact": "查看 round-01/*.png 只看到 v2",
+   "mitigation": "v1 的服务响应原始字节完整保留在 tmp/…/A21/responses/，sha256 与最初记录的交付值一致（portrait fe64da1a3410d9c5…、wide 62114c08523dad9f…）；viewing-evidence.json 的 ev-a21-003/004 指向这些保留文件",
+   "status": "disclosed"
+  },
+  {
+   "id": "a21-r1-u3",
+   "issue": "部分看图时间只能到分钟级",
+   "impact": "无法给出秒级看图时刻",
+   "mitigation": "viewing-evidence.json 逐条以 viewed_at_precision 标明精度",
+   "status": "disclosed"
+  }
+ ]
+}

@@ -1,0 +1,151 @@
+{
+ "gate": "a22_build.py dryrun",
+ "checks": [
+  {
+   "name": "画布尺寸 1600x1000",
+   "passed": true,
+   "detail": "声明与 Canvas 构造一致"
+  },
+  {
+   "name": "DSL 不含属性中禁止的 & 字符",
+   "passed": true,
+   "detail": "服务端要求属性值中不出现 &，已确认全文无 &"
+  },
+  {
+   "name": "渐变端点取服务端支持的对齐关键字或 (x,y) 元组",
+   "passed": true,
+   "detail": "gradientBegin/End/Center/Focal 只能是 9 个对齐关键字或 (x,y)；实测 \"50% 0%\" 会 PARSE_ERROR"
+  },
+  {
+   "name": "正文最小字号 ≥22",
+   "passed": true,
+   "detail": "最小 22（标题类与 KPI 数值除外）"
+  },
+  {
+   "name": "每段单行文字的文本盒宽度都够装下它（否则静默截断）",
+   "passed": true,
+   "detail": "concl_body 是多行文本，另用 2 行上限单独断言"
+  },
+  {
+   "name": "月份原样且数量正确",
+   "passed": true,
+   "detail": "6 个月，首月 2026-04，末月 2026-09（2026-04 未被省略）"
+  },
+  {
+   "name": "KPI 数值不换行且不溢出卡片",
+   "passed": true,
+   "detail": "总净收入 宽 228px；总经营利润 宽 228px；总订单 宽 181px；总体转化率 宽 171px"
+  },
+  {
+   "name": "KPI 标签/注释一行内",
+   "passed": true,
+   "detail": "标签与注释宽度均 ≤ 310px"
+  },
+  {
+   "name": "表头/单元格文字不超列宽",
+   "passed": true,
+   "detail": "各列宽度 [110, 128, 110, 112, 112]"
+  },
+  {
+   "name": "表行数与区域高度匹配",
+   "passed": true,
+   "detail": "表头 38 + 6 行 × 62.33 = 区域内容高 412.0"
+  },
+  {
+   "name": "柱组在绘图区内且不与相邻组重叠",
+   "passed": true,
+   "detail": "组宽 66，槽宽 118.00"
+  },
+  {
+   "name": "所有柱体落在绘图区纵轴范围内",
+   "passed": true,
+   "detail": "零线 y=816.9，比例 0.001170 px/元，绘图区 y 536..852"
+  },
+  {
+   "name": "负值柱确实画在零线下方且高度未被裁掉",
+   "passed": true,
+   "detail": "1 根负柱，最高 6.6px（按同一比例，未放大未隐藏）"
+  },
+  {
+   "name": "数值标签不越出绘图区：正值标签在柱上方、负值标签在柱下方",
+   "passed": true,
+   "detail": "标签高 24 + 间距 4 = 28px；标注的最高柱顶 y=580.0（绘图区顶 536），负柱标签底 y=852.0（绘图区底 852）"
+  },
+  {
+   "name": "已标注的数值标签与任何柱体都不相交（标签不会压在别的柱上）",
+   "passed": true,
+   "detail": "对 7 个标签矩形与 12 个柱矩形逐一做相交面积判定：无相交（正的经营利润柱不标注，因为标签带会落在同组净收入柱体内，其数值由右侧明细表承载）"
+  },
+  {
+   "name": "绘图区顶部留白 ≥ 标签高度（最高柱的标签有位置放）",
+   "passed": true,
+   "detail": "标注的最高柱顶部 y=580.0，绘图区顶 536，留白 44.0px，需要 28px"
+  },
+  {
+   "name": "月份标签在绘图区下方一行内（宽度 ≤96px）",
+   "passed": true,
+   "detail": "8 字符 ≈ 86.2px ≤ 96，标签盒宽 96"
+  },
+  {
+   "name": "轴标签在 y 轴左侧、不进入绘图区",
+   "passed": true,
+   "detail": "轴标签右边界 ≤ 150"
+  },
+  {
+   "name": "图例文字不越出图表面板",
+   "passed": true,
+   "detail": "图例右边界 ≤ 876"
+  },
+  {
+   "name": "四张 KPI 卡互不重叠",
+   "passed": true,
+   "detail": "间距 24，卡宽 358"
+  },
+  {
+   "name": "区域 header 内所有元素不越界",
+   "passed": true,
+   "detail": "5 个元素（区域 [48, 40, 1552, 142]）"
+  },
+  {
+   "name": "区域 conclusion 内所有元素不越界",
+   "passed": true,
+   "detail": "4 个元素（区域 [48, 158, 1552, 278]）"
+  },
+  {
+   "name": "区域 kpi 内所有元素不越界",
+   "passed": true,
+   "detail": "20 个元素（区域 [48, 294, 1552, 434]）"
+  },
+  {
+   "name": "区域 chart 内所有元素不越界",
+   "passed": true,
+   "detail": "53 个元素（区域 [48, 450, 876, 916]）"
+  },
+  {
+   "name": "区域 table 内所有元素不越界",
+   "passed": true,
+   "detail": "49 个元素（区域 [892, 450, 1552, 916]）"
+  },
+  {
+   "name": "区域 footer 内所有元素不越界",
+   "passed": true,
+   "detail": "1 个元素（区域 [48, 932, 1552, 964]）"
+  },
+  {
+   "name": "结论中引用的总额与 computed-data 一致：908,624",
+   "passed": true,
+   "detail": "结论文本中能找到该数值"
+  },
+  {
+   "name": "结论中引用的总额与 computed-data 一致：182,124",
+   "passed": true,
+   "detail": "结论文本中能找到该数值"
+  }
+ ],
+ "n_checks": 28,
+ "n_passed": 28,
+ "all_passed": true,
+ "round": 2,
+ "written_at": "2026-10-20T15:06:53+08:00",
+ "gate_sha256_note": "干跑门禁结果，提交服务前必须全通过"
+}

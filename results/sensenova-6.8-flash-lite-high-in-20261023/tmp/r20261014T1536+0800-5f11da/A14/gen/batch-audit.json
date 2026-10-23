@@ -1,0 +1,7181 @@
+{
+  "schema_version": 1,
+  "task_id": "A14",
+  "path_base": "output_dir",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "thresholds": {
+    "safe_margin_min_px": {
+      "value": 40,
+      "source": "task"
+    },
+    "title_font_min_px": {
+      "value": 36,
+      "source": "task"
+    },
+    "title_lines_max": {
+      "value": 3,
+      "source": "task"
+    },
+    "speaker_font_min_px": {
+      "value": 22,
+      "source": "task"
+    },
+    "speaker_lines_max": {
+      "value": 2,
+      "source": "task"
+    },
+    "title_badge_clear_gap_min_px": {
+      "value": 8.0,
+      "source": "self_defined",
+      "basis": "题目只要求「标题不与状态徽标碰撞」，未给数值；取 8 px 作为排版安全余量，任何正净空都算不碰撞"
+    },
+    "ink_overshoot_allowed_px": {
+      "value": -1.0,
+      "source": "self_defined",
+      "basis": "文字抗锯齿边缘会向外溢约 1 px，允许 1 px 的盒外墨迹"
+    },
+    "right_anchor_tolerance_px": {
+      "value": 2.0,
+      "source": "self_defined",
+      "basis": "右锚算法（盒宽=墨宽+pad、盒心右移 pad/2）把墨宽估算误差减半；等宽 5 字符的估算误差约 ±3 px，±2 px 既能覆盖又能抓出丢字"
+    },
+    "label_ink_width_ratio_min": {
+      "value": 0.6,
+      "source": "self_defined",
+      "basis": "CJK 字面墨宽约为字号的 0.85–0.95 倍，估算本身偏保守，所以真实/估算正常在 0.8 以上；掉到 0.6 以下只能是字符被裁掉（历史上「讲者」→「讲」、页脚 →「讲座系列 ·」）"
+    }
+  },
+  "tools": {
+    "pillow": "10.0.0"
+  },
+  "generation": {
+    "script": "tmp/r20261014T1536+0800-5f11da/_suite/gen/a14_pages.py",
+    "input": "tasks/A14-content-stress-batch/inputs/cards.json",
+    "canvas_px": [
+      1200,
+      630
+    ],
+    "safe_margin_px": 40,
+    "content_column": [
+      88,
+      1112
+    ],
+    "primary_color": "#4338CA",
+    "brand": "Structure / Vision",
+    "date": "2026.11.07",
+    "status_system": {
+      "channels": [
+        "foreground_color",
+        "background_tint",
+        "drawn_symbol",
+        "chinese_label"
+      ],
+      "symbols_are_geometric": true,
+      "symbols_not_font_glyphs": true,
+      "symbols_avoid_missing_glyph_tofu": true,
+      "table": {
+        "开放": {
+          "foreground": "#15803D",
+          "background": "#DCFCE7",
+          "symbol": "disc",
+          "note": "实心圆点：位置可用"
+        },
+        "满额": {
+          "foreground": "#B45309",
+          "background": "#FEF3C7",
+          "symbol": "block",
+          "note": "实心方块：额度已满"
+        },
+        "候补": {
+          "foreground": "#1D4ED8",
+          "background": "#DBEAFE",
+          "symbol": "ring",
+          "note": "空心圆环：等待递补"
+        },
+        "取消": {
+          "foreground": "#B91C1C",
+          "background": "#FEE2E2",
+          "symbol": "strike",
+          "note": "空心圆环加横杠：本场取消"
+        }
+      }
+    },
+    "shared_rules": [
+      "全部坐标/字号/颜色来自 a14_pages.py 的常量表，无逐卡硬编码",
+      "标题一行一个单行 <Text> 盒，不依赖服务自动折行",
+      "右锚元素走 text_r()：盒宽 = 墨宽估算 + PAD_X，align=CENTER，盒左 = 右缘 - 墨宽 - PAD_X/2，从而墨迹右缘落在内容栏右缘上且估算误差减半",
+      "盒宽必须大于墨宽：盒窄于墨宽时服务会自行折行，而单行盒高把第二行整行裁掉——这是标签与页脚丢字的真实根因",
+      "所有 text 属性收原始字符，esc() 为恒等函数；服务不解码 XML 实体，写成 &lt; 会在画面上显示成字面串（实测见 text_special_chars）",
+      "卡片 PNG 均为服务原始字节，未做任何后处理"
+    ],
+    "length_branch_conditions": {
+      "title": {
+        "rule": "从 [48, 46, 44, 42, 40, 38, 36] 起逐档降，取第一个能在 3 行内排下的字号",
+        "wrap_limit_px": 817,
+        "box_width_px": 888,
+        "slack_px": 71,
+        "font_floor_px": 36,
+        "never_changes": [
+          "canvas",
+          "safe_margin",
+          "badge",
+          "speaker_slot",
+          "time_slot",
+          "header",
+          "footer"
+        ]
+      },
+      "speaker": {
+        "rule": "先 26 px，装不下降到 24 px，均按 2 行上限",
+        "wrap_limit_px": 835,
+        "box_width_px": 888,
+        "font_floor_px": 22
+      },
+      "cancel_note": {
+        "rule": "仅取消卡出现；顶缘 = 标题盒底 + 24 px，由实际行数驱动，不逐条硬改",
+        "title_time_status_all_retained": true
+      }
+    },
+    "anchor_calibration": {
+      "mechanism": "text_r 用 alignment=CENTER，盒中心 = 右缘 - ink_est/2；真实墨宽与估算差被减半传导到锚点",
+      "shift_px": {
+        "date": 4.0,
+        "time": 4.0,
+        "label_time": 2.0,
+        "footer_right": -3.0
+      },
+      "evidence": "tmp/r20261014T1536+0800-5f11da/A14/gen/batch-audit.json 的 right_anchors：K01–K08 的 date/time/label_time/footer_right 墨迹右缘完全一致（偏差 -4/-4/-2/+3），说明偏移只跟字符串族+字号+字距有关，与卡内容无关",
+      "note": "shift 是实测值不是估计值；盒边界与墨迹一起平移同样的量"
+    },
+    "text_special_chars": {
+      "chars": [
+        "&",
+        "<",
+        ">"
+      ],
+      "policy": "原样写入 text 属性，不做任何转义（esc() 为恒等函数）",
+      "why": "服务不解码 XML 实体：写成 &lt; 会在画面上显示成字面串",
+      "evidence": [
+        "req-a14-probe-layout-abdd1d：标题写成 &lt; &amp; &gt; 实体，渲染结果就是字面 &lt; &amp; &gt;，证明实体未被解码",
+        "req-a14-escape-test-raw-6355ec：裸 A < B & C > D 直接写入 text 属性，HTTP 200，渲染逐字正确"
+      ],
+      "verified_by": "a14_pages._escape_check（实体串出现即判缺陷）",
+      "caveat": "半角双引号会截断属性，本批 8 条数据均不含，已断言"
+    },
+    "pre_render_checks": {
+      "problems": [],
+      "count": 0,
+      "escape_check_included": true
+    }
+  },
+  "cards": [
+    {
+      "id": "K01",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K01.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K01.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 23674,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            210
+          ],
+          "ink": [
+            90,
+            155,
+            183,
+            200
+          ],
+          "has_ink": true,
+          "ink_w": 94,
+          "ink_h": 46,
+          "ink_px": 2107,
+          "clear": {
+            "left": 2,
+            "top": 15,
+            "right": 793,
+            "bottom": 10
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4468,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            89,
+            431,
+            136,
+            456
+          ],
+          "has_ink": true,
+          "ink_w": 48,
+          "ink_h": 26,
+          "ink_px": 415,
+          "clear": {
+            "left": 1,
+            "top": 7,
+            "right": 840,
+            "bottom": 44
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1210,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 800,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 158,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            155,
+            200
+          ]
+        ],
+        "measured_line_count": 1
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 183,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 825
+      },
+      "status": {
+        "text_original": "开放",
+        "label_rendered": "开放",
+        "code": "OPEN",
+        "foreground": "#15803D",
+        "background": "#DCFCE7",
+        "foreground_pixels_in_badge": 454,
+        "background_pixels_in_badge": 3899,
+        "symbol_kind": "disc",
+        "symbol_note": "实心圆点：位置可用",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "09:00",
+        "rendered": "09:00",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "开始",
+          "rendered_lines": [
+            "开始"
+          ],
+          "joined": "开始",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "林川",
+          "rendered_lines": [
+            "林川"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "09:00",
+          "actual": "09:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 1,
+        "lines": [
+          "开始"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          210
+        ],
+        "estimated_widest_line_px": 98.0,
+        "widest_line_ratio_of_box": 0.1104,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "林川"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K01",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": null
+    },
+    {
+      "id": "K02",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K02.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K02.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 37591,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            210
+          ],
+          "ink": [
+            89,
+            154,
+            673,
+            203
+          ],
+          "has_ink": true,
+          "ink_w": 585,
+          "ink_h": 50,
+          "ink_px": 12636,
+          "clear": {
+            "left": 1,
+            "top": 14,
+            "right": 303,
+            "bottom": 7
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4504,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            89,
+            431,
+            212,
+            458
+          ],
+          "has_ink": true,
+          "ink_w": 124,
+          "ink_h": 28,
+          "ink_px": 901,
+          "clear": {
+            "left": 1,
+            "top": 7,
+            "right": 764,
+            "bottom": 42
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1171,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 799,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 157,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            154,
+            203
+          ]
+        ],
+        "measured_line_count": 1
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            431,
+            458
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 673,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 335
+      },
+      "status": {
+        "text_original": "满额",
+        "label_rendered": "满额",
+        "code": "FULL",
+        "foreground": "#B45309",
+        "background": "#FEF3C7",
+        "foreground_pixels_in_badge": 541,
+        "background_pixels_in_badge": 3731,
+        "symbol_kind": "block",
+        "symbol_note": "实心方块：额度已满",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "09:40",
+        "rendered": "09:40",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "读文档，也要读懂布局约束",
+          "rendered_lines": [
+            "读文档，也要读懂布局约束"
+          ],
+          "joined": "读文档，也要读懂布局约束",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "周禾 / 许宁",
+          "rendered_lines": [
+            "周禾 / 许宁"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "09:40",
+          "actual": "09:40"
+        },
+        "status": {
+          "original": "满额",
+          "actual": "满额"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 1,
+        "lines": [
+          "读文档，也要读懂布局约束"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          210
+        ],
+        "estimated_widest_line_px": 588.0,
+        "widest_line_ratio_of_box": 0.6622,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "周禾 / 许宁"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K02",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": null
+    },
+    {
+      "id": "K03",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K03.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K03.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 51588,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            280
+          ],
+          "ink": [
+            89,
+            154,
+            643,
+            271
+          ],
+          "has_ink": true,
+          "ink_w": 555,
+          "ink_h": 118,
+          "ink_px": 25303,
+          "clear": {
+            "left": 1,
+            "top": 14,
+            "right": 333,
+            "bottom": 9
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4468,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            89,
+            431,
+            138,
+            456
+          ],
+          "has_ink": true,
+          "ink_w": 50,
+          "ink_h": 26,
+          "ink_px": 476,
+          "clear": {
+            "left": 1,
+            "top": 7,
+            "right": 838,
+            "bottom": 44
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1123,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 799,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 157,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 2,
+        "measured_line_bands": [
+          [
+            154,
+            201
+          ],
+          [
+            224,
+            271
+          ]
+        ],
+        "measured_line_count": 2
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 643,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 365
+      },
+      "status": {
+        "text_original": "候补",
+        "label_rendered": "候补",
+        "code": "WAITLIST",
+        "foreground": "#1D4ED8",
+        "background": "#DBEAFE",
+        "foreground_pixels_in_badge": 360,
+        "background_pixels_in_badge": 3985,
+        "symbol_kind": "ring",
+        "symbol_note": "空心圆环：等待递补",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "10:20",
+        "rendered": "10:20",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "当所有信息都想成为标题：密集内容中的取舍与层级",
+          "rendered_lines": [
+            "当所有信息都想成为标题：",
+            "密集内容中的取舍与层级"
+          ],
+          "joined": "当所有信息都想成为标题：密集内容中的取舍与层级",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "顾行",
+          "rendered_lines": [
+            "顾行"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "10:20",
+          "actual": "10:20"
+        },
+        "status": {
+          "original": "候补",
+          "actual": "候补"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 2,
+        "lines": [
+          "当所有信息都想成为标题：",
+          "密集内容中的取舍与层级"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          280
+        ],
+        "estimated_widest_line_px": 588.0,
+        "widest_line_ratio_of_box": 0.6622,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "顾行"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K03",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": null
+    },
+    {
+      "id": "K04",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K04.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K04.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 40004,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            210
+          ],
+          "ink": [
+            88,
+            154,
+            875,
+            201
+          ],
+          "has_ink": true,
+          "ink_w": 788,
+          "ink_h": 48,
+          "ink_px": 13723,
+          "clear": {
+            "left": 0,
+            "top": 14,
+            "right": 101,
+            "bottom": 9
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4468,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            89,
+            431,
+            138,
+            456
+          ],
+          "has_ink": true,
+          "ink_w": 50,
+          "ink_h": 26,
+          "ink_px": 446,
+          "clear": {
+            "left": 1,
+            "top": 7,
+            "right": 838,
+            "bottom": 44
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1110,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 802,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 160,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            154,
+            201
+          ]
+        ],
+        "measured_line_count": 1
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 875,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 133
+      },
+      "status": {
+        "text_original": "开放",
+        "label_rendered": "开放",
+        "code": "OPEN",
+        "foreground": "#15803D",
+        "background": "#DCFCE7",
+        "foreground_pixels_in_badge": 454,
+        "background_pixels_in_badge": 3899,
+        "symbol_kind": "disc",
+        "symbol_note": "实心圆点：位置可用",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "11:00",
+        "rendered": "11:00",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "A < B & C > D：不要把文本当成标签",
+          "rendered_lines": [
+            "A < B & C > D：不要把文本当成标签"
+          ],
+          "joined": "A < B & C > D：不要把文本当成标签",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "苏言",
+          "rendered_lines": [
+            "苏言"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "11:00",
+          "actual": "11:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 1,
+        "lines": [
+          "A < B & C > D：不要把文本当成标签"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          210
+        ],
+        "estimated_widest_line_px": 741.6,
+        "widest_line_ratio_of_box": 0.8351,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "苏言"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K04",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": null
+    },
+    {
+      "id": "K05",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K05.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K05.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 44736,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            280
+          ],
+          "ink": [
+            89,
+            157,
+            686,
+            270
+          ],
+          "has_ink": true,
+          "ink_w": 598,
+          "ink_h": 114,
+          "ink_px": 16598,
+          "clear": {
+            "left": 1,
+            "top": 17,
+            "right": 290,
+            "bottom": 10
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4468,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            89,
+            432,
+            139,
+            455
+          ],
+          "has_ink": true,
+          "ink_w": 51,
+          "ink_h": 24,
+          "ink_px": 540,
+          "clear": {
+            "left": 1,
+            "top": 8,
+            "right": 837,
+            "bottom": 45
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1120,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 800,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 158,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 2,
+        "measured_line_bands": [
+          [
+            157,
+            205
+          ],
+          [
+            224,
+            270
+          ]
+        ],
+        "measured_line_count": 2
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            432,
+            455
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 686,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 322
+      },
+      "status": {
+        "text_original": "开放",
+        "label_rendered": "开放",
+        "code": "OPEN",
+        "foreground": "#15803D",
+        "background": "#DCFCE7",
+        "foreground_pixels_in_badge": 454,
+        "background_pixels_in_badge": 3899,
+        "symbol_kind": "disc",
+        "symbol_note": "实心圆点：位置可用",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "13:00",
+        "rendered": "13:00",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "Color, Alpha & Contrast / 从颜色到可读性",
+          "rendered_lines": [
+            "Color, Alpha & Contrast /",
+            "从颜色到可读性"
+          ],
+          "joined": "Color, Alpha & Contrast /从颜色到可读性",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "孟澄",
+          "rendered_lines": [
+            "孟澄"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "13:00",
+          "actual": "13:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 2,
+        "lines": [
+          "Color, Alpha & Contrast /",
+          "从颜色到可读性"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          280
+        ],
+        "estimated_widest_line_px": 552.5,
+        "widest_line_ratio_of_box": 0.6222,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "孟澄"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K05",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": null
+    },
+    {
+      "id": "K06",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K06.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K06.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 50389,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            280
+          ],
+          "ink": [
+            89,
+            155,
+            621,
+            270
+          ],
+          "has_ink": true,
+          "ink_w": 533,
+          "ink_h": 116,
+          "ink_px": 22595,
+          "clear": {
+            "left": 1,
+            "top": 15,
+            "right": 355,
+            "bottom": 10
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4446,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            89,
+            431,
+            138,
+            456
+          ],
+          "has_ink": true,
+          "ink_w": 50,
+          "ink_h": 26,
+          "ink_px": 367,
+          "clear": {
+            "left": 1,
+            "top": 7,
+            "right": 838,
+            "bottom": 44
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1081,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 809,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 167,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 2,
+        "measured_line_bands": [
+          [
+            155,
+            203
+          ],
+          [
+            225,
+            270
+          ]
+        ],
+        "measured_line_count": 2
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 621,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 387
+      },
+      "status": {
+        "text_original": "取消",
+        "label_rendered": "取消",
+        "code": "CANCELLED",
+        "foreground": "#B91C1C",
+        "background": "#FEE2E2",
+        "foreground_pixels_in_badge": 392,
+        "background_pixels_in_badge": 4331,
+        "symbol_kind": "strike",
+        "symbol_note": "空心圆环加横杠：本场取消",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "13:40",
+        "rendered": "13:40",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "两张看似相同的图片，为什么不能证明语义相同？",
+          "rendered_lines": [
+            "两张看似相同的图片，为",
+            "什么不能证明语义相同？"
+          ],
+          "joined": "两张看似相同的图片，为什么不能证明语义相同？",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "许宁",
+          "rendered_lines": [
+            "许宁"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "13:40",
+          "actual": "13:40"
+        },
+        "status": {
+          "original": "取消",
+          "actual": "取消"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 2,
+        "lines": [
+          "两张看似相同的图片，为",
+          "什么不能证明语义相同？"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          280
+        ],
+        "estimated_widest_line_px": 539.0,
+        "widest_line_ratio_of_box": 0.607,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "许宁"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K06",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": {
+        "box": [
+          944,
+          304,
+          1112,
+          352
+        ],
+        "text": "本场取消",
+        "gap_from_title_bottom_px": 24
+      },
+      "greyed_check": {
+        "dominant": [
+          {
+            "rgb": [
+              224,
+              224,
+              224
+            ],
+            "pixels": 727088,
+            "pct": 96.18
+          },
+          {
+            "rgb": [
+              0,
+              0,
+              32
+            ],
+            "pixels": 17503,
+            "pct": 2.32
+          },
+          {
+            "rgb": [
+              192,
+              192,
+              192
+            ],
+            "pixels": 1148,
+            "pct": 0.15
+          },
+          {
+            "rgb": [
+              160,
+              160,
+              160
+            ],
+            "pixels": 1037,
+            "pct": 0.14
+          }
+        ],
+        "paper_pct": 96.18,
+        "greyed": false
+      }
+    },
+    {
+      "id": "K07",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K07.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K07.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 59307,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            280
+          ],
+          "ink": [
+            89,
+            154,
+            755,
+            270
+          ],
+          "has_ink": true,
+          "ink_w": 667,
+          "ink_h": 117,
+          "ink_px": 26163,
+          "clear": {
+            "left": 1,
+            "top": 14,
+            "right": 221,
+            "bottom": 10
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4468,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            90,
+            431,
+            407,
+            456
+          ],
+          "has_ink": true,
+          "ink_w": 318,
+          "ink_h": 26,
+          "ink_px": 2040,
+          "clear": {
+            "left": 2,
+            "top": 7,
+            "right": 569,
+            "bottom": 44
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1084,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 796,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 154,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 2,
+        "measured_line_bands": [
+          [
+            154,
+            201
+          ],
+          [
+            224,
+            270
+          ]
+        ],
+        "measured_line_count": 2
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 755,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 253
+      },
+      "status": {
+        "text_original": "候补",
+        "label_rendered": "候补",
+        "code": "WAITLIST",
+        "foreground": "#1D4ED8",
+        "background": "#DBEAFE",
+        "foreground_pixels_in_badge": 360,
+        "background_pixels_in_badge": 3985,
+        "symbol_kind": "ring",
+        "symbol_note": "空心圆环：等待递补",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "14:20",
+        "rendered": "14:20",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "把一次失败变成可复现记录——服务、字体、数据与视觉检查",
+          "rendered_lines": [
+            "把一次失败变成可复现记录——",
+            "服务、字体、数据与视觉检查"
+          ],
+          "joined": "把一次失败变成可复现记录——服务、字体、数据与视觉检查",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "Northstar Research · 林川",
+          "rendered_lines": [
+            "Northstar Research · 林川"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "14:20",
+          "actual": "14:20"
+        },
+        "status": {
+          "original": "候补",
+          "actual": "候补"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 2,
+        "lines": [
+          "把一次失败变成可复现记录——",
+          "服务、字体、数据与视觉检查"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          280
+        ],
+        "estimated_widest_line_px": 686.0,
+        "widest_line_ratio_of_box": 0.7725,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "Northstar Research · 林川"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K07",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": null
+    },
+    {
+      "id": "K08",
+      "png": {
+        "path_base": "output_dir",
+        "path": "card-K08.png"
+      },
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "card-K08.snapshot"
+      },
+      "dsl_matches_generator": true,
+      "png_bytes": 49491,
+      "ink": {
+        "bbox": [
+          88,
+          50,
+          1112,
+          551
+        ]
+      },
+      "safe_margin": {
+        "min_px": 40,
+        "measured_clearance_px": {
+          "left": 88,
+          "top": 50,
+          "right": 87,
+          "bottom": 78
+        },
+        "passed": true,
+        "method": "整幅 PNG 墨迹包围盒到画布边缘的距离；白底铺满画布，所以墨迹即非白像素"
+      },
+      "regions": {
+        "brand": {
+          "declared": [
+            88,
+            44,
+            376,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true,
+          "ink_w": 213,
+          "ink_h": 21,
+          "ink_px": 1176,
+          "clear": {
+            "left": 1,
+            "top": 6,
+            "right": 75,
+            "bottom": 3
+          }
+        },
+        "date": {
+          "declared": [
+            976,
+            44,
+            1136,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true,
+          "ink_w": 116,
+          "ink_h": 15,
+          "ink_px": 511,
+          "clear": {
+            "left": 21,
+            "top": 8,
+            "right": 24,
+            "bottom": 7
+          }
+        },
+        "accent_rule": {
+          "declared": [
+            88,
+            85,
+            132,
+            88
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ],
+          "has_ink": true,
+          "ink_w": 44,
+          "ink_h": 3,
+          "ink_px": 132,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "title": {
+          "declared": [
+            88,
+            140,
+            976,
+            280
+          ],
+          "ink": [
+            89,
+            154,
+            868,
+            271
+          ],
+          "has_ink": true,
+          "ink_w": 780,
+          "ink_h": 118,
+          "ink_px": 28316,
+          "clear": {
+            "left": 1,
+            "top": 14,
+            "right": 108,
+            "bottom": 9
+          }
+        },
+        "status": {
+          "declared": [
+            1008,
+            140,
+            1112,
+            188
+          ],
+          "ink": [
+            1008,
+            140,
+            1111,
+            187
+          ],
+          "has_ink": true,
+          "ink_w": 104,
+          "ink_h": 48,
+          "ink_px": 4468,
+          "clear": {
+            "left": 0,
+            "top": 0,
+            "right": 1,
+            "bottom": 1
+          }
+        },
+        "speaker": {
+          "declared": [
+            88,
+            424,
+            976,
+            500
+          ],
+          "ink": [
+            89,
+            432,
+            138,
+            456
+          ],
+          "has_ink": true,
+          "ink_w": 50,
+          "ink_h": 25,
+          "ink_px": 470,
+          "clear": {
+            "left": 1,
+            "top": 8,
+            "right": 838,
+            "bottom": 44
+          }
+        },
+        "time": {
+          "declared": [
+            996,
+            424,
+            1136,
+            476
+          ],
+          "ink": [
+            1017,
+            440,
+            1112,
+            465
+          ],
+          "has_ink": true,
+          "ink_w": 96,
+          "ink_h": 26,
+          "ink_px": 1128,
+          "clear": {
+            "left": 21,
+            "top": 16,
+            "right": 24,
+            "bottom": 11
+          }
+        },
+        "label_speaker": {
+          "declared": [
+            88,
+            396,
+            156,
+            416
+          ],
+          "ink": [
+            88,
+            400,
+            116,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 29,
+          "ink_h": 14,
+          "ink_px": 164,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 40,
+            "bottom": 3
+          }
+        },
+        "label_time": {
+          "declared": [
+            1066,
+            396,
+            1134,
+            416
+          ],
+          "ink": [
+            1085,
+            400,
+            1112,
+            413
+          ],
+          "has_ink": true,
+          "ink_w": 28,
+          "ink_h": 14,
+          "ink_px": 177,
+          "clear": {
+            "left": 19,
+            "top": 4,
+            "right": 22,
+            "bottom": 3
+          }
+        },
+        "footer": {
+          "declared": [
+            88,
+            534,
+            1112,
+            554
+          ],
+          "ink": [
+            88,
+            538,
+            1111,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 1024,
+          "ink_h": 14,
+          "ink_px": 814,
+          "clear": {
+            "left": 0,
+            "top": 4,
+            "right": 1,
+            "bottom": 3
+          }
+        },
+        "footer_id": {
+          "declared": [
+            88,
+            534,
+            162,
+            554
+          ],
+          "ink": [
+            88,
+            539,
+            114,
+            549
+          ],
+          "has_ink": true,
+          "ink_w": 27,
+          "ink_h": 11,
+          "ink_px": 172,
+          "clear": {
+            "left": 0,
+            "top": 5,
+            "right": 48,
+            "bottom": 5
+          }
+        },
+        "footer_right": {
+          "declared": [
+            949,
+            534,
+            1129,
+            554
+          ],
+          "ink": [
+            963,
+            538,
+            1112,
+            551
+          ],
+          "has_ink": true,
+          "ink_w": 150,
+          "ink_h": 14,
+          "ink_px": 653,
+          "clear": {
+            "left": 14,
+            "top": 4,
+            "right": 17,
+            "bottom": 3
+          }
+        }
+      },
+      "title_measurement": {
+        "declared_lines": 2,
+        "measured_line_bands": [
+          [
+            154,
+            201
+          ],
+          [
+            225,
+            271
+          ]
+        ],
+        "measured_line_count": 2
+      },
+      "speaker_measurement": {
+        "declared_lines": 1,
+        "measured_line_bands": [
+          [
+            432,
+            456
+          ]
+        ]
+      },
+      "title_badge": {
+        "title_ink_right_px": 868,
+        "badge_ink_left_px": 1008,
+        "measured_gap_px": 140
+      },
+      "status": {
+        "text_original": "开放",
+        "label_rendered": "开放",
+        "code": "OPEN",
+        "foreground": "#15803D",
+        "background": "#DCFCE7",
+        "foreground_pixels_in_badge": 454,
+        "background_pixels_in_badge": 3899,
+        "symbol_kind": "disc",
+        "symbol_note": "实心圆点：位置可用",
+        "symbol_drawn_geometrically": true,
+        "symbol_is_font_glyph": false,
+        "box": [
+          1008,
+          140,
+          1112,
+          188
+        ],
+        "encoded_by": [
+          "color",
+          "drawn_symbol",
+          "chinese_label"
+        ],
+        "distinguished_without_color": true
+      },
+      "time": {
+        "text_original": "15:00",
+        "rendered": "15:00",
+        "size_px": 36,
+        "box": [
+          996.0,
+          424,
+          1136.0,
+          476
+        ],
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "has_ink": true,
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      },
+      "right_anchors": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ],
+      "original_vs_actual": {
+        "title": {
+          "original": "从“已经请求成功”到“已经完成作品”：模型工作能力的最后一公里",
+          "rendered_lines": [
+            "从“已经请求成功”到“已经完成",
+            "作品”：模型工作能力的最后一公里"
+          ],
+          "joined": "从“已经请求成功”到“已经完成作品”：模型工作能力的最后一公里",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "周禾",
+          "rendered_lines": [
+            "周禾"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "15:00",
+          "actual": "15:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      },
+      "title": {
+        "font_size_px": 48,
+        "line_count": 2,
+        "lines": [
+          "从“已经请求成功”到“已经完成",
+          "作品”：模型工作能力的最后一公里"
+        ],
+        "line_height_px": 70,
+        "box": [
+          88,
+          140,
+          976,
+          280
+        ],
+        "estimated_widest_line_px": 784.0,
+        "widest_line_ratio_of_box": 0.8829,
+        "wrap_limit_px": null,
+        "font_steps_tried": [
+          48
+        ],
+        "font_size_floor_px": 36,
+        "wrapped_not_shrunk_canvas": true
+      },
+      "speaker": {
+        "font_size_px": 26,
+        "line_count": 1,
+        "lines": [
+          "周禾"
+        ],
+        "line_height_px": 38,
+        "box": [
+          88,
+          424,
+          976,
+          500
+        ],
+        "font_steps_tried": [
+          26
+        ]
+      },
+      "header": {
+        "brand": {
+          "text": "Structure / Vision",
+          "box": [
+            88,
+            44,
+            376.0,
+            73
+          ],
+          "ink": [
+            89,
+            50,
+            301,
+            70
+          ],
+          "has_ink": true
+        },
+        "date": {
+          "text": "2026.11.07",
+          "box": [
+            976.0,
+            44,
+            1136.0,
+            73
+          ],
+          "ink": [
+            997,
+            52,
+            1112,
+            66
+          ],
+          "has_ink": true
+        },
+        "accent_rule": {
+          "box": [
+            88,
+            85,
+            44,
+            3
+          ],
+          "ink": [
+            88,
+            85,
+            131,
+            87
+          ]
+        },
+        "rule_y": 104
+      },
+      "footer": {
+        "box": [
+          88,
+          534,
+          1112,
+          554
+        ],
+        "ink": [
+          88,
+          538,
+          1111,
+          551
+        ],
+        "id": "K08",
+        "right_text": "讲座系列 · SESSION"
+      },
+      "cancel_note": null
+    }
+  ],
+  "consistency": {
+    "title_ink_right_edges": {
+      "min": 183,
+      "max": 875,
+      "spread_px": 692,
+      "n": 8
+    },
+    "badge_ink_left_edges": {
+      "min": 1008,
+      "max": 1008,
+      "spread_px": 0,
+      "n": 8
+    },
+    "badge_ink_right_edges": {
+      "min": 1111,
+      "max": 1111,
+      "spread_px": 0,
+      "n": 8
+    },
+    "time_ink": {
+      "right_edges": {
+        "min": 1112,
+        "max": 1112,
+        "spread_px": 0,
+        "n": 8
+      },
+      "entries": [
+        {
+          "id": "K01",
+          "ink_right": 1112,
+          "ink_left": 1017
+        },
+        {
+          "id": "K02",
+          "ink_right": 1112,
+          "ink_left": 1017
+        },
+        {
+          "id": "K03",
+          "ink_right": 1112,
+          "ink_left": 1017
+        },
+        {
+          "id": "K04",
+          "ink_right": 1112,
+          "ink_left": 1017
+        },
+        {
+          "id": "K05",
+          "ink_right": 1112,
+          "ink_left": 1017
+        },
+        {
+          "id": "K06",
+          "ink_right": 1112,
+          "ink_left": 1017
+        },
+        {
+          "id": "K07",
+          "ink_right": 1112,
+          "ink_left": 1017
+        },
+        {
+          "id": "K08",
+          "ink_right": 1112,
+          "ink_left": 1017
+        }
+      ]
+    },
+    "shared_layout": {
+      "content_column": [
+        88,
+        1112
+      ],
+      "title_x": 88,
+      "title_y": 140,
+      "title_w": 888,
+      "badge_box": [
+        1008,
+        140,
+        1112,
+        188
+      ],
+      "speaker_box_top": 424,
+      "speaker_x": 88,
+      "speaker_w": 888,
+      "time_right": 1112,
+      "label_y": 396,
+      "footer_y": 534,
+      "rule1_y": 104,
+      "rule2_y": 522,
+      "brand": "Structure / Vision",
+      "date": "2026.11.07",
+      "primary": "#4338CA"
+    },
+    "note": "标题右缘与各卡标题墨迹右缘不必相同（长度不同），但标题**左缘**、标题盒顶、徽标盒、讲者盒顶、时间右缘、页脚线必须全批一致；spread_px 用来量实际的偏差"
+  },
+  "reviews": [
+    {
+      "card": "K01",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K01.png",
+      "viewed_at": "2026-10-18T16:02:00+08:00",
+      "view_method": "Read 最终服务原图（card-K01.png，req-a14-card-K01-2b12a0 的原始响应字节）",
+      "observed": [
+        "标题「开始」单行 48px，完整未裁切，左缘对齐内容栏左缘",
+        "讲者标签「讲者」两字完整（早期版本只剩「讲」，现已修复）",
+        "讲者「林川」、时间「09:00」完整，时间右缘落在内容栏右缘",
+        "状态徽标为绿色实心圆点 + 「开放」，圆点无豆腐块",
+        "页脚「K01」与「讲座系列 · SESSION」完整（早期版本 SESSION 整段缺失，现已恢复）",
+        "页眉品牌、日期、主色短线、分隔线齐全；四向留白充足"
+      ],
+      "changes": [],
+      "conclusion": "通过。标题/讲者/时间/状态/页眉/页脚全部完整，右列对齐，无裁切与遮挡。"
+    },
+    {
+      "card": "K02",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K02.png",
+      "viewed_at": "2026-10-18T16:02:30+08:00",
+      "view_method": "Read 最终服务原图（card-K02.png，req-a14-card-K02-3b89d7 的原始响应字节）",
+      "observed": [
+        "标题「读文档，也要读懂布局约束」单行 48px，标点全角正确，未越界",
+        "讲者标签「讲者」完整；讲者「周禾 / 许宁」完整，斜杠两侧空格保留",
+        "状态徽标为琥珀色实心方块 + 「满额」，与「开放」的圆点在形状和颜色上都可区分",
+        "时间「09:40」右缘对齐；页脚「K02」「讲座系列 · SESSION」完整"
+      ],
+      "changes": [],
+      "conclusion": "通过。"
+    },
+    {
+      "card": "K03",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K03.png",
+      "viewed_at": "2026-10-18T16:03:00+08:00",
+      "view_method": "Read 最终服务原图（card-K03.png，req-a14-card-K03-f5f2ad 的原始响应字节）",
+      "observed": [
+        "最长中文标题两行：「当所有信息都想成为标题：」/「密集内容中的取舍与层级」，折行点落在全角冒号之后，语义与断句都干净",
+        "标题第二行墨迹未触及状态徽标，二者之间有清晰空白",
+        "状态徽标为蓝色空心圆环 + 「候补」",
+        "讲者标签与讲者「顾行」完整；时间「10:20」右缘对齐；页脚完整"
+      ],
+      "changes": [],
+      "conclusion": "通过。密集中文标题的折行取舍符合预期。"
+    },
+    {
+      "card": "K04",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K04.png",
+      "viewed_at": "2026-10-18T16:03:40+08:00",
+      "view_method": "Read 最终服务原图（card-K04.png，req-a14-card-K04-16d4b0 的原始响应字节）",
+      "observed": [
+        "标题逐字正确：「A < B & C > D：不要把文本当成标签」——尖括号与和号都是原始字符，不是 &lt; &amp; &gt; 这类实体串",
+        "证明服务不解码 XML 实体，也证明 esc() 恒等函数的改法是对的（对照早期版本曾把实体当缺陷处理）",
+        "半角字符与全角冒号混排未越界，标题单行 48px",
+        "讲者标签「讲者」完整；讲者「苏言」、时间「11:00」、状态「开放」、页脚均完整"
+      ],
+      "changes": [],
+      "conclusion": "通过。特殊字符是本批的转义压力点，实测正确。"
+    },
+    {
+      "card": "K05",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K05.png",
+      "viewed_at": "2026-10-18T16:04:10+08:00",
+      "view_method": "Read 最终服务原图（card-K05.png，req-a14-card-K05-5345a6 的原始响应字节）",
+      "observed": [
+        "中英混排标题两行：「Color, Alpha & Contrast /」/「从颜色到可读性」，斜杠前后的空格都保留（早期版本曾渲染成「Contrast /从」）",
+        "英文与中文各自成段，视觉层级清楚；两行都在盒内",
+        "状态「开放」、讲者「孟澄」、时间「13:00」、标签与页脚全部完整"
+      ],
+      "changes": [],
+      "conclusion": "通过。"
+    },
+    {
+      "card": "K06",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K06.png",
+      "viewed_at": "2026-10-18T16:04:50+08:00",
+      "view_method": "Read 最终服务原图（card-K06.png，req-a14-card-K06-a6cc4b 的原始响应字节）",
+      "observed": [
+        "取消卡保留完整两行标题「两张看似相同的图片，为」/「什么不能证明语义相同？」，没有被删除或缩水",
+        "时间「13:40」仍然显示，讲者「许宁」完整",
+        "状态徽标为红色空心圆环加横杠 + 「取消」，与其他三个状态在形状上互不相同",
+        "标题右侧另有「本场取消」注明块（同色系红），题目要求的三项都齐",
+        "整幅仍是白底，没有整体灰底化处理（早期审计曾误判为灰底，那是 dominant() 量化后比对了未量化的 [255,255,255]）"
+      ],
+      "changes": [],
+      "conclusion": "通过。取消卡满足「完整标题 + 时间 + 另注明 + 非灰底」四项。"
+    },
+    {
+      "card": "K07",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K07.png",
+      "viewed_at": "2026-10-18T16:05:30+08:00",
+      "view_method": "Read 最终服务原图（card-K07.png，req-a14-card-K07-be4c6f 的原始响应字节）",
+      "observed": [
+        "两行标题「把一次失败变成可复现记录——」/「服务、字体、数据与视觉检查」，破折号留在第一行行末，第二行以词首字符起头，未被禁则字符开头",
+        "讲者「Northstar Research · 林川」完整，间隔号与空格都保留，未折行",
+        "状态「候补」（蓝色圆环）、时间「14:20」、页脚「K07」完整"
+      ],
+      "changes": [],
+      "conclusion": "通过。"
+    },
+    {
+      "card": "K08",
+      "image": "outputs/r20261014T1536+0800-5f11da/A14/card-K08.png",
+      "viewed_at": "2026-10-18T16:06:00+08:00",
+      "view_method": "Read 最终服务原图（card-K08.png，req-a14-card-K08-229b4d 的原始响应字节）",
+      "observed": [
+        "弯引号逐字正确：「从“已经请求成功”到“已经完成」/「作品”：模型工作能力的最后一公里」，U+201C/U+201D 与全角冒号都保留",
+        "这是全批最长标题，两行均在盒内、未触及徽标、字号仍为 48px 下限以上",
+        "状态「开放」、讲者「周禾」、时间「15:00」、标签与页脚完整"
+      ],
+      "changes": [],
+      "conclusion": "通过。"
+    }
+  ],
+  "checks": [
+    {
+      "id": "size-K01",
+      "desc": "K01 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K01",
+      "desc": "K01 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 3429
+      }
+    },
+    {
+      "id": "safe-K01",
+      "desc": "K01 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K01",
+      "desc": "K01 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            155,
+            200
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K01",
+      "desc": "K01 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          90,
+          155,
+          183,
+          200
+        ],
+        "clear": {
+          "left": 2,
+          "top": 15,
+          "right": 793,
+          "bottom": 10
+        }
+      }
+    },
+    {
+      "id": "titlefont-K01",
+      "desc": "K01 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K01",
+      "desc": "K01 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K01",
+      "desc": "K01 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K01",
+      "desc": "K01 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K01",
+      "desc": "K01 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K01",
+      "desc": "K01 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 183,
+        "badge_ink_left_px": 1008,
+        "gap_px": 825,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K01",
+      "desc": "K01 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "disc",
+        "foreground": {
+          "target": "#15803D",
+          "pixels": 454,
+          "pct_of_region": 9.095
+        },
+        "background": {
+          "target": "#DCFCE7",
+          "pixels": 3899,
+          "pct_of_region": 78.105
+        }
+      }
+    },
+    {
+      "id": "timeink-K01",
+      "desc": "K01 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K01",
+      "desc": "K01 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K01",
+      "desc": "K01 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K01",
+      "desc": "K01 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K01",
+      "desc": "K01 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "开始",
+          "rendered_lines": [
+            "开始"
+          ],
+          "joined": "开始",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "林川",
+          "rendered_lines": [
+            "林川"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "09:00",
+          "actual": "09:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      }
+    },
+    {
+      "id": "cancel-absent-K01",
+      "desc": "K01 非取消卡不出现「本场取消」注明",
+      "passed": true,
+      "detail": {
+        "status": "开放",
+        "cancel_note": null
+      }
+    },
+    {
+      "id": "inkall-K01",
+      "desc": "K01 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "size-K02",
+      "desc": "K02 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K02",
+      "desc": "K02 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 3470
+      }
+    },
+    {
+      "id": "safe-K02",
+      "desc": "K02 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K02",
+      "desc": "K02 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            154,
+            203
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K02",
+      "desc": "K02 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          89,
+          154,
+          673,
+          203
+        ],
+        "clear": {
+          "left": 1,
+          "top": 14,
+          "right": 303,
+          "bottom": 7
+        }
+      }
+    },
+    {
+      "id": "titlefont-K02",
+      "desc": "K02 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K02",
+      "desc": "K02 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K02",
+      "desc": "K02 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K02",
+      "desc": "K02 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K02",
+      "desc": "K02 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            431,
+            458
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K02",
+      "desc": "K02 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 673,
+        "badge_ink_left_px": 1008,
+        "gap_px": 335,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K02",
+      "desc": "K02 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "block",
+        "foreground": {
+          "target": "#B45309",
+          "pixels": 541,
+          "pct_of_region": 10.837
+        },
+        "background": {
+          "target": "#FEF3C7",
+          "pixels": 3731,
+          "pct_of_region": 74.74
+        }
+      }
+    },
+    {
+      "id": "timeink-K02",
+      "desc": "K02 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K02",
+      "desc": "K02 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K02",
+      "desc": "K02 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K02",
+      "desc": "K02 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K02",
+      "desc": "K02 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "读文档，也要读懂布局约束",
+          "rendered_lines": [
+            "读文档，也要读懂布局约束"
+          ],
+          "joined": "读文档，也要读懂布局约束",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "周禾 / 许宁",
+          "rendered_lines": [
+            "周禾 / 许宁"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "09:40",
+          "actual": "09:40"
+        },
+        "status": {
+          "original": "满额",
+          "actual": "满额"
+        }
+      }
+    },
+    {
+      "id": "cancel-absent-K02",
+      "desc": "K02 非取消卡不出现「本场取消」注明",
+      "passed": true,
+      "detail": {
+        "status": "满额",
+        "cancel_note": null
+      }
+    },
+    {
+      "id": "inkall-K02",
+      "desc": "K02 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "size-K03",
+      "desc": "K03 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K03",
+      "desc": "K03 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 3754
+      }
+    },
+    {
+      "id": "safe-K03",
+      "desc": "K03 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K03",
+      "desc": "K03 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 2,
+        "measured": 2,
+        "bands": [
+          [
+            154,
+            201
+          ],
+          [
+            224,
+            271
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K03",
+      "desc": "K03 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          89,
+          154,
+          643,
+          271
+        ],
+        "clear": {
+          "left": 1,
+          "top": 14,
+          "right": 333,
+          "bottom": 9
+        }
+      }
+    },
+    {
+      "id": "titlefont-K03",
+      "desc": "K03 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K03",
+      "desc": "K03 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 2,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K03",
+      "desc": "K03 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K03",
+      "desc": "K03 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K03",
+      "desc": "K03 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K03",
+      "desc": "K03 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 643,
+        "badge_ink_left_px": 1008,
+        "gap_px": 365,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K03",
+      "desc": "K03 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "ring",
+        "foreground": {
+          "target": "#1D4ED8",
+          "pixels": 360,
+          "pct_of_region": 7.212
+        },
+        "background": {
+          "target": "#DBEAFE",
+          "pixels": 3985,
+          "pct_of_region": 79.828
+        }
+      }
+    },
+    {
+      "id": "timeink-K03",
+      "desc": "K03 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K03",
+      "desc": "K03 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K03",
+      "desc": "K03 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K03",
+      "desc": "K03 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K03",
+      "desc": "K03 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "当所有信息都想成为标题：密集内容中的取舍与层级",
+          "rendered_lines": [
+            "当所有信息都想成为标题：",
+            "密集内容中的取舍与层级"
+          ],
+          "joined": "当所有信息都想成为标题：密集内容中的取舍与层级",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "顾行",
+          "rendered_lines": [
+            "顾行"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "10:20",
+          "actual": "10:20"
+        },
+        "status": {
+          "original": "候补",
+          "actual": "候补"
+        }
+      }
+    },
+    {
+      "id": "cancel-absent-K03",
+      "desc": "K03 非取消卡不出现「本场取消」注明",
+      "passed": true,
+      "detail": {
+        "status": "候补",
+        "cancel_note": null
+      }
+    },
+    {
+      "id": "inkall-K03",
+      "desc": "K03 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "size-K04",
+      "desc": "K04 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K04",
+      "desc": "K04 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 3466
+      }
+    },
+    {
+      "id": "safe-K04",
+      "desc": "K04 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K04",
+      "desc": "K04 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            154,
+            201
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K04",
+      "desc": "K04 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          88,
+          154,
+          875,
+          201
+        ],
+        "clear": {
+          "left": 0,
+          "top": 14,
+          "right": 101,
+          "bottom": 9
+        }
+      }
+    },
+    {
+      "id": "titlefont-K04",
+      "desc": "K04 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K04",
+      "desc": "K04 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K04",
+      "desc": "K04 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K04",
+      "desc": "K04 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K04",
+      "desc": "K04 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K04",
+      "desc": "K04 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 875,
+        "badge_ink_left_px": 1008,
+        "gap_px": 133,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K04",
+      "desc": "K04 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "disc",
+        "foreground": {
+          "target": "#15803D",
+          "pixels": 454,
+          "pct_of_region": 9.095
+        },
+        "background": {
+          "target": "#DCFCE7",
+          "pixels": 3899,
+          "pct_of_region": 78.105
+        }
+      }
+    },
+    {
+      "id": "timeink-K04",
+      "desc": "K04 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K04",
+      "desc": "K04 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K04",
+      "desc": "K04 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K04",
+      "desc": "K04 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K04",
+      "desc": "K04 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "A < B & C > D：不要把文本当成标签",
+          "rendered_lines": [
+            "A < B & C > D：不要把文本当成标签"
+          ],
+          "joined": "A < B & C > D：不要把文本当成标签",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "苏言",
+          "rendered_lines": [
+            "苏言"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "11:00",
+          "actual": "11:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      }
+    },
+    {
+      "id": "cancel-absent-K04",
+      "desc": "K04 非取消卡不出现「本场取消」注明",
+      "passed": true,
+      "detail": {
+        "status": "开放",
+        "cancel_note": null
+      }
+    },
+    {
+      "id": "inkall-K04",
+      "desc": "K04 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "size-K05",
+      "desc": "K05 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K05",
+      "desc": "K05 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 3722
+      }
+    },
+    {
+      "id": "safe-K05",
+      "desc": "K05 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K05",
+      "desc": "K05 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 2,
+        "measured": 2,
+        "bands": [
+          [
+            157,
+            205
+          ],
+          [
+            224,
+            270
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K05",
+      "desc": "K05 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          89,
+          157,
+          686,
+          270
+        ],
+        "clear": {
+          "left": 1,
+          "top": 17,
+          "right": 290,
+          "bottom": 10
+        }
+      }
+    },
+    {
+      "id": "titlefont-K05",
+      "desc": "K05 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K05",
+      "desc": "K05 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 2,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K05",
+      "desc": "K05 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K05",
+      "desc": "K05 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K05",
+      "desc": "K05 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            432,
+            455
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K05",
+      "desc": "K05 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 686,
+        "badge_ink_left_px": 1008,
+        "gap_px": 322,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K05",
+      "desc": "K05 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "disc",
+        "foreground": {
+          "target": "#15803D",
+          "pixels": 454,
+          "pct_of_region": 9.095
+        },
+        "background": {
+          "target": "#DCFCE7",
+          "pixels": 3899,
+          "pct_of_region": 78.105
+        }
+      }
+    },
+    {
+      "id": "timeink-K05",
+      "desc": "K05 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K05",
+      "desc": "K05 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K05",
+      "desc": "K05 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K05",
+      "desc": "K05 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K05",
+      "desc": "K05 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "Color, Alpha & Contrast / 从颜色到可读性",
+          "rendered_lines": [
+            "Color, Alpha & Contrast /",
+            "从颜色到可读性"
+          ],
+          "joined": "Color, Alpha & Contrast /从颜色到可读性",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "孟澄",
+          "rendered_lines": [
+            "孟澄"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "13:00",
+          "actual": "13:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      }
+    },
+    {
+      "id": "cancel-absent-K05",
+      "desc": "K05 非取消卡不出现「本场取消」注明",
+      "passed": true,
+      "detail": {
+        "status": "开放",
+        "cancel_note": null
+      }
+    },
+    {
+      "id": "inkall-K05",
+      "desc": "K05 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "size-K06",
+      "desc": "K06 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K06",
+      "desc": "K06 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 4602
+      }
+    },
+    {
+      "id": "safe-K06",
+      "desc": "K06 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K06",
+      "desc": "K06 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 2,
+        "measured": 2,
+        "bands": [
+          [
+            155,
+            203
+          ],
+          [
+            225,
+            270
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K06",
+      "desc": "K06 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          89,
+          155,
+          621,
+          270
+        ],
+        "clear": {
+          "left": 1,
+          "top": 15,
+          "right": 355,
+          "bottom": 10
+        }
+      }
+    },
+    {
+      "id": "titlefont-K06",
+      "desc": "K06 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K06",
+      "desc": "K06 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 2,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K06",
+      "desc": "K06 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K06",
+      "desc": "K06 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K06",
+      "desc": "K06 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K06",
+      "desc": "K06 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 621,
+        "badge_ink_left_px": 1008,
+        "gap_px": 387,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K06",
+      "desc": "K06 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "strike",
+        "foreground": {
+          "target": "#B91C1C",
+          "pixels": 392,
+          "pct_of_region": 7.853
+        },
+        "background": {
+          "target": "#FEE2E2",
+          "pixels": 4331,
+          "pct_of_region": 86.759
+        }
+      }
+    },
+    {
+      "id": "timeink-K06",
+      "desc": "K06 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K06",
+      "desc": "K06 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K06",
+      "desc": "K06 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K06",
+      "desc": "K06 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K06",
+      "desc": "K06 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "两张看似相同的图片，为什么不能证明语义相同？",
+          "rendered_lines": [
+            "两张看似相同的图片，为",
+            "什么不能证明语义相同？"
+          ],
+          "joined": "两张看似相同的图片，为什么不能证明语义相同？",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "许宁",
+          "rendered_lines": [
+            "许宁"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "13:40",
+          "actual": "13:40"
+        },
+        "status": {
+          "original": "取消",
+          "actual": "取消"
+        }
+      }
+    },
+    {
+      "id": "cancel-K06",
+      "desc": "K06 取消卡完整标题 + 时间 + 「本场取消」注明三者墨迹都在",
+      "passed": true,
+      "detail": {
+        "cancel_note_box": [
+          944,
+          304,
+          1112,
+          352
+        ],
+        "cancel_note_ink": [
+          944,
+          304,
+          1111,
+          351
+        ],
+        "title_ink": [
+          89,
+          155,
+          621,
+          270
+        ],
+        "time_ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "method": "三处区域分别量墨迹存在性"
+      }
+    },
+    {
+      "id": "nogrey-K06",
+      "desc": "K06 取消卡未灰底（白色底仍占主导）",
+      "passed": true,
+      "detail": {
+        "dominant": [
+          {
+            "rgb": [
+              224,
+              224,
+              224
+            ],
+            "pixels": 727088,
+            "pct": 96.18
+          },
+          {
+            "rgb": [
+              0,
+              0,
+              32
+            ],
+            "pixels": 17503,
+            "pct": 2.32
+          },
+          {
+            "rgb": [
+              192,
+              192,
+              192
+            ],
+            "pixels": 1148,
+            "pct": 0.15
+          },
+          {
+            "rgb": [
+              160,
+              160,
+              160
+            ],
+            "pixels": 1037,
+            "pct": 0.14
+          }
+        ],
+        "paper_quantized": [
+          224,
+          224,
+          224
+        ],
+        "method": "整幅主色统计（量化到 8 级，纯白归为 [224, 224, 224]）；白色占比 >30% 即未整体灰化",
+        "threshold_source": "self_defined"
+      }
+    },
+    {
+      "id": "inkall-K06",
+      "desc": "K06 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "size-K07",
+      "desc": "K07 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K07",
+      "desc": "K07 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 3788
+      }
+    },
+    {
+      "id": "safe-K07",
+      "desc": "K07 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K07",
+      "desc": "K07 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 2,
+        "measured": 2,
+        "bands": [
+          [
+            154,
+            201
+          ],
+          [
+            224,
+            270
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K07",
+      "desc": "K07 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          89,
+          154,
+          755,
+          270
+        ],
+        "clear": {
+          "left": 1,
+          "top": 14,
+          "right": 221,
+          "bottom": 10
+        }
+      }
+    },
+    {
+      "id": "titlefont-K07",
+      "desc": "K07 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K07",
+      "desc": "K07 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 2,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K07",
+      "desc": "K07 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K07",
+      "desc": "K07 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K07",
+      "desc": "K07 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            431,
+            456
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K07",
+      "desc": "K07 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 755,
+        "badge_ink_left_px": 1008,
+        "gap_px": 253,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K07",
+      "desc": "K07 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "ring",
+        "foreground": {
+          "target": "#1D4ED8",
+          "pixels": 360,
+          "pct_of_region": 7.212
+        },
+        "background": {
+          "target": "#DBEAFE",
+          "pixels": 3985,
+          "pct_of_region": 79.828
+        }
+      }
+    },
+    {
+      "id": "timeink-K07",
+      "desc": "K07 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K07",
+      "desc": "K07 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K07",
+      "desc": "K07 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K07",
+      "desc": "K07 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K07",
+      "desc": "K07 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "把一次失败变成可复现记录——服务、字体、数据与视觉检查",
+          "rendered_lines": [
+            "把一次失败变成可复现记录——",
+            "服务、字体、数据与视觉检查"
+          ],
+          "joined": "把一次失败变成可复现记录——服务、字体、数据与视觉检查",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "Northstar Research · 林川",
+          "rendered_lines": [
+            "Northstar Research · 林川"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "14:20",
+          "actual": "14:20"
+        },
+        "status": {
+          "original": "候补",
+          "actual": "候补"
+        }
+      }
+    },
+    {
+      "id": "cancel-absent-K07",
+      "desc": "K07 非取消卡不出现「本场取消」注明",
+      "passed": true,
+      "detail": {
+        "status": "候补",
+        "cancel_note": null
+      }
+    },
+    {
+      "id": "inkall-K07",
+      "desc": "K07 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "size-K08",
+      "desc": "K08 尺寸 1200×630",
+      "passed": true,
+      "detail": {
+        "actual": [
+          1200,
+          630
+        ],
+        "decode": "RGBA"
+      }
+    },
+    {
+      "id": "dsl-K08",
+      "desc": "K08 .snapshot 与生成器 DSL 完全一致",
+      "passed": true,
+      "detail": {
+        "bytes": 3769
+      }
+    },
+    {
+      "id": "safe-K08",
+      "desc": "K08 安全边距 ≥40（实测四向墨迹净空）",
+      "passed": true,
+      "detail": {
+        "left": 88,
+        "top": 50,
+        "right": 87,
+        "bottom": 78
+      }
+    },
+    {
+      "id": "lines-K08",
+      "desc": "K08 标题实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 2,
+        "measured": 2,
+        "bands": [
+          [
+            154,
+            201
+          ],
+          [
+            225,
+            271
+          ]
+        ]
+      }
+    },
+    {
+      "id": "titlefit-K08",
+      "desc": "K08 标题墨迹在标题盒内未被裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          89,
+          154,
+          868,
+          271
+        ],
+        "clear": {
+          "left": 1,
+          "top": 14,
+          "right": 108,
+          "bottom": 9
+        }
+      }
+    },
+    {
+      "id": "titlefont-K08",
+      "desc": "K08 标题字号 ≥36",
+      "passed": true,
+      "detail": {
+        "size_px": 48,
+        "steps_tried": [
+          48
+        ]
+      }
+    },
+    {
+      "id": "titlelines-K08",
+      "desc": "K08 标题行数 ≤3",
+      "passed": true,
+      "detail": {
+        "line_count": 2,
+        "max": 3
+      }
+    },
+    {
+      "id": "speakerfont-K08",
+      "desc": "K08 讲者字号 ≥22",
+      "passed": true,
+      "detail": {
+        "size_px": 26,
+        "steps_tried": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "speakerlines-K08",
+      "desc": "K08 讲者行数 ≤2",
+      "passed": true,
+      "detail": {
+        "line_count": 1,
+        "max": 2
+      }
+    },
+    {
+      "id": "speakers-K08",
+      "desc": "K08 讲者实测行数 == 声明行数",
+      "passed": true,
+      "detail": {
+        "declared": 1,
+        "measured": 1,
+        "bands": [
+          [
+            432,
+            456
+          ]
+        ]
+      }
+    },
+    {
+      "id": "nocollision-K08",
+      "desc": "K08 标题墨迹与状态徽标墨迹不相交且净空 ≥8",
+      "passed": true,
+      "detail": {
+        "title_ink_right_px": 868,
+        "badge_ink_left_px": 1008,
+        "gap_px": 140,
+        "declared_title_badge_gap_px": 32
+      }
+    },
+    {
+      "id": "statuscolor-K08",
+      "desc": "K08 状态颜色真的画出来了（前景与底色像素数）",
+      "passed": true,
+      "detail": {
+        "symbol": "disc",
+        "foreground": {
+          "target": "#15803D",
+          "pixels": 454,
+          "pct_of_region": 9.095
+        },
+        "background": {
+          "target": "#DCFCE7",
+          "pixels": 3899,
+          "pct_of_region": 78.105
+        }
+      }
+    },
+    {
+      "id": "timeink-K08",
+      "desc": "K08 时间有墨迹且未裁切",
+      "passed": true,
+      "detail": {
+        "ink": [
+          1017,
+          440,
+          1112,
+          465
+        ],
+        "clear": {
+          "left": 21,
+          "top": 16,
+          "right": 24,
+          "bottom": 11
+        }
+      }
+    },
+    {
+      "id": "labelink-K08",
+      "desc": "K08 两个标签的墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": [
+          {
+            "label": "speaker",
+            "measured_ink_w_px": 29
+          },
+          {
+            "label": "time",
+            "measured_ink_w_px": 28
+          }
+        ],
+        "issues": [],
+        "defect_guarded": "盒宽=估算墨宽会导致服务自动折行、单行盒高裁掉第二行，历史上表现为「讲者」只剩「讲」"
+      }
+    },
+    {
+      "id": "footerink-K08",
+      "desc": "K08 页脚卡号与右侧串墨迹宽度覆盖全部字符",
+      "passed": true,
+      "detail": {
+        "measured": {
+          "id": 27,
+          "right": 150
+        },
+        "issues": [],
+        "defect_guarded": "页脚右串曾渲染成「讲座系列 ·」而 SESSION 整段消失"
+      }
+    },
+    {
+      "id": "anchor-K08",
+      "desc": "K08 右锚墨迹右缘落在内容栏右缘 1112（±2 px）",
+      "passed": true,
+      "detail": [
+        {
+          "slot": "date",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "label_time",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        },
+        {
+          "slot": "footer_right",
+          "ink_right_px": 1112,
+          "delta_from_content_right_px": 0
+        }
+      ]
+    },
+    {
+      "id": "text-K08",
+      "desc": "K08 标题/讲者/时间/状态文字与原始数据一致",
+      "passed": true,
+      "detail": {
+        "title": {
+          "original": "从“已经请求成功”到“已经完成作品”：模型工作能力的最后一公里",
+          "rendered_lines": [
+            "从“已经请求成功”到“已经完成",
+            "作品”：模型工作能力的最后一公里"
+          ],
+          "joined": "从“已经请求成功”到“已经完成作品”：模型工作能力的最后一公里",
+          "identical_after_whitespace": true
+        },
+        "speaker": {
+          "original": "周禾",
+          "rendered_lines": [
+            "周禾"
+          ],
+          "identical_after_whitespace": true
+        },
+        "time": {
+          "original": "15:00",
+          "actual": "15:00"
+        },
+        "status": {
+          "original": "开放",
+          "actual": "开放"
+        }
+      }
+    },
+    {
+      "id": "cancel-absent-K08",
+      "desc": "K08 非取消卡不出现「本场取消」注明",
+      "passed": true,
+      "detail": {
+        "status": "开放",
+        "cancel_note": null
+      }
+    },
+    {
+      "id": "inkall-K08",
+      "desc": "K08 全部文字与几何槽位都有墨迹",
+      "passed": true,
+      "detail": {
+        "missing": []
+      }
+    },
+    {
+      "id": "consistency-badge",
+      "desc": "8 张卡徽标墨迹右缘一致（误差 ≤3 px，抗锯齿）",
+      "passed": true,
+      "detail": {
+        "min": 1111,
+        "max": 1111,
+        "spread_px": 0,
+        "n": 8
+      }
+    },
+    {
+      "id": "consistency-time",
+      "desc": "8 张卡时间墨迹右缘一致（同一等宽字与字号）",
+      "passed": true,
+      "detail": {
+        "min": 1112,
+        "max": 1112,
+        "spread_px": 0,
+        "n": 8
+      }
+    }
+  ],
+  "contact_sheet": {
+    "path": "D:\\mine\\test\\sensenova-6.8-flash-lite\\tmp\\r20261014T1536+0800-5f11da\\A14\\preview\\a14-contact-sheet.png",
+    "purpose": "全批一致性辅助检查",
+    "does_not_replace": "逐张查看最终服务原图（A14 AGENTS 明确要求）",
+    "size": [
+      1232,
+      1412
+    ],
+    "cell_w": 600,
+    "cell_h": 315,
+    "cols": 2,
+    "rows": 4,
+    "gap": 16,
+    "cells": [
+      "K01",
+      "K02",
+      "K03",
+      "K04",
+      "K05",
+      "K06",
+      "K07",
+      "K08"
+    ]
+  }
+}

@@ -1,0 +1,229 @@
+{
+ "schema_version": 1,
+ "task_id": "A21",
+ "round": 1,
+ "path_base": "output_dir",
+ "colors": {
+  "background": {
+   "bg_deep": "#060A18",
+   "bg_panel": "#0E1936",
+   "role": "深底与网址牌底面"
+  },
+  "primary": {
+   "primary": "#5FE0FF",
+   "primary_2": "#1E86C8",
+   "primary_3": "#0B2B4E",
+   "glow": "#EAFDFF",
+   "role": "主色系：字标中文、发光球、光带、网址牌圆点、强调条"
+  },
+  "accent": {
+   "accent": "#FFC26B",
+   "role": "唯一暖色，只用于日期与眉标竖条"
+  },
+  "ink": {
+   "ink": "#F5F9FF",
+   "muted": "#8FA3C2",
+   "rule": "#24385E",
+   "role": "主标题、次要文字、分隔线"
+  },
+  "orb_ramp": {
+   "stops": [
+    "#A8F0FF",
+    "#1E86C8",
+    "#0B2B4E"
+   ],
+   "type": "RADIAL",
+   "gradientRadius": 0.6,
+   "gradientFocal": null,
+   "note": "探针实测：加 gradientFocal 会把亮点推出可见范围导致球体发平，故留空"
+  },
+  "halo_ramp": {
+   "stops": [
+    "#1E86C8",
+    "#08182C"
+   ],
+   "type": "RADIAL",
+   "gradientRadius": 0.72,
+   "opacity": 0.42
+  },
+  "sheet_ramp": {
+   "pairs": [
+    {
+     "fill": "#0E2440",
+     "border": "#2A4E74"
+    },
+    {
+     "fill": "#134C79",
+     "border": "#2E86BE"
+    },
+    {
+     "fill": "#1A6FA8",
+     "border": "#59C8EE"
+    }
+   ],
+   "note": "由暗到亮，越靠前越亮"
+  },
+  "corner_stack": {
+   "colors": [
+    "#16385E",
+    "#1E5688",
+    "#2E7FB8"
+   ],
+   "opacities": [
+    0.45,
+    0.62,
+    0.8
+   ],
+   "applies_to": [
+    "portrait"
+   ],
+   "note": "仅竖版；纯描边无填充，以区别于左上实心主标记"
+  },
+  "url_plate": {
+   "fill": "#0E1936",
+   "border": "2 SOLID #24507A"
+  },
+  "text_shadow": {
+   "title_portrait": "0 8 26 #5FE0FF2E",
+   "title_wide": "0 6 22 #5FE0FF2E"
+  }
+ },
+ "typography": {
+  "fontFamily": "Noto Sans CJK SC,Inter",
+  "fontFamily_source": "文档缓存 fonts.txt 中的中文字体族名 Noto Sans CJK SC，拉丁与数字用 Inter",
+  "portrait": {
+   "title": 132,
+   "kicker": 32,
+   "date": 56,
+   "speakers": 34,
+   "url": 32,
+   "brand": 36
+  },
+  "wide": {
+   "title": 116,
+   "kicker": 30,
+   "date": 44,
+   "speakers": 30,
+   "url": 28,
+   "brand": 30
+  },
+  "line_height": 1.0,
+  "kicker_letter_spacing_px": 8,
+  "title_bold": true,
+  "min_required": {
+   "title": 56,
+   "others": 24
+  }
+ },
+ "brand_geometry": [
+  {
+   "id": "stack-mark",
+   "构件": "叠层主标记",
+   "params": {
+    "sheets": 3,
+    "size_portrait": 76,
+    "size_wide": 58,
+    "offset_ratio": 0.17,
+    "corner_radius_ratio": 0.3,
+    "fills": [
+     "#0E2440",
+     "#134C79",
+     "#1A6FA8"
+    ],
+    "borders": [
+     "2 SOLID #2A4E74",
+     "2 SOLID #2E86BE",
+     "2 SOLID #59C8EE"
+    ]
+   },
+   "cross_round": "形状与叠层数固定；仅尺寸随版式缩放"
+  },
+  {
+   "id": "mark-core",
+   "构件": "主标记亮核",
+   "params": {
+    "size_ratio": 0.4,
+    "corner_radius_ratio": 0.34,
+    "fill": "#EAFDFF",
+    "boxShadow": "0 8 22 #5FE0FF66"
+   },
+   "cross_round": "固定；与发光球共用亮色，构成「光」的呼应"
+  },
+  {
+   "id": "light-orb",
+   "构件": "发光球",
+   "params": {
+    "radius_portrait": 130,
+    "radius_wide": 190,
+    "gradient": "RADIAL #A8F0FF,#1E86C8,#0B2B4E r=0.60",
+    "ring": "直径+34，1 SOLID #1E86C8",
+    "halo": "直径 3.4r，RADIAL #1E86C8→#08182C r=0.72，opacity 0.42"
+   },
+   "cross_round": "结构与色带固定；半径随版式变化；不加 gradientFocal"
+  },
+  {
+   "id": "light-band",
+   "构件": "球内光带（叠层）",
+   "params": {
+    "count": 3,
+    "width_ratio_portrait": [
+     1.62,
+     1.28,
+     0.96
+    ],
+    "height_portrait": [
+     14,
+     10,
+     8
+    ],
+    "width_ratio_wide": [
+     1.72,
+     1.4,
+     1.04
+    ],
+    "height_wide": [
+     18,
+     12,
+     10
+    ],
+    "opacity": [
+     0.9,
+     0.58,
+     0.34
+    ],
+    "color": "#EAFDFF",
+    "cap": "两端圆角 = 高度的一半，圆头收口"
+   },
+   "cross_round": "3 条、自上而下递减宽度与亮度；横版光带略加高"
+  },
+  {
+   "id": "accent-bar",
+   "构件": "主色强调条",
+   "params": {
+    "portrait": "156x6，圆角 3，标题与信息之间的唯一分隔线",
+    "wide": "5x34，圆角 2，与眉标并排",
+    "fill": "#5FE0FF"
+   },
+   "cross_round": "固定"
+  },
+  {
+   "id": "url-plate",
+   "构件": "网址牌",
+   "params": {
+    "portrait": "632x84，圆角 42",
+    "wide": "552x60，圆角 30",
+    "fill": "#0E1936",
+    "border": "2 SOLID #24507A",
+    "dot": "shape CIRCLE，竖版 20、横版 16，fill #5FE0FF"
+   },
+   "cross_round": "固定；shape 与 borderRadius 互斥（实测 PARSE_ERROR 约束）"
+  }
+ ],
+ "brand_geometry_count": 6,
+ "compositions": {
+  "portrait": "纵向结构：顶部品牌行 → 眉标 → 主标题两行 → 强调条 → 信息栈（日期/讲者/网址牌）自上而下；右上线叠层水印，右中发光球；左下氛围 wash",
+  "wide": "横向分栏：左栏品牌行 + 眉标 + 主标题两行，底部日期｜竖分隔线｜讲者横排、网址牌收尾；右栏发光球大图占整栏。与竖版不是等比缩放——信息区横排 vs 纵排、主视觉整栏 vs 右中"
+ },
+ "round_intro": "第一轮基线：首次建立整套设计 token 与品牌几何，并产出 launch-portrait(1080x1350) 与 launch-wide(1440x810) 两张成品",
+ "changes": []
+}

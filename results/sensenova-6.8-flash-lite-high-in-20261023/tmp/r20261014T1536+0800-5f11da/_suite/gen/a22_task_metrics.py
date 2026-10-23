@@ -1,0 +1,869 @@
+"""A22 题目层累计指标：生成 outputs/<run_id>/A22/task-metrics.json。
+
+按 A22/TASK.md：task-metrics.json 位于本题输出根，汇总三轮；每轮另有
+round-XX/task-metrics.json 只记录该轮。本文件**只累计各轮顶层汇总**，
+不把同题 round/case 的明细重复相加。
+
+另外顺手修正 round-03/task-metrics.json 里一处字段值错误（见 fix_round03_timing_field）：
+elapsed_compared_to_previous_rounds 初版把 round_01 写成 5023.0（那是 round-01 的
+first_delivered_image_seconds，不是墙钟）、把 round_03 写成 1883.0（当时按预估结束
+时刻 17:56:00 算的）。归档时刻已过，值不再对应实际 ended_at，所以按实际值修正并在
+同一字段内留修正记录，不静默改写。
+
+用法
+    python -I -X utf8 a22_task_metrics.py
+"""
+from __future__ import annotations
+
+import datetime as dt
+import hashlib
+import json
+import pathlib
+import sys
+
+HERE = pathlib.Path(__file__).resolve()
+# HERE = <suite_root>/tmp/<run_id>/_suite/gen/a22_task_metrics.py
+ROOT = HERE.parents[4]
+RUN_ID = HERE.parents[2].name
+OUT_ROOT = ROOT / "outputs" / RUN_ID
+OUT = OUT_ROOT / "A22"
+TMP = ROOT / "tmp" / RUN_ID / "A22"
+TZ = dt.timezone(dt.timedelta(hours=8))
+NOW = dt.datetime.now(TZ).isoformat(timespec="seconds")
+
+OD = "outputs/%s/A22" % RUN_ID
+TD = "tmp/%s/A22" % RUN_ID
+
+# 三轮首条快照请求 → 归档时刻
+R1 = "2026-10-20T12:24:03+08:00"
+R1_END = "2026-10-20T14:45:09+08:00"
+R2 = "2026-10-20T15:06:53+08:00"
+R2_END = "2026-10-20T16:57:03+08:00"
+R3 = "2026-10-20T17:24:37+08:00"
+R3_END = "2026-10-20T18:04:04+08:00"  # round-03 归档时刻，a22_state_r03.py 运行时写入
+R1_ELAPSED = 8466.0
+R2_ELAPSED = 6550.0
+
+
+def _parse(ts: str) -> dt.datetime:
+    return dt.datetime.fromisoformat(ts)
+
+
+def r3_elapsed() -> float:
+    """round-03 的墙钟固定到归档时刻 R3_END，不随本脚本运行时间漂移。"""
+    return round((_parse(R3_END) - _parse(R3)).total_seconds(), 1)
+
+
+def fix_round03_timing_field() -> str:
+    """修正 round-03/task-metrics.json 的 elapsed_compared_to_previous_rounds。"""
+    p = OUT / "round-03" / "task-metrics.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    t = d["timings"]
+    e = t.get("elapsed_compared_to_previous_rounds") or {}
+    old = {k: e.get(k) for k in ("round_01", "round_02", "round_03")}
+    e["round_01"] = R1_ELAPSED
+    e["round_02"] = R2_ELAPSED
+    e["round_03"] = r3_elapsed()
+    e["sum"] = R1_ELAPSED + R2_ELAPSED + r3_elapsed()
+    e["note"] = (
+        "三轮墙钟之和 %.0f s（约 %.2f h）。字段修正记录：本字段初版把 round_01 写成 "
+        "5023.0（那是 round-01 的 first_delivered_image_seconds，不是墙钟）并把 round_03 "
+        "写成 1883.0（当时按预估结束时刻 17:56:00 算的），归档时已按各轮实际 ended_at 修正为 "
+        "%.0f / %.0f。修正依据是各轮 timings.ended_at；该字段后续被本脚本重跑时不会漂移，"
+        "因为 round_03 固定取归档时刻 %s"
+        % (e["sum"], e["sum"] / 3600.0, R1_ELAPSED, e["round_03"], R3_END)
+    )
+    d["timings"] = t
+    p.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return "round_01: %s -> %.0f，round_03: %s -> %.0f" % (
+        old.get("round_01"), R1_ELAPSED, old.get("round_03"), e["round_03"])
+
+
+def sha16(p: pathlib.Path) -> str:
+    return hashlib.sha256(p.read_bytes()).hexdigest()[:16]
+
+
+def artifact(rel: str, note: str | None = None) -> dict:
+    p = ROOT / rel
+    return {
+        "path": rel,
+        "bytes": p.stat().st_size if p.exists() else None,
+        "sha256": hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None,
+        "note": note,
+    }
+
+
+def build() -> dict:
+    total_elapsed = R1_ELAPSED + R2_ELAPSED + r3_elapsed()
+    span = round((_parse(R3_END) - _parse(R1)).total_seconds())
+
+    r2_span = round((_parse(R2_END) - _parse(R2)).total_seconds())
+    gaps = {
+        "round_01_end_to_round_02_start_seconds": round((_parse(R2) - _parse(R1_END)).total_seconds()),
+        "round_02_end_to_round_03_start_seconds": round((_parse(R3) - _parse(R2_END)).total_seconds()),
+    }
+    gaps["total_between_rounds_seconds"] = (
+        gaps["round_01_end_to_round_02_start_seconds"] + gaps["round_02_end_to_round_03_start_seconds"])
+    # round-02 的 elapsed_seconds（6550）比它自己 started_at→ended_at 的跨度（6610）少 60 s，如实披露
+    gaps["round_02_elapsed_vs_timestamp_span"] = {
+        "elapsed_seconds": R2_ELAPSED,
+        "span_from_started_at_to_ended_at_seconds": r2_span,
+        "difference_seconds": r2_span - R2_ELAPSED,
+        "note": (
+            "round-02/task-metrics.json 的 elapsed_seconds=6550 与它自己 "
+            "started_at(15:06:53)→ended_at(16:57:03) 的跨度 %d s 相差 %d s。"
+            "两者当时都是脚本里的硬编码常量，无法判断哪一个写错了，所以原样保留、只做披露不静默改写。"
+            "本文件的累计墙钟按「各轮顶层汇总之和」取 %.0f（见 aggregation_rule），"
+            "因此「三轮 elapsed 之和 + 轮间停顿」会比观测到的时间跨度少 %d s"
+            % (r2_span, r2_span - R2_ELAPSED, R2_ELAPSED, r2_span - R2_ELAPSED)
+        ),
+    }
+
+    files = [
+        ("round-01/dashboard.png", "round-01 基线驾驶舱，6 个月，服务返回的原始 PNG 字节"),
+        ("round-01/dashboard.snapshot", "与 PNG 同名的完整 DSL"),
+        ("round-01/computed-data.json", "6 个月逐月与期间汇总，含公式与舍入口径"),
+        ("round-01/layout-map.json", "126 个元素与 6 个主区域框"),
+        ("round-01/change-audit.json", "多做的：第一轮无上一轮可比，comparison 为空数组"),
+        ("round-01/snapshot-usage.md", "round-01 单轮报告"),
+        ("round-01/task-metrics.json", "round-01 单轮指标"),
+        ("round-02/dashboard.png", "round-02 财务更正，负轴与负柱，服务原始字节"),
+        ("round-02/dashboard.snapshot", "与 PNG 同名的完整 DSL"),
+        ("round-02/computed-data.json", "6 个月，含两项更正与传播链"),
+        ("round-02/layout-map.json", "133 个元素与 6 个主区域框"),
+        ("round-02/change-audit.json", "两项更正的传播链 + 12 项回归检查"),
+        ("round-02/snapshot-usage.md", "round-02 单轮报告"),
+        ("round-02/task-metrics.json", "round-02 单轮指标"),
+        ("round-03/dashboard.png", "round-03 新增 2026-10，7 个月 14 根柱，服务原始字节"),
+        ("round-03/dashboard.snapshot", "与 PNG 同名的完整 DSL"),
+        ("round-03/computed-data.json", "7 个月，含新增月与沿用更正"),
+        ("round-03/layout-map.json", "143 个元素与 6 个主区域框"),
+        ("round-03/change-audit.json", "新增月传播链 + 沿用更正 + 14 根柱逐根几何"),
+        ("round-03/snapshot-usage.md", "round-03 单轮报告"),
+        ("round-03/task-metrics.json", "round-03 单轮指标"),
+        ("snapshot-usage.md", "本题输出根的三轮累计报告"),
+        ("task-metrics.json", "本文件，三轮累计指标"),
+    ]
+
+    rounds = {}
+    for r in ("round-01", "round-02", "round-03"):
+        c = json.loads((OUT / r / "task-metrics.json").read_text(encoding="utf-8"))["counts"]
+        t = json.loads((OUT / r / "task-metrics.json").read_text(encoding="utf-8"))["timings"]
+        rounds[r] = {
+            "status": "completed",
+            "output_dir": "outputs/%s/A22/%s" % (RUN_ID, r),
+            "spec_source": (None if r == "round-01" else "tasks/A22-staged-data-correction/rounds/%s.md" % r),
+            "started_at": t["started_at"],
+            "ended_at": t["ended_at"],
+            "elapsed_seconds": t["elapsed_seconds"],
+            "request_duration_sum_seconds": t["request_duration_sum_seconds"],
+            "first_usable_image_seconds": t.get("first_usable_image_seconds"),
+            "first_delivered_image_seconds": t.get("first_delivered_image_seconds"),
+            "snapshot_requests": c["snapshot_requests"],
+            "http_requests": c["http_requests"],
+            "successful_snapshot_requests": c["successful_snapshot_requests"],
+            "failed_snapshot_requests": c["failed_snapshot_requests"],
+            "retry_requests": c["retry_requests"],
+            "syntax_fix_resubmits": c["syntax_fix_resubmits"],
+            "dsl_versions": c["dsl_versions"],
+            "image_views": c["image_views"],
+            "image_view_events_logged": c.get("image_view_events_logged", c["image_views"]),
+            "image_views_rejected_by_api": c.get("image_views_rejected_by_api", 0),
+            "completed_visual_iterations": c["completed_visual_iterations"],
+            "audit_fixes": c.get("audit_fixes", 0),
+            "audit_selftests_added": c.get("audit_selftests_added", 0),
+            "audit_reruns_due_to_checker_change": c.get("audit_reruns_due_to_checker_change", 0),
+            "dryrun_gates": "%d/%d" % (c["dryrun_gates_passed"], c["dryrun_gates_total"]),
+            "pixel_audit_checks": "%d/%d" % (c["pixel_audit_checks_passed"], c["pixel_audit_checks_total"]),
+            "elements_total": c["elements_total"],
+            "metrics": "outputs/%s/A22/%s/task-metrics.json" % (RUN_ID, r),
+            "snapshot_usage": "outputs/%s/A22/%s/snapshot-usage.md" % (RUN_ID, r),
+        }
+
+    return {
+        "schema_version": 1,
+        "path_base": "suite_root",
+        "path_base_note": "本文件与 rounds 下各轮指标共用同一基准：总任务根目录，即 outputs/ 与 tmp/ 的父目录",
+        "task_id": "A22",
+        "task_name": "staged-data-correction",
+        "task_kind": "A（预置连续三轮）",
+        "run_id": RUN_ID,
+        "task_round": None,
+        "round_of": 3,
+        "rounds_total": 3,
+        "execution_mode": (
+            "预置连续执行（自动三轮）：round-01 归档后才读取 rounds/round-02.md，"
+            "round-02 归档后才读取 rounds/round-03.md，不等待外部反馈。"
+            "三轮需求文件在 tasks/A22-staged-data-correction/rounds/ 内本就可读，"
+            "本文件不声称是隐藏反馈盲测"
+        ),
+        "status": "completed",
+        "stop_reason": (
+            "TASK.md 第一轮需求与 round-02.md / round-03.md 逐项核对全部满足；"
+            "干跑门禁三轮各 28/28、像素审计三轮各 12/12 全部通过；28 次实际看图复核"
+            "无已知影响交付的缺陷；1 次视觉迭代与 4 次审计脚本修复均已闭环"
+        ),
+        "timings": {
+            "started_at": R1,
+            "ended_at": R3_END,
+            "generated_at": NOW,
+            "generated_at_note": "本文件与 round-03/task-metrics.json 的该字段修正由 a22_task_metrics.py 在该时刻生成/对齐；A22 的实际完成时刻是 ended_at（round-03 归档时刻）",
+            "elapsed_seconds": total_elapsed,
+            "elapsed_note": (
+                "三轮墙钟之和 %.0f + %.0f + %.0f = %.0f s（约 %.2f h）。每轮各自的 "
+                "started_at 取该轮首条快照请求，前置设计时间（数据层与构造器改动）没有"
+                "独立时间戳、未计入，所以合计仍是下界" % (
+                    R1_ELAPSED, R2_ELAPSED, r3_elapsed(), total_elapsed, total_elapsed / 3600.0)
+            ),
+            "first_usable_image_seconds": 889.0,
+            "first_usable_image_note": (
+                "整题首次成功取得可打开的 PNG：round-01 的 req-a22-r01-dashboard-8102fe"
+                "（HTTP 200，237,428 字节），发生在 round-01 起点后 889 s"
+            ),
+            "first_delivered_image_seconds": 5023.0,
+            "first_delivered_image_note": (
+                "整题第一张通过全部检查并交付的 PNG：round-01 的 dashboard.png（视觉迭代后的 v2）"
+            ),
+            "request_duration_sum_seconds": 35.314,
+            "request_duration_sum_note": (
+                "三轮成功与失败请求记录的 elapsed_ms 之和 17.923 + 5.016 + 12.375 = 35.314 s；"
+                "只含本地往返，不含看图、审计与写报告"
+            ),
+            "service_stall_seconds": 0,
+            "service_stall_note": "三轮都没有 http_status 为 None 的挂起请求",
+            "rate_limit_wait_seconds": 0,
+            "rate_limit_wait_note": "三轮未出现 429/503，retry_after 均为 null",
+            "queue_wait_seconds": None,
+            "queue_wait_null_reason": "服务端不可观测排队，未取得该数据",
+            "user_feedback_wait_seconds": 0,
+            "user_feedback_wait_note": "预置轮次模式，不等待外部反馈",
+            "timezone": "Asia/Shanghai (UTC+08:00)",
+            "timestamp_precision": (
+                "各轮 requests.jsonl 的 started_at / ended_at 精确到秒；亚秒分量由 elapsed_ms 还原，"
+                "故 derived 字段的绝对不确定度为 ±1 s"
+            ),
+            "wall_clock_gaps": {
+                "round_01_end_to_round_02_start_seconds": gaps["round_01_end_to_round_02_start_seconds"],
+                "round_02_end_to_round_03_start_seconds": gaps["round_02_end_to_round_03_start_seconds"],
+                "total_between_rounds_seconds": gaps["total_between_rounds_seconds"],
+                "span_start_to_end_seconds": span,
+                "round_02_elapsed_vs_timestamp_span": gaps["round_02_elapsed_vs_timestamp_span"],
+                "note": (
+                    "从 round-01 首条请求（%s）到 round-03 归档（%s）的时间跨度是 %d s。"
+                    "轮间停顿 %d + %d = %d s；三轮 elapsed 之和 %.0f s。"
+                    "elapsed 之和 + 轮间停顿 = %.0f s，比观测跨度少 %d s——这 %d s 来自 "
+                    "round_02_elapsed_vs_timestamp_span 记录的 round-02 内部不一致，不是漏算。"
+                    "轮间要读下一轮需求、做传播核对与归档，这段时间不属于任何一轮的 elapsed；"
+                    "两个口径都保留，不可互相替代" % (
+                        R1, R3_END, span,
+                        gaps["round_01_end_to_round_02_start_seconds"],
+                        gaps["round_02_end_to_round_03_start_seconds"],
+                        gaps["total_between_rounds_seconds"], total_elapsed,
+                        total_elapsed + gaps["total_between_rounds_seconds"],
+                        span - total_elapsed - gaps["total_between_rounds_seconds"],
+                        span - total_elapsed - gaps["total_between_rounds_seconds"])
+                ),
+            },
+            "elapsed_compared_to_rounds": {
+                "round_01": R1_ELAPSED,
+                "round_02": R2_ELAPSED,
+                "round_03": r3_elapsed(),
+                "sum": total_elapsed,
+            },
+        },
+        "counts": {
+            "snapshot_requests": 5,
+            "snapshot_request_note": (
+                "requests.jsonl 的记录条数 = 3（round-01）+ 1（round-02）+ 1（round-03），"
+                "对应 5 次 render() 调用，不是 HTTP 请求条数"
+            ),
+            "http_requests": 7,
+            "http_requests_note": (
+                "实际发出的 POST /snapshot 次数 = 5（round-01：400 那一条内部重试 3 次）"
+                "+ 1 + 1。requests.jsonl 只按 render() 调用各记一条，attempts 字段给出该条内的尝试次数"
+            ),
+            "successful_snapshot_requests": 4,
+            "failed_snapshot_requests": 1,
+            "failed_snapshot_request_detail": (
+                "req-a22-r01-dashboard-61c533：HTTP 400 PARSE_ERROR，响应 785 字节 JSON 原文保留在 "
+                "tmp/%s/A22/responses/；根因是 gradientBegin=\"50%% 0%%\"，"
+                "服务端只接受 9 个对齐关键字或 (x,y) 元组。round-02 / round-03 无失败" % RUN_ID
+            ),
+            "retry_requests": 3,
+            "retry_note": (
+                "全部集中在 round-01 的那一条确定性语法错误上（attempts=3，1,172 ms 内）。"
+                "重发必然同样失败，浪费的是时间和请求额；发现后已把「渐变端点取值」加进干跑门禁，"
+                "round-02 / round-03 的门禁在提交前 28/28 全通过，不再需要拿服务当语法检查器"
+            ),
+            "syntax_fix_resubmits": 1,
+            "syntax_fix_resubmits_note": (
+                "round-01 的 v1（24,866 字节）修正 v0 的 gradientBegin 取值后重交；"
+                "round-02 / round-03 各 1 次请求即成功"
+            ),
+            "other_service_requests": 0,
+            "other_service_note": (
+                "服务指南、DSL 文档与 fonts 查询在 round-01 之前已取得并缓存于 "
+                "tmp/%s/_suite/docs/，三轮复用未新增 HTTP" % RUN_ID
+            ),
+            "dsl_versions": 5,
+            "dsl_versions_note": (
+                "round-01 三个版本（v0 400 / v1 标签全标 / v2 选择性直标=交付），"
+                "round-02 与 round-03 各一个版本且唯一版本即交付版本"
+            ),
+            "image_views": 28,
+            "image_views_note": (
+                "按**实际打开并读到内容**的次数记录：10（round-01）+ 9（round-02）+ 9（round-03）。"
+                "同一张交付图的不同视图（整图、区域放大裁切、局部 2×、footer 半宽）不合并"
+            ),
+            "image_view_events_logged": 30,
+            "image_view_events_logged_note": (
+                "viewing-evidence.json 三条 rounds 各 10 条事件；round-02 / round-03 各 1 条指向被拒收的 footer.png，"
+                "已用 notes 批注标注「未真正打开」，原事件保留不改（只增不改）"
+            ),
+            "image_views_rejected_by_api": 2,
+            "image_views_rejected_detail": (
+                "round-02 与 round-03 的 preview/footer.png（[48,932,1552,964]×2.0 = 3008×64，宽高比 47:1）"
+                "被 Read 的图像接口拒收（media removed — rejected by API），两轮各实际重试一次确认；"
+                "round-01 用的是裁好后打开的两半，没有触发拒收。footer 可读性由 footer_left / footer_right"
+                "（各 752×60，12.5:1）与 whole 1:1 共同确认"
+            ),
+            "completed_visual_iterations": 1,
+            "completed_visual_iterations_note": (
+                "只在 round-01 发生一次（v1→v2）：像素审计发现 2026-06 净收入柱实测 113 px、"
+                "计算应为 167 px，定位到同组经营利润数值标签的墨迹压在净收入柱体内，"
+                "修复为选择性直标，重渲后 12 根柱高度与计算值 ±1 px 一致。"
+                "round-02 / round-03 各 0 次：数据更正与新增月份都是一次性重算，"
+                "首版渲染即满足全部门禁与审计。不为凑次数制造迭代"
+            ),
+            "incomplete_visual_iterations": 0,
+            "audit_fixes": 4,
+            "audit_fixes_note": (
+                "改的是审计脚本本身而不是图，所以不计入 visual_iterations、也不触发重渲。"
+                "round-01 修 1 次（标签压柱的检出方式），round-02 修 3 次："
+                "(1) 索引漏减 PLOT[\"left\"]，把子图里别处的柱体算进标签框，报出 482 个柱像素；"
+                "(2) 改成「先挖掉标签墨迹外接框」后柱像素计数 366→366 一模一样——修复是空操作，"
+                "根因是切片下标基准写错一层；(3) ink-bbox 方案有结构性漏报盲区"
+                "（柱体比标签框大且落在框内时柱体被当成墨迹挖掉），整个方案作废，"
+                "换成「柱体列窗口内实心行段 ≥4 行」的判定。round-03 为 0 次"
+            ),
+            "audit_selftests_added": 1,
+            "audit_selftests_note": (
+                "round-02 新增 tmp/%s/_suite/gen/a22_selftest_label_gate.py：7 张合成图反测像素审计第 6 项，"
+                "覆盖「不报」4 例（纯背景、只压 3 行、柱在上方、空框）与「必须报」3 例"
+                "（压 21 行、同色压柱、柱体比框高），全部通过；阈值 75%% / 4 行由这三个用例夹住边界。"
+                "round-03 沿用" % RUN_ID
+            ),
+            "audit_reruns_due_to_checker_change": 2,
+            "audit_reruns_note": (
+                "第 6 项算法改写后，round-01 与 round-02 的 change-audit.json 及 stdout 副本都用新算法重跑刷新，"
+                "两者仍 12/12。round-01 报告里的判定表述保持旧写法，差异已在该报告尾部补轮后说明"
+            ),
+            "dryrun_gates_total": 28,
+            "dryrun_gates_passed": 28,
+            "dryrun_gates_note": (
+                "三轮同一套 28 项离线门禁，每轮提交前全部通过（28×3 = 84 项次），"
+                "报告在 tmp/%s/A22/gate-reports/round-{01,02,03}.json" % RUN_ID
+            ),
+            "pixel_audit_checks_total": 12,
+            "pixel_audit_checks_passed": 12,
+            "pixel_audit_checks_note": (
+                "三轮同一套 12 项像素级审计，每轮全部通过（12×3 = 36 项次），"
+                "报告为各轮 change-audit.json 的 regression 段"
+            ),
+            "text_elements": 253,
+            "geometry_elements": 149,
+            "elements_total": 402,
+            "elements_note": (
+                "三轮 layout-map.json 的元素总数之和 126 + 133 + 143 = 402，"
+                "文字 80 + 83 + 90 = 253，几何 46 + 50 + 53 = 149。"
+                "这个数字**不可跨轮当成一张图的规模**——每轮是独立的一张 1600×1000 图"
+            ),
+            "final_images": 3,
+            "final_images_required": 3,
+            "final_images_note": (
+                "三轮各 1 张 dashboard.png，均为 1600×1000（PNG IHDR 实测），"
+                "都是服务返回的原始字节、未做后处理"
+            ),
+            "events_logged": 30,
+            "events_logged_note": (
+                "viewing-evidence.json 的 30 条看图事件；另有 tmp/%s/_suite/events.jsonl 的套级事件"
+                % RUN_ID
+            ),
+        },
+        "counting_notes": [
+            "本文件只累计各轮顶层汇总，不把同题 round 的明细重复相加；逐轮明细见 rounds 数组",
+            "snapshot_requests（5）与 http_requests（7）是两个不同口径，不能互替：前者是 render() 调用条数，后者是实际 POST 次数",
+            "image_views（28）只算真正打开的视图，image_view_events_logged（30）是事件条数，"
+            "image_views_rejected_by_api（2）是两轮被接口拒收的 footer 裁切",
+            "completed_visual_iterations（1）与 audit_fixes（4）分开统计：前者改图并重渲，后者只改审计脚本",
+            "elapsed_seconds 是三轮墙钟之和（各轮顶层汇总相加），wall_clock_gaps.span_start_to_end_seconds 是观测时间跨度，"
+            "两者差 %d s = 轮间停顿 %d s + round-02 的 60 s 内部不一致（见 wall_clock_gaps.round_02_elapsed_vs_timestamp_span）" % (
+                span - total_elapsed, gaps["total_between_rounds_seconds"]),
+            "request_duration_sum_seconds 与 elapsed_seconds 不可相加、不可互替",
+        ],
+        "data": {
+            "source_csv": "tasks/A22-staged-data-correction/inputs/monthly.csv",
+            "source_csv_note": (
+                "三轮都只读未修改；每月 csv_original 都保留 CSV 原值，"
+                "更正与新增月份只在计算层 _apply(round_no) 生效，所以「旧值 vs 新值」三轮都可追溯"
+            ),
+            "precision": (
+                "汇总、差额与图形比例全部用未舍入的 Decimal 算完才格式化；展示用十进制四舍五入"
+                "（decimal.ROUND_HALF_UP，恰好半单位时绝对值增大）。期间比率是各分量先分别求和再相除，"
+                "不平均各月百分比"
+            ),
+            "rounds_progression": [
+                {
+                    "round": 1,
+                    "label": "基线",
+                    "months": "6（2026-04 → 2026-09）",
+                    "applied_changes": 0,
+                    "period_net_revenue": 918624,
+                    "period_profit": 262124,
+                    "orders": 3045,
+                    "sessions": 27300,
+                    "total_conversion_rate_pct": 11.15,
+                    "total_refund_rate_pct": 5.79,
+                    "margin_pct": 28.53,
+                    "loss_months": 0,
+                    "axis": "0 → 240,000",
+                    "px_per_yuan": 0.001317,
+                    "bars": 12,
+                    "labels": 6,
+                },
+                {
+                    "round": 2,
+                    "label": "两项财务更正",
+                    "months": "6（2026-04 → 2026-09）",
+                    "applied_changes": 2,
+                    "changes": [
+                        "2026-08 refund_amount 15,048 → 25,048",
+                        "2026-09 operating_cost 138,000 → 208,000",
+                    ],
+                    "period_net_revenue": 908624,
+                    "period_profit": 182124,
+                    "orders": 3045,
+                    "sessions": 27300,
+                    "total_conversion_rate_pct": 11.15,
+                    "total_refund_rate_pct": 6.81,
+                    "margin_pct": 20.04,
+                    "loss_months": 1,
+                    "loss_month_detail": "2026-09 利润 64,368 → −5,632 由正转负",
+                    "axis": "−30,000 → 240,000",
+                    "px_per_yuan": 0.001170,
+                    "bars": 12,
+                    "labels": 7,
+                    "delta_vs_round_01": {
+                        "period_net_revenue": -10000,
+                        "period_profit": -80000,
+                        "total_refund_rate_pct": 1.02,
+                        "margin_pct": -8.49,
+                    },
+                },
+                {
+                    "round": 3,
+                    "label": "新增 2026-10 一行",
+                    "months": "7（2026-04 → 2026-10）",
+                    "applied_changes": 3,
+                    "changes": [
+                        "沿用 2026-08 refund_amount 25,048",
+                        "沿用 2026-09 operating_cost 208,000",
+                        "新增 2026-10：orders 640 / gross_revenue 224,000 / refund_amount 11,200 / operating_cost 142,000 / sessions 5,900",
+                    ],
+                    "new_month_derived": {
+                        "net_revenue": 212800,
+                        "profit": 70800,
+                        "refund_rate_pct": 5.00,
+                        "conversion_rate_pct": 10.85,
+                        "margin_pct": 33.27,
+                    },
+                    "period_net_revenue": 1121424,
+                    "period_profit": 252924,
+                    "orders": 3685,
+                    "sessions": 33200,
+                    "total_conversion_rate_pct": 11.10,
+                    "total_refund_rate_pct": 6.47,
+                    "margin_pct": 22.55,
+                    "loss_months": 1,
+                    "loss_month_detail": "2026-09 的 −5,632 仍是全期唯一亏损月，负轴沿用未撤",
+                    "axis": "−30,000 → 240,000（沿用 round-02，未动）",
+                    "px_per_yuan": 0.001170,
+                    "bars": 14,
+                    "labels": 8,
+                    "delta_vs_round_02": {
+                        "period_net_revenue": 212800,
+                        "period_profit": 70800,
+                        "orders": 640,
+                        "sessions": 5900,
+                        "total_conversion_rate_pp": -0.05,
+                        "total_refund_rate_pp": -0.34,
+                        "margin_pp": 2.51,
+                    },
+                    "rate_direction_note": (
+                        "三个总体比率方向不一致：转化率与退款率被新增月拉低，利润率被拉高"
+                        "（2026-10 的利润率 33.27% 高于原期间值 20.04%）。结论区分条陈述，"
+                        "没有合并成一句「整体变好了」"
+                    ),
+                },
+            ],
+            "cross_round_geometry": {
+                "main_regions": {
+                    "header": [48, 40, 1552, 142],
+                    "conclusion": [48, 158, 1552, 278],
+                    "kpi": [48, 294, 1552, 434],
+                    "chart": [48, 450, 876, 916],
+                    "table": [892, 450, 1552, 916],
+                    "footer": [48, 932, 1552, 964],
+                },
+                "main_regions_note": (
+                    "三轮逐区域比对的分量差全部 0 px，容差 ±2 px。每轮由该轮 layout-map.json 的 comparison 段承载"
+                ),
+                "plot_box": [152, 536, 860, 852],
+                "plot_box_note": "绘图区框三轮未动，708×316 px。变的是内部刻度与柱组槽宽",
+                "inherited_bar_heights_px": {
+                    "round_02_to_round_03": {
+                        "months": ["2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"],
+                        "net_revenue": [140, 159, 149, 189, 191, 237],
+                        "profit": [44, 49, 33, 57, 36, 7],
+                        "note": (
+                            "round-02 的 12 根柱像素高在 round-03 里逐根一字未变，"
+                            "这是「新增月份没有偷偷重排轴」的直接证据；"
+                            "14 根柱的 delta_height_px 全部为 0（像素级精确一致，不是 ±1 之内）"
+                        ),
+                    }
+                },
+                "scale_change_note": (
+                    "round-01 → round-02 的比例从 0.001317 变松到 0.001170 px/元（为 −5,632 扩负轴），"
+                    "round-01 的 12 根柱在 round-02 里等比例变矮 11.2%。这不是缺陷，是负轴的必要代价；"
+                    "若让柱体保持原像素高，等于在视觉上谎称比例没变"
+                ),
+            },
+            "label_policy": (
+                "选择性直标，三轮不变：净收入柱带柱顶标签；正值经营利润柱不标注（数值由紧邻的明细表承载）；"
+                "零线下方负值柱带标签（round-02 起生效）。图表说明写明「柱顶标注净收入：经营利润逐月数值见右侧明细表」。"
+                "标签数 6 → 7 → 8；标签与柱体的对数 72 → 84 → 112，三轮全部 0 对相交、最近间距 4.0 px"
+            ),
+        },
+        "quality_gates": {
+            "dryrun": "三轮各 28/28，提交前离线跑完，共 84 项次",
+            "pixel_audit": "三轮各 12/12，交付后对 PNG 做像素级复核，共 36 项次",
+            "pixel_audit_selftest": "7/7（round-02 新增 a22_selftest_label_gate.py，round-03 沿用）",
+            "visual_review": "28 次实际打开并读到内容（10 + 9 + 9），另有 2 次 footer 整条裁切被接口拒收",
+            "contrast_min": 4.552,
+            "contrast_note": "三轮文字色对背景的最小对比度都是 4.552，阈值 4.5:1，按 WCAG 公式用未舍入值判",
+            "body_font_min_px": 22,
+            "font_sizes_px": [22, 24, 26, 32, 42],
+            "table_cells_checked": "30 + 30 + 35 = 95 格（5×6 + 5×6 + 5×7）",
+            "region_box_delta_max_px": 0,
+            "region_box_tolerance_px": 2,
+            "label_bar_pairs_checked": "72 + 84 + 112 = 368 对，0 对相交",
+            "label_bar_min_gap_px": 4.0,
+            "bar_heights_checked": "12 + 12 + 14 = 38 根柱，delta_height_px 全为 0",
+            "delivery_verified_by": (
+                "三轮的响应字节 sha256 与交付 PNG sha256 比对一致；"
+                "交付 DSL 与当前构造器重建结果逐字节一致（各轮审计第 2 项）"
+            ),
+        },
+        "aggregation_rule": (
+            "本文件只累计各轮顶层汇总；逐轮明细（公式、传播链、逐根柱几何、逐条判定）"
+            "在各轮 round-XX/task-metrics.json 与 change-audit.json 内，不在本文件重复展开"
+        ),
+        "output_dir": OD,
+        "temp_dir": TD,
+        "logs": {
+            "requests": "tmp/%s/A22/requests.jsonl" % RUN_ID,
+            "requests_note": "5 条，按 render() 调用各记一条，attempts 字段给出该条内的 HTTP 尝试次数",
+            "iterations": "tmp/%s/A22/iterations.jsonl" % RUN_ID,
+            "iterations_note": "1 条，round-01 的 v1→v2 视觉迭代；round-02/03 各 0 条",
+            "viewing_evidence": "tmp/%s/A22/viewing-evidence.json" % RUN_ID,
+            "viewing_evidence_note": "三条 rounds 各 10 条事件 + round-02/03 各 1 条批注，共 30 条事件 2 条批注",
+            "gate_reports": "tmp/%s/A22/gate-reports/round-{01,02,03}.json" % RUN_ID,
+            "dsl_temp": "tmp/%s/A22/dsl/" % RUN_ID,
+            "responses": "tmp/%s/A22/responses/" % RUN_ID,
+            "responses_note": "5 份响应原文，含 785 字节的 400 JSON；服务返回的原始 PNG 字节完整保留",
+            "preview": "tmp/%s/A22/preview/" % RUN_ID,
+            "preview_note": "三轮共 32 个视图 PNG 与 3 份 views-manifest.json",
+            "scripts": "tmp/%s/_suite/gen/" % RUN_ID,
+            "scripts_note": (
+                "a22_data.py（数据层，_apply(round_no) 注入轮次差异）、a22_build.py（构造器 + 28 项门禁 + 12 项审计）、"
+                "a22_log.py（留痕）、a22_view_footer.py（footer 两半裁切处置）、"
+                "a22_selftest_label_gate.py（审计自检 7 用例）、"
+                "a22_state_r01/r02/r03.py（各轮归档）、a22_task_metrics.py（本文件生成脚本）、"
+                "out_r{1,2,3}_{audit,dryrun,layout,render}.*（各轮 stdout 副本）"
+            ),
+        },
+        "artifacts": [
+            artifact("outputs/%s/A22/%s" % (RUN_ID, rel), note) for rel, note in files
+        ],
+        "evidence_files": [
+            "tmp/%s/A22/requests.jsonl" % RUN_ID,
+            "tmp/%s/A22/iterations.jsonl" % RUN_ID,
+            "tmp/%s/A22/viewing-evidence.json" % RUN_ID,
+            "tmp/%s/A22/gate-reports/round-01.json" % RUN_ID,
+            "tmp/%s/A22/gate-reports/round-02.json" % RUN_ID,
+            "tmp/%s/A22/gate-reports/round-03.json" % RUN_ID,
+            "tmp/%s/A22/responses/req-a22-r01-dashboard-61c533.png" % RUN_ID,
+            "tmp/%s/A22/responses/req-a22-r01-dashboard-8102fe.png" % RUN_ID,
+            "tmp/%s/A22/responses/req-a22-r01-dashboard-b0f6f2.png" % RUN_ID,
+            "tmp/%s/A22/responses/req-a22-r02-dashboard-aea7c6.png" % RUN_ID,
+            "tmp/%s/A22/responses/req-a22-r03-dashboard-d9a10a.png" % RUN_ID,
+            "tmp/%s/_suite/gen/out_r3_audit.json" % RUN_ID,
+            "tmp/%s/_suite/gen/out_r3_dryrun.txt" % RUN_ID,
+            "tmp/%s/_suite/gen/a22_selftest_label_gate.py" % RUN_ID,
+            "tmp/%s/_suite/checkpoints/state-000060.json" % RUN_ID,
+        ],
+        "evidence_files_note": (
+            "400 那一次的 785 字节 JSON 原文按原文件名保留（扩展名 .png 是响应落盘的扩展名，"
+            "内容其实是 JSON 错误体）。检查点 state-000060.json 是 A22 三轮归档完成时的快照"
+        ),
+        "requirements_check": {
+            "source": "tasks/A22-staged-data-correction/TASK.md + rounds/round-02.md + rounds/round-03.md",
+            "round_01_items": 13,
+            "round_01_passed": 13,
+            "round_02_items": 11,
+            "round_02_passed": 11,
+            "round_03_items": 13,
+            "round_03_passed": 13,
+            "detail": (
+                "逐条对照表在各轮 snapshot-usage.md 的第 1 节。三轮共 37 项要求全部满足。"
+                "round-02 与 round-03 各列出 7 个交付文件，全部就位、无多做无缺项；"
+                "round-01 的 change-audit.json 是多做的（第一轮无上一轮可比，其 comparison 为空数组）"
+            ),
+        },
+        "shared_context": {
+            "docs_cache": "tmp/%s/_suite/docs/" % RUN_ID,
+            "shared_note": (
+                "服务指南 https://open-snapshot.muedsa.com/ai-guide.md、DSL 文档 https://snapshot.muedsa.com/ "
+                "与 fonts 查询在 round-01 之前已取得并缓存，三轮复用未新增 HTTP；"
+                "本题未计入 shared_preparation 的一次性耗时，因为它发生在 A22 之前且已在套级指标里归到 shared"
+            ),
+        },
+        "cross_round_lessons": [
+            {
+                "lesson": "拿服务当语法检查器是净亏",
+                "evidence": (
+                    "round-01 唯一的一次 400（gradientBegin=\"50% 0%\"）加上 3 次原样重试，"
+                    "1,172 ms 内全部失败，还消耗 4 个请求；发现后把「渐变端点取值」加进干跑门禁，"
+                    "round-02 / round-03 在提交前 28/28 全通过，请求耗时从 17.923 s 降到 5.016 / 12.375 s"
+                ),
+            },
+            {
+                "lesson": "审计脚本本身也需要被审计",
+                "evidence": (
+                    "4 次审计修复全部是审计算法自己的错（索引漏减 PLOT[\"left\"]、切片下标基准写错一层、"
+                    "ink-bbox 方案有结构性漏报盲区），不是图有缺陷。"
+                    "教训固化成两条：改检查器与改图分开统计（audit_fixes vs completed_visual_iterations），"
+                    "以及每个判据都要有合成图反测的活性证明（7 用例自检脚本）"
+                ),
+            },
+            {
+                "lesson": "换判据类型而不是加白名单",
+                "evidence": (
+                    "负标签与负柱同色族（#C2410C），任何「框内有没有柱色像素」的写法都会把标签自己算进去。"
+                    "换成形状差异（实心块 vs 细笔画）后同色不再是问题"
+                ),
+            },
+            {
+                "lesson": "「完全没变」是信号而不是好消息",
+                "evidence": (
+                    "round-02 第二次修审计脚本后柱像素计数 366→366 一模一样，当时没停下来核对，白改了一轮"
+                ),
+            },
+            {
+                "lesson": "跨轮可比性靠「继承量逐根一致」证明",
+                "evidence": (
+                    "round-03 用 round-02 的 12 根柱像素高逐根对照（140/44、159/49、149/33、189/57、191/36、237/7 全部一致），"
+                    "而不是写一句「我没改轴」。同理，轴扩了就得让所有柱等比例变矮，"
+                    "不能为了「图看起来一样」而保持原像素高"
+                ),
+            },
+            {
+                "lesson": "新增一个月不等于可以撤掉旧结构",
+                "evidence": (
+                    "2026-10 让期间利润回升到 252,924 元，但 2026-09 的 −5,632 仍然存在；"
+                    "撤掉负轴等于把负值裁掉。第七个月进 708 px 压的是组间净空（52→35.14 px）而不是柱宽，"
+                    "因为 −5,632 的负柱只有 7 px，柱宽再窄它就退化成一条线"
+                ),
+            },
+            {
+                "lesson": "比率方向不一致时不合并定性",
+                "evidence": (
+                    "round-03 的总体转化率（−0.05pp）与总体退款率（−0.34pp）被拉低、利润率（+2.51pp）被拉高，"
+                    "结论分条陈述并给分子分母，不写「整体变好了」"
+                ),
+            },
+            {
+                "lesson": "平台限制要固化处置办法，不要每轮重新踩",
+                "evidence": (
+                    "footer 47:1 裁切的拒收在 round-02 / round-03 各发生一次（三轮共 3 次尝试），"
+                    "处置（改裁两半 752×60，12.5:1）已固化在 a22_view_footer.py"
+                ),
+            },
+            {
+                "lesson": "前置防线建好之后，后续轮次的问题数会自然下降",
+                "evidence": (
+                    "round-01 修渲染层、round-02 修审计层并加自检，round-03 就是 0 次视觉迭代 + 0 次审计修复。"
+                    "这是「问题变少」而不是「标准变松」——门禁 28/28、审计 12/12、9 次实际看图与另两轮同一标准"
+                ),
+            },
+        ],
+        "unresolved_issues": [
+            {
+                "id": "a22-u1",
+                "issue": "记录条数（5）不等于实际 HTTP 请求（7）",
+                "impact": "只看 requests.jsonl 的行数会低估 2 个请求",
+                "resolution": "两个口径都保留在 counts 里并各带 note",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u2",
+                "issue": "400 请求的 3 次尝试没有各自的独立时间戳",
+                "impact": "只能知道这 3 次在 1,172 ms 内发生，不能逐次计时",
+                "resolution": "只在 round-01 发生；attempts 字段与总耗时如实记录",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u3",
+                "issue": "round-01 的 v0 / v1 DSL 正文不可复原",
+                "impact": "只剩字节数与 sha256；无法逐字比对那一版的构造",
+                "resolution": (
+                    "v1 的服务响应字节（237,428 B 的服务原始 PNG）完整保留在 responses/；"
+                    "round-02 / round-03 各 1 个版本且已交付，正文可复原"
+                ),
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u4",
+                "issue": "看图事件与迭代记录的写入时刻不等于发生时刻",
+                "impact": "逐条事件的时间序列只反映日志写入顺序",
+                "resolution": "改动证据链改用 requests 的时间序列 + responses 的字节 sha256 交叉验证",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u5",
+                "issue": "footer 整条裁切（3008×64，47:1）在三轮里被图像查看接口拒收 3 次",
+                "impact": "round-02 / round-03 各 1 条看图事件没有对应的真实查看",
+                "resolution": (
+                    "三轮各实际重试一次确认，原事件保留不改、另以 notes 批注标注「未真正打开」；"
+                    "可读性由 footer_left / footer_right（各 752×60，12.5:1）与 whole 1:1 确认；"
+                    "image_views_rejected_by_api 单列不并入 image_views；处置已固化在 a22_view_footer.py"
+                ),
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u6",
+                "issue": "墙钟不含各轮前置设计时间，是下界",
+                "impact": "elapsed_seconds 低估了真实投入",
+                "resolution": "每轮 started_at 取该轮首条快照请求，前置改动时间没有独立时间戳，已在各轮与本文档的 elapsed_note 里写明",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u7",
+                "issue": "事件数（30）大于实际打开数（28）",
+                "impact": "两条指向被拒收的 footer，不是真实查看",
+                "resolution": "用 notes 批注显式标注，原事件不加删改（只增不改）",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u8",
+                "issue": "像素审计第 6 项的判定算法在 round-02 被改写三次",
+                "impact": "round-01 报告里的判定表述与最终算法不一致",
+                "resolution": (
+                    "两份 change-audit.json 都用最终算法重跑刷新（仍各 12/12）；"
+                    "round-01 报告尾部补轮后说明，差异如实列出"
+                ),
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u9",
+                "issue": "change-audit.json 审计时的 viewing_events 小于归档后的事件数",
+                "impact": "审计快照与最终留痕差 1–2 条事件",
+                "resolution": "归档时回写实际值并保留 audited_at_event_count 作为审计当时的值",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u10",
+                "issue": "服务端自报耗时与本地实测的差值三轮递增（round-02 2.981 s、round-03 10.549 s）",
+                "impact": "若误把服务端自报值当成请求耗时之和会低估等待",
+                "resolution": "计时口径统一以本地 elapsed_ms 为准，服务端自报值仅作参照，两者与差值都写进各轮 server_timing_source",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u11",
+                "issue": "round-03 的 completed_visual_iterations=0 与 audit_fixes=0 容易被误读成没做检查",
+                "impact": "两个 0 可能被理解成留痕缺失",
+                "resolution": (
+                    "报告显式说明是首版即达标 + 前置防线已就位，并给出门禁 28/28、审计 12/12、"
+                    "9 次实际看图、14 根柱 delta 全 0 作为独立证据"
+                ),
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u12",
+                "issue": "本题 rounds 下 requests.jsonl 的字段命名与套件内其他题不同",
+                "impact": "跨题汇总时按固定键读取会取不到值",
+                "resolution": "按各题实际键读取，不在汇总时强行统一命名",
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u13",
+                "issue": "round-03/task-metrics.json 的 elapsed_compared_to_previous_rounds 初版两处值错",
+                "impact": "round_01 被写成 5023.0（那是 first_delivered_image_seconds）、round_03 被写成 1883.0（预估结束时刻）",
+                "resolution": (
+                    "归档时按各轮实际 ended_at 修正为 8466.0 / 2367.0，并在同一字段的 note 里"
+                    "保留修正前的值与修正依据，不静默改写"
+                ),
+                "status": "disclosed",
+            },
+            {
+                "id": "a22-u14",
+                "issue": "round-02 的 elapsed_seconds（6550）与它自己 started_at→ended_at 的跨度（6610）相差 60 s",
+                "impact": (
+                    "本文件的累计墙钟 17,383 s + 轮间停顿 2,958 s = 20,341 s，"
+                    "比观测到的时间跨度 20,401 s 少 60 s，差值就落在这里"
+                ),
+                "resolution": (
+                    "round-02/task-metrics.json 里的 started_at / ended_at / elapsed_seconds 三个值当时都是"
+                    "a22_state_r02.py 的硬编码常量，无法判断是哪一个写错，所以原样保留、只做披露不静默改写。"
+                    "本文件按 AGENTS.md 的「只累计各题顶层汇总」口径取 6550，"
+                    "并在 wall_clock_gaps.round_02_elapsed_vs_timestamp_span 里把两个值与差值都列出来。"
+                    "这 60 s 的差异不改变任何交付内容，也不影响任何数值或几何结论"
+                ),
+                "status": "disclosed",
+            },
+        ],
+        "rounds": rounds,
+        "round_summary": {
+            "rounds_total": 3,
+            "rounds_completed": 3,
+            "data_evolution": "6 个月基线 → 两项财务更正（轴扩负值、出现首个亏损月）→ 新增 2026-10（7 个月，轴不动）",
+            "issue_evolution": "round-01 修渲染层（1 次视觉迭代 + 1 次审计修复）→ round-02 修审计层（3 次审计修复 + 1 个自检脚本）→ round-03 零修复",
+            "final_state": (
+                "7 个月 2026-04→2026-10；期间净收入 1,121,424 元、经营利润 252,924 元、"
+                "总订单 3,685 笔、总体转化率 11.10%、总体退款率 6.47%、利润率 22.55%；"
+                "2026-09 的 −5,632 仍为全期唯一亏损月，负轴 −30,000→240,000 沿用"
+            ),
+            "next": "A23",
+        },
+    }
+
+
+def main() -> int:
+    for s in (sys.stdout, sys.stderr):
+        if hasattr(s, "reconfigure"):
+            s.reconfigure(encoding="utf-8")
+    fix_msg = fix_round03_timing_field()
+    doc = build()
+    p = OUT / "task-metrics.json"
+    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print("已写 %s（%d 字节，sha256 前 16 位 %s）" % (p.relative_to(ROOT), p.stat().st_size, sha16(p)))
+    print("修正 round-03 elapsed_compared_to_previous_rounds：%s" % fix_msg)
+    print("累计墙钟 %.0f s（约 %.2f h），请求耗时之和 %.3f s，看图 %d 次，迭代 %d 次，审计修复 %d 次"
+          % (doc["timings"]["elapsed_seconds"], doc["timings"]["elapsed_seconds"] / 3600.0,
+             doc["timings"]["request_duration_sum_seconds"], doc["counts"]["image_views"],
+             doc["counts"]["completed_visual_iterations"], doc["counts"]["audit_fixes"]))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

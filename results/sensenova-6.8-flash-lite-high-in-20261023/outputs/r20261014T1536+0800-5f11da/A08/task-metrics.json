@@ -1,0 +1,216 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A08",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": null,
+ "status": "completed",
+ "stop_reason": "需求满足；几何自检 25/25、像素核验 288/288、路径审计 12/12 全部通过，并完成 3 张整图与 19 张局部放大的实际查看",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A08",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A08",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "timings": {
+  "started_at": "2026-10-15T11:43:02+08:00",
+  "ended_at": "2026-10-15T15:06:00+08:00",
+  "elapsed_seconds": 12178,
+  "first_usable_image_seconds": 3685,
+  "user_feedback_wait_seconds": 0,
+  "rate_limit_wait_seconds": 0,
+  "queue_wait_seconds": null,
+  "request_duration_sum_seconds": 20.531,
+  "server_timing_source": "requests.jsonl 的 elapsed_ms（本地计时，含网络）；服务端 Server-Timing 仅返回 render 与 total，逐请求记录在 server_timing 字段",
+  "started_at_source": "suite-state.json 的 updated_at（A07 task_completed 于 11:20:05 之后，11:43:02 将 current_task 切为 A08）。该切换当时未追加 events.jsonl 条目，已在 A08 完成事件中补记",
+  "queue_wait_note": "服务端未返回排队时长，不可测，故为 null；不是 0",
+  "rate_limit_note": "4 次请求均一次成功，未发生 429，故为 0",
+  "note": "elapsed_seconds 远大于 request_duration_sum_seconds；差额为 floor.txt 解析与 BFS 最优性证明、走廊带与 47 段虚线及 40 个箭头的几何推导、像素核验脚本三轮重写与 22 次看图。两者不可相加或互相替代"
+ },
+ "counts": {
+  "snapshot_requests": 4,
+  "successful_snapshot_requests": 4,
+  "failed_snapshot_requests": 0,
+  "retry_requests": 0,
+  "other_service_requests": 0,
+  "dsl_versions": 3,
+  "image_views": 22,
+  "completed_visual_iterations": 2,
+  "incomplete_visual_iterations": 0,
+  "counts_note": {
+   "snapshot_requests": "v1、v2、v3 三个预览 + v3 交付版渲染（同一 DSL 的第 4 次请求，request_id 自动去重为 req-a08-wayfinding-v3-1）",
+   "retry_requests": "无 4xx/5xx、无超时，未发生重试",
+   "other_service_requests": "A08 未新增文档或字体 HTTP 请求，仅复用 run 早期已真实取得并缓存于 tmp/<rid>/_suite/docs/ 的结果",
+   "dsl_versions": "wayfinding v1、v2、v3（dsl/wayfinding.v1..v3.snapshot 均保留）",
+   "image_views": "3 张整图（v1/v2/v3）+ 19 张局部放大：v1 4 张（conv-exit、labels、r2card、shared-entry）、v2 10 张（route1、route2、row2-C、scale、shared1、shared2、arrow-corner、arrow-corner-20-2、arrow-row12-r1、arrow-row2-1）、v3 5 张（diverge、converge、row2-dashes、shared1-row13、shared1-col3-badge）",
+   "completed_visual_iterations": "v1→v2（拆分走廊带与逐段虚线几何）、v2→v3（修掉零长段导致的虚线退化成倒三角、ARROW_F 由 0.5 改为 0.24 使箭头落在虚线段内）；v1 的首次生成与查看计为基线不计入",
+   "verifier_rework_not_counted_as_iteration": "像素核验工具的三次判据重写（点探针→面积相关→白色权重剖面）没有改动 DSL 或重新渲染，属校验器修正，不计入视觉迭代，详见 snapshot-usage.md 第 4 节"
+  },
+  "verifications": {
+   "geometry_checks": {
+    "passed": 25,
+    "total": 25,
+    "source": "tmp/r20261014T1536+0800-5f11da/A08/geom-check.json",
+    "tool": "tmp/r20261014T1536+0800-5f11da/A08/gen/a08_geom_check.py"
+   },
+   "pixel_probes": {
+    "conforming": 288,
+    "total": 288,
+    "mismatches": 0,
+    "by_route": {
+     "R1": "124/124（本色 93、被 R2 合法覆盖 31、通道白 0）",
+     "R2": "164/164（本色 88、被 R1 合法覆盖 27、通道白 49）"
+    },
+    "source": "tmp/r20261014T1536+0800-5f11da/A08/preview/v3-pixel-report.json",
+    "method": "按实际绘制顺序（通道白 → R1 实线带 → R2 虚线 → 白色箭头 → 标记/徽章）用实际多边形包含关系算出每个取样弧位的期望颜色，再比对 PNG 实际像素；弧位取 2/20（虚线段内）与 30/38（间隙内）"
+   },
+   "arrow_direction_checks": {
+    "passed": 32,
+    "verified_of_drawn": "32/32（R1 14/17、R2 18/23 未被覆盖），另有 8 个（R1 3、R2 5）被地标或徽章合法覆盖",
+    "worst_case": "未覆盖箭头中底边 2px 白色权重最低 8.9、尖端 2px 权重最高 2.1，差 ≥ 6.8；正向三角最少 22/22 个白色像素",
+    "method": "白色权重剖面：底边附近 2px 内的白色权重必须显著大于尖端附近 2px 内的权重"
+   },
+   "shared_corridor_legibility": {
+    "both_routes_legible": true,
+    "shared_1": "取 12 点：蓝 6（其中 6 处落在 R2 的白色间隙）+ 橙 6",
+    "shared_2": "取 10 点：蓝 5（其中 5 处落在 R2 的白色间隙）+ 橙 5"
+   },
+   "traceability_checks": {
+    "passed": 14,
+    "total": 14,
+    "endpoint_cells_counted_one_sided": 2
+   },
+   "path_audit": {
+    "passed": 12,
+    "total": 12,
+    "source": "outputs/r20261014T1536+0800-5f11da/A08/paths.json",
+    "tool": "tmp/r20261014T1536+0800-5f11da/A08/gen/a08_paths.py",
+    "note": "12 项审计（可走性、4-邻接、途经点顺序、无重复格、R1/R2 最优性、距离换算、共享通道识别、描边在可走区内、像素逐段比对、共享段双路可辨、标记两侧可追溯）全部由 inputs/floor.txt 原文独立复算，不引用 model.json 的结论字段"
+   }
+  },
+  "result_data": {
+   "grid": "26 x 16，每格 2 米，4-邻接，共 65 格可走 / 351 格墙体",
+   "routes": {
+    "R1": {
+     "name": "直达出口",
+     "waypoints": ["S", "E"],
+     "cells": 36,
+     "steps": 35,
+     "meters": 70,
+     "segments": 1,
+     "shared_steps": 17,
+     "exclusive_steps": 18,
+     "shortest_path_count": 1
+    },
+    "R2": {
+     "name": "主题参观",
+     "waypoints": ["S", "B", "D", "E"],
+     "cells": 48,
+     "steps": 47,
+     "meters": 94,
+     "segments": 3,
+     "shared_steps": 17,
+     "exclusive_steps": 30,
+     "shortest_path_count_per_segment": 1
+    }
+   },
+   "shared_corridors": [
+    {
+     "id": "shared-1",
+     "cells": "（0,13）→（6,10）",
+     "cells_count": 10,
+     "steps": 9,
+     "meters": 18,
+     "same_direction": true
+    },
+    {
+     "id": "shared-2",
+     "cells": "（20,10）→（25,7）",
+     "cells_count": 9,
+     "steps": 8,
+     "meters": 16,
+     "same_direction": true
+    }
+   ]
+  }
+ },
+ "logs": {
+  "requests": "tmp/r20261014T1536+0800-5f11da/A08/requests.jsonl",
+  "iterations": "tmp/r20261014T1536+0800-5f11da/A08/iterations.jsonl",
+  "geometry_check": "tmp/r20261014T1536+0800-5f11da/A08/geom-check.json",
+  "pixel_report": "tmp/r20261014T1536+0800-5f11da/A08/preview/v3-pixel-report.json"
+ },
+ "outputs": [
+  {
+   "file": "outputs/r20261014T1536+0800-5f11da/A08/wayfinding.png",
+   "kind": "required_output",
+   "width": 1560,
+   "height": 1080,
+   "bytes": 325926,
+   "dsl": "outputs/r20261014T1536+0800-5f11da/A08/wayfinding.snapshot",
+   "http_status": 200,
+   "content_type": "image/png",
+   "request_id": "req-a08-wayfinding-v3-1",
+   "post_processing": "none",
+   "byte_identical_to": [
+    "tmp/r20261014T1536+0800-5f11da/A08/preview/v3-wayfinding.png",
+    "tmp/r20261014T1536+0800-5f11da/A08/responses/req-a08-wayfinding-v3.body"
+   ]
+  },
+  {
+   "file": "outputs/r20261014T1536+0800-5f11da/A08/wayfinding.snapshot",
+   "kind": "required_output",
+   "bytes": 63805,
+   "chars": 62883,
+   "positioned_count": 293,
+   "version": "v3"
+  },
+  {
+   "file": "outputs/r20261014T1536+0800-5f11da/A08/paths.json",
+   "kind": "required_output",
+   "bytes": 21070,
+   "audit_passed": "12/12"
+  },
+  {
+   "file": "outputs/r20261014T1536+0800-5f11da/A08/snapshot-usage.md",
+   "kind": "required_output"
+  },
+  {
+   "file": "outputs/r20261014T1536+0800-5f11da/A08/task-metrics.json",
+   "kind": "required_output"
+  }
+ ],
+ "candidates": [
+  {
+   "version": "v1",
+   "path": "tmp/r20261014T1536+0800-5f11da/A08/preview/v1-wayfinding.png",
+   "bytes": 328064,
+   "disposition": "未交付：72 个橙色填充块中 69 个为退化形，虚线形状错误",
+   "views": 5
+  },
+  {
+   "version": "v2",
+   "path": "tmp/r20261014T1536+0800-5f11da/A08/preview/v2-wayfinding.png",
+   "bytes": 331686,
+   "disposition": "未交付：46 个橙色退化形，47 段虚线被渲染成尖端朝外的三角形",
+   "views": 11
+  },
+  {
+   "version": "v3",
+   "path": "tmp/r20261014T1536+0800-5f11da/A08/preview/v3-wayfinding.png",
+   "bytes": 325926,
+   "disposition": "已交付：47/47 段虚线为 4 顶点 24x16 矩形，退化形 0 个，全部核验通过",
+   "views": 6
+  }
+ ],
+ "rounds": [],
+ "unresolved_issues": [
+  {
+   "issue": "沿法向实测带宽为 23.5 px（R1，预期 24.0）与 15.5 px（R2，预期 16.0），紧容差 10 与松容差 120 读数相同",
+   "impact": "无。属栅格化边缘约 0.5 px 抗锯齿余量；底层多边形真实宽度由几何自检 G2 证明为精确 24.0/16.0 px（实测区间 23.9–23.95 与 15.95–16.0）",
+   "status": "如实记录，不影响交付"
+  },
+  {
+   "issue": "events.jsonl 缺少 A08 的 task_started 条目（suite-state 于 11:43:02 切换 current_task 但未追加事件）",
+   "impact": "无。开始时间取自 suite-state 的该切换时刻，本次交付事件已补记，不重写历史条目",
+   "status": "已补记"
+  }
+ ]
+}

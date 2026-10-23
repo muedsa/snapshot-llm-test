@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A04",
+  "track": "A",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐图查看与像素自检：最终产物 conversion-story.png 上 15/15 项题面要求断言全部 passed，实际打开最终图复核完成。交付前逐条回读题面另发现并修复 1 处字号不合规（正文行 20 号 < 22）。",
+  "output_dir": "outputs/r20261014T1536+0800-5f11da/A04",
+  "temp_dir": "tmp/r20261014T1536+0800-5f11da/A04",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "started_at": "2026-10-15T01:28:21+08:00",
+  "ended_at": "2026-10-15T04:04:00+08:00",
+  "elapsed_seconds": 9339,
+  "elapsed_note": "墙钟时间：started_at 取 events.jsonl 中 A03 完成 / A04 开始的记录（2026-10-15T01:28:21+08:00），与 A03 的 ended_at 衔接；ended_at 取写完三份交付物后的时刻。墙钟不等于请求耗时之和，中间含读题面与文档、数据模型用 Fraction 精确推导、构造器与像素自检器编写、4 次解析错误的字节偏移定位、7 次看图、3 次自检器自身修正、以及交付前逐条回读题面并因此多渲染一版（v4 + final-2）。",
+  "counts": {
+    "final_pngs": 1,
+    "final_dsl": 1,
+    "snapshot_requests": 11,
+    "successful_snapshot_requests": 7,
+    "failed_snapshot_requests": 4,
+    "retry_requests": 0,
+    "retry_requests_note": "11 次请求全部 attempts=1：4 次 HTTP 400 是真实结果（不重试），7 次 200 一次成功，无连接或读取超时。",
+    "attempts_without_response": 0,
+    "attempts_without_response_note": "本题 11 次提交全部有 HTTP 响应与请求日志，无 A03 那样的无响应缺口。",
+    "document_requests": 0,
+    "shared_document_requests": 0,
+    "shared_document_requests_note": "本题未新增文档或字体请求，全部复用 tmp/_suite/docs/ 下 9 份已缓存的 shared 结果（请求记录在 tmp/_suite/_suite/requests.jsonl，2026-10-14T23:14–23:16）。",
+    "other_service_requests": 0,
+    "dsl_versions_rendered": 5,
+    "dsl_versions_rendered_note": "5 个不同 DSL 正文：probe-font、v1、v2、v3、v4。另 2 次成功请求是同一正文重提交（final 用 v3 字节、final-2 用 v4 字节）写入输出目录，故 7 次 200 = 5 个版本 + 2 次定稿。",
+    "dsl_drafts_on_disk": 5,
+    "iterations_recorded": 13,
+    "iterations_note": "11 条对应请求 + 2 条无请求的自检器修正（verify）。查看时刻只记真实下界 viewed_not_before。第一版迭代日志保留为 iterations.v1.jsonl。",
+    "completed_visual_iterations": 3,
+    "completed_visual_iterations_note": "v1→v2（结论区越框）、v2→v3（构成注余量）、v3→v4（正文行字号），每次都是「看图或自检发现缺陷 → 改 DSL → 重渲染 → 再看图/自检比较」。",
+    "incomplete_visual_iterations": 0,
+    "syntax_fix_requests": 5,
+    "syntax_fix_requests_note": "probe-font 的 5 次：前 4 次各命中一个真实解析错误并修正，第 5 次确认字体与四条语法约束。",
+    "requirement_change_iterations": 1,
+    "requirement_change_iterations_note": "交付前逐条回读题面，发现结论区最后一行是正文却写成 20 号，低于「正文≥22」，改 22 号并整体上移 4px（v4），随后重新定稿。",
+    "image_views": 7,
+    "image_views_note": "probe-font.png、v1.png、v2.png、v3.png、final-1 产物、v4.png、final-2 产物。查看时刻只有下界，见 timings.view_note。",
+    "preview_images": 5,
+    "inspect_report_runs": 7,
+    "inspect_report_runs_note": "inspect-v1(10/13)、inspect-v2(12/13)、inspect-v3(13/13)、inspect-final(13/13)、inspect-final-v2(14/14)、inspect-v4(15/15)、inspect-final-v3(15/15，最终产物)。",
+    "issues_found": 13,
+    "issues_by_class": {
+      "服务真实报错": 4,
+      "渲染产物缺陷": 4,
+      "自检器自身缺陷": 5
+    },
+    "issues_found_note": "服务报错 4 条（根标签、属性分隔、alignment 枚举、fontFeatures 等号）。渲染产物缺陷 4 条（v1 结论区越框且外 36px 边距有 38 个非背景像素、v2 第 5 行仍越框、v2→v3 构成注下缘余量约 2px、v3→v4 正文行 20 号低于下限）。自检器自身缺陷 5 条（亮度阈值法漏深色描边、只排除 [r-stroke,r] 环带漏掉圆角抗锯齿晕、逐行碰撞检查在 28px/22px 下结构性不可满足、行带交叠却注释声称不交叠、CJK 字宽系数误用 0.86 应为 1.0），全部已修。",
+    "requirement_checks": 15,
+    "requirement_failures": 0
+  },
+  "request_notes": {
+    "http_status_distribution": {
+      "200": 7,
+      "400": 4
+    },
+    "http_429_or_503": 0,
+    "retry_after_seen": false,
+    "queue_wait_seconds": null,
+    "queue_wait_note": "服务未返回排队字段，Server-Timing 只有 render;dur 与 total;dur，排队等待不可测，按约定记 null（不是 0）。",
+    "ratelimit_remaining_range": "118–119",
+    "ratelimit_note": "11 次请求的 X-RateLimit-Remaining 始终在 118–119，从未触及限流，故 rate_limit_wait_seconds=0（确认未发生）。",
+    "error_codes": [
+      "PARSE_ERROR"
+    ],
+    "error_kinds": [
+      "First tag must be 'Snapshot', but get 'Container'",
+      "Unexpected character 't' in input state [AFTER_ATTR_VALUE_QUOTED]",
+      "Attr [alignment] value format error",
+      "Attr [fontFeatures] value is invalid: Can't parse FontFeature: 2"
+    ],
+    "error_position_is_utf8_byte_offset": true,
+    "error_position_note": "4 次失败的 position 分别为 0、1494、2115、3105，逐字节定位到出错属性，用于区分「我写错语法」与「服务静默忽略」。这是 A03 学到的核心手段：只改一处，看 position 移动了多少字节。",
+    "request_id_collision": "5 次字体探针共用 req-a04-probe-font，草稿/响应头/响应体三次同名覆盖，详见 unresolved_issues A04-U1。"
+  },
+  "timings": {
+    "started_at": "2026-10-15T01:28:21+08:00",
+    "ended_at": "2026-10-15T04:04:00+08:00",
+    "elapsed_seconds": 9339,
+    "first_usable_image_seconds": 1395,
+    "first_usable_image_note": "起点 01:28:21 → req-a04-probe-font 第 5 次结束 2026-10-15T01:51:36+08:00，首个 200 PNG。前 4 次请求全部 400，故首次可用图耗时较长。",
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_wait_note": "预置连续执行模式，无用户反馈轮次，确认未发生记 0。",
+    "rate_limit_wait_seconds": 0,
+    "rate_limit_wait_note": "全程 118–119，无 429/503、无 Retry-After，确认未发生记 0。",
+    "queue_wait_seconds": null,
+    "queue_wait_note": "服务无排队字段，不可测记 null。",
+    "request_duration_sum_seconds": 40.529,
+    "request_duration_sum_note": "requests.jsonl 中 11 条记录的 elapsed_ms 之和 ÷1000（客户端端到端视角，含 DNS/TLS 与本地开销），顺序执行。不等于任务墙钟总耗时。",
+    "request_elapsed_ms_min": 1063,
+    "request_elapsed_ms_max": 7953,
+    "request_first_started_at": "2026-10-15T01:43:44+08:00",
+    "request_last_ended_at": "2026-10-15T03:57:57+08:00",
+    "server_timing_total_dur_sum_seconds": 15790.2,
+    "server_timing_render_dur_sum_seconds": 15432.6,
+    "server_timing_source": "各响应头 Server-Timing: render;dur=..., total;dur=...，仅表示服务端处理段，与客户端 elapsed_ms 是两个口径，彼此不可相加，也不等于墙钟。4 次 400 只报 total;dur，不含 render;dur。",
+    "server_timing_outliers": {
+      "req-a04-v1-preview": "render;dur=4924.9（首个完整版 592 元素 DSL，明显高于后续版本）",
+      "req-a04-probe-font#5": "render;dur=3337.9（字体探针首次成功）",
+      "req-a04-v2-preview": "render;dur=1971.0 与 total;dur=2000.0 几乎相等，服务端处理段极短"
+    },
+    "view_note": "图像查看未记录精确时刻，iterations.jsonl 中 viewed_not_before = 该响应结束时间，是真实下界；不编造精确时刻。",
+    "log_sources": [
+      "tmp/r20261014T1536+0800-5f11da/A04/requests.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A04/iterations.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A04/iterations.v1.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v1.json",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v2.json",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v3.json",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-final.json",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-final-v2.json",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v4.json",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-final-v3.json",
+      "tmp/r20261014T1536+0800-5f11da/_suite/events.jsonl"
+    ]
+  },
+  "artifacts": {
+    "png": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A04/conversion-story.png",
+      "bytes": 314286,
+      "sha256_16": "ba9201928e677e14",
+      "size": [1600, 1000],
+      "mode": "RGBA",
+      "is_real_service_response": true,
+      "is_real_service_response_note": "req-a04-final-2 的 HTTP 200 image/png 响应字节直存，与预览 v4.png 逐字节相同。final-1 曾写出 313099 B 版本，后被本次覆盖；两次的请求与响应体均保留。"
+    },
+    "dsl": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A04/conversion-story.snapshot",
+      "bytes": 25323,
+      "sha256_16": "2b2472f7532222cd",
+      "element_count": 592,
+      "matches_rendered_dsl": true,
+      "matches_rendered_dsl_note": "与 tmp/.../A04/dsl/conversion-story.v4.snapshot 逐字节相同，即渲染该 PNG 的那一份正文。"
+    },
+    "analysis": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A04/analysis.json",
+      "bytes": 11521,
+      "sha256_16": "0092450137fd78e3",
+      "contains": [
+        "精确分数（3/10、1/10、7/20、3/25、13/50、83/500）",
+        "显示百分比",
+        "加权公式 overall = Σ_i (visits_i/total_visits) × (conversions_i/visits_i)",
+        "两种顺序的恒等分解",
+        "conclusions 三条含 evidence 与 concordant 标记",
+        "axes 数组（rate_scale、composition_scale）",
+        "prohibited_methods 两条及其后果"
+      ]
+    },
+    "usage_report": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A04/snapshot-usage.md",
+      "bytes": 22063,
+      "sha256_16": "0c92c7d68a47ae88",
+      "sections": [
+        "1 最终产物与需求完成情况（含 19 项题面逐项核验表）",
+        "2 文档阅读与实际使用的能力",
+        "3 迭代过程、服务调用与图像检查",
+        "4 修改记录与踩坑",
+        "5 任务耗时与请求统计",
+        "6 设计选择、经验与未解决事项"
+      ]
+    }
+  },
+  "quality_gates": {
+    "requirement_checks_pass": "15/15",
+    "requirement_checks_source": "tmp/r20261014T1536+0800-5f11da/A04/inspect-final-v3.json",
+    "canvas_size": [1600, 1000],
+    "safe_margin_px": 36,
+    "safe_margin_non_background_pixels": 0,
+    "safe_margin_note": "外 36px 带内非背景像素数为 0；内容区 x/y ∈ [40,1560]/[40,960]。v1 时此处为 38，已修复。",
+    "chart1_bar_lengths_px": {
+      "前期_直接访问": 78,
+      "后期_直接访问": 91,
+      "前期_推广访问": 26,
+      "后期_推广访问": 31
+    },
+    "chart1_bar_lengths_expected_px": {
+      "前期_直接访问": 78.0,
+      "后期_直接访问": 91.0,
+      "前期_推广访问": 26.0,
+      "后期_推广访问": 31.2
+    },
+    "chart1_origin_x": 256,
+    "chart1_tolerance_px": 1.6,
+    "chart3_bar_lengths_px": {"前期": 67, "后期": 43},
+    "chart3_bar_lengths_expected_px": {"前期": 67.6, "后期": 43.2},
+    "chart3_origin_x": 1230,
+    "shared_rate_scale_px_per_percent": 2.6,
+    "same_scale_abs_diff_px_per_percent": 0.0,
+    "same_scale_tolerance": 0.06,
+    "same_scale_note": "图①与图③同为 2.6 px/1%、同一 0–100% 尺度，可直接目视比较；实测差 ≤0.06 px/1%。",
+    "composition_total_length_px": {"前期": 419, "后期": 419},
+    "composition_equal_length_abs_diff_px": 0,
+    "composition_equal_length_tolerance_px": 2.0,
+    "composition_segments_px": {
+      "前期": {"直接访问": 333, "推广访问": 82},
+      "后期": {"直接访问": 82, "推广访问": 333}
+    },
+    "composition_share_tolerance_pp": 1.2,
+    "composition_note": "分段长度按真实访问占比切分，段间 2px 面板色间隔含在 420px 总长内、不占任何渠道的比例。",
+    "font_sizes_in_dsl": [18, 19, 20, 22, 38],
+    "min_font_size": 18,
+    "font_size_requirement": "正文 ≥22、图标注 ≥18",
+    "font_size_note": "正文 22、标题 38；图标注 18–20；最小字号 18 不低于下限。结论区最后一行曾为 20 号（正文低于下限），已改 22 号。",
+    "measured_ink_heights_px": {"title_38": 38, "body_22": 21, "tick_18": 13, "value_18": 13},
+    "amber_conclusion_line": {
+      "width_px": 798,
+      "ink_height_px": 23,
+      "width_px_at_20": 719,
+      "note": "按墨迹宽度反向验证该行为 22 号而非 20 号，防止构造器再把它写回 20 号。"
+    },
+    "panel_clearance_px": {
+      "主结论框": {"左": 24, "上": 16, "右": 105, "下": 14, "ink_bbox": [64, 766, 925, 946]},
+      "限制框": {"左": 25, "上": 61, "右": 127, "下": 16, "ink_bbox": [1075, 811, 1433, 944]},
+      "图②构成注": {"左": 25, "上": 311, "右": 18, "下": 12, "ink_bbox": [585, 707, 1042, 724]}
+    },
+    "panel_clearance_min_required_px": 8,
+    "panel_clearance_note": "从面板外缘量起，需同时覆盖 2px 描边、约 2px 圆角抗锯齿晕与正文净空。描边按圆角矩形几何排除（border_zone），不靠颜色阈值。",
+    "inter_line_ink_separation": {
+      "结论框A": {"peak_ink_count": 328, "gap_min_count": 0},
+      "限制框B": {"peak_ink_count": 155, "gap_min_count": 0},
+      "gap_window": "行盒边界 ±4px",
+      "note": "4 处行间的密度低谷均为 0，即整行为白，相邻行字形在竖直方向不相触。像素检查器无法把墨迹归属到某一行，故不做逐行 bbox 断言。"
+    },
+    "overall_is_total_over_total": {
+      "前期": "2600/10000 = 13/50 = 26.00%",
+      "后期": "1660/10000 = 83/500 = 16.60%",
+      "verified_by": "Fraction 独立重算，与模型差 < 1e-9"
+    },
+    "prohibited_mean_direction_check": {
+      "naive_unweighted_mean": "20.00% → 23.50%",
+      "naive_delta_pp": 3.5,
+      "true_delta_pp": -9.4,
+      "signs_opposite": true
+    },
+    "decomposition": {
+      "identity": "overall = Σ_i (visits_i/total_visits) × (conversions_i/visits_i)",
+      "order_rates_then_mix": {"rate_effect_pp": 4.4, "mix_effect_pp": -13.8, "sum_pp": -9.4},
+      "order_mix_then_rates": {"rate_effect_pp": 2.6, "mix_effect_pp": -12.0, "sum_pp": -9.4},
+      "note": "两种顺序合计都精确等于 −9.40 pp，故图中按区间展示率效应 +2.60～+4.40、构成效应 −13.80～−12.00。"
+    },
+    "no_post_processing": "最终 PNG 为服务响应字节直存，未做任何像素后处理；未用其他绘图工具画主体或嵌入外部图片。全部图形、文字、网格线、边框与颜色都由 DSL 构造。",
+    "no_hardcoded_rates_in_dsl": "DSL 中不出现任何比率字面量；所有百分比、分数、构成占比与变化量由 a04_model.py 从 conversion.csv 用 Fraction 计算后经 a04_build.py 注入。",
+    "self_check_independent_of_builder": "a04_inspect.py 的几何期望值独立重推导（不读 a04_build.py 的结果），构造器算错会让两边算出不同期望值而判失败。",
+    "failed_drafts_retained": true,
+    "fonts_verified": "fontFamily 统一 Noto Sans CJK SC（/fonts 缓存确认已安装；Noto Sans SC 未安装，未使用）。探针第 5 次实测可渲染中文与 ①②③ Σ ÷ → − ↑ ↓ 「」＝ ≥ × ·。",
+    "input_unchanged": "tasks/A04-conversion-paradox/inputs/conversion.csv 只读未改；模板未改。"
+  },
+  "visual_review": [
+    {
+      "version": "probe-font",
+      "kind": "probe",
+      "action": "字体与属性语法探针（5 次提交，4 次 400 + 1 次 200）",
+      "result": "锁定四条能力边界：根标签必须是 Snapshot；属性必须空格分隔；Container alignment 只收 Alignment 枚举名；fontFeatures 必须带等号。第 5 次 200，确认 Noto Sans CJK SC 可渲染中文与所需符号，Noto Sans SC 未安装。"
+    },
+    {
+      "version": "v1",
+      "kind": "visual",
+      "action": "整幅目检 + 像素自检（10/13）",
+      "result": "构图正确但两处缺陷：外 36px 安全边距内有 38 个非背景像素（两框底 962 > 960）；结论框第 5 行墨迹右缘 1027px 越出限制 1014px。看图确认结论区文字压住框下缘。"
+    },
+    {
+      "version": "v2",
+      "kind": "visual",
+      "action": "整幅目检 + 像素自检（12/13）",
+      "result": "两框整体上移 6px、高度 206→210、五行上移 8px 后，安全边距恢复 0。但自检仍报结论框第 5 行右缘 1024 > 1016、下缘 953 > 950；看图确认构成注紧贴图②面板下缘，余量约 2px。"
+    },
+    {
+      "version": "v3",
+      "kind": "visual",
+      "action": "整幅目检 + 像素自检（13/13）",
+      "result": "构成注上移 6px（708→702），实测距面板②下缘 12px。看图确认三图关系清晰、构成反转一目了然。此轮同时暴露自检器自身的深色描边阈值缺陷，改为几何排除后复跑通过。"
+    },
+    {
+      "version": "final-1",
+      "kind": "final",
+      "action": "整幅目检最终 PNG + 自检（14/14）",
+      "result": "同一 DSL 写入输出目录，313099 B 与 v3 预览字节一致。实际打开复核：中性标题与副标题（无结论）、4 行原始数据表可逐格核对、① 分组率四条同尺度条形、② 两条等长构成条真实 80/20 与 20/80、③ 总体条附 N÷M 分数与 −9.40 pp 提示条、青色主结论框 5 行、红色限制框 5 行。"
+    },
+    {
+      "version": "v4",
+      "kind": "requirement-change",
+      "action": "交付前逐条回读题面 + 整幅目检 + 自检（15/15）",
+      "result": "发现结论区最后一行是正文却为 20 号，低于「正文≥22」。改 22 号并整体上移 4px：墨迹宽 798px（20 号时 719px），框底余量 14px、行 5 墨迹高 23px；新增第 14 项自检从最终 DSL 读字号断言 ≥18 并用墨迹宽度反推该行字号。"
+    },
+    {
+      "version": "final-2",
+      "kind": "final",
+      "action": "整幅目检最终 PNG + 自检（15/15）",
+      "result": "314286 B 与 v4 预览逐字节一致，实际打开复核完成。恒等分解行现为 22 号正文，五行间距均匀、行间整行留白，五个结论行均在框内且四边余量 ≥12px。15/15 项题面要求断言全部 passed。"
+    }
+  ],
+  "evidence": {
+    "requests_log": "tmp/r20261014T1536+0800-5f11da/A04/requests.jsonl（11 条）",
+    "iterations_log": "tmp/r20261014T1536+0800-5f11da/A04/iterations.jsonl（13 条）+ iterations.v1.jsonl（被替换的第一版）",
+    "raw_dsl_per_request": "tmp/r20261014T1536+0800-5f11da/A04/req-*.snapshot（11 份请求正文快照）",
+    "response_headers": "tmp/r20261014T1536+0800-5f11da/A04/req-*.snapshot.headers.txt",
+    "versioned_dsl": "tmp/r20261014T1536+0800-5f11da/A04/dsl/（5 份：probe-font、v1、v2、v3、v4，递增不覆盖）",
+    "raw_responses": "tmp/r20261014T1536+0800-5f11da/A04/responses/（5 份 200 图片响应；4 次 400 的响应体被同名覆盖，见 A04-U1）",
+    "preview_images": "tmp/r20261014T1536+0800-5f11da/A04/preview/（5 张：probe-font、v1、v2、v3、v4）",
+    "self_check_reports": [
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v1.json（10/13，v1 缺陷证据）",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v2.json（12/13，v2 缺陷证据）",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v3.json（13/13）",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-final.json（13/13，行带版，被 final-v2 取代）",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-final-v2.json（14/14，加入行间密度低谷检查）",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-v4.json（15/15）",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-final-v3.json（15/15，最终产物）",
+      "tmp/r20261014T1536+0800-5f11da/A04/inspect-限制框B.json（误名副本，内容同 inspect-v3.json，见 A04-U2）"
+    ],
+    "data_model": "tmp/r20261014T1536+0800-5f11da/A04/model.json（与 analysis.json 同内容，DSL 的唯一数据源）",
+    "generators_and_scripts": [
+      "tmp/r20261014T1536+0800-5f11da/A04/gen/a04_io.py（请求留痕封装，失败不落输出目录）",
+      "tmp/r20261014T1536+0800-5f11da/A04/gen/a04_model.py（读 CSV，用 Fraction 精确计算，写 analysis.json）",
+      "tmp/r20261014T1536+0800-5f11da/A04/gen/a04_build.py（DSL 构造器，无硬编码比率）",
+      "tmp/r20261014T1536+0800-5f11da/A04/gen/a04_inspect.py（15 项像素自检，几何期望独立重推导）",
+      "tmp/r20261014T1536+0800-5f11da/A04/gen/a04_probe_font.py（字体与属性语法探针）",
+      "tmp/r20261014T1536+0800-5f11da/A04/gen/a04_iter.py（迭代留痕生成）"
+    ],
+    "shared_docs_reused": "tmp/r20261014T1536+0800-5f11da/_suite/docs/（ai-guide.md、fonts.txt、openapi.yaml、dsl/*.html 等 9 份缓存，未新增请求）",
+    "source_input_unchanged": "tasks/A04-conversion-paradox/inputs/conversion.csv（只读，未改写）",
+    "templates_consulted": [
+      "tasks/A04-conversion-paradox/templates/audit-fields.json",
+      "tasks/A04-conversion-paradox/templates/snapshot-usage-template.md",
+      "tasks/A04-conversion-paradox/templates/task-metrics-template.json"
+    ]
+  },
+  "unresolved_issues": [
+    {
+      "id": "A04-U1",
+      "severity": "low",
+      "type": "留痕缺口",
+      "detail": "5 次字体探针共用 request_id req-a04-probe-font，请求正文快照 req-font.snapshot、响应头、响应体三次同名覆盖：responses/ 只留最后一次（128303 B 的 200），4 次 400 的响应体（188/239/213/240 B）与 4 个探针 DSL 变体未留档。a04_io._unique_rid() 只在 requests.jsonl 里查过名号，同一进程内连续提交时读到的日志可能还是旧的。",
+      "impact": "4 次失败的原始响应 JSON 与 4 个 DSL 变体文件缺失。但 4 次的完整错误文本、position 字节偏移、near 片段、字节数、Server-Timing、X-Request-Id 均在 requests.jsonl 的 error_summary 等字段中保留，定位过程可完整复现，不影响结论。",
+      "recovery": "探针改用带序号的 rid 即可；重跑会改变历史请求计数，故未补做，如实记录。",
+      "status": "open"
+    },
+    {
+      "id": "A04-U2",
+      "severity": "info",
+      "type": "命名瑕疵",
+      "detail": "tmp/.../A04/inspect-限制框B.json 是早期版本中循环变量 tag 被 main() 的参数 tag 遮蔽后写出的误名报告，内容与 inspect-v3.json 逐字节相同（sha256_16 = e1258797827523be）。",
+      "impact": "无。保留未删，作为当时的真实尝试记录。",
+      "recovery": "无需恢复。",
+      "status": "accepted"
+    },
+    {
+      "id": "A04-U3",
+      "severity": "info",
+      "type": "版本覆盖",
+      "detail": "final-1 写出的 313099 B 最终产物被 final-2 的 314286 B 覆盖（v4 修复正文行字号后重新定稿）；iterations.jsonl 的第一版（11 条）被 13 条版本替换。",
+      "impact": "无。final-1 的请求记录与响应体仍在 requests.jsonl / responses/，第一版迭代日志保留为 iterations.v1.jsonl。",
+      "recovery": "无需恢复。",
+      "status": "accepted"
+    },
+    {
+      "id": "A04-U4",
+      "severity": "info",
+      "type": "不可测指标与测量上限",
+      "detail": "排队等待时间不可测（服务无相关响应字段，Server-Timing 只有 render;dur 与 total;dur）；图像查看只有真实下界 viewed_not_before；圆角描边抗锯齿晕宽按实测取 2.0px；CJK 字形墨迹无法按行归属，故行间检查用密度低谷而非逐行 bbox。",
+      "impact": "queue_wait_seconds 记 null（不是 0）；查看时刻不做精确断言。四项都是测量方法的上限，不是渲染缺陷，不影响题面要求的通过判定。",
+      "recovery": "不可恢复（排队、查看时刻）；几何测量已给出可直接复核的数值。",
+      "status": "accepted"
+    }
+  ]
+}

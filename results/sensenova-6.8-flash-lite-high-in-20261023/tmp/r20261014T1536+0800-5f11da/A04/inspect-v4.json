@@ -1,0 +1,362 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "png": "tmp/r20261014T1536+0800-5f11da/A04/preview/v4.png",
+  "size": [
+    1600,
+    1000
+  ],
+  "checks": [
+    {
+      "name": "canvas_size_1600x1000",
+      "passed": true,
+      "expected": [
+        1600,
+        1000
+      ],
+      "actual": [
+        1600,
+        1000
+      ],
+      "note": ""
+    },
+    {
+      "name": "page_background_F8FAFC",
+      "passed": true,
+      "expected": [
+        248,
+        250,
+        252
+      ],
+      "actual": [
+        [
+          248,
+          250,
+          252
+        ],
+        [
+          248,
+          250,
+          252
+        ],
+        [
+          248,
+          250,
+          252
+        ],
+        [
+          248,
+          250,
+          252
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "safe_margin_36px_no_content",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "note": "内容区 x/y ∈ [40,1560]/[40,960]，外 36px 应为纯页面底色"
+    },
+    {
+      "name": "chart1_bar_lengths_match_rates",
+      "passed": true,
+      "expected": [
+        78.0,
+        91.0,
+        26.0,
+        31.2
+      ],
+      "actual": [
+        78,
+        91,
+        26,
+        31
+      ],
+      "note": "容差 ±1.6px（圆角与抗锯齿）"
+    },
+    {
+      "name": "chart3_bar_lengths_match_overall",
+      "passed": true,
+      "expected": [
+        67.6,
+        43.2
+      ],
+      "actual": [
+        67,
+        43
+      ],
+      "note": ""
+    },
+    {
+      "name": "same_0_100pct_scale_chart1_vs_chart3",
+      "passed": true,
+      "expected": "两图 px/1% 差 ≤ 0.06，均为 2.6",
+      "actual": {
+        "chart1_px_per_pct": 2.5958,
+        "chart3_px_per_pct": 2.5836,
+        "abs_diff": 0.0122
+      },
+      "note": ""
+    },
+    {
+      "name": "composition_bars_equal_length",
+      "passed": true,
+      "expected": "两条总长相同（420px = 各期 10,000 次）",
+      "actual": {
+        "前期": 419,
+        "后期": 419,
+        "abs_diff": 0
+      },
+      "note": ""
+    },
+    {
+      "name": "composition_segments_match_true_share",
+      "passed": true,
+      "expected": "分段占比 = 访问数占比（容差 1.2pp）",
+      "actual": {
+        "前期": {
+          "measured_direct_pct": 80.24,
+          "expected_direct_pct": 80.0,
+          "measured_boundary_x": 917,
+          "expected_boundary_x": 918.4
+        },
+        "后期": {
+          "measured_direct_pct": 19.76,
+          "expected_direct_pct": 20.0,
+          "measured_boundary_x": 666,
+          "expected_boundary_x": 667.6
+        }
+      },
+      "note": ""
+    },
+    {
+      "name": "font_size_hierarchy_22_body_vs_18_annotation",
+      "passed": true,
+      "expected": "正文(22) 墨迹高度 ≥ 图标注(18) + 2px",
+      "actual": {
+        "title_h": 38,
+        "body_h": 21,
+        "tick_h": 13,
+        "value_h": 13,
+        "title_over_body": 1.81,
+        "expect_title_over_body": 1.727
+      },
+      "note": "标题38/正文22 ≈ 1.727"
+    },
+    {
+      "name": "conclusion_and_limitation_both_present",
+      "passed": true,
+      "expected": "两框均有正文墨迹",
+      "actual": {
+        "boxA_ink_px": 17956,
+        "boxB_ink_px": 5893
+      },
+      "note": ""
+    },
+    {
+      "name": "overall_is_total_over_total",
+      "passed": true,
+      "expected": "总体率 = 成交总数 ÷ 访问总数（未取渠道平均）",
+      "actual": [
+        {
+          "period": "前期",
+          "numerator": 2600,
+          "denominator": 10000,
+          "value_pct": 26.0,
+          "model_pct": 26.0,
+          "match": true
+        },
+        {
+          "period": "后期",
+          "numerator": 1660,
+          "denominator": 10000,
+          "value_pct": 16.6,
+          "model_pct": 16.6,
+          "match": true
+        }
+      ],
+      "note": ""
+    },
+    {
+      "name": "prohibited_mean_would_be_wrong_direction",
+      "passed": true,
+      "expected": "未加权平均 Δ=+3.50pp 与真实 Δ=-9.40pp 方向相反",
+      "actual": {
+        "naive_mean_pct": {
+          "前期": 20.0,
+          "后期": 23.5
+        },
+        "naive_delta_pp": 3.5,
+        "true_delta_pp": -9.4
+      },
+      "note": ""
+    },
+    {
+      "name": "no_text_overflows_panels",
+      "passed": true,
+      "expected": "文字距面板外缘 ≥ 8.0px（描边 + 圆角抗锯齿晕 + 正文净空），无文字越出任何面板",
+      "actual": {
+        "violations": "无",
+        "detail": {
+          "主结论框": {
+            "ink_bbox": [
+              64,
+              766,
+              925,
+              946
+            ],
+            "clearance_px": {
+              "左": 24,
+              "上": 16,
+              "右": 105,
+              "下": 14
+            },
+            "width": 861
+          },
+          "限制框": {
+            "ink_bbox": [
+              1075,
+              811,
+              1433,
+              944
+            ],
+            "clearance_px": {
+              "左": 25,
+              "上": 61,
+              "右": 127,
+              "下": 16
+            },
+            "width": 358
+          },
+          "图②构成注": {
+            "ink_bbox": [
+              585,
+              707,
+              1042,
+              724
+            ],
+            "clearance_px": {
+              "左": 25,
+              "上": 311,
+              "右": 18,
+              "下": 12
+            },
+            "width": 457
+          }
+        }
+      },
+      "note": ""
+    },
+    {
+      "name": "inter_line_ink_separation",
+      "passed": true,
+      "expected": "每对相邻结论行之间都存在墨迹密度低谷（< 峰值的一半）",
+      "actual": {
+        "结论框A": {
+          "window_y": [
+            790,
+            954
+          ],
+          "window_x": [
+            56,
+            1024
+          ],
+          "gaps": [
+            {
+              "boundary_y": 832,
+              "min_count": 0,
+              "peak": 328
+            },
+            {
+              "boundary_y": 860,
+              "min_count": 0,
+              "peak": 328
+            },
+            {
+              "boundary_y": 888,
+              "min_count": 0,
+              "peak": 328
+            },
+            {
+              "boundary_y": 916,
+              "min_count": 0,
+              "peak": 328
+            }
+          ],
+          "ok": true
+        },
+        "限制框B": {
+          "window_y": [
+            790,
+            954
+          ],
+          "window_x": [
+            1066,
+            1554
+          ],
+          "gaps": [
+            {
+              "boundary_y": 832,
+              "min_count": 0,
+              "peak": 155
+            },
+            {
+              "boundary_y": 860,
+              "min_count": 0,
+              "peak": 155
+            },
+            {
+              "boundary_y": 888,
+              "min_count": 0,
+              "peak": 155
+            },
+            {
+              "boundary_y": 916,
+              "min_count": 0,
+              "peak": 155
+            }
+          ],
+          "ok": true
+        }
+      },
+      "note": "峰值 = 该行字形最密的一行的墨迹像素数；低谷取行盒边界 ±4px 内的最小值"
+    },
+    {
+      "name": "font_sizes_meet_task_minimums",
+      "passed": true,
+      "expected": "所有 fontSize ≥ 18（图标注下限）；结论区最后一行与其余正文同为 22 号",
+      "actual": {
+        "dsl_path": "tmp\\r20261014T1536+0800-5f11da\\A04\\dsl\\conversion-story.v4.snapshot",
+        "dsl_font_sizes": [
+          18,
+          19,
+          20,
+          22,
+          38
+        ],
+        "min_font_size": 18,
+        "amber_conclusion_line": {
+          "width_px": 798,
+          "ink_height_px": 23,
+          "expect_width_at_22px": "775–805（20 号实测 719）"
+        },
+        "measured_ink_heights": {
+          "title_38": 38,
+          "body_22": 21,
+          "tick_18": 13,
+          "value_18": 13
+        }
+      },
+      "note": "字号取自最终 .snapshot 的 fontSize 属性；琥珀色分解行的墨迹宽度反向验证其字号"
+    }
+  ],
+  "summary": {
+    "total": 15,
+    "passed": 15,
+    "failed": 0
+  }
+}

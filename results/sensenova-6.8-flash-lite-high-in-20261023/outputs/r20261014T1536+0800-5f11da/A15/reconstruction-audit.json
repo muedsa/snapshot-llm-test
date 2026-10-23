@@ -1,0 +1,3953 @@
+{
+  "schema_version": 1,
+  "task_id": "A15",
+  "path_base": "output_dir",
+  "reference_image": {
+    "path_base": "task_input_root",
+    "path": "tasks/A15-reference-reconstruction/inputs/reference.png"
+  },
+  "reconstructed_image": {
+    "path_base": "output_dir",
+    "path": "reconstructed.png"
+  },
+  "reconstructed_dsl": {
+    "path_base": "output_dir",
+    "path": "reconstructed.snapshot"
+  },
+  "tolerance_px_per_component": 8.0,
+  "anchors_checked": 19,
+  "anchors_pass": 19,
+  "anchors": [
+    {
+      "anchor_id": "sidebar_right",
+      "name": "侧栏右边界",
+      "type": "line",
+      "covers": "纵向贯通，Q1–Q3 分界",
+      "reference_estimated": 220,
+      "reconstructed": 220,
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "行 y=500 从 x=180 向右扫，取第一个与侧栏底色 (20,35,60) 色差 > 8 的列",
+      "local_evidence": "x=220 vs x=220"
+    },
+    {
+      "anchor_id": "nav_selected_box",
+      "name": "导航选中态外框",
+      "type": "rect",
+      "covers": "左上象限",
+      "reference_estimated": [
+        18,
+        116,
+        201,
+        163
+      ],
+      "reconstructed": [
+        18,
+        116,
+        201,
+        163
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (4,108)-(218,186) 内与选中底色 (41,68,103) 色差 ≤ 16 的像素外接框；窗口切在第 2 行文字之前，避免抗锯齿混色被计入",
+      "local_evidence": "[18,116,201,163]"
+    },
+    {
+      "anchor_id": "title_ink",
+      "name": "主标题可见字形框左上角",
+      "type": "point",
+      "covers": "左上象限（取左上角点）",
+      "reference_estimated": [
+        261,
+        39
+      ],
+      "reconstructed": [
+        262,
+        39
+      ],
+      "error": [
+        1,
+        0
+      ],
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (236,16)-(780,82) 内相对页面底色 (243,246,251) 的墨迹框，阈值取窗口最大色差的 50%（≈50% 覆盖率，去抗锯齿晕影）；取左上角",
+      "local_evidence": "[261,39,593,68] vs [262,39,636,72]，取左上角"
+    },
+    {
+      "anchor_id": "kpi_card_1",
+      "name": "KPI 卡①外框（收入）",
+      "type": "rect",
+      "covers": "上中左",
+      "reference_estimated": [
+        260,
+        138,
+        615,
+        281
+      ],
+      "reconstructed": [
+        260,
+        138,
+        615,
+        281
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 = 卡外扩 10 px；窗口内与页面底色色差 > 8 的像素外接框（1 px 边框对底色差 17，可辨）",
+      "local_evidence": "[260,138,615,281]"
+    },
+    {
+      "anchor_id": "kpi_card_2",
+      "name": "KPI 卡②外框（订单）",
+      "type": "rect",
+      "covers": "上中右",
+      "reference_estimated": [
+        644,
+        138,
+        999,
+        281
+      ],
+      "reconstructed": [
+        644,
+        138,
+        999,
+        281
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "同 kpi_card_1，窗口随卡②平移",
+      "local_evidence": "[644,138,999,281]"
+    },
+    {
+      "anchor_id": "kpi_card_3",
+      "name": "KPI 卡③外框（退款率）",
+      "type": "rect",
+      "covers": "右上象限",
+      "reference_estimated": [
+        1028,
+        138,
+        1383,
+        281
+      ],
+      "reconstructed": [
+        1028,
+        138,
+        1383,
+        281
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "同 kpi_card_1，窗口随卡③平移",
+      "local_evidence": "[1028,138,1383,281]"
+    },
+    {
+      "anchor_id": "chart_card",
+      "name": "净收入图表卡外框",
+      "type": "rect",
+      "covers": "图表区 + 左下",
+      "reference_estimated": [
+        260,
+        310,
+        1001,
+        595
+      ],
+      "reconstructed": [
+        260,
+        310,
+        1001,
+        595
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (250,300)-(1010,605) 内与页面底色色差 > 8 的像素外接框",
+      "local_evidence": "[260,310,1001,595]"
+    },
+    {
+      "anchor_id": "zero_line",
+      "name": "图表零线左端点",
+      "type": "point",
+      "covers": "图表区",
+      "reference_estimated": [
+        315,
+        549
+      ],
+      "reconstructed": [
+        311,
+        549
+      ],
+      "error": [
+        -4,
+        0
+      ],
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "行 y=549 上「比卡片白暗一点点」（与白差 6–48）的像素最左列，端点 y 取网格线行号 549",
+      "local_evidence": "(315,549) vs (311,549)"
+    },
+    {
+      "anchor_id": "last_bar",
+      "name": "最后一根柱的顶部中心",
+      "type": "point",
+      "covers": "图表区（取顶缘中点）",
+      "reference_estimated": [
+        888.5,
+        420
+      ],
+      "reconstructed": [
+        888.5,
+        419
+      ],
+      "error": [
+        0.0,
+        -1
+      ],
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 x 848–928、y 400–553 内与柱体蓝 (36,92,228) 色差 ≤ 40 的像素；中心 x = (最左列+最右列)/2，顶部 y = 最上排",
+      "local_evidence": "顶缘中点 (888.5,420) vs (888.5,419)"
+    },
+    {
+      "anchor_id": "activity_card",
+      "name": "活动卡外框",
+      "type": "rect",
+      "covers": "右上 / 右中",
+      "reference_estimated": [
+        1030,
+        310,
+        1399,
+        595
+      ],
+      "reconstructed": [
+        1030,
+        310,
+        1399,
+        595
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (1020,300)-(1409,605) 内与页面底色色差 > 8 的像素外接框",
+      "local_evidence": "[1030,310,1399,595]"
+    },
+    {
+      "anchor_id": "table_card",
+      "name": "项目表格卡外框",
+      "type": "rect",
+      "covers": "下沿，Q3–Q4",
+      "reference_estimated": [
+        260,
+        624,
+        1399,
+        841
+      ],
+      "reconstructed": [
+        260,
+        624,
+        1399,
+        841
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (250,614)-(1409,851) 内与页面底色色差 > 8 的像素外接框",
+      "local_evidence": "[260,624,1399,841]"
+    },
+    {
+      "anchor_id": "last_pill",
+      "name": "最后一行状态标签外框",
+      "type": "rect",
+      "covers": "右下象限",
+      "reference_estimated": [
+        1012,
+        795,
+        1192,
+        826
+      ],
+      "reconstructed": [
+        1012,
+        795,
+        1192,
+        826
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (1012,790)-(1192,836) 内与 Done 底色 (220,245,236) 色差 ≤ 20 的像素外接框",
+      "local_evidence": "[1012,795,1192,826]"
+    },
+    {
+      "anchor_id": "export_button",
+      "name": "导出按钮外框",
+      "type": "rect",
+      "covers": "右上象限",
+      "reference_estimated": [
+        1184,
+        43,
+        1399,
+        90
+      ],
+      "reconstructed": [
+        1184,
+        43,
+        1399,
+        90
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (1140,30)-(1420,110) 内与主蓝 (36,92,228) 色差 ≤ 40 的像素外接框",
+      "local_evidence": "[1184,43,1399,90]"
+    },
+    {
+      "anchor_id": "workspace_card",
+      "name": "侧栏工作区卡外框",
+      "type": "rect",
+      "covers": "左下象限",
+      "reference_estimated": [
+        22,
+        752,
+        197,
+        867
+      ],
+      "reconstructed": [
+        22,
+        752,
+        197,
+        867
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (6,700)-(218,884) 内与工作区卡底色 (35,57,84) 色差 ≤ 18 的像素外接框",
+      "local_evidence": "[22,752,197,867]"
+    },
+    {
+      "anchor_id": "footer_ink",
+      "name": "页脚说明字形框左上角",
+      "type": "point",
+      "covers": "左下象限",
+      "reference_estimated": [
+        260,
+        867
+      ],
+      "reconstructed": [
+        260,
+        867
+      ],
+      "error": [
+        0,
+        0
+      ],
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (240,856)-(820,890) 内相对页面底色的墨迹框，阈值同 title_ink；取左上角",
+      "local_evidence": "[260,867,516,879] vs [260,867,523,879]，取左上角"
+    },
+    {
+      "anchor_id": "header_band",
+      "name": "表格表头浅色带外框",
+      "type": "rect",
+      "covers": "下沿左侧，Q3",
+      "reference_estimated": [
+        284,
+        688,
+        1373,
+        721
+      ],
+      "reconstructed": [
+        284,
+        688,
+        1373,
+        721
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (262,640)-(1398,755) 严格落在表格卡内部；取与带色 (243,246,251) 色差 ≤ 6 的像素，先按「整行命中数 ≥ 60% 行宽」筛出带所在行再取列范围，不用外接框。两点必要：窗口不能出卡（卡外页面底色与带同色，首版窗口右界 1408 越过卡右缘 1399 后把整列卡外底色算成带，top/bottom/right 都顶到窗口边界，0 误差是窗口自证）；也不能直接取外接框（标题与正文的抗锯齿晕影有不少像素落在带色 ±6 内，散在 y 645–665 与 745 附近，会把 top 拉早 25 px）。窗口纵向避开卡圆角与 y≈760 的行分隔线（(235,239,245) 与带色差 8，tol 6 内可分开）",
+      "local_evidence": "[284,688,1373,721]"
+    },
+    {
+      "anchor_id": "divider_1",
+      "name": "表格第 1 条行分隔线外框",
+      "type": "rect",
+      "covers": "下沿，Q3–Q4",
+      "reference_estimated": [
+        284,
+        754,
+        1373,
+        760
+      ],
+      "reconstructed": [
+        284,
+        754,
+        1373,
+        760
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (262,754)-(1398,766) 内与分隔线色 (235,239,245) 色差 ≤ 10 的像素外接框；窗口夹在第 1 行墨迹底 749 与第 2 行墨迹顶 770 之间，只含这一条线",
+      "local_evidence": "[284,754,1373,760]"
+    },
+    {
+      "anchor_id": "divider_2",
+      "name": "表格第 2 条行分隔线外框",
+      "type": "rect",
+      "covers": "下沿，Q4",
+      "reference_estimated": [
+        284,
+        795,
+        1373,
+        801
+      ],
+      "reconstructed": [
+        284,
+        795,
+        1373,
+        801
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (262,789)-(1398,801) 内与分隔线色 (235,239,245) 色差 ≤ 10 的像素外接框；窗口夹在第 2 行墨迹底 784 与第 3 行墨迹顶 805 之间，只含这一条线",
+      "local_evidence": "[284,795,1373,801]"
+    },
+    {
+      "anchor_id": "logo_ring",
+      "name": "侧栏品牌标记圆环",
+      "type": "rect",
+      "covers": "左上象限",
+      "reference_estimated": [
+        30,
+        33,
+        57,
+        60
+      ],
+      "reconstructed": [
+        30,
+        33,
+        57,
+        60
+      ],
+      "error": 0,
+      "tolerance_px": 8.0,
+      "pass": true,
+      "measurement_method": "窗口 (20,24)-(80,70) 内与描边色 (100,219,182) 色差 ≤ 40 的像素外接框；窗口右界 80 切在品牌文字之前，避免白色文字被计入围框",
+      "local_evidence": "[30,33,57,60]"
+    }
+  ],
+  "glyph_boxes": [
+    {
+      "element": "subtitle",
+      "font_size_px": 18.0,
+      "expected_ink_top_left": [
+        261,
+        85
+      ],
+      "reference": [
+        261,
+        86,
+        506,
+        102
+      ],
+      "reconstructed": [
+        262,
+        85,
+        507,
+        101
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": -1,
+        "right": 1,
+        "bottom": -1
+      },
+      "ink_h": [
+        17,
+        17
+      ],
+      "ink_w": [
+        246,
+        246
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          1
+        ],
+        "reconstructed": [
+          1,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.944,
+        0.944
+      ]
+    },
+    {
+      "element": "kpi1_label",
+      "font_size_px": 14.0,
+      "expected_ink_top_left": [
+        285,
+        161
+      ],
+      "reference": [
+        285,
+        161,
+        348,
+        170
+      ],
+      "reconstructed": [
+        286,
+        162,
+        349,
+        171
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        10,
+        10
+      ],
+      "ink_w": [
+        64,
+        64
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.714,
+        0.714
+      ]
+    },
+    {
+      "element": "kpi1_value",
+      "font_size_px": 32.0,
+      "expected_ink_top_left": [
+        285,
+        199
+      ],
+      "reference": [
+        285,
+        200,
+        431,
+        228
+      ],
+      "reconstructed": [
+        286,
+        200,
+        432,
+        228
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        29,
+        29
+      ],
+      "ink_w": [
+        147,
+        147
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          1
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.906,
+        0.906
+      ]
+    },
+    {
+      "element": "kpi1_delta",
+      "font_size_px": 16.0,
+      "expected_ink_top_left": [
+        285,
+        246
+      ],
+      "reference": [
+        285,
+        246,
+        340,
+        257
+      ],
+      "reconstructed": [
+        286,
+        247,
+        341,
+        258
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        12,
+        12
+      ],
+      "ink_w": [
+        56,
+        56
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.75,
+        0.75
+      ]
+    },
+    {
+      "element": "kpi2_value",
+      "font_size_px": 32.0,
+      "expected_ink_top_left": [
+        669,
+        199
+      ],
+      "reference": [
+        670,
+        200,
+        728,
+        222
+      ],
+      "reconstructed": [
+        671,
+        200,
+        729,
+        222
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        23,
+        23
+      ],
+      "ink_w": [
+        59,
+        59
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          1,
+          1
+        ],
+        "reconstructed": [
+          2,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.719,
+        0.719
+      ]
+    },
+    {
+      "element": "kpi3_value",
+      "font_size_px": 32.0,
+      "expected_ink_top_left": [
+        1053,
+        199
+      ],
+      "reference": [
+        1054,
+        199,
+        1126,
+        223
+      ],
+      "reconstructed": [
+        1055,
+        199,
+        1127,
+        223
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        25,
+        25
+      ],
+      "ink_w": [
+        73,
+        73
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          1,
+          0
+        ],
+        "reconstructed": [
+          2,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.781,
+        0.781
+      ]
+    },
+    {
+      "element": "kpi3_delta",
+      "font_size_px": 16.0,
+      "expected_ink_top_left": [
+        1053,
+        246
+      ],
+      "reference": [
+        1053,
+        246,
+        1111,
+        260
+      ],
+      "reconstructed": [
+        1054,
+        247,
+        1112,
+        261
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        15,
+        15
+      ],
+      "ink_w": [
+        59,
+        59
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.938,
+        0.938
+      ]
+    },
+    {
+      "element": "chart_title",
+      "font_size_px": 22.0,
+      "expected_ink_top_left": [
+        286,
+        336
+      ],
+      "reference": [
+        286,
+        336,
+        413,
+        351
+      ],
+      "reconstructed": [
+        287,
+        336,
+        414,
+        351
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        16,
+        16
+      ],
+      "ink_w": [
+        128,
+        128
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.727,
+        0.727
+      ]
+    },
+    {
+      "element": "chart_period",
+      "font_size_px": 17.0,
+      "expected_ink_top_left": [
+        900,
+        338
+      ],
+      "reference": [
+        897,
+        338,
+        972,
+        352
+      ],
+      "reconstructed": [
+        898,
+        338,
+        974,
+        352
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 2,
+        "bottom": 0
+      },
+      "ink_h": [
+        15,
+        15
+      ],
+      "ink_w": [
+        76,
+        77
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          -3,
+          0
+        ],
+        "reconstructed": [
+          -2,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.882,
+        0.882
+      ]
+    },
+    {
+      "element": "chart_unit",
+      "font_size_px": 13.2,
+      "expected_ink_top_left": [
+        288,
+        376
+      ],
+      "reference": [
+        288,
+        376,
+        355,
+        384
+      ],
+      "reconstructed": [
+        289,
+        376,
+        356,
+        385
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        9,
+        10
+      ],
+      "ink_w": [
+        68,
+        68
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.682,
+        0.758
+      ]
+    },
+    {
+      "element": "tick_120",
+      "font_size_px": 13.0,
+      "expected_ink_top_left": [
+        300,
+        398
+      ],
+      "reference": [
+        300,
+        398,
+        319,
+        407
+      ],
+      "reconstructed": [
+        297,
+        399,
+        317,
+        408
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": -3,
+        "top": 1,
+        "right": -2,
+        "bottom": 1
+      },
+      "ink_h": [
+        10,
+        10
+      ],
+      "ink_w": [
+        20,
+        21
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          -3,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.769,
+        0.769
+      ]
+    },
+    {
+      "element": "tick_0",
+      "font_size_px": 13.0,
+      "expected_ink_top_left": [
+        314,
+        543
+      ],
+      "reference": [
+        314,
+        543,
+        319,
+        551
+      ],
+      "reconstructed": [
+        312,
+        544,
+        317,
+        552
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": -2,
+        "top": 1,
+        "right": -2,
+        "bottom": 1
+      },
+      "ink_h": [
+        9,
+        9
+      ],
+      "ink_w": [
+        6,
+        6
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          -2,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.692,
+        0.692
+      ]
+    },
+    {
+      "element": "month_apr",
+      "font_size_px": 13.5,
+      "expected_ink_top_left": [
+        373,
+        561
+      ],
+      "reference": [
+        373,
+        561,
+        394,
+        573
+      ],
+      "reconstructed": [
+        373,
+        561,
+        393,
+        572
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 0,
+        "right": -1,
+        "bottom": -1
+      },
+      "ink_h": [
+        13,
+        12
+      ],
+      "ink_w": [
+        22,
+        21
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          0,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.963,
+        0.889
+      ]
+    },
+    {
+      "element": "month_sep",
+      "font_size_px": 13.5,
+      "expected_ink_top_left": [
+        877,
+        561
+      ],
+      "reference": [
+        877,
+        561,
+        900,
+        573
+      ],
+      "reconstructed": [
+        877,
+        561,
+        899,
+        573
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 0,
+        "right": -1,
+        "bottom": 0
+      },
+      "ink_h": [
+        13,
+        13
+      ],
+      "ink_w": [
+        24,
+        23
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          0,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.963,
+        0.963
+      ]
+    },
+    {
+      "element": "activity_title",
+      "font_size_px": 22.0,
+      "expected_ink_top_left": [
+        1055,
+        335
+      ],
+      "reference": [
+        1055,
+        335,
+        1198,
+        355
+      ],
+      "reconstructed": [
+        1056,
+        334,
+        1199,
+        354
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": -1,
+        "right": 1,
+        "bottom": -1
+      },
+      "ink_h": [
+        21,
+        21
+      ],
+      "ink_w": [
+        144,
+        144
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          -1
+        ]
+      },
+      "ink_top_over_em": [
+        0.955,
+        0.955
+      ]
+    },
+    {
+      "element": "activity1",
+      "font_size_px": 17.0,
+      "expected_ink_top_left": [
+        1078,
+        395
+      ],
+      "reference": [
+        1078,
+        395,
+        1194,
+        410
+      ],
+      "reconstructed": [
+        1079,
+        394,
+        1195,
+        409
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": -1,
+        "right": 1,
+        "bottom": -1
+      },
+      "ink_h": [
+        16,
+        16
+      ],
+      "ink_w": [
+        117,
+        117
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          -1
+        ]
+      },
+      "ink_top_over_em": [
+        0.941,
+        0.941
+      ]
+    },
+    {
+      "element": "activity1_time",
+      "font_size_px": 14.0,
+      "expected_ink_top_left": [
+        1078,
+        423
+      ],
+      "reference": [
+        1078,
+        423,
+        1115,
+        432
+      ],
+      "reconstructed": [
+        1079,
+        424,
+        1116,
+        433
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        10,
+        10
+      ],
+      "ink_w": [
+        38,
+        38
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.714,
+        0.714
+      ]
+    },
+    {
+      "element": "activity3",
+      "font_size_px": 17.0,
+      "expected_ink_top_left": [
+        1078,
+        516
+      ],
+      "reference": [
+        1078,
+        516,
+        1218,
+        530
+      ],
+      "reconstructed": [
+        1079,
+        516,
+        1219,
+        530
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        15,
+        15
+      ],
+      "ink_w": [
+        141,
+        141
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.882,
+        0.882
+      ]
+    },
+    {
+      "element": "activity3_time",
+      "font_size_px": 14.0,
+      "expected_ink_top_left": [
+        1078,
+        543
+      ],
+      "reference": [
+        1078,
+        543,
+        1113,
+        552
+      ],
+      "reconstructed": [
+        1079,
+        544,
+        1114,
+        553
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        10,
+        10
+      ],
+      "ink_w": [
+        36,
+        36
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.714,
+        0.714
+      ]
+    },
+    {
+      "element": "table_title",
+      "font_size_px": 22.0,
+      "expected_ink_top_left": [
+        286,
+        645
+      ],
+      "reference": [
+        286,
+        645,
+        452,
+        665
+      ],
+      "reconstructed": [
+        288,
+        644,
+        454,
+        664
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 2,
+        "top": -1,
+        "right": 2,
+        "bottom": -1
+      },
+      "ink_h": [
+        21,
+        21
+      ],
+      "ink_w": [
+        167,
+        167
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          2,
+          -1
+        ]
+      },
+      "ink_top_over_em": [
+        0.955,
+        0.955
+      ]
+    },
+    {
+      "element": "tbl_hdr_project",
+      "font_size_px": 12.5,
+      "expected_ink_top_left": [
+        299,
+        699
+      ],
+      "reference": [
+        299,
+        699,
+        353,
+        707
+      ],
+      "reconstructed": [
+        299,
+        700,
+        355,
+        708
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 1,
+        "right": 2,
+        "bottom": 1
+      },
+      "ink_h": [
+        9,
+        9
+      ],
+      "ink_w": [
+        55,
+        57
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          0,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.72,
+        0.72
+      ]
+    },
+    {
+      "element": "tbl_hdr_due",
+      "font_size_px": 12.5,
+      "expected_ink_top_left": [
+        1231,
+        699
+      ],
+      "reference": [
+        1231,
+        699,
+        1254,
+        707
+      ],
+      "reconstructed": [
+        1232,
+        700,
+        1255,
+        708
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        9,
+        9
+      ],
+      "ink_w": [
+        24,
+        24
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.72,
+        0.72
+      ]
+    },
+    {
+      "element": "row1_name",
+      "font_size_px": 16.2,
+      "expected_ink_top_left": [
+        299,
+        735
+      ],
+      "reference": [
+        299,
+        735,
+        459,
+        749
+      ],
+      "reconstructed": [
+        299,
+        736,
+        460,
+        750
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        15,
+        15
+      ],
+      "ink_w": [
+        161,
+        162
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          0,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.926,
+        0.926
+      ]
+    },
+    {
+      "element": "row1_owner",
+      "font_size_px": 16.0,
+      "expected_ink_top_left": [
+        783,
+        735
+      ],
+      "reference": [
+        783,
+        735,
+        855,
+        746
+      ],
+      "reconstructed": [
+        784,
+        736,
+        856,
+        747
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        12,
+        12
+      ],
+      "ink_w": [
+        73,
+        73
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.75,
+        0.75
+      ]
+    },
+    {
+      "element": "row1_due",
+      "font_size_px": 16.0,
+      "expected_ink_top_left": [
+        1231,
+        735
+      ],
+      "reference": [
+        1231,
+        735,
+        1284,
+        746
+      ],
+      "reconstructed": [
+        1232,
+        736,
+        1285,
+        747
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        12,
+        12
+      ],
+      "ink_w": [
+        54,
+        54
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.75,
+        0.75
+      ]
+    },
+    {
+      "element": "row3_name",
+      "font_size_px": 16.2,
+      "expected_ink_top_left": [
+        299,
+        805
+      ],
+      "reference": [
+        299,
+        805,
+        407,
+        818
+      ],
+      "reconstructed": [
+        300,
+        806,
+        408,
+        819
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 1,
+        "bottom": 1
+      },
+      "ink_h": [
+        14,
+        14
+      ],
+      "ink_w": [
+        109,
+        109
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.864,
+        0.864
+      ]
+    },
+    {
+      "element": "brand",
+      "font_size_px": 19.0,
+      "expected_ink_top_left": [
+        73,
+        38
+      ],
+      "reference": [
+        73,
+        38,
+        188,
+        51
+      ],
+      "reconstructed": [
+        74,
+        38,
+        189,
+        51
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        14,
+        14
+      ],
+      "ink_w": [
+        116,
+        116
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0,
+          0
+        ],
+        "reconstructed": [
+          1,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.737,
+        0.737
+      ]
+    },
+    {
+      "element": "nav_overview",
+      "font_size_px": 19.0,
+      "expected_ink_top_left": [
+        62.5,
+        126
+      ],
+      "reference": [
+        63,
+        126,
+        149,
+        140
+      ],
+      "reconstructed": [
+        63,
+        125,
+        149,
+        139
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": -1,
+        "right": 0,
+        "bottom": -1
+      },
+      "ink_h": [
+        15,
+        15
+      ],
+      "ink_w": [
+        87,
+        87
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0.5,
+          0
+        ],
+        "reconstructed": [
+          0.5,
+          -1
+        ]
+      },
+      "ink_top_over_em": [
+        0.789,
+        0.789
+      ]
+    },
+    {
+      "element": "nav_projects",
+      "font_size_px": 19.0,
+      "expected_ink_top_left": [
+        62.5,
+        191
+      ],
+      "reference": [
+        63,
+        191,
+        134,
+        208
+      ],
+      "reconstructed": [
+        64,
+        191,
+        134,
+        208
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "ink_h": [
+        18,
+        18
+      ],
+      "ink_w": [
+        72,
+        71
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0.5,
+          0
+        ],
+        "reconstructed": [
+          1.5,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.947,
+        0.947
+      ]
+    },
+    {
+      "element": "nav_settings",
+      "font_size_px": 19.0,
+      "expected_ink_top_left": [
+        62.5,
+        319
+      ],
+      "reference": [
+        63,
+        319,
+        135,
+        336
+      ],
+      "reconstructed": [
+        64,
+        319,
+        136,
+        336
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        18,
+        18
+      ],
+      "ink_w": [
+        73,
+        73
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0.5,
+          0
+        ],
+        "reconstructed": [
+          1.5,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.947,
+        0.947
+      ]
+    },
+    {
+      "element": "ws_tag",
+      "font_size_px": 13.0,
+      "expected_ink_top_left": [
+        38.5,
+        770
+      ],
+      "reference": [
+        39,
+        770,
+        150,
+        779
+      ],
+      "reconstructed": [
+        39,
+        770,
+        151,
+        779
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 0,
+        "right": 1,
+        "bottom": 0
+      },
+      "ink_h": [
+        10,
+        10
+      ],
+      "ink_w": [
+        112,
+        113
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0.5,
+          0
+        ],
+        "reconstructed": [
+          0.5,
+          0
+        ]
+      },
+      "ink_top_over_em": [
+        0.769,
+        0.769
+      ]
+    },
+    {
+      "element": "ws_main",
+      "font_size_px": 16.0,
+      "expected_ink_top_left": [
+        38.5,
+        804
+      ],
+      "reference": [
+        39,
+        804,
+        172,
+        815
+      ],
+      "reconstructed": [
+        39,
+        805,
+        172,
+        816
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 1,
+        "right": 0,
+        "bottom": 1
+      },
+      "ink_h": [
+        12,
+        12
+      ],
+      "ink_w": [
+        134,
+        134
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0.5,
+          0
+        ],
+        "reconstructed": [
+          0.5,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.75,
+        0.75
+      ]
+    },
+    {
+      "element": "ws_sub",
+      "font_size_px": 14.0,
+      "expected_ink_top_left": [
+        38.5,
+        836
+      ],
+      "reference": [
+        39,
+        836,
+        160,
+        848
+      ],
+      "reconstructed": [
+        40,
+        837,
+        160,
+        849
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 1,
+        "top": 1,
+        "right": 0,
+        "bottom": 1
+      },
+      "ink_h": [
+        13,
+        13
+      ],
+      "ink_w": [
+        122,
+        121
+      ],
+      "offset_vs_expected": {
+        "reference": [
+          0.5,
+          0
+        ],
+        "reconstructed": [
+          1.5,
+          1
+        ]
+      },
+      "ink_top_over_em": [
+        0.929,
+        0.929
+      ]
+    },
+    {
+      "element": "pill_inprogress",
+      "font_size_px": 13.0,
+      "expected_ink_top_left": null,
+      "reference": [
+        1068,
+        737,
+        1136,
+        748
+      ],
+      "reconstructed": [
+        1068,
+        737,
+        1136,
+        748
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "ink_h": [
+        12,
+        12
+      ],
+      "ink_w": [
+        69,
+        69
+      ],
+      "ink_top_over_em": [
+        0.923,
+        0.923
+      ]
+    },
+    {
+      "element": "pill_review",
+      "font_size_px": 13.0,
+      "expected_ink_top_left": null,
+      "reference": [
+        1079,
+        771,
+        1124,
+        780
+      ],
+      "reconstructed": [
+        1079,
+        771,
+        1124,
+        780
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "ink_h": [
+        10,
+        10
+      ],
+      "ink_w": [
+        46,
+        46
+      ],
+      "ink_top_over_em": [
+        0.769,
+        0.769
+      ]
+    },
+    {
+      "element": "pill_done",
+      "font_size_px": 13.0,
+      "expected_ink_top_left": null,
+      "reference": [
+        1086,
+        807,
+        1117,
+        815
+      ],
+      "reconstructed": [
+        1086,
+        807,
+        1117,
+        815
+      ],
+      "measure_method": "与 title_ink 同一阈值：ROI 内相对该元素底色最大色差的 50%",
+      "delta": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "ink_h": [
+        9,
+        9
+      ],
+      "ink_w": [
+        32,
+        32
+      ],
+      "ink_top_over_em": [
+        0.692,
+        0.692
+      ]
+    }
+  ],
+  "color_review": [
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        243,
+        246,
+        251
+      ],
+      "token_hex": "#F3F6FB",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "主背景",
+          "role_in_layout": "主背景铺底",
+          "sample_point_or_roi": [
+            720,
+            120
+          ],
+          "reference_sample_rgb": [
+            243,
+            246,
+            251
+          ],
+          "reconstructed_sample_rgb": [
+            243,
+            246,
+            251
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "表头带底",
+          "role_in_layout": "表格表头浅底带",
+          "sample_point_or_roi": [
+            900,
+            690
+          ],
+          "reference_sample_rgb": [
+            243,
+            246,
+            251
+          ],
+          "reconstructed_sample_rgb": [
+            243,
+            246,
+            251
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 2,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "主背景与表格表头浅底带。参考与重建并排看：都是同一支偏冷的极浅灰蓝，明度相同、饱和度相同，卡片浮在这层底上时对比关系一致。",
+      "residual_difference": "无（该 token 下 2 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        20,
+        35,
+        60
+      ],
+      "token_hex": "#14233C",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "侧栏底",
+          "role_in_layout": "侧栏铺底",
+          "sample_point_or_roi": [
+            28,
+            460
+          ],
+          "reference_sample_rgb": [
+            20,
+            35,
+            60
+          ],
+          "reconstructed_sample_rgb": [
+            20,
+            35,
+            60
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "侧栏铺底。深海军蓝，蓝相一致、明度一致；侧栏内文字与卡片的层次没有变。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        255,
+        255,
+        255
+      ],
+      "token_hex": "#FFFFFF",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "卡片底",
+          "role_in_layout": "KPI 卡内空白",
+          "sample_point_or_roi": [
+            1360,
+            200
+          ],
+          "reference_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "reconstructed_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "品牌名",
+          "role_in_layout": "侧栏品牌",
+          "sample_point_or_roi": [
+            73,
+            38,
+            188,
+            51
+          ],
+          "reference_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "reconstructed_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "导航选中文字",
+          "role_in_layout": "当前页",
+          "sample_point_or_roi": [
+            62,
+            126,
+            149,
+            140
+          ],
+          "reference_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "reconstructed_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "团队成员数",
+          "role_in_layout": "工作区主行",
+          "sample_point_or_roi": [
+            38,
+            804,
+            172,
+            815
+          ],
+          "reference_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "reconstructed_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "按钮文字",
+          "role_in_layout": "导出按钮",
+          "sample_point_or_roi": [
+            1196,
+            60,
+            1387,
+            82
+          ],
+          "reference_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "reconstructed_sample_rgb": [
+            255,
+            255,
+            255
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 5,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "卡片底、品牌名、导航选中文字、工作区主行、按钮文字。白底与反白文字均逐位相同；侧栏里白字在深蓝上的可读性关系不变。",
+      "residual_difference": "无（该 token 下 5 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        226,
+        232,
+        241
+      ],
+      "token_hex": "#E2E8F1",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "卡片边框",
+          "role_in_layout": "卡片 1 px 描边",
+          "sample_point_or_roi": [
+            260,
+            200
+          ],
+          "reference_sample_rgb": [
+            226,
+            232,
+            241
+          ],
+          "reconstructed_sample_rgb": [
+            226,
+            232,
+            241
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "卡片 1 px 描边。浅灰蓝描边，参考与重建在同一卡片边缘上粗细与深浅一致，卡片没有被描边压重或压淡。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        36,
+        92,
+        228
+      ],
+      "token_hex": "#245CE4",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "主蓝（导出按钮）",
+          "role_in_layout": "导出按钮填充",
+          "sample_point_or_roi": [
+            1200,
+            71
+          ],
+          "reference_sample_rgb": [
+            36,
+            92,
+            228
+          ],
+          "reconstructed_sample_rgb": [
+            36,
+            92,
+            228
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "柱体填充",
+          "role_in_layout": "图表最后一根柱体内（顶缘 y=420 与零线 y=549 之间），应与按钮同为主蓝",
+          "sample_point_or_roi": [
+            888,
+            500
+          ],
+          "reference_sample_rgb": [
+            36,
+            92,
+            228
+          ],
+          "reconstructed_sample_rgb": [
+            36,
+            92,
+            228
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "胶囊 In progress 字",
+          "role_in_layout": "进行中",
+          "sample_point_or_roi": [
+            1035,
+            729,
+            1170,
+            755
+          ],
+          "reference_sample_rgb": [
+            36,
+            92,
+            228
+          ],
+          "reconstructed_sample_rgb": [
+            36,
+            92,
+            228
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 3,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "主蓝。导出按钮填充与图表最后一根柱体各自单独取样，都是 (36,92,228)；并排看按钮和柱体的蓝相、明度一致，与胶囊 In progress 的文字色也是同一支蓝。",
+      "residual_difference": "无（该 token 下 3 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        231,
+        237,
+        245
+      ],
+      "token_hex": "#E7EDF5",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "网格线",
+          "role_in_layout": "0 刻度网格线",
+          "sample_point_or_roi": [
+            400,
+            549
+          ],
+          "reference_sample_rgb": [
+            231,
+            237,
+            245
+          ],
+          "reconstructed_sample_rgb": [
+            231,
+            237,
+            245
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "0 刻度网格线。极浅灰蓝细线，与背景只差一层，参考与重建一致，网格没有变黑成实线也没有淡到看不见。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        235,
+        239,
+        245
+      ],
+      "token_hex": "#EBEFF5",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "行分隔线",
+          "role_in_layout": "表格行间分隔",
+          "sample_point_or_roi": [
+            900,
+            760
+          ],
+          "reference_sample_rgb": [
+            235,
+            239,
+            245
+          ],
+          "reconstructed_sample_rgb": [
+            235,
+            239,
+            245
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "表格行间分隔线。与网格线同一族但更淡一档；并排看两条线在同一图里的相对深浅关系保持一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        41,
+        68,
+        103
+      ],
+      "token_hex": "#294467",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "导航选中底",
+          "role_in_layout": "选中态外框填充",
+          "sample_point_or_roi": [
+            150,
+            139
+          ],
+          "reference_sample_rgb": [
+            41,
+            68,
+            103
+          ],
+          "reconstructed_sample_rgb": [
+            41,
+            68,
+            103
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "导航选中态外框填充。比侧栏底亮一档、偏蓝一档，选中项因此可辨；参考与重建的选中框在同一行上位置和明暗都一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        35,
+        57,
+        84
+      ],
+      "token_hex": "#233954",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "侧栏工作区卡",
+          "role_in_layout": "侧栏底部卡片填充",
+          "sample_point_or_roi": [
+            120,
+            800
+          ],
+          "reference_sample_rgb": [
+            35,
+            57,
+            84
+          ],
+          "reconstructed_sample_rgb": [
+            35,
+            57,
+            84
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "侧栏底部工作区卡填充。落在侧栏底与选中底之间的一档，卡片边界清楚；并排看两图工作区卡的明暗相对关系一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        231,
+        239,
+        255
+      ],
+      "token_hex": "#E7EFFF",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "胶囊 In progress 底",
+          "role_in_layout": "进行中状态底",
+          "sample_point_or_roi": [
+            1036,
+            742
+          ],
+          "reference_sample_rgb": [
+            231,
+            239,
+            255
+          ],
+          "reconstructed_sample_rgb": [
+            231,
+            239,
+            255
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "胶囊 In progress 底。极浅蓝，配主蓝字；两图并排底色深浅一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        255,
+        243,
+        215
+      ],
+      "token_hex": "#FFF3D7",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "胶囊 Review 底",
+          "role_in_layout": "待评审状态底",
+          "sample_point_or_roi": [
+            1036,
+            777
+          ],
+          "reference_sample_rgb": [
+            255,
+            243,
+            215
+          ],
+          "reconstructed_sample_rgb": [
+            255,
+            243,
+            215
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "胶囊 Review 底。极浅琥珀，配琥珀字；两图并排底色深浅一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        220,
+        245,
+        236
+      ],
+      "token_hex": "#DCF5EC",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "胶囊 Done 底",
+          "role_in_layout": "已完成状态底",
+          "sample_point_or_roi": [
+            1036,
+            812
+          ],
+          "reference_sample_rgb": [
+            220,
+            245,
+            236
+          ],
+          "reconstructed_sample_rgb": [
+            220,
+            245,
+            236
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "胶囊 Done 底。极浅绿，配绿字；两图并排底色深浅一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        100,
+        219,
+        182
+      ],
+      "token_hex": "#64DBB6",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "logo 描边",
+          "role_in_layout": "品牌标记描边",
+          "sample_point_or_roi": [
+            33,
+            46
+          ],
+          "reference_sample_rgb": [
+            100,
+            219,
+            182
+          ],
+          "reconstructed_sample_rgb": [
+            100,
+            219,
+            182
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "导航圆点 选中",
+          "role_in_layout": "选中态圆点（取圆心，避开圆点下缘与底色的混色）",
+          "sample_point_or_roi": [
+            39,
+            133
+          ],
+          "reference_sample_rgb": [
+            100,
+            219,
+            182
+          ],
+          "reconstructed_sample_rgb": [
+            100,
+            219,
+            182
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "PRO WORKSPACE",
+          "role_in_layout": "工作区标签",
+          "sample_point_or_roi": [
+            38,
+            770,
+            150,
+            779
+          ],
+          "reference_sample_rgb": [
+            100,
+            219,
+            182
+          ],
+          "reconstructed_sample_rgb": [
+            100,
+            219,
+            182
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 3,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "薄荷绿。logo 描边、导航选中圆点、PRO WORKSPACE 文字三处共用；采样逐位相同，并排看三处绿是同支薄荷绿，明度一致。",
+      "residual_difference": "无（该 token 下 3 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        119,
+        145,
+        179
+      ],
+      "token_hex": "#7791B3",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "导航圆点 未选",
+          "role_in_layout": "未选圆点",
+          "sample_point_or_roi": [
+            39,
+            200
+          ],
+          "reference_sample_rgb": [
+            119,
+            145,
+            179
+          ],
+          "reconstructed_sample_rgb": [
+            119,
+            145,
+            179
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "未选导航圆点。中灰蓝，明显比选中绿圆点点缀更弱；两图并排圆点深浅一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        234,
+        175,
+        64
+      ],
+      "token_hex": "#EAAF40",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "活动圆点 1",
+          "role_in_layout": "琥珀",
+          "sample_point_or_roi": [
+            1058,
+            401
+          ],
+          "reference_sample_rgb": [
+            234,
+            175,
+            64
+          ],
+          "reconstructed_sample_rgb": [
+            234,
+            175,
+            64
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "活动圆点（琥珀）。活动流第 1 条圆点；两图并排同一颗圆点的色相与明度一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        22,
+        130,
+        103
+      ],
+      "token_hex": "#168267",
+      "sample_kind": "fill",
+      "roles": [
+        {
+          "role": "活动圆点 3",
+          "role_in_layout": "绿",
+          "sample_point_or_roi": [
+            1058,
+            521
+          ],
+          "reference_sample_rgb": [
+            22,
+            130,
+            103
+          ],
+          "reconstructed_sample_rgb": [
+            22,
+            130,
+            103
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "KPI 变化",
+          "role_in_layout": "环比变化（含 −0.8 pp，同色）",
+          "sample_point_or_roi": [
+            285,
+            246,
+            341,
+            258
+          ],
+          "reference_sample_rgb": [
+            22,
+            130,
+            103
+          ],
+          "reconstructed_sample_rgb": [
+            22,
+            130,
+            103
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "胶囊 Done 字",
+          "role_in_layout": "已完成",
+          "sample_point_or_roi": [
+            1035,
+            799,
+            1170,
+            825
+          ],
+          "reference_sample_rgb": [
+            22,
+            130,
+            103
+          ],
+          "reconstructed_sample_rgb": [
+            22,
+            130,
+            103
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 3,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "深绿。KPI 变化文字与胶囊 Done 文字共用；采样取的是满覆盖文字体素，逐位相同，不是抗锯齿混色。",
+      "residual_difference": "无（该 token 下 3 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        24,
+        40,
+        63
+      ],
+      "token_hex": "#18283F",
+      "sample_kind": "text_core",
+      "roles": [
+        {
+          "role": "主标题",
+          "role_in_layout": "页头主标题",
+          "sample_point_or_roi": [
+            261,
+            38,
+            594,
+            69
+          ],
+          "reference_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "reconstructed_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "KPI 数值",
+          "role_in_layout": "指标值",
+          "sample_point_or_roi": [
+            285,
+            199,
+            432,
+            228
+          ],
+          "reference_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "reconstructed_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "图表标题",
+          "role_in_layout": "图表区块标题",
+          "sample_point_or_roi": [
+            286,
+            336,
+            413,
+            351
+          ],
+          "reference_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "reconstructed_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "活动标题",
+          "role_in_layout": "活动区块标题",
+          "sample_point_or_roi": [
+            1055,
+            335,
+            1198,
+            355
+          ],
+          "reference_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "reconstructed_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "活动条目",
+          "role_in_layout": "动态正文",
+          "sample_point_or_roi": [
+            1078,
+            395,
+            1194,
+            410
+          ],
+          "reference_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "reconstructed_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "表格标题",
+          "role_in_layout": "表格区块标题",
+          "sample_point_or_roi": [
+            286,
+            645,
+            452,
+            665
+          ],
+          "reference_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "reconstructed_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "行项目名",
+          "role_in_layout": "行主字段",
+          "sample_point_or_roi": [
+            299,
+            735,
+            459,
+            749
+          ],
+          "reference_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "reconstructed_sample_rgb": [
+            24,
+            40,
+            63
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 7,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "主要墨色。主标题、KPI 数值、三个区块标题、活动条目、行项目名共用；深蓝黑，比侧栏底更暗更冷。并排看正文墨色的浓淡关系一致。",
+      "residual_difference": "无（该 token 下 7 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        99,
+        116,
+        143
+      ],
+      "token_hex": "#63748F",
+      "sample_kind": "text_core",
+      "roles": [
+        {
+          "role": "副标题",
+          "role_in_layout": "页头次级信息",
+          "sample_point_or_roi": [
+            261,
+            85,
+            506,
+            102
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "KPI 标签",
+          "role_in_layout": "指标名",
+          "sample_point_or_roi": [
+            285,
+            161,
+            348,
+            170
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "图表周期",
+          "role_in_layout": "统计区间",
+          "sample_point_or_roi": [
+            900,
+            338,
+            972,
+            352
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "图表单位",
+          "role_in_layout": "纵轴单位",
+          "sample_point_or_roi": [
+            288,
+            376,
+            355,
+            384
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "y 轴刻度",
+          "role_in_layout": "数值刻度",
+          "sample_point_or_roi": [
+            299,
+            398,
+            320,
+            407
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            105,
+            121,
+            147
+          ],
+          "delta_rgb": [
+            6,
+            5,
+            4
+          ],
+          "exact": false
+        },
+        {
+          "role": "月份标签",
+          "role_in_layout": "横轴分类",
+          "sample_point_or_roi": [
+            373,
+            561,
+            394,
+            573
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            100,
+            117,
+            144
+          ],
+          "delta_rgb": [
+            1,
+            1,
+            1
+          ],
+          "exact": false
+        },
+        {
+          "role": "活动时间",
+          "role_in_layout": "动态时间",
+          "sample_point_or_roi": [
+            1078,
+            423,
+            1115,
+            432
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "表头文字",
+          "role_in_layout": "列名",
+          "sample_point_or_roi": [
+            299,
+            699,
+            353,
+            707
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        },
+        {
+          "role": "行负责人",
+          "role_in_layout": "行次级字段",
+          "sample_point_or_roi": [
+            783,
+            735,
+            855,
+            746
+          ],
+          "reference_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "reconstructed_sample_rgb": [
+            99,
+            116,
+            143
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 9,
+      "delta_rgb_max_abs": [
+        6,
+        5,
+        4
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "次要墨色。副标题、KPI 标签、图表周期/单位、y 轴刻度、活动时间、表头文字、行负责人共用；中等灰蓝。并排看次级文字与主墨色的层级关系一致。",
+      "residual_difference": "三通道最大差 [6, 5, 4]，只出现在：y 轴刻度、月份标签。这些角色的文字是 13 px 级小字号，笔画只有 1–2 px 宽，窗口内取到的「核心像素」会掺进抗锯齿混色，量出来的不是纯 token 值而是 token 与底色的过渡色。并排看两图这几处文字色相与明暗一致，差值来自采样口径；同一 token 下 17 px 以上的角色（副标题、KPI 标签等）采样逐位相同。",
+      "residual_roles": [
+        {
+          "role": "y 轴刻度",
+          "delta_rgb": [
+            6,
+            5,
+            4
+          ]
+        },
+        {
+          "role": "月份标签",
+          "delta_rgb": [
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        123,
+        139,
+        163
+      ],
+      "token_hex": "#7B8BA3",
+      "sample_kind": "text_core",
+      "roles": [
+        {
+          "role": "页脚",
+          "role_in_layout": "页脚说明",
+          "sample_point_or_roi": [
+            260,
+            867,
+            516,
+            879
+          ],
+          "reference_sample_rgb": [
+            123,
+            139,
+            163
+          ],
+          "reconstructed_sample_rgb": [
+            123,
+            139,
+            163
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "页脚墨色。比次要墨色更淡一档；两图页脚行的明度接近，仍可读但不抢正文。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        190,
+        202,
+        221
+      ],
+      "token_hex": "#BECADD",
+      "sample_kind": "text_core",
+      "roles": [
+        {
+          "role": "导航未选文字",
+          "role_in_layout": "非当前页",
+          "sample_point_or_roi": [
+            62,
+            191,
+            134,
+            208
+          ],
+          "reference_sample_rgb": [
+            190,
+            202,
+            221
+          ],
+          "reconstructed_sample_rgb": [
+            190,
+            202,
+            221
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "未选导航文字。在深蓝侧栏上属于低对比灰白；并排看与选中态白字的强弱对比一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        184,
+        202,
+        221
+      ],
+      "token_hex": "#B8CADD",
+      "sample_kind": "text_core",
+      "roles": [
+        {
+          "role": "管理入口",
+          "role_in_layout": "工作区次行",
+          "sample_point_or_roi": [
+            38,
+            836,
+            160,
+            848
+          ],
+          "reference_sample_rgb": [
+            184,
+            202,
+            221
+          ],
+          "reconstructed_sample_rgb": [
+            184,
+            202,
+            221
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "工作区次行（管理入口）。比同卡主行白字更淡一档；两图一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    },
+    {
+      "path_base": "output_dir",
+      "token_rgb": [
+        157,
+        102,
+        19
+      ],
+      "token_hex": "#9D6613",
+      "sample_kind": "text_core",
+      "roles": [
+        {
+          "role": "胶囊 Review 字",
+          "role_in_layout": "待评审",
+          "sample_point_or_roi": [
+            1035,
+            764,
+            1170,
+            790
+          ],
+          "reference_sample_rgb": [
+            157,
+            102,
+            19
+          ],
+          "reconstructed_sample_rgb": [
+            157,
+            102,
+            19
+          ],
+          "delta_rgb": [
+            0,
+            0,
+            0
+          ],
+          "exact": true
+        }
+      ],
+      "roles_count": 1,
+      "delta_rgb_max_abs": [
+        0,
+        0,
+        0
+      ],
+      "manual_side_by_side_review": "review/01-page-pair.png（整页并排）+ 对应区块对照图",
+      "judgement": "胶囊 Review 文字。深琥珀，压在浅琥珀底上；并排看两图这枚胶囊的字色与底色对比度一致。",
+      "residual_difference": "无（该 token 下 1 个角色采样三通道逐位相同）"
+    }
+  ],
+  "visual_reviews": [
+    {
+      "path_base": "output_dir",
+      "path": "review/00-thumbnail.png",
+      "view": "缩略（720×450）",
+      "conclusion": "整体版面对得上：深蓝侧栏 + 浅色主区、上排三张 KPI 卡、下方左大图右活动流、底部通栏表格，比例与页边距在缩略尺度下没有可辨差异；没有明显缺块或多出的装饰。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/01-page-pair.png",
+      "view": "原尺寸整页并排（1440×900）",
+      "conclusion": "区块边界、卡片圆角、行高节奏一致。并排逐区看下来没有遮挡、裁切或文字溢出版心；侧栏与主区分界、表格通栏右缘对齐都一致。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/02-kpi-row-pair.png",
+      "view": "KPI 行并排",
+      "conclusion": "三张卡等宽等高、间距一致；标签—数值—变化的垂直节奏一致，数值基线对齐；第三个变化值前的负号与单位排布一致，绿色变化文字位置一致。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/03-chart-pair.png",
+      "view": "图表卡并排",
+      "conclusion": "纵轴刻度自上而下 120→0、柱底都落在零线上、柱宽与柱间距一致、横轴月份标签居中对齐柱；「¥ thousand」单位在左上、「Apr – Sep」在右上，与标题在同一水平带。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/04-activity-pair.png",
+      "view": "活动流并排",
+      "conclusion": "三条动态的圆点—正文—时间结构一致，圆点垂直居中于首行文字，时间缩进一致；第 2 条圆点为蓝、第 1、3 条为琥珀与绿，与参考的角色分配一致。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/05-table-pair.png",
+      "view": "表格卡并排",
+      "conclusion": "表头浅底带两端都内缩（参考 [284,688,1373,721]，比卡片内容右缘 1398 短 25 px，并不是贯通卡宽——首版按贯通卡宽画成 1399，1× 并排看不出，收紧审计窗口后才露出），两条行分隔线与带同宽；四列表位置一致；五行行高一致；胶囊在最后一列右对齐、垂直居中于行内。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/06-sidebar-pair.png",
+      "view": "侧栏并排（含 logo 与工作区卡）",
+      "conclusion": "logo 是同心圆环而不是矩形环，外缘与内孔比例一致；品牌名与其右侧对齐一致；四项导航的行距与圆点位置一致，选中态只有 Overview 有底框；底部工作区卡三行层级一致。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/07-title-pair.png",
+      "view": "页头标题 2× 放大",
+      "conclusion": "主标题与副标题的字号、字重、颜色层级一致；主标题下沿与副标题上沿的间距一致；两行左缘同对齐线。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/08-bars-pair.png",
+      "view": "柱体 1.5× 放大",
+      "conclusion": "柱体填充色、柱宽、柱间距、柱底基线一致；6 根柱的高度比例与参考一致。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/09-bar-top-pair.png",
+      "view": "单根柱 4× 放大",
+      "conclusion": "柱顶左右两角都是圆角、柱底为直角，两图一致——圆角只作用在顶部；圆角半径目测量级相同，没有把整条柱做成胶囊形。"
+    },
+    {
+      "path_base": "output_dir",
+      "path": "review/10-yaxis-pair.png",
+      "view": "纵轴 3× 放大",
+      "conclusion": "刻度顺序自上而下 120、90、60、30、0，两图一致；刻度文字右对齐、贴左留白一致；0 刻度与网格线重合，柱底也压在同一根零线上。"
+    }
+  ],
+  "color_review_summary": {
+    "path_base": "output_dir",
+    "roles_sampled": 47,
+    "roles_exact_on_both_sides": 45,
+    "roles_with_residual_delta": 2,
+    "fill_roles": 19,
+    "text_roles": 28,
+    "tokens_grouped": 22,
+    "tokens_exact_on_both_sides": 21,
+    "tokens_with_residual_delta": [
+      {
+        "token_rgb": [
+          99,
+          116,
+          143
+        ],
+        "delta_rgb_max_abs": [
+          6,
+          5,
+          4
+        ],
+        "residual_roles": [
+          "y 轴刻度",
+          "月份标签"
+        ]
+      }
+    ],
+    "required_roles_covered": [
+      "主背景",
+      "侧栏底",
+      "主蓝（导出按钮）",
+      "柱体填充",
+      "卡片底",
+      "卡片边框",
+      "胶囊 In progress 底",
+      "胶囊 Review 底",
+      "胶囊 Done 底",
+      "胶囊 In progress 字",
+      "胶囊 Review 字",
+      "胶囊 Done 字",
+      "导航选中底",
+      "导航圆点 选中",
+      "logo 描边",
+      "侧栏工作区卡"
+    ],
+    "method_note": "填充色取窗口中心单像素；文字色取窗口内相对底色 |像素−底色| 通道和最大处的核心像素，避开抗锯齿混色。题面未公开 RGB/色差硬阈值，这里只记录采样与人工判断，不据此判定合格。"
+  }
+}

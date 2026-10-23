@@ -1,0 +1,212 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "A21",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "task_round": 3,
+ "status": "completed",
+ "stop_reason": "需求满足并完成视觉自检",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A21/round-03",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A21",
+ "timings": {
+  "started_at": "2026-10-20T09:33:04+08:00",
+  "ended_at": "2026-10-20T10:38:13+08:00",
+  "elapsed_seconds": 3909.0,
+  "elapsed_note": "墙钟时间，含第 1 轮起的复用准备、色板与球位重排设计、无网络干跑门、去文字辅助渲染、交付渲染、逐图看图、对比度量测、审计与归档；因此远大于 request_duration_sum_seconds，两者不可相加或互相替代",
+  "last_recorded_activity_at": "2026-10-20T09:56:00+08:00",
+  "archive_tail_seconds": 2533.0,
+  "archive_tail_note": "墙钟终点取本指标文件生成时刻（本轮归档完成）。在案的本轮活动——迭代记录的 ended_at、看图事件的 viewed_at、成功请求的结束时刻——止于 last_recorded_activity_at；两者之差 archive_tail_seconds 是归档与记账尾段，含写本报告与指标、必要的返工与调试。它是墙钟的一部分，不能扣掉，也不能用 request_duration_sum_seconds 或service_stall_seconds 替代墙钟",
+  "service_stall_seconds": 0.0,
+  "service_stall_note": "http_status 为 None 的 0 条请求的 elapsed_ms 之和——服务端接受了连接但在返回响应体期间挂起，最后由 socket 读取超时终止。这段时间没有产出，也不是模型或设计的时间",
+  "started_at_correction_note": "本轮 0 条请求全部返回了响应，started_at 均为服务端起点，无需还原；本脚本只在 http_status 为 None 时才改用 started_at - elapsed_ms",
+  "started_at_correction": [],
+  "first_usable_image_seconds": 58.922,
+  "first_usable_image_note": "本轮未提交能力探针（复用第一轮已验证的渐变/Opacity/文本扩展结论，不重复消耗请求），首次可打开图片取首次成功的渲染请求",
+  "first_delivered_image_seconds": 58.9,
+  "first_delivered_image_note": "首次成功取得交付尺寸的成品图（launch-portrait，attempt 1）",
+  "user_feedback_wait_seconds": 0,
+  "user_feedback_wait_note": "预置轮次模式，不等待外部反馈；第 2、3 轮需求文件在本题 rounds/ 内，前一轮归档后直接读取",
+  "rate_limit_wait_seconds": 0,
+  "rate_limit_wait_note": "本轮未出现 429/503",
+  "queue_wait_seconds": null,
+  "queue_wait_null_reason": "服务端不可观测排队，未取得该数据",
+  "request_duration_sum_seconds": 15.187,
+  "request_duration_sum_note": "本轮 4 条快照请求的 elapsed_ms 之和，其中 2 条是去文字辅助渲染（仅为对比度审计量取文字下方的实际合成背景，不产出交付件）；本轮无 429/503、无读取超时、无重试，4 条全部一次成功，有效请求耗时 15.187 s，占墙钟 0.4%，其余是浅色主题重排设计、9 项无网络干跑门、去文字辅助渲染构造、逐图看图、逐段对比度量测、审计与归档",
+  "server_timing_source": "requests.jsonl 的 server_timing 字段：本轮 4 条成功记录（含 2 条交付渲染与 2 条去文字辅助渲染）全部有服务端自报值，如交付渲染 portrait attempt 1 'render;dur=3460.4, total;dur=3467.0'、wide 'render;dur=735.3, total;dur=743.2'；服务端自报与本地墙钟分开记录",
+  "timestamp_precision": "requests.jsonl 的 started_at / ended_at 被截断到整秒，first_usable_image_seconds 与 first_delivered_image_seconds 已用 elapsed_ms 还原亚秒分量；绝对起点仍只精确到 1 秒，故这两个字段的不确定度为 ±1 s"
+ },
+ "counts": {
+  "snapshot_requests": 4,
+  "snapshot_requests_by_kind": {
+   "render": 2,
+   "render-aux": 2
+  },
+  "snapshot_requests_by_kind_note": "kind='render' 是交付渲染，产出交付目录里的 PNG 与 .snapshot；kind='render-aux' 是去文字辅助渲染，只为对比度审计量取文字下方的实际合成背景，其 PNG 与 DSL 只落在临时目录，不是作品、不进入交付清单。两类请求都是真实的服务请求，故总请求数包含它们，但交付件数、dsl_versions 与作品数只计 render",
+  "successful_snapshot_requests": 4,
+  "failed_snapshot_requests": 0,
+  "retry_requests": 0,
+  "retry_note": "同 DSL 原样重发次数：本轮 4 条请求全部一次成功（HTTP 200），无失败、无需重发，故为 0；不计入语法修复",
+  "syntax_fix_resubmits": 0,
+  "other_service_requests": 0,
+  "other_service_note": "服务指南与 DSL 文档、fonts 查询在本轮之前已取得并缓存于 tmp/r20261014T1536+0800-5f11da/_suite/docs/，本轮复用未新增 HTTP",
+  "dsl_versions": 2,
+  "dsl_versions_breakdown": {
+   "artifacts": {
+    "launch-portrait": 1,
+    "launch-wide": 1
+   },
+   "probe": 0
+  },
+  "image_views": 15,
+  "completed_visual_iterations": 0,
+  "incomplete_visual_iterations": 0
+ },
+ "contrast_audit": {
+  "audit_path": "outputs/r20261014T1536+0800-5f11da/A21/round-03/contrast-audit.json",
+  "threshold": 4.5,
+  "n_images_checked": 2,
+  "n_images_not_checked": 0,
+  "n_text_segments_checked": 23,
+  "n_text_segments_not_checked": 0,
+  "n_coordinate_samples": 12,
+  "global_minimum_contrast_unrounded": 4.861573385783012,
+  "global_minimum_contrast": 4.8616,
+  "all_plain_text_meets_threshold": true,
+  "not_checked_items": [],
+  "per_image": [
+   {
+    "image": "launch-portrait",
+    "png": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.png",
+    "size": [
+     1080,
+     1350
+    ],
+    "n_text_segments": 12,
+    "n_checked": 12,
+    "n_samples_with_coordinates": 6,
+    "minimum_contrast_across_all_text": 4.8616,
+    "minimum_contrast_unrounded": 4.861573385783012,
+    "worst_segment": "date",
+    "method_sanity_passed": true
+   },
+   {
+    "image": "launch-wide",
+    "png": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.png",
+    "size": [
+     1440,
+     810
+    ],
+    "n_text_segments": 11,
+    "n_checked": 11,
+    "n_samples_with_coordinates": 6,
+    "minimum_contrast_across_all_text": 4.9098,
+    "minimum_contrast_unrounded": 4.909818451773984,
+    "worst_segment": "date",
+    "method_sanity_passed": true
+   }
+  ],
+  "method": "前景取 design-token 色，背景取去文字辅助渲染（同构造器、Canvas.text(record_text=False)）的实测像素，在字形覆盖区域内取最差对比度；逐段最差位置另附坐标、颜色、亮度与未舍入计算过程。辅助渲染仅存临时目录。",
+  "evidence_paths": [
+   "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/",
+   "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/"
+  ]
+ },
+ "counting_notes": [
+  "按 requests.jsonl 的 round 字段筛选",
+  "初次生成与查看计为基线，不计为改进迭代；改进迭代必须是「实际看图 → 修改 → 重渲 → 再实际看图比较」的完整闭环",
+  "image_views 按实际打开次数记录，不因是同一张图的不同视图（整图 / 放大裁切）而合并",
+  "本轮无 400 响应，syntax_fix_resubmits 与 retry_requests 均为 0",
+  "本轮请求日志原生带 delivered 字段；delivery_map 仍以 sha256 逐一比对复核，双通道一致",
+  "本轮 4 条快照请求分两种 kind：render 2 条产出交付 PNG（launch-portrait / launch-wide），render-aux 2 条只产出去文字辅助背景渲染（tmp/r20261014T1536+0800-5f11da/A21/backgrounds/），为对比度审计量取每段文字下方的实际合成背景。render-aux 不产出任何交付件，不计入作品数，也不进 delivery_map",
+  "本轮 4 条请求全部一次成功（HTTP 200），无 429/503、无读取超时、无重试，故 retry_requests 与语法修复重提交均为 0",
+  "contrast-audit.json 覆盖两图 23 段普通文字（竖版 12 段、横版 11 段），全部检查、无未检查项，最小对比度 4.8616（阈值 4.5），另附 12 处带实际坐标的样本；该结果由去文字辅助渲染的实测像素算出，不是主题 token 的推算，故本轮 counts 里不另设对比度相关的请求或迭代计数"
+ ],
+ "delivery_map": [
+  {
+   "artifact": "launch-portrait",
+   "png": "round-03/launch-portrait.png",
+   "png_bytes": 189963,
+   "png_sha256": "8dce3bf596f0fd3c7ae9a4f01fffc549d2207ac2a791c1ad6196b8f09660c524",
+   "dsl": "round-03/launch-portrait.snapshot",
+   "dsl_bytes": 6373,
+   "dsl_sha256": "cec1c5d623a907146c2bffed8d615cac47b5533f81c5aa2ce4f35be37c39bd25",
+   "source_request_id": "req-a21-r03-launch-portrait-7ad921",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 逐一比对"
+  },
+  {
+   "artifact": "launch-wide",
+   "png": "round-03/launch-wide.png",
+   "png_bytes": 179308,
+   "png_sha256": "b42d9bbf25e9a24a9a96b26e3c99bb192036100fb387f4428ae4d499dce9c575",
+   "dsl": "round-03/launch-wide.snapshot",
+   "dsl_bytes": 5401,
+   "dsl_sha256": "266639379a81b28922e68a4eb9fdd13e19ad71ed25799f3d4b4e0641e435f2db",
+   "source_request_id": "req-a21-r03-launch-wide-16dce2",
+   "match_basis": "响应字节 sha256 与交付 PNG sha256 逐一比对"
+  }
+ ],
+ "logs": {
+  "round_changes": "tmp/r20261014T1536+0800-5f11da/A21/round-03-changes.json",
+  "requests": "tmp/r20261014T1536+0800-5f11da/A21/requests.jsonl",
+  "iterations": "tmp/r20261014T1536+0800-5f11da/A21/iterations.jsonl",
+  "viewing_evidence": "tmp/r20261014T1536+0800-5f11da/A21/viewing-evidence.json",
+  "preview_manifest": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/views-manifest.json",
+  "auxiliary_background_renders": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/",
+  "auxiliary_background_note": "去文字辅助渲染的 PNG（launch-*.notext.png）与它们的 DSL （tmp/r20261014T1536+0800-5f11da/A21/dsl/r03-*.notext.*.snapshot）只落在临时目录，不进入交付目录，也不是作品",
+  "contrast_local_evidence": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/",
+  "contrast_local_evidence_note": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/ 下逐段文字的交付图局部与去文字背景局部各一份，供人工复核对比度取样位置；这些局部图不进交付目录",
+  "dryrun_gate": "tmp/r20261014T1536+0800-5f11da/A21/dsl/r03-*.dryrun.snapshot"
+ },
+ "outputs": [
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/design-tokens.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/content-map.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/contrast-audit.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/snapshot-usage.md",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/task-metrics.json"
+ ],
+ "iterations": [
+  {
+   "id": "it-a21-008",
+   "type": "baseline",
+   "variant": null,
+   "status": "completed"
+  }
+ ],
+ "unresolved_issues": [
+  {
+   "id": "a21-r3-u1",
+   "issue": "round-03-changes.json 的第一版写成了 Python 风格的相邻字符串字面量拼接，不是合法 JSON",
+   "why": "生成时沿用了代码里的多行字符串拼接写法；a21_audit.py 用 json.loads 读取时在 line 6 报 Expecting ',' delimiter",
+   "impact": "design-tokens.json 一度无法生成；不影响任何已交付图片",
+   "mitigation": "改为每个字段一个完整字符串后重新校验通过；失败草稿原样留底于 tmp/r20261014T1536+0800-5f11da/A21/round-03-changes.attempt-01.invalid-json.json，未删除",
+   "status": "disclosed"
+  },
+  {
+   "id": "a21-r3-u2",
+   "issue": "修正版 round-03-changes.json 先被写到交付目录 outputs/<run>/A21/ 下，与第 1、2 轮「变更说明放临时目录」的约定不一致",
+   "why": "改写时路径敲错；该文件是审计脚本的输入而非交付件，round-03.md 的必需交付清单里没有它",
+   "impact": "交付目录一度混入一个工作输入文件",
+   "mitigation": "用 mv 移到 tmp/r20261014T1536+0800-5f11da/A21/ 与 round-01/02-changes.json 同级，交付目录现在只剩 round-01/、round-02/、round-03/ 三个轮次目录；未使用删除命令",
+   "status": "disclosed"
+  },
+  {
+   "id": "a21-r3-u3",
+   "issue": "本轮看图时间只记录到分钟级",
+   "impact": "无法给出秒级看图时刻",
+   "mitigation": "viewing-evidence.json 的 15 条事件逐条以 viewed_at_precision 标明「minute-level（本次会话内实际打开）」",
+   "status": "disclosed"
+  },
+  {
+   "id": "a21-r3-u4",
+   "issue": "横版外辉光半径的配置值与构造器实参一度不一致：cfg['halo_scale_wide'] = 2.7，而 build_wide_r3 里写死 2.75",
+   "why": "第三轮先写死了构造器实参，再补配置项时只改了竖版；配置项对横版是死值，读设计 token 的人会拿到错误数字",
+   "impact": "不影响已交付的图像或 DSL，但影响设计 token 文档的可信度",
+   "mitigation": "改为构造器统一读 cfg['halo_scale_wide'] 并把它设为 2.75；随后重算两份 DSL 并与已交付 .snapshot 逐字节比对一致（portrait 6373 B、wide 5401 B，内容 IDENTICAL），证明该修正没有改动任何已交付字节",
+   "status": "disclosed"
+  }
+ ]
+}

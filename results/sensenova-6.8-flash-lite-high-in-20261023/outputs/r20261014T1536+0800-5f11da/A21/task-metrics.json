@@ -1,0 +1,222 @@
+{
+ "schema_version": "1.0",
+ "path_base": "suite_root",
+ "scope": "task（A21 三轮累计；逐轮明细见各 round-NN/task-metrics.json，本文件只累计顶层汇总，不重复相加轮次内的明细）",
+ "task_id": "A21",
+ "task_name": "staged-launch-change",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "rounds_total": 3,
+ "status": "completed",
+ "stop_reason": "三轮需求全部满足并完成视觉自检与对比度审计",
+ "started_at": "2026-10-19T18:40:30+08:00",
+ "ended_at": "2026-10-20T10:38:13+08:00",
+ "elapsed_seconds": 57463.0,
+ "elapsed_note": "从 round-01 开始到 round-03 归档完成的墙钟差，包含三轮之间的阅读与设计时间，也包含本会话中段的上下文压缩与平台停顿；不等于三轮 elapsed_seconds 之和（三轮之间还有跨轮准备与归档时间），也不等于请求耗时之和",
+ "output_dir": "outputs/r20261014T1536+0800-5f11da/A21",
+ "temp_dir": "tmp/r20261014T1536+0800-5f11da/A21",
+ "final_images_total": 6,
+ "final_images_note": "每轮 2 张（launch-portrait 1080x1350、launch-wide 1440x810），三轮各为一组独立作品，不是同一张图的重复",
+ "counts": {
+  "snapshot_requests": 17,
+  "snapshot_requests_by_round": {
+   "1": 9,
+   "2": 4,
+   "3": 4
+  },
+  "snapshot_requests_by_kind": {
+   "render": 12,
+   "render-aux": 2,
+   "probe": 3
+  },
+  "snapshot_requests_note": "round-01 含 3 条能力探针（实测 gradientFocal、Opacity、文本扩展、CIRCLE 与 borderRadius 互斥等）；round-03 含 2 条去文字辅助渲染，只为对比度审计量取文字下方的实际合成背景，不产出交付件、不计入作品数",
+  "snapshot_requests_attribution_note": "3 条能力探针的 requests.jsonl 记录 round 字段为 null（驱动脚本在轮次字段落地之前就发出了它们）；按 started_at（2026-10-19T18:40–18:43，落在 round-01 起点 18:39:48 之后）归属 round-01，与 round-01 task-metrics.json 的 9 条一致",
+  "successful_snapshot_requests": 12,
+  "failed_snapshot_requests": 5,
+  "retry_requests": 2,
+  "syntax_fix_resubmits": 3,
+  "dsl_versions": 10,
+  "image_views": 43,
+  "image_views_by_round": {
+   "1": 14,
+   "2": 14,
+   "3": 15
+  },
+  "completed_visual_iterations": 1,
+  "iteration_records": 8
+ },
+ "request_duration_sum_seconds": 1417.469,
+ "request_duration_sum_note": "三轮 requests.jsonl 的 elapsed_ms 之和；round-02 含 1342.141 s 服务端读取超时挂起（无产出），扣掉后有效请求耗时为 70.515 s",
+ "rounds": [
+  {
+   "round": 1,
+   "output_subdirectory": "round-01",
+   "started_at": "2026-10-19T18:40:30+08:00",
+   "ended_at": "2026-10-19T21:00:41+08:00",
+   "elapsed_seconds": 8411.1,
+   "final_images": 2,
+   "snapshot_requests": 9,
+   "image_views": 14,
+   "completed_visual_iterations": 1,
+   "content_map_checks": "7/7",
+   "request_duration_sum_seconds": 32.656,
+   "first_usable_image_seconds": 6.531,
+   "first_delivered_image_seconds": 922.6,
+   "metrics": "outputs/r20261014T1536+0800-5f11da/A21/round-01/task-metrics.json"
+  },
+  {
+   "round": 2,
+   "output_subdirectory": "round-02",
+   "started_at": "2026-10-19T21:23:01+08:00",
+   "ended_at": "2026-10-19T22:44:16+08:00",
+   "elapsed_seconds": 4874.3,
+   "final_images": 2,
+   "snapshot_requests": 4,
+   "image_views": 14,
+   "completed_visual_iterations": 0,
+   "content_map_checks": "9/9",
+   "request_duration_sum_seconds": 1369.626,
+   "service_stall_seconds": 1342.141,
+   "first_usable_image_seconds": 1396.454,
+   "first_delivered_image_seconds": 1396.5,
+   "metrics": "outputs/r20261014T1536+0800-5f11da/A21/round-02/task-metrics.json"
+  },
+  {
+   "round": 3,
+   "output_subdirectory": "round-03",
+   "started_at": "2026-10-20T09:33:04+08:00",
+   "ended_at": "2026-10-20T10:38:13+08:00",
+   "elapsed_seconds": 3909.0,
+   "archive_tail_seconds": 2533.0,
+   "final_images": 2,
+   "snapshot_requests": 4,
+   "snapshot_requests_by_kind": {
+    "render": 2,
+    "render-aux": 2
+   },
+   "image_views": 15,
+   "completed_visual_iterations": 0,
+   "content_map_checks": "9/9",
+   "request_duration_sum_seconds": 15.187,
+   "first_usable_image_seconds": 58.922,
+   "first_delivered_image_seconds": 58.9,
+   "metrics": "outputs/r20261014T1536+0800-5f11da/A21/round-03/task-metrics.json"
+  }
+ ],
+ "contrast_audit": {
+  "requirement": "round-03.md：所有普通文字与实际合成背景 ≥4.5:1，不得只用主题 token 或名义底色",
+  "path": "outputs/r20261014T1536+0800-5f11da/A21/round-03/contrast-audit.json",
+  "threshold": 4.5,
+  "n_text_segments_checked": 23,
+  "n_text_segments_not_checked": 0,
+  "n_images_checked": 2,
+  "global_minimum_contrast_unrounded": 4.861573385783012,
+  "global_minimum_contrast": 4.8616,
+  "all_plain_text_meets_threshold": true,
+  "not_checked_items": [],
+  "method": "前景取 design-token 色；背景取去文字辅助渲染（同构造器、Canvas.text(record_text=False)）在字形覆盖区的实际像素，按需求规定的 8 位 sRGB 线性化与相对亮度公式、用未舍入结果判阈值；渐变背景取字形覆盖区内最差值",
+  "note": "仅 round-03 要求对比度审计；round-01 与 round-02 为深底主题，需求未要求该项，故无该文件"
+ },
+ "delivery_verified_by": "每轮 metrics.delivery_map 均用响应字节 sha256 与交付 PNG sha256 逐一比对",
+ "unresolved_issues": [
+  {
+   "round": 1,
+   "id": "a21-r1-u1",
+   "issue": "本轮 9 条 requests.jsonl 记录均无 delivered 字段",
+   "status": "disclosed"
+  },
+  {
+   "round": 1,
+   "id": "a21-r1-u2",
+   "issue": "交付目录中的 PNG 被同轮 v2 迭代原地覆盖，v1 字节不在交付目录",
+   "status": "disclosed"
+  },
+  {
+   "round": 1,
+   "id": "a21-r1-u3",
+   "issue": "部分看图时间只能到分钟级",
+   "status": "disclosed"
+  },
+  {
+   "round": 2,
+   "id": "a21-r2-u1",
+   "issue": "launch-portrait 的前两次请求在读取响应阶段超时，未返回任何字节",
+   "status": "disclosed"
+  },
+  {
+   "round": 2,
+   "id": "a21-r2-u2",
+   "issue": "驱动脚本异常路径把 started_at 记为异常发生时刻，即请求结束时刻",
+   "status": "disclosed"
+  },
+  {
+   "round": 3,
+   "id": "a21-r3-u1",
+   "issue": "round-03-changes.json 的第一版写成了 Python 风格的相邻字符串字面量拼接，不是合法 JSON",
+   "status": "disclosed"
+  },
+  {
+   "round": 3,
+   "id": "a21-r3-u2",
+   "issue": "修正版 round-03-changes.json 先被写到交付目录 outputs/<run>/A21/ 下，与第 1、2 轮「变更说明放临时目录」的约定不一致",
+   "status": "disclosed"
+  },
+  {
+   "round": 3,
+   "id": "a21-r3-u3",
+   "issue": "本轮看图时间只记录到分钟级",
+   "status": "disclosed"
+  },
+  {
+   "round": 3,
+   "id": "a21-r3-u4",
+   "issue": "横版外辉光半径的配置值与构造器实参一度不一致：cfg['halo_scale_wide'] = 2.7，而 build_wide_r3 里写死 2.75",
+   "status": "disclosed"
+  }
+ ],
+ "logs": {
+  "requests": "tmp/r20261014T1536+0800-5f11da/A21/requests.jsonl",
+  "iterations": "tmp/r20261014T1536+0800-5f11da/A21/iterations.jsonl",
+  "viewing_evidence": "tmp/r20261014T1536+0800-5f11da/A21/viewing-evidence.json",
+  "round_changes": [
+   "tmp/r20261014T1536+0800-5f11da/A21/round-02-changes.json",
+   "tmp/r20261014T1536+0800-5f11da/A21/round-03-changes.json"
+  ],
+  "preview_manifests": [
+   "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/views-manifest.json",
+   "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/views-manifest.json",
+   "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/views-manifest.json"
+  ],
+  "auxiliary_background_renders": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/",
+  "contrast_local_evidence": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/",
+  "archive_conform_backup": "tmp/r20261014T1536+0800-5f11da/A21/archive-conform/",
+  "iterations_pre_normalize_backup": "tmp/r20261014T1536+0800-5f11da/A21/iterations.pre-r03-normalize.jsonl"
+ },
+ "outputs": [
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/content-map.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/design-tokens.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-portrait.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-portrait.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-wide.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-wide.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/snapshot-usage.md",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-01/task-metrics.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/content-map.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/design-tokens.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/snapshot-usage.md",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-02/task-metrics.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/content-map.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/contrast-audit.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/design-tokens.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.png",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.snapshot",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/snapshot-usage.md",
+  "outputs/r20261014T1536+0800-5f11da/A21/round-03/task-metrics.json",
+  "outputs/r20261014T1536+0800-5f11da/A21/task-metrics.json"
+ ]
+}

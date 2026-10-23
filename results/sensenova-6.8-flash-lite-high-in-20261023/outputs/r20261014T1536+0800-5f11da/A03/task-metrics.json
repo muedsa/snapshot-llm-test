@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A03",
+  "track": "A",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐图查看与像素自检：repair-log.json 记录 11 项缺陷（3 真实报错 / 3 静默忽略 / 5 视觉暴露）全部修复，final_verification 的 20 项题面要求断言全部 passed",
+  "output_dir": "outputs/r20261014T1536+0800-5f11da/A03",
+  "temp_dir": "tmp/r20261014T1536+0800-5f11da/A03",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "started_at": "2026-10-14T23:42:18+08:00",
+  "ended_at": "2026-10-15T01:21:00+08:00",
+  "elapsed_seconds": 5922,
+  "elapsed_note": "墙钟时间：started_at 取 events.jsonl 中 A02 完成 / A03 开始的记录（2026-10-14T23:42:18+08:00），与 A02 的 ended_at 衔接；23:52:20 的 state-000029 检查点是对同一任务的重新确认，不是新起点。ended_at 取本次收尾写完三份交付物后的时刻。墙钟不等于请求耗时之和，中间含读原稿与文档、6 个单点语法探针的构造与二分定位、像素测量脚本的编写与三处 numpy 失效修正、逐图查看与报告撰写。",
+  "counts": {
+    "final_pngs": 1,
+    "final_dsl": 1,
+    "snapshot_requests": 16,
+    "successful_snapshot_requests": 9,
+    "failed_snapshot_requests": 7,
+    "retry_requests": 1,
+    "attempts_without_response": 3,
+    "attempts_without_response_note": "probe2 的 q2/q3 与 probe5 第 1 次均在读取响应阶段 TimeoutError，无 HTTP 响应、无 requests.jsonl 记录、无响应 body。真实 HTTP 尝试数为 19 而日志为 16 条。见 unresolved_issues。",
+    "document_requests": 0,
+    "shared_document_requests": 0,
+    "shared_document_requests_note": "本题未新增文档或字体请求，全部复用 tmp/_suite/docs/ 下已缓存的 shared 结果。",
+    "other_service_requests": 0,
+    "dsl_versions_rendered": 15,
+    "dsl_versions_rendered_note": "dsl/ 目录落盘 16 份草稿；实际提交到服务的不同版本 15 个（probe2-q2 落盘但未成功提交；v2 提交两次 preview + final）。",
+    "iterations_recorded": 16,
+    "completed_visual_iterations": 1,
+    "completed_visual_iterations_note": "仅 v1 → v2 构成完整视觉迭代（看图发现缺陷 V-1 → 修改 → 重渲染 → 再看图比较）。",
+    "incomplete_visual_iterations": 0,
+    "syntax_fix_requests": 8,
+    "syntax_fix_requests_note": "p1–p5 五个单点探针 + probe2-q1 + probe3-p6 + probe4-p7/p8，用于定位与修复解析错误及验证语法修复结果。",
+    "alternative_probe_requests": 4,
+    "alternative_probe_requests_note": "probe3-s1、probe3-s2（BackdropFilter 语义对照）、probe4-p8（debug 层）、probe5-layout（四象限二分）。",
+    "image_views": 11,
+    "image_views_note": "8 张渲染预览（p6、s1、s2、p7、p8、probe5、v1、v2）+ 2 张 probe5 放大裁图（T1、T4）+ 最终 PNG。查看时刻只有下界，见 timings.view_note。",
+    "crop_images": 2,
+    "preview_images": 11,
+    "issues_found": 11,
+    "issues_by_class": {
+      "真实报错": 3,
+      "静默忽略": 3,
+      "只在视觉上暴露": 5
+    },
+    "own_defects": 2,
+    "own_defects_note": "V-0（p6 自造嵌套错误）、V-1（v1 漏减根 padding 平移），已修复并单独归档，不计入原稿缺陷。",
+    "requirement_checks": 20,
+    "requirement_failures": 0
+  },
+  "request_notes": {
+    "http_status_distribution": {
+      "200": 9,
+      "400": 7
+    },
+    "http_429_or_503": 0,
+    "retry_after_seen": false,
+    "queue_wait_seconds": null,
+    "queue_wait_note": "服务未返回排队字段，Server-Timing 只有 render;dur 与 total;dur，排队等待不可测，按约定记 null（不是 0）。",
+    "ratelimit_remaining_range": "115–119",
+    "ratelimit_note": "16 次请求的 X-RateLimit-Remaining 始终在 115–119，从未触及限流，故 rate_limit_wait_seconds=0（确认未发生）。",
+    "error_codes": [
+      "PARSE_ERROR"
+    ],
+    "error_kinds": [
+      "Attr [padding] value format error",
+      "Attr [matrix] must not be null",
+      "Attr [matrix] value format error"
+    ],
+    "error_position_is_utf8_byte_offset": true,
+    "error_position_note": "服务报的 position 等于各版本 DSL 中出错标签的 UTF-8 字节偏移，已用 6 个探针逐一交叉验证（v0=464、p1=466、p2=440、p3=439、p4=467、p5=467 均命中 <Transform）。这是区分真实报错与静默忽略的核心手段：只改一处，看 position 移动了多少字节。"
+  },
+  "timings": {
+    "started_at": "2026-10-14T23:42:18+08:00",
+    "ended_at": "2026-10-15T01:21:00+08:00",
+    "elapsed_seconds": 5922,
+    "first_usable_image_seconds": 1724,
+    "first_usable_image_note": "起点 23:42:18 → req-a03-probe3-p6 结束 2026-10-15T00:11:02+08:00，首个 200 PNG。前 7 次请求全部 400（原稿 + 6 个语法探针），故首次可用图耗时较长。",
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_wait_note": "单轮任务，无用户反馈轮次，确认未发生记 0。",
+    "rate_limit_wait_seconds": 0,
+    "rate_limit_wait_note": "全程 115–119，无 429/503、无 Retry-After，确认未发生记 0。",
+    "queue_wait_seconds": null,
+    "queue_wait_note": "服务无排队字段，不可测记 null。",
+    "request_duration_sum_seconds": 56.06,
+    "request_duration_sum_note": "requests.jsonl 中 16 条记录的 elapsed_ms 之和 ÷1000（客户端端到端视角，含 DNS/TLS 与本地开销），顺序执行。不等于任务墙钟总耗时。",
+    "request_elapsed_ms_min": 1703,
+    "request_elapsed_ms_max": 7609,
+    "request_first_started_at": "2026-10-14T23:53:51+08:00",
+    "request_last_ended_at": "2026-10-15T01:00:48+08:00",
+    "server_timing_total_dur_sum_seconds": 8065.2,
+    "server_timing_render_dur_sum_seconds": 7207.6,
+    "server_timing_source": "各响应头 Server-Timing: render;dur=..., total;dur=...，仅表示服务端处理段，与客户端 elapsed_ms 是两个口径，彼此不可相加，也不等于墙钟。",
+    "server_timing_outliers": {
+      "req-a03-probe4-p8": "render;dur=2595.0（开启 debug 布局覆盖层，明显高于其他版本）",
+      "req-a03-v1-preview": "render;dur=1672.7"
+    },
+    "view_note": "图像查看未记录精确时刻，iterations.jsonl 与 repair-log.json 中 recorded 为 viewed_not_before = 该响应结束时间，是真实下界；不编造精确时刻。",
+    "log_sources": [
+      "tmp/r20261014T1536+0800-5f11da/A03/requests.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A03/iterations.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A03/v2-inspect.json",
+      "tmp/r20261014T1536+0800-5f11da/A03/v1-inspect.json",
+      "tmp/r20261014T1536+0800-5f11da/A03/alpha-check.json",
+      "tmp/r20261014T1536+0800-5f11da/_suite/events.jsonl"
+    ]
+  },
+  "artifacts": {
+    "png": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A03/system-pulse.png",
+      "bytes": 48526,
+      "sha256_16": "c180a82519789efb",
+      "size": [1280, 800],
+      "is_real_service_response": true
+    },
+    "dsl": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A03/system-pulse.snapshot",
+      "bytes": 5796,
+      "sha256_16": "89c3348e072ba3a2",
+      "matches_rendered_dsl": true
+    },
+    "repair_log": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A03/repair-log.json",
+      "bytes": 49293,
+      "sha256_16": "ede6e48321f2dda6"
+    },
+    "usage_report": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A03/snapshot-usage.md",
+      "bytes": 24121,
+      "sha256_16": "0ccc6c40a3e8efdb"
+    }
+  },
+  "quality_gates": {
+    "requirement_checks_pass": "20/20",
+    "requirement_checks_source": "outputs/.../A03/repair-log.json → final_verification.requirement_check.items",
+    "safe_margin_min_px": 32,
+    "content_bbox": [32, 42, 1247, 735],
+    "metric_card_widths": [384, 384, 384],
+    "metric_card_max_width_delta": 0,
+    "metric_card_gaps": [32, 32],
+    "live_size": [96, 36],
+    "live_title_overlap_px": -830,
+    "live_title_overlap_note": "title.right_edge=322 远小于 live.left=1152，横向间隔 830px，不遮挡。",
+    "explain_card_size": [500, 150],
+    "stripe_extent_x": [250, 1029],
+    "stripe_overhang_px": {"left": 140, "right": 140},
+    "blur_outside_inside_ratio": 16.59,
+    "blur_outside_inside_note": "逐列纵向亮度剖面最大单步跳变：卡外均值 173.77、卡内均值 10.48，已排除卡体上下边框行与文字笔画列。比值 >3 即证明模糊只作用于卡内。",
+    "card_text_max_step": 172.09,
+    "card_text_crisp": true,
+    "review_bbox": [1076, 660, 1239, 735],
+    "review_rotation": "counterclockwise",
+    "review_alpha_fill_measured": [58, 64, 76],
+    "review_alpha_fill_expected": [60, 65, 77],
+    "review_alpha_fill_channel_delta_max": 2,
+    "no_post_processing": "最终 PNG 为服务响应字节直存，未做任何像素后处理；未用其他绘图工具画主体或嵌入图片。",
+    "no_unknown_attributes_in_source": "最终 DSL 不含 rotate、font-size、<Snapshot> 上的 width/height、<Row> 内的 Positioned 等任何已证实不生效的写法。",
+    "failed_drafts_retained": true,
+    "fonts_verified": "fontFamily 统一 Inter（/fonts 确认 7 个字重可用；Noto Sans SC 未安装，未使用）。"
+  },
+  "visual_review": [
+    {
+      "version": "v0-original",
+      "kind": "baseline",
+      "action": "原样提交",
+      "result": "HTTP 400 PARSE_ERROR padding value format error @91。取得原稿的真实报错基线，失败响应保留。"
+    },
+    {
+      "version": "p1–p5",
+      "kind": "syntax-fix",
+      "action": "5 个单点语法探针",
+      "result": "全部收敛到同一 Attr [matrix] must not be null 错误；用 position 的字节偏移差证明 Snapshot width/height 与 font-size 被静默忽略（466→440 差 26 = 被删字节数；440→439 差 1 = kebab 改 camelCase 的字节数）。"
+    },
+    {
+      "version": "probe2-q1",
+      "kind": "syntax-fix",
+      "action": "matrix 首次填写",
+      "result": "仍 400，报 value format error：矩阵值算对但缺外层括号。文档要求外层必须有括号且值间不能有空格。"
+    },
+    {
+      "version": "probe3-p6",
+      "kind": "syntax-fix",
+      "action": "整幅目检",
+      "result": "返回 200 但画面只剩标题。复查 DSL 发现是我多加一个 <Container> 却漏了对应闭合标签——自造缺陷 V-0，不能当干净基线，改用 probe4-p7 重做。"
+    },
+    {
+      "version": "probe3-s1 / s2",
+      "kind": "alternative",
+      "action": "BackdropFilter 语义对照",
+      "result": "s1 证明 ClipRRect + BackdropFilter 结构成立；s2 把文字放进 BackdropFilter 子树内文字仍清晰，确认 BackdropFilter 不模糊自己的子树，而原稿用的 ImageFiltered 会模糊整棵子树——这是「文字被糊掉」的机制。"
+    },
+    {
+      "version": "probe4-p7 / p8",
+      "kind": "syntax-fix",
+      "action": "整幅目检 + debug 布局层",
+      "result": "p7 语法全修、零结构改动，HTTP 200 且 PNG 正常，画面仍只剩标题。p8 加 debug=\"true\" 后布局层只有根容器与标题两个盒子，<Row> 及之后所有兄弟节点未进入布局树——把「内容消失」从猜测变成可定位的事实。"
+    },
+    {
+      "version": "probe5-layout",
+      "kind": "alternative",
+      "action": "整幅目检 + T1/T4 放大裁图",
+      "result": "一图四象限定位：T2 Row>Stack(fit=EXPAND)>Positioned>Text 什么都不渲染（原稿整棵子树消失的机制）；T1 Expanded flex=1 把 width=360 拉满 576（等宽不成立）；T4 #33FFFFFF 渲染成不透明青色、#FFFFFF44 实测白色 26.7%。"
+    },
+    {
+      "version": "v1",
+      "kind": "visual",
+      "action": "整幅目检 + 像素自检",
+      "result": "构图正确但整体右下偏移 32px：content_bbox=[64,74,1279,773]，右余量 0 贴住画布边缘，第三张指标卡与 REVIEW 溢出安全边距。定位为自造缺陷 V-1：根 Container 的 padding 平移了 Stack 原点，而所有 <Positioned> 写的是画布绝对坐标。"
+    },
+    {
+      "version": "v2",
+      "kind": "visual",
+      "action": "整幅目检 + 像素自检 + alpha 众数核验",
+      "result": "所有布局常量改画布绝对值并统一经 L()/T() 减 32；REVIEW 与说明卡卡体 alpha 改 #FFFFFF33。content_bbox=[32,42,1247,735]、安全边距 min=32；三卡 384 等宽、间距 32；LIVE 96×36 不遮挡；说明卡 500×150、细条两侧各越出 140px、卡外/卡内锐度比 16.59；文字笔画跳变 172.09；REVIEW 164×76 逆时针、白底 20% 通道差 ≤2。20 项要求全部通过。"
+    },
+    {
+      "version": "v2-final",
+      "kind": "retry",
+      "action": "整幅目检最终 PNG",
+      "result": "同一 DSL 重提交写入输出目录，48526 B 与 preview 字节数一致。实际打开最终图复核：#0B1220 深底、44px 粗体标题左上、右上绿色 LIVE 胶囊不遮挡、三张等宽指标卡带彩色强调条、分隔线、说明卡内五条彩色细条穿过两侧边界且卡内背景被模糊而文字锐利、右下 160×56 REVIEW 半透明白底逆时针 8°。"
+    }
+  ],
+  "evidence": {
+    "requests_log": "tmp/r20261014T1536+0800-5f11da/A03/requests.jsonl",
+    "iterations_log": "tmp/r20261014T1536+0800-5f11da/A03/iterations.jsonl",
+    "raw_dsl_per_request": "tmp/r20261014T1536+0800-5f11da/A03/req-*.snapshot（16 份）",
+    "response_headers": "tmp/r20261014T1536+0800-5f11da/A03/req-*.snapshot.headers.txt",
+    "versioned_dsl": "tmp/r20261014T1536+0800-5f11da/A03/dsl/（16 份草稿：v0-original、p1–p5、probe2-q1/q2、probe3-p6/s1/s2、probe4-p7/p8、probe5-layout、v1、v2）",
+    "raw_responses": "tmp/r20261014T1536+0800-5f11da/A03/responses/（含 7 份 400 错误 JSON）",
+    "preview_images": "tmp/r20261014T1536+0800-5f11da/A03/preview/（11 张，含 probe5 的 T1/T4 放大裁图）",
+    "self_check_reports": [
+      "tmp/r20261014T1536+0800-5f11da/A03/v1-inspect.json（缺陷 V-1 证据）",
+      "tmp/r20261014T1536+0800-5f11da/A03/v2-inspect.json（最终图全量数值断言）",
+      "tmp/r20261014T1536+0800-5f11da/A03/alpha-check.json（alpha 语义众数 vs 理论上叠值）"
+    ],
+    "probe_diagnosis": [
+      "tmp/r20261014T1536+0800-5f11da/A03/original-error.json",
+      "tmp/r20261014T1536+0800-5f11da/A03/probe-chain.json",
+      "tmp/r20261014T1536+0800-5f11da/A03/probe3.json",
+      "tmp/r20261014T1536+0800-5f11da/A03/probe4.json",
+      "tmp/r20261014T1536+0800-5f11da/A03/probe5.json",
+      "tmp/r20261014T1536+0800-5f11da/A03/v2.json"
+    ],
+    "generators_and_scripts": [
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_io.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_build.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_probe_chain.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_probe2.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_probe3.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_probe4.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_probe5.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_inspect.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_alpha.py",
+      "tmp/r20261014T1536+0800-5f11da/A03/gen/a03_iter.py"
+    ],
+    "source_input_unchanged": "tasks/A03-semantic-debugging/inputs/broken.snapshot（只读，未改写；工作副本在 tmp/.../A03/inputs-copy/）",
+    "templates_consulted": [
+      "tasks/A03-semantic-debugging/templates/audit-fields.json",
+      "tasks/A03-semantic-debugging/templates/snapshot-usage-template.md",
+      "tasks/A03-semantic-debugging/templates/task-metrics-template.json"
+    ]
+  },
+  "unresolved_issues": [
+    {
+      "id": "A03-U1",
+      "severity": "low",
+      "type": "留痕缺口",
+      "detail": "3 次提交在读取响应阶段 TimeoutError（probe2 的 q2、q3，probe5 的第 1 次），没有 HTTP 响应、没有 requests.jsonl 记录、没有响应 body。真实 HTTP 尝试数是 19 而日志 16 条，snapshot_requests=16 统计的是有响应的请求。",
+      "impact": "requests.jsonl 少 3 条；probe2-q2 的 DSL 草稿与请求快照保留但无对应响应。",
+      "recovery": "已如实记录，不补造记录。恢复办法：重新提交 dsl/system-pulse.probe2-q2.snapshot 并追加记录即可补齐，但会改变历史请求计数，故未做。",
+      "status": "open"
+    },
+    {
+      "id": "A03-U2",
+      "severity": "low",
+      "type": "留痕瑕疵",
+      "detail": "tmp/.../A03/v2.json 被最终提交覆盖：--final 运行把 preview 写入的 final:false 那份覆盖成最终记录。",
+      "impact": "v2.json 只反映最后一次提交。两个请求都在 requests.jsonl 中，PNG 字节数一致（48526 B），preview 副本 preview/v2.png 完整保留。",
+      "recovery": "无需恢复：可复现性与证据链未受影响。",
+      "status": "accepted"
+    },
+    {
+      "id": "A03-U3",
+      "severity": "info",
+      "type": "不可测指标",
+      "detail": "排队等待时间不可测：服务无相关响应字段，Server-Timing 只有 render;dur 与 total;dur。",
+      "impact": "queue_wait_seconds 记 null（不是 0）。",
+      "recovery": "不可恢复；已按约定标 null。",
+      "status": "accepted"
+    },
+    {
+      "id": "A03-U4",
+      "severity": "info",
+      "type": "测量精度上限",
+      "detail": "图像查看时刻只有真实下界（viewed_not_before = 响应结束时间），无精确查看时刻；REVIEW 与说明卡卡体的 alpha 用 2 级量化众数 vs 理论上叠值核验，允许 ±2 通道误差；说明卡圆角 24 未做单独的弧半径数值断言（由「上下边框行只在 x=413..866 出现亮蓝」侧面证明圆角生效）。",
+      "impact": "不影响题面要求的通过判定；这四项是测量方法的上限，不是渲染缺陷。",
+      "recovery": "不可恢复（查看时刻）；alpha 与圆角如需量化可追加脚本，但当前断言已足够判定。",
+      "status": "accepted"
+    }
+  ]
+}

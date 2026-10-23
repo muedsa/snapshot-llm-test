@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A07",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "task_round": null,
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检与像素校验",
+  "output_dir": "outputs/r20261014T1536+0800-5f11da/A07",
+  "temp_dir": "tmp/r20261014T1536+0800-5f11da/A07",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "timings": {
+    "started_at": "2026-10-15T07:40:54+08:00",
+    "ended_at": "2026-10-15T11:07:00+08:00",
+    "elapsed_seconds": 12366,
+    "first_usable_image_seconds": 1000,
+    "user_feedback_wait_seconds": 0,
+    "rate_limit_wait_seconds": 0,
+    "queue_wait_seconds": null,
+    "request_duration_sum_seconds": 43.124,
+    "server_timing_source": "requests.jsonl 的 elapsed_ms（本地计时，含网络）；服务端 Server-Timing 仅返回 render 与 total，两者记录在各请求的 server_timing 字段",
+    "queue_wait_note": "服务端未返回排队时长，不可测，故为 null；不是 0",
+    "note": "elapsed_seconds 远大于 request_duration_sum_seconds；差额为本地图元原型推导、像素测量分析、排版常量调整与逐图查看，不属于服务耗时。两者不可相加或互相替代"
+  },
+  "counts": {
+    "snapshot_requests": 12,
+    "successful_snapshot_requests": 11,
+    "failed_snapshot_requests": 1,
+    "retry_requests": 1,
+    "other_service_requests": 0,
+    "dsl_versions": 11,
+    "image_views": 28,
+    "completed_visual_iterations": 4,
+    "incomplete_visual_iterations": 0,
+    "counts_note": {
+      "retry_requests": "req-a07-probe1-clip（400）→ req-a07-probe1-clip-1（200）为同一探针 DSL 的修复重发，是 12 次请求的子集",
+      "other_service_requests": "A07 未新增文档或字体 HTTP 请求，仅复用 run 早期已真实取得并缓存的结果",
+      "dsl_versions": "network-map 9 个（probe1-clip, probe2-rot, probe3-center, probe4-align, probe5-order, v1, v2, v3, v4）+ travel-card 2 个（v1, v2）",
+      "image_views": "5 张探针图 + 地图 v1(1 全图+4 局部) + v2(5 局部) + v3(4 局部) + v4(1 全图) + 旅行卡 v1(1) + v2(1 全图+6 局部) = 28，其中 21 张为 2x 局部放大",
+      "completed_visual_iterations": "map v1→v2、v2→v3、v3→v4、card v1→v2；初次生成与查看计为基线不计入",
+      "iterations_total": "iterations.jsonl 共 18 条：3 基线 + 4 完整视觉迭代 + 4 方案探索（探针） + 3 语法修复 + 4 校验修复/校验器修正"
+    }
+  },
+  "logs": {
+    "requests": "tmp/r20261014T1536+0800-5f11da/A07/requests.jsonl",
+    "iterations": "tmp/r20261014T1536+0800-5f11da/A07/iterations.jsonl"
+  },
+  "outputs": [
+    {
+      "file": "outputs/r20261014T1536+0800-5f11da/A07/network-map.png",
+      "kind": "required_output",
+      "width": 1600,
+      "height": 1000,
+      "bytes": 279814,
+      "dsl": "outputs/r20261014T1536+0800-5f11da/A07/network-map.snapshot",
+      "http_status": 200,
+      "content_type": "image/png"
+    },
+    {
+      "file": "outputs/r20261014T1536+0800-5f11da/A07/network-map.snapshot",
+      "kind": "required_output",
+      "bytes": 25645,
+      "positioned_count": 147,
+      "version": "v4"
+    },
+    {
+      "file": "outputs/r20261014T1536+0800-5f11da/A07/travel-card.png",
+      "kind": "required_output",
+      "width": 720,
+      "height": 1280,
+      "bytes": 234625,
+      "dsl": "outputs/r20261014T1536+0800-5f11da/A07/travel-card.snapshot",
+      "http_status": 200,
+      "content_type": "image/png"
+    },
+    {
+      "file": "outputs/r20261014T1536+0800-5f11da/A07/travel-card.snapshot",
+      "kind": "required_output",
+      "bytes": 28791,
+      "positioned_count": 149,
+      "version": "v2"
+    },
+    {
+      "file": "outputs/r20261014T1536+0800-5f11da/A07/routes.json",
+      "kind": "additional_output",
+      "bytes": 52161,
+      "generator": "tmp/r20261014T1536+0800-5f11da/A07/gen/a07_routes.py"
+    },
+    {
+      "file": "outputs/r20261014T1536+0800-5f11da/A07/snapshot-usage.md",
+      "kind": "common_output"
+    },
+    {
+      "file": "outputs/r20261014T1536+0800-5f11da/A07/task-metrics.json",
+      "kind": "common_output"
+    }
+  ],
+  "candidates": [
+    {"id": "network-map/v1", "path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A07/dsl/network-map.v1.snapshot", "outcome": "角标被裁、压字、图例行距紧"},
+    {"id": "network-map/v2", "path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A07/dsl/network-map.v2.snapshot", "outcome": "修裁切与压字，图例行距仍紧"},
+    {"id": "network-map/v3", "path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A07/dsl/network-map.v3.snapshot", "outcome": "图例行距正常，站标签第二行仍 17px"},
+    {"id": "network-map/v4", "path_base": "suite_root", "path": "outputs/r20261014T1536+0800-5f11da/A07/network-map.snapshot", "outcome": "最终版，C1..C10 通过"},
+    {"id": "travel-card/v1", "path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A07/dsl/travel-card.v1.snapshot", "outcome": "站名越界、角标压点、标签撞角标"},
+    {"id": "travel-card/v2", "path_base": "suite_root", "path": "outputs/r20261014T1536+0800-5f11da/A07/travel-card.snapshot", "outcome": "最终版，D1..D10 通过"}
+  ],
+  "rounds": [],
+  "verification": {
+    "map_pixel_checks": {
+      "report": "tmp/r20261014T1536+0800-5f11da/A07/inspect-map.json",
+      "script": "tmp/r20261014T1536+0800-5f11da/A07/gen/a07_inspect.py",
+      "passed": 10,
+      "total": 10,
+      "checks": [
+        "C1 canvas 1600x1000",
+        "C2 18 段中心线覆盖率 100%（站标记圆盘内不计）",
+        "C3 3 条 45 度段斜率 -1.0000（期望 -1.0），垂直厚度 14..14px（线宽 14px）",
+        "C4 三条线路像素互不接触（膨胀半径 2px，换乘站圆盘内不计），接触像素 0",
+        "C5 16 站核色 = 无障碍状态色",
+        "C6 16 站外圈 = 换乘深圈 / 所属线路色",
+        "C7 16 站 x 2 行标签区有墨迹且无线路色侵入",
+        "C8 38 个标签/Q 角标区块两两不重叠",
+        "C9 18 段端点在地图面板内；R/B/G 字母角标环上 >=6/8 为本线色且不压他线",
+        "C10 最小字号 17px（仅图例补充说明），站标签两行均 20px"
+      ],
+      "method_notes": {
+        "C3_slope": "逐列取带内像素中心 y 后 np.polyfit(xs, ys, 1)；不用整块像素相关系数（14px 宽的带本身有 +/-7 横向散布，会把相关系数拉低约 0.02）",
+        "C3_exclusion": "只保留整列都落在站标记圆盘之外的中间段列（|x - 端点x| >= 24 + 2）。原因：对称圆盘会在段两端切掉 45 度带的下半截，两端列中心同向上移而中段不变，系统性压小拟合斜率约 0.045",
+        "C3_unrounded_values": "斜率实测 -1.0000 / -1.0000 / -1.0000（期望 -1.0）；垂直厚度 14px x3",
+        "perpendicular": "垂直方向由实测几何 ux,uy = dx,dy 归一化后取 (uy, -ux)，不用模型里不带符号的 angle_deg（图像坐标 y 向下）",
+        "color_gate": "v = 255 - im, w = 255 - color, t = clip(sum(v*w)/|w|^2, 0, 1), resid = ||v - t*w||；保留 ||v|| > 60, t >= 0.6, resid < 25。判定他色侵入收紧到 resid < 14, t >= 0.75（#B91C1B 的 70% 抗锯齿混合在松门槛下残差约 22.4 会误判为 #DC2626）"
+      }
+    },
+    "card_pixel_checks": {
+      "report": "tmp/r20261014T1536+0800-5f11da/A07/inspect-card.json",
+      "script": "tmp/r20261014T1536+0800-5f11da/A07/gen/a07_inspect_card.py",
+      "passed": 10,
+      "total": 10,
+      "checks": [
+        "D1 canvas 720x1280",
+        "D2 61 个文本最小 20px（手机正文要求）",
+        "D3 9 条站间边的色条颜色 = 该段所属线路色，且 +/-5px 内无他线色",
+        "D4 26 个圆点：核色 = 无障碍状态色；外圈在 r=d/2-2 处 8 角度取样 >=7 命中",
+        "D5 9 个字母角标：与最近圆点几何距离 >=30px，26x26 盒内本线色填充 >=350px 且中心 10x10 白字 >=15px",
+        "D6 4 条线路条：换乘站有换乘标记（深色块 >=400px），非换乘站 0px",
+        "D7 26 个站名有墨迹",
+        "D8 站名区块两两不重叠且落在 [25, 695] 内（未被裁切）",
+        "D9 Q1/Q3 判定标青色、Q2 红色，各 >=120px",
+        "D10 末卡底 1098 <= 页脚顶 1104；页脚墨迹 13281px"
+      ],
+      "method_notes": {
+        "independence": "检查器自行重算 4 条线路条的像素位置（strip_geometry），不信任绘制脚本；版面算错会直接失败",
+        "D5_badge_rule": "段中点索引 (i0+i1)/2 为整数即落在某站上，绘制时右移半格；校验用真实几何 min|bx-xk| >= 30（= 角标半径 13 + 换乘圆点半径 15 + 2 余量），不用段跨度的任意比例"
+      }
+    },
+    "routes_audit": {
+      "report": "tmp/r20261014T1536+0800-5f11da/A07/audit-routes.json",
+      "script": "tmp/r20261014T1536+0800-5f11da/A07/gen/a07_audit_routes.py",
+      "passed": 14,
+      "total": 14,
+      "checks": [
+        "A0 schema_version / task_id / path_base",
+        "A1 无机器绝对路径（0 处盘符/UNC）",
+        "A2 模板要求的 4 组必需字段齐全",
+        "A3 queries 逐项 from/to/normal/accessible 与 stations/edge_lines/intervals/transfers/transfer_stations 齐全",
+        "A4 accessibility 16 站与 inputs/network.json 一致",
+        "A5 16 站逐项 endpoint/transfer/ride_through 检查 + 3 项汇总检查，均带 passed/method",
+        "A6 optimality 覆盖 3 查询 x 2 模式",
+        "A7 content_map 含显示区域（box [left,top,right,bottom]）与核对结论",
+        "A8 与独立重算的最短路径一致：站序/边数/换乘数/每条边所属线路",
+        "A9 可无障碍判定 = 起终点与换乘站全部无障碍",
+        "A10 无障碍路线合规且不劣于普通路线"
+      ],
+      "independence": "A8 完全绕开 model.json，直接对 tasks/A07-transit-topology/inputs/network.json 重建双向等权图，用另一套实现（heapq + 状态 (站, 当前线路) + 前驱回溯）跑字典序最短路径，再与 routes.json 比对",
+      "result": "Q1 S01→S11 6边/1换乘（可无障碍）；Q2 S13→S12 6边/1换乘（不可无障碍，换乘站 S05 东桥 accessible=false）→ 无障碍替代 6边/2换乘；Q3 S07→S16 4边/1换乘（可无障碍）"
+    },
+    "geometer": {
+      "source": "tmp/r20261014T1536+0800-5f11da/A07/model.json",
+      "is_geographic": false,
+      "drawn_angles_deg": [0.0, 45.0, 90.0],
+      "allowed_angles_deg": [0, 45, 90],
+      "total_segments": 18,
+      "segments_per_line": {"R": 6, "B": 7, "G": 5},
+      "false_crossing_count": 0,
+      "same_line_crossing_count": 0,
+      "line_passes_foreign_station_count": 0
+    }
+  },
+  "deliverable_summary": {
+    "network_map": {
+      "purpose": "全网非地理示意图",
+      "size_px": [1600, 1000],
+      "lines": 3,
+      "stations": 16,
+      "drawn_segments": 18,
+      "letter_chips": ["R", "B", "G"],
+      "transfer_stations": ["S04", "S05", "S08"],
+      "not_to_scale_note": "图中含『示意 · 不按比例』标注，routes.json 的 geometry.is_geographic = false"
+    },
+    "travel_card": {
+      "purpose": "三条最短旅程旅行卡",
+      "size_px": [720, 1280],
+      "journeys": 3,
+      "strips": 4,
+      "layout": "卡头（Q 徽标 + 起终点 + 无障碍判定）→ 统计行 → 线路条 →（Q2 说明 + 第二条线路条）→ 页脚；三卡占用 y 122..1098，页脚 1104..1256"
+    },
+    "routes_json": {
+      "purpose": "路线核验审计数据",
+      "queries": 3,
+      "accessibility_stations": 16,
+      "optimality_entries": 6,
+      "content_map_entries": 4
+    }
+  },
+  "unresolved_issues": [],
+  "known_defects_fixed": [
+    {"where": "network-map v1", "defect": "Q1 与 S13 的查询角标被地图面板裁掉一角", "fixed_in": "v2", "verified_by": "2x 局部放大 + C8"},
+    {"where": "network-map v1", "defect": "S16 研究所、S07 西港 的查询角标与站标签压字", "fixed_in": "v2", "verified_by": "2x 局部放大 + C7/C8"},
+    {"where": "network-map v2", "defect": "右侧图例说明行距过紧，末行贴近框下沿", "fixed_in": "v3", "verified_by": "2x 局部放大"},
+    {"where": "network-map v3", "defect": "站标签第二行 17px，低于题目要求的 20px", "fixed_in": "v4", "verified_by": "C10 + 看图"},
+    {"where": "travel-card v1", "defect": "首末站站名（S01 松林 / S11 会展 / S07 西港 / S16 研究所）越出卡片边缘被裁", "fixed_in": "v2", "verified_by": "D8 + 2x 局部放大"},
+    {"where": "travel-card v1", "defect": "Q2 无障碍线路条的 R 字母角标压在 S06 江湾 圆点上", "fixed_in": "v2", "verified_by": "D5 + 2x 局部放大"},
+    {"where": "travel-card v1", "defect": "换乘标签与相邻 B 角标水平间距约 4px 且有 4px 垂直重叠", "fixed_in": "v2", "verified_by": "D5 + 2x 局部放大"}
+  ]
+}

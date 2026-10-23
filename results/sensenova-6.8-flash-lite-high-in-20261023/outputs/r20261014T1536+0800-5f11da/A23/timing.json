@@ -1,0 +1,169 @@
+{
+ "schema_version": 1,
+ "task_id": "A23",
+ "path_base": "output_dir",
+ "run_id": "r20261014T1536+0800-5f11da",
+ "created_at": "2026-10-20T22:09:29+08:00",
+ "timezone": "Asia/Shanghai (UTC+08:00)",
+ "frames": [
+  {
+   "order": 1,
+   "id": "frame-1",
+   "t_ms": 0,
+   "file": "frame-1.png",
+   "duration_ms": 250,
+   "loop_point": true
+  },
+  {
+   "order": 2,
+   "id": "frame-2",
+   "t_ms": 250,
+   "file": "frame-2.png",
+   "duration_ms": 250,
+   "loop_point": false
+  },
+  {
+   "order": 3,
+   "id": "frame-3",
+   "t_ms": 500,
+   "file": "frame-3.png",
+   "duration_ms": 250,
+   "loop_point": false
+  },
+  {
+   "order": 4,
+   "id": "frame-4",
+   "t_ms": 750,
+   "file": "frame-4.png",
+   "duration_ms": 250,
+   "loop_point": false
+  },
+  {
+   "order": 5,
+   "id": "frame-5",
+   "t_ms": 1000,
+   "file": "frame-5.png",
+   "duration_ms": 250,
+   "loop_point": false
+  },
+  {
+   "order": 6,
+   "id": "frame-6",
+   "t_ms": 1250,
+   "file": "frame-6.png",
+   "duration_ms": 250,
+   "loop_point": false
+  }
+ ],
+ "loop": true,
+ "period_ms": 1500,
+ "duration_ms": 250,
+ "frame_rate_fps": 4.0,
+ "interpolation_note": "本 JSON 只给 6 个关键帧的时长与顺序，不含中间帧；插值规则见 frame-data.json 的 trajectories[].interpolation，它只描述设计轨迹，未渲染中间帧",
+ "seamless": false,
+ "seam_evidence": {
+  "location": "t=1250 ms（帧6）→ t=1500 ms ≡ 0 ms（帧1）",
+  "interval_ms": 250,
+  "type": "硬跳变（hard cut），不是无缝循环",
+  "per_unit": [
+   {
+    "id": "U01",
+    "distance_px": 136.0625,
+    "drot_deg": 120.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U02",
+    "distance_px": 87.9814,
+    "drot_deg": 25.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U03",
+    "distance_px": 87.9814,
+    "drot_deg": -15.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U04",
+    "distance_px": 39.6344,
+    "drot_deg": 0.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U05",
+    "distance_px": 78.1794,
+    "drot_deg": 20.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U06",
+    "distance_px": 91.348,
+    "drot_deg": 30.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U07",
+    "distance_px": 68.3706,
+    "drot_deg": -45.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U08",
+    "distance_px": 104.4204,
+    "drot_deg": 45.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U09",
+    "distance_px": 50.1003,
+    "drot_deg": 20.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U10",
+    "distance_px": 112.0543,
+    "drot_deg": 35.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U11",
+    "distance_px": 132.7818,
+    "drot_deg": 0.0,
+    "seam_over_forward_ratio": 3.3784
+   },
+   {
+    "id": "U12",
+    "distance_px": 97.4478,
+    "drot_deg": 0.0,
+    "seam_over_forward_ratio": 3.3784
+   }
+  ],
+  "min_jump_px": 39.6344,
+  "max_jump_px": 136.0625,
+  "min_rotation_jump_deg": 0.0,
+  "max_rotation_jump_deg": 120.0,
+  "rotation_wrapped_to_180": true,
+  "position_closure_at_1500ms": false,
+  "direction_continuity": false,
+  "velocity_continuity": false,
+  "impact": "每循环一次，画面在 250 ms 内从完整房景跳回 12 个散落的几何单元，再花 1250 ms 重新汇聚。跳变位置固定、幅度 39.6344–136.0625 px，不是随机卡顿",
+  "why": "「t=0 分散、t=1250 汇聚」与「1500 ms 处位置等于 0 处」不能同时成立；6 帧关键帧 + 250 ms/帧 的设定下无解",
+  "remediations": [
+   "改为 12 帧 / 3000 ms：帧 1–6 汇聚、帧 7–12 反向散开，接缝处首尾构型相同",
+   "保留 6 帧但在帧 6→帧 1 之间加 250 ms 交叉淡入淡出（需外部合成器，本服务不生成动画）",
+   "在帧 6 多停留 250 ms（末帧 hold 两次）再跳回，把跳变藏进静止期，仍有跳变但更不显眼",
+   "改设计为单元沿闭合路径运动、汇聚只是途经态——但那样末帧不再是纯汇聚态，与「末帧构成可识别图形」的要求冲突"
+  ],
+  "not_claimed_because": "不因为 loop=true 就宣称无缝；seamless 只按轨迹在 1500 ms 与 0 处位置/旋转一致与否判定",
+  "source": {
+   "path_base": "output_dir",
+   "path": "frame-data.json",
+   "pointer": "seam"
+  }
+ },
+ "playback_hints": {
+  "gif_note": "本服务不支持 GIF 输出（<Snapshot type=> 只接受 png/jpg/webp），因此未合成 GIF；6 张关键帧与这份 timing 描述可直接交给任意动画合成器使用",
+  "still_image_view": "静态查看建议看 contact-sheet.png（6 帧并排，浅底展示真实透明度）"
+ }
+}

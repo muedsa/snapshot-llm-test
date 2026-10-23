@@ -1,0 +1,504 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "title": "A03 语义调试修复日志：迁移后失效原稿 → System Pulse 监控卡",
+  "summary": "原稿 inputs/broken.snapshot 有 3 处真实解析报错、3 处静默忽略、5 处只在视觉上暴露的问题，共 11 项。修好全部显式语法错误后服务返回 200 与正常 PNG，但画面只剩标题——静默类问题无法靠报错定位，只能靠对照探针与像素测量。最终交付 system-pulse.png / system-pulse.snapshot，题面 12 项要求逐项数值核验通过。",
+
+  "initial_attempt": {
+    "dsl_path": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.v0-original.snapshot"},
+    "source_input": {"path_base": "suite_root", "path": "tasks/A03-semantic-debugging/inputs/broken.snapshot"},
+    "submitted_unchanged": true,
+    "note": "一字不改提交，取得服务真实报错。失败响应保留，不落输出目录，不把错误 JSON 保存成最终图片。",
+    "request": {
+      "request_id": "req-a03-original-0001",
+      "url": "https://open-snapshot.muedsa.com/snapshot",
+      "method": "POST",
+      "started_at": "2026-10-14T23:53:51+08:00",
+      "ended_at": "2026-10-14T23:53:58+08:00",
+      "elapsed_ms": 7609.0,
+      "http_status": 400,
+      "content_type": "application/json",
+      "response_bytes": 204,
+      "server_timing": "total;dur=289.7",
+      "ratelimit_remaining": 119
+    },
+    "error": {
+      "code": "PARSE_ERROR",
+      "message": "Attr [padding] value format error at position 91 near: =\"png\">\\n  <Container padding=\"24 32\" borderRadius=\"24\">\\n    ",
+      "position": 91,
+      "server_request_id": "3b6c7fab-dc3e-4326-ab19-de2927c4b508",
+      "raw_response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-original-0001.body"},
+      "request_headers_saved": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/req-0001.snapshot.headers.txt"}
+    }
+  },
+
+  "issue_classification_note": "TASK.md 要求区分三类。本日志的判据是服务实际响应，不是主观归类：真实报错 = 服务返回 HTTP 400 与 PARSE_ERROR；静默忽略 = 服务返回 200 且属性完全不生效（用单点探针证明：改这一处会让错误位置移动该字节的字节数，或修好后仍无任何视觉变化）；只在视觉上暴露 = 服务返回 200、无报错、DSL 语法合法，但题面需求未实现（靠对照探针渲染与像素测量暴露）。",
+
+  "issue_counts": {
+    "total": 11,
+    "真实报错": 3,
+    "静默忽略": 3,
+    "只在视觉上暴露": 5
+  },
+
+  "issues": [
+    {
+      "id": "A03-I01",
+      "class": "真实报错",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 2,
+                 "node": "<Container padding=\"24 32\" borderRadius=\"24\">",
+                 "attribute": "padding", "value": "24 32"},
+      "requirement_not_met": "安全边距 32（写法本身不成立，且 24/32 也不是 32/32）",
+      "observation": "原稿首次提交即报 PARSE_ERROR，position 91，near 直接指到 padding=\"24 32\"。",
+      "cause": "本 DSL 的 padding/margin 只接受三种格式：\"12\" 四边、\"(8,16)\" 纵向/横向、\"(8,12,16,20)\" 左/上/右/下。括号和逗号是语法的一部分，空格分隔不是。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+                     "quote": "padding 和 margin 支持三种格式：\"12\" 四边 12 / \"(8,16)\" vertical=8，horizontal=16 / \"(8,12,16,20)\" left、top、right、bottom；括号和逗号是语法的一部分。",
+                     "line_hint": "EdgeInsets 小节"},
+      "fix": "改为 padding=\"(32,32)\"（四边各 32，符合题目安全边距）。",
+      "verification": {"request_id": "req-a03-probe-p1", "http_status": 400,
+                       "evidence": "单点修 padding 后错误消失，位置移到 466 的 Transform 错误——证明 padding 是解析器遇到的第一个错误。最终稿用 padding=\"(32,32)\" 提交返回 200。",
+                       "pixel": "v2-inspect.json 的 content_bbox=[32,42,1247,735]，safe_margin_clearance.min=32，all_content_inside_safe_margin=true。"}
+    },
+    {
+      "id": "A03-I02",
+      "class": "真实报错",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 10,
+                 "node": "<Transform rotate=\"-8\">", "attribute": "rotate", "value": "-8"},
+      "requirement_not_met": "REVIEW 视觉逆时针 8°",
+      "observation": "五处单点探针 p1/p2/p3/p4/p5 全部收敛到同一个错误：Attr [matrix] must not be null。逐个用字节偏移交叉验证：service 报的 position 恰好等于各版本 DSL 里 <Transform 的 UTF-8 字节偏移（v0=464、p1=466、p2=440、p3=439、p4=467、p5=467）。p5 只删掉 rotate=\"-8\" 这一处，错误不变，说明 rotate 不是报错源而是「没有替代内容」。",
+      "cause": "Transform 没有 rotate 属性，也不接受角度；只接受 matrix。matrix 是必填。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+                     "quote": "Transform.matrix 使用列主序的 4×4 矩阵，共 16 个有限 Float；matrix 是 16 个 Float 的列主序 4×4 矩阵。示例：<Transform matrix=\"(1,0,0,0,0,1,0,0,0,0,1,0,20,10,0,1)\">",
+                     "line_hint": "坐标与矩阵 / Transform 小节"},
+      "fix": "删掉 rotate，改写列主序 4×4 矩阵。画布 y 轴向下，所以视觉逆时针 8° 对应数学正角度为负：θ = -8° = -0.13962634 rad，cos θ = 0.9902681、sin θ = -0.1391731，矩阵 = (0.9902681,-0.1391731,0.0000000,0.0000000,0.1391731,0.9902681,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,1.0000000)。另外把 REVIEW 放进一个定位容器使矩阵绕自身中心旋转（alignment=\"CENTER\"），否则绕原稿左上角旋转会把标签甩出画布。",
+      "verification": {"request_id": "req-a03-probe5-layout", "http_status": 200,
+                       "evidence": "同一矩阵在 probe5 T4 渲染出逆时针倾斜的 REVIEW 标签。",
+                       "pixel": "v2-inspect.json 的 review.rotation=\"counterclockwise\"（topmost_x=1221 > centroid_x=1157.5 > bottommost_x=1093）；bbox=164×76 与旋转 8° 后 160×56 的理论外接框 167×78 相差 ≤2px（圆角与抗锯齿）。"}
+    },
+    {
+      "id": "A03-I03",
+      "class": "真实报错",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 10,
+                 "node": "<Transform matrix=\"…\">（probe2-q1 首次尝试填写）",
+                 "attribute": "matrix", "value": "16 个值但缺外层括号"},
+      "requirement_not_met": "REVIEW 视觉逆时针 8°",
+      "observation": "矩阵值本身算对之后第一次提交仍报 400：Attr [matrix] value format error at position 510。",
+      "cause": "矩阵字符串必须有外层括号且 16 个值之间不能有空格；原稿与我的第一次尝试都是裸 16 个数。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+                     "quote": "外层必须有括号且值之间不能有空格：(1,0,0,0,0,1,0,0,0,0,1,0,20,10,0,1)",
+                     "line_hint": "坐标与矩阵 小节"},
+      "fix": "给 16 个值加外层括号，值之间不留空格。",
+      "verification": {"request_id": "req-a03-probe4-p7", "http_status": 200,
+                       "evidence": "同一字符串加括号后解析通过。失败稿 req-a03-probe2-q1 与响应 body 均保留。"}
+    },
+    {
+      "id": "A03-I04",
+      "class": "静默忽略",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 1,
+                 "node": "<Snapshot width=\"1280\" height=\"800\" …>",
+                 "attribute": "width / height"},
+      "requirement_not_met": "1280×800 画布尺寸",
+      "observation": "服务从不报这两个属性。证据是字节级：p2 只删掉 width=\"1280\" height=\"800\" 这 26 个字节，同一 matrix 错误的 position 从 466 精确左移到 440（=466-26）。若 Snapshot 真的接受这两个属性，删除它们会触发「缺少画布尺寸」一类错误，而不会只让别处位置平移。",
+      "cause": "<Snapshot> 只有 background / debug / type 三个属性；画布尺寸必须来自根布局节点的 width/height。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/tagref-Transform-Container-Text-Snapshot-Stack.txt"},
+                     "quote": "Snapshot 的属性表只有 background / debug / type；Container 才有 width / height / padding / color / borderRadius。",
+                     "line_hint": "Snapshot 小节"},
+      "fix": "把 width=\"1280\" height=\"800\" 从 <Snapshot> 移到根 <Container>，并把背景色也写一份在根 Container 上（避免根容器外的透明区域）。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "pixel": "v2-inspect.json 的 size=[1280,800]，size_ok_1280x800=true；corner_pixels 四角均为 [11,18,32] = #0B1220。"}
+    },
+    {
+      "id": "A03-I05",
+      "class": "静默忽略",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 4,
+                 "node": "<Text font-size=\"44\" color=\"#FFFFFF\">System Pulse</Text>",
+                 "attribute": "font-size"},
+      "requirement_not_met": "44 字号标题",
+      "observation": "服务不报。p3 只把 font-size 改成 fontSize（少 1 个字节），matrix 错误 position 从 440 变 439——位置只移 1 字节，说明原属性名被丢弃而不是报错。p7 修好全部语法后标题仍按默认字号渲染，不是 44。",
+      "cause": "属性名大小写敏感，本 DSL 用 camelCase；kebab-case 属性名被解析器直接跳过。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/tagref-Transform-Container-Text-Snapshot-Stack.txt"},
+                     "quote": "Text 的属性表列的是 fontSize / fontFamily / fontStyle / letterSpacing / color，无 kebab-case 变体。",
+                     "line_hint": "Text 小节"},
+      "fix": "改为 fontSize=\"44\"。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "pixel": "v2-inspect.json 的 title.bbox=[33,44,322,85]，h=42px，与 Inter 44pt 的帽高+降部一致（44px 字高下实测 42px 是正确比例）。"}
+    },
+    {
+      "id": "A03-I06",
+      "class": "静默忽略",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 7,
+                 "node": "<Positioned right=\"20\"> 作为 <Row> 的直接子节点",
+                 "attribute": "Positioned 的父级"},
+      "requirement_not_met": "右上 LIVE 标签 96×36；修好语法后仍应有完整内容",
+      "observation": "服务不报。两层后果都在渲染上暴露：(a) probe4-p7 把 Positioned 包进 Stack 后整条子树仍不渲染；(b) probe5 的 T2 象限用同一形状 Row > Stack(fit=\"EXPAND\") > Positioned > Text 渲染，结果该格一片空白，而 T3 用 Row > Container 正常——定位到 <Positioned> 在 Row 内是导致 Column 第二个子节点起整棵子树消失的机制。",
+      "cause": "Positioned 必须是 Stack 或 IndexedStack 的直接子节点；Row 是 Flex，不消费 left/top/right/bottom。原稿还把 LIVE 写成裸 <Text>，连 96×36 尺寸都没有。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+                     "quote": "Positioned 必须是 Stack 或 IndexedStack 的直接子节点。 / Stack 先布局非 Positioned 子节点，再按 left / top / right / bottom / width / height 放 Positioned 子节点。",
+                     "line_hint": "Positioned / Stack 小节"},
+      "fix": "LIVE 改为 <Positioned left=\"1152\" top=\"10\"> 作为根 <Stack> 的直接子节点，内层用 96×36 的 Container 承载文字。所有绝对定位元素统一直接挂在根 Stack 下，不再让 Positioned 出现在 Row/Column 里。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "pixel": "v2-inspect.json 的 live.bbox=[1152,42,1247,77]，w=96、h=36、inside_safe_margin=true；title.right_edge=322 远小于 live.bbox[0]=1152，不遮挡标题。"}
+    },
+    {
+      "id": "A03-I07",
+      "class": "只在视觉上暴露",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 10,
+                 "node": "<Container width=\"160\" height=\"56\" color=\"#33FFFFFF\">",
+                 "attribute": "color", "value": "#33FFFFFF"},
+      "requirement_not_met": "REVIEW 白底不透明度 20%",
+      "observation": "服务返回 200，语法完全合法。probe5 T4 里这个标签渲染成一块饱和青色。用颜色掩膜定位其 bbox 为 [909,552,1074,615]（尺寸 166×64，比预期 167×78 略小，因为青色掩膜不含抗锯齿边缘）。青色与白色相差 222 个通道，任何肉眼检查都会发现，但报错日志里什么都没有。",
+      "cause": "本 DSL 的 8 位十六进制是 #RRGGBBAA，alpha 在末两位。#33FFFFFF 解析为 R=0x33、G=0xFF、B=0xFF、A=0xFF = 完全不透明青色。这是 Flutter 0x33FFFFFF 的「alpha 在前」习惯，迁移时最容易踩。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+                     "quote": "十六进制颜色需以 # 开头，支持 3、4、6、8 位；4 位与 8 位的最后一组是透明度（alpha）。例如 #f00 和 #FF0000 都是不透明红色，#FF000080 是约 50% 透明红色。",
+                     "line_hint": "颜色 小节"},
+      "fix": "改为 color=\"#FFFFFF33\"（白色 + alpha=0x33=20%）。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "evidence": "alpha-check.json case 3：实测卡体众数 [58,64,76]，白色 20% 叠加到 #0B1220 的理论值 [60,65,77]，通道差 ≤2（众数做了 2 级量化）。",
+                       "pixel": "v2-inspect.json 的 review.fill_mode_color=[58,64,76]、fill_mode_share=0.619、expected_fill_for_20pct_white=[60,65,77]。"}
+    },
+    {
+      "id": "A03-I08",
+      "class": "只在视觉上暴露",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 11,
+                 "node": "<Container width=\"500\" height=\"150\" color=\"#FFFFFF44\">",
+                 "attribute": "color", "value": "#FFFFFF44"},
+      "requirement_not_met": "半透明白底（题目要求 20%）",
+      "observation": "服务返回 200。probe5 T4 里说明卡卡体取众数为 [84,90,100]，其背景为 [15,23,42]；按 alpha=0x44/0xFF=26.66% 计算的理论上叠值同样是 [84,90,100]，通道差 [1,1,1]——即 DSL 的 alpha 语义是对的，但 26.7% 不是题目要求的 20%。",
+      "cause": "#FFFFFF44 的 alpha 是 0x44 = 68/255 = 26.66%，比 20% 高约 1/3。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+                     "quote": "4 位与 8 位的最后一组是透明度（alpha）。",
+                     "line_hint": "颜色 小节"},
+      "fix": "改为 color=\"#FFFFFF33\"（alpha=0x33=20%），与 REVIEW 标签一致。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "evidence": "alpha-check.json case 2 记录了原稿 26.66% 的测量与理论对照，case 3 记录修复后 20% 的对照。"}
+    },
+    {
+      "id": "A03-I09",
+      "class": "只在视觉上暴露",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 11,
+                 "node": "<ImageFiltered sigmaX=\"10\" sigmaY=\"10\"><Container …><Text …>Background-only blur</Text></Container></ImageFiltered>",
+                 "attribute": "ImageFiltered 包住整个子树"},
+      "requirement_not_met": "只模糊卡内背景，文字保持清晰",
+      "observation": "服务返回 200，无报错。ImageFiltered 按定义作用于整棵子树的渲染结果，所以卡体和「Background-only blur」文字一起被糊掉。对照实验 probe3-s2 把同一句文字放进 <BackdropFilter> 内部，文字仍然锐利——直接证明 BackdropFilter 与 ImageFiltered 的语义差别，也是选结构的依据。",
+      "cause": "ImageFiltered 对子树结果应用 ImageFilter；BackdropFilter 对已经绘制在背后的区域应用滤镜，不模糊自己的子树。原稿用错了滤镜类型。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/guides-painting.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/guides-painting.html.md.txt"},
+                     "quote": "ImageFiltered 对子树结果应用 ImageFilter。 / BackdropFilter 对已经绘制在当前内容背后的区域应用滤镜。 / BackdropFilter 只有在其背后已经有内容时才有可见效果。",
+                     "line_hint": "ImageFiltered 与 BackdropFilter 小节"},
+      "fix": "说明卡拆成四层独立 Positioned 兄弟节点，按绘制顺序：① 5 条彩色细条 → ② <ClipRRect borderRadius=\"24\"><BackdropFilter sigmaX=\"10\" sigmaY=\"10\" tileMode=\"CLAMP\"><Container color=\"transparent\"/></BackdropFilter></ClipRRect> 作为「只模糊卡内背景」的载体 → ③ 卡体填充（borderRadius 24、白 20%、1px 边框）→ ④ 文字。文字与卡体都在滤镜之后绘制，不会被模糊；ClipRRect 把模糊限定在圆角矩形内。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "method": "逐列纵向亮度剖面在卡内 y 区间内的最大单步跳变 max_step；已排除卡体上下边框行（它们在滤镜之后绘制，本来就锐利）与文字笔画列。1px 过渡的锐利细条相邻行亮度一次跳 ~170；σ=10 高斯把 10px 细条摊成 20+px 斜坡，单步跳变掉到个位数。",
+                       "pixel": "v2-inspect.json 的 stripes：outside_max_step_mean=173.77、inside_max_step_mean=10.48、outside_to_inside_ratio=16.59，verdict_outside_sharp / verdict_inside_soft / verdict_blur_confined_to_card 全为 true；card_text_sharpness.max_step=172.09，verdict_text_crisp=true（文字笔画跳变比卡内模糊背景大 16 倍）。"}
+    },
+    {
+      "id": "A03-I10",
+      "class": "只在视觉上暴露",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "lines": [5, 6, 7],
+                 "node": "<Row><Expanded flex=\"1\"><Container width=\"360\" …></Expanded><Positioned …></Row>",
+                 "attribute": "Expanded flex=\"1\" 覆盖子节点固定尺寸"},
+      "requirement_not_met": "第一行三个等宽指标卡",
+      "observation": "原稿的 Row 里只有一个 Expanded 子节点（另一个 Positioned 还不合法），根本没有三个等宽卡。probe5 T1 象限复现原稿写法：width=\"360\" height=\"200\" 的灰块被拉满 576px 的格宽，高度也被压缩——固定尺寸完全失效，「等宽」无从谈起。",
+      "cause": "Expanded 相当于 Flexible(fit=TIGHT)，强制占满分配到的主轴空间；在 Row 里三个 Expanded flex=1 才是等宽，一个 Expanded 会吃掉全部剩余宽度并覆盖子节点的 width。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/reference-parser-tags.html.md.txt"},
+                     "quote": "Expanded flex 1 整数份额；固定使用 TIGHT，不接受 fit 属性。 / Expanded 强制填满分配到的主轴空间；Flexible fit=\"LOOSE\" 允许子节点小于分配份额。",
+                     "line_hint": "Expanded 与 Flexible 小节"},
+      "fix": "不用 Expanded，改为三张各自 384×150 的 Container 挂在根 Stack 下，left 分别为 32、448、864（(1280-2×32-2×32)/3 = 384，间距 32，整行恰好占满安全区）。固定尺寸比 flex 更可测：等宽要求可以变成 max_width_delta=0 的数值断言。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "pixel": "v2-inspect.json 的 metric_cards：count=3、widths=[384,384,384]、max_width_delta=0、gaps=[32,32]、widths_match_384=true、gaps_match_32=true。"}
+    },
+    {
+      "id": "A03-I11",
+      "class": "只在视觉上暴露",
+      "source": {"file": "tasks/A03-semantic-debugging/inputs/broken.snapshot", "line": 10,
+                 "node": "<Text color=\"white\">REVIEW</Text>（缺少字号属性）",
+                 "attribute": "fontSize（缺失）"},
+      "requirement_not_met": "REVIEW 文字不透明、字号 24",
+      "observation": "服务返回 200，缺属性不报错，文字按默认字号渲染而非 24。与 I05 同属「缺失/错误属性被静默使用默认值」这一族，但表现形式只在图像上。",
+      "cause": "fontSize 未设置时取默认字号；文档属性表中 fontSize 是可选项（未设置）。",
+      "doc_source": {"url": "https://snapshot.muedsa.com/ → guides/reference-parser-tags.html",
+                     "cached_at": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/_suite/docs/dsl/tagref-Transform-Container-Text-Snapshot-Stack.txt"},
+                     "quote": "Text 属性表中 fontSize 为可选项（未设置时使用默认字号），color 同为可选。",
+                     "line_hint": "Text 小节"},
+      "fix": "补 fontSize=\"24\"，并显式 color=\"#FFFFFF\"（不用 white 命名色，避免大小写与命名表差异），另加 letterSpacing=\"2\" 让标签在 160×56 内呼吸更舒展。文字保持完全不透明——题目只要求卡体半透明。",
+      "verification": {"request_id": "req-a03-v2-final", "http_status": 200,
+                       "pixel": "最终图上 REVIEW 文字笔画清晰、白色不透明（v2-inspect.json 的 review.fill_mode_color 取到的是卡体众数，文字笔画不在众数中）。文字尺寸与 24px 字号一致，由人工看图确认。"}
+    }
+  ],
+
+  "own_defects": {
+    "note": "以下两项是本次执行自己引入的缺陷，不是原稿问题。单独列出，避免与原稿缺陷混淆，也保留真实的返工记录。",
+    "items": [
+      {
+        "id": "V-0",
+        "version": "probe3-p6",
+        "type": "自造结构错误",
+        "detail": "替换 <Snapshot> 起始标签时多加了一个外层 <Container> 却漏了对应的 </Container>。服务返回 200 且出图，但画面只有标题。不能当「修好语法后原稿的真实状态」的基线，改用 probe4-p7 重做。",
+        "evidence": {"request_id": "req-a03-probe3-p6", "image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe3-p6.png"}}
+      },
+      {
+        "id": "V-1",
+        "version": "v1",
+        "type": "坐标系错误",
+        "detail": "根 <Container> 的 padding 会把 <Stack> 的原点平移 (+32,+32)，而所有 <Positioned left/top> 写的都是画布绝对坐标，漏减了 32。整版右下偏移 32px，第三张指标卡与 REVIEW 都溢出安全边距。v2 用 L()/T() 统一换算修复。",
+        "evidence": {"request_id": "req-a03-v1-preview",
+                      "before": "v1-inspect.json：content_bbox=[64,74,1279,773]，safe_margin_clearance={left:64,top:74,right:0,bottom:26,min:0}，all_content_inside_safe_margin=false，review.fully_visible=true 但 inside_safe_margin=false",
+                      "after": "v2-inspect.json：content_bbox=[32,42,1247,735]，min=32，all_content_inside_safe_margin=true",
+                      "image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/v1.png"}}
+      }
+    ]
+  },
+
+  "versions": [
+    {
+      "version": "v0-original", "parent": null, "kind": "基线", "label": "A03 迁移后失效原稿，一字不改",
+      "request_id": "req-a03-original-0001", "http_status": 400, "server_timing": "total;dur=289.7",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.v0-original.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-original-0001.body"},
+      "png": null, "png_note": "失败响应，无图像",
+      "viewed": null,
+      "changed": "无（原样提交）",
+      "result": "PARSE_ERROR padding value format error at position 91"
+    },
+    {
+      "version": "p1", "parent": "v0-original", "kind": "语法修复", "label": "单点修复 1/6：padding 格式",
+      "request_id": "req-a03-probe-p1", "http_status": 400, "server_timing": "total;dur=406.3",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p1.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe-p1.body"},
+      "png": null, "viewed": null,
+      "changed": "只把 padding=\"24 32\" 改成 padding=\"(24,32)\"",
+      "result": "PARSE_ERROR matrix must not be null at position 466（padding 错误消失，说明它排在第一个）"
+    },
+    {
+      "version": "p2", "parent": "v0-original", "kind": "语法修复", "label": "单点修复 2/6：Snapshot width/height",
+      "request_id": "req-a03-probe-p2", "http_status": 400, "server_timing": "total;dur=26.6",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p2.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe-p2.body"},
+      "png": null, "viewed": null,
+      "changed": "只移除 <Snapshot> 上的 width/height",
+      "result": "同一 matrix 错误，position 440 = 466-26（被删字节数）→ 证明被静默忽略"
+    },
+    {
+      "version": "p3", "parent": "v0-original", "kind": "语法修复", "label": "单点修复 3/6：kebab 属性名",
+      "request_id": "req-a03-probe-p3", "http_status": 400, "server_timing": "total;dur=9.8",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p3.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe-p3.body"},
+      "png": null, "viewed": null,
+      "changed": "只把 font-size 改成 fontSize",
+      "result": "同一 matrix 错误，position 439 → 证明被静默忽略"
+    },
+    {
+      "version": "p4", "parent": "v0-original", "kind": "语法修复", "label": "单点修复 4/6：Positioned 的父级",
+      "request_id": "req-a03-probe-p4", "http_status": 400, "server_timing": "total;dur=13.8",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p4.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe-p4.body"},
+      "png": null, "viewed": null,
+      "changed": "只把 <Positioned right=\"20\"> 包进 <Stack fit=\"EXPAND\">",
+      "result": "同一 matrix 错误，position 467"
+    },
+    {
+      "version": "p5", "parent": "v0-original", "kind": "语法修复", "label": "单点修复 5/6：Transform rotate",
+      "request_id": "req-a03-probe-p5", "http_status": 400, "server_timing": "total;dur=12.7",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p5.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe-p5.body"},
+      "png": null, "viewed": null,
+      "changed": "只移除 <Transform> 上不存在的 rotate 属性",
+      "result": "同一 matrix 错误，position 467，near 变成 <Transform><Container width=\"1 → rotate 不是报错源"
+    },
+    {
+      "version": "probe2-q1", "parent": "v0-original", "kind": "语法修复", "label": "matrix 首次填写（缺外层括号）",
+      "request_id": "req-a03-probe2-q1", "http_status": 400, "server_timing": "total;dur=42.4",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe2-q1.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe2-q1.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe2-q1.png", "note": "204 字节，是错误 JSON 被当作 PNG 保存的失败稿，保留不删"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe2-q1.png"}, "viewed": false, "reason": "响应是 JSON 错误而非图像，无可看内容；未作为图像查看事件计入 image_views"},
+      "changed": "把 rotate=\"-8\" 换成 16 个矩阵值但不加外层括号",
+      "result": "PARSE_ERROR Attr [matrix] value format error at position 510",
+      "unresolved_gap": "同批 q2、q3 两次提交在读取响应阶段超时（TimeoutError），没有 HTTP 响应、没有写入 requests.jsonl，也没有响应 body。这是本题留痕的真实缺口，见 task-metrics.json 的 unresolved_issues；不补造记录。dsl/system-pulse.probe2-q2.snapshot 与 req-q2.snapshot 保留。"
+    },
+    {
+      "version": "probe3-p6", "parent": "v0-original", "kind": "语法修复", "label": "语法全修但自造嵌套错误",
+      "request_id": "req-a03-probe3-p6", "http_status": 200, "server_timing": "render;dur=934.3, total;dur=942.2",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe3-p6.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe3-p6.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe3-p6.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe3-p6.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:11:02+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "画面只有标题。复查 DSL 发现我多加了一个 <Container> 却漏了对应闭合标签——自造错误，不是原稿缺陷。",
+                 "conclusion": "不能当干净基线，改用 probe4-p7"}
+    },
+    {
+      "version": "probe3-s1", "parent": null, "kind": "对照实验", "label": "只模糊卡内背景的结构可行性",
+      "request_id": "req-a03-probe3-s1", "http_status": 200, "server_timing": "render;dur=290.7, total;dur=296.0",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe3-s1.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe3-s1.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe3-s1.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe3-s1.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:11:04+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "卡外细条锐利、卡内为平滑模糊渐变、文字清晰。结构成立。",
+                 "conclusion": "作为 v2 模糊结构的依据"}
+    },
+    {
+      "version": "probe3-s2", "parent": null, "kind": "对照实验", "label": "对照组：文字放进 BackdropFilter 子树内",
+      "request_id": "req-a03-probe3-s2", "http_status": 200, "server_timing": "render;dur=337.6, total;dur=341.3",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe3-s2.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe3-s2.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe3-s2.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe3-s2.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:11:06+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "文字仍然清晰。结论：BackdropFilter 只模糊它之前绘制的图层，从不模糊自己的子树；ImageFiltered 才会把整棵子树一起模糊。",
+                 "conclusion": "据此确定说明卡的四层拆分顺序"}
+    },
+    {
+      "version": "probe4-p7", "parent": "v0-original", "kind": "语法修复", "label": "干净的语法-only 修复（零结构改动）",
+      "request_id": "req-a03-probe4-p7", "http_status": 200, "server_timing": "render;dur=475.8, total;dur=482.1",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe4-p7.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe4-p7.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe4-p7.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe4-p7.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:18:04+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "服务 200 与正常 PNG，但画面里只有标题。",
+                 "conclusion": "修好全部显式语法错误后仍有大面积内容缺失——进入 TASK.md 要求的「未生效属性 / 画布尺寸 / 有界布局」排查"}
+    },
+    {
+      "version": "probe4-p8", "parent": "probe4-p7", "kind": "语法修复", "label": "p7 加 debug=\"true\" 查看布局盒子",
+      "request_id": "req-a03-probe4-p8", "http_status": 200, "server_timing": "render;dur=2595.0, total;dur=2601.1",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe4-p8.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe4-p8.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe4-p8.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe4-p8.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:18:07+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "布局调试层里只有两个盒子：根容器与标题。<Row> 及其之后的所有兄弟节点没有进入布局树。（服务端渲染耗时 2595ms，明显高于其他版本）",
+                 "conclusion": "把「内容消失」从猜测变成可定位的事实"}
+    },
+    {
+      "version": "probe5-layout", "parent": null, "kind": "对照实验", "label": "有界布局二分定位（一图四象限）",
+      "request_id": "req-a03-probe5-layout", "http_status": 200, "server_timing": "render;dur=261.9, total;dur=267.5",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe5-layout.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-probe5-layout.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe5-layout.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe5-layout.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:32:26+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界。另看 T1/T4 放大裁图",
+                 "zoom_crops": [
+                   {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe5-T1-zoom.png", "viewed": true, "note": "由真实渲染响应裁剪，未用于输出"},
+                   {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/probe5-T4-zoom.png", "viewed": true, "note": "由真实渲染响应裁剪，未用于输出"}],
+                 "observation": "T1：Expanded flex=1 覆盖子节点固定尺寸，width=\"360\" 的灰块被拉满 576。T2：Row > Stack(fit=EXPAND) > Positioned > Text 什么都不渲染——这是原稿整棵子树消失的机制。T3：Row > Container 正常。T4：#33FFFFFF 渲染成不透明青色，#FFFFFF44 实测白色 26.7%。",
+                 "conclusion": "静默忽略与视觉暴露三类问题全部定位"},
+      "attempts": 2,
+      "retry_note": "第一次尝试在读取阶段超时（300s），重试成功；该次无 HTTP 响应、无 requests.jsonl 记录，是本题留痕的真实缺口。"
+    },
+    {
+      "version": "v1", "parent": "probe4-p7", "kind": "视觉迭代", "label": "首个完整设计版本",
+      "request_id": "req-a03-v1-preview", "http_status": 200, "server_timing": "render;dur=1672.7, total;dur=1678.2",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.v1.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-v1-preview.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/v1.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/v1.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:18:11+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "整体构图正确，但几何整体右下偏移 32px：content_bbox=[64,74,1279,773]，右余量 0 贴住画布边缘，第三张指标卡与 REVIEW 溢出安全边距。",
+                 "conclusion": "定位到自造缺陷 V-1：根 padding 平移 Stack 原点，而 Positioned 写的是画布绝对坐标"},
+      "defect_found": "V-1", "defect_status": "未修复即进入 v2"
+    },
+    {
+      "version": "v2", "parent": "v1", "kind": "视觉迭代", "label": "视觉迭代 1：修正坐标系偏移 + REVIEW 卡体 alpha",
+      "request_id": "req-a03-v2-preview", "http_status": 200, "server_timing": "render;dur=323.0, total;dur=329.6",
+      "dsl": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.v2.snapshot"},
+      "response": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/req-a03-v2-preview.body"},
+      "png": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/v2.png"},
+      "viewed": {"image": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/preview/v2.png"},
+                 "viewed": true, "viewed_not_before": "2026-10-15T00:21:50+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "content_bbox=[32,42,1247,735]，安全边距 min=32，全部在安全区内。与 v1 逐项像素对比全部通过。",
+                 "conclusion": "题面要求全部满足，进入最终交付提交"},
+      "changed": "所有布局常量改为画布绝对坐标，<Positioned> 值统一经 L()/T() 减去安全边距 32；REVIEW 与说明卡卡体改用 #FFFFFF33"
+    },
+    {
+      "version": "v2", "parent": "v2", "kind": "重试/交付提交", "label": "最终交付提交（同一 DSL 重提交，无内容变更）",
+      "request_id": "req-a03-v2-final", "http_status": 200, "server_timing": "render;dur=316.6, total;dur=325.9",
+      "dsl": "system-pulse.snapshot",
+      "response": "system-pulse.png",
+      "png": "system-pulse.png",
+      "viewed": {"image": "system-pulse.png", "viewed": true, "viewed_not_before": "2026-10-15T01:00:48+08:00",
+                 "note": "未记录精确查看时刻；viewed_not_before 取该响应结束时间，是真实下界",
+                 "observation": "已实际打开最终 PNG 复核：#0B1220 深底、44px 粗体 System Pulse 左上、右上绿色 96×36 LIVE 胶囊不与标题重叠、三张等宽指标卡带彩色强调条、分隔线、500×150 圆角 24 说明卡内五条彩色细条穿过两侧边界且卡内背景被模糊而文字锐利、右下 160×56 REVIEW 半透明白底逆时针 8°。",
+                 "conclusion": "与 v2-preview 字节数相同（48526 B），不是一次视觉迭代"},
+      "changed": "无（DSL 与 v2-preview 完全相同，只是把真实响应写入输出目录）"
+    }
+  ],
+
+  "final_verification": {
+    "deliverables": {
+      "png": "system-pulse.png", "snapshot": "system-pulse.snapshot",
+      "png_bytes": 48526, "snapshot_bytes": 5796,
+      "png_is_real_service_response": true,
+      "post_processed": false,
+      "note": "最终图是服务真实响应字节，未做任何后处理来掩盖 DSL 问题；同一份 DSL 保存为同名 .snapshot"
+    },
+    "requirement_check": {
+      "method": "数值断言来自 a03_inspect.py 对最终 PNG 的像素测量，报告在 tmp/.../A03/v2-inspect.json；alpha 语义额外在 alpha-check.json 用众数 vs 理论上叠值核验。所有判定先定义阈值再测量，未反推。",
+      "items": [
+        {"requirement": "1280×800", "measured": "size=[1280,800]", "passed": true},
+        {"requirement": "深底 #0B1220", "measured": "corner_pixels 四角均 [11,18,32]", "passed": true},
+        {"requirement": "安全边距 32", "measured": "content_bbox=[32,42,1247,735]，clearance {left:32,top:42,right:32,bottom:64,min:32}", "passed": true},
+        {"requirement": "44 字号标题", "measured": "title.bbox=[33,44,322,85]，h=42px（Inter 44pt 的正常比例）", "passed": true},
+        {"requirement": "第一行三个等宽指标卡", "measured": "count=3，widths=[384,384,384]，max_width_delta=0", "passed": true},
+        {"requirement": "指标卡间距", "measured": "gaps=[32,32]", "passed": true},
+        {"requirement": "USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%", "measured": "三张卡文案与题面逐字一致，由最终图人工确认", "passed": true},
+        {"requirement": "三指标文案字号 28", "measured": "与 28px 字号一致，由最终图人工确认", "passed": true},
+        {"requirement": "右上 LIVE 96×36", "measured": "live.bbox=[1152,42,1247,77]，w=96，h=36", "passed": true},
+        {"requirement": "LIVE 不能盖住标题", "measured": "title.right_edge=322 < live.bbox[0]=1152，横向间隔 830px", "passed": true},
+        {"requirement": "说明卡 500×150、圆角 24", "measured": "card_geometry_check.size=[500,150]，top_bottom_border_rows=[446,595]，左右边框列 390/889，size_matches_500x150=true", "passed": true},
+        {"requirement": "彩色细条同时穿过说明卡两侧边界", "measured": "stripe_extent_check.extent_x=[250,1029]，card_edges_x=[390,889]，overhang_left=140，overhang_right=140，crosses_both_card_edges=true", "passed": true},
+        {"requirement": "只模糊卡内背景", "measured": "outside_max_step_mean=173.77 vs inside_max_step_mean=10.48（比值 16.59），verdict_blur_confined_to_card=true", "passed": true},
+        {"requirement": "文字保持清晰", "measured": "card_text_sharpness.max_step=172.09，verdict_text_crisp=true", "passed": true},
+        {"requirement": "说明卡显示 Background-only blur、字号 28", "measured": "card_text_bbox=[495,511,785,536]（h=26px，与 28px 字号一致）；文案与题面逐字一致，由最终图人工确认", "passed": true},
+        {"requirement": "REVIEW 160×56", "measured": "review.bbox=[1076,660,1239,735]，w=164，h=76（旋转 8° 后 160×56 的理论外接框为 167×78，差值来自圆角与抗锯齿）", "passed": true},
+        {"requirement": "REVIEW 视觉逆时针 8°", "measured": "rotation=counterclockwise，topmost_x=1221 > centroid_x=1157.5 > bottommost_x=1093", "passed": true},
+        {"requirement": "REVIEW 白底不透明度 20%", "measured": "fill_mode_color=[58,64,76] vs 理论 [60,65,77]，通道差 ≤2；alpha-check.json 众数占比 0.8122", "passed": true},
+        {"requirement": "REVIEW 文字不透明、字号 24", "measured": "不透明白色，字号与 24px 一致，由最终图人工确认", "passed": true},
+        {"requirement": "各元素完整可见", "measured": "content_bbox 与 canvas 四边余量均 ≥32；review.fully_visible=true、inside_safe_margin=true", "passed": true}
+      ]
+    },
+    "known_limitations": [
+      "标题、指标卡文案、说明卡文案、REVIEW 文案的字符内容与字号，像素测量只能给出外接框与高度比例，逐字核对靠人工看图完成，已在 iterations.jsonl 与最终看图记录中说明。",
+      "REVIEW 与说明卡卡体的 alpha 用「众数 vs 理论上叠值」核验，众数做了 2 级量化，允许 ±2 通道误差；这是测量方法的上限，不是渲染误差。",
+      "说明卡的圆角 24 未做数值断言：borderRadius 对上下边框行的截短（只在 x=413..866 出现亮蓝）正是 card_geometry_check 的判据之一，侧面证明圆角生效，但没有单独量化弧半径。"
+    ]
+  },
+
+  "retention": {
+    "note": "逐次失败稿与失败响应全部保留，未清理、未覆盖。",
+    "failed_drafts": [
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.v0-original.snapshot"},
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p1.snapshot"},
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p2.snapshot"},
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p3.snapshot"},
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p4.snapshot"},
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.p5.snapshot"},
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe2-q1.snapshot"},
+      {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/dsl/system-pulse.probe2-q2.snapshot"}
+    ],
+    "failed_responses": {"path_base": "suite_root", "path": "tmp/r20261014T1536+0800-5f11da/A03/responses/",
+                         "note": "7 份 400 响应 body + 请求 headers 与快照副本均在 tmp/.../A03/ 下"},
+    "no_unknown_attributes_left_in_source": true,
+    "no_unknown_attributes_note": "最终稿 system-pulse.snapshot 中不含 rotate、font-size、Snapshot 上的 width/height、Row 内的 Positioned 等任何已被证实不生效的写法；每一项需求都由实际生效的 DSL 属性实现，未用「把未知属性原样留在源码里」的方式声称实现。"
+  }
+}

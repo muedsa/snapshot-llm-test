@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "task_id": "A05",
+  "track": "A",
+  "status": "completed",
+  "stop_reason": "需求满足并完成逐件实际看图与像素自检：最终产物 sensor-report.png 上 8 组要求共 134 项断言全部 PASS、0 FAIL，已实际打开最终 PNG 与 3 张裁图复核。交付前逐条回读题面后把同一份 DSL 以 render 方式重新提交写入输出目录，并对最终产物（而非预览）重跑核验。",
+  "output_dir": "outputs/r20261014T1536+0800-5f11da/A05",
+  "temp_dir": "tmp/r20261014T1536+0800-5f11da/A05",
+  "run_id": "r20261014T1536+0800-5f11da",
+  "timezone": "Asia/Shanghai (UTC+08:00)",
+  "started_at": "2026-10-15T04:04:00+08:00",
+  "ended_at": "2026-10-15T06:23:45+08:00",
+  "elapsed_seconds": 8385,
+  "elapsed_note": "墙钟：started_at 取 events.jsonl 中 A04 完成/A05 开始的记录，与 A04 的 ended_at 衔接。墙钟不等于请求耗时之和，中间含10 次能力探针（含 2 次语法 400）、6 轮视觉迭代、7 处核验器自身缺陷的排查与修正、4 个逐像素诊断脚本、25 张裁图的查看，以及交付前逐条回读题面后重新定稿。",
+  "counts": {
+    "final_pngs": 1,
+    "final_dsl": 1,
+    "additional_json": 1,
+    "snapshot_requests": 18,
+    "successful_snapshot_requests": 16,
+    "failed_snapshot_requests": 2,
+    "retry_requests": 0,
+    "retry_requests_note": "18 次请求全部 attempts=1：2 次 HTTP 400 是真实结果（不重试），16 次 200 一次成功，无连接或读取超时。",
+    "request_kind_breakdown": {
+      "probe": 11,
+      "draft": 6,
+      "render": 1
+    },
+    "request_kind_note": "probe=语法与能力探针（11 次，含 2 次 400），draft=预览迭代（6 次），render=写入输出目录的定稿（1 次）。",
+    "document_requests": 0,
+    "shared_document_requests": 0,
+    "shared_document_requests_note": "本题未新增文档或字体请求，全部复用 tmp/r20261014T1536+0800-5f11da/_suite/docs/ 下的 shared 缓存（A01–A04 期间取回）。",
+    "other_service_requests": 0,
+    "dsl_versions_rendered": 17,
+    "dsl_versions_rendered_note": "18 次请求对应 17 份不同的 DSL 正文：v10-final 与 v9-preview 正文逐字节相同（99963 B 磁盘 / 98573 字符），仅请求用途不同（写预览 vs 写输出目录）。tmp/.../A05/dsl/ 保留 11 份版本化副本，递增命名不覆盖。",
+    "dsl_drafts_on_disk": 11,
+    "iterations_recorded": 28,
+    "iterations_note": "28 条：18 条对应请求（含 2 次 400）+ 1 条无请求的方案决策（ladder）+ 2 条裁图查看 + 7 条无请求的核验器自身修正（verify-1..7）。查看时刻只记真实下界 viewed_not_before。",
+    "completed_visual_iterations": 6,
+    "completed_visual_iterations_note": "v1→v2、v2→v3（经探针 6–10 归因）、v3→v4（压差纵轴域）、v4→v5（阶梯线宽）、v5→v9（表格排版）、v9→v10-final（定稿）。每次都是「看图或自检发现缺陷 → 改 DSL → 重渲染 → 再看图/自检比较」。",
+    "incomplete_visual_iterations": 0,
+    "syntax_fix_requests": 2,
+    "syntax_fix_requests_note": "probe1（matrix 只给 4 值，PARSE_ERROR position 888）与 probe6（属性值嵌套引号，PARSE_ERROR position 296）。两次都用 position 字节偏移定位到出错属性后只改一处重提。",
+    "capability_probe_requests": 9,
+    "capability_probe_requests_note": "探针 1–10 中 9 次成功渲染，用于量出 Transform/matrix 生效条件、句点裁剪触发条件与字号行为。这些是本次新增、后续各题共用的能力边界。",
+    "requirement_change_iterations": 1,
+    "requirement_change_iterations_note": "交付前逐条回读题面，把「核验对象」从预览改为最终产物：以 render 用途重新提交同一份 DSL 写入输出目录，并对最终 PNG 重跑 8 组断言。",
+    "image_views": 36,
+    "image_views_note": "整幅 11 次（4 张探针图 + v1/v2/v3/v4/v5/v9 六个预览 + 最终 PNG），裁图 25 张（分 6 次裁图会话）。查看时刻只有下界 viewed_not_before，不编造精确时刻。04:17–05:25 的早期会话在上下文压缩前完成，逐张明细无法回溯，故只按「裁图文件数」计数，不声称每张都单独打开过。",
+    "pixel_dump_runs": 4,
+    "pixel_dump_runs_note": "a05_dump.py / dump2 / dump3 / dump4 打印原始 RGB 网格，直接推翻了 6 处核验器误报（渲染本来是对的）。",
+    "preview_images": 11,
+    "crop_images": 25,
+    "inspect_report_runs": 12,
+    "inspect_report_runs_note": "≥12 次运行，只有最后两次留档为 .txt（v9-inspect.txt 为 11 处 FAIL 的诊断态、final-inspect.txt 为 134 项全过态）；早前运行被同名覆盖，见 A05-U1。",
+    "issues_found": 13,
+    "issues_by_class": {
+      "服务真实报错": 2,
+      "渲染产物缺陷": 4,
+      "核验器自身缺陷": 7
+    },
+    "issues_found_note": "服务报错 2 条（matrix 值数不足、属性值嵌套引号），都是我方语法错误。渲染缺陷 4 条：小数点被容器高度裁掉、压差纵轴域与「可正可负」矛盾、阶梯竖条陡段超厚 3.5 倍、表格页脚与最后一行墨迹挤叠。核验器自身缺陷 7 条：标记白环被当成断线、负压差标记红色未并入掩码、tol 过宽把网格当折线、湿度射线近浅灰蓝需饱和度门、空心圆掩码方向写反、表格取窗大于行距量出假负间隙、页脚 y 重复叠加 TABLE_Y 报出 1667。全部已修，修复依据均为逐像素实测反例。",
+    "requirement_checks": 134,
+    "requirement_failures": 0,
+    "requirement_check_groups": 8
+  },
+  "request_notes": {
+    "http_status_distribution": {
+      "400": 2,
+      "200": 16
+    },
+    "http_429_or_503": 0,
+    "retry_after_seen": false,
+    "queue_wait_seconds": null,
+    "queue_wait_note": "服务未返回排队字段，Server-Timing 只有 render;dur 与 total;dur，排队等待不可测，按约定记 null（不是 0）。",
+    "ratelimit_remaining_range": "118–119",
+    "ratelimit_note": "18 次请求的 X-RateLimit-Remaining 始终在 118–119，从未触及限流，故 rate_limit_wait_seconds=0（确认未发生）。",
+    "error_codes": [
+      "PARSE_ERROR"
+    ],
+    "error_kinds": [
+      "Attr [matrix] must contain 16 values at position 888",
+      "Unexpected character 'N' in input state [AFTER_ATTR_VALUE_QUOTED] at position 296"
+    ],
+    "error_position_is_utf8_byte_offset": true,
+    "error_position_note": "2 次失败的 position 分别为 888 与 296，逐字节定位到出错属性。这是 A03/A04 学到的手段：只改一处，看 position 移动多少字节，可区分「我写错语法」与「服务静默忽略」。",
+    "request_id_collision": null,
+    "request_id_collision_note": "本题沿用 A04 修好的 _unique_rid（进程内计数器 + 扫日志双重去重），18 次请求各有独立 ID，草稿、响应头、响应体均未同名覆盖。"
+  },
+  "timings": {
+    "started_at": "2026-10-15T04:04:00+08:00",
+    "ended_at": "2026-10-15T06:23:45+08:00",
+    "elapsed_seconds": 8385,
+    "first_usable_image_seconds": 782,
+    "first_usable_image_note": "起点 04:04:00 → req-a05-probe-line-1 结束 04:17:02，首个 200 PNG。首次请求（04:16:23）是 400，故首图耗时含一次语法修正。首版完整报告（v1-preview）在 04:49:02，即 2702 s。",
+    "user_feedback_wait_seconds": 0,
+    "user_feedback_wait_note": "预置顺序执行模式，无用户反馈轮次，确认未发生记 0。",
+    "rate_limit_wait_seconds": 0,
+    "rate_limit_wait_note": "全程 118–119，无 429/503、无 Retry-After，确认未发生记 0。",
+    "queue_wait_seconds": null,
+    "queue_wait_note": "服务无排队字段，不可测记 null。",
+    "request_duration_sum_seconds": 61.845,
+    "request_duration_sum_note": "requests.jsonl 中 18 条记录 elapsed_ms 之和 ÷1000（客户端端到端视角，含 DNS/TLS 与本地开销），顺序执行。不等于任务墙钟总耗时。",
+    "request_elapsed_ms_min": 1516.0,
+    "request_elapsed_ms_max": 5484.0,
+    "request_first_started_at": "2026-10-15T04:16:23+08:00",
+    "request_last_ended_at": "2026-10-15T06:00:50+08:00",
+    "server_timing_render_dur_sum_ms": 18600.2,
+    "server_timing_source": "各响应头 Server-Timing: render;dur=..., total;dur=...，仅表示服务端处理段，与客户端 elapsed_ms 是两个口径，彼此不可相加，也不等于墙钟。2 次 400 只报 total;dur，不含 render;dur。",
+    "view_note": "图像查看未记录精确时刻，iterations.jsonl 中 viewed_not_before = 对应响应结束时间，是真实下界；不编造精确时刻。",
+    "log_sources": [
+      "tmp/r20261014T1536+0800-5f11da/A05/requests.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A05/iterations.jsonl",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/final-inspect.txt",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/v9-inspect.txt",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump2.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump3.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump4.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_check.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_check2.py",
+      "tmp/r20261014T1536+0800-5f11da/_suite/events.jsonl"
+    ]
+  },
+  "artifacts": {
+    "png": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A05/sensor-report.png",
+      "bytes": 276050,
+      "sha256_16": "74a507cecf231ce8",
+      "size": [
+        1440,
+        1000
+      ],
+      "mode": "RGBA",
+      "is_real_service_response": true,
+      "is_real_service_response_note": "req-a05-v10final-final 的 HTTP 200 image/png 响应字节直存，与预览 v9-preview.png 逐字节相同（276050 B）。"
+    },
+    "dsl": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A05/sensor-report.snapshot",
+      "bytes": 99963,
+      "sha256_16": "01c55681b7279b36",
+      "characters": 98573,
+      "positioned_count": 579,
+      "node_count": 2506,
+      "matches_rendered_dsl": true,
+      "matches_rendered_dsl_note": "与 tmp/.../A05/dsl/sensor-report.v10-final.snapshot 逐字节相同，即渲染该 PNG 的那一份正文；正文与 v9-preview 相同。"
+    },
+    "normalized_data": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A05/normalized-data.json",
+      "bytes": 12514,
+      "sha256_16": "035db69f242cf2b3",
+      "contains": [
+        "12 时点的 minute_offset（0..270）",
+        "temperature_c / humidity_pct / pressure_kpa 的 null 缺测",
+        "各指标 axis_domain 与 observed_min/max 及其所在采样点",
+        "连接段 7/9/11 = 27（含两端是否均为负）",
+        "negative_samples 3 个",
+        "共享横轴像素映射（px/min = 4.459259）与零线 y = 510.0",
+        "artifacts 与 quality_notes（valid_readings_total = 33）"
+      ],
+      "audit_template": "tasks/A05-irregular-sensors/templates/audit-fields.json"
+    },
+    "usage_report": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A05/snapshot-usage.md",
+      "sections": [
+        "1 最终产物",
+        "2 题面逐项核验（8 组 134 项断言）",
+        "3 文档阅读与实际使用的 DSL 能力",
+        "4 数据模型与几何推导",
+        "5 迭代过程、服务调用与图像检查",
+        "6 修改记录与踩坑",
+        "7 任务耗时与请求统计",
+        "8 设计选择、经验与未解决事项"
+      ]
+    }
+  },
+  "quality_gates": {
+    "requirement_checks_pass": "134/134",
+    "requirement_checks_source": "tmp/r20261014T1536+0800-5f11da/A05/gen/final-inspect.txt",
+    "requirement_checks_target": "outputs/r20261014T1536+0800-5f11da/A05/sensor-report.png",
+    "requirement_checks_note": "核验器对**最终交付件**运行，不是对预览运行。退出码 0。",
+    "canvas_size": [
+      1440,
+      1000
+    ],
+    "canvas_size_measured": [
+      1440,
+      1000
+    ],
+    "shared_time_axis": {
+      "start_time": "08:00",
+      "end_time": "12:30",
+      "total_minutes": 270,
+      "is_linear_in_minutes": true,
+      "pixels_per_minute": 4.459259,
+      "pixel_range": [
+        178.0,
+        1382.0
+      ],
+      "shared_by_all_three_charts": true
+    },
+    "vertical_reference_lines": {
+      "checked_x": [
+        178,
+        446,
+        713,
+        981,
+        1248,
+        1382
+      ],
+      "checked_x_minutes": [
+        0,
+        60,
+        120,
+        180,
+        240,
+        270
+      ],
+      "rows_of_ink_out_of": 353,
+      "min_rows_of_ink": 345,
+      "note": "6 条主刻度参考线各贯穿三个绘图区，逐列量到 345–352 行有线墨。"
+    },
+    "segments": {
+      "total": 27,
+      "temperature_c": 7,
+      "humidity_pct": 9,
+      "pressure_kpa": 11,
+      "all_continuous": true,
+      "internal_empty_columns": 0,
+      "endpoint_ink_columns_each_end": 7,
+      "note": "每段内部空列 0；两端各有 7 列墨迹，证明线段确实接到采样标记上。"
+    },
+    "break_at_missing": {
+      "checked": [
+        "temperature_c S05 (09:15)",
+        "temperature_c S10 (11:40)",
+        "humidity_pct S06 (09:40)"
+      ],
+      "window": "缺测点前后各 10..26px",
+      "line_ink_columns": 0,
+      "note": "三处缺测点两侧各 16 列窗口内折线墨迹 0 列，确认不补值、不插值。"
+    },
+    "pressure_zero_line": {
+      "pixel_y": 510.0,
+      "domain": [
+        -1.5,
+        1.5
+      ],
+      "fraction_of_columns_with_ink": 0.988,
+      "all_pressure_points_in_domain": true,
+      "note": "零线加粗贯穿，所有压差点（含 0.1 与 0.0）都在绘图区内。"
+    },
+    "markers": {
+      "valid_markers_expected": 33,
+      "valid_markers_found": "temperature 10/10, humidity 11/11, pressure 12/12",
+      "missing_rings_expected": 3,
+      "missing_rings_found": 3,
+      "missing_ring_pixels": [
+        63,
+        61,
+        64
+      ],
+      "missing_ring_radius_px": "3.5–6.0",
+      "negative_pressure_marker_color": "#DC2626（红色，带 2px 白环）",
+      "note": "11px 圆点加 2px 边框时边框画在盒子内部，填充半径只有 3.5px；白环会遮挡约 3px 的折线，故段连续性检查必须端点感知。"
+    },
+    "statistics": {
+      "valid_readings_total": 33,
+      "total_readings": 36,
+      "temperature_c": {
+        "valid": 10,
+        "missing": [
+          "S05",
+          "S10"
+        ],
+        "min": 19.2,
+        "min_at": "S01",
+        "max": 23.1,
+        "max_at": "S08"
+      },
+      "humidity_pct": {
+        "valid": 11,
+        "missing": [
+          "S06"
+        ],
+        "min": 34,
+        "min_at": "S08",
+        "max": 41,
+        "max_at": "S01"
+      },
+      "pressure_kpa": {
+        "valid": 12,
+        "missing": [],
+        "min": -0.8,
+        "min_at": "S07",
+        "max": 1.3,
+        "max_at": "S05"
+      },
+      "observed_min_max_from_valid_only": true
+    },
+    "negative_pressure_marking": {
+      "actual_negative_samples": 3,
+      "samples": [
+        "09:40 −0.2",
+        "10:10 −0.8",
+        "10:50 −0.3"
+      ],
+      "shading_pixel_x": [
+        624,
+        935
+      ],
+      "shading_expected_x": [
+        623.926,
+        936.074
+      ],
+      "shading_overhangs_range": false,
+      "claim_scope": "只标注 3 个实际为负的采样点，并给出反例（09:15 +1.3、11:00 +0.1）",
+      "note": "底纹只覆盖 3 点的 x 范围，端点外 8px 为纯白，未外扩成「整个期间为负」。"
+    },
+    "table": {
+      "rows_expected": 12,
+      "rows_with_ink": 12,
+      "ink_bands_total": 15,
+      "ink_band_height_px": 14,
+      "row_pitch_px": 17.2,
+      "inter_row_gap_px": {
+        "min": 3,
+        "max": 4
+      },
+      "missing_cells_shown_as_dash": 3,
+      "value_cells_with_ink": 33,
+      "temperature_decimal_point_columns": 10,
+      "temperature_decimal_point_runs_each": 4,
+      "footer_ink_y": [
+        965,
+        981
+      ],
+      "panel_bottom_y": 984,
+      "footer_clearance_px": 3,
+      "amber_row_highlight": "#FEF3C7（3 个含缺测的行）",
+      "note": "15 条墨迹带 = 标题 + 表头 + 12 行 + 页脚，互不相交。10 个温度值的小数列剖面各为 4 段，证明小数点渲染成功。"
+    },
+    "font_sizes_in_dsl": [
+      18,
+      20,
+      30
+    ],
+    "min_font_size": 18,
+    "font_size_requirement": "正文 ≥20、轴/表 ≥18",
+    "font_size_note": "标题 30、副标题与卡片标题 20；轴标签、表格、图例、注释一律 18。DSL 中 <20 的字号集合只有 {18}，全部属于轴与表。18 个对齐一律走 Container alignment（Text 的 textAlign 无效）。",
+    "legend": {
+      "ink_fraction": 0.117,
+      "items": [
+        "实际采样标记（33 个真实读数）",
+        "缺测：空单元格 = 无读数，不是 0",
+        "连接段：仅相邻有效采样相连",
+        "负压差实际采样区段"
+      ],
+      "missing_and_break_documented": true
+    },
+    "row_annotation_clearance": {
+      "annotation_ink_bottom_y": {
+        "temperature_c": 207,
+        "humidity_pct": 331,
+        "pressure_kpa": 451
+      },
+      "plot_area_top_y": {
+        "temperature_c": 214,
+        "humidity_pct": 338,
+        "pressure_kpa": 458
+      },
+      "overlaps_plot_area": false
+    },
+    "no_post_processing": "最终 PNG 为服务响应字节直存，未做任何像素后处理；未用其他绘图工具画主体或嵌入外部图片。全部图形、文字、网格线、边框与颜色都由 DSL 构造。",
+    "no_hardcoded_readings_in_dsl": "DSL 中不出现任何读数、极值或像素坐标字面量；所有数值由 a05_model.py 从 readings.csv 计算后经 a05_build.py 注入。",
+    "self_check_independent_of_builder": "a05_inspect.py 的期望几何从 model.json 独立重推导，不复用 a05_build.py 的函数；构造器算错会让两边期望值不同而判失败。",
+    "failed_drafts_retained": true,
+    "fonts_verified": "fontFamily 统一 Noto Sans CJK SC；探针实测可渲染中文与 ① ② ③ → − ↑ 「」＝ ≥ × · — °C。Noto Sans SC 未安装，未使用。",
+    "input_unchanged": "tasks/A05-irregular-sensors/inputs/readings.csv 与 inputs/README.md 只读未改；模板未改。"
+  },
+  "visual_review": [
+    {
+      "version": "v1-preview",
+      "kind": "visual",
+      "action": "整幅目检 + 6 张裁图",
+      "result": "构图正确但三处硬缺陷：所有数字小数点丢失、压差 0.1 落在绘图区顶之外、陡段折线厚达目标 3.5 倍。"
+    },
+    {
+      "version": "probe6–probe10",
+      "kind": "probe",
+      "action": "10 次探针（含 1 次 400）定位句点裁剪触发条件",
+      "result": "容器高度 ≤ fontSize 即裁掉句点；与对齐、fontFeatures、容器宽度无关。同时量出 Transform 2×2 部分静默失效、无 Path/Line 标签。"
+    },
+    {
+      "version": "v3-preview",
+      "kind": "visual",
+      "action": "整幅目检 + 5 张裁图（纵轴、行注释、图例、表格上下半）",
+      "result": "句点全部恢复；发现 txt_box 与裸 Text 墨迹偏移 2px，把表格时间列与表头一并改为 txt_box 后对齐一致。"
+    },
+    {
+      "version": "v4-preview",
+      "kind": "visual",
+      "action": "裁 3 张逐行核对（温度、湿度、压差）",
+      "result": "压差三点全在 [−1.5, +1.5] 域内，零线居中 y=510。"
+    },
+    {
+      "version": "v5-preview",
+      "kind": "visual",
+      "action": "整幅目检 + 5 张裁图",
+      "result": "折线全图线宽均匀 2–3px；发现表格页脚与最后一行墨迹挤叠。"
+    },
+    {
+      "version": "v9-preview",
+      "kind": "visual",
+      "action": "整幅目检 + 8 组像素断言（首轮 11 处 FAIL）",
+      "result": "11 处 FAIL 全部查清为核验器自身缺陷，逐条用逐像素反例修正核验器；渲染本身无缺陷。"
+    },
+    {
+      "version": "v10-final",
+      "kind": "final",
+      "action": "实际打开最终 PNG + 3 张裁图 + 对最终产物重跑 8 组断言",
+      "result": "134 项断言全过、0 FAIL。目视确认：标题与副标题、三张汇总卡、① ② ③ 三行独立纵轴与对齐参考线、27 段折线与 33 个标记、3 个缺测空心圆与断口、压差零线与 3 个红色负点及区间底纹、4 项图例、12 行明细表（3 行琥珀底 + 「—」+ 红色负值）、页脚说明。"
+    }
+  ],
+  "evidence": {
+    "requests_log": "tmp/r20261014T1536+0800-5f11da/A05/requests.jsonl（18 条）",
+    "iterations_log": "tmp/r20261014T1536+0800-5f11da/A05/iterations.jsonl（28 条）",
+    "raw_dsl_per_request": "tmp/r20261014T1536+0800-5f11da/A05/req-*.snapshot（18 份请求正文快照）",
+    "response_headers": "tmp/r20261014T1536+0800-5f11da/A05/req-*.snapshot.headers.txt（18 份）",
+    "versioned_dsl": "tmp/r20261014T1536+0800-5f11da/A05/dsl/（11 份，递增命名不覆盖）",
+    "raw_responses": "tmp/r20261014T1536+0800-5f11da/A05/responses/（16 份 200 图片响应体；2 次 400 的响应体也在 responses/ 下）",
+    "preview_images": "tmp/r20261014T1536+0800-5f11da/A05/preview/（11 张预览 + 25 张裁图）",
+    "self_check_reports": [
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/final-inspect.txt（134 项全过，对最终产物）",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/v9-inspect.txt（11 处 FAIL 的诊断态，核验器缺陷证据）"
+    ],
+    "pixel_diagnostics": [
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump2.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump3.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_dump4.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_check.py",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_check2.py"
+    ],
+    "data_model": "tmp/r20261014T1536+0800-5f11da/A05/model.json（与 normalized-data.json 同内容 + 像素几何）",
+    "generators_and_scripts": [
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_io.py（请求留痕，失败不落输出目录）",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_model.py（读 CSV，算缺测/极值/连接段/坐标）",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_build.py（DSL 构造器，无硬编码读数）",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_inspect.py（8 组 134 项像素自检）",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_probe.py … a05_probe8.py（10 次能力探针）",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_stats.py（统计汇总）",
+      "tmp/r20261014T1536+0800-5f11da/A05/gen/a05_finalize.py（本报告与指标生成）"
+    ],
+    "shared_docs_reused": "tmp/r20261014T1536+0800-5f11da/_suite/docs/（未新增请求）",
+    "source_input_unchanged": "tasks/A05-irregular-sensors/inputs/readings.csv",
+    "templates_consulted": [
+      "tasks/A05-irregular-sensors/templates/audit-fields.json",
+      "tasks/A05-irregular-sensors/templates/snapshot-usage-template.md",
+      "tasks/A05-irregular-sensors/templates/task-metrics-template.json"
+    ]
+  },
+  "unresolved_issues": [
+    {
+      "id": "A05-U1",
+      "severity": "low",
+      "type": "留痕缺口",
+      "detail": "早前约 10 次 a05_inspect.py 运行被同名 v9-inspect.txt 覆盖，只保留最后两次（诊断态与全过态）。",
+      "impact": "中间各次核验器的报错原文不可逐行回溯。但每处缺陷的根因、判定依据与修正内容都完整记录在 iterations.jsonl 的 verify-1..7，且 4 个诊断脚本仍在 gen/ 下可重跑，结论可复现。",
+      "recovery": "重跑 a05_inspect.py 即可复现最终状态；未补做是因为重跑会改变历史文件与请求计数。",
+      "status": "open"
+    },
+    {
+      "id": "A05-U2",
+      "severity": "info",
+      "type": "不可测指标与测量上限",
+      "detail": "排队等待不可测（服务无相关字段）；看图只有真实下界 viewed_not_before；ladder 实测线宽以「纯色列存在性」为判据，抗锯齿边缘不计入线宽；04:17–05:25 的早期看图会话在上下文压缩前完成，逐张明细无法回溯。",
+      "impact": "queue_wait_seconds 记 null（不是 0）；image_views 按裁图文件数计数，不声称每张都单独打开过；查看时刻不做精确断言。",
+      "recovery": "不可恢复（排队、早期查看明细）；几何测量已给出可直接复核的数值。",
+      "status": "accepted"
+    },
+    {
+      "id": "A05-U3",
+      "severity": "info",
+      "type": "能力上限",
+      "detail": "Transform 的 2×2 部分（旋转/错切/缩放）静默失效，且无 Path/Line/Polyline 标签；斜线只能由轴对齐矩形拼合。",
+      "impact": "ladder 的实测线宽 2–3px 相对目标 2.2px 有几何近似偏差；DSL 体积从 82KB 增到 97KB。",
+      "recovery": "已用步长随斜率收缩把偏差压到 1px 内；属服务与 DSL 能力限制，非实现问题。",
+      "status": "accepted"
+    }
+  ]
+}

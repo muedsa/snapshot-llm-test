@@ -1,0 +1,649 @@
+{
+ "schema_version": 1,
+ "task_id": "A21",
+ "path_base": "suite_root",
+ "method": "交付 PNG 与放大裁切视图逐张实际打开查看（视觉工具），记录观察与结论；裁切视图由 preview/round-NN/views-manifest.json 记录 source_sha256，与交付 PNG 逐字节对应，避免查看的是旧版字节。凡在本轮上下文压缩之前的会话中实际打开的图，时间精度只能到分钟级，以 viewed_at_precision 标明，不做更精细的补记。",
+ "rounds": {
+  "1": {
+   "conclusion": "两图通过实际看图验收：竖版与横版均为完整成品，叠层主标记与字标中英分色清晰、发光球有立体感、主标题 132/116px 醒目、日期（橙）与讲者（灰）层级明确、网址牌完整；文字两两不碰撞、标题不压发光球实体、顶部与底部均有扩展空间、无占位文字。竖版右上线叠层水印与左下氛围 wash 形成对角重量，构图不左倾。",
+   "image_open_events": [
+    {
+     "event_id": "ev-a21-001",
+     "round": 1,
+     "phase": "research",
+     "artifact": "probe1-capabilities",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-probe1-capabilities-ab094e.png",
+      "note": "能力探针图 1600x1200，非交付件"
+     },
+     "view_type": "probe",
+     "viewed_at": "2026-10-19T18:44:00+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "渐变、Opacity 子树透明度、文本扩展属性全部生效；嵌套 Text 同句混色可用但子 span 前导空白被裁掉"
+    },
+    {
+     "event_id": "ev-a21-002",
+     "round": 1,
+     "phase": "research",
+     "artifact": "probe2-transform",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-probe2-transform-624a90.png",
+      "note": "能力探针图 1600x1080，非交付件"
+     },
+     "view_type": "probe",
+     "viewed_at": "2026-10-19T18:47:00+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "transform 矩阵与 <Transform> 均可旋转且角度正确；boxShadow、origin 偏移旋转生效；品牌图形三候选中候选二识别度最高、候选三读作射线而非叠层故弃用"
+    },
+    {
+     "event_id": "ev-a21-003",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-r01-launch-portrait-cf8a74.png",
+      "sha256": "fe64da1a3410d9c54d3722971330af2ddef7a041c11b743a412d9f29e9427c8d",
+      "note": "v1 版本；本轮 outputs/round-01/launch-portrait.png 已由 v2 覆盖，v1 字节以此响应文件为准"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T19:06:00+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "首次交付竖版。整体成立但发现三处缺陷：(1) 字标渲染为「叠光Layerlight」，中英之间无空格——嵌套 Text 裁掉了前导空白；(2) 右上象限（约 x640-1080、y90-400）大面积空白，左重右轻；(3) 主标题下先有 156x6 主色强调条、66px 后又有 320x2 灰细线，长度不一间距过近，读起来像误留的笔画",
+     "decision": "判定不通过，进入视觉迭代 v2"
+    },
+    {
+     "event_id": "ev-a21-004",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/responses/req-a21-r01-launch-wide-eb0d6f.png",
+      "sha256": "62114c08523dad9f29a9a85ad28fd09d338729b9c609bd132bb9b83362335e13",
+      "note": "v1 版本；v1 字节以此响应文件为准"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T19:06:00+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "首次交付横版。左右分栏成立、发光球大图占整栏；同竖版存在字标无空格问题。右下为深色背景、无图形元素，属底部扩展空间一部分，非缺陷",
+     "decision": "随竖版一起做 v2"
+    },
+    {
+     "event_id": "ev-a21-005",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-portrait.png",
+      "sha256": "d7fbe0229d21cf1458ca5998bbd1a80bba213fd362339f459323891b25639051"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T19:21:00+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "v2 整图。三处缺陷均已修复：字标中英之间有明确空隙；右上线叠层水印填补空白且只用描边不喧宾夺主；强调条唯一、灰细线已删。水印不压任何文字",
+     "decision": "进入放大裁切逐件复核"
+    },
+    {
+     "event_id": "ev-a21-006",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/launch-portrait-header.png",
+      "scale": 1.6,
+      "note": "裁切 [0,90,1080,250]，源图 sha256 与 v2 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T19:21:00+08:00",
+     "viewed_at_precision": "minute-level estimate",
+     "observed": "1.6x 放大：叠层主标记三张板材由暗到亮、亮核居中；「叠光」主色、「Layerlight」次要色，两色分明"
+    },
+    {
+     "event_id": "ev-a21-007",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/launch-portrait-kicker-title.png",
+      "scale": 1.35,
+      "note": "裁切 [0,230,1080,660]"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T19:21:00+08:00",
+     "viewed_at_precision": "minute-level estimate",
+     "observed": "眉标 ONLINE LAUNCH 字距展开、颜色为青；主标题两行 132px 字重足够、行距不挤不松；标题右侧与发光球之间留有深色缓冲"
+    },
+    {
+     "event_id": "ev-a21-008",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/launch-portrait-orb.png",
+      "scale": 1.6,
+      "note": "裁切 [540,400,1080,1030]"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T19:21:00+08:00",
+     "viewed_at_precision": "minute-level estimate",
+     "observed": "发光球居心径向渐变有明确球体感，外环细线完整，3 条光带自上而下递减宽度与亮度、两端圆头收口"
+    },
+    {
+     "event_id": "ev-a21-009",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/launch-portrait-info.png",
+      "scale": 1.4,
+      "note": "裁切 [0,640,1080,1200]"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T19:21:00+08:00",
+     "viewed_at_precision": "minute-level estimate",
+     "observed": "信息栈自上而下：强调条 → 日期（橙、加粗）→ 讲者（灰）→ 网址牌（药丸形 + 圆点 + 网址），节奏清楚、无重叠、网址未溢出牌体"
+    },
+    {
+     "event_id": "ev-a21-010",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-wide.png",
+      "sha256": "3af59f8d277df85b4ebae207f8e8e7a1d0cb7462a07e5a38052ac31ba51e6c45"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T19:21:00+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "v2 横版整图。字标间距已修复；左栏文字区与右栏发光球大图互不侵占；底部日期与讲者之间用竖分隔线分开，横排与竖版纵排不是等比缩放"
+    },
+    {
+     "event_id": "ev-a21-011",
+     "round": 1,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/launch-wide-header.png",
+      "scale": 1.8,
+      "note": "裁切 [0,70,940,210]"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T19:21:00+08:00",
+     "viewed_at_precision": "minute-level estimate",
+     "observed": "1.8x 放大：横版主标记 58px、字标 30px，中英间距约 13px，与竖版一致的排版规则"
+    },
+    {
+     "event_id": "ev-a21-012",
+     "round": 1,
+     "phase": "archive",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-portrait.png",
+      "sha256": "d7fbe0229d21cf1458ca5998bbd1a80bba213fd362339f459323891b25639051",
+      "note": "归档前复查：确认当前交付字节即已查看过的字节"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T19:40:00+08:00",
+     "viewed_at_precision": "minute-level（本次会话，秒级墙钟可用，统一记到分钟）",
+     "observed": "归档前复查通过：与 ev-a21-005 观察一致，字节未变（sha256 比对）。文字全部落在左侧文字区，发光球实体与标题之间有明显深色间隙，水印仅描边且不触任何文字"
+    },
+    {
+     "event_id": "ev-a21-013",
+     "round": 1,
+     "phase": "archive",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-01/launch-wide.png",
+      "sha256": "3af59f8d277df85b4ebae207f8e8e7a1d0cb7462a07e5a38052ac31ba51e6c45"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T19:40:00+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "归档前复查通过：与 ev-a21-010 观察一致。右下深色区域为底部扩展空间，非缺陷"
+    },
+    {
+     "event_id": "ev-a21-014",
+     "round": 1,
+     "phase": "archive",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-01/launch-portrait-header.png",
+      "scale": 1.6,
+      "note": "归档前复查字标放大视图"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T19:40:00+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "字标中英两段间距清晰可见，「叠光」与「Layerlight」不粘连；主标记叠层与字标基线对齐良好"
+    }
+   ]
+  },
+  "2": {
+   "conclusion": "两图通过实际看图验收：竖版三行、横版两行长标题均为完整 27 字、字号 66/52 均 ≥48 且未变形压窄；新增赞助方与报名状态牌各占一行、层级低于日期与网址；日期、讲者、ONLINE LAUNCH、网址与品牌行全部保留；主色与 6 个品牌构件形态未变（报名状态牌是牌子族的新实例而非新构件）；文字两两不碰撞、标题不压发光球实体、上下与左右均有余量、无占位文字。本轮首版即通过，未产生改进迭代——12 个查看视图逐张核对后没有发现需要返工的缺陷。",
+   "image_open_events": [
+    {
+     "event_id": "ev-a21-015",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.png",
+      "sha256": "421c3c4e2c9d73c561fa1a701fa0ed461ea31d90c6a3d15496e174744ebafc4b"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T21:48+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "整图 1:1 首次查看。三行长标题 66px 字重足够、行距不挤不松；眉标带橙色竖条；蓝色强调条唯一且与标题、日期都有间距；发光球移到右中偏下后与三行标题的墨迹之间留有明显深色间隙；底部新增赞助方与报名状态牌两行，未压到任何元素"
+    },
+    {
+     "event_id": "ev-a21-016",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.png",
+      "sha256": "9f0d4bc1e90f45964d2aaeefce165a7ef7f46a602925cf75558693449b8f1fe9"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T21:48+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "整图 1:1 首次查看。左栏品牌行 + 眉标 + 两行长标题（第 2 行 15 字）依次向下，右栏发光球大图占整栏，左右分栏互不侵占；底部 5 行信息栈（日期/讲者/网址牌/赞助方/报名状态牌）比竖版更紧但行距仍清楚"
+    },
+    {
+     "event_id": "ev-a21-017",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-wide-title.png",
+      "scale": 1.5,
+      "note": "裁切 [0,128,960,362]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T21:49+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "1.5x 放大：眉标 ONLINE LAUNCH 字距展开、竖条完整；两行标题 52px 笔画未变形、未出现横向压窄；第 2 行 15 字未折行，右缘距发光球辉光仍有深色缓冲"
+    },
+    {
+     "event_id": "ev-a21-018",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-portrait-kicker-title.png",
+      "scale": 1.3,
+      "note": "裁切 [0,258,1080,700]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T21:50+08:00",
+     "viewed_at_precision": "minute-level estimate（压缩前的会话中实际打开）",
+     "observed": "1.3x 放大：三行标题 66px 逐行左对齐、行距一致；首行冒号收在行尾未折行；第三行「的结构化方法」下方留白足够，蓝色强调条位置清楚；发光球辉光只从右下角进入，不触任何字"
+    },
+    {
+     "event_id": "ev-a21-019",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-portrait-footer.png",
+      "scale": 1.6,
+      "note": "裁切 [0,1030,1080,1240]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T21:57+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "1.6x 放大（新增窗口，专查两条新增信息）：赞助方 30px 灰色一行排完，英文与中文之间斜杠分隔清楚；报名状态牌为主色描边、文字白色居中，牌内左右各有明显余量；牌体圆角收口完整"
+    },
+    {
+     "event_id": "ev-a21-020",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-portrait-info.png",
+      "scale": 1.4,
+      "note": "裁切 [0,640,1080,1010]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T21:58+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "1.4x 放大：日期橙色加粗最醒目、讲者灰色次之、网址牌收尾，层级未倒挂；网址牌由第一轮 632 宽收窄到 560 宽后，牌右缘与发光球外环之间留出清晰深色间隙，不再粘连"
+    },
+    {
+     "event_id": "ev-a21-021",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-portrait-orb.png",
+      "scale": 1.5,
+      "note": "裁切 [540,560,1080,1060]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T21:58+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "1.5x 放大：球体半径由 130 增到 165 后球感更足，三条光带自上而下递减宽度与亮度、圆头收口；外环细线完整；左下角可见报名状态牌边缘，与球体无重叠"
+    },
+    {
+     "event_id": "ev-a21-022",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-wide-footer.png",
+      "scale": 2.0,
+      "note": "裁切 [0,600,960,730]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T21:59+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "2.0x 放大：赞助方 28px 一行排完；报名状态牌与上方网址牌同属牌子族但边框色不同（主色青 vs 中性蓝），语义区分一眼可辨"
+    },
+    {
+     "event_id": "ev-a21-023",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-wide-info.png",
+      "scale": 1.9,
+      "note": "裁切 [0,380,960,592]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T21:59+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "1.9x 放大：横版由第一轮的横排改为纯竖排后，日期→讲者→网址牌三行对齐左基线，圆点垂直居中于牌；竖分隔线已随横排删除，版式更干净"
+    },
+    {
+     "event_id": "ev-a21-024",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-portrait-header.png",
+      "scale": 1.6,
+      "note": "裁切 [0,80,1080,260]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T22:00+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "1.6x 放大：主标记 76→72 后与字标基线仍对齐，中英分色与间距规则未变；右上线叠层水印缩到 288 并外移后与标题首行不相交"
+    },
+    {
+     "event_id": "ev-a21-025",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-wide-orb.png",
+      "scale": 1.4,
+      "note": "裁切 [820,180,1440,620]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T22:00+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "1.4x 放大：球缩小到半径 175 并右移后右栏更居中；裁切左缘可见标题第 2 行末字「法」，其墨迹止于球辉光左缘之前，无覆盖"
+    },
+    {
+     "event_id": "ev-a21-026",
+     "round": 2,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-02/launch-wide-header.png",
+      "scale": 1.8,
+      "note": "裁切 [0,40,960,210]，源图 sha256 与 round-02 交付 PNG 一致"
+     },
+     "view_type": "crop-zoomed",
+     "viewed_at": "2026-10-19T22:06+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "1.8x 放大：主标记 52、字标 30，与竖版同一套间距规则；眉标竖条与字距完整"
+    },
+    {
+     "event_id": "ev-a21-027",
+     "round": 2,
+     "phase": "archive",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-portrait.png",
+      "sha256": "421c3c4e2c9d73c561fa1a701fa0ed461ea31d90c6a3d15496e174744ebafc4b"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T22:08+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "归档前复查通过：与 ev-a21-015 观察一致，交付字节未变（sha256 与 views-manifest 的 source_sha256 比对一致）。8 项必需文案全部在场，无占位词；三行标题与两条新增信息之间、与发光球之间均有净距"
+    },
+    {
+     "event_id": "ev-a21-028",
+     "round": 2,
+     "phase": "archive",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-02/launch-wide.png",
+      "sha256": "9f0d4bc1e90f45964d2aaeefce165a7ef7f46a602925cf75558693449b8f1fe9"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-19T22:08+08:00",
+     "viewed_at_precision": "minute-level（本次会话）",
+     "observed": "归档前复查通过：与 ev-a21-016 观察一致，交付字节未变。两行长标题覆盖完整 27 字标题，底部 5 行信息栈收口在底部扩展空间内"
+    }
+   ]
+  },
+  "3": {
+   "conclusion": "两图通过实际看图验收：浅底主题落地干净，页面为极浅蓝灰 #F5F8FC、牌子为纯白；9 条文案全部保留（含第二轮新增的赞助方与报名状态牌，以及本轮新增的英语短句「Clarity through structure」）；主标题取消发光阴影后字边缘在浅底上锐利，三行/两行不折不挤；6 个品牌构件的形态、层数与递减关系未变，只换色带；发光球移到右列空区、辉光收敛后，未压到任何一行文字，赞助方与报名状态牌仍在网址牌之下。对比度用去文字辅助渲染量取实际合成背景，两图 23 段普通文字全量检查，全局最小 4.8616（阈值 4.5），最差段为竖版日期 #C2410C 对页面底 #F5F8FC，证据见 round-03/contrast-audit.json。本轮首版即通过，未产生改进迭代。",
+   "image_open_events": [
+    {
+     "event_id": "ev-a21-029",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-portrait.png",
+      "sha256": "8dce3bf596f0fd3c7ae9a4f01fffc549d2207ac2a791c1ad6196b8f09660c524"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-20T09:49+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "整图 1:1 首次查看。浅底主题落地：页面为极浅蓝灰 #F5F8FC，无暗场噪点。三行长标题 #0B1B33 深藏蓝、无发光阴影，边缘干净；眉标 ONLINE LAUNCH 深青蓝 + 橙色竖条；日期橙红 #C2410C；讲者与赞助方中灰蓝；新增英语短句 Clarity through structure 在讲者与网址牌之间，深青蓝、字高明显低于日期。网址牌与报名状态牌为纯白底、圆角收口完整。发光球移到右侧标题与信息之间的空区，浅蓝辉光外环很淡，未压到任何一行文字。上下左右都有余量。"
+    },
+    {
+     "event_id": "ev-a21-030",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "outputs/r20261014T1536+0800-5f11da/A21/round-03/launch-wide.png",
+      "sha256": "b42d9bbf25e9a24a9a96b26e3c99bb192036100fb387f4428ae4d499dce9c575"
+     },
+     "view_type": "whole-1to1",
+     "viewed_at": "2026-10-20T09:50+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "整图 1:1 首次查看。左栏品牌行 + 眉标 + 两行长标题（15 字行）排满，底部信息竖排为日期 → 讲者 → 英语短句 → 网址牌 → 赞助方 → 报名状态牌六行，收口在底部扩展空间内。右栏发光球占整栏中部，浅蓝外辉光与球体轮廓清楚。浅底上六个品牌构件（叠层主标记、亮核、球、光带、强调条、牌子族）都在，无深底主题残留。"
+    },
+    {
+     "event_id": "ev-a21-031",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-portrait-info.png",
+      "sha256": "6611d7bd014daf650da2a1136d01af457b165c7b55a20a8127cd9fdbad5b0d82"
+     },
+     "view_type": "crop-info-1.5x",
+     "viewed_at": "2026-10-20T09:50+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "信息栈 1.5x 放大。强调条 → 日期 → 讲者 → Clarity through structure → 网址牌五档层级清楚：日期 56px 橙红最重，讲者与赞助方中灰蓝次级，英语短句 28px 深青蓝独立成档，网址牌内 layerlight.example.org 深青蓝。四行文字全部落在页面底纯色上，无辉光、无渐变干扰，字边缘锐利可读。发光球的浅蓝外环在最右侧，与文字之间留有可见间隙。"
+    },
+    {
+     "event_id": "ev-a21-032",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-portrait-footer.png",
+      "sha256": "8bf82242b9f59004e769d8364eb7ae26800c4d29a5d365a9935c3969886f056d"
+     },
+     "view_type": "crop-footer-1.5x",
+     "viewed_at": "2026-10-20T09:50+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "页脚 1.5x 放大。赞助方 Northstar Research / 云构工具 保留，中灰蓝可读；报名状态牌「免费参加 · 无需报名」纯白底 + 深青蓝边框，文字 #0B1B33，圆角收口完整无锯齿。第二条 round-03.md 硬约束「不得让赞助方消失」确认满足。"
+    },
+    {
+     "event_id": "ev-a21-033",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-portrait-header.png",
+      "sha256": "21bc374b33a2f972824835a75456f06144a5776601835f5d0ac50eecc1d81373"
+     },
+     "view_type": "crop-header-1.6x",
+     "viewed_at": "2026-10-20T09:51+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "顶部品牌行 1.6x 放大。叠层主标记三段蓝由暗到亮，亮核为近白青色、压在最亮板材上仍读得出边界——浅底上亮核未变成一团白。字标「叠光」深青蓝、「Layerlight」中灰蓝。右上角部线叠层水印为浅蓝描边无填充，与左上实心主标记区分清楚，未与文字相撞。"
+    },
+    {
+     "event_id": "ev-a21-034",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-wide-info.png",
+      "sha256": "422cdf142b079755bc814e08165f0fd17c2aa659de95dee16b53ebdaa0208a82"
+     },
+     "view_type": "crop-info-2.0x",
+     "viewed_at": "2026-10-20T09:51+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "横版信息栈 2.0x 放大。日期橙红 44px、讲者中灰蓝、英语短句深青蓝 26px、网址牌内网址深青蓝，四档颜色不混淆。网址牌左右内边距均匀，左侧主色圆点与文字基线对齐。最右缘可见发光球外环的极淡浅蓝，未压到任何字形。"
+    },
+    {
+     "event_id": "ev-a21-035",
+     "round": 3,
+     "phase": "contrast",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/contrast-evidence/launch-portrait-date-bg.png",
+      "sha256": "b517bf5d29282c3330db8b3ad2c12eb897e959eb789c9194e0bbba2ff8c4bb57"
+     },
+     "view_type": "contrast-evidence-background",
+     "viewed_at": "2026-10-20T09:52+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "对比度证据图：日期所在区域的去文字背景局部。整片为均匀的 #F5F8FC 页面底，无氛围 wash、无辉光叠层——证实全图最差对比度段（date）测到的背景就是页面底名义色本身，而不是某个不利的渐变叠层。发光球外环在框外右侧，未进入取样区。"
+    },
+    {
+     "event_id": "ev-a21-036",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-portrait-title.png",
+      "sha256": "c90ee693381605d7013f9841afd3b5c97dbc443eb1d465f5747f6aab1c536994"
+     },
+     "view_type": "crop-title-1.3x",
+     "viewed_at": "2026-10-20T09:52+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "标题 1.3x 放大。三行 66px 加粗，27 字长标题完整、行距 1.30em 不挤不撞；确认已取消前两轮的青色发光阴影，字边缘在浅底上无半透明光晕。裁切框右下角刚露出发光球辉光的起点，与第三行字墨迹之间有明显浅色间隙。"
+    },
+    {
+     "event_id": "ev-a21-037",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-portrait-orb.png",
+      "sha256": "e587ab65410698a484fb7e6734ecb26fdbc4bfb78950a2254c36202ffacad17b"
+     },
+     "view_type": "crop-orb-1.5x",
+     "viewed_at": "2026-10-20T09:53+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "竖版发光球 1.5x 放大。径向渐变由中上亮蓝过渡到边缘深藏蓝，立体感到位；外环细线主色蓝；外辉光在浅底上收成一圈极淡的冷色，边缘自然消失不显脏。球内光带为近白青色圆头条。左上角的标题墨迹属于相邻文字段，与球体不相交。"
+    },
+    {
+     "event_id": "ev-a21-038",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-wide-orb.png",
+      "sha256": "38e84d115a74397c33edf6aeae273e7a808e5372a95affa657d1befb64d178de"
+     },
+     "view_type": "crop-orb-1.4x",
+     "viewed_at": "2026-10-20T09:53+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "横版发光球 1.4x 放大。三条光带自上而下宽度与亮度递减（0.90 / 0.58 / 0.34）关系保留，圆头收口完整；球体轮廓在浅底上由辉光与外环共同勾勒，边界清楚不糊。品牌图形在浅底主题下的形制与前两轮一致。"
+    },
+    {
+     "event_id": "ev-a21-039",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-wide-footer.png",
+      "sha256": "35931e74b847ae3367bf0e2d9c6171ac38fa467005bc84a649a8f0260d9a1769"
+     },
+     "view_type": "crop-footer-2.0x",
+     "viewed_at": "2026-10-20T09:54+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "横版页脚 2.0x 放大。赞助方与报名状态牌均在，层级低于网址牌；状态牌边框为主色深青蓝，与网址牌的中性浅蓝边框区分语义。"
+    },
+    {
+     "event_id": "ev-a21-040",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-wide-header.png",
+      "sha256": "8d0ec3bb65c1d537c87f818135dec7bb42796a1c50be3bb51604033a09bf0c49"
+     },
+     "view_type": "crop-header-1.8x",
+     "viewed_at": "2026-10-20T09:54+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "横版品牌行 1.8x 放大。主标记亮核与板材层级清楚；字标两色可读；眉标橙竖条 + 深青蓝 ONLINE LAUNCH，字距均匀。"
+    },
+    {
+     "event_id": "ev-a21-041",
+     "round": 3,
+     "phase": "delivery",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/preview/round-03/launch-wide-title.png",
+      "sha256": "6357a7eb8f41eda42dff8ba792ea13a292eecc8f7d643e69873b7f8d8cf9a27c"
+     },
+     "view_type": "crop-title-1.5x",
+     "viewed_at": "2026-10-20T09:55+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "横版标题 1.5x 放大。两行 52px，15 字行排满不折行、不压窄；确认 <Text> 无 transform 属性，字形比例正常。底部露出的橙色为日期顶部。"
+    },
+    {
+     "event_id": "ev-a21-042",
+     "round": 3,
+     "phase": "contrast",
+     "artifact": "launch-portrait",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-portrait.notext.png",
+      "sha256": "1c61e32b8e57850b4c0ee149233b15c146a58b32b6e54102ef7102c441a1ce46"
+     },
+     "view_type": "auxiliary-notext-1to1",
+     "viewed_at": "2026-10-20T09:56+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "去文字辅助背景图整图 1:1。所有非文字层齐全：叠层主标记与亮核、眉标橙竖条、主色强调条、网址牌与报名状态牌（含左侧主色圆点）、角部线叠层水印、发光球（辉光 + 外环 + 球体 + 三条光带）、左下氛围 wash；画面中无任何文字。确认该渲染与交付图只差在 <Text> 节点，因此可作为文字下方实际合成背景的取样源。此图仅存临时目录，不进入交付。"
+    },
+    {
+     "event_id": "ev-a21-043",
+     "round": 3,
+     "phase": "contrast",
+     "artifact": "launch-wide",
+     "image": {
+      "path": "tmp/r20261014T1536+0800-5f11da/A21/backgrounds/launch-wide.notext.png",
+      "sha256": "45cc9c4c9fe6505713abe47f91b4ce60cb5397dd2fb070d6250a993d33c7aead"
+     },
+     "view_type": "auxiliary-notext-1to1",
+     "viewed_at": "2026-10-20T09:56+08:00",
+     "viewed_at_precision": "minute-level（本次会话内实际打开）",
+     "observed": "去文字辅助背景图整图 1:1。左栏除文字外的品牌行、眉标竖条、网址牌与报名状态牌齐全，右栏发光球完整（辉光、外环、球体、三条光带），左上氛围 wash可见。无任何文字。与交付横版只差在 <Text> 节点。仅存临时目录。"
+    }
+   ],
+   "note": "辅助去文字背景图（ev-a21-042 / ev-a21-043）只作对比度取样的临时证据，不属于交付作品；其 PNG 与 DSL 均在临时目录，交付目录内没有对应文件"
+  }
+ },
+ "updated_at": "2026-10-20T09:57+08:00"
+}

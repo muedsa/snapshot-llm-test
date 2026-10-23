@@ -1,0 +1,59 @@
+[
+  {
+    "id": "r03-01",
+    "requirement": "改浅色主题",
+    "change": "页面底由 #060A18 改为 #F5F8FC，牌子底面由 #0E1936 改为 #FFFFFF；ink 由 #F5F9FF 改为 #0B1B33，muted 由 #8FA3C2 改为 #4A5A72，primary 由 #5FE0FF 改为 #0A6FA8（深青蓝，浅底可读档），primary_2 保持 #1E86C8，accent 由 #FFC26B 改为 #C2410C（暖色降暗）。深底主题的近白文字与亮青在浅底上不可读，故文字档整体换档而非个别调整",
+    "why": "浅底上普通文字必须对实际合成背景 ≥4.5:1；#5FE0FF 对 #F5F8FC 只有 1.55，#F5F9FF 只有 1.06，无法保留",
+    "verified_unchanged": "色板仍是同一组语义角色（background/primary/accent/ink/rule），每个角色的用途未变：主标题 ink、赞助方与讲者 muted、网址与眉标 primary、日期与强调条 accent"
+  },
+  {
+    "id": "r03-02",
+    "requirement": "所有普通文字与实际合成背景的对比度 ≥4.5:1",
+    "change": "取消主标题的青色 textShadow（前两轮 0 8 26 #5FE0FF2E / 0 6 22 #5FE0FF2E）；发光球移到标题与信息栈之间的右列空区，外辉光半径由 3.4r 收到 2.7r（竖版）/ 2.75r（横版）；氛围 wash 由深底渐暗改为页面底到纯白的径向渐白",
+    "why": "浅底上任何深色半透明叠层都会压暗文字的实际背景；把球体与辉光的填充框移出所有文字墨迹之后，每段文字的实际合成背景就只是页面底 #F5F8FC 或牌子底 #FFFFFF，不再依赖渐变叠层的运气。渐白 wash 只会把底面提亮，对深色文字只增不减对比度",
+    "verified_unchanged": "品牌图形的形态、层数、圆角比例、光带条数与自上而下递减的关系全部未变，只换色带与收敛半径",
+    "evidence": "round-03/contrast-audit.json：两图 23 段普通文字全量检查，最小对比度 4.8616（未舍入 4.861573385783012），最差位置为竖版 date #C2410C 对页面底 #F5F8FC"
+  },
+  {
+    "id": "r03-03",
+    "requirement": "保留全部第二轮文案和品牌图形",
+    "change": "无文案删减；9 条文案（品牌字标、ONLINE LAUNCH、27 字长标题、日期、讲者、网址、赞助方、报名状态、英语短句）全部保留并逐字符比对通过。6 个品牌构件（叠层主标记、主标记亮核、发光球、球内光带、主色强调条、牌子族）全部保留",
+    "why": "本轮只在主题与可读性上做文章，不改信息架构",
+    "verified_unchanged": "content-map.json 的必需文案完整性检查 9/9 匹配；设计 token 的品牌几何 6 项参数（sheets=3、offset 0.17、圆角比 0.30/0.34、光带 3 条 0.90/0.58/0.34、牌子族同源）与第二轮一致"
+  },
+  {
+    "id": "r03-04",
+    "requirement": "另在网址上方新增英语短句 \"Clarity through structure\"",
+    "change": "新增一段文字，位于讲者与网址牌之间（网址牌之上）；竖版 28px、横版 26px，均 ≥24；颜色用 primary #0A6FA8，无字距",
+    "why": "网址是整版唯一的行动入口，英语短句作为品牌语放在它正上方，构成「口号 → 入口」的收尾对",
+    "verified_unchanged": "新增后信息栈由 5 行扩到 6 行，赞助方与报名状态牌仍在，未被挤出版面；两图的上下扩展空间仍 ≥70px"
+  },
+  {
+    "id": "r03-05",
+    "requirement": "两尺寸不变；中文长标题仍 ≤3 行、≥48",
+    "change": "无。竖版 1080x1350、横版 1440x810 未动；标题仍为竖版 3 行 66px、横版 2 行 52px",
+    "why": "第 2 轮的长标题解法（减字号 + 增行数）在浅底上依然成立，无需重排",
+    "verified_unchanged": "PNG IHDR 尺寸、title_line* 条目数、字号下限检查均通过；交付 .snapshot 中 <Text> 无 transform / matrix 属性"
+  },
+  {
+    "id": "r03-06",
+    "requirement": "不得让赞助方消失，不能只改两种颜色忽略实际叠层",
+    "change": "赞助方「Northstar Research / 云构工具」保留在网址牌之下（竖版 y=1097、横版 y=606），字号与颜色档位不变（muted）；报名状态牌一并保留",
+    "why": "浅底重排最容易牺牲的就是页脚那几行",
+    "verified_unchanged": "footer 裁切视图（1.5x / 2.0x）肉眼确认赞助方与状态牌可读；content-map 完整性检查中 sponsors 与 badge 均 match=true"
+  },
+  {
+    "id": "r03-07",
+    "requirement": "不能只改两种颜色忽略实际叠层",
+    "change": "背景取样不用主题 token，改用去文字辅助渲染：同一份 round-03 构造器关掉 <Text> 输出后重渲染一次，拿到逐像素真实的合成背景，再在字形覆盖区内取最差对比度。辅助渲染保留氛围 wash、角部水印、辉光、外环、光带、牌子底面与边框、主标记，只比交付版少 12/11 个 <Text>",
+    "why": "名义底色无法代表渐变与透明叠层的实际结果；只用 token 判读会让被叠层污染的文字误判为通过",
+    "verified_unchanged": "方法自洽性自检：两图除墨迹外的逐通道最大差为 12（即墨迹阈值边界），证明辅助渲染与交付图只差在文字；round-03 的 12/11 段文字均无 textShadow，差值不会混入阴影"
+  },
+  {
+    "id": "r03-08",
+    "requirement": "保留三轮及累计报告/指标",
+    "change": "round-01、round-02 的 PNG、.snapshot、design-tokens.json、content-map.json、task-metrics.json 与 snapshot-usage.md 均未改动；第三轮产物全部写入 round-03/ 新目录；题目根层另补一份跨三轮的 snapshot-usage.md 与 task-metrics.json 做累计汇总",
+    "why": "轮次产物不可覆盖，累计视图需与轮次视图并存",
+    "verified_unchanged": "round-01 与 round-02 目录下文件的时间戳与哈希未变"
+  }
+]
