@@ -1,0 +1,391 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "input": "tasks/A24-release-plan-capstone/inputs/release.json",
+ "timezone": "Asia/Shanghai (+08:00)",
+ "window": {
+  "start": "2026-11-07T09:00:00+08:00",
+  "deadline": "2026-11-07T16:00:00+08:00",
+  "minutes": 420
+ },
+ "checks": [
+  {
+   "id": "duration-window",
+   "name": "任务完整时长且落在 0–420 窗口",
+   "passed": true,
+   "method": "逐任务比对 schedule.json 的 end_minute-start_minute 与 release.json minutes，并检查 0≤start、end≤420",
+   "evidence": {
+    "checked_tasks": 12,
+    "max_end_minute": 260,
+    "window_minutes": 420,
+    "violations": []
+   }
+  },
+  {
+   "id": "resource-no-overlap",
+   "name": "同团队占用区间半开不重叠（不可并行）",
+   "passed": true,
+   "method": "按团队取 [start,end) 区间排序后相邻比较，要求前项 end≤后项 start",
+   "evidence": {
+    "design_intervals": [
+     [
+      0,
+      25
+     ],
+     [
+      25,
+      85
+     ],
+     [
+      85,
+      155
+     ],
+     [
+      155,
+      200
+     ],
+     [
+      205,
+      240
+     ],
+     [
+      240,
+      260
+     ]
+    ],
+    "engineering_intervals": [
+     [
+      0,
+      20
+     ],
+     [
+      25,
+      55
+     ],
+     [
+      55,
+      95
+     ],
+     [
+      95,
+      140
+     ],
+     [
+      140,
+      205
+     ],
+     [
+      205,
+      235
+     ]
+    ],
+    "conflicts": []
+   }
+  },
+  {
+   "id": "flexible-team-valid",
+   "name": "柔性任务 teams 列任选其一，不占用两团队",
+   "passed": true,
+   "method": "对 teams 长度>1 的任务，确认 schedule.json 的 team 属于其 teams 列表，且全程仅该团队一个区间",
+   "evidence": {
+    "flexible_tasks": {
+     "R05": {
+      "allowed": [
+       "design",
+       "engineering"
+      ],
+      "assigned": "engineering"
+     },
+     "R09": {
+      "allowed": [
+       "design",
+       "engineering"
+      ],
+      "assigned": "design"
+     },
+     "R12": {
+      "allowed": [
+       "design",
+       "engineering"
+      ],
+      "assigned": "design"
+     }
+    },
+    "invalid": []
+   }
+  },
+  {
+   "id": "dependencies",
+   "name": "全部先决 end ≤ 后继 start（未改依赖）",
+   "passed": true,
+   "method": "逐任务逐依赖比较 schedule.json 中两侧分钟数",
+   "evidence": {
+    "dependency_count": 16,
+    "violations": [],
+    "per_task": {
+     "R01": [],
+     "R02": [],
+     "R03": [
+      "R02"
+     ],
+     "R04": [
+      "R01"
+     ],
+     "R05": [
+      "R01"
+     ],
+     "R06": [
+      "R03"
+     ],
+     "R07": [
+      "R04",
+      "R05"
+     ],
+     "R08": [
+      "R04",
+      "R06"
+     ],
+     "R09": [
+      "R07"
+     ],
+     "R10": [
+      "R07",
+      "R08",
+      "R09"
+     ],
+     "R11": [
+      "R08",
+      "R09"
+     ],
+     "R12": [
+      "R10",
+      "R11"
+     ]
+    }
+   }
+  },
+  {
+   "id": "critical-path",
+   "name": "关键路径时长（仅依赖与时长，不含资源约束）",
+   "passed": true,
+   "method": "对 DAG 按 tasks 顺序动态规划求最长路径；忽略资源约束",
+   "evidence": {
+    "critical_path_minutes": 255,
+    "path": [
+     "R01",
+     "R04",
+     "R07",
+     "R09",
+     "R10",
+     "R12"
+    ],
+    "per_task_minutes": {
+     "R01": 25,
+     "R02": 20,
+     "R03": 40,
+     "R04": 60,
+     "R05": 30,
+     "R06": 45,
+     "R07": 70,
+     "R08": 65,
+     "R09": 45,
+     "R10": 35,
+     "R11": 30,
+     "R12": 20
+    }
+   }
+  },
+  {
+   "id": "task-set-unchanged",
+   "name": "12 项任务全部保留，未删检查环节、未缩时",
+   "passed": true,
+   "method": "比对 schedule.json 任务 ID 集合与 release.json tasks",
+   "evidence": {
+    "schedule_ids": [
+     "R01",
+     "R02",
+     "R03",
+     "R04",
+     "R05",
+     "R06",
+     "R07",
+     "R08",
+     "R09",
+     "R10",
+     "R11",
+     "R12"
+    ],
+    "input_ids": [
+     "R01",
+     "R02",
+     "R03",
+     "R04",
+     "R05",
+     "R06",
+     "R07",
+     "R08",
+     "R09",
+     "R10",
+     "R11",
+     "R12"
+    ]
+   }
+  }
+ ],
+ "lower_bounds": {
+  "critical_path": {
+   "minutes": 255,
+   "path": [
+    "R01",
+    "R04",
+    "R07",
+    "R09",
+    "R10",
+    "R12"
+   ],
+   "basis": "仅依赖关系与任务时长求和（忽略团队资源约束），DP 最长链：R01(25)+R04(60)+R07(70)+R09(45)+R10(35)+R12(20)"
+  },
+  "workload": {
+   "minutes": 242.5,
+   "basis": "总工作量 485 分钟 ÷ 2 个团队 = 242.5 分钟（不提前取整）",
+   "total_minutes": 485,
+   "team_count": 2
+  },
+  "dominant": {
+   "minutes": 255,
+   "of": "critical_path"
+  }
+ },
+ "finish": {
+  "finish_minute": 260,
+  "finish_time": "2026-11-07T13:20:00+08:00",
+  "buffer_minutes": 160,
+  "buffer_span": [
+   "13:20",
+   "16:00"
+  ],
+  "basis": "缓冲 = 420 − 最大 end_minute = 420 − 260 = 160"
+ },
+ "optimality": {
+  "feasible": true,
+  "claimed_optimal": true,
+  "proof_method": "状态穷举：以（已完成任务位掩码, design 空闲时刻, engineering 空闲时刻, 各任务结束时刻）为状态，逐单动作推进搜索全部可行排程，未发现完工时间小于 260 的排程",
+  "proof_stats": {
+   "states": 315,
+   "transitions": 412
+  },
+  "all_optimal_schedule_count": 4,
+  "improvement_basis": "两下界较大者为关键路径 255 分钟；本排程 260 分钟仅差 5 分钟；穷举证明 259 及以下不可行",
+  "caveats": "最优性证明仅覆盖本输入（12 项任务、2 个团队、固定时长与依赖）；不含风险返工场景"
+ },
+ "float": {
+  "per_task_minutes": {
+   "R01": 5,
+   "R02": 35,
+   "R03": 0,
+   "R04": 5,
+   "R05": 35,
+   "R06": 0,
+   "R07": 5,
+   "R08": 0,
+   "R09": 5,
+   "R10": 0,
+   "R11": 5,
+   "R12": 0
+  },
+  "total_float_minutes": 95,
+  "risk_float": {
+   "K1": 35,
+   "K2": 35,
+   "K3": 0
+  },
+  "basis": "各任务在保持完工 260 不变时可延迟的分钟数（成功者优先搜索的 DFS 中逐任务试探）"
+ },
+ "team_utilization": {
+  "design": {
+   "busy_minutes": 255,
+   "load_minutes": 255,
+   "idle_within_window_minutes": 165
+  },
+  "engineering": {
+   "busy_minutes": 230,
+   "load_minutes": 230,
+   "idle_within_window_minutes": 190
+  }
+ },
+ "schedule": [
+  {
+   "id": "R01",
+   "team": "design",
+   "start_minute": 0,
+   "end_minute": 25
+  },
+  {
+   "id": "R02",
+   "team": "engineering",
+   "start_minute": 0,
+   "end_minute": 20
+  },
+  {
+   "id": "R03",
+   "team": "engineering",
+   "start_minute": 55,
+   "end_minute": 95
+  },
+  {
+   "id": "R04",
+   "team": "design",
+   "start_minute": 25,
+   "end_minute": 85
+  },
+  {
+   "id": "R05",
+   "team": "engineering",
+   "start_minute": 25,
+   "end_minute": 55
+  },
+  {
+   "id": "R06",
+   "team": "engineering",
+   "start_minute": 95,
+   "end_minute": 140
+  },
+  {
+   "id": "R07",
+   "team": "design",
+   "start_minute": 85,
+   "end_minute": 155
+  },
+  {
+   "id": "R08",
+   "team": "engineering",
+   "start_minute": 140,
+   "end_minute": 205
+  },
+  {
+   "id": "R09",
+   "team": "design",
+   "start_minute": 155,
+   "end_minute": 200
+  },
+  {
+   "id": "R10",
+   "team": "design",
+   "start_minute": 205,
+   "end_minute": 240
+  },
+  {
+   "id": "R11",
+   "team": "engineering",
+   "start_minute": 205,
+   "end_minute": 235
+  },
+  {
+   "id": "R12",
+   "team": "design",
+   "start_minute": 240,
+   "end_minute": 260
+  }
+ ]
+}

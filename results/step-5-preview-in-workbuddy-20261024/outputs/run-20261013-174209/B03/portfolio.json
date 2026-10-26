@@ -1,0 +1,706 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "B03",
+ "run_id": "run-20261013-174209",
+ "status": "completed",
+ "stop_reason": "10 件独立完整作品全部经真实服务渲染、逐图（整图+分区放大）验收，已知缺陷与 DSL 边界问题全部修复并复检通过，无未解决问题",
+ "output_dir": "outputs/run-20261013-174209/B03/",
+ "temp_dir": "tmp/run-20261013-174209/B03/",
+ "asset_policy": "dsl_only（run-config.json 指定）；纯 DSL 交付，仅 case-04 含 PIL 生成灰度赛照的合法 dataUri（双色调映射底图，已注明用途）",
+ "plan": "tmp/run-20261013-174209/B03/plan/plan-v01.md（2026-10-22 20:20 建立，首次用例渲染之前）",
+ "cases": [
+  {
+   "id": "case-01",
+   "title": "霓虹演出海报",
+   "canvas": "1080×1440（3:4 社交竖版）",
+   "audience": "独立音乐与夜场文化受众",
+   "scenario": "社交平台传播的 livehouse 夜场演出海报",
+   "goal": "3 秒内传递乐队名、巡演站次、日期场地与购票入口",
+   "technique": "三层渐变夜空 + RADIAL 星晕 + Container transform 矩阵旋转光束 + 多层 textShadow 霓虹辉光 + Text STROKE 空心管描边 + 剪影收底",
+   "visual": "三层渐变夜空 + 霓虹管标题 + 旋转光束 + 星晕 + 剪影人群收底",
+   "content_basis": "虚构独立乐队「北极星信号 Polaris Signal」冬夜巡演第三站 · 潮汐 Livehouse；乐队、场次、票价均为虚构演示内容，不宣称实际演出",
+   "final_png": "outputs/run-20261013-174209/B03/case-01/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-01/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-01/case.md",
+   "dsl_version": "v01",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "622a4062-674b-4f87-b2bc-9bf0e96b215e",
+    "elapsed_s": 5.531,
+    "dsl_bytes": 96086,
+    "png_bytes": 329557,
+    "png_md5": "4f22d0a649bf1219d4194a6c1c6d7218",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C01-1",
+     "condition": "霓虹辉光可辨：标题为空心管 + 多层辉光，非实心字",
+     "status": "met",
+     "evidence": "dsl：STROKE 描边 2.2px（v02 加粗，1.2px 在 108px 下过细）+ 三层 textShadow 辉光；view-zoom：整图 + 标题分区放大，管芯空心与内外辉光层次清晰可辨"
+    },
+    {
+     "id": "C01-2",
+     "condition": "光束与星晕为矩阵旋转构造，角度经计算",
+     "status": "met",
+     "evidence": "dsl：Container transform=matrix 旋转 -90° 纵向巡演锁扣 + 旋转光束；pixel：分区放大实测光束角度与矩阵 deg 一致；带环行星双弧 ring_segment"
+    },
+    {
+     "id": "C01-3",
+     "condition": "构图均衡：左上不留大面积空区",
+     "status": "met",
+     "evidence": "view-zoom：v02 新增行星 + 纵向 TOUR 锁扣填充左上（原 y 100–460 空区），与右侧极星光束形成对角平衡；整图复核通过"
+    },
+    {
+     "id": "C01-4",
+     "condition": "演出信息四要素齐全无裁切",
+     "status": "met",
+     "evidence": "dsl：T() 宽度自检 0 警告；view-zoom：乐队名/日期 12.24 / 场地 / CTA 均完整"
+    }
+   ],
+   "rounds": "v01 修 T() 漏传 nodes=n 致 10 处文本缺失；v02 描边加粗 + 左上构图配重",
+   "views": [
+    "整图",
+    "标题区",
+    "左上行星锁扣区",
+    "信息卡与 CTA 区",
+    "人群剪影收底"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-02",
+   "title": "毛玻璃天气行程卡",
+   "canvas": "1080×1920（9:16 手机）",
+   "audience": "计划前往鹭洲湿地公园的访客",
+   "scenario": "出行 App「今日行程」底部三层面板浮层",
+   "goal": "一屏读完天气、当日行程与行动入口，面板浮动于实景之上",
+   "technique": "frosted() 三层面板（ClipRRect + BackdropFilter 高斯毛玻璃）+ ImageFiltered 柔化云层 + 渐变天色 + 渐变 CTA + Flex 时间轴",
+   "visual": "渐变天色 + 毛玻璃三层面板 + 柔化云层 + 渐变 CTA + Flex 时间轴",
+   "content_basis": "虚构出行 App「云图 Weather」；服务对象为鹭洲湿地公园访客（B02 规范数据：开放 旺季 08:30–20:00 / 淡季 09:00–17:00、周二闭园、咨询 0512-6688-0000），天气与行程为演示数据",
+   "final_png": "outputs/run-20261013-174209/B03/case-02/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-02/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-02/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "161dc6c8-0a47-4879-bd18-8e3996c0837a",
+    "elapsed_s": 5.812,
+    "dsl_bytes": 31960,
+    "png_bytes": 302385,
+    "png_md5": "e0abbff575cd07904fbffdf9dda4bf77",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C02-1",
+     "condition": "毛玻璃真实：背后内容被模糊且圆角裁剪",
+     "status": "met",
+     "evidence": "dsl：frosted() = Positioned→ClipRRect(r28)→BackdropFilter(sigma14)→Container；view-zoom：面板分区放大，背后条纹/山形被高斯模糊 + 圆角边框齐整"
+    },
+    {
+     "id": "C02-2",
+     "condition": "三层面板垂直预算精确，无重叠无溢出",
+     "status": "met",
+     "evidence": "dsl：场景 0–1080 / 面板一 1096–1436 / 面板二 1452–1852 / 面板三 1860–1916；pixel：分区实测各面板边界与预算一致"
+    },
+    {
+     "id": "C02-3",
+     "condition": "底部行动条贴画布底边，仅上圆角",
+     "status": "met",
+     "evidence": "dsl：ClipPath 自定义路径（M 28,0 L 956,0 Q 984,0 984,28…）仅上两角 r28；pixel：v02 修复后底条下缘与画布底边 0 缝隙（v01 曾有 4px 缝）"
+    },
+    {
+     "id": "C02-4",
+     "condition": "云层柔化与天色渐变分层可辨",
+     "status": "met",
+     "evidence": "dsl：ImageFiltered sigma 柔化云组 + 三段渐变天色；view-zoom：云层边缘虚化过渡自然"
+    }
+   ],
+   "rounds": "v01 渲染前自检拦截 6 处 += 字符展开；v02 修底条 4px 缝隙贴边",
+   "views": [
+    "整图",
+    "天色与云层区",
+    "天气面板",
+    "行程面板",
+    "底部行动条"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-03",
+   "title": "剪纸风国家公园导览图",
+   "canvas": "1920×1080（16:9 横版壁画）",
+   "audience": "游客中心内全体访客（含亲子与长者）",
+   "scenario": "游客中心大幅墙面导览图",
+   "goal": "远距离识别园区格局，近距离读取动线、观测点与规范信息",
+   "technique": "ClipPath EVEN_ODD 多轮廓镂空剪纸（团花/云朵卷曲/鱼鳞/亭窗/芦苇中缝/烛穗环/船帆月牙）+ 分层剪影 + ClipOval 日月 + 云纹滚边",
+   "visual": "剪纸风分层剪影 + EVEN_ODD 镂空纹样 + 日月环 + 云纹滚边",
+   "content_basis": "鹭洲湿地公园游客中心导览图；数据用 B02 项目规范（862 公顷 / 287 种鸟 / 426 种植物、开放时间、票价、电话、地址），园区为虚构演示项目",
+   "final_png": "outputs/run-20261013-174209/B03/case-03/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-03/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-03/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "b492edb0-dabb-4292-b462-fcecb5524077",
+    "elapsed_s": 4.422,
+    "dsl_bytes": 63837,
+    "png_bytes": 202418,
+    "png_md5": "b7612cdee97730780460baea28e77835",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C03-1",
+     "condition": "镂空纹样正确：EVEN_ODD 仅镂空实体内部子路径",
+     "status": "met",
+     "evidence": "dsl：卷曲子路径回到剪影体内（v02 修复：云朵 bump 上凸、卷曲内嵌）；view-zoom：7 分区逐个核对团花六瓣、芦苇中缝、烛穗环、鱼鳞、亭窗、船帆月牙全部为真镂空"
+    },
+    {
+     "id": "C03-2",
+     "condition": "剪纸分层可辨：前景/中景/远景层次分明",
+     "status": "met",
+     "evidence": "view-zoom：天空加深为 #C7DAD2 托出白云剪影（v02），远近山影/水岸/船只分层清晰"
+    },
+    {
+     "id": "C03-3",
+     "condition": "导览信息可读：动线、观测点、规范数据齐全",
+     "status": "met",
+     "evidence": "dsl：三条动线 + 观测点编号 + 开放时间/票价/电话/统计数；pixel：抽测文字对比度达标；数据与 B02 跨用例规范一致"
+    },
+    {
+     "id": "C03-4",
+     "condition": "曲线全部采样为 M/L 折线（不依赖未探测的 Q/C）",
+     "status": "met",
+     "evidence": "dsl：所有路径为 M/L 折线段；view-zoom：放大部分路径边缘平滑无断点"
+    }
+   ],
+   "rounds": "v02 修云朵 bump 角度（下半圆→上凸）与卷曲越界致整朵云只剩 4 个白点",
+   "views": [
+    "整图",
+    "云朵与团花区",
+    "芦苇中缝",
+    "烛穗环与鱼鳞",
+    "亭窗与船帆",
+    "日月环",
+    "图板滚边"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-04",
+   "title": "双色马拉松数据海报",
+   "canvas": "1080×1350（4:5 社交竖版）",
+   "audience": "完赛选手与跑步社群",
+   "scenario": "赛事官方社交账号完赛数据海报",
+   "goal": "一张图传递赛事规模与个人完赛数据，适合转发",
+   "technique": "ColorFiltered 嵌套双色调（内层 SCREEN 靛蓝映射暗部 × 外层 MULTIPLY 暖黄映射亮部，作用于 PIL 生成灰度赛照 dataUri）+ Flex 大数字 + 偏移框破版",
+   "visual": "冷暖双色调赛照 + Flex 大数字排版 + 成绩分布条形图 + 偏移框破版",
+   "content_basis": "虚构赛事「2026 鹭洲湿地半程马拉松」（2026-10-25 周日）；参赛人数、成绩分布等均为虚构演示数据（case.md 已注明）",
+   "final_png": "outputs/run-20261013-174209/B03/case-04/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-04/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-04/case.md",
+   "dsl_version": "v03",
+   "dsl_versions_all": [
+    "v01",
+    "v02",
+    "v03"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "fb847e99-8d76-49e0-afdb-d2fbbb1ec526",
+    "elapsed_s": 3.531,
+    "dsl_bytes": 24110,
+    "png_bytes": 128968,
+    "png_md5": "a77d878ccfe350e3b2056eff4a8f21a3",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C04-1",
+     "condition": "双色调斜坡成立：暗部偏冷、亮部偏暖",
+     "status": "met",
+     "evidence": "pixel：v03 按 Skia 混合数学重配后采样——最暗 (36,47,57) 冷蓝 slate → 中调 (114,112,95) 暖灰 → 最亮 (240,216,157) 暖奶油；v01 曾单一暖褐（最暗仅 102,103,89）"
+    },
+    {
+     "id": "C04-2",
+     "condition": "完赛数据自洽：大数字与分布图同源",
+     "status": "met",
+     "evidence": "dsl：人数/完赛率/平均成绩/ PB 四大数字 + 成绩分布条形图；calc：分布各组人数合计 = 参赛人数（复算一致）"
+    },
+    {
+     "id": "C04-3",
+     "condition": "dataUri 图片合法嵌入且注明用途",
+     "status": "met",
+     "evidence": "dsl：PIL 生成灰度赛照 → PNG base64 dataUri（合法用途：双色调映射底图）；渲染 HTTP 200 无 IMAGE_LOAD_ERROR"
+    },
+    {
+     "id": "C04-4",
+     "condition": "Flex 大数字行对齐：四数字基线一致、分隔线等长",
+     "status": "met",
+     "evidence": "dsl：Row/Expanded/Column 结构 + 等比分隔线；view-zoom：分区放大实测四数字基线对齐"
+    }
+   ],
+   "rounds": "v01→v03 重配双色调两端（暖端提亮 #F6DEA0、冷端 MULTIPLY #16294F 穿透）",
+   "views": [
+    "整图",
+    "双色调主图",
+    "Flex 数据行",
+    "成绩分布图",
+    "偏移框与距离带"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-05",
+   "title": "自适应信息亭界面设计稿",
+   "canvas": "1920×1080（16:10 设计稿纸）",
+   "audience": "园区触摸屏信息亭的界面设计评审者",
+   "scenario": "同一信息架构在三种屏宽下的呈现（设计提案稿）",
+   "goal": "证明一套 Flex 结构在 1000/480/260 三档宽度均成立",
+   "technique": "Flex 弹性布局（Row/Column/Expanded/Flexible/Spacer + SPACE_BETWEEN/AROUND/EVENLY + crossAxisAlignment=STRETCH）+ AspectRatio / FractionallySizedBox / ConstrainedBox 约束构件",
+   "visual": "三台信息亭并列 + 注释卡片 + 主轴分布点阵对比 + 约束构件的像素标注",
+   "content_basis": "鹭洲湿地公园触摸屏信息亭 V2 设计稿（虚构项目演示）；磁贴内容取自 B02 规范数据",
+   "final_png": "outputs/run-20261013-174209/B03/case-05/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-05/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-05/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "4adb21e0-3a1f-4ce0-bbb7-38ed6972b475",
+    "elapsed_s": 2.969,
+    "dsl_bytes": 24364,
+    "png_bytes": 191974,
+    "png_md5": "75a466e61e31eaceef335b2e76dd1c7c",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C05-1",
+     "condition": "三种宽度布局全部成立且磁贴数随宽度变化",
+     "status": "met",
+     "evidence": "view-zoom：宽 1000 一行四磁贴 / 中 480 2×2 / 窄 260 纵排；pixel：各磁贴边界与 Column flex 分配（620-60-29-3×10=501）一致"
+    },
+    {
+     "id": "C05-2",
+     "condition": "约束构件按标注渲染：AspectRatio/FSB/ConstrainedBox",
+     "status": "met",
+     "evidence": "pixel：AspectRatio 2.5 → 150×60；FSB .55×.6 → 橙块 121×36 居中；ConstrainedBox → 240×40（v02 修复：紧约束父级下 maxWidth 失效，改 Align 松约束父级，probe5 实证）"
+    },
+    {
+     "id": "C05-3",
+     "condition": "主轴分布点阵对比可见：三种 SPACE_* 分布直观可辨",
+     "status": "met",
+     "evidence": "view-zoom：注释卡三点阵（BETWEEN/AROUND/EVENLY）间距差异清晰"
+    },
+    {
+     "id": "C05-4",
+     "condition": "全部尺寸为像素浮点（服务端不接受百分比）",
+     "status": "met",
+     "evidence": "dsl：v01 的 width=\"100%\" 等 7 处 PARSE_ERROR 后全部改 px；dsl_check 矩阵/实体/标签换行复检 0 问题"
+    }
+   ],
+   "rounds": "v01 渲染前拦截 7 处百分比尺寸；v02 修 ConstrainedBox 紧约束失效（probe5 实证）",
+   "views": [
+    "整图",
+    "宽屏磁推行",
+    "中屏 2×2",
+    "窄屏纵排",
+    "注释卡 A/B/C",
+    "主轴点阵对比"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-06",
+   "title": "活版印刷书展海报「活字」",
+   "canvas": "1240×1754（A2 竖版）",
+   "audience": "独立书店与阅读爱好者",
+   "scenario": "独立书展现场张贴的复古印刷海报",
+   "goal": "传递书展届次、主题、日期场地与讲座名单",
+   "technique": "Text STROKE 套印错版（青 +8 / 橙 +16 偏移）+ textShadow 压印 + decoration 装饰线 + letterSpacing 字距 + height 行距 + 衬线排版；纸纹/齿孔/十字标/晕墨全部用 DSL 图元构造",
+   "visual": "三层套印错版主标题 + 做旧纸纹 + 齿孔 + 套印十字标 + 衬线排版",
+   "content_basis": "虚构「临州独立书展 · 第七回」（临州市图书馆场地为虚构信息）；42 家书店名单与讲座信息为虚构演示内容",
+   "final_png": "outputs/run-20261013-174209/B03/case-06/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-06/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-06/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "0a33f455-5b7e-4050-8965-d538c2f6105c",
+    "elapsed_s": 3.218,
+    "dsl_bytes": 33629,
+    "png_bytes": 277451,
+    "png_md5": "a149d52237a13f1ab6de86afdb1bee9d",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C06-1",
+     "condition": "套印错版三层可辨：青边、橙边、墨黑实心",
+     "status": "met",
+     "evidence": "dsl：青 +8px STROKE 空心 + 橙 +16px STROKE 空心 + 墨黑实心 + 硬凹痕 shadow「3 3 0 #221E1A2E」；view-zoom：标题分区放大三层错版边缘清晰"
+    },
+    {
+     "id": "C06-2",
+     "condition": "42 家书店三列全数入列无溢出",
+     "status": "met",
+     "evidence": "dsl：字号 13、行高 1.55（14 行 ≈282px）、盒高 290（1362–1644）；view-zoom：v02 修复后末两行不再压色条（v01 溢出约 61px）"
+    },
+    {
+     "id": "C06-3",
+     "condition": "印刷语汇完整：纸纹/齿孔/十字标/做旧晕墨",
+     "status": "met",
+     "evidence": "dsl：36/44px 细线纸纹 + 齿孔圆 + 套印十字标 + RADIAL 晕墨三角；view-zoom：分区放大逐项核对在位"
+    },
+    {
+     "id": "C06-4",
+     "condition": "讲座信息层级清晰：编号 + 主题 + 讲者",
+     "status": "met",
+     "evidence": "dsl：讲座编号壹贰叁肆 + OVERLINE 标签三列；view-zoom：信息栏分区可读"
+    }
+   ],
+   "rounds": "v02 修书店名单第三列溢出（行高/盒高重算）",
+   "views": [
+    "整图",
+    "套印主标题",
+    "LIVE TYPE 区",
+    "书店名单三列",
+    "信息栏",
+    "齿孔与纸纹",
+    "底部印记"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-07",
+   "title": "智能家居能量环中控屏",
+   "canvas": "1600×1000（16:10 横屏墙装屏）",
+   "audience": "家庭能源管理者（墙装中控屏旁观者）",
+   "scenario": "客厅墙面常驻能源中控界面",
+   "goal": "远距离一眼读取总功率与能源结构，近距离看房间分布",
+   "technique": "SWEEP 环形能量进度 + RADIAL 光晕 + 60 根矩阵旋转刻度 + ClipOval 环带嵌套",
+   "visual": "能量进度环 + 刻度环 + 内环电量条 + 三能源卡 + 四房间条 + 流向条",
+   "content_basis": "虚构产品「栖居 OS · 能源」中控界面；功耗数据为演示数据但内部自洽",
+   "final_png": "outputs/run-20261013-174209/B03/case-07/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-07/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-07/case.md",
+   "dsl_version": "v07",
+   "dsl_versions_all": [
+    "v01",
+    "v02",
+    "v03",
+    "v04",
+    "v05",
+    "v06",
+    "v07"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "f64ee132-97bf-4591-87fa-33586a9506c5",
+    "elapsed_s": 7.766,
+    "dsl_bytes": 151458,
+    "png_bytes": 178541,
+    "png_md5": "72b07f98e99851c653e87a70293591e1",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C07-1",
+     "condition": "进度弧起止与渐变完全可控（SWEEP 语义不可控的替代方案）",
+     "status": "met",
+     "evidence": "dsl：47 根渐变色旋转条拼成 0–280.8° 弧（probe6/7 实证服务端 SWEEP 亮区恒从 12 点起、渐变反向映射、endAngle 非线性后放弃 SWEEP 做进度）；pixel：弧端角度与颜色逐根复核"
+    },
+    {
+     "id": "C07-2",
+     "condition": "刻度环亮暗分界与进度一致",
+     "status": "met",
+     "evidence": "pixel：60 根刻度 47 亮/13 暗，分界 280.8°；游标菱形位于 (280°, r286)；v02 曾因 deg 误加 90° 致游标飞右上，已删"
+    },
+    {
+     "id": "C07-3",
+     "condition": "能源数据自洽：来源合计 = 总功率 = 负载合计",
+     "status": "met",
+     "evidence": "calc：太阳能 1.2 + 储能放电 0.6 + 电网 0.6 = 2.4 kW；房间 0.86+0.52+0.31+0.71 = 2.40 kW；环心显示 2.4"
+    },
+    {
+     "id": "C07-4",
+     "condition": "2px 级细条不被圆角吞没",
+     "status": "met",
+     "evidence": "dsl：短刻度 2px→3px（v02 修复：borderRadius 1.5 吞没 2px 条）；pixel：分区放大 3px 刻度清晰可数"
+    }
+   ],
+   "rounds": "v01–v07 七版：助手误用修正 → SWEEP 标定放弃 → 旋转条拼弧 → 游标/刻度/采样半径修正",
+   "views": [
+    "整图",
+    "进度环",
+    "刻度环",
+    "游标",
+    "内环电量",
+    "三能源卡",
+    "四房间条",
+    "流向条"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-08",
+   "title": "儿童 App 启动页景深插画",
+   "canvas": "1080×1920（9:16）",
+   "audience": "3–8 岁儿童及其家长",
+   "scenario": "自然认知 App 冷启动页",
+   "goal": "2 秒内建立自然认知品牌印象并等待加载",
+   "technique": "ImageFiltered 分层景深（sigma 14/8/3/0 四层）+ Opacity 层间雾带 + Stack 层次 + ClipPath 叶形徽标",
+   "visual": "四层景深林间场景 + 雾带过渡 + 叶形徽标 + loading 三点",
+   "content_basis": "虚构产品「叶子 · 自然认知」儿童自然认知 App 启动页",
+   "final_png": "outputs/run-20261013-174209/B03/case-08/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-08/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-08/case.md",
+   "dsl_version": "v01",
+   "dsl_versions_all": [
+    "v01"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "4ac94d10-1837-43d9-b454-04c24a2520a4",
+    "elapsed_s": 10.703,
+    "dsl_bytes": 24592,
+    "png_bytes": 349464,
+    "png_md5": "860d6d2341193aa955bc8b7b1c74d4a0",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C08-1",
+     "condition": "四层景深虚化层次分明",
+     "status": "met",
+     "evidence": "dsl：blurred() 助手（children 包 Stack + ImageFiltered 全画布盒）sigma 14/8/3/0；view-zoom：远景柔散、中景渐清、近景锐利、前景叶完全清晰"
+    },
+    {
+     "id": "C08-2",
+     "condition": "树冠不越画布（旋转/圆形包围盒核算）",
+     "status": "met",
+     "evidence": "dsl：树簇右界收进 1080（x ≤ 1075-1.95r，v01 曾 1215>1080）；pixel：分区实测最右树冠墨迹止于画布内"
+    },
+    {
+     "id": "C08-3",
+     "condition": "前景叶旋转包围盒反解正确（28° 旋转不出画布）",
+     "status": "met",
+     "evidence": "dsl：300×460 旋 28° → 481×547 包围盒反解盒位；rotate 内手写 ClipPath inner；view-zoom：前景叶双叶完整压角不出画布"
+    },
+    {
+     "id": "C08-4",
+     "condition": "徽标组件完整：白卡圆角 + 叶形 + 高光 + 投影",
+     "status": "met",
+     "evidence": "dsl：ClipRRect 白卡 + ClipPath 叶形 + 高光条 + boxShadow；view-zoom：徽标分区放大四要素齐全"
+    }
+   ],
+   "rounds": "v01 修 ImageFiltered 多子级（包 Stack）、树冠越界、前景叶旋转包围盒",
+   "views": [
+    "整图",
+    "远景林冠",
+    "中景树干",
+    "前景双叶",
+    "雾带过渡",
+    "徽标"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-09",
+   "title": "杂志跨页破版特辑",
+   "canvas": "1754×1240（√2 横版跨页）",
+   "audience": "生活方式杂志读者",
+   "scenario": "秋迁观鸟特辑跨页编辑设计",
+   "goal": "以破版构图传达「人潮与候鸟同潮」的特辑主题",
+   "technique": "ClipRect 硬边裁切出血 + SizedOverflowBox 破界 + Positioned 跨栏压图",
+   "visual": "跨栏出血主图 + 逐字破版标题 + 跨栏圆月 + 通栏色带 + 数据条 + 双栏正文",
+   "content_basis": "虚构生活方式杂志特辑「追潮汐的人」；观鸟数据引用 B02 规范（287 种鸟等）",
+   "final_png": "outputs/run-20261013-174209/B03/case-09/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-09/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-09/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "4b4d4b00-dd7c-427b-be80-1e52e83a06ee",
+    "elapsed_s": 3.204,
+    "dsl_bytes": 15952,
+    "png_bytes": 165587,
+    "png_md5": "a2beb712b127f32241329619fe2fecd8",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C09-1",
+     "condition": "标题逐字跨中缝，无压缩无丢失",
+     "status": "met",
+     "evidence": "dsl：170px SERIF 每字 185px，第 5 字 820–1010 越中缝 877 进入右页；（v01 SOB 内 Text 被盒压缩止于 714、「人」字丢失——重要边界：SOB 内 Text 不溢出）；view-zoom：中缝分区放大 5 字完整压缝线"
+    },
+    {
+     "id": "C09-2",
+     "condition": "通栏色带跨中缝无断开",
+     "status": "met",
+     "evidence": "dsl：SOB 1700×50 横贯 40–1740；view-zoom：色带分区实测中缝处连续无断点"
+    },
+    {
+     "id": "C09-3",
+     "condition": "ClipRect 出血主图六要素齐全",
+     "status": "met",
+     "evidence": "dsl：scene 包 Stack 后入 ClipRect（v01 多子级 PARSE_ERROR 修复）；view-zoom：天空/远山/湖面/波光/渔船/树/飞鸟全部在位"
+    },
+    {
+     "id": "C09-4",
+     "condition": "跨页版式数据自洽：左右页分栏与页脚位置正确",
+     "status": "met",
+     "evidence": "calc：左页 40–877 / 右页 877–1714；正文两栏 + 竖排刊名 + 页脚右移避让跨栏字区；view-zoom：整图复核"
+    }
+   ],
+   "rounds": "v02 修 ClipRect 多子级 + SOB 文字压缩（改逐字 Positioned 跨栏）",
+   "views": [
+    "整图",
+    "中缝跨栏字",
+    "跨栏圆月",
+    "通栏色带",
+    "出血主图",
+    "数据条",
+    "双栏正文"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-10",
+   "title": "产品发布电子邀请函",
+   "canvas": "1080×1080（1:1 方卡）",
+   "audience": "受邀嘉宾（邮件/社交分发）",
+   "scenario": "「秋迁观鸟季」启幕仪式电子邀请函",
+   "goal": "一卡传递活动名、日期时间地点与 RSVP 入口",
+   "technique": "WidgetSpan 行内嵌件（日期徽章/序号徽章/菱形分隔）+ 嵌套 Span 混排（SERIF/INTER 数字/金色强调）+ Noto Color Emoji + decoration 层级",
+   "visual": "夜蓝卡纸 + 双线金框 + 叶形徽标 + 92px 衬线主标题 + 渐变 RSVP 按钮",
+   "content_basis": "虚构「秋迁观鸟季」启幕仪式邀请函；鹭洲湿地公园科普馆露台、回复截止等均为虚构演示信息（日期 2026-11-20 周五经 datetime 实算）",
+   "final_png": "outputs/run-20261013-174209/B03/case-10/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B03/case-10/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B03/case-10/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "9c18a2b5-1ba1-4aee-bd74-cdedaaa7cdc5",
+    "elapsed_s": 8.453,
+    "dsl_bytes": 13722,
+    "png_bytes": 186668,
+    "png_md5": "5b86e7a197c2ce516cbba44a15f8c873",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C10-1",
+     "condition": "WidgetSpan 行内嵌件与文本混排正确",
+     "status": "met",
+     "evidence": "dsl：三段 rich_text——圆形「4」徽章（30×30）行内居中对齐、日期徽章（56×56）、菱形分隔（10×10）；view-zoom：徽章分区放大，序号圆与文字行距协调；日期徽章 v02 缩至 56px 后圆-文中心错位从 19px 降至 10.5px"
+    },
+    {
+     "id": "C10-2",
+     "condition": "嵌套 Span 颜色/字体混排可辨",
+     "status": "met",
+     "evidence": "dsl：GOLD SERIF 活动名 + ORANGE INTER 数字（287/1/16:00–17:30）；view-zoom：正文分区放大混排层级清晰"
+    },
+    {
+     "id": "C10-3",
+     "condition": "Emoji 彩色渲染（Noto Color Emoji）",
+     "status": "met",
+     "evidence": "dsl：fontFamily=\"Noto Color Emoji\" + emoji 字符；pixel：🦢🍂🦆/🦆 三彩渲染实测（非单色字形）"
+    },
+    {
+     "id": "C10-4",
+     "condition": "STROKE 空心副题 + UNDERLINE 组合正确",
+     "status": "met",
+     "evidence": "dsl：92px SERIF STROKE 1.8 + UNDERLINE 橙色；pixel：下划线实测 y466–470、x90–497 正落「启幕仪式」四字下方"
+    }
+   ],
+   "rounds": "v01 修 textShadow 5 令牌 PARSE_ERROR + 日期徽章 72→56px；v02 定稿",
+   "views": [
+    "整图",
+    "主标题区",
+    "顶部 Emoji",
+    "行内徽章",
+    "日期徽章 v01/v02",
+    "RSVP 区",
+    "页眉"
+   ],
+   "unresolved": []
+  }
+ ],
+ "general_criteria_results": [
+  {
+   "id": "G-1",
+   "condition": "每件 final.png 为 open-snapshot 服务真实响应字节；final.snapshot 完整自包含",
+   "status": "met",
+   "evidence": "byte/MD5：10/10 final.png 与 requests.jsonl 记录的最后一次成功响应 MD5 逐字节一致（本脚本运行实测）；dsl：10/10 final.snapshot 与对应版本 cases/case-NN-vNN.snapshot 一致，无 <Image url= 外部引用（case-04 使用 PIL 生成灰度赛照的合法 dataUri 并注明用途）；CRLF 说明：final.snapshot 由 write_text 写出（Windows CRLF），与请求体仅差换行符"
+  },
+  {
+   "id": "G-2",
+   "condition": "每件至少一次整图实际查看 + 分区放大查看；缺陷修复后重渲染并复查",
+   "status": "met",
+   "evidence": "view-zoom：63 个分区/整图全部实际查看（含 case-10 日期徽章 v01/v02 对比）；iterations.jsonl 15 条迭代全部含 issue/fix/result/viewed；缺陷件（01/02/03/04/05/06/07/09/10）修复后均重渲染并复检；渲染前自检拦截 3 次（case-02 字符展开、case-05 百分比尺寸、case-07 助手误用）未浪费请求"
+  },
+  {
+   "id": "G-3",
+   "condition": "技术服务内容：每件主导手法在成图中可指认，且不损害目标场景的信息可读性",
+   "status": "met",
+   "evidence": "view-zoom 逐件指认：霓虹辉光（01）/毛玻璃三层面板（02）/EVEN_ODD 剪纸镂空（03）/双色调斜坡（04）/Flex 三档自适应（05）/套印错版（06）/旋转条拼弧与刻度环（07）/四层景深虚化（08）/跨栏破版（09）/WidgetSpan 行内嵌件（10）；各件 criteria 均含信息可读性核验（文字对比/层级/数据自洽），无「为技术牺牲可读性」项"
+  },
+  {
+   "id": "G-4",
+   "condition": "文字无裁切：Text 声明盒 ≥ 估算墨迹宽 1.03 倍（CJK 1.09em、ASCII 0.57em）",
+   "status": "met",
+   "evidence": "dsl：case-01/06/07/10 生成器内置 T() 宽度自检（probe-textw 校准 CJK 1.086em 实测），渲染前 dsl_check 复检 0 警告；pixel：case-06 名单三列 42 家全数入列（v02 修复溢出 61px）、case-09 逐字标题第 5 字完整跨中缝、case-10 日期行右界 753px 于 900px 盒内"
+  },
+  {
+   "id": "G-5",
+   "condition": "场景真实可述：受众/场景/目标成立，虚构信息在 case.md 标注",
+   "status": "met",
+   "evidence": "10 件 case.md 均含「内容依据」字段逐件注明虚构声明（乐队/App/赛事/书展/中控产品/杂志/邀请函）；case-03/05/10 复用 B02 项目规范数据（开放时间/票价/电话/统计数）并保持一致；case-04 赛事数据、case-07 功耗数据、case-10 日期周五均经 datetime 实算自洽"
+  },
+  {
+   "id": "G-6",
+   "condition": "十件实质独立：画布比例、场景任务、主导手法各不相同",
+   "status": "met",
+   "evidence": "canvas：7 种比例（3:4 / 9:16 / 16:9 / 4:5 / 16:10 / √2（A2 竖与跨页）/ 1:1），场景覆盖演出/出行/导览/赛事/信息亭/书展/家居/儿童/杂志/邀请函；z-contact-sheet.png 缩略矩阵实际查看：10 套色系、10 种构图、10 种主导手法，非同图换色"
+  },
+  {
+   "id": "G-7",
+   "condition": "交付含 technique-notes.md：每件独到手法、文档依据、试验与看图证据、应用价值与已确认边界",
+   "status": "met",
+   "evidence": "technique-notes.md 已交付：十件逐件「独到手法 → 官方文档依据 → 试验/探测证据 → 看图验证 → 应用价值」+ 全任务边界清单（百分比尺寸/单子级滤镜/SOB 文字不溢出/Positioned 不可嵌套/SWEEP 语义/border 仅 SOLID/textShadow 四令牌/2px 细条风险等）"
+  }
+ ]
+}

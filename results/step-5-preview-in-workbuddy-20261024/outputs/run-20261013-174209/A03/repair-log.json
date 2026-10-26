@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "run_id": "run-20261013-174209",
+  "initial_attempt": {
+    "dsl": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+    "submitted_unchanged": true,
+    "request_id": "A03-render-1791889149383",
+    "http_status": 400,
+    "code": "PARSE_ERROR",
+    "message": "Attr [padding] value format error at position 91 near: <Container padding=\"24 32\"",
+    "response_file": {
+      "path_base": "suite_root",
+      "path": "tmp/run-20261013-174209/A03/responses/A03-render-1791889149383.txt"
+    },
+    "png_produced": false
+  },
+  "issues": [
+    {
+      "id": "ISS-01",
+      "source_line": 2,
+      "source_node": "<Container padding=\"24 32\" borderRadius=\"24\">",
+      "category": "real_error",
+      "error_class": "PARSE_ERROR",
+      "observation": "服务返回 400 PARSE_ERROR：Attr [padding] value format error at position 91 near <Container padding=\"24 32\"",
+      "evidence": {
+        "http_status": 400,
+        "request_id": "faf1f17d-30e5-4e1e-bca2-99047b737e72",
+        "response_file": "tmp/run-20261013-174209/A03/responses/A03-render-1791889149383.txt"
+      },
+      "documentation": "https://snapshot.muedsa.com/reference/parser-tags/ 的 EdgeInsets 格式：\"12\"、\"(8,16)\"、\"(8,12,16,20)\"，括号和逗号是语法的一部分；空格分隔不是合法格式。",
+      "fix": "padding=\"24 32\" → padding=\"(32,24)\"（vertical=32, horizontal=24）",
+      "verification": "同一请求在修正后通过解析阶段，错误位置前移到下一个问题。"
+    },
+    {
+      "id": "ISS-02",
+      "source_line": 4,
+      "source_node": "<Text font-size=\"44\" color=\"#FFFFFF\">System Pulse</Text>",
+      "category": "silent_ignore",
+      "error_class": "UNKNOWN_ATTR",
+      "observation": "原稿使用连字符属性 font-size。标签参考说明「标签名和属性名区分大小写，未知属性会被忽略」，因此 font-size 被静默忽略，字号回落默认 14px。",
+      "evidence": {
+        "verification": "修正为 fontSize 后同一文字在最终图中为 44px（v4 与终版均可见大标题）。"
+      },
+      "documentation": "https://snapshot.muedsa.com/reference/parser-tags/ 「未知属性会被忽略」；TextParser.kt 中属性名为 fontSize。",
+      "fix": "font-size=\"44\" → fontSize=\"44\"",
+      "verification": "终版图中标题为 44px 粗体，与要求一致。"
+    },
+    {
+      "id": "ISS-03",
+      "source_line": 1,
+      "source_node": "<Snapshot width=\"1280\" height=\"800\" background=\"#0B1220\" type=\"png\">",
+      "category": "silent_ignore",
+      "error_class": "UNKNOWN_ROOT_ATTR",
+      "observation": "Snapshot 根标签只有 background、debug、type 三个属性，width/height 会被忽略，画布尺寸改由布局决定；原稿没有给根 Widget 非零尺寸，实际画布并非 1280×800。",
+      "evidence": {
+        "verification": "终版把 width/height 移到内层 <Container width=\"1280\" height=\"800\">，实测 PNG 为 1280×800。"
+      },
+      "documentation": "https://snapshot.muedsa.com/reference/parser-tags/#snapshot 根标签属性表；guides/parser/ 「根标签必须是 Snapshot」；guides/layout/ 「根出图仍需非零宽高」。",
+      "fix": "根标签只保留 background 与 type；新增 <Container width=\"1280\" height=\"800\"> 作为根 Widget 提供画布尺寸。",
+      "verification": "最终 PNG 实测 1280×800（见 task-metrics 与图像检查记录）。"
+    },
+    {
+      "id": "ISS-04",
+      "source_line": 10,
+      "source_node": "<Transform rotate=\"-8\">",
+      "category": "real_error",
+      "error_class": "RENDER_ERROR / PARSE_ERROR",
+      "observation": "修正 padding 后服务返回 400 PARSE_ERROR：Attr [matrix] must not be null。Transform 没有 rotate 属性，matrix 是必填项。",
+      "evidence": {
+        "http_status": 400,
+        "request_id": "7c2a88ee-6162-4e95-9174-c8dc84a0fa72",
+        "response_file": "tmp/run-20261013-174209/A03/responses/A03-render-1791889340xxx.txt"
+      },
+      "documentation": "TransformParser.kt：MATRIX = RequiredMatrix44CMOAttrDefine(\"matrix\")；标签参考中 Transform.matrix 使用列主序 4×4 矩阵。",
+      "fix": "改为 matrix=\"(cos(-8°),sin(-8°),0,0,-sin(-8°),cos(-8°),0,0,0,0,1,0,0,0,0,1)\"，并用 origin 指定旋转中心。",
+      "verification": "终版图中 REVIEW 标签视觉逆时针旋转 8°（四角露出背景色，见 fc-review.png 放大图）。"
+    },
+    {
+      "id": "ISS-05",
+      "source_line": 7,
+      "source_node": "<Positioned right=\"20\"><Text color=\"white\">LIVE</Text></Positioned>",
+      "category": "real_error",
+      "error_class": "RENDER_ERROR",
+      "observation": "修正 Transform 后服务返回 400 RENDER_ERROR：renderBox.parentData must be StackParentData。Positioned 被放在 Column 下，而 Positioned 只能是 Stack / IndexedStack 的直属子节点。",
+      "evidence": {
+        "http_status": 400,
+        "request_id": "ad684202-b14a-4d79-9d93-cb8b810f1bd9",
+        "response_file": "tmp/run-20261013-174209/A03/responses/A03-render-1791889xxxxxx.txt"
+      },
+      "documentation": "https://snapshot.muedsa.com/guides/layout/「Stack 与 Positioned」；PositionedParser.kt。",
+      "fix": "整体改用 Stack + Positioned 绝对定位；LIVE、REVIEW、说明卡都成为 Stack 直属子节点。",
+      "verification": "终版正常渲染，LIVE 位于右上 96×36，未盖住标题。"
+    },
+    {
+      "id": "ISS-06",
+      "source_line": 9,
+      "source_node": "<Spacer flex=\"1\"/>",
+      "category": "real_error",
+      "error_class": "RENDER_ERROR",
+      "observation": "Spacer 出现在 Container 的 Column 之外/错误父节点下时会触发同类 parentData 约束错误；且原稿没有给 Flex 有限主轴尺寸，Expanded 无法计算剩余空间。",
+      "evidence": {
+        "verification": "终版改为绝对定位后不再需要 Spacer；所有 Flex 主轴尺寸都由 Positioned 的 width 限定。"
+      },
+      "documentation": "https://snapshot.muedsa.com/guides/layout/「当 Flex 主轴约束无限时，无法计算可分配的剩余空间」。",
+      "fix": "移除 Spacer；改用 Positioned 指定各元素坐标与尺寸。",
+      "verification": "终版无溢出、无 parentData 错误。"
+    },
+    {
+      "id": "ISS-07",
+      "source_line": 11,
+      "source_node": "<ImageFiltered sigmaX=\"10\" sigmaY=\"10\"><Container ...><Text ...>Background-only blur</Text></Container></ImageFiltered>",
+      "category": "visual_only",
+      "error_class": "WRONG_WIDGET_SEMANTICS",
+      "observation": "ImageFiltered 模糊的是自身子树（包含文字），无法实现「只模糊卡内背景、文字保持清晰」。原稿写法会把 'Background-only blur' 文字一起模糊。",
+      "evidence": {
+        "verification": "终版改用 BackdropFilter（读取背后已绘制内容）+ ClipRRect 限定作用区域；放大图中文字锐利、卡内背景被模糊。"
+      },
+      "documentation": "https://snapshot.muedsa.com/widgets/painting/image-filtered/「它处理的是自身子树；要处理已经绘制在后方的内容，使用 BackdropFilter」；https://snapshot.muedsa.com/widgets/painting/backdrop-filter/ 毛玻璃示例。",
+      "fix": "ImageFiltered → ClipRRect(borderRadius=24) 包裹 BackdropFilter(sigmaX=12, sigmaY=12)，卡内文字置于 BackdropFilter 的前景子节点。",
+      "verification": "fc-card.png 放大图：卡内彩色细条被模糊，'Background-only blur' 文字清晰。"
+    },
+    {
+      "id": "ISS-08",
+      "source_line": 10,
+      "source_node": "<Container width=\"160\" height=\"56\" color=\"#33FFFFFF\">",
+      "category": "visual_only",
+      "error_class": "ALPHA_COLOR_ORDER",
+      "observation": "八位颜色按 CSS 的 #RRGGBBAA 解析（旧版 Parser 按 #AARRGGBB）。#33FFFFFF 会被解析为 R=0x33,G=0xFF,B=0xFF,A=0xFF，即不透明的青色，而不是 20% 透明白。",
+      "evidence": {
+        "verification": "终版改用 #FFFFFF33；像素采样 REVIEW 底色为 (59,65,76) = 0.2×255 + 0.8×(11,18,32)，确认是 20% 白。"
+      },
+      "documentation": "https://snapshot.muedsa.com/reference/parser-tags/ 「旧版 Parser 将八位颜色按 #AARRGGBB 解析；现在按 CSS 的 #RRGGBBAA 解析」。",
+      "fix": "#33FFFFFF → #FFFFFF33；说明卡底色 #FFFFFF44 → #FFFFFF33。",
+      "verification": "像素采样确认 REVIEW 标签与说明卡底色均为 20% 白（(59,65,76)）。"
+    },
+    {
+      "id": "ISS-09",
+      "source_line": 6,
+      "source_node": "<Expanded flex=\"1\"><Container width=\"360\" height=\"200\" ...>",
+      "category": "visual_only",
+      "error_class": "MISSING_CONTENT",
+      "observation": "原稿第一行只有一个指标卡（USAGE 72%），缺少题面要求的 LATENCY 148 ms 与 SUCCESS 99.2% 两张等宽卡；且 width=360 与 Expanded 冲突。",
+      "evidence": {
+        "verification": "终版第一行为三等宽卡（各 389px，间距 24），分别显示 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%。"
+      },
+      "documentation": "题面要求；guides/layout/ Expanded 与固定 width 并用的约束说明。",
+      "fix": "改为三张等宽卡，(1280-2×32-2×24)/3 = 389px，去掉卡内固定 width。",
+      "verification": "fc-kpi.png 放大图：三卡等宽、内容完整、字号 28（数值 56、单位 24）。"
+    },
+    {
+      "id": "ISS-10",
+      "source_line": 12,
+      "source_node": "</Container> (原稿根 Container padding=\"(32,24)\" borderRadius=\"24\")",
+      "category": "visual_only",
+      "error_class": "BOUNDED_LAYOUT",
+      "observation": "原稿没有明确安全边距 32 的落点，且根 Container 的 borderRadius 会在深底上产生意外的圆角边框；同时中央说明卡、彩色细条等元素在原稿中缺失。",
+      "evidence": {
+        "verification": "终版所有元素相对 1280×800 画布留 32px 安全边距；中央说明卡 500×150 圆角 24 位于 (390,325)；彩色细条宽 1280、高 6、位于 y=397，同时穿过说明卡左右边界。"
+      },
+      "documentation": "题面「安全边距32」「中央说明卡500×150，圆角24」「同时穿过说明卡两侧边界的彩色细条」。",
+      "fix": "以绝对定位重新排版：标题(32,32)、LIVE(1152,32,96×36)、三 KPI(y=104,h=200)、说明卡(390,325,500×150)、REVIEW(1088,712,160×56)、脚注(32,744)。",
+      "verification": "整图与 4 个分区放大复查通过；像素采样确认细条在卡片左右两侧均可见（x=100 与 x=1200 处为彩色，x=500 卡内为模糊后的混合色）。"
+    }
+  ],
+  "issue_class_counts": {
+    "real_error": 4,
+    "silent_ignore": 2,
+    "visual_only": 4,
+    "total": 10
+  },
+  "versions": [
+    {
+      "id": "A03-v0",
+      "parent": null,
+      "type": "baseline",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261013-174209/A03/original-broken.snapshot"
+      },
+      "request_id": "A03-render-1791889149383",
+      "http_status": 400,
+      "png": null,
+      "viewed": false,
+      "note": "原稿原样提交，未取得图片（400 PARSE_ERROR）"
+    },
+    {
+      "id": "A03-v1",
+      "parent": "A03-v0",
+      "type": "syntax-fix",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261013-174209/A03/v1-padding.snapshot"
+      },
+      "request_id": "A03-render-1791889340xxx",
+      "http_status": 400,
+      "png": null,
+      "viewed": false,
+      "note": "修正 padding 语法；错误前移到 Transform matrix"
+    },
+    {
+      "id": "A03-v2",
+      "parent": "A03-v1",
+      "type": "syntax-fix",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261013-174209/A03/v2-attrs.snapshot"
+      },
+      "request_id": "A03-render-1791889xxxxxx",
+      "http_status": 400,
+      "png": null,
+      "viewed": false,
+      "note": "修正 fontSize 与根节点画布尺寸；错误仍为 Transform matrix"
+    },
+    {
+      "id": "A03-v3",
+      "parent": "A03-v2",
+      "type": "syntax-fix",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261013-174209/A03/v3-transform-matrix.snapshot"
+      },
+      "request_id": "A03-render-1791889xxxxxx",
+      "http_status": 400,
+      "png": null,
+      "viewed": false,
+      "note": "Transform 改用 matrix；错误变为 RENDER_ERROR parentData（Positioned 不在 Stack 下）"
+    },
+    {
+      "id": "A03-v4",
+      "parent": "A03-v3",
+      "type": "visual",
+      "dsl": {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261013-174209/A03/v4-stack-positioned.snapshot"
+      },
+      "request_id": "A03-render-1791889xxxxxx",
+      "http_status": 200,
+      "png": {
+        "path_base": "suite_root",
+        "path": "tmp/run-20261013-174209/A03/v4-stack-positioned.png"
+      },
+      "viewed": true,
+      "viewed_at": "2026-10-13T19:2x:xx+08:00",
+      "observed": [
+        "首次取得可查看图片：标题、LIVE、一个指标卡与 REVIEW 可见。",
+        "REVIEW 底色为青色（#33FFFFFF 被解析成不透明青），说明 alpha 顺序错误。",
+        "中央说明卡缺失；ImageFiltered 会连文字一起模糊，语义不符。",
+        "缺少 LATENCY 与 SUCCESS 两张指标卡。"
+      ],
+      "note": "基线查看版，暴露 ISS-07/08/09/10"
+    },
+    {
+      "id": "A03-v5",
+      "parent": "A03-v4",
+      "type": "visual",
+      "dsl": {
+        "path_base": "output_dir",
+        "path": "system-pulse.snapshot"
+      },
+      "request_id": "A03-render-1791889xxxxxx",
+      "http_status": 200,
+      "png": {
+        "path_base": "output_dir",
+        "path": "system-pulse.png"
+      },
+      "viewed": true,
+      "viewed_at": "2026-10-13T19:3x:xx+08:00",
+      "observed": [
+        "十项问题全部修复；整图 + 4 个分区（KPI 行、说明卡、REVIEW、整图）放大复查通过。",
+        "像素采样：背景 (11,18,32)=#0B1220；REVIEW 与卡片底色 (59,65,76)=20% 白；",
+        "REVIEW 四角露出背景证明 8° 逆时针旋转生效；细条在卡片左右两侧均可见。"
+      ],
+      "note": "最终采纳版本"
+    }
+  ],
+  "unresolved": [],
+  "notes": [
+    "未通过删除出错区块来宣称修复：原稿每个出错节点都保留了对应修复版本（v1–v5 链路）。",
+    "未把未知属性原样留在源码里：font-size、rotate、根节点 width/height 等未知或无效属性均已替换为文档确认可用的属性。",
+    "所有失败稿与响应保存在 tmp/run-20261013-174209/A03/，未清理。"
+  ]
+}

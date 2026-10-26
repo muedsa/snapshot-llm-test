@@ -1,0 +1,975 @@
+{
+ "schema_version": 1,
+ "path_base": "output_dir",
+ "task_id": "B06",
+ "run_id": "run-20261013-174209",
+ "status": "completed",
+ "asset_policy": "dsl_primary_with_supporting_assets（run-config.json 指定）；实际交付为纯 DSL（无外部素材，符号与图标全部程序绘制）",
+ "curatorial_statement": "十个日常信息难题的重构：账单、用药、体检、降雨概率、比价、中转、洗衣符号、垃圾分类、末班车、营养标签——每件都把「原本卡住的那一步」换成可直接阅读的结构",
+ "plan": "tmp/run-20261013-174209/B06/plan/plan.json + b06-plan.md（plan v1，2026-10-24T14:10 +08:00，首次渲染前建立）",
+ "problem_evidence": "outputs/run-20261013-174209/B06/problem-evidence.json",
+ "design_review": "outputs/run-20261013-174209/B06/design-review.md",
+ "cases": [
+  {
+   "id": "case-01",
+   "title": "电费单：钱花在哪（阶梯水位图）",
+   "audience": "家庭里管账单的人（30–50 岁）与第一次自己缴电费的租房年轻人",
+   "use_context": "A4 竖版 1240×1754，打印贴冰箱或夹进账单夹；也可在手机上看同版竖图",
+   "user_goal": "看懂本月电费构成，知道再做多少度会进更贵的档，以及哪三个动作最可能省钱",
+   "problem": "电费单只有总量总价，看不出贵在第几档、哪个电器在花电、离下一档还差多少",
+   "redesign": "把阶梯电价画成水位图：电量是水位，三档是三道闸，钱随闸口单价分层累加；右侧电器归因条；底部三个动作与估算月省",
+   "content_basis": "R1 北京阶梯电价公开标准（一户一表·不满 1 千伏）；本户电量与构成为演示数据",
+   "visual_intent": "水位隐喻 + 分层累加明细 + 归因横条",
+   "medium": "A4 竖版 1240×1754",
+   "device": "打印单页",
+   "png": "case-01/final.png",
+   "snapshot": "case-01/final.snapshot",
+   "case_md": "case-01/case.md",
+   "dimensions": [
+    1240,
+    1754
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "水位图/闸口/分层累加行/归因横条/动作卡",
+   "completion_criteria": [
+    {
+     "id": "C01-1",
+     "condition": "三档分界（240/400 kWh）与电价（0.4883/0.5383/0.7883）与 R1 一致，且图中总电费=分层累加（240×0.4883+72×0.5383=155.95）",
+     "method": "程序化计算 + 看图读数核对"
+    },
+    {
+     "id": "C01-2",
+     "condition": "水位图可见本月档位与距下一档距离（88 度）",
+     "method": "看图：档位徽标与距离标注"
+    },
+    {
+     "id": "C01-3",
+     "condition": "电器归因 6 项合计 100%，最大三项有动作与月省金额",
+     "method": "算术核对 + 看图"
+    },
+    {
+     "id": "C01-4",
+     "condition": "电价来源与适用条件、演示数据标注在脚注",
+     "method": "看图：脚注完整"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z01-view.png",
+     "z01-view-v02.png",
+     "z01-c-tank.png",
+     "z01-c-c.png",
+     "z01-c-tank2.png",
+     "z01-c-c2.png",
+     "z01-c-legend.png",
+     "z01-c-bottom.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "07cb6b50-f4a6-4ba2-826b-1a96e356c1f0"
+   ],
+   "iteration_ids": [
+    "v01",
+    "v02"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C01-1",
+     "result": "passed",
+     "evidence": "z01-view-v02.png：三行明细 117.19+38.76+0.00=155.95 与合计行一致"
+    },
+    {
+     "id": "C01-2",
+     "result": "passed",
+     "evidence": "z01-c-tank2.png：水位线 312 位于二档区内；「距下一档还有 88 度」"
+    },
+    {
+     "id": "C01-3",
+     "result": "passed",
+     "evidence": "z01-c-bottom.png：38+22+14+12+9+5=100；三个动作卡含 kWh 与金额"
+    },
+    {
+     "id": "C01-4",
+     "result": "passed",
+     "evidence": "z01-c-bottom.png 脚注：电价标准全文 + 演示数据声明"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "07cb6b50-f4a6-4ba2-826b-1a96e356c1f0",
+    "elapsed_s": 5.39,
+    "dsl_bytes": 36382,
+    "png_bytes": 246632,
+    "png_md5": "a72b699bed1bf0baa074fda88befa88d",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-02",
+   "title": "一页用药卡：什么时候吃、吃多少、什么情况停",
+   "audience": "65 岁以上慢病患者与其成年子女（照护者）",
+   "use_context": "3:4 竖版 1080×1440 大字卡，压餐桌玻璃板下或贴药盒盖内侧",
+   "user_goal": "不读全文也能答：早中晚各吃什么、吃几片、不能和什么同服、出现什么情况停药并打电话",
+   "problem": "折叠说明书字小行密，老人找不到用法用量与禁忌；照护者担心漏药或重复吃药",
+   "redesign": "一天时间轴承载三种演示药的大字剂量块；红色禁令牌；「先停药再打电话」红旗清单；底部注明与法定说明书结构的对应关系",
+   "content_basis": "R5 法定说明书结构（药品管理法第 49 条/局令第 24 号）；药品与剂量为演示数据",
+   "visual_intent": "时间轴 + 大字剂量 + 红色安全区",
+   "medium": "3:4 竖版 1080×1440",
+   "device": "桌面大字卡",
+   "png": "case-02/final.png",
+   "snapshot": "case-02/final.snapshot",
+   "case_md": "case-02/case.md",
+   "dimensions": [
+    1080,
+    1440
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "垂直时间轴/大字剂量块/旋转斜杠禁令牌/红旗清单",
+   "completion_criteria": [
+    {
+     "id": "C02-1",
+     "condition": "三种演示药在时间轴上剂量/频次一致，无重复遗漏",
+     "method": "逐药核对：怡宁平早 1、舒络通晚 1、维固钙早晚各 1"
+    },
+    {
+     "id": "C02-2",
+     "condition": "主剂量数字 38px、药名 19px、正文≥11.5px，无更小文字",
+     "method": "字号清点 + 局部放大看图"
+    },
+    {
+     "id": "C02-3",
+     "condition": "禁忌/停药安全信息用红色系且位于主路径",
+     "method": "看图：红色卡与红旗清单层级"
+    },
+    {
+     "id": "C02-4",
+     "condition": "「演示数据·非用药建议」与法定结构对应说明存在",
+     "method": "看图：徽标与脚注"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z02-view.png",
+     "z02-c-time.png",
+     "z02-c-stop.png",
+     "z02-c-time2.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "b402fb6b-6f39-405e-8c80-84b3269e7dcb"
+   ],
+   "iteration_ids": [
+    "v01",
+    "v02"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C02-1",
+     "result": "passed",
+     "evidence": "z02-c-time2.png：三时段剂量块与总览卡频次一致"
+    },
+    {
+     "id": "C02-2",
+     "result": "passed",
+     "evidence": "z02-c-time2.png：剂量 38px/药名 19px；脚注 11.5px 为最小"
+    },
+    {
+     "id": "C02-3",
+     "result": "passed",
+     "evidence": "z02-view.png：红色「不要一起吃」卡 + 深红「先停药再打电话」卡"
+    },
+    {
+     "id": "C02-4",
+     "result": "passed",
+     "evidence": "z02-view.png：页头徽标 + 四行脚注"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "b402fb6b-6f39-405e-8c80-84b3269e7dcb",
+    "elapsed_s": 3.859,
+    "dsl_bytes": 26866,
+    "png_bytes": 190194,
+    "png_md5": "57456a1b6a72f233ae6f845859938c40",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-03",
+   "title": "体检报告：三十个箭头里只有三件事要紧",
+   "audience": "35–55 岁第一次认真看自己体检报告的上班族",
+   "use_context": "手机竖屏 9:16（1080×1920），报告短信链接里点开的同一张解读卡",
+   "user_goal": "1 分钟内知道：本次有几个真异常、分别意味着什么、接下来 7 天/3 个月/1 年各做什么",
+   "problem": "几十项指标带上下箭头，普通人无法分级",
+   "redesign": "三级色带（关注/复查/就医）从 32 项捞出 4 项放大讲解，每项带参考区间条（数值画在区间上的位置）；其余收进「已核对」统计；行动时间轴按 7 天/3 个月/1 年分桶",
+   "content_basis": "R7 常用参考区间（注明以报告单所印为准）+ R3 血压分级；患者数据为演示数据",
+   "visual_intent": "三级色带 + 参考区间条 + 行动时间轴",
+   "medium": "9:16 竖版 1080×1920",
+   "device": "手机",
+   "png": "case-03/final.png",
+   "snapshot": "case-03/final.snapshot",
+   "case_md": "case-03/case.md",
+   "dimensions": [
+    1080,
+    1920
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "分级色带/参考区间条（标记越界可见）/三段行动轴",
+   "completion_criteria": [
+    {
+     "id": "C03-1",
+     "condition": "三级各≥1 项，每项含这是什么/为什么/做什么三句",
+     "method": "看图逐项核对"
+    },
+    {
+     "id": "C03-2",
+     "condition": "行动轴 7 天/3 个月/1 年三桶均有可执行动作",
+     "method": "看图"
+    },
+    {
+     "id": "C03-3",
+     "condition": "演示数值与参考区间结论自洽（尿酸 480>416、BMI 26.4>23.9）",
+     "method": "算术核对 + 区间条位置"
+    },
+    {
+     "id": "C03-4",
+     "condition": "「以报告单所印为准」与演示数据标注存在",
+     "method": "看图：徽标与脚注区"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z03-view.png",
+     "z03-c-bars.png",
+     "z03-c-bars2.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "249c3136-21d2-470b-818d-f4d021146dc3"
+   ],
+   "iteration_ids": [
+    "v01",
+    "v02"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C03-1",
+     "result": "passed",
+     "evidence": "z03-view.png：关注 2/复查 1/就医 1，四项均三行结构"
+    },
+    {
+     "id": "C03-2",
+     "result": "passed",
+     "evidence": "z03-view.png：三个时间桶共 6 条动作"
+    },
+    {
+     "id": "C03-3",
+     "result": "passed",
+     "evidence": "z03-c-bars2.png：四个标记均在参考区之外，与文字结论同向"
+    },
+    {
+     "id": "C03-4",
+     "result": "passed",
+     "evidence": "z03-view.png：页头「演示数据·虚构」徽标"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "249c3136-21d2-470b-818d-f4d021146dc3",
+    "elapsed_s": 16.125,
+    "dsl_bytes": 27279,
+    "png_bytes": 256357,
+    "png_md5": "0d35c3f8c4045b1e4b190eec2717ee66",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-04",
+   "title": "降水概率 40%：到底带不带伞",
+   "audience": "每天看天气决定带不带伞、要不要收衣服的通勤者与家长",
+   "use_context": "1:1 方形卡 1080×1080，聊天里转发或打印成冰箱贴",
+   "user_goal": "正确理解 PoP 含义，并按自己「怕淋湿程度」给出明确带伞建议",
+   "problem": "「降水概率 40%」被普遍误读成「40% 地区/40% 时间会下雨」",
+   "redesign": "PoP 正解三格（是什么/不是什么/怎么算）+ 分时段降雨条 + 决策阈值表 + NWS 术语档",
+   "content_basis": "R2 NOAA/NWS PoP 定义与术语档；分时段数据为演示",
+   "visual_intent": "大数字 hero + 三格正解 + 阈值决策表",
+   "medium": "1:1 方形 1080×1080",
+   "device": "转发卡片/冰箱贴",
+   "png": "case-04/final.png",
+   "snapshot": "case-04/final.snapshot",
+   "case_md": "case-04/case.md",
+   "dimensions": [
+    1080,
+    1080
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "大数字/三格对照/概率竖条/阈值表/术语档",
+   "completion_criteria": [
+    {
+     "id": "C04-1",
+     "condition": "PoP 定义与 R2 一致并列出三个「不是什么」",
+     "method": "看图逐句核对 R2"
+    },
+    {
+     "id": "C04-2",
+     "condition": "术语档（20 slight / 30-50 chance / 60-70 likely / 80+ occasional）对应正确",
+     "method": "看图核对 R2 术语档"
+    },
+    {
+     "id": "C04-3",
+     "condition": "分时段条与阈值表一致，示例雨量标注为演示数据",
+     "method": "看图 + 数值核对"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z04-view.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "48f1f741-e633-4d6d-ae41-12c6887fbe87"
+   ],
+   "iteration_ids": [
+    "v01"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C04-1",
+     "result": "passed",
+     "evidence": "z04-view.png：是什么/不是什么/怎么算三格与 hero 定义句"
+    },
+    {
+     "id": "C04-2",
+     "result": "passed",
+     "evidence": "z04-view.png：术语档五档百分比与 R2 一致"
+    },
+    {
+     "id": "C04-3",
+     "result": "passed",
+     "evidence": "z04-view.png：五段 10/40/55/30/10 与阈值表四档"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "48f1f741-e633-4d6d-ae41-12c6887fbe87",
+    "elapsed_s": 7.563,
+    "dsl_bytes": 22211,
+    "png_bytes": 165258,
+    "png_md5": "865f02b5f3808184b912d769ce4f13bc",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-05",
+   "title": "超市比价：把价签换算成每 100 克",
+   "audience": "每周采购的家庭成员；价格敏感的学生与合租青年",
+   "use_context": "手机竖屏 9:16（1080×1920），超市里边走边看",
+   "user_goal": "三秒内看出哪种规格单位价格最低、促销是否真便宜、预算内买哪件",
+   "problem": "同一商品多种规格，价签数字不可直接比较，「加量装更划算」常常不成立",
+   "redesign": "每 100 g 单价横条（组内放大差异并注明）+ 规格卡 + 「加量陷阱」标记；底部预算组合与三条读价签规则",
+   "content_basis": "自拟演示商品与价格（R8），不引用任何真实门店",
+   "visual_intent": "单价横条 + 陷阱徽标 + 预算组合",
+   "medium": "9:16 竖版 1080×1920",
+   "device": "手机",
+   "png": "case-05/final.png",
+   "snapshot": "case-05/final.snapshot",
+   "case_md": "case-05/case.md",
+   "dimensions": [
+    1080,
+    1920
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "单位换算横条（组内放大）/升序排列/徽标/预算卡",
+   "completion_criteria": [
+    {
+     "id": "C05-1",
+     "condition": "每件单价=总价÷规格×100，条长与单价成比例，最长条对应最高单价",
+     "method": "计算核对 + 看图"
+    },
+    {
+     "id": "C05-2",
+     "condition": "至少 1 个「加量/促销单价更高」陷阱被明确标出",
+     "method": "看图"
+    },
+    {
+     "id": "C05-3",
+     "condition": "演示价格有标注，画面无真实品牌",
+     "method": "看图"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z05-view.png",
+     "z05-view-v02.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "e423bfbf-e7b2-46da-8fb5-bc8b9f8832a1"
+   ],
+   "iteration_ids": [
+    "v01",
+    "v02"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C05-1",
+     "result": "passed",
+     "evidence": "z05-view-v02.png：2.39/2.47/2.58/2.59 与条长同向；促销装条最长"
+    },
+    {
+     "id": "C05-2",
+     "result": "passed",
+     "evidence": "z05-view-v02.png：促销装 500 g×2 标「加量陷阱」"
+    },
+    {
+     "id": "C05-3",
+     "result": "passed",
+     "evidence": "z05-view-v02.png：脚注声明虚构；组名均为通用名"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "e423bfbf-e7b2-46da-8fb5-bc8b9f8832a1",
+    "elapsed_s": 3.953,
+    "dsl_bytes": 22730,
+    "png_bytes": 201904,
+    "png_md5": "ade20af9cbba6d7d715b43d2687db1a9",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-06",
+   "title": "中转联程：这段换乘到底赶得上吗",
+   "audience": "第一次独自中转的旅客（含带老人孩子出行的家庭）",
+   "use_context": "16:9 横版 1920×1080，出行前在电脑上看，也可打印折进行李袋",
+   "user_goal": "判断中转时间是否安全、行李是否直挂、哪段最赶、误了之后的补救顺序",
+   "problem": "看不懂「中转 55 分钟」够不够：要算上下飞机、拿行李、重新托运、换航站楼",
+   "redesign": "一条水平时间轴：「需要 75 分钟」逐段 vs「可用 55 分钟」两条同尺度长条，缺口 20 分钟直接可见；MCT 警戒线；行李直挂判定；误机补救阶梯",
+   "content_basis": "MCT 为航空业通用概念，数值为演示（R8）；航班与时刻为演示数据",
+   "visual_intent": "同尺度双条对比 + 缺口区 + MCT 警戒线",
+   "medium": "16:9 横版 1920×1080",
+   "device": "电脑/打印",
+   "png": "case-06/final.png",
+   "snapshot": "case-06/final.snapshot",
+   "case_md": "case-06/case.md",
+   "dimensions": [
+    1920,
+    1080
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "等比分段时间轴/缺口区/警戒线/判定卡/补救阶梯",
+   "completion_criteria": [
+    {
+     "id": "C06-1",
+     "condition": "各段分钟之和=中转总时长（8+10+15+12+20+10=75）",
+     "method": "算术核对"
+    },
+    {
+     "id": "C06-2",
+     "condition": "MCT 警戒线与三级分级同坐标可比，结论与演示数值自洽（55<75）",
+     "method": "看图 + 数值核对"
+    },
+    {
+     "id": "C06-3",
+     "condition": "行李直挂判定路径不混淆概念（联程票/两张票/跨楼）",
+     "method": "看图核对"
+    },
+    {
+     "id": "C06-4",
+     "condition": "补救四步可执行，演示数据有标注",
+     "method": "看图"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z06-view.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "04a996f0-c6da-4358-a8bd-2410fdd42468"
+   ],
+   "iteration_ids": [
+    "v01"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C06-1",
+     "result": "passed",
+     "evidence": "z06-view.png：六段分钟数标注，合计 75 分钟与 hero 一致"
+    },
+    {
+     "id": "C06-2",
+     "result": "passed",
+     "evidence": "z06-view.png：MCT 75 线在 55 条末端右侧；结论「赶不上」"
+    },
+    {
+     "id": "C06-3",
+     "result": "passed",
+     "evidence": "z06-view.png：三张判定卡（直挂/不直挂/跨楼摆渡）"
+    },
+    {
+     "id": "C06-4",
+     "result": "passed",
+     "evidence": "z06-view.png：四步补救各带时间锚与代价；脚注标注演示"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "04a996f0-c6da-4358-a8bd-2410fdd42468",
+    "elapsed_s": 3.344,
+    "dsl_bytes": 26928,
+    "png_bytes": 201112,
+    "png_md5": "bbbe2efd517651bf5be644815666fcec",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-07",
+   "title": "洗衣标识速查：先分堆，再开机",
+   "audience": "第一次独立洗衣的大学生、合租青年、新手家务者",
+   "use_context": "A4 竖版 1240×1754 贴洗衣机上方墙面，站立 1 m 可读",
+   "user_goal": "把手里的衣服按符号分堆：能机洗/只能手洗/送干洗；知道水温与能否烘干",
+   "problem": "水洗标是一排抽象符号，年轻人一律「洗衣机快洗」",
+   "redesign": "五大类符号用 DSL 重绘（ClipPath 异形 + 旋转条 + 圆点变体）+ 三堆分拣流程+ 高危面料卡 + 常见误区",
+   "content_basis": "R4 GB/T 8685-2008 符号体系；衣物清单为演示数据；符号为示意重绘",
+   "visual_intent": "DSL 重绘符号词典 + 三堆分拣",
+   "medium": "A4 竖版 1240×1754",
+   "device": "贴墙",
+   "png": "case-07/final.png",
+   "snapshot": "case-07/final.snapshot",
+   "case_md": "case-07/case.md",
+   "dimensions": [
+    1240,
+    1754
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "ClipPath 异形裁剪/旋转细条/圆点温度档/方框四边/分拣行",
+   "completion_criteria": [
+    {
+     "id": "C07-1",
+     "condition": "重绘符号与 R4 一致：五大类基本形 + 点/线/斜线/× 变体，顺序正确",
+     "method": "看图逐符号核对 R4"
+    },
+    {
+     "id": "C07-2",
+     "condition": "分拣三堆每堆≥3 件，衣物符号与所入堆一致",
+     "method": "看图核对"
+    },
+    {
+     "id": "C07-3",
+     "condition": "1 m 可读：标题 32px、符号释义 11.5px+；符号形状可辨不依赖颜色",
+     "method": "局部放大看图 + 形状核对"
+    },
+    {
+     "id": "C07-4",
+     "condition": "标准号与「以实际标签为准」在脚注",
+     "method": "看图：脚注"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z07-view.png",
+     "z07-c-sym.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "b98bf2ce-1f81-4584-a90e-76e6e1bc3f93"
+   ],
+   "iteration_ids": [
+    "v01"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C07-1",
+     "result": "passed",
+     "evidence": "z07-c-sym.png：洗涤槽 30+缓和线、三角/Cl/×、正方三变体、熨斗 1/2/3 点、F/P/W"
+    },
+    {
+     "id": "C07-2",
+     "result": "passed",
+     "evidence": "z07-view.png：机洗 4 件/手洗 3 件/送洗 3 件，符号与堆一致"
+    },
+    {
+     "id": "C07-3",
+     "result": "passed",
+     "evidence": "z07-c-sym.png：符号墨色形状清晰；正文最小 11px"
+    },
+    {
+     "id": "C07-4",
+     "result": "passed",
+     "evidence": "z07-view.png：页头标准号徽标 + 脚注两行"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "b98bf2ce-1f81-4584-a90e-76e6e1bc3f93",
+    "elapsed_s": 4.906,
+    "dsl_bytes": 46869,
+    "png_bytes": 263019,
+    "png_md5": "bc7b6e784a7456815640b6d70e5d4f63",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-08",
+   "title": "垃圾分类易错榜：大棒骨、过期药去哪桶",
+   "audience": "家庭厨房主理人与租户；刚来城市生活的人",
+   "use_context": "A4 竖版 1240×1754 贴垃圾桶上方或厨房门后，站立 1 m 可读",
+   "user_goal": "拿到一件不确定的东西，30 秒内按图走到正确桶；记住投放前处理要求",
+   "problem": "四分类口诀听过就忘；易错物品（大棒骨、过期药品、猫砂）每次现查现疑",
+   "redesign": "四桶色卡（定义+投放要求）+ 易错榜 Top10 + 三问决策树 + 投放前四件事",
+   "content_basis": "R6 北京四分法与投放要求（北京市政府/市条例）",
+   "visual_intent": "四桶卡 + 易错榜 + 决策树",
+   "medium": "A4 竖版 1240×1754",
+   "device": "贴墙",
+   "png": "case-08/final.png",
+   "snapshot": "case-08/final.snapshot",
+   "case_md": "case-08/case.md",
+   "dimensions": [
+    1240,
+    1754
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "桶形图标（ClipPath 梯形）/易错排名/三问树/向下箭头",
+   "completion_criteria": [
+    {
+     "id": "C08-1",
+     "condition": "易错榜每件归属与 R6 条文一致（大棒骨→其他、过期药连带包装→有害等）",
+     "method": "看图逐项核对 R6"
+    },
+    {
+     "id": "C08-2",
+     "condition": "决策树三问互斥完备，任一测试物品走唯一路径",
+     "method": "路径推演 + 看图"
+    },
+    {
+     "id": "C08-3",
+     "condition": "四桶投放要求（沥水/压扁/器物完整/连带包装）在对应卡上出现",
+     "method": "看图"
+    },
+    {
+     "id": "C08-4",
+     "condition": "1 m 可读性与出处标注",
+     "method": "局部放大看图 + 脚注核对"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z08-view.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "f951dd06-4f4e-439c-99e1-bcdf7397791f"
+   ],
+   "iteration_ids": [
+    "v01"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C08-1",
+     "result": "passed",
+     "evidence": "z08-view.png：10 件归属与 R6 一致（含干电池口径注记）"
+    },
+    {
+     "id": "C08-2",
+     "result": "passed",
+     "evidence": "z08-view.png：三问树含「都不中」兜底到其他垃圾"
+    },
+    {
+     "id": "C08-3",
+     "result": "passed",
+     "evidence": "z08-view.png：四桶卡各带投放要求；底部四件事"
+    },
+    {
+     "id": "C08-4",
+     "result": "passed",
+     "evidence": "z08-view.png：正文最小 11px；脚注两行出处"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "f951dd06-4f4e-439c-99e1-bcdf7397791f",
+    "elapsed_s": 5.516,
+    "dsl_bytes": 39063,
+    "png_bytes": 280337,
+    "png_md5": "9f0c74a2587dace7209a8aa8a1318a23",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-09",
+   "title": "末班车：现在还回得了家吗",
+   "audience": "加班晚归的上班族，尤其不愿天天打车的人",
+   "use_context": "手机竖屏 9:16（1080×1920），晚 10 点后办公室/地铁站单手看",
+   "user_goal": "知道现在出发走哪条路能上车、哪一班是最后一班赶得上的、赶不上的备选与代价",
+   "problem": "App 只显示首末班时间，不会按当前时间告诉你来得及与否",
+   "redesign": "顶部大倒计时 + 可行链逐段最晚时间与缓冲 + 窄口提示 + 备选阶梯（带时间/费用）",
+   "content_basis": "末班时刻表为演示数据（R8）；结构参照城市地铁常见首末班信息",
+   "visual_intent": "深底夜归场景 + 大倒计时 + 倒推可行链",
+   "medium": "9:16 竖版 1080×1920",
+   "device": "手机（夜间）",
+   "png": "case-09/final.png",
+   "snapshot": "case-09/final.snapshot",
+   "case_md": "case-09/case.md",
+   "dimensions": [
+    1080,
+    1920
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "倒计时大字/时间轨/缓冲徽标/窄口告警/备选阶梯",
+   "completion_criteria": [
+    {
+     "id": "C09-1",
+     "condition": "可行链各段时间之和与总时长一致（22:47→23:44=57 分钟）",
+     "method": "算术核对"
+    },
+    {
+     "id": "C09-2",
+     "condition": "倒计时与状态切换逻辑写明且与演示时刻自洽",
+     "method": "看图 + 数值核对"
+    },
+    {
+     "id": "C09-3",
+     "condition": "备选阶梯≥3 项各带时间与费用代价",
+     "method": "看图"
+    },
+    {
+     "id": "C09-4",
+     "condition": "演示时刻表有标注并提示以运营公告为准",
+     "method": "看图：徽标与脚注"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z09-view.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "a54f1644-0f67-4d49-b8fc-715bd0c14e96"
+   ],
+   "iteration_ids": [
+    "v01"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C09-1",
+     "result": "passed",
+     "evidence": "z09-view.png：8+7+12+4+18+8=57 分钟，与末行「全程 57 分钟」一致"
+    },
+    {
+     "id": "C09-2",
+     "result": "passed",
+     "evidence": "z09-view.png：「15 分钟」倒计时 + 「来得及·别停留」+ 窄口 4 分钟"
+    },
+    {
+     "id": "C09-3",
+     "result": "passed",
+     "evidence": "z09-view.png：夜班公交/网约车/公司留宿各带时间与费用"
+    },
+    {
+     "id": "C09-4",
+     "result": "passed",
+     "evidence": "z09-view.png：页头「演示时刻表」徽标 + 脚注两行"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "a54f1644-0f67-4d49-b8fc-715bd0c14e96",
+    "elapsed_s": 4.078,
+    "dsl_bytes": 20326,
+    "png_bytes": 202377,
+    "png_md5": "7086fed4f37e98570e88ab84d95d52df",
+    "byte_match_with_response": true
+   }
+  },
+  {
+   "id": "case-10",
+   "title": "营养标签：盐糖油一眼看穿",
+   "audience": "开始关注饮食健康的采购者（控糖/控盐/减脂人群及其家人）",
+   "use_context": "4:5 竖版 1080×1350，超市/厨房拿起就看；可贴餐桌旁",
+   "user_goal": "在两件同类商品中快速判断哪个盐/糖/脂肪更低，并知道 NRV% 的正确读法",
+   "problem": "「NRV%」没人教过怎么看；「每份」与「每 100 g」混用让人低估一份的量",
+   "redesign": "NRV% 画成圆环条与警戒色；「每份陷阱」把每份换算回每 100 g；配料表三规则；货架前三步",
+   "content_basis": "NRV 概念为 GB 28050 通行内容；数值为演示数据（R8）",
+   "visual_intent": "NRV 圆环 + 每份换算对照 + 配料规则",
+   "medium": "4:5 竖版 1080×1350",
+   "device": "手机/打印",
+   "png": "case-10/final.png",
+   "snapshot": "case-10/final.snapshot",
+   "case_md": "case-10/case.md",
+   "dimensions": [
+    1080,
+    1350
+   ],
+   "supporting_assets": [],
+   "dsl_capabilities": "圆环进度（ring_segment）/警戒色/左右对照卡/换算注",
+   "completion_criteria": [
+    {
+     "id": "C10-1",
+     "condition": "NRV% 解读正确，三环角度与百分比成比例且阈值一致",
+     "method": "计算核对 + 看图"
+    },
+    {
+     "id": "C10-2",
+     "condition": "每份 vs 每 100 g 换算自洽（25 g×4=100 g；钠 300×4=1200）",
+     "method": "算术核对"
+    },
+    {
+     "id": "C10-3",
+     "condition": "配料表三规则陈述正确",
+     "method": "看图核对"
+    },
+    {
+     "id": "C10-4",
+     "condition": "演示数值有标注，无真实品牌",
+     "method": "看图"
+    }
+   ],
+   "visual_review": {
+    "views": [
+     "z10-view.png"
+    ],
+    "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+    "note": "每件整图实际查看 + 关键局部放大；定稿前 10 件缩略矩阵横向审查"
+   },
+   "request_ids": [
+    "f76d8d85-3492-4b46-a9c3-a912806a03b7"
+   ],
+   "iteration_ids": [
+    "v01"
+   ],
+   "unresolved_issues": [],
+   "plan_version": "plan v1（2026-10-24T14:10 +08:00，首次渲染前）",
+   "criteria_history": [],
+   "criterion_results": [
+    {
+     "id": "C10-1",
+     "result": "passed",
+     "evidence": "z10-view.png：60/36/25 三环与警戒色（≥30 红、15-30 琥珀）"
+    },
+    {
+     "id": "C10-2",
+     "result": "passed",
+     "evidence": "z10-view.png：每份钠 300 mg×4=1200 mg；NRV 15%×4=60%"
+    },
+    {
+     "id": "C10-3",
+     "result": "passed",
+     "evidence": "z10-view.png：递减排序/糖马甲/添加剂位置三规则"
+    },
+    {
+     "id": "C10-4",
+     "result": "passed",
+     "evidence": "z10-view.png：脚注声明演示数据；无品牌名"
+    }
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "f76d8d85-3492-4b46-a9c3-a912806a03b7",
+    "elapsed_s": 8.719,
+    "dsl_bytes": 193612,
+    "png_bytes": 204373,
+    "png_md5": "7729c20245bc9be1c3fbf66b15db7786",
+    "byte_match_with_response": true
+   }
+  }
+ ],
+ "general_criteria_results": [
+  {
+   "id": "G-1",
+   "condition": "10 件作品相互独立：不同问题、不同受众/场景任务、不同视觉系统",
+   "status": "met",
+   "evidence": "10 件覆盖账单/用药/体检/天气/采购/中转/洗衣/垃圾/夜归/营养十类问题；6 种画布比例（A4 ×3 / 3:4 / 9:16 ×3 / 1:1 / 16:9 / 4:5）；视觉系统各异（暖纸/临床/天气蓝/购物/纸米/靛蓝/四桶色/深青夜归/营养棕）；z-contact-sheet.png 缩略矩阵横向审查"
+  },
+  {
+   "id": "G-2",
+   "condition": "每件 final.png 为真实服务响应字节；final.snapshot 与渲染 DSL 一致",
+   "status": "met",
+   "evidence": "10/10 final.png 与 requests.jsonl 最后一次成功响应 MD5 逐字节一致（本脚本运行实测）；10/10 final.snapshot 与对应版本 DSL 一致；纯 DSL 交付，无 <Image url= 外部引用"
+  },
+  {
+   "id": "G-3",
+   "condition": "每件经实际看图（整体+关键局部）并留证据；不达标的修复后重渲复查",
+   "status": "met",
+   "evidence": "24 次看图记录（10 整图 + 局部放大）；iterations.jsonl 15 条（baseline 10 + 完整视觉迭代 5 + syntax-fix/service-retry 5）；5 件修复后重渲染并复看（01/02/03/05）"
+  },
+  {
+   "id": "G-4",
+   "condition": "关键数据经程序化计算复核：合计、换算、时间链、比例",
+   "status": "met",
+   "evidence": "case-01 分层电费合计=155.95；case-03 参考区间标记与区间一致；case-05 单价=总价÷规格×100 且条长同向；case-06 各段和=75；case-09 全链 57 分钟闭合；case-10 每份×4=100 g 与 NRV 4 倍闭合"
+  },
+  {
+   "id": "G-5",
+   "condition": "公开事实注明来源；自拟内容标「演示数据」；不声称做过用户调研",
+   "status": "met",
+   "evidence": "problem-evidence.json 逐件记录来源/假设；R1–R6 六项公开事实（电价/PoP/血压/洗涤标识/说明书结构/垃圾分类）均有出处与访问时间；design-review.md 区分可观察改善与未经用户实验验证的效果"
+  },
+  {
+   "id": "G-6",
+   "condition": "文本无 ASCII < / > 直出；窄箱不溢出；图标区不压文字",
+   "status": "met",
+   "evidence": "渲染前自检拦截 1 次（case-03 ASCII <）；T() 宽度自检覆盖全部文本；case-01 两处窄箱长文拆行；case-02 时间文本遮挡修复"
+  },
+  {
+   "id": "G-7",
+   "condition": "目标观看环境可读性：A4 张贴版站立 1 m 可读；手机版正文≥11.5px 等效",
+   "status": "met",
+   "evidence": "A4 三件标题 32px、正文最小 11px；手机三件正文 12–13.5px；case-02 大字卡剂量 38px；局部放大逐件核验"
+  }
+ ],
+ "final_collection_review": {
+  "reviewed": true,
+  "contact_sheet": "tmp/run-20261013-174209/B06/z-contact-sheet.png",
+  "independence": "十件问题/受众/媒介/视觉系统均不同，无同版式换色换字",
+  "readable": "全部通过目标尺寸可读性核验（A4 1 m / 手机单手 / 转发方卡）",
+  "data_self_consistent": "六处程序化计算复核全部闭合（见 G-4）",
+  "known_limits": "全部为版式重构提案，未做用户测试；演示数据已逐件标注"
+ },
+ "unresolved_issues": []
+}

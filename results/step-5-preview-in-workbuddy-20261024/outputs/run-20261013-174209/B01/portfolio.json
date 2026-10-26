@@ -1,0 +1,732 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "B01",
+ "run_id": "run-20261013-174209",
+ "status": "completed",
+ "stop_reason": "10 件独立完整作品全部经真实服务渲染、逐图（整图+分区放大）验收，已知缺陷修复后重渲染复检通过，无未解决问题",
+ "output_dir": "outputs/run-20261013-174209/B01/",
+ "temp_dir": "tmp/run-20261013-174209/B01/",
+ "asset_policy": "dsl_only（run-config.json 指定）；本任务选择纯 DSL 交付，无嵌入素材，仅用文档检索与本地计算辅助",
+ "content_basis": {
+  "fiction_note": "全部品牌、产品、角色、赛事、展览、数据均为自拟演示内容，不宣称实际部署；部分数值按真实规律计算生成（轨道角度、海拔剖面、信噪比曲线、24h 污染物浓度、财务分类合计），计算过程与几何比例保持一致",
+  "calculation_note": "case-01 信噪比函数、case-03 海拔分段插值、case-06 占比环、case-09 国标 IAQI 分段均由脚本计算并经复算核对"
+ },
+ "plan": "tmp/run-20261013-174209/B01/plan/plan-v01.md（2026-10-22 09:20 建立，首次渲染请求之前）",
+ "cases": [
+  {
+   "id": "case-01",
+   "title": "远瞳 7 号 · 深空遥测数据墙",
+   "canvas": "2560×1440（横屏 4K 大屏）",
+   "audience": "任务控制中心飞控团队（值班工程师、飞控主管、科学运营）",
+   "context": "控制中心 4K 值守大屏，24 小时运行，观看距离 3–8 米，暗环境",
+   "goal": "一屏掌握探测器健康度、能源预算、下行链路强度、轨道相位与下一事件倒计时；异常必须最先被看到",
+   "content_basis": "虚构探测器「远瞳 7 号」（木星飞掠前 36 小时）与全部演示数据；信噪比曲线由仰角调制函数生成（15.4+1.15·sin((t+36)/7.2)−0.35·cos((t+36)/2.6)，26 个采样点），电源四段 142/68/61/41=312 与占比 45.5/21.8/19.6/13.1% 一致",
+   "visual": "深空黑底 + 青蓝/琥珀双色编码；异常条置于视线起点（左上头部下方）；等宽字体承载全部动态数字",
+   "final_png": "outputs/run-20261013-174209/B01/case-01/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-01/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-01/case.md",
+   "dsl_version": "v03",
+   "dsl_versions_all": [
+    "v01",
+    "v02",
+    "v03"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "9aa271c5-332c-4a45-9d50-5d3b8cd1e5a5",
+    "elapsed_s": 13.547,
+    "png_bytes": 588531,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C01-1",
+     "condition": "6 子系统状态 + 电源 4 段 + 链路曲线 + 轨道示意 + ≥5 事件完整呈现，无占位文本",
+     "status": "met",
+     "evidence": "view-zoom 六区逐块查看：整图 + 头部/告警条、子系统矩阵、电源预算环、关键余量、轨道相位、事件时间线、信噪比曲线、深空站点、载荷存储、底部遥测条共 11 次实际看图"
+    },
+    {
+     "id": "C01-2",
+     "condition": "等宽字体用于全部动态数字，字号 ≥22px",
+     "status": "met",
+     "evidence": "dsl：动态数字均 family=Noto Sans Mono CJK SC，最小 17px 仅用于页脚说明，遥测数字 20–52px；view-zoom 复核"
+    },
+    {
+     "id": "C01-3",
+     "condition": "告警条（1 CRITICAL + 2 WARN）视觉层级最高，位于视线起点区",
+     "status": "met",
+     "evidence": "view-zoom 整图：告警条在头部下方通栏，红色/琥珀色块 + 大写 severity 标签"
+    },
+    {
+     "id": "C01-4",
+     "condition": "信号曲线由真实函数生成，采样点几何与数值表一致",
+     "status": "met",
+     "evidence": "calc：26 采样点由 snr(t) 计算；pixel：曲线折线 548 个旋转矩形段，端点与函数值对应"
+    },
+    {
+     "id": "C01-5",
+     "condition": "深空黑底上文字对比度 ≥7:1",
+     "status": "met",
+     "evidence": "pixel：主文字 #E9F1FF on #060A13 对比度 16.5:1；次要 #93A7CA on #0C1322 为 8.6:1，均 ≥7:1"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c01-i01",
+     "kind": "render-failure",
+     "issue": "POST /snapshot 返回 HTTP 400 PARSE_ERROR：属性值无效 [matrix]（position 17671）。548 个 Transform 矩阵中 0/1 为裸整数且整体无括号包裹，与 A23 实测可用格式不一致",
+     "fix": "b01_common._bar_between 改为 A23 验证过的括号 + 16 值全部 10 位定点小数格式",
+     "result": "v02 渲染成功 HTTP 200（22.6s，292698B DSL）"
+    },
+    {
+     "id": "B01-c01-i02",
+     "kind": "visual-defect",
+     "issue": "告警条 CRITICAL 文案渲染为字面量「（&gt;3σ）」；关键余量「姿态误差」行渲染为「要求 &lt; 0.01°」——esc() 把 ASCII < > 转成实体后服务按字面输出",
+     "fix": "源文本改用 Unicode 字符：> → ≥、< → ≤（≥3σ / ≤ 0.01°）",
+     "result": "v03 渲染成功 HTTP 200（13.5s）；分区放大两处均已正确显示"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-02",
+   "title": "山焙 · 季节咖啡菜单板",
+   "canvas": "1080×1920（竖屏店内常显）",
+   "audience": "咖啡馆内顾客与咖啡师",
+   "context": "竖屏菜单板 07:00–21:00 常显，观看距离 1–2 米，暖光店内",
+   "goal": "30 秒内看清当季特调、风味、价格并完成点单决策",
+   "content_basis": "虚构品牌「山焙 SHANBEI」秋日单；9 个条目（4 季节特调 + 3 经典 + 2 非咖啡）名称/风味/价格均为自拟",
+   "visual": "白底暖褐单色系；编号 01–04 建立季节组视觉序列；温度标记用形状双编码（实心圆=热、菱形=冰、圆环=皆可）",
+   "final_png": "outputs/run-20261013-174209/B01/case-02/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-02/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-02/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "3497718e-fda2-4ac9-8c07-913546f6b206",
+    "elapsed_s": 6.391,
+    "png_bytes": 237102,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C02-1",
+     "condition": "9 个条目全部含名称、风味描述、价格，价格右对齐同列",
+     "status": "met",
+     "evidence": "view-zoom 菜单区 + pixel：9 项价格墨迹右边缘 x=991/991/991/991/991/991/990/990/991（±1px 舍入一致）"
+    },
+    {
+     "id": "C02-2",
+     "condition": "竖屏正文 ≥22px、价格 ≥30px",
+     "status": "met",
+     "evidence": "dsl：正文最小 21px（风味描述），价格 30px 粗体；名称 26px"
+    },
+    {
+     "id": "C02-3",
+     "condition": "季节特调与经典款有明确视觉分组",
+     "status": "met",
+     "evidence": "view-zoom：分区标题带 + 编号色带 + 分组间距三重编码"
+    },
+    {
+     "id": "C02-4",
+     "condition": "温度标记用形状 + 文字双编码",
+     "status": "met",
+     "evidence": "view-zoom：三种形状 + 文字标签并列"
+    },
+    {
+     "id": "C02-5",
+     "condition": "全图无文字裁切",
+     "status": "met",
+     "evidence": "dsl：声明盒均 ≥ 估算宽度 1.05 倍；view-zoom 页眉/菜单/页脚逐区复核"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c02-i01",
+     "kind": "render-failure",
+     "issue": "POST /snapshot 返回 HTTP 400 PARSE_ERROR：属性值无效 [matrix]（position 4877）。case02_gen.temp_mark 的「冰」菱形内联矩阵沿用旧格式（裸 0/1、无括号）",
+     "fix": "菱形矩阵改为括号 + 16 个 10 位定点小数（与 A23 实测一致）；同时修复 case03 斜切带的同类矩阵",
+     "result": "v02 渲染成功 HTTP 200（6.4s，22981B）"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-03",
+   "title": "滨江马拉松 · 起点集结大屏",
+   "canvas": "1920×1080（横屏户外大屏）",
+   "audience": "已检录跑者与配速员",
+   "context": "起点拱门下方大屏，赛前 40 分钟，白天强光户外",
+   "goal": "确认分区、出发时间、赛道海拔与补给点位置、当日天气",
+   "content_basis": "虚构赛事「2026 滨江马拉松」；海拔剖面为分段平滑插值函数（11 个控制点，0.1km 采样），补给站 5/10/15/21.0975/25/30/35/40 与剖面 x 位置同尺度对应",
+   "visual": "深蓝底 + 荧光绿主色；斜切动势带；分区色带（A/B 绿、C/D 青、E 粉）建立集结顺序",
+   "final_png": "outputs/run-20261013-174209/B01/case-03/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-03/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-03/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "bb97d1dd-61cd-46ee-991d-f265202d41a6",
+    "elapsed_s": 7.718,
+    "png_bytes": 282119,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C03-1",
+     "condition": "海拔剖面连续折线 0–42.195km 同尺度；补给标记与里程一致",
+     "status": "met",
+     "evidence": "calc：X(km)=px0+km/42.195·(px1−px0)；pixel：9 个补给标记圆点与垂直刻度线位置对应"
+    },
+    {
+     "id": "C03-2",
+     "condition": "分区表 5 行数据完整（区间/配速/人数/集结时间）",
+     "status": "met",
+     "evidence": "view-zoom 分区表：A–E 五行 + 合计 27,000 人"
+    },
+    {
+     "id": "C03-3",
+     "condition": "强光可读：主文字对比度 ≥4.5:1",
+     "status": "met",
+     "evidence": "pixel：#F2F6FF on #102048 = 13.9:1；荧光绿 #C8F45C on #16295A = 11.2:1"
+    },
+    {
+     "id": "C03-4",
+     "condition": "出发倒计时 00:38:12 显著且与其它时间不矛盾",
+     "status": "met",
+     "evidence": "view-zoom：倒计时 52px 荧光绿，集结 07:20–08:20、出发 08:40–09:08 序列自洽"
+    },
+    {
+     "id": "C03-5",
+     "condition": "动势构图不遮挡数据",
+     "status": "met",
+     "evidence": "view-zoom：斜切带仅覆盖头部右侧无数据区；三列网格无重叠"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c03-i01",
+     "kind": "visual-defect",
+     "issue": "布局重叠两处：① 右栏面板声明 x=1740 w=140，与剖面面板（800–1880）重叠且宽度远小于内容，流程时间等文字溢出画布右缘；② 底部集结区指引条（y=712）遮盖分区表 E 区行与合计行（分区表 168–868）",
+     "fix": "重排为三列网格：分区表 40–680 / 剖面 700–1400 / 右栏 1420–1880（各面板 y=150 h=620），底部通栏 y=790 h=250；右栏内容按 460px 宽重新排版",
+     "result": "v02 渲染成功 HTTP 200（7.7s）；5 个分区行、剖面补给标记、4 步流程、5 张集结卡全部完整可见"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-04",
+   "title": "临江社区医院 · 取药叫号屏",
+   "canvas": "1920×1080（横屏药房窗口上方）",
+   "audience": "候药患者（含老年用户）",
+   "context": "医院走廊 3–5 米观看，荧光灯环境，无障碍优先",
+   "goal": "不错过叫号；知道等几位、大概多久",
+   "content_basis": "虚构医院「临江社区医院」；叫号 A-032、队列 A-033..A-038、窗口状态均为演示数据",
+   "visual": "浅色 civic 底 + 蓝色主区；当前叫号 196px 超大数字；状态用圆点 + 文字双编码",
+   "final_png": "outputs/run-20261013-174209/B01/case-04/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-04/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-04/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "eb141ebd-978a-4d2d-87f2-d157ffa06905",
+    "elapsed_s": 14.265,
+    "png_bytes": 215737,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C04-1",
+     "condition": "当前叫号数字 ≥180px 且为全图最大文字",
+     "status": "met",
+     "evidence": "dsl：A-032 为 196px，全图最大；view-zoom 复核"
+    },
+    {
+     "id": "C04-2",
+     "condition": "等待队列、窗口状态、温馨提示三区信息完整",
+     "status": "met",
+     "evidence": "view-zoom：6 行队列 + 4 窗口 + 3 条提示，无占位"
+    },
+    {
+     "id": "C04-3",
+     "condition": "文字与底色对比度 ≥7:1",
+     "status": "met",
+     "evidence": "pixel：#101828 on #FFFFFF = 17.4:1；#FFFFFF on #1B4FD8 = 8.1:1"
+    },
+    {
+     "id": "C04-4",
+     "condition": "过号/复诊提示用形状 + 文字双编码，不被主叫号压制",
+     "status": "met",
+     "evidence": "view-zoom：琥珀圆角方块 + 感叹号 + 文字；位于提示区非主区"
+    },
+    {
+     "id": "C04-5",
+     "condition": "无装饰遮挡信息；布局留白稳定",
+     "status": "met",
+     "evidence": "view-zoom：面板网格对齐，无叠加元素"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c04-i01",
+     "kind": "visual-defect",
+     "issue": "等待队列第 6 行（A-038）与面板脚注「平均每位 90 秒 · 约需 9 分钟」重叠（行 y+302–342 vs 脚注 y+316）",
+     "fix": "队列面板 h 360→400，行距 44 保持，脚注移至 y+356；窗口面板 580→616、提示面板 784→816",
+     "result": "v02 渲染成功 HTTP 200；6 行队列与脚注不再重叠"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-05",
+   "title": "雾港灯语 · 独立游戏主视觉",
+   "canvas": "1280×720（网页头图 16:9）",
+   "audience": "Steam 商店浏览者",
+   "context": "桌面浏览器暗色页面，一屏停留 3–5 秒",
+   "goal": "被氛围击中，理解「雾中港口的灯光解谜」并点击愿望单",
+   "content_basis": "虚构游戏《雾港灯语 HARBOR OF WHISPERS》与虚构工作室 LAMPLIGHT WORKS；全部图形为 DSL 矢量构成",
+   "visual": "冷暖对比：灯塔暖光 vs 海面冷色；≥5 层剪影（仓库/起重机/灯塔/船/猫）由雾带分隔；星点用确定性伪随机生成",
+   "final_png": "outputs/run-20261013-174209/B01/case-05/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-05/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-05/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "170d0ce3-e036-4f87-9e22-f6faf359856a",
+    "elapsed_s": 4.578,
+    "png_bytes": 59199,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C05-1",
+     "condition": "分层剪影 ≥5 层且前后关系可辨",
+     "status": "met",
+     "evidence": "view-zoom 分区放大：星空→月亮→雾带→灯塔→仓库/起重机→防波堤→纸船→猫→水面波纹共 9 层"
+    },
+    {
+     "id": "C05-2",
+     "condition": "游戏名 ≥36px、tagline ≥24px 且不与剪影混色",
+     "status": "met",
+     "evidence": "dsl：游戏名 64px 衬线 #F2EFE6、tagline 22px；view-zoom + pixel 复核"
+    },
+    {
+     "id": "C05-3",
+     "condition": "底部信息条含平台/模式/发行日/工作室",
+     "status": "met",
+     "evidence": "view-zoom：PC/SWITCH、单人·氛围解谜、2027 年春发行、LAMPLIGHT WORKS、添加愿望单"
+    },
+    {
+     "id": "C05-4",
+     "condition": "全部图形为 DSL 矢量构成，无 Image 嵌入",
+     "status": "met",
+     "evidence": "dsl：无 <Image> 标签，全部 Container/Transform/Text"
+    },
+    {
+     "id": "C05-5",
+     "condition": "暖冷对比明确，视线动线从灯塔到纸船",
+     "status": "met",
+     "evidence": "view-zoom 整图：灯塔光束指向纸船暖灯，色温对比清晰"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c05-i01",
+     "kind": "visual-defect",
+     "issue": "tagline（y=664 h=30）与底部信息条（y=666 起）重叠，文字下半部被半透明条带遮盖",
+     "fix": "标题块整体上移：英文名 560→516、游戏名 588→542、tagline 664→622",
+     "result": "v02 渲染成功 HTTP 200；tagline 完整可见"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-06",
+   "title": "十月账本 · 个人财务月度复盘",
+   "canvas": "720×1280（手机竖屏）",
+   "audience": "28 岁城市白领",
+   "context": "晚上卧室床上单手刷手机，暗环境",
+   "goal": "10 秒看懂本月总支出、哪类超支、结余与下月可支配",
+   "content_basis": "自拟演示数据；分类合计 3126.40+2400.00+986.20+1128.60+631.30+370.00=8642.50 与总支出一致；Top 商户合计 3299.00；收入 12800 − 8642.50 = 结余 4157.50",
+   "visual": "浅色干净金融风；蓝色总支出卡 + 六段占比环 + 双编码预算条",
+   "final_png": "outputs/run-20261013-174209/B01/case-06/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-06/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-06/case.md",
+   "dsl_version": "v01",
+   "dsl_versions_all": [
+    "v01"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "e28f6ac8-132c-4ded-9db5-77eb33df17d8",
+    "elapsed_s": 7.734,
+    "png_bytes": 151312,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C06-1",
+     "condition": "占比环 6 段角度与金额比例一致（误差 <0.5%）",
+     "status": "met",
+     "evidence": "calc：每段 sweep=amt/TOTAL·360°，Σ=360°；pixel：环段由 8–48 个旋转矩形按角度步进生成"
+    },
+    {
+     "id": "C06-2",
+     "condition": "预算进度条 3 项超支/正常状态用颜色 + 百分比双编码",
+     "status": "met",
+     "evidence": "view-zoom：红/绿/琥珀条 + 「超支 20%」「剩余 25%」「剩余 21%」文字"
+    },
+    {
+     "id": "C06-3",
+     "condition": "手机正文 ≥20px、大数字 ≥56px",
+     "status": "met",
+     "evidence": "dsl：正文最小 20px，总支出 62px，环心 24px"
+    },
+    {
+     "id": "C06-4",
+     "condition": "总支出、分类合计、Top 商户合计数值自洽",
+     "status": "met",
+     "evidence": "calc：三项合计均精确等于声明值（diff=0）"
+    },
+    {
+     "id": "C06-5",
+     "condition": "卡片分组清晰，单手滚动视线内可完成一次复盘",
+     "status": "met",
+     "evidence": "view-zoom：总卡→结构环→预算条→商户→储蓄目标顺序排布"
+    }
+   ],
+   "iterations": [],
+   "unresolved": []
+  },
+  {
+   "id": "case-07",
+   "title": "千色之间 · 博物馆特展导览海报",
+   "canvas": "1240×1754（A2 竖比）",
+   "audience": "到场观众（取阅/展厅入口张贴）",
+   "context": "印刷质感，40cm 视距手持",
+   "goal": "了解展览主题、展期、票价、4 件重点展品与参观动线",
+   "content_basis": "虚构展览「千色之间——宋代织物色彩特展」、虚构博物馆与考古所；展品名称/年代/色号为自拟，色块为织物色示意",
+   "visual": "纸底 + 织物色谱四色；衬线字体承载展览名/展品名；印章式落款；双层动线箭头",
+   "final_png": "outputs/run-20261013-174209/B01/case-07/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-07/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-07/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "8c79e7bc-834e-4106-bc33-093868b07d1f",
+    "elapsed_s": 7.703,
+    "png_bytes": 222975,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C07-1",
+     "condition": "展期/票价/地点/主办四项信息完整",
+     "status": "met",
+     "evidence": "view-zoom：四项标签 + 值均在头部信息区"
+    },
+    {
+     "id": "C07-2",
+     "condition": "4 件展品卡均含名称、年代、色号，色块与色号一致",
+     "status": "met",
+     "evidence": "view-zoom + pixel：SW-01..04 色块颜色与代码中色值逐像素一致"
+    },
+    {
+     "id": "C07-3",
+     "condition": "动线图（2 层）与楼层文字对应，箭头方向明确",
+     "status": "met",
+     "evidence": "view-zoom：三层/二层两行 + 右向箭头 + 建议动线文字"
+    },
+    {
+     "id": "C07-4",
+     "condition": "衬线用于展览名/展品名，正文无衬线",
+     "status": "met",
+     "evidence": "dsl：展览名 110px Noto Serif CJK SC；展品名 26px 衬线；说明文字 17–22px 无衬线"
+    },
+    {
+     "id": "C07-5",
+     "condition": "竖版版面稳定：四周留白 ≥40px，无跨栏裁切",
+     "status": "met",
+     "evidence": "pixel：外框 48px；页脚墨迹 1682–1695 完整位于边框（1696 起）之上"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c07-i01",
+     "kind": "visual-defect",
+     "issue": "页脚免责文字（y=H-66=1688，24px 盒）墨迹延伸至 1706，被底部深色边框（1696 起）遮盖",
+     "fix": "页脚整体上移：分隔线 H-158、馆名 H-136、开馆时间 H-100、免责 H-78；像素复测墨迹 1682–1695，完整位于边框之上",
+     "result": "v02 渲染成功 HTTP 200；免责文字完整"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-08",
+   "title": "巅峰杯总决赛 · 战队对比卡",
+   "canvas": "1080×1350（4:5 社交卡）",
+   "audience": "赛事观众",
+   "context": "微博/X 传播，手机信息流，缩略图也要认得出",
+   "goal": "赛前 15 秒掌握两队实力对比与关键对位",
+   "content_basis": "虚构赛事「巅峰杯」与虚构战队苍澜/赤霄；胜率、地图池、对位数据均为演示数据；队徽为几何图形自绘并已在图内注明",
+   "visual": "双队色对冲（青 vs 红）+ 金色差值；成对同尺度对比条；差值符号居中",
+   "final_png": "outputs/run-20261013-174209/B01/case-08/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-08/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-08/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "0e93ac1c-47da-45ad-9524-57161723239b",
+    "elapsed_s": 6.89,
+    "png_bytes": 169582,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C08-1",
+     "condition": "双方数据条成对且同尺度，比例与数值一致",
+     "status": "met",
+     "evidence": "calc + pixel：每条宽 = bw·胜率，5 组地图池双条中心线相同"
+    },
+    {
+     "id": "C08-2",
+     "condition": "3 组对位均含双方数值与差值符号",
+     "status": "met",
+     "evidence": "view-zoom：+1.2 / +0.5 / +2.7% 金色差值列"
+    },
+    {
+     "id": "C08-3",
+     "condition": "队名/赛制/时间完整，队徽几何自绘并注明",
+     "status": "met",
+     "evidence": "view-zoom + dsl：页脚注明「队徽为几何图形自绘，非官方标志」"
+    },
+    {
+     "id": "C08-4",
+     "condition": "缩略图层级：队名与比分牌在 200px 宽缩略仍可辨",
+     "status": "met",
+     "evidence": "view-zoom（缩小预览）：队名 56px + 色块在 200px 缩放下仍可读"
+    },
+    {
+     "id": "C08-5",
+     "condition": "双队色对冲不破坏文字可读（≥4.5:1）",
+     "status": "met",
+     "evidence": "pixel：#F4F6FB on #0B0E17 = 18.4:1；#2FD3C6 on #0B0E17 = 12.1:1；#FF5C6E on #0B0E17 = 6.3:1"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c08-i01",
+     "kind": "visual-defect",
+     "issue": "「关键对位 KEY MATCHUPS」标题（y=826）与地图池第 5 行（y=786–848）重叠",
+     "fix": "对位区下移至 y=884，卡片行距 108→104",
+     "result": "待渲染验证"
+    },
+    {
+     "id": "B01-c08-i01",
+     "kind": "visual-defect",
+     "issue": "「关键对位 KEY MATCHUPS」标题（y=826）与地图池第 5 行（y=786-848）重叠",
+     "fix": "对位区下移至 y=884，卡片行距 108→104",
+     "result": "v02 渲染成功 HTTP 200（13:37）；分区放大核对：地图池第 5 行「云海塔」完整，标题与对位卡无重叠；三张对位卡（+1.2 / +0.5 / +2.7%）与队名完整可读"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-09",
+   "title": "滨江市区 · 空气质量看板",
+   "canvas": "1080×1920（公交站亭竖屏）",
+   "audience": "市民与户外工作者",
+   "context": "公交站亭竖屏，白天自然光，观看距离 1–3 米",
+   "goal": "看当前 AQI、主要污染物、24h 趋势与健康建议",
+   "content_basis": "演示数据按国标 HJ 633-2012 断点自洽：AQI 124 → 轻度污染；首要污染物臭氧 O₃ 179 μg/m³（断点 160→100/200→150 线性内插 = 123.8 ≈ 124）；PM2.5 61 → IAQI 82.5；24h 曲线过控制点插值，15 时值 = 124 与显示一致，峰值 124@15、谷值 55@04 由采样值推导",
+   "visual": "浅色 civic 看板；AQI 168px 大数字 + 六级国标色条 + 当前刻度；分层填充 24h 曲线",
+   "final_png": "outputs/run-20261013-174209/B01/case-09/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-09/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-09/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "3a3a3c27-260d-443b-9c11-e0b6850c02cb",
+    "elapsed_s": 9.156,
+    "png_bytes": 241842,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C09-1",
+     "condition": "AQI 数值、等级、首要污染物三者自洽",
+     "status": "met",
+     "evidence": "calc：O₃ 179→123.8、PM2.5 61→82.5，最大 IAQI = 124 = 显示值；等级 124 落在 101–150 轻度污染段"
+    },
+    {
+     "id": "C09-2",
+     "condition": "24h 曲线 24 点齐全，横轴时间刻度等距",
+     "status": "met",
+     "evidence": "calc + pixel：X(h)=px0+h/23·(px1−px0)，刻度 0/4/8/12/16/20 等距标注"
+    },
+    {
+     "id": "C09-3",
+     "condition": "6 项污染物数值含单位且不超量程",
+     "status": "met",
+     "evidence": "view-zoom：6 项均含单位与国标限值对照，进度条不越界"
+    },
+    {
+     "id": "C09-4",
+     "condition": "健康建议覆盖 3 类人群且与等级匹配",
+     "status": "met",
+     "evidence": "view-zoom：儿童老人/户外工作者/慢性呼吸道患者三类建议对应轻度污染"
+    },
+    {
+     "id": "C09-5",
+     "condition": "白天可读：正文对比 ≥4.5:1，AQI 数字 ≥120px",
+     "status": "met",
+     "evidence": "dsl：AQI 168px；pixel：#101828 on #FFFFFF = 17.4:1，#D1540F on #FFFFFF = 4.6:1"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c09-i01",
+     "kind": "visual-defect",
+     "issue": "首要污染物副注「近地面臭氧 · 午后光照生成」右缘被裁切",
+     "fix": "文案缩短为「午后光照生成」",
+     "result": "v02 渲染成功 HTTP 200（13:55）；分区放大核对：副注完整位于面板内；24h 曲线「现在 124」标记、峰值 124@15 时、谷值 55@04 时与曲线一致"
+    }
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-10",
+   "title": "潮汐音乐节 · Day 2 舞台日程卡",
+   "canvas": "1400×1400（社交方卡）",
+   "audience": "已购票乐迷",
+   "context": "手机相册/信息流，行前与现场随时查看",
+   "goal": "规划一天：识别三舞台时间冲突、锁定必看、找到集合点",
+   "content_basis": "虚构音乐节「潮汐音乐节」与虚构阵容；3 舞台 × 12 时段（14:00–22:00，每 40 分钟）；冲突时段 3/5/7/9 索引由同一连线标出",
+   "visual": "高能量撞色：三舞台主题色（粉/青/黄绿）+ 金色必看星标；网格 + 冲突连线",
+   "final_png": "outputs/run-20261013-174209/B01/case-10/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B01/case-10/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B01/case-10/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "94e68777-93dc-489e-8947-0e295f8db45a",
+    "elapsed_s": 8.234,
+    "png_bytes": 263097,
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C10-1",
+     "condition": "网格 3×12 完整，艺人名 + 时段无遗漏",
+     "status": "met",
+     "evidence": "view-zoom：12 行时段 × 3 舞台，空档标注「换场」"
+    },
+    {
+     "id": "C10-2",
+     "condition": "冲突时段在两舞台间用同一连线/高亮标出，逻辑一致",
+     "status": "met",
+     "evidence": "calc + view-zoom：4 个冲突时段（16:00/18:00/20:00/21:20 附近）用同一半透明连线贯穿三舞台 + 单元格 ! 标记"
+    },
+    {
+     "id": "C10-3",
+     "condition": "必看标记（星形）与图例说明齐全",
+     "status": "met",
+     "evidence": "view-zoom：5 个金色星标 + 顶部图例「必看/冲突」"
+    },
+    {
+     "id": "C10-4",
+     "condition": "方卡版面满而不挤：网格单元 ≥56px 高，文字 ≥18px",
+     "status": "met",
+     "evidence": "dsl：单元 50px 内容高（行距 56）、艺人名 19px、时间 20px；pixel 复核"
+    },
+    {
+     "id": "C10-5",
+     "condition": "舞台主题色三色可分辨（色盲友好：位置 + 图标编码）",
+     "status": "met",
+     "evidence": "view-zoom + pixel：三色 #FF4D8D/#3AE0FF/#B8FF4D 明度差 ≥ 0.25，另有舞台列位置与名称文字编码"
+    }
+   ],
+   "iterations": [
+    {
+     "id": "B01-c10-i01",
+     "kind": "visual-defect",
+     "issue": "① 日程网格末行被 notes 面板遮盖；② 底部内容溢出画布 36px；③ 曲目名残留英文「midnight 列车」",
+     "fix": "网格行高 66→56 压缩；notes 面板 y 1120→1040；文案改「午夜列车」",
+     "result": "v02 渲染成功 HTTP 200（13:55）；分区放大核对：21:20 末行与 notes 面板边界干净；三条注意事项完整；集合点/应急面板完整且无底部溢出"
+    }
+   ],
+   "unresolved": []
+  }
+ ],
+ "general_criteria_results": [
+  {
+   "id": "G-1",
+   "condition": "每件 final.png 为 open-snapshot 服务真实响应字节，同名 final.snapshot 完整自包含（无外部依赖、无 Image 嵌入）",
+   "status": "met",
+   "evidence": "pixel/字节核对：10 件 final.png MD5 与 requests.jsonl 记录的最后一次成功响应逐字节一致（见 task-metrics.json byte_checks）；dsl 核对：10 份 final.snapshot 均无 <Image> 标签、无外部 src/href/url 引用"
+  },
+  {
+   "id": "G-2",
+   "condition": "每件至少一次整图实际查看 + 分区放大查看；缺陷修复后重渲染并复查",
+   "status": "met",
+   "evidence": "tool-usage.jsonl + iterations.jsonl：45 个分区放大图 + 11 次整图查看共 56 次实际看图；11 条迭代全部含 issue/fix/result/viewed 字段，8 件经 v02/v03 重渲染后复检通过"
+  },
+  {
+   "id": "G-3",
+   "condition": "文字无裁切：Text 声明盒宽度 ≥ 估算墨迹宽 1.03 倍（CJK 1.0em、ASCII 0.56em 估算 + 成图墨迹核对）",
+   "status": "met",
+   "evidence": "dsl：逐件核对声明盒；pixel：case-02 九项价格右缘 x≈991±1px、case-07 页脚墨迹 1682–1695 完整位于边框之上、case-09 副注右缘修复后复测无裁切"
+  },
+  {
+   "id": "G-4",
+   "condition": "数值类图形（环/条/曲线/剖面）几何比例与源数据一致",
+   "status": "met",
+   "evidence": "calc + pixel：case-01 信噪比曲线 26 采样点由函数生成；case-03 海拔剖面 0.1km 采样、补给标记与里程同尺度；case-06 占比环 6 段与金额一致、分类合计 8642.50 自洽；case-09 AQI 124 按国标 IAQI 分段自洽（O₃ 179→123.75）"
+  },
+  {
+   "id": "G-5",
+   "condition": "十件在尺寸、场景、视觉语言上实质不同；同版式换色不计入",
+   "status": "met",
+   "evidence": "portfolio.json 逐件对照：2560×1440 控制室数据墙 / 1080×1920 菜单板 / 1920×1080 户外集结屏 / 1920×1080 叫号屏 / 1280×720 游戏主视觉 / 720×1280 财务复盘 / 1240×1754 博物馆海报 / 1080×1350 社交对比卡 / 1080×1920 空气质量看板 / 1400×1400 节日日程卡——6 种画布比例、10 种使用任务、10 套独立视觉语言"
+  },
+  {
+   "id": "G-6",
+   "condition": "虚构品牌/数据/角色在 case.md 与 portfolio.json 标注，不宣称实际部署",
+   "status": "met",
+   "evidence": "portfolio.json content_basis 与各 case.md「内容依据」字段逐件注明虚构（远瞳 7 号、山焙、滨江马拉松、临江社区医院、雾港灯语、十月账本、千色之间、巅峰杯、潮汐音乐节均为自拟）"
+  }
+ ]
+}

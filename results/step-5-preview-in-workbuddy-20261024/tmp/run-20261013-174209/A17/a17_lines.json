@@ -1,0 +1,1074 @@
+{
+ "1": [
+  [
+   "body",
+   "本页目标：不依赖任何转述，也能正确发出第一次请求。契约只有三件事：发什么、收什么、出错时",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "怎么读。右侧示例是一份最小可用文档。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "POST /snapshot，请求体是 UTF-8 纯文本 DSL 而非 JSON，Content-Type 为 text/plain。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "根标签 <Snapshot> 全文档仅一次，且必须有根 Widget 子节点。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "成功时响应体是图片二进制，格式由根标签 type 决定：png（默认）/ jpg / webp。GET /fonts",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "返回 text/plain，每行一个字体族；fontFamily 多字体用英文逗号分隔，逗号后不加空格。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "失败通常是 JSON：code / message / requestId，用 X-Request-Id 关联服务日志。400",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "PARSE_ERROR 修 DSL 再提交；413 缩小请求体；429 与 503 按 Retry-After 重试。不要用 ?",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "errorImage=png：它把错误改成图片，程序读不到。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "确认三件事：根标签只有一个、根 Widget 子节点存在、请求体是 UTF-8 纯文本。拿到响应先判断",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "是不是图片二进制，再按根标签 type 决定扩展名。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "head",
+   "请求",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "响应",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "错误",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "发出前检查单",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "title",
+   "第一次调用：契约先行",
+   38,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "sec",
+   "入门手册 · 调用契约",
+   24,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "codelabel",
+   "印刷代码：example-01.snapshot 第 1–11 行（省略处已标识）",
+   20,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "code",
+   "<Snapshot type=\"png\" background=\"#0F172A\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "<Container width=\"400\" height=\"240\" color=\"#1E293B\" padding=\"24\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "  <Column crossAxisAlignment=\"START\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text color=\"#38BDF8\" fontSize=\"20\" fontStyle=\"BOLD\">POST /snapshot</Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text color=\"#F8FAFC\" fontSize=\"28\" fontStyle=\"BOLD\">text/plain in, PNG out</Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text color=\"#94A3B8\" fontSize=\"20\">charset=utf-8 · 200 image/png</Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <SizedBox width=\"352\" height=\"12\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text color=\"#F8FAFC\" fontSize=\"20\">Content-Type: text/plain</Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text color=\"#94A3B8\" fontSize=\"20\">X-Request-Id 关联服务日志</Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <SizedBox width=\"352\" height=\"12\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text color=\"#94A3B8\" fontSize=\"20\">GET /fonts 返回字体族清单</Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "omit",
+   "…………省略 </Column>、</Container> 与 </Snapshot> 三行收尾…………",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#7C8CA1"
+  ],
+  [
+   "caption",
+   "示例 1 实际渲染（400×240，与手册插图同一子树 1:1）",
+   20,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#64748B"
+  ],
+  [
+   "foot",
+   "Snapshot DSL 入门手册 · 第 1 / 4 页 · run-run-20261013-174209",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ],
+  [
+   "foot",
+   "来源：open-snapshot.muedsa.com/ai-guide.md ；snapshot.muedsa.com/guides/parser/",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ]
+ ],
+ "2": [
+  [
+   "body",
+   "画布尺寸不是配置项，而是布局算出来的结果。同一张 400×240 里：上半弹性分配，下半绝对定位",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Container 的 width/height 会收紧 constraints；没有子节点也没有约束的空 Container",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "在无界根约束下收缩为零。父节点传 BoxConstraints，子节点在范围内选择尺寸；根出图仍需非",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "零宽高。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Row 与 Column 是 Flex 的特化，管 mainAxisAlignment、mainAxisSize、",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "crossAxisAlignment；只有 STRETCH 才填满交叉轴。Expanded 以紧约束占满主轴剩余空间，",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Flexible 允许更小；三者必须是 Flex 直接子节点。主轴无限时先用 SizedBox 给出有限尺寸。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Stack 先布局非 Positioned 子节点，再按 left/top/right/bottom/width/height 放置",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Positioned 子节点，同一轴最多两项。默认 clipBehavior 为 HARD_EDGE，越界即裁剪；设",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "NONE 允许越界绘制。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "head",
+   "根尺寸来自布局",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "Flex：Row / Column / Expanded",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "Stack / Positioned",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "title",
+   "尺寸从布局来：Flex 与 Stack 对照",
+   38,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "sec",
+   "入门手册 · 布局",
+   24,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "codelabel",
+   "印刷代码：example-02.snapshot 第 6–9、13–21 行（省略处已标识）",
+   20,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "code",
+   "      <Row crossAxisAlignment=\"STRETCH\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <Expanded flex=\"2\"><Container color=\"#38BDF8\"/></Expanded>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <Expanded flex=\"1\"><Container color=\"#A78BFA\"/></Expanded>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "      </Row>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "omit",
+   "…………省略外层包装、文字标签与 SizedBox，见图示…………",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#7C8CA1"
+  ],
+  [
+   "code",
+   "      <Stack alignment=\"TOP_LEFT\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <Container width=\"368\" height=\"104\" color=\"#0F172A\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <Positioned left=\"12\" top=\"12\" width=\"128\" height=\"32\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "          <Container color=\"#F8FAFC\" borderRadius=\"6\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        </Positioned>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <Positioned right=\"12\" bottom=\"12\" width=\"128\" height=\"32\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "          <Container color=\"#38BDF8\" borderRadius=\"6\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        </Positioned>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "      </Stack>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "caption",
+   "示例 2 实际渲染（400×240，与手册插图同一子树 1:1）",
+   20,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#64748B"
+  ],
+  [
+   "foot",
+   "Snapshot DSL 入门手册 · 第 2 / 4 页 · run-run-20261013-174209",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ],
+  [
+   "foot",
+   "来源：snapshot.muedsa.com/guides/layout/ ；snapshot.muedsa.com/reference/parser-tags/",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ]
+ ],
+ "3": [
+  [
+   "body",
+   "四个最容易踩的文本与颜色误解，用同一张 400×240 给出反例：CDATA 保原文、Raw 保空白、",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Span 可嵌套、alpha 在颜色串末两位。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "解析器不做 HTML 实体解码；要原样输出 < > &，用 CDATA 包裹：<Text><![CDATA[a < b & c >",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "d]]></Text>。CDATA 未闭合时会把已读内容当文本输出，与注释的行为不同。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Text 会 trim 首尾空白；要保留首尾空格和换行用 Raw。Raw 支持文本样式属性，但不支持",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "textAlign / softWrap 等段落属性，且只能出现在最外层 Text 创建的行内内容树里。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "Text 可嵌套 Text / Raw / Emoji / WidgetSpan 组成行内 Span 树，子 Span 继承父未覆盖",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "的样式；WidgetSpan 必须恰有一个 Widget 子节点。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "颜色支持 #RGB / #RGBA / #RRGGBB / #RRGGBBAA，8 位格式的透明度在最后两位：#FF000080",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "是半透明红。多字体串不会逐项 trim，写成 Noto Sans CJK SC,Inter 时逗号后不能加空格。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "head",
+   "误解一：实体可以在 DSL 里用",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "误解二：Text 会保留空白",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "误解三：富文本靠拼字符串",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "误解四：alpha 在颜色串前面",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "title",
+   "Raw / CDATA / 富文本与尾部 alpha",
+   38,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "sec",
+   "入门手册 · 文本与颜色",
+   24,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "codelabel",
+   "印刷代码：example-03.snapshot 第 1–9、15–17 行（省略处已标识）",
+   20,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "code",
+   "<Snapshot background=\"#FFFFFF\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "<Container width=\"400\" height=\"240\" padding=\"20\"",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "          border=\"1 SOLID #E2E8F0\" borderRadius=\"12\" color=\"#F8FAFC\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "  <Column crossAxisAlignment=\"START\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text fontSize=\"20\" color=\"#0F172A\">富文本",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "      <Text color=\"#245CE4\" fontStyle=\"BOLD\">嵌套 Span</Text>继承样式",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    </Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text fontSize=\"20\" color=\"#0F172A\"><![CDATA[CDATA: a < b & c > d 原样]]></Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "    <Text fontSize=\"20\" color=\"#0F172A\">Trim 首尾空白:<Raw>|  保留  |</Raw></Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "omit",
+   "…………省略三个半透明色块行与 Row，见图示…………",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#7C8CA1"
+  ],
+  [
+   "code",
+   "    <Text fontSize=\"20\" color=\"#0F172A\">alpha 在末两位：#FF000080 半透明</Text>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "  </Column>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "</Container>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "caption",
+   "示例 3 实际渲染（400×240，与手册插图同一子树 1:1）",
+   20,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#64748B"
+  ],
+  [
+   "foot",
+   "Snapshot DSL 入门手册 · 第 3 / 4 页 · run-run-20261013-174209",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ],
+  [
+   "foot",
+   "来源：snapshot.muedsa.com/guides/parser/ ；snapshot.muedsa.com/guides/media-text/",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ]
+ ],
+ "4": [
+  [
+   "body",
+   "滤镜改变绘制结果，不改变布局尺寸。本页对照三种滤镜，并给出可复现交付的自检纪律。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "sigmaX/sigmaY 对子树结果做高斯模糊；Parser 版自动按 sigma 提供模糊输出边界，嵌进",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "ColorFiltered 时无需手配 outputBounds。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "color 加 blendMode 对子树应用颜色混合，作用范围由子树绘制边界决定，合法溢出与阴影也包",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "含在内。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "模糊的是背后已绘制的内容，用来做毛玻璃；背后没有内容时没有可见效果，通常配 ClipRect 或",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "ClipRRect 限定区域。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "四层验证由稳到脆：布局断言、像素采样、Golden 比对、人工 Artifact；采样点避开抗锯齿边缘",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "body",
+   "。可复现：固定字体与 Surface、网络图转本地、不把时间或随机数写进图。",
+   24,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#1E293B"
+  ],
+  [
+   "head",
+   "ImageFiltered：子树高斯模糊",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "ColorFiltered：子树颜色混合",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "BackdropFilter：背景高斯模糊",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "head",
+   "自检与可复现交付",
+   26,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "title",
+   "三种滤镜与可复现的自检",
+   38,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#0F172A"
+  ],
+  [
+   "sec",
+   "入门手册 · 效果与交付",
+   24,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "codelabel",
+   "印刷代码：example-04.snapshot 第 4–6、8–11、15–19 行（省略处已标识）",
+   20,
+   "Noto Sans CJK SC",
+   "BOLD",
+   "#245CE4"
+  ],
+  [
+   "code",
+   "    <Row>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "      <ImageFiltered sigmaX=\"5\" sigmaY=\"5\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <Container width=\"104\" height=\"104\" color=\"#38BDF8\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "omit",
+   "…………省略 Spacer…………",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#7C8CA1"
+  ],
+  [
+   "code",
+   "      <Spacer/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "      <ColorFiltered color=\"#245CE4\" blendMode=\"MULTIPLY\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <Container width=\"104\" height=\"104\" color=\"#FFC107\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "      </ColorFiltered>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "omit",
+   "…………省略间距、Stack 外层与 Positioned 收尾，见图示…………",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#7C8CA1"
+  ],
+  [
+   "code",
+   "      <ClipRRect borderRadius=\"12\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        <BackdropFilter sigmaX=\"6\" sigmaY=\"6\">",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "          <Container width=\"360\" height=\"72\" color=\"#FFFFFF26\"/>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "        </BackdropFilter>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "code",
+   "      </ClipRRect>",
+   20,
+   "Noto Sans Mono CJK SC",
+   "NORMAL",
+   "#CBD5E1"
+  ],
+  [
+   "caption",
+   "示例 4 实际渲染（400×240，与手册插图同一子树 1:1）",
+   20,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#64748B"
+  ],
+  [
+   "foot",
+   "Snapshot DSL 入门手册 · 第 4 / 4 页 · run-run-20261013-174209",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ],
+  [
+   "foot",
+   "来源：snapshot.muedsa.com/guides/painting/ ；snapshot.muedsa.com/guides/testing/",
+   18,
+   "Noto Sans CJK SC",
+   "NORMAL",
+   "#94A3B8"
+  ]
+ ]
+}

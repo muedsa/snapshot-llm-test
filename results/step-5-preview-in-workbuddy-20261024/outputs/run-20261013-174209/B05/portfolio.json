@@ -1,0 +1,604 @@
+{
+ "schema_version": 1,
+ "path_base": "suite_root",
+ "task_id": "B05",
+ "run_id": "run-20261013-174209",
+ "status": "completed",
+ "stop_reason": "10 件独立完整界面画面（含 3 种设备）全部经真实服务渲染、逐图验收，旅程一致性与数据自洽核验通过，无未解决问题",
+ "output_dir": "outputs/run-20261013-174209/B05/",
+ "temp_dir": "tmp/run-20261013-174209/B05/",
+ "asset_policy": "dsl_primary_with_supporting_assets（run-config.json 指定）；实际交付为纯 DSL（无外部素材，图标全部程序绘制）",
+ "plan": "tmp/run-20261013-174209/B05/plan/plan-v01.md（2026-10-23 17:45 建立，首次用例渲染之前）",
+ "product_brief": "outputs/run-20261013-174209/B05/product-brief.md",
+ "journey": "outputs/run-20261013-174209/B05/journey.json",
+ "cases": [
+  {
+   "id": "case-01",
+   "title": "首页「今日通勤」卡",
+   "canvas": "1080×1920（9:16 手机竖屏）",
+   "audience": "轮椅通勤者周敏（出门前）",
+   "scenario": "周四早晨出门前，打开 App 看今日通勤与设施预警",
+   "goal": "今日路线一眼可见 + 电梯检修预警 + 绕行预备 + 一键出发",
+   "technique": "主卡（起终点+预警带+数据行）+ 四宫格快捷操作 + 提醒卡 + 底部 Tab",
+   "visual": "通行青主色 + 预警米黄卡 + 纸白底；轮椅可达/每周四胶囊标签",
+   "content_basis": "虚构样例（产品演示）；通勤数据自洽（47 分/620 m/5 段无障碍）",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-01/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-01/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-01/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "5dfa5fa7-58a6-472c-801e-1410952076f0",
+    "elapsed_s": 2.875,
+    "dsl_bytes": 24320,
+    "png_bytes": 103678,
+    "png_md5": "8a182954ab34cd4dc1923f4235848f44",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "今日路线与预警信息完整可读",
+     "status": "met",
+     "evidence": "看图：起终点 + 6 号线 3 站 + 换乘 10 号线 + 预计 9:20 到；预警带「惠民路站 3 号电梯今日检修（9:00–16:00）」与绕行预备并列"
+    },
+    {
+     "id": "C-2",
+     "condition": "数据三行与后件画面一致",
+     "status": "met",
+     "evidence": "预计用时 47 分/步行 620 m/无障碍段 5 段——与 case-02 方案 A（47 分、620 m）一致"
+    },
+    {
+     "id": "C-3",
+     "condition": "装饰不是按钮：每个快捷操作可解释",
+     "status": "met",
+     "evidence": "四个快捷操作均对应旅程真实功能（规划新路线→case-02、站内设施→case-03、上报故障→case-09、家人共享→case-10）"
+    }
+   ],
+   "rounds": "v01 首渲一次成功；v02 一致性修订：家站线路 7 号线→6 号线（与 case-04 步骤 3、case-08 设施码 L-6-B 一致）、提醒出发 8:40→8:33（8:33+47 分=9:20 计划到达）",
+   "views": [
+    "z01-view.png 首页整图",
+    "z01-view-v02.png 首页整图（一致性修订后复核）"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-02",
+   "title": "可达性路线规划",
+   "canvas": "1080×1920（9:16 手机竖屏）",
+   "audience": "轮椅通勤者周敏（规划中）",
+   "scenario": "出发前对比三条候选路线",
+   "goal": "三条路线按可达性评分排序（不只最短），逐段可达性可查",
+   "technique": "候选路线卡（排名徽章+评分条+标签）+ 逐段可达性时间线",
+   "visual": "选中方案青色左饰条；评分条按 80/60 阈值着色；风险段黄色节点",
+   "content_basis": "虚构样例；评分依据「电梯·宽闸·坡道·换乘通道」四维",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-02/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-02/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-02/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "7558ecb7-a92d-4432-9d42-b7805fec8208",
+    "elapsed_s": 3.875,
+    "dsl_bytes": 31521,
+    "png_bytes": 149243,
+    "png_md5": "0cf6bff0c7864ff413fe559b4eb91fdd",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "三方案评分/用时/风险差异清晰",
+     "status": "met",
+     "evidence": "看图：A 92 分 47 分（3 号电梯 9:00 起检修·绕行已预备）/ B 74 分 52 分（1 处电梯检修）/ C 61 分 58 分（受路况影响）"
+    },
+    {
+     "id": "C-2",
+     "condition": "逐段可达性与设施状态一致",
+     "status": "met",
+     "evidence": "方案 A 五段中「惠民路换乘」为 warn 态（3 号电梯检修·已改 B 口扶梯）——与 case-03 设施页、case-01 预警带一致"
+    },
+    {
+     "id": "C-3",
+     "condition": "排序逻辑与说明文字一致",
+     "status": "met",
+     "evidence": "标题「按可达性排序（轮椅优先）」与排名 1/2/3 顺序一致；评分依据注记在图"
+    }
+   ],
+   "rounds": "v01 首渲一次成功；v02 一致性修订：家站 7 号线→6 号线；方案 A 原标签「电梯 3 部全开」与 case-03 的 warn 态矛盾，改披露「3 号电梯 9:00 起检修」+「绕行已预备」标签",
+   "views": [
+    "z02-view.png 路线规划整图",
+    "z02-view-v02.png 路线规划整图（一致性修订后复核）"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-03",
+   "title": "站内设施详情",
+   "canvas": "1080×1920（9:16 手机竖屏）",
+   "audience": "轮椅通勤者周敏（出发前核查）",
+   "scenario": "查看惠民路站逐设施实时状态",
+   "goal": "电梯/宽闸/扶梯/坡道逐项状态 + 来源说明",
+   "technique": "深青总览条（2/3·4/4·3/4）+ 设施行卡（图标+状态章+更新时间）+ 说明卡",
+   "visual": "状态章绿/黄双态；图标全部 DSL 绘制；MONO 编号",
+   "content_basis": "虚构样例；状态来源说明（运营通告+用户上报双通道）为产品机制描述",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-03/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-03/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-03/case.md",
+   "dsl_version": "v01",
+   "dsl_versions_all": [
+    "v01"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "09838410-884e-47dc-a20f-7705a6946f8a",
+    "elapsed_s": 3.812,
+    "dsl_bytes": 38702,
+    "png_bytes": 149376,
+    "png_md5": "607c87fbdc07a3b2ede1eca33ce55616",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "七行设施状态与总览一致",
+     "status": "met",
+     "evidence": "看图：总览 2/3 电梯运行（3 号检修）、4/4 宽闸开放、3/4 扶梯运行；逐行状态章与描述一致"
+    },
+    {
+     "id": "C-2",
+     "condition": "设施编号跨页一致",
+     "status": "met",
+     "evidence": "L-10-B1/L-10-3/L-10-H1/G-10-W1/G-10-W2/R-6-10/E-10-B2 与 case-02/05/09 一致"
+    },
+    {
+     "id": "C-3",
+     "condition": "「状态从哪里来」机制可解释",
+     "status": "met",
+     "evidence": "说明卡：双通道 + 2 人确认标「已确认」、单人显示「待确认」——与 case-09 确认机制一致"
+    }
+   ],
+   "rounds": "v01 首渲 PARSE_ERROR（T() 位置参数错位致 fontStyle 非法值）→ 显式参数修复后重渲成功",
+   "views": [
+    "z03-view.png 站内设施整图"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-04",
+   "title": "分步门到门导航",
+   "canvas": "1080×1920（9:16 手机竖屏）",
+   "audience": "轮椅通勤者周敏（出行中，第 2/5 步）",
+   "scenario": "沿小区道路前往柳芳里站 B 口",
+   "goal": "大步骤卡 + 剩余距离 + 到达后动作 + 后续步骤预览",
+   "technique": "深青大步骤卡（距离徽章+动作提示槽）+ 步骤列表 + 途中提示",
+   "visual": "步骤编号圆底；右上 310 m 距离徽章；底部双按钮（我已到达/暂停导航）",
+   "content_basis": "虚构样例；步骤链与 case-02 方案 A 五段一致",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-04/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-04/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-04/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "8672b5bc-e744-440f-bb00-3e2e56d93481",
+    "elapsed_s": 2.813,
+    "dsl_bytes": 24139,
+    "png_bytes": 122688,
+    "png_md5": "a35cb9214a1dc78a0486a6ee2ed243bd",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "当前步骤与剩余信息明确",
+     "status": "met",
+     "evidence": "看图：第 2 步/共 5 步 · 方案 A；剩余距离 310 m；预计 9:28 到达 · 剩余 47 分钟（8:41+47=9:28）"
+    },
+    {
+     "id": "C-2",
+     "condition": "「到达后」动作与设施状态一致",
+     "status": "met",
+     "evidence": "到达后：乘 B 口电梯（L-6-B）下站厅 · 今日 8:30 巡检过一次——与 case-01 同站信息一致"
+    },
+    {
+     "id": "C-3",
+     "condition": "后续步骤与后续画面衔接",
+     "status": "met",
+     "evidence": "步骤 3/4（6 号线乘车/惠民路换乘）展开为 case-06 手表与 case-05 绕行画面；10 号线登车门位见 case-07（惠民路站）"
+    }
+   ],
+   "rounds": "v01 首渲一次成功；v02 一致性修订：剩余时间 41→47 分钟（8:41+47=9:28，与实际到达及 case-08/10 一致）",
+   "views": [
+    "z04-view.png 门到门导航整图",
+    "z04-view-v02.png 门到门导航整图（一致性修订后复核）"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-05",
+   "title": "换乘绕行：电梯检修",
+   "canvas": "1080×1920（9:16 手机竖屏）",
+   "audience": "轮椅通勤者周敏（换乘站状态变化）",
+   "scenario": "8:53 车上：惠民路站 3 号电梯今日检修，App 自动改走 B 口扶梯绕行",
+   "goal": "设施状态变化即时重算 + 绕行代价透明 + 备选方案 + 一键继续",
+   "technique": "红色告警头 + 绕行前后对比双卡 + 新路线逐段 + 备选卡",
+   "visual": "全页唯一红色告警头；原方案淡红「已不可用」/新方案浅青「多约 8 分钟」",
+   "content_basis": "虚构样例；绕行方案与 case-01 预警/case-03 设施态/case-04 步骤 4 一致；上报确认时间链（9:02→9:05→9:06）见 case-09",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-05/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-05/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-05/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "fc552435-5382-412f-a934-8beea480a1aa",
+    "elapsed_s": 3.11,
+    "dsl_bytes": 27746,
+    "png_bytes": 133145,
+    "png_md5": "4ae25d9284df25aac635e655eaea5dd1",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "绕行前后代价透明",
+     "status": "met",
+     "evidence": "看图：原 3 号电梯 47 分钟（已不可用）→ 新 B 口扶梯+2 号宽闸 55 分钟（绕行 210 m · 多约 8 分钟）"
+    },
+    {
+     "id": "C-2",
+     "condition": "新路线逐段可执行",
+     "status": "met",
+     "evidence": "新路线第 4 步起五段：6 号线下车（保持原计划）→ B 口扶梯上行 → 2 号宽闸出付费区 → 10 号线乘车 → 望京西 B 口出站"
+    },
+    {
+     "id": "C-3",
+     "condition": "备选方案有评估依据",
+     "status": "met",
+     "evidence": "备选卡：等下一班车间隔改乘 2 号线 · 多步行 150 m · 总时长相近（56 分）· 已评估 2 号线站台有坡道"
+    }
+   ],
+   "rounds": "v01 首渲一次成功；v02 一致性修订：告警副文案原「9:02 用户上报已确认」是 8:53 屏上的未来事件，改为「今日检修（9:00–16:00）· 你的到站时间在窗口内」",
+   "views": [
+    "z05-view.png 绕行整图",
+    "z05-view-v02.png 绕行整图（一致性修订后复核）"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-06",
+   "title": "手表到站提醒",
+   "canvas": "440×512（55:64 方形小屏）",
+   "audience": "轮椅通勤者周敏（6 号线即将到惠民路）",
+   "scenario": "抬腕看表：下一站 + 倒计时 + 下车后动作",
+   "goal": "小屏只给一件事——准备下车；不需掏手机",
+   "technique": "深底表盘 + 深青主卡（下一站/倒计时/行程点）+ 浅黄动作卡 + 双按钮",
+   "visual": "全特辑唯一小屏设备；高对比白字；行程点三站进度",
+   "content_basis": "虚构样例；换乘提示与 case-05 新路线一致",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-06/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-06/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-06/case.md",
+   "dsl_version": "v01",
+   "dsl_versions_all": [
+    "v01"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "54a2dc64-097e-424a-b13c-1e81c5a3a1ef",
+    "elapsed_s": 5.047,
+    "dsl_bytes": 9089,
+    "png_bytes": 31848,
+    "png_md5": "79c25a0da6d384bb91eeeddadf84b10d",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "小屏信息层级单一",
+     "status": "met",
+     "evidence": "看图：主信息只有「下一站 惠民路 · 1 站约 2 分钟」；动作卡一句「下车后走 B 口扶梯 · 3 号电梯停运 · 换 10 号线」"
+    },
+    {
+     "id": "C-2",
+     "condition": "与手机端状态一致",
+     "status": "met",
+     "evidence": "手表时间 8:53、下一站惠民路、下车走 B 口扶梯——与 case-04 步骤 4、case-05 绕行画面一致"
+    },
+    {
+     "id": "C-3",
+     "condition": "两个操作按钮可解释",
+     "status": "met",
+     "evidence": "「我已下车」（推进旅程步骤）/「跳过」（暂不响应，均不产生不可解释动作）"
+    }
+   ],
+   "rounds": "v01 首渲一次成功",
+   "views": [
+    "z06-view.png 手表提醒"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-07",
+   "title": "站台间隙与车厢门位",
+   "canvas": "1080×1920（9:16 手机竖屏）",
+   "audience": "轮椅通勤者周敏（惠民路站登车前，绕行后换乘 10 号线）",
+   "scenario": "列车即将进站，确认登车门位",
+   "goal": "间隙数据透明 + 推荐门位 + 呼叫站务",
+   "technique": "深青推荐卡（门位+间隙剖面）+ 四门位间隙对比条 + 登车提示",
+   "visual": "间隙剖面示意图（站台/车厢/红色间隙线）；对比条按阈值绿/黄/红",
+   "content_basis": "虚构样例；门位间隙为演示量级（9–14 cm），页内已注「站务实测每月更新」",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-07/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-07/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-07/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "f51145da-3c77-4634-b077-f1b27e6a9fdc",
+    "elapsed_s": 2.719,
+    "dsl_bytes": 18449,
+    "png_bytes": 97788,
+    "png_md5": "c6c2e5ff9631a2ef3fcf67e2bd123992",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "推荐门位有数据依据",
+     "status": "met",
+     "evidence": "看图：推荐「第 2 节车厢 3 号门」——本站 10 号线 6 节编组、此门位间隙最窄（9 cm）"
+    },
+    {
+     "id": "C-2",
+     "condition": "四门位对比完整",
+     "status": "met",
+     "evidence": "1 号 12 cm（宽）/ 2 号 10 cm（中）/ 3 号 9 cm（最窄）/ 4 号 14 cm（最宽），对比条+数值+标签三编码一致"
+    },
+    {
+     "id": "C-3",
+     "condition": "演示数据标注为实测来源",
+     "status": "met",
+     "evidence": "卡内注「本站台间隙数据由站务实测（每月更新）」；case.md 标注数值为演示量级"
+    }
+   ],
+   "rounds": "v01 首渲一次成功；v02 一致性修订：登车站 望京西→惠民路（10 号线在换乘站登车、望京西为出站站，与 case-04/05 步骤链一致）、时间 9:04→9:12（绕行确认后登车）",
+   "views": [
+    "z07-view.png 登车准备整图",
+    "z07-view-v02.png 登车准备整图（一致性修订后复核）"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-08",
+   "title": "到达回顾",
+   "canvas": "1080×1350（4:5 手机竖屏）",
+   "audience": "轮椅通勤者周敏（到达公司后）",
+   "scenario": "查看今日全程用时与事件回看",
+   "goal": "实际用时/分段用时/无障碍段/事件/下次建议",
+   "technique": "深青总览卡 + 分段行（状态点+时长）+ 统计三联 + 事件卡 + 建议卡",
+   "visual": "分段行状态点绿/黄；「换乘（绕行）」段黄色标注",
+   "content_basis": "虚构样例；分段合计 8+11+14+9+10=52 分钟与总览一致",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-08/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-08/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-08/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "6e1710f4-6239-414e-a00d-ad9a70a645d2",
+    "elapsed_s": 3.234,
+    "dsl_bytes": 17866,
+    "png_bytes": 118296,
+    "png_md5": "21b576adb7fe246b0e017abd8a42163b",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "用时数据自洽",
+     "status": "met",
+     "evidence": "实际 52 分钟；分段 8+11+14+9+10=52；比预计多 5 分钟（case-02 预估 47）——算术一致"
+    },
+    {
+     "id": "C-2",
+     "condition": "事件回看与前面画面一致",
+     "status": "met",
+     "evidence": "「惠民路站 3 号电梯停运（9:02 上报）· 绕行实测多花 5 分钟」——与同屏「比预计多 5 分钟」一致（8 分钟为 case-05 预估绕行代价，实测更快）"
+    },
+    {
+     "id": "C-3",
+     "condition": "下次建议可执行",
+     "status": "met",
+     "evidence": "「若 3 号电梯明日仍未修复，建议 8:25 前出发」——8:25+55=9:20 与原计划到达一致"
+    }
+   ],
+   "rounds": "v01 首渲一次成功；v02 一致性修订：事件卡「多花 8 分钟」→「实测多花 5 分钟」（原与同屏「比预计多 5 分钟」矛盾）；建议 8:35→8:25（8:25+55 分=9:20）；「明日前未修复」→「明日仍未修复」",
+   "views": [
+    "z08-view.png 到达回顾整图",
+    "z08-view-v02.png 到达回顾整图（一致性修订后复核）"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-09",
+   "title": "故障上报与反馈",
+   "canvas": "1080×1350（4:5 手机竖屏）",
+   "audience": "轮椅通勤者周敏（晚间回看上报记录）",
+   "scenario": "查看本月两条上报的状态链与社区影响",
+   "goal": "上报被确认/影响人数/社区致谢/确认机制透明",
+   "technique": "深青贡献卡 + 两条上报记录（状态链时间线）+ 机制说明卡",
+   "visual": "状态链四节点（提交→确认→重算→修复）绿点连线；影响人数文字",
+   "content_basis": "虚构样例；状态链时间与 case-08 事件回看一致（9:06 路线重算为系统级广播；周敏本机 8:53 已预绕行）",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-09/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-09/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-09/case.md",
+   "dsl_version": "v01",
+   "dsl_versions_all": [
+    "v01"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "25cc4348-86ea-4b0b-89fa-bdae1f505855",
+    "elapsed_s": 4.125,
+    "dsl_bytes": 28592,
+    "png_bytes": 106202,
+    "png_md5": "36384ac211901a59ad7280b452a31ac2",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "两条记录状态链完整",
+     "status": "met",
+     "evidence": "今日 9:02→9:05→9:06→16:20（提交/第 2 人确认/进入路线重算/运营修复）；11 月 2 日 8:47→8:52→9:10"
+    },
+    {
+     "id": "C-2",
+     "condition": "影响人数与 case-05 一致",
+     "status": "met",
+     "evidence": "今日上报「影响 12 人的当日路线 · 其中 4 人改用你后续确认的绕行方案」；贡献卡合计 36 位同行者"
+    },
+    {
+     "id": "C-3",
+     "condition": "确认机制防误报可解释",
+     "status": "met",
+     "evidence": "「同一设施 15 分钟内 2 人上报即标『已确认』并触发路线重算；单人上报显示『待确认』，不影响他人路线」"
+    }
+   ],
+   "rounds": "v01 首渲一次成功",
+   "views": [
+    "z09-view.png 我的上报整图"
+   ],
+   "unresolved": []
+  },
+  {
+   "id": "case-10",
+   "title": "家庭共享视图",
+   "canvas": "1600×1200（4:3 平板横屏）",
+   "audience": "女儿周周（远程守护者）",
+   "scenario": "在平板上查看母亲今日通勤状态",
+   "goal": "只读守护：今日状态/时间线/历史规律/异常才通知",
+   "technique": "侧栏菜单 + 状态大卡 + 五节点时间线 + 柱状图 + 概览四联 + 设置提示",
+   "visual": "全特辑唯一平板设备与唯一双栏布局；「本周」柱黄色突出",
+   "content_basis": "虚构样例；统计与 case-08/09 一致",
+   "journey_ref": "outputs/run-20261013-174209/B05/journey.json",
+   "final_png": "outputs/run-20261013-174209/B05/case-10/final.png",
+   "final_snapshot": "outputs/run-20261013-174209/B05/case-10/final.snapshot",
+   "case_md": "outputs/run-20261013-174209/B05/case-10/case.md",
+   "dsl_version": "v02",
+   "dsl_versions_all": [
+    "v01",
+    "v02"
+   ],
+   "render_evidence": {
+    "http_status": 200,
+    "request_id": "dc01eaa3-a8bf-4550-ae2c-cdb7edda661b",
+    "elapsed_s": 2.156,
+    "dsl_bytes": 21655,
+    "png_bytes": 136726,
+    "png_md5": "159b516a2a37473d1cfb769cd7784c50",
+    "byte_match_with_response": true
+   },
+   "criterion_results": [
+    {
+     "id": "C-1",
+     "condition": "守护隐私边界明确",
+     "status": "met",
+     "evidence": "侧栏注明「你看不到她的实时位置，只看她愿意分享的状态」；通知规则仅三种异常"
+    },
+    {
+     "id": "C-2",
+     "condition": "时间线与手机端一致",
+     "status": "met",
+     "evidence": "8:12 在家 → 8:36 出发 → 8:53 6 号线即将到站 → 9:02 电梯停运上报 → 9:28 到达公司——与 case-01/04/06/08 一致"
+    },
+    {
+     "id": "C-3",
+     "condition": "历史规律统计自洽",
+     "status": "met",
+     "evidence": "近四周 44/47/47/52 分（W1 周二、W2–本周 周四）；本月 7 次/平均 47 分/2 次故障/7-7 安全到达——与 case-08（52 分）一致"
+    }
+   ],
+   "rounds": "v01 首渲一次成功（修复一处两行文本窄箱：拆为两条 T()）；v02 一致性修订：状态卡到达 9:20→9:28（与同屏时间线一致）、「到家门」→「到公司」、出发 8:41→8:36（8:36+52=9:28）",
+   "views": [
+    "z10-view.png 家庭共享整图",
+    "z10-view-v02.png 家庭共享整图（一致性修订后复核）"
+   ],
+   "unresolved": []
+  }
+ ],
+ "general_criteria_results": [
+  {
+   "id": "G-1",
+   "condition": "每件 final.png 为 open-snapshot 服务真实响应字节；final.snapshot 完整自包含",
+   "status": "met",
+   "evidence": "byte/MD5：10/10 final.png 与 requests.jsonl 记录的最后一次成功响应 MD5 逐字节一致（本脚本运行实测）；dsl：10/10 final.snapshot 与对应版本一致；纯 DSL 交付，无 <Image url= 外部引用"
+  },
+  {
+   "id": "G-2",
+   "condition": "每件至少一次整图实际查看 + 分区放大查看；缺陷修复后重渲染并复查",
+   "status": "met",
+   "evidence": "view-zoom：17 个整图全部实际查看；iterations.jsonl 2 条迭代含 issue/fix/result/viewed；缺陷件（03 PARSE_ERROR、10 窄箱）修复后重渲染并复检；z-contact-sheet.png 10 件缩略矩阵横向对比实际查看"
+  },
+  {
+   "id": "G-3",
+   "condition": "技术服务内容：每件主导手法在成图中可指认，且不损害目标场景的信息可读性",
+   "status": "met",
+   "evidence": "view-zoom 逐件指认：主卡+四宫格（01）/评分条+逐段时间线（02）/总览条+设施行（03）/大步骤卡+距离徽章（04）/告警头+对比双卡（05）/小屏单任务卡（06）/间隙剖面+对比条（07）/分段行+统计三联（08）/状态链时间线（09）/双栏+柱状图（10）；各件 criteria 均含可读性与一致性核验，无「为技术牺牲可读性」项"
+  },
+  {
+   "id": "G-4",
+   "condition": "文字无裁切：Text 声明盒 ≥ 估算墨迹宽 1.03 倍（CJK 1.09em、ASCII 0.57em）",
+   "status": "met",
+   "evidence": "dsl：10 件生成器内置 T() 宽度自检；case-10 一处两行文本窄箱（est=270 box=204）已拆为两条单行 T()；渲染前复检 0 窄箱警告；pixel：各卡数值串均在卡内"
+  },
+  {
+   "id": "G-5",
+   "condition": "场景真实可述：受众/场景/目标成立；虚构内容标注；跨画面一致",
+   "status": "met",
+   "evidence": "10 件 case.md 均含受众/场景/目标与虚构声明；journey.json 五条一致性核验（时间线 8:12→9:28 连续 / 用时 47→55→52 自洽 / 设施编号跨页一致 / 事件链一致 / 统计自洽）；产品假设与验证边界见 product-brief.md §七"
+  },
+  {
+   "id": "G-6",
+   "condition": "十件实质独立：画布比例、设备、画面类型各不相同",
+   "status": "met",
+   "evidence": "canvas：4 种比例（9:16 ×6 / 4:5 ×2 / 55:64 手表 / 4:3 平板），设备覆盖手机/手表/平板；画面类型覆盖首页/规划/详情/导航/告警/提醒/登车/回顾/反馈/仪表；z-contact-sheet.png 缩略矩阵实际查看"
+  },
+  {
+   "id": "G-7",
+   "condition": "交付含 product-brief.md 与 journey.json：产品方案与旅程关系可述",
+   "status": "met",
+   "evidence": "product-brief.md：问题/方案/机制表/受众/十画面表/跨画面一致性/视觉语言/假设与验证边界（含「未做真实用户测试」声明）；journey.json：逐画面seq/need/decision/state/inputs/outputs/handoff/cross_screen_data + 状态机（normal/exception/guard）+ 5 条 consistency_checks"
+  }
+ ]
+}

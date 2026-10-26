@@ -1,0 +1,313 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "answers": [
+  {
+   "id": "Q01",
+   "answer": {
+    "count": 4,
+    "ids": [
+     "G43",
+     "G45",
+     "G46",
+     "G47"
+    ]
+   },
+   "computation": "筛选 row==6 且 color==purple 的对象，按 ID 升序。",
+   "definitions": "行/列仅按对象中心点所在格判定；颜色按主体填充色。",
+   "tolerance": "计数为整数，无容差；ID 列表须完整且升序。",
+   "visibility_basis": "grid-scene.png 中第 6 行 8 个对象的填充色可直接辨认，标签 G41-G48 与格位对应。"
+  },
+  {
+   "id": "Q02",
+   "answer": {
+    "count": 4,
+    "ids": [
+     "G21",
+     "G37",
+     "G45",
+     "G53"
+    ]
+   },
+   "computation": "筛选 col==5 且 shape==ring 的对象，按 ID 升序。",
+   "definitions": "列仅按对象中心点所在格判定；圆环按外径识别（中心有镂空孔）。",
+   "tolerance": "计数为整数，无容差。",
+   "visibility_basis": "grid-scene.png 第 5 列 8 个对象中，带中心镂空孔的即为圆环。"
+  },
+  {
+   "id": "Q03",
+   "answer": {
+    "count": 5,
+    "ids": [
+     "G08",
+     "G23",
+     "G43",
+     "G45",
+     "G56"
+    ]
+   },
+   "computation": "同时满足 color==purple 且 size==80 的对象，按 ID 升序。",
+   "definitions": "尺寸按形状外接度量：圆为直径、方/圆角方为外接边长、圆环为外径；以像素级实测（cov50 半径）核对。",
+   "tolerance": "计数为整数；尺寸判定容差 ±1px（渲染实测 35.70-36.19px 对应 36 名义值比例一致）。",
+   "visibility_basis": "grid-scene.png 中紫色对象共 16 个，其中外接尺寸最大的（80px 档）为所列对象。"
+  },
+  {
+   "id": "Q04",
+   "answer": {
+    "count": 6,
+    "ids": [
+     "G02",
+     "G10",
+     "G17",
+     "G18",
+     "G25",
+     "G27"
+    ]
+   },
+   "computation": "第一步按严格不等式 x<800 且 y<800 取左上象限对象（共 16 个）；第二步筛其中 shape==rounded-square，按 ID 升序。",
+   "definitions": "坐标原点为画布左上角 (0,0)，x 向右、y 向下；象限用严格不等式，中心点在轴上不计入任何象限（本题无对象中心恰在 x=800 或 y=800 上）。",
+   "tolerance": "整数计数，无容差。",
+   "visibility_basis": "grid-scene.png 中左上象限即第 1-4 行且第 1-4 列交叉区域，圆角方以圆角外形识别。"
+  },
+  {
+   "id": "Q05",
+   "answer": {
+    "distance_px": 894.43
+   },
+   "computation": "G18 中心 (300,500)，G52 中心 (700,1300)；欧氏距离 = sqrt((700-300)^2+(1300-500)^2) = sqrt(800000)。",
+   "definitions": "欧氏距离，坐标原点为画布左上角，x 向右、y 向下；对象位置取其主体中心点。",
+   "tolerance": "±2px。",
+   "visibility_basis": "两对象的标签与主体均在最终图可见，中心即格中心。"
+  },
+  {
+   "id": "Q06",
+   "answer": {
+    "choice": "A",
+    "distance_px": 1979.9,
+    "all_distances": {
+     "A": 1979.9,
+     "B": 1843.91,
+     "C": 1720.47,
+     "D": 1414.21
+    }
+   },
+   "computation": "分别计算四组中心欧氏距离：A) G01-G64 = 1979.90；B) G08-G49 = 1843.91；C) G16-G49 = 1720.47；D) G32-G17 = 1414.21；最大为 A。",
+   "definitions": "欧氏距离；坐标原点为画布左上角；比较标准为中心点间直线距离。",
+   "tolerance": "±2px。",
+   "visibility_basis": "四个选项涉及的 8 个对象标签均可见。"
+  },
+  {
+   "id": "Q07",
+   "answer": {
+    "first": "G01",
+    "last": "G62"
+   },
+   "computation": "排序键 = (-size, center_y, center_x)：先尺寸降序，再 y 升序，再 x 升序。第 1 位为 G01（尺寸 80、y=100 中 x 最小）；最后 1 位为 G62（尺寸 48、y=1500 中 x 最大）。",
+   "definitions": "尺寸按外接度量；坐标原点画布左上角；排序键三分量完全确定（无并列）。",
+   "tolerance": "ID 精确匹配，无容差。",
+   "visibility_basis": "全部 64 个对象的标签与尺寸档在最终图可见。"
+  },
+  {
+   "id": "Q08",
+   "answer": {
+    "box": [
+     68.0,
+     60.0,
+     1540.0,
+     1532.0
+    ],
+    "extremes": {
+     "left": "G57",
+     "top": "G08",
+     "right": "G08/G56",
+     "bottom": "G57/G63"
+    }
+   },
+   "computation": "对 16 个紫色对象取主体外包框的并集：left=min(x0)=68(G57)，top=min(y0)=60(G08)，right=max(x1)=1540(G08/G56)，bottom=max(y1)=1532(G57/G63)。",
+   "definitions": "最小轴对齐包围框：同时包住全部紫色对象主体框的最小矩形；坐标原点画布左上角，框记 [left,top,right,bottom]。",
+   "tolerance": "±1px。",
+   "visibility_basis": "16 个紫色对象及其外接尺寸在最终图可测。"
+  },
+  {
+   "id": "Q09",
+   "answer": {
+    "size64_ids": [
+     "G49",
+     "G50",
+     "G52",
+     "G53"
+    ],
+    "circle_count": 2,
+    "circle_ids": [
+     "G49",
+     "G52"
+    ]
+   },
+   "computation": "第一步取第 7 行（G49-G56）中尺寸 64 的对象；第二步统计其中形状为圆的个数。",
+   "definitions": "行按中心点所在格；尺寸按外接度量；圆为实心无孔圆形。",
+   "tolerance": "ID 精确；计数为整数。",
+   "visibility_basis": "第 7 行 8 个对象标签连续可读。"
+  },
+  {
+   "id": "Q10",
+   "answer": {
+    "count": 3,
+    "ids": [
+     "G17",
+     "G33",
+     "G41"
+    ]
+   },
+   "computation": "G01 为绿色、第 1 列；在第 1 列（G09/G17/G25/G33/G41/G49/G57）中找绿色对象，排除 G01 自身。",
+   "definitions": "颜色按主体填充色；列按中心点所在格；比较对象为同列同色。",
+   "tolerance": "ID 精确；计数为整数。",
+   "visibility_basis": "第 1 列 8 个对象颜色可辨。"
+  },
+  {
+   "id": "Q11",
+   "answer": {
+    "count": 6,
+    "ids": [
+     "G01",
+     "G12",
+     "G20",
+     "G28",
+     "G42",
+     "G58"
+    ]
+   },
+   "computation": "第一步取中心点 x 严格小于 800 的对象；第二步筛其中圆环，按 ID 升序。",
+   "definitions": "坐标原点画布左上角；严格小于（=800 不计入；本题列中心为 100..1500 的奇数百，无对象恰在 x=800 上，实测在轴对象数 0）。",
+   "tolerance": "整数计数。",
+   "visibility_basis": "圆环以中心镂空孔识别，x 位置按格位判定。"
+  },
+  {
+   "id": "Q12",
+   "answer": {
+    "id": "G04",
+    "distance_px": 200.0,
+    "runner_up": {
+     "id": "G14",
+     "distance_px": 282.84
+    }
+   },
+   "computation": "第一步取全部尺寸 48 的对象（22 个）；第二步计算各对象中心与 G05 中心 (900,100) 的欧氏距离，最小者为 G04（d=200.00），次近为 G14（d=282.84），无并列。",
+   "definitions": "欧氏距离；G05 自身尺寸为 80，不在候选集内；候选集按外接尺寸 48 筛选。",
+   "tolerance": "±2px。",
+   "visibility_basis": "候选对象与 G05 的标签、尺寸档均可见。"
+  },
+  {
+   "id": "Q13",
+   "answer": {
+    "count": 4,
+    "ids": [
+     "V01",
+     "V03",
+     "V04",
+     "V06"
+    ]
+   },
+   "computation": "以遮挡矩形左缘 x=400 为界，逐个比较 V01-V06 中心点 x 坐标：V01=160、V03=180、V04=300、V06=120 均 <400；V02=640、V05=660 不小于。",
+   "definitions": "坐标原点为画布左上角 (0,0)，x 向右、y 向下；严格小于；遮挡矩形边界为 [400,220,760,580]。",
+   "tolerance": "整数计数；ID 精确。",
+   "visibility_basis": "occlusion.png（与 occlusion-alternative.png 逐像素等价）中 6 个可见对象及其标签、遮挡矩形左缘均可直接观察。"
+  },
+  {
+   "id": "Q14",
+   "answer": {
+    "answer": "无法确定"
+   },
+   "computation": "该问题问的是被遮挡物完全遮住的对象数量。版本 A 的隐藏内容为 1 个对象（H01 橙色圆），版本 B 为 3 个（H01 绿色方、H02 紫色圆环、H03 蓝色圆），两版隐藏对象均完全位于遮挡矩形内；而两版最终 PNG 经逐像素比对完全一致（不同像素数 0、最大通道差 0、RGBA 数组哈希相同，见 equivalence.json），可见部分没有任何差异可借判断。因此仅凭最终可见图无法确定答案。",
+   "definitions": "“完全位于遮挡矩形内”指主体外包框四边均在矩形 [400,220,760,580] 边界上或以内；判定只能依据最终可见图像。",
+   "tolerance": "不适用（答案为无法确定）。",
+   "visibility_basis": "两版 PNG 逐像素等价是“无法区分”的直接证据；遮挡矩形内部在最终图中完全是遮挡物颜色（实测矩形内非遮挡色像素数 = 0），隐藏内容零泄漏。"
+  }
+ ],
+ "uniqueness_verification": [
+  {
+   "id": "Q01",
+   "check": "计数唯一",
+   "ok": true,
+   "detail": "第6行紫色 = ['G43', 'G45', 'G46', 'G47']"
+  },
+  {
+   "id": "Q02",
+   "check": "计数唯一",
+   "ok": true,
+   "detail": "第5列圆环 = ['G21', 'G37', 'G45', 'G53']"
+  },
+  {
+   "id": "Q03",
+   "check": "计数唯一",
+   "ok": true,
+   "detail": "紫色且 80 = ['G08', 'G23', 'G43', 'G45', 'G56']"
+  },
+  {
+   "id": "Q04",
+   "check": "两步唯一",
+   "ok": true,
+   "detail": "左上象限对象 16 个，其中圆角方 = ['G02', 'G10', 'G17', 'G18', 'G25', 'G27']"
+  },
+  {
+   "id": "Q05",
+   "check": "唯一",
+   "ok": true,
+   "detail": "d=894.427"
+  },
+  {
+   "id": "Q06",
+   "check": "最大值唯一",
+   "ok": true,
+   "detail": "distances={'A': 1979.9, 'B': 1843.91, 'C': 1720.47, 'D': 1414.21} winners=['A']"
+  },
+  {
+   "id": "Q07",
+   "check": "排序键全序",
+   "ok": true,
+   "detail": "64 个对象的 (-size,y,x) 三元组互异"
+  },
+  {
+   "id": "Q08",
+   "check": "极值唯一（数值）",
+   "ok": true,
+   "detail": "box=[68.0,60.0,1540.0,1532.0]"
+  },
+  {
+   "id": "Q09",
+   "check": "两步唯一",
+   "ok": true,
+   "detail": "row7 size64=['G49', 'G50', 'G52', 'G53'], circles=['G49', 'G52']"
+  },
+  {
+   "id": "Q10",
+   "check": "两步唯一",
+   "ok": true,
+   "detail": "同色同列 = ['G17', 'G33', 'G41']"
+  },
+  {
+   "id": "Q11",
+   "check": "两步唯一",
+   "ok": true,
+   "detail": "左半圆环 = ['G01', 'G12', 'G20', 'G28', 'G42', 'G58']"
+  },
+  {
+   "id": "Q12",
+   "check": "最近唯一",
+   "ok": true,
+   "detail": "nearest=G04 200.000, second=G14 282.843"
+  },
+  {
+   "id": "Q13",
+   "check": "唯一",
+   "ok": true,
+   "detail": "x<400 的可见对象 = ['V01', 'V03', 'V04', 'V06']"
+  },
+  {
+   "id": "Q14",
+   "check": "两版隐藏数不同且像素等价",
+   "ok": true,
+   "detail": "A 隐藏 1 个 / B 隐藏 3 个；different_pixels=0"
+  }
+ ]
+}

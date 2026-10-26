@@ -1,0 +1,197 @@
+{
+ "schema_version": 1,
+ "task_id": "A22",
+ "path_base": "output_dir",
+ "round": 2,
+ "baseline": {
+  "round": 1,
+  "dashboard": "round-01/dashboard.png",
+  "dashboard_dsl": "round-01/dashboard.snapshot",
+  "computed_data": "round-01/computed-data.json",
+  "layout_map": "round-01/layout-map.json"
+ },
+ "changes": [
+  {
+   "month": "2026-08",
+   "field": "refund_amount",
+   "old": 15048,
+   "new": 25048,
+   "source": "rounds/round-02.md",
+   "propagated_to": [
+    {
+     "what": "当月净收入",
+     "old": "173,052",
+     "new": "163,052",
+     "formula": "gross_revenue − refund_amount"
+    },
+    {
+     "what": "当月经营利润",
+     "old": "41,052",
+     "new": "31,052",
+     "formula": "净收入 − operating_cost"
+    },
+    {
+     "what": "当月退款率",
+     "old": "8.00%",
+     "new": "13.32%",
+     "formula": "refund_amount / gross_revenue"
+    },
+    {
+     "what": "当月转化率",
+     "old": "10.96%",
+     "new": "10.96%",
+     "formula": "orders / sessions（不变）"
+    }
+   ],
+   "outputs": {
+    "柱高": "chart 中 2026-08 分组柱按新值重绘（像素实测误差 <=2px）",
+    "表格": "table 中 2026-08 行净收入/经营利润/退款率单元格更新",
+    "KPI": "四张 KPI 卡按新的期间汇总重算",
+    "结论": "主结论中累计利润、亏损月、退款率最高月等表述随之更新"
+   }
+  },
+  {
+   "month": "2026-09",
+   "field": "operating_cost",
+   "old": 138000,
+   "new": 208000,
+   "source": "rounds/round-02.md",
+   "propagated_to": [
+    {
+     "what": "当月经营利润",
+     "old": "64,368",
+     "new": "-5,632",
+     "formula": "净收入 − operating_cost"
+    },
+    {
+     "what": "当月净收入",
+     "old": "202,368",
+     "new": "202,368",
+     "formula": "不变（退款未变）"
+    }
+   ],
+   "outputs": {
+    "柱高": "chart 中 2026-09 分组柱按新值重绘（像素实测误差 <=2px）",
+    "表格": "table 中 2026-09 行净收入/经营利润/退款率单元格更新",
+    "KPI": "四张 KPI 卡按新的期间汇总重算",
+    "结论": "主结论中累计利润、亏损月、退款率最高月等表述随之更新"
+   }
+  },
+  {
+   "month": "(汇总)",
+   "field": "totals",
+   "old": null,
+   "new": null,
+   "source": "由上述两项更正传播",
+   "propagated_to": [
+    {
+     "what": "总退款",
+     "old": "56,426",
+     "new": "66,426"
+    },
+    {
+     "what": "总经营成本",
+     "old": "656,500",
+     "new": "726,500"
+    },
+    {
+     "what": "总净收入",
+     "old": "918,624",
+     "new": "908,624"
+    },
+    {
+     "what": "总经营利润",
+     "old": "262,124",
+     "new": "182,124"
+    },
+    {
+     "what": "总体退款率",
+     "old": "5.79%",
+     "new": "6.81%"
+    },
+    {
+     "what": "总订单",
+     "old": "3,045",
+     "new": "3,045",
+     "note": "不变"
+    },
+    {
+     "what": "总 sessions",
+     "old": "27,300",
+     "new": "27,300",
+     "note": "不变"
+    },
+    {
+     "what": "总体转化率",
+     "old": "11.15%",
+     "new": "11.15%",
+     "note": "不变（加权，不平均各月）"
+    }
+   ],
+   "outputs": {
+    "KPI": "总净收入 91.86→90.86 万元；总经营利润 26.21→18.21 万元",
+    "表格": "合计行净收入/利润/退款率更新",
+    "结论": "累计利润与亏损月表述更新"
+   }
+  }
+ ],
+ "preserved": [
+  {
+   "item": "原始 CSV",
+   "evidence": "inputs/monthly.csv 未修改；更正/新增只写在 a22_data.py 的 ROUND2_CORRECTIONS / ROUND3_NEW_MONTH"
+  },
+  {
+   "item": "画布尺寸",
+   "evidence": "两轮均为 1600×1000"
+  },
+  {
+   "item": "五大主区域边界",
+   "evidence": "header/kpi_row/chart/table/conclusion 边界分量差全部 <=2px，见 layout-map.json comparison"
+  },
+  {
+   "item": "主字体与视觉系统",
+   "evidence": "Noto Sans CJK SC + Noto Sans Mono CJK SC；页面 #F1F5F9、卡片 #FFFFFF、净收入 #2563EB、经营利润 #7C3AED；正文最小 22px"
+  },
+  {
+   "item": "未更正月分的全部数值",
+   "evidence": "逐月比对 computed-data.json 的 months 数组，非指定月份的六项原值与派生值完全一致"
+  },
+  {
+   "item": "公式与显示精度",
+   "evidence": "净收入/利润/退款率/转化率公式与 TASK.md 一致；百分比两位小数、金额整数元千分位、KPI 万元两位小数"
+  }
+ ],
+ "regression": [
+  {
+   "check": "数据一致性",
+   "method": "复跑 a22_verify.py：KPI 值、表格全部单元格、结论中每个数字都与 a22_data.build() 的未舍入计算结果一致",
+   "result": "通过（0 问题）"
+  },
+  {
+   "check": "柱高与数值成比例",
+   "method": "像素实测每根柱的上下边，与声明轴 [lo,hi] 下的理论位置比对",
+   "result": "通过（全部 <=2px）；负柱顶端落在零线、底端落在 y_of(负值)"
+  },
+  {
+   "check": "轴与负轴",
+   "method": "定位零线行、统计零线以下利润柱像素",
+   "result": "通过；本轮轴 [-50000, 250000] step 50000，零线以下利润柱像素 > 20"
+  },
+  {
+   "check": "布局稳定",
+   "method": "与上一轮 layout-map 各区域边界做分量差",
+   "result": "通过（主区域 <=2px；绘图区组宽与表格行高按题面允许的内部重排）"
+  },
+  {
+   "check": "文字不溢出/不碰撞",
+   "method": "墨迹盒两两求交 + 盒内墨迹量 + 越界检查",
+   "result": "通过"
+  },
+  {
+   "check": "真实图像核验",
+   "method": "整图 + 柱图左/右分区 + KPI 行 + 明细表 + 主结论分区放大查看",
+   "result": "通过；已实际看图"
+  }
+ ],
+ "notes": "本轮只应用轮次文件指定的数据更正/新增，未修改原始 CSV；汇总与图形比例一律用未舍入值计算，最后才格式化展示。"
+}

@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "task_id": "A19",
+ "path_base": "output_dir",
+ "versions": [
+  {
+   "version": "A",
+   "dsl": "occlusion.snapshot",
+   "png": "occlusion.png",
+   "file_sha256": "5c78bce3103de116793ecb5f3eb7322344f0cc589f00aef244dbd075f5786d04",
+   "hidden_content": [
+    {
+     "id": "H01",
+     "desc": "橙色圆，中心 (580,400)，直径 80"
+    }
+   ],
+   "visible_layer": "与 B 完全一致（背景/前景 V01-V06/标签/遮挡物/渲染参数）"
+  },
+  {
+   "version": "B",
+   "dsl": "occlusion-alternative.snapshot",
+   "png": "occlusion-alternative.png",
+   "file_sha256": "5c78bce3103de116793ecb5f3eb7322344f0cc589f00aef244dbd075f5786d04",
+   "hidden_content": [
+    {
+     "id": "H01",
+     "desc": "绿色方，中心 (520,320)，边长 48"
+    },
+    {
+     "id": "H02",
+     "desc": "紫色圆环，中心 (640,470)，外径 64"
+    },
+    {
+     "id": "H03",
+     "desc": "蓝色圆，中心 (580,530)，直径 56"
+    }
+   ],
+   "visible_layer": "与 A 完全一致（背景/前景 V01-V06/标签/遮挡物/渲染参数）"
+  }
+ ],
+ "comparison": {
+  "decoder": "Pillow 10.0.0（Image.open 默认解码器）",
+  "decoder_mode": "RGBA，8 位未预乘；服务返回 RGBA，四通道全部参与比较；不合成到白底、不缩放、不忽略透明通道或透明像素的 RGB",
+  "same_size": true,
+  "size_a": [
+   800,
+   800
+  ],
+  "size_b": [
+   800,
+   800
+  ],
+  "same_array_shape": true,
+  "dtype": "uint8",
+  "different_pixels": 0,
+  "max_channel_diff": 0,
+  "array_hash_a": "416ed6f45c4ee92ab8dfa1145773598e419da278f4903d76f34e51c0f97e7f4c",
+  "array_hash_b": "416ed6f45c4ee92ab8dfa1145773598e419da278f4903d76f34e51c0f97e7f4c",
+  "array_hash_equal": true,
+  "verdict": "pixel_equivalent"
+ },
+ "file_hash_note": "两份文件 SHA-256 相同（服务对等价画面的确定性编码）；按任务约定，文件哈希仅用于留痕，像素等价性以解码后的 RGBA 数组逐像素比对判定",
+ "leak_check": {
+  "method": "遮挡矩形 [400,220,760,580] 内 129600 个像素逐一与遮挡物颜色 #0F172A=(15,23,42) 比对（容差 2）",
+  "non_occluder_pixels": {
+   "A": 0,
+   "B": 0
+  },
+  "verdict": "隐藏内容（含其抗锯齿边缘）零泄漏"
+ }
+}

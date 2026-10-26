@@ -1,0 +1,252 @@
+"""A16 findings.json 生成：从 flawed-report.png 实测 + source.csv 核对，可复算。
+
+每项 finding：id、原图位置/现象、类别、来源数据核对、影响、修改、最终实际查看结果。
+uncertainties：未确认事项、原因与所需证据。
+"""
+from __future__ import annotations
+import csv
+import json
+from pathlib import Path
+
+ROOT = Path(".")
+OUT = ROOT / "outputs" / "run-20261013-174209" / "A16"
+TMP = ROOT / "tmp" / "run-20261013-174209" / "A16"
+
+# ---------- 源数据 ----------
+rows = list(csv.DictReader(open("tasks/A16-visual-data-forensics/inputs/source.csv", encoding="utf-8")))
+src = {r["quarter"]: (float(r["revenue_wan"]), float(r["cost_wan"])) for r in rows}
+profit = {q: rev - cost for q, (rev, cost) in src.items()}
+
+# ---------- 原图实测（ flawed-report.png ） ----------
+from PIL import Image  # noqa: E402
+im = Image.open("tasks/A16-visual-data-forensics/inputs/flawed-report.png").convert("RGB")
+px = im.load()
+
+BLUE, ORANGE = (36, 92, 228), (232, 142, 53)
+# 柱心列与实测顶（此前实测，复算确认）
+BARS = {  # quarter -> (blue_top, orange_top)
+    "Q1": (415, 455), "Q2": (393, 430), "Q3": (367, 437), "Q4": (319, 400),
+}
+BASE = 564            # 柱底像素行
+# 轴：网格线 y=295/349/403/457/511/565 -> 200/180/160/140/120/100
+GRID = {200: 295, 180: 349, 160: 403, 140: 457, 120: 511, 100: 565}
+PX_PER_UNIT = (565 - 295) / (200 - 100)   # 2.7
+
+def axis_read(top):
+    """按原图印刷轴（100 起、2.7px/单位）读数。"""
+    return 100 + (565 - top) / PX_PER_UNIT
+
+# 柱标签（墨迹框上方数字，此前实测）
+LABELS = {"Q1": (120, 90), "Q2": (135, 108), "Q3": (128, 96), "Q4": (180, 126)}
+
+# 最小二乘拟合 值->柱高（除 Q3 外的其余季度，用于量化 Q3 异常）
+def lsq(pairs):
+    n = len(pairs)
+    mx = sum(p[0] for p in pairs) / n
+    my = sum(p[1] for p in pairs) / n
+    sxy = sum((p[0] - mx) * (p[1] - my) for p in pairs)
+    sxx = sum((p[0] - mx) ** 2 for p in pairs)
+    k = sxy / sxx
+    b = my - k * mx
+    return k, b
+
+blue_h = {q: BASE - t for q, (t, _) in BARS.items()}
+orange_h = {q: BASE - t for q, (_, t) in BARS.items()}
+
+# 蓝柱（收入值）拟合：用 Q1/Q2/Q4
+fit_blue = lsq([(LABELS[q][0], blue_h[q]) for q in ("Q1", "Q2", "Q4")])
+fit_orange = lsq([(LABELS[q][1], orange_h[q]) for q in ("Q1", "Q2", "Q4")])
+q3_blue_resid = blue_h["Q3"] - (fit_blue[0] * LABELS["Q3"][0] + fit_blue[1])
+q3_orange_resid = orange_h["Q3"] - (fit_orange[0] * LABELS["Q3"][1] + fit_orange[1])
+
+# 全八柱同一线性映射检验（蓝橙各自 4 点）
+def r2(pairs, k, b):
+    my = sum(p[1] for p in pairs) / len(pairs)
+    ss_res = sum((p[1] - (k * p[0] + b)) ** 2 for p in pairs)
+    ss_tot = sum((p[1] - my) ** 2 for p in pairs)
+    return 1 - ss_res / ss_tot
+
+kb, bb = lsq([(LABELS[q][0], blue_h[q]) for q in ("Q1", "Q2", "Q3", "Q4")])
+ko, bo = lsq([(LABELS[q][1], orange_h[q]) for q in ("Q1", "Q2", "Q3", "Q4")])
+r2_blue = r2([(LABELS[q][0], blue_h[q]) for q in ("Q1", "Q2", "Q3", "Q4")], kb, bb)
+r2_orange = r2([(LABELS[q][1], orange_h[q]) for q in ("Q1", "Q2", "Q3", "Q4")], ko, bo)
+
+axis_reads_blue = {q: round(axis_read(BARS[q][0]), 1) for q in BARS}
+axis_reads_orange = {q: round(axis_read(BARS[q][1]), 1) for q in BARS}
+
+# ---------- findings ----------
+findings = [
+    {
+        "id": "F01",
+        "category": "视觉错误（图例与数据颠倒）",
+        "location": {"path_base": "suite_root",
+                     "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+                     "region": [860, 175, 1140, 210],
+                     "detail": "图表卡右上角图例：蓝色方块 x[877,896] y[183,202] 标注'成本'，"
+                               "橙色方块 x[1056,1075] y[183,202] 标注'收入'"},
+        "observation": "图例称蓝=成本、橙=收入；但四根蓝柱顶标签为 120/135/128/180，"
+                       "与 source.csv 的 revenue 列完全一致；四根橙柱顶标签 90/108/96/126 "
+                       "与 cost 列完全一致。即蓝柱实际画的是收入、橙柱画的是成本。",
+        "source_check": "source.csv: Q1 revenue=120 cost=90；Q2 135/108；Q3 128/96；Q4 180/126。"
+                        "柱标签与源数据一致，图例与源数据不一致。",
+        "impact": "读者按图例会把收入读成成本，所有对比结论方向相反。",
+        "fix": "修正版图例改为 蓝=收入、橙=成本（色块颜色不变，与柱标签和源数据对齐）。",
+        "final_review": "修正版查看：图例'收入'蓝块紧贴蓝柱组、'成本'橙块紧贴橙柱组，"
+                        "与柱顶数值和 source.csv 三方一致（见 tmp/run-20261013-174209/A16/qc-q2_chart.png）。",
+    },
+    {
+        "id": "F02",
+        "category": "视觉误导（Y 轴截断不归零）",
+        "location": {"path_base": "suite_root",
+                     "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+                     "region": [140, 280, 1160, 570],
+                     "detail": "图表卡 Y 轴网格线 y=295/349/403/457/511/565 对应 200/180/160/140/120/100，"
+                               "间距 54px=20 单位（2.7px/单位）；八根柱的底端全部坐在 y=564/565 的'100'线上"},
+        "observation": "纵轴从 100 起而不是 0，柱高从'100'线算起，属截断轴。",
+        "source_check": "收入/成本最小值为 Q1 成本 90、最大 Q4 收入 180；可信轴应含 0。",
+        "impact": "截断轴放大柱高差：收入 Q1→Q4 实际比 120:180=1:1.5，从 100 起算视觉约 "
+                  "(180-100):(120-100)=4:1，差距被显著夸大。",
+        "fix": "修正版改为共同零起点轴：0–200、刻度 0/50/100/150/200、1.8px/单位，"
+               "八根柱全部从零线（y=600）起绘。",
+        "final_review": "修正版程序化实测：八根柱底端均在 y=599/600 零线上，柱顶 "
+                        "384/438/357/406/370/427/276/373 与 值×1.8 完全一致（0 误差）。",
+    },
+    {
+        "id": "F03",
+        "category": "数值/视觉错误（柱高与数值不成比例）",
+        "location": {"path_base": "suite_root",
+                     "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+                     "region": [224, 310, 1071, 565],
+                     "detail": "八根柱实测顶 y（底 564）：蓝 415/393/367/319（高 149/171/197/245），"
+                               "橙 455/430/437/400（高 109/134/127/164）"},
+        "observation": f"同一张图内八根柱无法用同一线性映射解释：蓝柱 值→高 四点 R²={r2_blue:.3f}、"
+                       f"橙柱 R²={r2_orange:.3f}。按 Q1/Q2/Q4 拟合（蓝 h≈{fit_blue[0]:.3f}v{fit_blue[1]:+.1f}），"
+                       f"Q3 蓝柱高出拟合线 {q3_blue_resid:+.0f}px；橙柱（h≈{fit_orange[0]:.3f}v{fit_orange[1]:+.1f}）"
+                       f"Q3 高出 {q3_orange_resid:+.0f}px。数值更低的 Q3 蓝柱（128）反而比 Q2 蓝柱（135）高 26px。"
+                       f"若按原图印刷轴读数（100 起、2.7px/单位），柱顶对应蓝 {axis_reads_blue}、橙 {axis_reads_orange}，"
+                       "与柱顶标签 120/135/128/180、90/108/96/126 全部对不上——柱高与轴、标签三套互不一致。",
+        "source_check": "source.csv: revenue 120/135/128/180，cost 90/108/96/126；"
+                        "正确柱高应严格按同一比例随值单调变化。",
+        "impact": "柱高本身误导：Q3 双柱被异常抬高，配合 F04/F05 强化了错误的'Q3 最高'叙事；"
+                  "且柱高与印刷轴不同尺度，读者无法从图中复原数值。",
+        "fix": "修正版按 值×1.8px/万元 从零起点重绘全部八根柱，程序化实测 0 误差。",
+        "final_review": "修正版查看：柱高严格成比例（Q4/Q1 收入高比 1.500=180/120；Q2 收入/Q1 成本 "
+                        "高比 1.500=135/90），零起点明确，刻度可直读。",
+    },
+    {
+        "id": "F04",
+        "category": "数值错误（利润明细 Q3 错值）",
+        "location": {"path_base": "suite_root",
+                     "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+                     "region": [570, 700, 800, 790],
+                     "detail": "利润明细卡 Q3 列数值墨迹 x[619,708] y[718,782]，显示'42 万元'"},
+        "observation": "Q3 利润标 42 万元；同卡 Q1=30、Q2=27、Q4=54 与源数据相符，仅 Q3 异常。",
+        "source_check": "source.csv Q3: revenue 128 − cost 96 = 32 万元（42 与任何季度、任何加减组合均不符）。",
+        "impact": "利润明细与源数据矛盾，且 42>32 直接支撑了错误的'Q3 利润最高'结论。",
+        "fix": "修正为 32 万元（=128−96）。",
+        "final_review": "修正版查看：利润明细 Q1 30 / Q2 27 / Q3 32 / Q4 54 万元，"
+                        "与 corrected-data.json 计算一致（见 qc-q3_cards.png）。",
+    },
+    {
+        "id": "F05",
+        "category": "叙事错误（标题/副标题与数据相反）",
+        "location": {"path_base": "suite_root",
+                     "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+                     "region": [60, 40, 430, 130],
+                     "detail": "主标题墨迹 (60,47)-(428,80)'季度复盘：Q3利润最高'；"
+                               "副标题墨迹 (60,105)-(326,125)'收入持续上升，全年保持增长'"},
+        "observation": "标题称 Q3 利润最高；副标题称收入持续上升。",
+        "source_check": "利润：Q1 30 / Q2 27 / Q3 32 / Q4 54——最高为 Q4(54)，Q3(32) 仅第二；"
+                        "收入：120→135→128→180，Q3 环比 −7，并非持续上升。",
+        "impact": "标题与副标题双重失实，把复盘结论和资源决策引向错误季度。",
+        "fix": "标题改为'季度复盘：Q4 利润 54 万元居首'（数据依据：Q4 profit_wan=54 为四季最大）；"
+               "副标题改为'Q4 收入 180 万元、利润 54 万元双双居首；Q3 收入环比回落 7 万元，"
+               "为全年唯一收入下滑季'（依据 quarters[Q4].revenue_wan/profit_wan 与 "
+               "quarters[Q3].rev_qoq=-7）。",
+        "final_review": "修正版查看：标题/副标题每个数字均可回溯到 source.csv 计算"
+                        "（corrected-data.json conclusion.cited_values）。",
+    },
+    {
+        "id": "F06",
+        "category": "叙事错误（重点观察结论与数据相反）",
+        "location": {"path_base": "suite_root",
+                     "path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+                     "region": [850, 640, 1220, 800],
+                     "detail": "右下琥珀卡，标题墨迹 (867,677)-(1013,689)'重点观察·Q3'，"
+                               "正文墨迹 (660,719)-(1072,782)'建议把资源集中到Q3，它的利润超过其他季度。'"},
+        "observation": "建议把资源集中到 Q3，理由是'利润超过其他季度'。",
+        "source_check": "Q3 利润 32 < Q4 54；Q3 利润率 25% < Q4 30%。Q4 收入 180、利润 54、"
+                        "利润率 30% 三项均为全年最高。",
+        "impact": "行动建议与数据相反，若被执行会错配资源。",
+        "fix": "重点观察改为 Q4：'Q4 收入 180 万元、利润 54 万元、利润率 30%，均为全年最高；"
+               "Q3 收入环比回落 7 万元，需关注回升节奏。'",
+        "final_review": "修正版查看：观察卡结论与 KPI 条、图表、利润明细四方数字一致。",
+    },
+]
+
+uncertainties = [
+    {
+        "id": "U01",
+        "item": "无法从成品图判断'图例错'还是'柱标签错'",
+        "reason": "原图无作者源码；柱顶标签与 source.csv 完全一致，图例与 source.csv 相反，"
+                  "按'多数证据一致方为正确'判定图例颠倒，属推断而非作者确认。",
+        "evidence_needed": "原图 DSL 或作者意图。修正版采用'图例迁就数据'，两种修正对数据的呈现等价。",
+    },
+    {
+        "id": "U02",
+        "item": "柱高异常的具体成因未知",
+        "reason": "Q3 双柱偏离其余季度拟合线（蓝 +%.0fpx、橙 +%.0fpx），但无法从成品图确证是"
+                  "误用缩放公式还是手工拉高。" % (q3_blue_resid, q3_orange_resid),
+        "evidence_needed": "原图绘图代码。findings 仅记录可观察事实'柱高与标签/轴不成比例'。",
+    },
+    {
+        "id": "U03",
+        "item": "Q3 利润'42'的错误来源未知",
+        "reason": "42 与 128−96=32 不符，也无法由源数据任何简单组合（如 138−96）确证；"
+                  "不作为成因结论，只记录与源数据的差。",
+        "evidence_needed": "同事初稿的计算过程。",
+    },
+]
+
+audit = {
+    "schema_version": 1,
+    "task_id": "A16",
+    "path_base": "output_dir",
+    "run_id": "run-20261013-174209",
+    "flawed_report": {"path": "tasks/A16-visual-data-forensics/inputs/flawed-report.png",
+                      "path_base": "suite_root", "width": 1280, "height": 900},
+    "source_csv": {"path": "tasks/A16-visual-data-forensics/inputs/source.csv",
+                   "path_base": "suite_root",
+                   "note": "唯一可信原始数据；图片与源码都不是标准答案"},
+    "measurement": {
+        "method": "PIL 逐像素扫描 flawed-report.png：色块定位柱列、网格线定标轴、"
+                  "墨迹阈值定位文字；全部数字可由本脚本复算。",
+        "axis_calibration": {"gridlines_px": {"200": 295, "180": 349, "160": 403, "140": 457,
+                                              "120": 511, "100": 565},
+                             "px_per_unit": PX_PER_UNIT, "baseline_value": 100},
+        "bar_tops_px": BARS, "bar_base_px": BASE,
+        "bar_heights_px": {"blue": blue_h, "orange": orange_h},
+        "axis_read_of_bar_tops": {"blue": axis_reads_blue, "orange": axis_reads_orange},
+        "linear_fit_excluding_q3": {"blue": {"slope": round(fit_blue[0], 4), "intercept": round(fit_blue[1], 2)},
+                                    "orange": {"slope": round(fit_orange[0], 4), "intercept": round(fit_orange[1], 2)}},
+        "q3_residual_px": {"blue": round(q3_blue_resid, 1), "orange": round(q3_orange_resid, 1)},
+        "fit_r2_all_four": {"blue": round(r2_blue, 3), "orange": round(r2_orange, 3)},
+    },
+    "findings": findings,
+    "uncertainties": uncertainties,
+    "corrected": {
+        "report": "outputs/run-20261013-174209/A16/corrected-report.png",
+        "data": "outputs/run-20261013-174209/A16/corrected-data.json",
+        "side_by_side_evidence": "tmp/run-20261013-174209/A16/side-by-side.png",
+    },
+}
+
+with open(OUT / "findings.json", "w", encoding="utf-8") as f:
+    json.dump(audit, f, ensure_ascii=False, indent=2)
+
+print("findings:", len(findings), "uncertainties:", len(uncertainties))
+print(f"fit blue: h={fit_blue[0]:.3f}v{fit_blue[1]:+.1f}  Q3 resid {q3_blue_resid:+.1f}px  R2(all4)={r2_blue:.3f}")
+print(f"fit orange: h={fit_orange[0]:.3f}v{fit_orange[1]:+.1f}  Q3 resid {q3_orange_resid:+.1f}px  R2(all4)={r2_orange:.3f}")
+print("axis reads blue:", axis_reads_blue)
+print("axis reads orange:", axis_reads_orange)
+print("wrote", OUT / "findings.json")

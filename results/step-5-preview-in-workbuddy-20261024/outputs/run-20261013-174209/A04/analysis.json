@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "run_id": "run-20261013-174209",
+  "data_source": "tasks/A04-conversion-paradox/inputs/conversion.csv",
+  "units": {
+    "visits": "访问次数",
+    "conversions": "成交笔数",
+    "rate": "比例（0–1）"
+  },
+  "groups": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "numerator": 2400,
+      "denominator": 8000,
+      "fraction": 0.3,
+      "display": "30.0%"
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "numerator": 200,
+      "denominator": 2000,
+      "fraction": 0.1,
+      "display": "10.0%"
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "numerator": 700,
+      "denominator": 2000,
+      "fraction": 0.35,
+      "display": "35.0%"
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "numerator": 960,
+      "denominator": 8000,
+      "fraction": 0.12,
+      "display": "12.0%"
+    }
+  ],
+  "periods": [
+    {
+      "period": "前期",
+      "numerator": 2600,
+      "denominator": 10000,
+      "rate": 0.26,
+      "display": "26.0%",
+      "visit_mix": {
+        "直接访问": 0.8,
+        "推广访问": 0.2
+      },
+      "mix_display": {
+        "直接访问": "80%",
+        "推广访问": "20%"
+      }
+    },
+    {
+      "period": "后期",
+      "numerator": 1660,
+      "denominator": 10000,
+      "rate": 0.166,
+      "display": "16.6%",
+      "visit_mix": {
+        "直接访问": 0.2,
+        "推广访问": 0.8
+      },
+      "mix_display": {
+        "直接访问": "20%",
+        "推广访问": "80%"
+      }
+    }
+  ],
+  "weighted_formula": {
+    "period_rate": "sum(conversions) / sum(visits)",
+    "explicit": {
+      "前期": "2600/10000 = 0.260000",
+      "后期": "1660/10000 = 0.166000"
+    },
+    "not_used": "不对各渠道转化率取算术平均",
+    "mean_of_ratios_for_contrast": [
+      {
+        "period": "前期",
+        "value": 0.2,
+        "display": "20.0%"
+      },
+      {
+        "period": "后期",
+        "value": 0.235,
+        "display": "23.5%"
+      }
+    ]
+  },
+  "axes": [
+    {
+      "id": "group-rate",
+      "chart": "grouped_bar",
+      "title": "渠道分组转化率",
+      "scale": "0–100%",
+      "min": 0.0,
+      "max": 1.0,
+      "plot_box": [
+        130,
+        258,
+        700,
+        550
+      ],
+      "data_to_pixel": "y_px = 550 - rate * 292",
+      "shared_scale_both_periods": true,
+      "blocks": {
+        "前期/直接访问": [
+          190,
+          462.4,
+          264,
+          550
+        ],
+        "前期/推广访问": [
+          280,
+          520.8,
+          354,
+          550
+        ],
+        "后期/直接访问": [
+          475,
+          447.8,
+          549,
+          550
+        ],
+        "后期/推广访问": [
+          565,
+          514.96,
+          639,
+          550
+        ]
+      }
+    },
+    {
+      "id": "visit-mix",
+      "chart": "stacked_bar_equal_length",
+      "title": "两期访问构成",
+      "scale": "每期等长 = 100%",
+      "equal_length_px": 720,
+      "plot_box": [
+        800,
+        270,
+        1520,
+        534
+      ],
+      "segment_to_pixel": "width_px = share * 720",
+      "blocks": {
+        "前期/直接访问": [
+          800,
+          270,
+          1376.0,
+          344
+        ],
+        "前期/推广访问": [
+          1376.0,
+          270,
+          1520.0,
+          344
+        ],
+        "后期/直接访问": [
+          800,
+          402,
+          944.0,
+          476
+        ],
+        "后期/推广访问": [
+          944.0,
+          402,
+          1520.0,
+          476
+        ]
+      }
+    },
+    {
+      "id": "overall-compare",
+      "chart": "bar",
+      "title": "总体转化率对照（加权）",
+      "scale": "0–30%",
+      "min": 0.0,
+      "max": 0.3,
+      "plot_box": [
+        100,
+        720,
+        1500,
+        920
+      ],
+      "data_to_pixel": "y_px = 920 - rate/0.3 * 200",
+      "blocks": {
+        "前期": [
+          283,
+          746.6666666666666,
+          433,
+          920
+        ],
+        "后期": [
+          650,
+          809.3333333333334,
+          800,
+          920
+        ]
+      }
+    }
+  ],
+  "conclusions": [
+    {
+      "claim": "两个渠道各自的转化率都上升，但总体转化率下降。",
+      "values": {
+        "direct": "0.3000 → 0.3500（+5.0 个百分点）",
+        "promo": "0.1000 → 0.1200（+2.0 个百分点）",
+        "overall": "0.2600 → 0.1660（-9.4 个百分点）"
+      },
+      "reason": "访问构成由 80% 直接访问 / 20% 推广访问 变为 20% / 80%，低转化渠道权重上升。"
+    },
+    {
+      "claim": "不能由该数据证明因果。",
+      "limits": [
+        "无渠道定义、投放策略、用户构成或外部因素信息。",
+        "两期样本不可比性未知。",
+        "分组改善与总体下降可完全由加权结构差异解释，无需引入因果。"
+      ]
+    }
+  ],
+  "pitfalls_avoided": {
+    "averaging_channel_ratios": false,
+    "mean_of_ratios_values": [
+      {
+        "period": "前期",
+        "value": 0.2,
+        "display": "20.0%"
+      },
+      {
+        "period": "后期",
+        "value": 0.235,
+        "display": "23.5%"
+      }
+    ],
+    "absolute_conversions_used_as_rate": false,
+    "absolute_conversions": [
+      {
+        "period": "前期",
+        "channel": "直接访问",
+        "conversions": 2400
+      },
+      {
+        "period": "前期",
+        "channel": "推广访问",
+        "conversions": 200
+      },
+      {
+        "period": "后期",
+        "channel": "直接访问",
+        "conversions": 700
+      },
+      {
+        "period": "后期",
+        "channel": "推广访问",
+        "conversions": 960
+      }
+    ],
+    "note": "绝对成交量（如后期推广访问 960 笔）不是转化率，图中仅在小表作为分子出现。"
+  },
+  "visual_checks": {
+    "body_min_px": 18,
+    "annotation_min_px": 18,
+    "rate_chart_single_scale_0_100": true,
+    "mix_bars_equal_length": true,
+    "overall_uses_totals": true,
+    "period_labels_present": true,
+    "units_present": true
+  }
+}

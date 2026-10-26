@@ -1,0 +1,228 @@
+{
+ "schema_version": 1,
+ "task_id": "A24",
+ "path_base": "output_dir",
+ "timezone": "Asia/Shanghai (+08:00)",
+ "start": "2026-11-07T09:00:00+08:00",
+ "deadline": "2026-11-07T16:00:00+08:00",
+ "window_minutes": 420,
+ "teams": [
+  "design",
+  "engineering"
+ ],
+ "finish_minute": 260,
+ "finish_time": "2026-11-07T13:20:00+08:00",
+ "buffer_minutes": 160,
+ "schedule_source": "tmp/run-20261013-174209/A24/optimal-schedules.json（穷举全部排程后按风险浮动最大挑选，已证明 260 分钟最优）",
+ "tasks": [
+  {
+   "id": "R01",
+   "label": "需求核对",
+   "minutes": 25,
+   "team": "design",
+   "teams_allowed": [
+    "design"
+   ],
+   "flexible": false,
+   "depends": [],
+   "start_minute": 0,
+   "end_minute": 25,
+   "start": "2026-11-07T09:00:00+08:00",
+   "end": "2026-11-07T09:25:00+08:00"
+  },
+  {
+   "id": "R02",
+   "label": "服务与字体探测",
+   "minutes": 20,
+   "team": "engineering",
+   "teams_allowed": [
+    "engineering"
+   ],
+   "flexible": false,
+   "depends": [],
+   "start_minute": 0,
+   "end_minute": 20,
+   "start": "2026-11-07T09:00:00+08:00",
+   "end": "2026-11-07T09:20:00+08:00"
+  },
+  {
+   "id": "R03",
+   "label": "数据清洗",
+   "minutes": 40,
+   "team": "engineering",
+   "teams_allowed": [
+    "engineering"
+   ],
+   "flexible": false,
+   "depends": [
+    "R02"
+   ],
+   "start_minute": 55,
+   "end_minute": 95,
+   "start": "2026-11-07T09:55:00+08:00",
+   "end": "2026-11-07T10:35:00+08:00"
+  },
+  {
+   "id": "R04",
+   "label": "视觉系统",
+   "minutes": 60,
+   "team": "design",
+   "teams_allowed": [
+    "design"
+   ],
+   "flexible": false,
+   "depends": [
+    "R01"
+   ],
+   "start_minute": 25,
+   "end_minute": 85,
+   "start": "2026-11-07T09:25:00+08:00",
+   "end": "2026-11-07T10:25:00+08:00"
+  },
+  {
+   "id": "R05",
+   "label": "文案审校",
+   "minutes": 30,
+   "team": "engineering",
+   "teams_allowed": [
+    "design",
+    "engineering"
+   ],
+   "flexible": true,
+   "depends": [
+    "R01"
+   ],
+   "start_minute": 25,
+   "end_minute": 55,
+   "start": "2026-11-07T09:25:00+08:00",
+   "end": "2026-11-07T09:55:00+08:00"
+  },
+  {
+   "id": "R06",
+   "label": "图表计算",
+   "minutes": 45,
+   "team": "engineering",
+   "teams_allowed": [
+    "engineering"
+   ],
+   "flexible": false,
+   "depends": [
+    "R03"
+   ],
+   "start_minute": 95,
+   "end_minute": 140,
+   "start": "2026-11-07T10:35:00+08:00",
+   "end": "2026-11-07T11:20:00+08:00"
+  },
+  {
+   "id": "R07",
+   "label": "主海报构建",
+   "minutes": 70,
+   "team": "design",
+   "teams_allowed": [
+    "design"
+   ],
+   "flexible": false,
+   "depends": [
+    "R04",
+    "R05"
+   ],
+   "start_minute": 85,
+   "end_minute": 155,
+   "start": "2026-11-07T10:25:00+08:00",
+   "end": "2026-11-07T11:35:00+08:00"
+  },
+  {
+   "id": "R08",
+   "label": "驾驶舱构建",
+   "minutes": 65,
+   "team": "engineering",
+   "teams_allowed": [
+    "engineering"
+   ],
+   "flexible": false,
+   "depends": [
+    "R04",
+    "R06"
+   ],
+   "start_minute": 140,
+   "end_minute": 205,
+   "start": "2026-11-07T11:20:00+08:00",
+   "end": "2026-11-07T12:25:00+08:00"
+  },
+  {
+   "id": "R09",
+   "label": "手机适配",
+   "minutes": 45,
+   "team": "design",
+   "teams_allowed": [
+    "design",
+    "engineering"
+   ],
+   "flexible": true,
+   "depends": [
+    "R07"
+   ],
+   "start_minute": 155,
+   "end_minute": 200,
+   "start": "2026-11-07T11:35:00+08:00",
+   "end": "2026-11-07T12:20:00+08:00"
+  },
+  {
+   "id": "R10",
+   "label": "视觉回归检查",
+   "minutes": 35,
+   "team": "design",
+   "teams_allowed": [
+    "design"
+   ],
+   "flexible": false,
+   "depends": [
+    "R07",
+    "R08",
+    "R09"
+   ],
+   "start_minute": 205,
+   "end_minute": 240,
+   "start": "2026-11-07T12:25:00+08:00",
+   "end": "2026-11-07T13:00:00+08:00"
+  },
+  {
+   "id": "R11",
+   "label": "产物与数据核验",
+   "minutes": 30,
+   "team": "engineering",
+   "teams_allowed": [
+    "engineering"
+   ],
+   "flexible": false,
+   "depends": [
+    "R08",
+    "R09"
+   ],
+   "start_minute": 205,
+   "end_minute": 235,
+   "start": "2026-11-07T12:25:00+08:00",
+   "end": "2026-11-07T12:55:00+08:00"
+  },
+  {
+   "id": "R12",
+   "label": "交付归档",
+   "minutes": 20,
+   "team": "design",
+   "teams_allowed": [
+    "design",
+    "engineering"
+   ],
+   "flexible": true,
+   "depends": [
+    "R10",
+    "R11"
+   ],
+   "start_minute": 240,
+   "end_minute": 260,
+   "start": "2026-11-07T13:00:00+08:00",
+   "end": "2026-11-07T13:20:00+08:00"
+  }
+ ]
+}
