@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "resource_conflicts": [],
+  "dependency_violations": [],
+  "duration_check": true,
+  "within_window": true,
+  "makespan_minutes": 260,
+  "buffer_minutes": 160,
+  "critical_path_minutes": 255,
+  "total_work_minutes": 485,
+  "work_over_two_teams_lower_bound": 242.5,
+  "best_known_lower_bound": 255,
+  "proven_optimal": false,
+  "optimality_note": "260 分钟为可行排程，距依赖关键路径下界 255 分钟差 5 分钟；未做全局最优证明，不称最优。",
+  "team_intervals": {
+    "design": [
+      {
+        "id": "R01",
+        "start": 0,
+        "end": 25
+      },
+      {
+        "id": "R04",
+        "start": 25,
+        "end": 85
+      },
+      {
+        "id": "R07",
+        "start": 90,
+        "end": 160
+      },
+      {
+        "id": "R09",
+        "start": 160,
+        "end": 205
+      },
+      {
+        "id": "R10",
+        "start": 205,
+        "end": 240
+      },
+      {
+        "id": "R12",
+        "start": 240,
+        "end": 260
+      }
+    ],
+    "engineering": [
+      {
+        "id": "R02",
+        "start": 0,
+        "end": 20
+      },
+      {
+        "id": "R03",
+        "start": 20,
+        "end": 60
+      },
+      {
+        "id": "R05",
+        "start": 60,
+        "end": 90
+      },
+      {
+        "id": "R06",
+        "start": 90,
+        "end": 135
+      },
+      {
+        "id": "R08",
+        "start": 135,
+        "end": 200
+      },
+      {
+        "id": "R11",
+        "start": 205,
+        "end": 235
+      }
+    ]
+  },
+  "risk_notes": [
+    {
+      "id": "K1",
+      "task": "R02",
+      "impact": "服务限流导致等待",
+      "mitigation": "保留响应并依据Retry-After重试"
+    },
+    {
+      "id": "K2",
+      "task": "R05",
+      "impact": "长文案导致版式回归",
+      "mitigation": "冻结文案后再完成适配"
+    },
+    {
+      "id": "K3",
+      "task": "R10",
+      "impact": "实际图像暴露裁剪或比例错误",
+      "mitigation": "预留返工缓冲，不跳过看图"
+    }
+  ]
+}

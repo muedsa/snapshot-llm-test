@@ -1,0 +1,215 @@
+{
+  "task_id": "A23",
+  "title": "格式边界下的动画分镜交付",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "先依据指南确认服务只输出静态 png/jpg/webp，无 SVG/CMYK/GIF 参数。按授权交付 1200×800 RGB 封面与 6 张 600×600 透明关键帧：12 个单元（4 圆/4 方/4 环）属性跨帧守恒，沿各自径向轨迹从 1.75× 大三角汇聚到最终三角；250ms/帧、1500ms 循环，末帧→首帧为跳变并在 timing/frame-data/limitations 中明确。",
+  "requirements": [
+    {
+      "text": "判定格式支持并写 limitations",
+      "evidence": "limitations.md 四项请求/依据/替代/后续"
+    },
+    {
+      "text": "1200×800 封面文字可读",
+      "evidence": "“从结构到画面”64px，实图可读"
+    },
+    {
+      "text": "6 张透明 PNG、12 单元每帧、属性守恒",
+      "evidence": "frame-data.json；角 alpha=0；尺寸/颜色/alpha 不变"
+    },
+    {
+      "text": "轨迹连续、末帧成可识别三角",
+      "evidence": "径向 smoothstep；6 帧间距 105→60，未重叠"
+    },
+    {
+      "text": "250ms/帧、循环 1500ms、帧序",
+      "evidence": "timing.json"
+    },
+    {
+      "text": "循环接缝说明",
+      "evidence": "seam max 135.2px；标注跳变，不称无缝"
+    }
+  ],
+  "files": [
+    {
+      "file": "cover.snapshot",
+      "purpose": "封面 DSL",
+      "dsl": "cover.png",
+      "status": "完成"
+    },
+    {
+      "file": "cover.png",
+      "purpose": "1200×800 封面",
+      "dsl": "cover.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "frame-01.snapshot",
+      "purpose": "帧1 DSL",
+      "dsl": "frame-01.png",
+      "status": "完成"
+    },
+    {
+      "file": "frame-02.snapshot",
+      "purpose": "帧2 DSL",
+      "dsl": "frame-02.png",
+      "status": "完成"
+    },
+    {
+      "file": "frame-03.snapshot",
+      "purpose": "帧3 DSL",
+      "dsl": "frame-03.png",
+      "status": "完成"
+    },
+    {
+      "file": "frame-04.snapshot",
+      "purpose": "帧4 DSL",
+      "dsl": "frame-04.png",
+      "status": "完成"
+    },
+    {
+      "file": "frame-05.snapshot",
+      "purpose": "帧5 DSL",
+      "dsl": "frame-05.png",
+      "status": "完成"
+    },
+    {
+      "file": "frame-06.snapshot",
+      "purpose": "帧6 DSL",
+      "dsl": "frame-06.png",
+      "status": "完成"
+    },
+    {
+      "file": "frame-01.png",
+      "purpose": "600×600 透明帧1",
+      "dsl": "frame-01.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "frame-02.png",
+      "purpose": "600×600 透明帧2",
+      "dsl": "frame-02.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "frame-03.png",
+      "purpose": "600×600 透明帧3",
+      "dsl": "frame-03.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "frame-04.png",
+      "purpose": "600×600 透明帧4",
+      "dsl": "frame-04.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "frame-05.png",
+      "purpose": "600×600 透明帧5",
+      "dsl": "frame-05.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "frame-06.png",
+      "purpose": "600×600 透明帧6",
+      "dsl": "frame-06.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "limitations.md",
+      "purpose": "格式边界",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "frame-data.json",
+      "purpose": "逐帧/轨迹/接缝",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "timing.json",
+      "purpose": "帧时序",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A23/cover.png",
+      "at": "2026-10-29T04:20:55+0800",
+      "result": "封面文字与三角构图完整"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A23/frame-01.png",
+      "at": "2026-10-29T04:21:46+0800",
+      "result": "逐帧检查：12 单元、间距、透明背景与汇聚连续"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A23/frame-02.png",
+      "at": "2026-10-29T04:21:46+0800",
+      "result": "逐帧检查：12 单元、间距、透明背景与汇聚连续"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A23/frame-03.png",
+      "at": "2026-10-29T04:21:46+0800",
+      "result": "逐帧检查：12 单元、间距、透明背景与汇聚连续"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A23/frame-04.png",
+      "at": "2026-10-29T04:21:46+0800",
+      "result": "逐帧检查：12 单元、间距、透明背景与汇聚连续"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A23/frame-05.png",
+      "at": "2026-10-29T04:21:46+0800",
+      "result": "逐帧检查：12 单元、间距、透明背景与汇聚连续"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A23/frame-06.png",
+      "at": "2026-10-29T04:21:46+0800",
+      "result": "逐帧检查：12 单元、间距、透明背景与汇聚连续"
+    },
+    {
+      "image": "tmp/run-20261029-110525/A23/contact-sheet.png",
+      "at": "2026-10-29T04:21:32+0800",
+      "result": "3×2 接触表：三角形逐步收缩汇聚；末帧可识别"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A23-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A23/drafts/gen_a23.py",
+      "image": "tmp/run-20261029-110525/A23/contact-sheet.png",
+      "at": "2026-10-29T04:20:55+0800",
+      "problem": "线性路径中段碰撞",
+      "change": "改径向缩放轨迹",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "帧中段单元重叠",
+      "cause": "分散点到终点直线路径交叉",
+      "fix": "终点三角形按 1.75× 径向放大作为起点",
+      "verify": "最小中心距 60px；全部可见",
+      "evidence": "outputs/run-20261029-110525/A23/frame-data.json"
+    }
+  ],
+  "notes": "动画格式不支持时按授权改为关键帧+timing；循环接缝必须如实标注，不能用 loop 掩饰跳变。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "渲染接口/type 仅 png/jpg/webp",
+      "used_in": "A23/A24"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform",
+      "used_in": "全部布局"
+    }
+  ]
+}

@@ -1,0 +1,1124 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B06",
+  "run_id": "run-20261029-110525",
+  "status": "completed",
+  "asset_policy": "dsl_primary_with_supporting_assets",
+  "asset_usage": "supporting_assets 为空；十件全部由 DSL 绘制，无外部图片。",
+  "fictional_content": "所有规则、金额、车次、批号、医疗与法律条款均为演示；未做用户调研或机构核对。",
+  "problem_evidence": "problem-evidence.json",
+  "design_review": "design-review.md",
+  "curatorial_statement": "十件日常信息重构：停车牌、工资单、电费、药卡、换乘屏、召回卡、租约、垃圾房、营养标签与订阅账单。每件只回答一个被原有形式挡住的问题，用该媒介最擅长的组织方式——同一条时间标尺、一条闭合的分段条、一张 7 天网格、一条可行性时间轴、一组批号格、一张现金面板、一个物品网格、一排茶匙、一条续费跑道——把“看清”变成“能做”。",
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "路侧停车：现在能停吗？",
+      "audience": "临时到访的驾驶者",
+      "use_context": "梧桐路 12–28 号路边，周二 14:20，620×920 标牌",
+      "user_goal": "三秒内知道能不能停、最晚几点驶离",
+      "content_basis": "常见路侧停车规则结构；具体时段为演示",
+      "visual_intent": "一条 24 小时标尺承载四条规则；顶部直接给绿色“可以停”与 16:20",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        620,
+        920
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "24 小时标尺",
+        "分段色条",
+        "当前时刻线",
+        "大字号结论"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S01",
+          "condition": "结论与 24 小时标尺一致；最晚 16:20；周日/节假日例外可见",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 2,
+        "last_viewed": "2026-10-29T13:15:00+08:00",
+        "evidence": "case-01/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "a676f2f1b043",
+        "ef46748e53c5"
+      ],
+      "final_request_id": "ef46748e53c5",
+      "iteration_ids": [
+        "B06-c01-v1",
+        "B06-c01-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 620×920"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 2 times; last 13:15"
+        },
+        {
+          "id": "S01",
+          "passed": true,
+          "evidence": "结论与 24 小时标尺一致；最晚 16:20；周日/节假日例外可见"
+        }
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "工资单：钱去哪了",
+      "audience": "第一次独立看工资单的职员",
+      "use_context": "发薪日桌边阅读 A4 1240×1754",
+      "user_goal": "搞清应发、三项扣款、实发与雇主成本",
+      "content_basis": "常见工资单科目；金额与比例为演示，不是税务建议",
+      "visual_intent": "一条 18,000 分段条 + 三张扣款卡 + 22,320 雇主成本；所有数字闭合",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1240,
+        1754
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "分段比例条",
+        "三列扣款卡",
+        "变化清单",
+        "等宽数字"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S02",
+          "condition": "13,415+1,890+2,160+535=18,000；22,320=18,000+4,320；变化 +620−832=−212",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 3,
+        "last_viewed": "2026-10-29T13:17:00+08:00",
+        "evidence": "case-02/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "bf240a3053cc",
+        "d3ca129a12af",
+        "d8d929bf8f91"
+      ],
+      "final_request_id": "d8d929bf8f91",
+      "iteration_ids": [
+        "B06-c02-v1",
+        "B06-c02-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 1240×1754"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 3 times; last 13:17"
+        },
+        {
+          "id": "S02",
+          "passed": true,
+          "evidence": "13,415+1,890+2,160+535=18,000；22,320=18,000+4,320；变化 +620−832=−212"
+        }
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "电费：什么时候最贵？",
+      "audience": "租房家庭",
+      "use_context": "手机/打印海报，1200×1500",
+      "user_goal": "看见 24 小时峰谷差异，并知道移峰能省多少",
+      "content_basis": "常见峰谷电价结构；电价与曲线为演示",
+      "visual_intent": "24 根小时柱 + 峰段背景 + 19:00 最高柱；移峰换算成 −¥18.60/月",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        1200,
+        1500
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "24 小时柱图",
+        "峰谷分段背景",
+        "最高点标注",
+        "成本分段条"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S03",
+          "condition": "129.57+33.77+10=173.34；320kWh；移峰 60kWh×0.31=18.60",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 4,
+        "last_viewed": "2026-10-29T13:17:00+08:00",
+        "evidence": "case-03/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "d90f784ec56b",
+        "5e29a2f04b95",
+        "96db7e594e7f",
+        "54a17551c089"
+      ],
+      "final_request_id": "54a17551c089",
+      "iteration_ids": [
+        "B06-c03-v1",
+        "B06-c03-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 1200×1500"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 4 times; last 13:17"
+        },
+        {
+          "id": "S03",
+          "passed": true,
+          "evidence": "129.57+33.77+10=173.34；320kWh；移峰 60kWh×0.31=18.60"
+        }
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "一周药卡",
+      "audience": "需要长期服药的成年人及家属",
+      "use_context": "餐桌/钱包，1000×700 横卡",
+      "user_goal": "一周内不漏服、分清早/晚与随餐",
+      "content_basis": "常见多药管理场景；药品与剂量为演示，不构成用药建议",
+      "visual_intent": "7 天 × 4 药网格；药名、剂量、时间、随餐固定在左栏",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1000,
+        700
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "7×4 网格",
+        "双勾选格",
+        "药色编码",
+        "大字号周标题"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S04",
+          "condition": "4 种药、7 天全部可见；早/晚双勾选；时间与随餐标注",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 2,
+        "last_viewed": "2026-10-29T13:15:00+08:00",
+        "evidence": "case-04/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "3f993ad28a9e",
+        "cc0e99cd70e3"
+      ],
+      "final_request_id": "cc0e99cd70e3",
+      "iteration_ids": [
+        "B06-c04-v1",
+        "B06-c04-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 1000×700"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 2 times; last 13:15"
+        },
+        {
+          "id": "S04",
+          "passed": true,
+          "evidence": "4 种药、7 天全部可见；早/晚双勾选；时间与随餐标注"
+        }
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "换乘：跑不跑得赢？",
+      "audience": "高铁换乘乘客",
+      "use_context": "车站竖屏 1080×1920，14:32",
+      "user_goal": "立刻知道赶不赶得上、下一班在哪",
+      "content_basis": "换乘涉及的到达/步行/停检/发车；车次与站台为演示",
+      "visual_intent": "110px“赶不上”+ 四个时间节点 + 15:02 下一班",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "超大结论字",
+        "垂直时间轴",
+        "状态色",
+        "下一班卡"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S05",
+          "condition": "14:31 停检早于 14:32 到站；14:38 才到站台；下一班 15:02 同站台",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 3,
+        "last_viewed": "2026-10-29T13:17:00+08:00",
+        "evidence": "case-05/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "0246704544d9",
+        "9d34946e0fa0",
+        "a300392376ad"
+      ],
+      "final_request_id": "a300392376ad",
+      "iteration_ids": [
+        "B06-c05-v1",
+        "B06-c05-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 1080×1920"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 3 times; last 13:17"
+        },
+        {
+          "id": "S05",
+          "passed": true,
+          "evidence": "14:31 停检早于 14:32 到站；14:38 才到站台；下一班 15:02 同站台"
+        }
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "召回：我的盒子中招了吗？",
+      "audience": "家庭冰箱前的消费者",
+      "use_context": "冰箱门 800×1100 卡",
+      "user_goal": "核对自己的批号并知道下一步",
+      "content_basis": "召回公告的批号/行动结构；品牌与批号为虚构",
+      "visual_intent": "A1–A12 批号格，A7–A9 实心红；三步行动",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        800,
+        1100
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "批号网格",
+        "区间高亮",
+        "编号步骤",
+        "截止日期"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S06",
+          "condition": "A7、A8、A9 三格全部高亮；行动三步与退款截止日可见",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 2,
+        "last_viewed": "2026-10-29T13:17:00+08:00",
+        "evidence": "case-06/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "edbce97fb7c4",
+        "daaacf826521"
+      ],
+      "final_request_id": "daaacf826521",
+      "iteration_ids": [
+        "B06-c06-v1",
+        "B06-c06-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 800×1100"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 2 times; last 13:17"
+        },
+        {
+          "id": "S06",
+          "passed": true,
+          "evidence": "A7、A8、A9 三格全部高亮；行动三步与退款截止日可见"
+        }
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "租约：签字前先看 5 行",
+      "audience": "第一次租房的人",
+      "use_context": "签约前桌边阅读 A4 1240×1754",
+      "user_goal": "把条款换算成钱，并知道要问什么",
+      "content_basis": "常见租约五类花钱条款；金额与条款为演示，不构成法律建议",
+      "visual_intent": "左侧 5 条荧光笔条款 + 右侧现金面板 + 底部 5 个问题",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1240,
+        1754
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "条款卡",
+        "荧光色块",
+        "现金面板",
+        "问题清单"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S07",
+          "condition": "20,400=13,600+6,800；7,140=6,800×1.05；退租 6,800；五条与五问对应",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 2,
+        "last_viewed": "2026-10-29T13:17:00+08:00",
+        "evidence": "case-07/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "24c0d830735d",
+        "fcf44a8c8adc"
+      ],
+      "final_request_id": "fcf44a8c8adc",
+      "iteration_ids": [
+        "B06-c07-v1",
+        "B06-c07-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 1240×1754"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 2 times; last 13:17"
+        },
+        {
+          "id": "S07",
+          "passed": true,
+          "evidence": "20,400=13,600+6,800；7,140=6,800×1.05；退租 6,800；五条与五问对应"
+        }
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "垃圾房：这件东西投哪个桶？",
+      "audience": "楼栋住户",
+      "use_context": "垃圾房墙面 900×1200 海报",
+      "user_goal": "按物品名直接找到桶，不被长清单卡住",
+      "content_basis": "常见三类桶与高频物品；规则为演示，各地不同",
+      "visual_intent": "三类桶 + 12 件物品卡 + 红点标最容易错",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        900,
+        1200
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "三桶色标",
+        "物品网格",
+        "红点强调",
+        "桶名胶囊"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S08",
+          "condition": "12 件物品各有桶名与颜色；外卖盒/酸奶杯/电池/灯管/药品均正确；不确定项指向其他",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 1,
+        "last_viewed": "2026-10-29T13:15:00+08:00",
+        "evidence": "case-08/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "707322f742e0"
+      ],
+      "final_request_id": "707322f742e0",
+      "iteration_ids": [
+        "B06-c08-v1",
+        "B06-c08-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 900×1200"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 1 times; last 13:15"
+        },
+        {
+          "id": "S08",
+          "passed": true,
+          "evidence": "12 件物品各有桶名与颜色；外卖盒/酸奶杯/电池/灯管/药品均正确；不确定项指向其他"
+        }
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "营养：一袋有多少糖？",
+      "audience": "超市货架前的顾客",
+      "use_context": "货架卡 800×1200",
+      "user_goal": "把一份的糖换算成整袋与茶匙",
+      "content_basis": "常见每份/整袋标签结构；营养数值为演示",
+      "visual_intent": "整袋 30g 糖最大字号；7 满匙 + 半匙；一份/整袋对照表",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        800,
+        1200
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "大字号结论",
+        "茶匙图形",
+        "对照表",
+        "包装示意"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S09",
+          "condition": "12g/40g→30g/100g；30÷4=7.5 茶匙；蛋白 8→20g、纤维 5→12.5g",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 2,
+        "last_viewed": "2026-10-29T13:17:00+08:00",
+        "evidence": "case-09/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "0a5becd97cb5",
+        "cd2669bc2880"
+      ],
+      "final_request_id": "cd2669bc2880",
+      "iteration_ids": [
+        "B06-c09-v1",
+        "B06-c09-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 800×1200"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 2 times; last 13:17"
+        },
+        {
+          "id": "S09",
+          "passed": true,
+          "evidence": "12g/40g→30g/100g；30÷4=7.5 茶匙；蛋白 8→20g、纤维 5→12.5g"
+        }
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "订阅体检",
+      "audience": "有 5–10 项自动续费的上班族",
+      "use_context": "平板 1080×1350，月度复盘",
+      "user_goal": "看见年支出、续费日与低使用项",
+      "content_basis": "常见订阅扣费结构；订阅与金额为演示",
+      "visual_intent": "年化 1,662 + 5 周续费跑道（气泡=金额）+ 低使用卡",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1080,
+        1350
+      ],
+      "supporting_assets": [],
+      "dsl_capabilities": [
+        "气泡跑道",
+        "平方根比例",
+        "年化总额",
+        "低使用标记"
+      ],
+      "completion_criteria": [
+        {
+          "id": "E1",
+          "condition": "标题/开头在 3 秒内说清原来卡在哪、现在给什么答案",
+          "method": "整图查看首屏层级",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E2",
+          "condition": "所有数字与 data.json 一致；演示/非建议声明可见",
+          "method": "逐项复算并与 data.json 对照",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E3",
+          "condition": "先结论、再依据、后细节；目标尺寸下正文 ≥12px（远距离媒介按比例放大）",
+          "method": "按原生尺寸查看",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E4",
+          "condition": "给出明确下一步（可以停/别跑/退掉/问这 5 句/投哪个桶）",
+          "method": "整图查看结尾动作",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "E5",
+          "condition": "无文字重叠、裁切、误遮；实际查看最终 PNG",
+          "method": "逐张查看并复查修订页",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        },
+        {
+          "id": "S10",
+          "condition": "138.50×12=1,662；58×12=696；续费合计 320；8 项续费日期可见",
+          "method": "对照 data.json 与最终 PNG",
+          "plan_version": "plan-v1 2026-10-29T13:12+08:00"
+        }
+      ],
+      "visual_review": {
+        "views": 2,
+        "last_viewed": "2026-10-29T13:17:00+08:00",
+        "evidence": "case-10/final.png; tmp/run-20261029-110525/B06/iterations.jsonl",
+        "conclusion": "按原生尺寸查看，无重叠/裁切"
+      },
+      "request_ids": [
+        "ab29de89f541",
+        "1ba922a009bd"
+      ],
+      "final_request_id": "1ba922a009bd",
+      "iteration_ids": [
+        "B06-c10-v1",
+        "B06-c10-final"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "tmp/run-20261029-110525/B06/plan-v1.md",
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "E1",
+          "passed": true,
+          "evidence": "首屏结论与标题"
+        },
+        {
+          "id": "E2",
+          "passed": true,
+          "evidence": "逐项复算与 data.json"
+        },
+        {
+          "id": "E3",
+          "passed": true,
+          "evidence": "viewed at 1080×1350"
+        },
+        {
+          "id": "E4",
+          "passed": true,
+          "evidence": "结尾给出下一步"
+        },
+        {
+          "id": "E5",
+          "passed": true,
+          "evidence": "viewed 2 times; last 13:17"
+        },
+        {
+          "id": "S10",
+          "passed": true,
+          "evidence": "138.50×12=1,662；58×12=696；续费合计 320；8 项续费日期可见"
+        }
+      ]
+    }
+  ],
+  "final_collection_review": "十件均按原生尺寸逐张查看，共 3 轮修订。修复了停车页重复标签遮挡、工资单图例与分段条顺序相反、电费页说明压住坐标轴、换乘时间轴顺序矛盾、召回页 A8 漏标红、租约荧光条过长、营养表头错列、订阅气泡无标签等问题。最终十件的关键数字均在画面内闭合；每件都有明确下一步；所有演示与假设在画面内可见。",
+  "unresolved_issues": [
+    "未做用户测试、无障碍审计、打印实测或机构核对。",
+    "停车/垃圾/租约/医疗/税务/召回/列车/营养均为演示。",
+    "信息密度较高的工资单与租约只按 A4 尺寸设计，未验证更小屏幕。"
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "task_id": "A06",
+  "title": "十四节点依赖图与反馈回路",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "11 个拓扑层横向排布，同层并行节点上下堆叠；16 条先决边全部从左向右进入更高层，N04→N13 跨层先决用顶部绕行线。2 条反馈边用粉色虚线：N09→N08 从顶部绕回，N10→N08 从底部绕回，均配文字说明且不参与排序。下方三张说明卡给出先决、反馈、并行与最长路径，并加统计标签。",
+  "requirements": [
+    {
+      "text": "14 节点编号与标签完整",
+      "evidence": "N01–N14 全部出现，节点字号 22"
+    },
+    {
+      "text": "16 条先决边方向可辨，不指向过去层",
+      "evidence": "所有 solid 边 layer(to)>layer(from)，箭头从左到右"
+    },
+    {
+      "text": "反馈边虚线+专用图例，不画成先决",
+      "evidence": "2 条粉色虚线、图例与文字标注；graph-audit 标记 not_in_topological_sort"
+    },
+    {
+      "text": "解释失败回构建与检查后修复",
+      "evidence": "N09→N08、N10→N08 标签与说明卡"
+    },
+    {
+      "text": "附 graph-audit.json 层/邻居/最长路径/反馈位置",
+      "evidence": "graph-audit.json 完整"
+    }
+  ],
+  "files": [
+    {
+      "file": "dependency-map.snapshot",
+      "purpose": "1600×1000 DSL",
+      "dsl": "dependency-map.png",
+      "status": "完成"
+    },
+    {
+      "file": "dependency-map.png",
+      "purpose": "最终图",
+      "dsl": "dependency-map.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "graph-audit.json",
+      "purpose": "拓扑审计",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A06/dependency-map.png",
+      "at": "2026-10-29T11:29:51+0800",
+      "result": "节点/边/反馈/说明全部可读；说明卡略空"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A06/dependency-map.png",
+      "at": "2026-10-29T11:30:07+0800",
+      "result": "补统计标签后平衡，通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A06-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A06/drafts/gen_a06.py",
+      "image": "outputs/run-20261029-110525/A06/dependency-map.png",
+      "at": "2026-10-29T11:29:51+0800",
+      "problem": "说明卡空白偏多",
+      "change": "补三组统计标签",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "syntax",
+      "problem": "图例把 Positioned 放进 Row 导致渲染失败",
+      "cause": "seg() 返回 Stack 子节点用于 Row",
+      "fix": "改用 Container 色条",
+      "verify": "200 渲染",
+      "evidence": "requests.jsonl"
+    }
+  ],
+  "notes": "分层依赖图用直线边更清晰；跨层边统一走顶部通道，避免穿越节点与文字。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot 文本请求、图片响应、错误 JSON、/fonts",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform/Text 与属性限制",
+      "used_in": "全部布局"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize/fontStyle/maxLines 与文本换行",
+      "used_in": "标签与注释"
+    }
+  ]
+}

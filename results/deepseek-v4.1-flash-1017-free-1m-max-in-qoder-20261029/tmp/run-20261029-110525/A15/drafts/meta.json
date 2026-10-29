@@ -1,0 +1,123 @@
+{
+  "task_id": "A15",
+  "title": "复杂界面视觉复刻",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "按参考 PNG 实测坐标重建 1440×900 NORTHSTAR 仪表盘：220px 深色侧栏、三张 KPI、净收入柱图、活动卡、项目表。参考坐标由同算法图像测量获得（侧栏边界、卡片白区、柱色掩码、状态色块、字形暗像素），不是凭感觉摆放。字体用 Inter + Noto CJK 回退，按参考字形高度/宽度校正字号。",
+  "requirements": [
+    {
+      "text": "保持 1440×900、主要结构与信息完整",
+      "evidence": "侧栏/标题/按钮/3 KPI/图表/活动/表格/页脚齐全"
+    },
+    {
+      "text": "12+ 锚点±8px，覆盖四象限、图表、表格",
+      "evidence": "14 个锚点全部通过，最大 2px"
+    },
+    {
+      "text": "图表比例与标记，不只放数字",
+      "evidence": "0–120 轴、54px 柱宽、柱顶按值成比例"
+    },
+    {
+      "text": "表格 3 行顺序与状态编码准确",
+      "evidence": "Atlas/Pulse/Orbit；蓝/琥珀/绿三状态"
+    },
+    {
+      "text": "reconstruction-audit.json 与 comparison.md",
+      "evidence": "两文件含测量方法、误差、颜色与残余差异"
+    },
+    {
+      "text": "不嵌入参考图",
+      "evidence": "所有结构由 DSL 绘制"
+    }
+  ],
+  "files": [
+    {
+      "file": "reconstructed.snapshot",
+      "purpose": "1440×900 DSL",
+      "dsl": "reconstructed.png",
+      "status": "完成"
+    },
+    {
+      "file": "reconstructed.png",
+      "purpose": "复刻图",
+      "dsl": "reconstructed.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "reconstruction-audit.json",
+      "purpose": "锚点与颜色审计",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "comparison.md",
+      "purpose": "对比说明",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A15/reconstructed.png",
+      "at": "2026-10-29T04:00:06+0800",
+      "result": "结构接近；字号偏大"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A15/reconstructed.png",
+      "at": "2026-10-29T04:01:26+0800",
+      "result": "字号缩放后接近参考"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A15/reconstructed.png",
+      "at": "2026-10-29T04:02:25+0800",
+      "result": "14 锚点≤2px，通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A15-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A15/drafts/gen_a15.py",
+      "image": "outputs/run-20261029-110525/A15/reconstructed.png",
+      "at": "2026-10-29T04:00:06+0800",
+      "problem": "字体偏大、标题/KPI 宽度不符",
+      "change": "全局字号×0.78、标题微调",
+      "result": "锚点通过"
+    },
+    {
+      "id": "A15-v2",
+      "type": "visual",
+      "parent": "A15-v1",
+      "dsl": "outputs/run-20261029-110525/A15/reconstructed.snapshot",
+      "image": "outputs/run-20261029-110525/A15/reconstructed.png",
+      "at": "2026-10-29T04:02:25+0800",
+      "problem": "标题右边缘差 9px",
+      "change": "letterSpacing -0.1",
+      "result": "全部≤8px"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "初版字体整体偏大",
+      "cause": "参考使用更紧凑字号",
+      "fix": "0.78 缩放并按锚点微调",
+      "verify": "14 锚点通过",
+      "evidence": "outputs/run-20261029-110525/A15/reconstruction-audit.json"
+    }
+  ],
+  "notes": "复刻先量后画：用同一图像算法测参考与重建，避免只凭目测。字体差异在 comparison.md 如实说明。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "渲染接口",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Text",
+      "used_in": "全部布局"
+    }
+  ]
+}

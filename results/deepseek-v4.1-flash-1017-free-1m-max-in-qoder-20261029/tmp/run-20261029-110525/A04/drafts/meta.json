@@ -1,0 +1,157 @@
+{
+  "task_id": "A04",
+  "title": "分组改善与总体下降的数据解释",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "用同一 0–100% 尺度画四根渠道柱，直观看到 30→35、10→12 的双升；右侧用两期等长的 100% 堆叠条展示访问构成从 80/20 反转为 20/80；下方用总体 26.00%→16.60% 对照与原始分子/分母表锁定口径。结论给出精确分解：构成效应 −12.0pp、渠道内改善 +2.6pp、合计 −9.4pp，并明确观测数据不能证明因果。",
+  "requirements": [
+    {
+      "text": "1600×1000 信息图，两渠道两期率、构成、总体",
+      "evidence": "conversion-story.png 1600×1000，三部分齐全"
+    },
+    {
+      "text": "率图同一 0–100% 尺度，不平均渠道比例",
+      "evidence": "30.00/10.00/35.00/12.00 四柱同一轴；总体 2600/10000 与 1660/10000"
+    },
+    {
+      "text": "构成图每期等长、分段按真实占比",
+      "evidence": "两期均 540px=100%，80/20 与 20/80 分段"
+    },
+    {
+      "text": "总体对照与精确加权公式",
+      "evidence": "26.00%→16.60%，公式与 −9.40pp 可见"
+    },
+    {
+      "text": "所有原始分母/分子小表可核对",
+      "evidence": "4 渠道行 + 2 合计行，访问/成交/转化率齐全"
+    },
+    {
+      "text": "主结论与不可证明因果的限制",
+      "evidence": "结论卡明确“不能证明渠道调整导致下降”"
+    },
+    {
+      "text": "正文≥22、图标注≥18",
+      "evidence": "正文 22、表体 22、图注 18、轴 18"
+    },
+    {
+      "text": "analysis.json 精确分数、显示百分比、加权公式与依据",
+      "evidence": "analysis.json 含 rows/totals/weights/decomposition"
+    }
+  ],
+  "files": [
+    {
+      "file": "conversion-story.snapshot",
+      "purpose": "1600×1000 DSL",
+      "dsl": "conversion-story.png",
+      "status": "完成"
+    },
+    {
+      "file": "conversion-story.png",
+      "purpose": "最终图",
+      "dsl": "conversion-story.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "analysis.json",
+      "purpose": "分数、加权公式与分解",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A04/conversion-story.png",
+      "at": "2026-10-29T11:25:47+0800",
+      "result": "后期构成图例被裁、率图周期标签缺失"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A04/conversion-story.png",
+      "at": "2026-10-29T11:26:12+0800",
+      "result": "图例恢复；前期/后期标签贴底被裁"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A04/conversion-story.png",
+      "at": "2026-10-29T11:26:29+0800",
+      "result": "标签完整、表格 22px；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A04-v1",
+      "type": "syntax-fix",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A04/drafts/gen_a04.py",
+      "image": "tmp/run-20261029-110525/A04/drafts/conversion-story.png.http400.txt",
+      "at": "2026-10-29T11:25:27+0800",
+      "problem": "宽度属性出现未插值 {bar_w-w1}",
+      "change": "改成 f-string 计算 w2",
+      "result": "渲染成功"
+    },
+    {
+      "id": "A04-v2",
+      "type": "visual",
+      "parent": "A04-v1",
+      "dsl": "outputs/run-20261029-110525/A04/conversion-story.snapshot",
+      "image": "outputs/run-20261029-110525/A04/conversion-story.png",
+      "at": "2026-10-29T11:25:47+0800",
+      "problem": "构成图例被裁、周期标签缺失",
+      "change": "调整行距、加图例与周期标签",
+      "result": "周期标签仍被裁"
+    },
+    {
+      "id": "A04-v3",
+      "type": "visual",
+      "parent": "A04-v2",
+      "dsl": "outputs/run-20261029-110525/A04/conversion-story.snapshot",
+      "image": "outputs/run-20261029-110525/A04/conversion-story.png",
+      "at": "2026-10-29T11:26:29+0800",
+      "problem": "复查",
+      "change": "baseline 上移、表体 22",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "syntax",
+      "problem": "DSL 中 width=\"{bar_w-w1:.1f}\" 原样出现",
+      "cause": "拼接了非 f-string 片段",
+      "fix": "先算 w2 再插值",
+      "verify": "200 渲染",
+      "evidence": "requests.jsonl"
+    },
+    {
+      "type": "visual",
+      "problem": "构成图第二行图例被裁",
+      "cause": "卡片内容高 222px、图例结束 230px",
+      "fix": "行距 82→76，卡片 270→280",
+      "verify": "图例完整",
+      "evidence": "outputs/run-20261029-110525/A04/conversion-story.png"
+    },
+    {
+      "type": "visual",
+      "problem": "率图 前期/后期 标签贴底被裁",
+      "cause": "基线下移后标签超出内容框",
+      "fix": "baseline 338，标签上移",
+      "verify": "两标签完整",
+      "evidence": "outputs/run-20261029-110525/A04/conversion-story.png"
+    }
+  ],
+  "notes": "经验：百分比图统一 0–100% 轴能直接呈现“双升”，而堆叠构成条是解释辛普森悖论的关键；结论必须写出可复算的构成/渠道内分解。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot UTF-8 文本请求、图片二进制响应、错误 JSON 与 /fonts",
+      "used_in": "渲染与字体选择"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Row/Column/Transform/Text 属性与限制",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、maxLines、overflow 与文本换行",
+      "used_in": "文字排版"
+    }
+  ]
+}

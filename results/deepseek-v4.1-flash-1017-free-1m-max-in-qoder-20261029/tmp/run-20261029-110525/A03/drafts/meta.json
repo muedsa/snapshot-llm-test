@@ -1,0 +1,173 @@
+{
+  "task_id": "A03",
+  "title": "多层语义故障恢复",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "按原稿逐层修复：先真实提交 broken.snapshot 保存 400，再依次修复 padding、Transform.matrix、Positioned 父级，最后重建为 1280×800 深色监控卡。说明卡用 ClipRRect + BackdropFilter 只模糊卡内背景，彩色细条从卡左 260px 延伸到 1020px、穿过两侧边界，文字绘制在滤镜之后。REVIEW 用 -8° 列主序旋转矩阵、20% 白底与不透明文字。",
+  "requirements": [
+    {
+      "text": "原稿原样提交并保存响应，修复显式错误且不删区块",
+      "evidence": "tmp/run-20261029-110525/A03/drafts/broken-original.png.http400.txt；repair-log.json 记录 10 项问题"
+    },
+    {
+      "text": "1280×800、#0B1220、安全边距 32、标题 44",
+      "evidence": "最终 PNG 1280×800；标题 44，页边距 32"
+    },
+    {
+      "text": "三张等宽 KPI：USAGE 72% / LATENCY 148 ms / SUCCESS 99.2%，字号 28",
+      "evidence": "392×168×3，值 28px；LIVE 96×36 不压标题"
+    },
+    {
+      "text": "中央说明卡 500×150、圆角 24；彩条穿两侧；只模糊卡内背景",
+      "evidence": "BackdropFilter σ14 + ClipRRect；条纹 x=260–1020、300–1000、330–950 穿过卡 390–890"
+    },
+    {
+      "text": "REVIEW 160×56、逆时针 8°、白底 20%、文字不透明 24",
+      "evidence": "矩阵 rotation=-8°，#FFFFFF33 底、#FFFFFF 字 24px"
+    },
+    {
+      "text": "repair-log.json 对应位置、依据、修改与验证",
+      "evidence": "repair-log.json 含 10 项 issue 与 3 次失败响应记录"
+    }
+  ],
+  "files": [
+    {
+      "file": "system-pulse.snapshot",
+      "purpose": "修复后的 1280×800 DSL",
+      "dsl": "system-pulse.png",
+      "status": "完成"
+    },
+    {
+      "file": "system-pulse.png",
+      "purpose": "1280×800 最终图",
+      "dsl": "system-pulse.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "repair-log.json",
+      "purpose": "问题→依据→修改→验证",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "tmp/run-20261029-110525/A03/drafts/broken-original.png.http400.txt",
+      "at": "2026-10-29T11:19:32+0800",
+      "result": "400 PARSE_ERROR padding（非图片）"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A03/system-pulse.png",
+      "at": "2026-10-29T11:24:27+0800",
+      "result": "结构完整；实体转义文字与卡内条纹可见度需修"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A03/system-pulse.png",
+      "at": "2026-10-29T11:24:47+0800",
+      "result": "条纹穿过卡内虚化背景、文字锐利；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A03-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A03/drafts/broken-original.snapshot",
+      "image": "tmp/run-20261029-110525/A03/drafts/broken-original.png.http400.txt",
+      "at": "2026-10-29T11:19:32+0800",
+      "problem": "padding 400",
+      "change": "改 (24,32)",
+      "result": "进入 Transform.matrix 错误"
+    },
+    {
+      "id": "A03-v2",
+      "type": "syntax-fix",
+      "parent": "A03-v1",
+      "dsl": "tmp/run-20261029-110525/A03/drafts/broken-v1-padding.snapshot",
+      "image": "tmp/run-20261029-110525/A03/drafts/broken-v1-padding.png.http400.txt",
+      "at": "2026-10-29T11:19:43+0800",
+      "problem": "Transform 缺 matrix",
+      "change": "补 -8° 矩阵",
+      "result": "进入 Positioned 父级错误"
+    },
+    {
+      "id": "A03-v3",
+      "type": "syntax-fix",
+      "parent": "A03-v2",
+      "dsl": "tmp/run-20261029-110525/A03/drafts/broken-v2-transform.snapshot",
+      "image": "tmp/run-20261029-110525/A03/drafts/broken-v2-transform.png.http400.txt",
+      "at": "2026-10-29T11:19:50+0800",
+      "problem": "Positioned 在 Row 中导致 RENDER_ERROR",
+      "change": "重建 Stack 层级",
+      "result": "渲染成功"
+    },
+    {
+      "id": "A03-v4",
+      "type": "visual",
+      "parent": "A03-v3",
+      "dsl": "outputs/run-20261029-110525/A03/system-pulse.snapshot",
+      "image": "outputs/run-20261029-110525/A03/system-pulse.png",
+      "at": "2026-10-29T11:24:27+0800",
+      "problem": "实体未解码、卡内条纹过暗",
+      "change": "改文案；降低遮罩 alpha",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "parse_error",
+      "problem": "padding=\"24 32\"",
+      "cause": "EdgeInsets 格式非法",
+      "fix": "(24,32)",
+      "verify": "后续错误推进",
+      "evidence": "repair-log.json"
+    },
+    {
+      "type": "parse_error",
+      "problem": "Transform 缺 matrix",
+      "cause": "rotate 不是 Parser 属性",
+      "fix": "16 值矩阵",
+      "verify": "通过解析",
+      "evidence": "repair-log.json"
+    },
+    {
+      "type": "render_error",
+      "problem": "Positioned 在 Row 内",
+      "cause": "父级必须是 Stack",
+      "fix": "重建层级",
+      "verify": "200",
+      "evidence": "repair-log.json"
+    },
+    {
+      "type": "visual_only",
+      "problem": "卡内条纹不可见、文字被一起模糊",
+      "cause": "遮罩过暗；原稿 ImageFiltered 包住文字",
+      "fix": "BackdropFilter + 低 alpha 遮罩 + 文本后绘",
+      "verify": "最终图条纹可见且文字锐利",
+      "evidence": "outputs/run-20261029-110525/A03/system-pulse.png"
+    }
+  ],
+  "notes": "经验：BackdropFilter 必须放在裁剪容器内，且遮罩要半透明才能看见被模糊的背景；Parser 不做 HTML 实体解码，文本里的 < 要避开或用 CDATA。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot UTF-8 文本请求、图片二进制响应、错误 JSON 与 /fonts",
+      "used_in": "渲染与字体选择"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Row/Column/Transform/Text 属性与限制",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、maxLines、overflow 与文本换行",
+      "used_in": "文字排版"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-errors.md",
+      "knowledge": "PARSE_ERROR 的 diagnostic 字段与 RENDER_ERROR 区分",
+      "used_in": "A03 修复记录"
+    }
+  ]
+}

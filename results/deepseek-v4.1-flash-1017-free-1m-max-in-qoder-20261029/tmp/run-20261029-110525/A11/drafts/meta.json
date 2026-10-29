@@ -1,0 +1,153 @@
+{
+  "task_id": "A11",
+  "title": "文字保真与跨页结算单",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "两页 1200×1600 结算单。第 1 页展示双方、编号/日期/币种、四行明细、五步计税顺序与应付；金额用 Decimal 定点、ROUND_HALF_UP 至分，列右对齐。第 2 页四条 notes 与四条 literal_lines 用 CDATA 原样排版，保留双空格、反斜杠与尖括号；PAID / 已结算为嵌套 Text 富文本，斜线用 Raw 保留空格。",
+  "requirements": [
+    {
+      "text": "两页 1200×1600、编号/页眉/页码一致",
+      "evidence": "页码 01/02、02/02；编号一致"
+    },
+    {
+      "text": "四行 SKU/名称/数量/单价/行金额与汇总",
+      "evidence": "805.50/478.80/1,160.00/1,680.00；小计 4,124.30"
+    },
+    {
+      "text": "严格计税顺序与定点四舍五入",
+      "evidence": "折扣后 3,944.30；税 236.66；运费 35.00；应付 4,215.96"
+    },
+    {
+      "text": "金额小数点列对齐",
+      "evidence": "所有金额两位小数、右对齐"
+    },
+    {
+      "text": "notes 与 literal_lines 逐字符保真",
+      "evidence": "CDATA；批次双空格、路径反斜杠、A<B&C>D 均原样"
+    },
+    {
+      "text": "PAID / 已结算富文本共基线、不改应付",
+      "evidence": "嵌套 Text + Raw 斜线；应付仍 4,215.96"
+    },
+    {
+      "text": "正文≥24、脚注≥20、边距 48",
+      "evidence": "正文 24、说明 20、边距 48"
+    },
+    {
+      "text": "invoice-audit.json 与 text-map.json",
+      "evidence": "两文件完整"
+    }
+  ],
+  "files": [
+    {
+      "file": "invoice-page-01.snapshot",
+      "purpose": "第 1 页 DSL",
+      "dsl": "invoice-page-01.png",
+      "status": "完成"
+    },
+    {
+      "file": "invoice-page-01.png",
+      "purpose": "结算与明细",
+      "dsl": "invoice-page-01.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "invoice-page-02.snapshot",
+      "purpose": "第 2 页 DSL",
+      "dsl": "invoice-page-02.png",
+      "status": "完成"
+    },
+    {
+      "file": "invoice-page-02.png",
+      "purpose": "说明与原样文字",
+      "dsl": "invoice-page-02.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "invoice-audit.json",
+      "purpose": "金额与字面审计",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "text-map.json",
+      "purpose": "段落位置与字体",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A11/invoice-page-01.png",
+      "at": "2026-10-29T11:41:49+0800",
+      "result": "SKU 被转义成实体、应付金额换行"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A11/invoice-page-01.png",
+      "at": "2026-10-29T11:43:55+0800",
+      "result": "SKU 原样、应付一行；通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A11/invoice-page-02.png",
+      "at": "2026-10-29T11:42:00+0800",
+      "result": "说明中 &amp; 可见、PAID 斜线空格偏紧"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A11/invoice-page-02.png",
+      "at": "2026-10-29T11:44:16+0800",
+      "result": "和号文案与 Raw 斜线修正；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A11-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A11/drafts/gen_a11.py",
+      "image": "outputs/run-20261029-110525/A11/invoice-page-01.png",
+      "at": "2026-10-29T11:41:49+0800",
+      "problem": "实体转义与金额换行",
+      "change": "CDATA SKU、金额宽度/字号",
+      "result": "通过"
+    },
+    {
+      "id": "A11-v2",
+      "type": "visual",
+      "parent": "A11-v1",
+      "dsl": "outputs/run-20261029-110525/A11/invoice-page-02.snapshot",
+      "image": "outputs/run-20261029-110525/A11/invoice-page-02.png",
+      "at": "2026-10-29T11:44:16+0800",
+      "problem": "&amp; 与斜线空格",
+      "change": "改文案、Raw 斜线",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "SKU A<B&C>D 被转义为实体",
+      "cause": "T() 对 &<> 做 HTML 转义而 Parser 不解码实体",
+      "fix": "TRaw 使用 CDATA",
+      "verify": "页面显示原字符",
+      "evidence": "outputs/run-20261029-110525/A11/invoice-page-01.png"
+    }
+  ],
+  "notes": "Parser 不做实体解码；含 <、& 的文本必须 CDATA。金额对齐用固定宽度右对齐+两位小数即可。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot 文本请求、图片响应、错误处理",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Transform/Container/Stack/Text/滤镜/裁剪属性",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、文本换行",
+      "used_in": "文字排版"
+    }
+  ]
+}

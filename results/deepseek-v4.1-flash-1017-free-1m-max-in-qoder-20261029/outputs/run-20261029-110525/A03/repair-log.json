@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "original": "inputs/broken.snapshot",
+  "final": "system-pulse.snapshot",
+  "failures_kept": [
+    {
+      "version": "original",
+      "file": "tmp/run-20261029-110525/A03/drafts/broken-original.snapshot",
+      "response": "tmp/run-20261029-110525/A03/drafts/broken-original.png.http400.txt",
+      "request_id": "0a6070fe-cd67-4b07-ac12-fd6d6ba1b53c",
+      "http": 400,
+      "error": "PARSE_ERROR padding"
+    },
+    {
+      "version": "v1-padding",
+      "file": "tmp/run-20261029-110525/A03/drafts/broken-v1-padding.snapshot",
+      "response": "tmp/run-20261029-110525/A03/drafts/broken-v1-padding.png.http400.txt",
+      "request_id": "fd7164f6-2829-4720-83be-56b6b2fbcfb0",
+      "http": 400,
+      "error": "PARSE_ERROR Transform.matrix missing"
+    },
+    {
+      "version": "v2-transform",
+      "file": "tmp/run-20261029-110525/A03/drafts/broken-v2-transform.snapshot",
+      "response": "tmp/run-20261029-110525/A03/drafts/broken-v2-transform.png.http400.txt",
+      "request_id": "4eacd408-cd50-4f26-91ea-ea9b4797fc08",
+      "http": 400,
+      "error": "RENDER_ERROR renderBox.parentData must be StackParentData"
+    }
+  ],
+  "issues": [
+    {
+      "id": "A03-01",
+      "kind": "parse_error",
+      "location": "line 1, <Snapshot width=\"1280\" height=\"800\">",
+      "finding": "Snapshot 不接受 width/height，画布尺寸不是由根属性指定",
+      "basis": "parser-tags Snapshot 仅 background/debug/type；根尺寸由布局决定",
+      "fix": "外层 Container width=1280 height=800 固定画布",
+      "verified": "最终 1280×800 PNG 实际尺寸"
+    },
+    {
+      "id": "A03-02",
+      "kind": "parse_error",
+      "location": "line 2, padding=\"24 32\" (offset 92, col 23)",
+      "finding": "padding 格式非法，服务返回 400 PARSE_ERROR",
+      "basis": "错误响应 requestId 0a6070fe…；EdgeInsets 需 \"24\"、\"(v,h)\" 或 \"(l,t,r,b)\"",
+      "fix": "改为 padding=\"(24,32)\"；最终使用 (20,22) 等合法值",
+      "verified": "v1 通过解析，进入下一个错误"
+    },
+    {
+      "id": "A03-03",
+      "kind": "parse_error",
+      "location": "line 10, <Transform rotate=\"-8\"> (offset 466)",
+      "finding": "Transform 缺少必填 matrix，rotate 不是 Parser 属性",
+      "basis": "错误响应 requestId fd7164f6…；parser-tags Transform.matrix 必填",
+      "fix": "改用 16 值列主序旋转矩阵，rotation=-8°，alignment=CENTER",
+      "verified": "v2 通过解析；最终 REVIEW 逆时针 8° 由矩阵实现"
+    },
+    {
+      "id": "A03-04",
+      "kind": "render_error",
+      "location": "line 7, <Positioned> 直接位于 <Row> 内",
+      "finding": "Positioned 父节点必须是 Stack/IndexedStack，导致 RENDER_ERROR renderBox.parentData must be StackParentData",
+      "basis": "错误响应 requestId 4eacd408…；parser-tags Positioned 约束",
+      "fix": "重建层级：根 Stack + Positioned，LIVE 放到 Stack 顶层",
+      "verified": "最终渲染 200，LIVE 与标题不重叠"
+    },
+    {
+      "id": "A03-05",
+      "kind": "silent_ignore",
+      "location": "line 4, <Text font-size=\"44\">",
+      "finding": "font-size 不是属性名，未知属性被忽略，标题回退 14px",
+      "basis": "parser-tags 属性名区分大小写，未知属性忽略；对比实际图片字号",
+      "fix": "改为 fontSize=\"44\"",
+      "verified": "最终标题 44px，与安全边距内排版一致"
+    },
+    {
+      "id": "A03-06",
+      "kind": "silent_ignore",
+      "location": "line 1, Snapshot width/height 属性",
+      "finding": "未知根属性被忽略，画布由内容 intrinsic 尺寸决定，不能保证 1280×800",
+      "basis": "官方文档 Snapshot 属性表；首版图片尺寸与目标不符",
+      "fix": "在根 Stack 下使用固定 1280×800 Container",
+      "verified": "PNG IHDR 1280×800"
+    },
+    {
+      "id": "A03-07",
+      "kind": "silent_ignore",
+      "location": "line 9, <Spacer flex=\"1\"/> 位于无界高 Column",
+      "finding": "Column 高度无界时 Spacer/Flex 无法分配剩余空间",
+      "basis": "parser-tags Spacer 需要有限主轴空间",
+      "fix": "外层固定高度 + 明确 Positioned 布局，移除无界 Spacer",
+      "verified": "最终卡内所有元素有确定坐标"
+    },
+    {
+      "id": "A03-08",
+      "kind": "silent_ignore",
+      "location": "line 12, color=\"#33FFFFFF\"",
+      "finding": "8 位颜色语义已从 #AARRGGBB 改为 #RRGGBBAA，原写法变成青色而非半透明白",
+      "basis": "parser-tags 颜色迁移说明",
+      "fix": "按 #RRGGBBAA 写 #FFFFFF33（20% 白）",
+      "verified": "REVIEW 白底 20% 透明度、文字不透明"
+    },
+    {
+      "id": "A03-09",
+      "kind": "visual_only",
+      "location": "line 13-15, ImageFiltered 包裹整卡（含文字）",
+      "finding": "背景条纹与文字一起被高斯模糊，文字不可读；需求只要背景模糊",
+      "basis": "实际图片文字发虚；ImageFiltered 作用于整个子树",
+      "fix": "条纹放在卡片外，ClipRRect 内用 BackdropFilter 只模糊卡内背景，文字绘制在滤镜之后",
+      "verified": "最终图条纹在卡两侧可见、卡内背景虚化、文字锐利"
+    },
+    {
+      "id": "A03-10",
+      "kind": "visual_only",
+      "location": "line 5-7, 三指标未等宽/未组成一行，LIVE 缺失",
+      "finding": "原稿没有三张等宽 KPI、LIVE 96×36、REVIEW 160×56、500×150 说明卡",
+      "basis": "对照 TASK.md 逐项清单",
+      "fix": "按 392×168 三等分 KPI，LIVE 96×36、REVIEW 160×56、说明卡 500×150 r24",
+      "verified": "最终图逐项核对通过"
+    }
+  ],
+  "verification": {
+    "canvas": [
+      1280,
+      800
+    ],
+    "safe_margin_px": 32,
+    "title_font_px": 44,
+    "kpi_font_px": 28,
+    "explanation_font_px": 28,
+    "live_box_px": [
+      96,
+      36
+    ],
+    "review_box_px": [
+      160,
+      56
+    ],
+    "review_rotation_deg": -8,
+    "review_bg_alpha": 0.2,
+    "explanation_box_px": [
+      500,
+      150
+    ],
+    "explanation_radius_px": 24,
+    "stripes_cross_both_sides": true,
+    "stripe_x_ranges": [
+      [
+        260,
+        1020
+      ],
+      [
+        300,
+        1000
+      ],
+      [
+        330,
+        950
+      ]
+    ],
+    "text_over_stripes_clear": true
+  }
+}

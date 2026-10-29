@@ -1,0 +1,106 @@
+{
+  "task_id": "A10",
+  "title": "透明合成与滤镜语义实验板",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "1440×1100 六格实验板，3×2、320×240 白底。①②对照 alpha 与组 opacity；③④共用条纹+卡片场景，仅改变模糊作用层；⑤⑥共用 MULTIPLY+sigma6 场景，⑥额外 ClipOval r100。理论 alpha 计算与最终 PNG 像素采样写入 composite-audit.json。",
+  "requirements": [
+    {
+      "text": "六格 320×240、3×2、间距≥32、说明在区外",
+      "evidence": "格原点 (200/560/920, 190/470)，间距 40；下方说明卡"
+    },
+    {
+      "text": "①②重叠处 RGB 理论/实际与 128/255 vs 0.5 解释",
+      "evidence": "①(127,63,191) 采样一致；②(128,128,255) 实测(126,126,255)，误差≤2"
+    },
+    {
+      "text": "③④仅改变模糊层、共用参数",
+      "evidence": "pair_sharing 记录；③文字清晰、④文字糊"
+    },
+    {
+      "text": "⑤⑥共享场景与参数、⑥圆裁",
+      "evidence": "⑤无圆裁、⑥ ClipOval (160,120) r100；黄色形状跨圆周"
+    },
+    {
+      "text": "说明文字≥20",
+      "evidence": "说明条 20px"
+    },
+    {
+      "text": "③–⑥视觉判断引用实际图",
+      "evidence": "visual_checks 五条，含坐标与观察"
+    }
+  ],
+  "files": [
+    {
+      "file": "compositing-lab.snapshot",
+      "purpose": "1440×1100 DSL",
+      "dsl": "compositing-lab.png",
+      "status": "完成"
+    },
+    {
+      "file": "compositing-lab.png",
+      "purpose": "最终图",
+      "dsl": "compositing-lab.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "composite-audit.json",
+      "purpose": "像素与滤镜审计",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A10/compositing-lab.png",
+      "at": "2026-10-29T11:40:18+0800",
+      "result": "⑤的滤镜溢出格子上方并遮住标签"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A10/compositing-lab.png",
+      "at": "2026-10-29T11:40:43+0800",
+      "result": "六格清晰、③④与⑤⑥对照可辨；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A10-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A10/drafts/gen_a10_v2.py",
+      "image": "outputs/run-20261029-110525/A10/compositing-lab.png",
+      "at": "2026-10-29T11:40:18+0800",
+      "problem": "滤镜输出越出格子并遮挡标签",
+      "change": "每格 ClipRect 限制 320×240",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "⑤⑥模糊外溢、遮住标签",
+      "cause": "ImageFiltered 输出边界扩展",
+      "fix": "单元格 ClipRect",
+      "verify": "标签与格子边界恢复",
+      "evidence": "outputs/run-20261029-110525/A10/compositing-lab.png"
+    }
+  ],
+  "notes": "alpha 128/255 与 group opacity 0.5 的差异可被像素验证；BackdropFilter 与 ImageFiltered 的作用层差异必须用同一场景对照。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot 文本请求、图片响应、错误处理",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Transform/Container/Stack/Text/滤镜/裁剪属性",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、文本换行",
+      "used_in": "文字排版"
+    }
+  ]
+}

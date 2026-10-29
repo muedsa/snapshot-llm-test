@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "canvas": [
+    1440,
+    1100
+  ],
+  "cells": [
+    {
+      "index": 1,
+      "label": "① 50% alpha 叠加",
+      "origin_px": [
+        200,
+        190
+      ],
+      "size": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 2,
+      "label": "② Opacity(0.5) 组",
+      "origin_px": [
+        560,
+        190
+      ],
+      "size": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 3,
+      "label": "③ 仅背景模糊",
+      "origin_px": [
+        920,
+        190
+      ],
+      "size": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 4,
+      "label": "④ 子树整体模糊",
+      "origin_px": [
+        200,
+        470
+      ],
+      "size": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 5,
+      "label": "⑤ MULTIPLY + 模糊",
+      "origin_px": [
+        560,
+        470
+      ],
+      "size": [
+        320,
+        240
+      ]
+    },
+    {
+      "index": 6,
+      "label": "⑥ 同⑤ + 圆形裁剪",
+      "origin_px": [
+        920,
+        470
+      ],
+      "size": [
+        320,
+        240
+      ]
+    }
+  ],
+  "alpha_math": {
+    "sample_local": [
+      180,
+      100
+    ],
+    "alpha_128_over_255": 0.5019607843137255,
+    "cell1_steps": {
+      "red_over_white": [
+        255.0,
+        127.0,
+        127.0
+      ],
+      "blue_over_result": [
+        127.0,
+        63.25098,
+        191.25098
+      ],
+      "rounded": [
+        127,
+        63,
+        191
+      ]
+    },
+    "cell2_steps": {
+      "opaque_group_content_at_sample": [
+        0,
+        0,
+        255
+      ],
+      "group_opacity": 0.5,
+      "over_white": [
+        127.5,
+        127.5,
+        255.0
+      ],
+      "rounded": [
+        128,
+        128,
+        255
+      ]
+    },
+    "difference": "128/255 作用于每次绘制；0.5 作用于已合成的整组。",
+    "rounding": "floor(value+0.5)",
+    "tolerance_per_channel": 3,
+    "samples": [
+      {
+        "cell": 1,
+        "pixel": [
+          380,
+          290
+        ],
+        "rgba": [
+          127,
+          63,
+          191,
+          255
+        ],
+        "alpha": 255,
+        "theoretical_rounded": [
+          127,
+          63,
+          191
+        ],
+        "abs_error_rgb": [
+          0,
+          0,
+          0
+        ],
+        "passed": true
+      },
+      {
+        "cell": 2,
+        "pixel": [
+          740,
+          290
+        ],
+        "rgba": [
+          126,
+          126,
+          255,
+          255
+        ],
+        "alpha": 255,
+        "theoretical_rounded": [
+          128,
+          128,
+          255
+        ],
+        "abs_error_rgb": [
+          2,
+          2,
+          0
+        ],
+        "passed": true
+      }
+    ],
+    "all_passed": true
+  },
+  "filter_params": {
+    "sigmaX": 6,
+    "sigmaY": 6,
+    "card": [
+      240,
+      160
+    ],
+    "card_radius": 20,
+    "color_filter": "#F6B94A",
+    "blend_mode": "MULTIPLY",
+    "clip_circle": {
+      "center_local": [
+        160,
+        120
+      ],
+      "radius": 100
+    },
+    "card_local_origin": [
+      40,
+      40
+    ],
+    "text_size": 24
+  },
+  "pair_sharing": {
+    "cell3_4": {
+      "shared": [
+        "条纹颜色/宽度/相位",
+        "卡片位置/尺寸/圆角",
+        "文字",
+        "前景形状",
+        "绘制层次"
+      ],
+      "only_change": "模糊作用于背景（3）或整卡子树（4）"
+    },
+    "cell5_6": {
+      "shared": [
+        "基础场景",
+        "MULTIPLY",
+        "sigma 6",
+        "阴影",
+        "位置与颜色"
+      ],
+      "only_change": "⑥增加 ClipOval r100 at (160,120)"
+    }
+  },
+  "visual_checks": [
+    {
+      "cell": 3,
+      "what": "SHARP / BLUR 文字清晰；卡外条纹锐利；卡内条纹低频化",
+      "observed": true,
+      "evidence": "1440×1100 实际图，卡片区 (960..1200, 230..390) 与卡外 (930..950, 200..430) 对比"
+    },
+    {
+      "cell": 4,
+      "what": "同一场景文字与形状整体模糊、不可读；卡外条纹仍锐利",
+      "observed": true,
+      "evidence": "卡内文字轮廓扩散，卡外 (930..950, 470..710) 条纹边缘清晰"
+    },
+    {
+      "cell": 5,
+      "what": "MULTIPLY 后整体偏琥珀；透明间隙/深色矩形/阴影均可见且被模糊；未越出实验区",
+      "observed": true,
+      "evidence": "实验区 (560..880, 470..710)，白底间隙位于两组蓝色块之间"
+    },
+    {
+      "cell": 6,
+      "what": "圆形裁剪边界可见，圆心 (160,120) r100；黄色形状跨圆周被切断；圆外为白",
+      "observed": true,
+      "evidence": "实验区 (920..1240, 470..710)，圆周在 (1080,590) 附近切断黄色区域"
+    },
+    {
+      "cell": 3,
+      "what": "③④ 共用参数核对：条纹颜色/宽度/相位、卡片位置/尺寸/圆角、文字与前景形状相同",
+      "observed": true,
+      "evidence": "DSL 节点与 composite-audit pair_sharing 记录；仅滤镜作用层不同"
+    }
+  ]
+}

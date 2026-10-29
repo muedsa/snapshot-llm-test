@@ -1,0 +1,135 @@
+{
+  "task_id": "A08",
+  "title": "展馆双路线导览与共享通道",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "按 floor.txt 逐格绘制 26×16 网格（单格 36px），墙/通道/门格分色。BFS 求 S→E 与 S→B→D→E，R1 35 步 70 米、R2 47 步 94 米；两段共享通道分别 9 条与 8 条格间边。共享段使用宽蓝实线底 + 窄橙虚线同中心线，箭头按 ±3.5px 偏移，两侧均可追踪；分岔/合流处加标签。S/E 与 A–D 名称进入图例，格心保留字母标记。",
+  "requirements": [
+    {
+      "text": "1560×1080 双路线导览，26×16 网格与门洞",
+      "evidence": "wayfinding.png 尺寸正确，所有格子/门洞可见"
+    },
+    {
+      "text": "单格≥36px、格心坐标与比例尺",
+      "evidence": "36px；1 格=2 米；边缘坐标刻度"
+    },
+    {
+      "text": "R1 S→E 与 R2 S→B→D→E 步数/米数",
+      "evidence": "R1 35 步/70m；R2 47 步/94m；分段 19/16/12"
+    },
+    {
+      "text": "两条路线可独立追踪，共享段双向可辨",
+      "evidence": "宽蓝底+窄橙虚线；入/离馆共享段各一"
+    },
+    {
+      "text": "方向提示（箭头/分岔/合流/转弯）",
+      "evidence": "双色箭头、分岔/合流标签"
+    },
+    {
+      "text": "paths.json 格序列/共享段/审计依据",
+      "evidence": "paths.json 与 BFS 复核一致"
+    }
+  ],
+  "files": [
+    {
+      "file": "wayfinding.snapshot",
+      "purpose": "1560×1080 DSL",
+      "dsl": "wayfinding.png",
+      "status": "完成"
+    },
+    {
+      "file": "wayfinding.png",
+      "purpose": "最终图",
+      "dsl": "wayfinding.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "paths.json",
+      "purpose": "路径与绘制审计",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A08/wayfinding.png",
+      "at": "2026-10-29T11:34:45+0800",
+      "result": "S/E 大标签压线、A–D 名称溢出、图例拥挤"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A08/wayfinding.png",
+      "at": "2026-10-29T11:35:32+0800",
+      "result": "侧栏重构、S/E 标签移除、名称 22px；通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A08/wayfinding.png",
+      "at": "2026-10-29T11:35:49+0800",
+      "result": "分岔/合流左移、S/E 名称入图例；最终通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A08-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A08/drafts/gen_a08.py",
+      "image": "outputs/run-20261029-110525/A08/wayfinding.png",
+      "at": "2026-10-29T11:34:45+0800",
+      "problem": "标签压线、名称溢出",
+      "change": "移 S/E 标签入图例、A–D 名称 22px 两行",
+      "result": "基本通过"
+    },
+    {
+      "id": "A08-v2",
+      "type": "visual",
+      "parent": "A08-v1",
+      "dsl": "outputs/run-20261029-110525/A08/wayfinding.snapshot",
+      "image": "outputs/run-20261029-110525/A08/wayfinding.png",
+      "at": "2026-10-29T11:35:49+0800",
+      "problem": "分岔/合流标签压住路线",
+      "change": "左移标签、补 S/E 名称",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "render_error",
+      "problem": "图例共享段色块用 Stack 嵌套导致 ProxyWidget 错误",
+      "cause": "Stack 作为行内单子节点组合方式不稳定",
+      "fix": "改用单色条 + 文字说明",
+      "verify": "200",
+      "evidence": "requests.jsonl"
+    },
+    {
+      "type": "visual",
+      "problem": "S/E 大标签遮住路线",
+      "cause": "标签放在门格旁且覆盖路线",
+      "fix": "移除地图标签，名称入图例",
+      "verify": "路线连续可追踪",
+      "evidence": "outputs/run-20261029-110525/A08/wayfinding.png"
+    }
+  ],
+  "notes": "共享段用宽底+窄虚线是最稳妥的双身份画法；路径长度按格间边，不按像素偏移。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot 文本请求、图片响应、错误 JSON、/fonts",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform/Text 与属性限制",
+      "used_in": "全部布局"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize/fontStyle/maxLines 与文本换行",
+      "used_in": "标签与注释"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Stack 子节点限制与 Transform 矩阵",
+      "used_in": "路线与网格绘制"
+    }
+  ]
+}

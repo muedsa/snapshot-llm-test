@@ -1,0 +1,46 @@
+{
+  "task_id": "A01",
+  "title": "六个月经营诊断驾驶舱",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "采用浅色管理驾驶舱：顶部品牌与口径、四张 KPI、左侧主柱图 + 右侧两张月份对齐小图、底部六个月明细与管理结论。主图共用零起点与唯一金额轴（0–21 万元），净收入与利润分组柱；访问量小图使用零起点柱图，转化率小图使用独立百分比轴折线。表格按列右对齐，8 月退款异常行用暖色底强调，9 月用浅绿底标记收官。结论直接引用 8 月退款率 8.00%、利润环比 −16.4% 与 9 月 4.00% 的回落，避免把相关当因果。",
+  "requirements": [
+    {"text": "1600×1000 画布与 Northstar 六个月经营诊断", "evidence": "operations.png 实际尺寸 1600×1000，页眉含 2026-04 至 2026-09"},
+    {"text": "四张 KPI：总净收入、总经营利润、总订单、期间总体转化率", "evidence": "¥918,624 / ¥262,124 / 3,045 笔 / 11.15%；总体转化率=3045÷27300"},
+    {"text": "六个月净收入与经营利润分组柱图，共用零起点和比例", "evidence": "同一 0–21 万元轴，两根柱/月，9 月净收入 20.2 万与利润 6.4 万按同比例绘制"},
+    {"text": "访问量与转化率两个共享月份对齐的小图", "evidence": "两小图绘图区同为 x=34..432、6 组中心相同；访问量 0/3k/6k 刻度，转化率 10/11/12% 刻度"},
+    {"text": "六行明细表：月份/净收入/退款率/利润/转化率", "evidence": "表格 6 行完整，金额整数、比例两位小数，逐月数值与 CSV 计算一致"},
+    {"text": "一条有证据的管理结论", "evidence": "结论引用 8 月退款 15,048、退款率 8.00%、利润环比 −16.4% 与 9 月 4.00%、64,368，均可由 computed-data.json 复算"},
+    {"text": "正文≥20、脚注≥16；刻度单位图例完整", "evidence": "KPI 数值 38、表体 20、结论正文 20；脚注 16；主图图例与万元单位、两小图单位齐全"},
+    {"text": "computed-data.json 含每月计算值、汇总、图轴定义与结论引用数值", "evidence": "computed-data.json 含 months/totals/axes/bar_geometry/conclusion"}
+  ],
+  "docs": [
+    {"url": "https://open-snapshot.muedsa.com/ai-guide.md", "knowledge": "POST /snapshot 使用 UTF-8 纯文本，成功为图片二进制；错误为 JSON；/fonts 返回实际字体族", "used_in": "render.js 请求与错误处理、字体选择"},
+    {"url": "https://snapshot.muedsa.com/reference/parser-tags.md", "knowledge": "Container 尺寸/装饰/渐变、Stack+Positioned 定位、Row/Column/Expanded、Transform 矩阵、borderRadius 分角", "used_in": "operations.snapshot 全部布局与柱图"},
+    {"url": "https://snapshot.muedsa.com/reference/parser-text.md", "knowledge": "fontFamily、fontSize、fontStyle=BOLD、textAlign、字体回退与行高", "used_in": "KPI、表格与结论文字"},
+    {"url": "https://snapshot.muedsa.com/guides/examples.md", "knowledge": "固定画布 Container + 内层 Stack/Column 的构图方式", "used_in": "1600×1000 根布局"}
+  ],
+  "capabilities": "固定画布、Stack/Positioned 绝对定位、Container 边框/圆角/渐变、Row/Column/Expanded/Spacer、Text 多字号与字重、Transform 旋转绘制转化率折线；无外部图片，全部由 DSL 构造。",
+  "files": [
+    {"file": "operations.snapshot", "purpose": "经营驾驶舱完整 DSL", "dsl": "operations.png", "status": "完成（最终版本）"},
+    {"file": "operations.png", "purpose": "1600×1000 最终图", "dsl": "operations.snapshot", "status": "完成，服务真实响应 200"},
+    {"file": "computed-data.json", "purpose": "计算数据、轴定义与结论引用", "dsl": "-", "status": "完成"}
+  ],
+  "issues": [
+    {"type": "transport", "problem": "Python urllib 与 curl 在接收 PNG 时多次超时/截断（9583/15231 字节）", "cause": "本机 TLS/传输链路对大响应不稳定；服务端已返回 200 与完整 Content-Length", "fix": "改用 Node 24 fetch + Connection: close，校验 PNG IEND 后落盘；保留失败响应", "verify": "同一 DSL 由 Node 取得 15231 字节完整 PNG，可正常打开", "evidence": "tmp/run-20261029-110525/A01/requests.jsonl"},
+    {"type": "syntax-fix", "problem": "首次渲染 400 PARSE_ERROR：alignment CENTER_START 无效", "cause": "生成器把 START/END 直接拼进 CENTER_ 前缀；有效枚举是 CENTER_LEFT/CENTER_RIGHT", "fix": "表头对齐映射 LEFT/RIGHT", "verify": "重新渲染 200", "evidence": "tmp/run-20261029-110525/A01/failed/"},
+    {"type": "visual", "problem": "首版主图无柱、坐标被裁剪，结论与 KPI 文本溢出", "cause": "图表内部使用页面绝对坐标却放在有 padding 的 Stack 内，重复减去/未减去 padding；结论 Row 未用 Expanded", "fix": "全部图表改为卡片内容坐标；结论与 KPI 文本改用 Expanded/独立行", "verify": "第二版柱图、刻度、表格完整；结论脚注仍被裁", "evidence": "outputs/run-20261029-110525/A01/operations.png 首版与第二版对比"},
+    {"type": "visual", "problem": "结论卡片底部脚注仍被裁剪，访问量小图无刻度", "cause": "结论内证据文字 4 行 + 双标签行超出 300px；访问量小图仅画零线", "fix": "删去双标签行并压缩证据文案；访问量补 0/3k/6k 刻度与网格，与小图左边界对齐", "verify": "最终图脚注完整，两小图月份列严格对齐", "evidence": "outputs/run-20261029-110525/A01/operations.png"}
+  ],
+  "reviews": [
+    {"image": "outputs/run-20261029-110525/A01/operations.png", "at": "2026-10-29T11:14:30+0800", "result": "发现主图柱缺失、金额轴标题被裁、结论与 KPI 文本溢出"},
+    {"image": "outputs/run-20261029-110525/A01/operations.png", "at": "2026-10-29T11:16:30+0800", "result": "柱图和小图恢复正常；结论脚注被裁、访问量小图缺刻度"},
+    {"image": "outputs/run-20261029-110525/A01/operations.png", "at": "2026-10-29T11:16:55+0800", "result": "全部内容可见：四 KPI、主柱图、两小图、六行表、结论；通过"}
+  ],
+  "iterations": [
+    {"id": "A01-v1", "type": "baseline", "parent": null, "dsl": "tmp/run-20261029-110525/A01/drafts/gen_a01.py", "image": "outputs/run-20261029-110525/A01/operations.png", "at": "2026-10-29T11:14:30+0800", "problem": "主图柱缺失、文本溢出", "change": "修正卡片内容坐标系与文本 Expanded", "result": "部分修复，仍有裁剪"},
+    {"id": "A01-v2", "type": "visual", "parent": "A01-v1", "dsl": "outputs/run-20261029-110525/A01/operations.snapshot", "image": "outputs/run-20261029-110525/A01/operations.png", "at": "2026-10-29T11:16:30+0800", "problem": "结论脚注被裁、访问量小图无刻度", "change": "删标签行、压缩证据、补刻度与网格", "result": "通过，最终图完整"},
+    {"id": "A01-final", "type": "visual", "parent": "A01-v2", "dsl": "outputs/run-20261029-110525/A01/operations.snapshot", "image": "outputs/run-20261029-110525/A01/operations.png", "at": "2026-10-29T11:16:55+0800", "problem": "复查最终图", "change": "无（确认交付）", "result": "文字、数据、几何与链接通过"}
+  ],
+  "notes": "可复用经验：卡片内绝对坐标必须使用卡片内容坐标系；文本放在 Row 中必须用 Expanded 才能按可用宽度换行；迷你图共享月份对齐应使用同一绘图区左右边界与组宽。"
+}

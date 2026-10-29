@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "timezone": "+08:00",
+  "window": {
+    "start": "2026-11-07T09:00:00+08:00",
+    "deadline": "2026-11-07T16:00:00+08:00",
+    "minutes": 420
+  },
+  "makespan_minutes": 260,
+  "finish_time": "13:20",
+  "buffer_minutes": 160,
+  "tasks": [
+    {
+      "id": "R01",
+      "label": "需求核对",
+      "team": "design",
+      "start_min": 0,
+      "end_min": 25,
+      "start_time": "09:00",
+      "end_time": "09:25",
+      "minutes": 25,
+      "depends": []
+    },
+    {
+      "id": "R02",
+      "label": "服务与字体探测",
+      "team": "engineering",
+      "start_min": 0,
+      "end_min": 20,
+      "start_time": "09:00",
+      "end_time": "09:20",
+      "minutes": 20,
+      "depends": []
+    },
+    {
+      "id": "R03",
+      "label": "数据清洗",
+      "team": "engineering",
+      "start_min": 20,
+      "end_min": 60,
+      "start_time": "09:20",
+      "end_time": "10:00",
+      "minutes": 40,
+      "depends": [
+        "R02"
+      ]
+    },
+    {
+      "id": "R04",
+      "label": "视觉系统",
+      "team": "design",
+      "start_min": 25,
+      "end_min": 85,
+      "start_time": "09:25",
+      "end_time": "10:25",
+      "minutes": 60,
+      "depends": [
+        "R01"
+      ]
+    },
+    {
+      "id": "R05",
+      "label": "文案审校",
+      "team": "engineering",
+      "start_min": 60,
+      "end_min": 90,
+      "start_time": "10:00",
+      "end_time": "10:30",
+      "minutes": 30,
+      "depends": [
+        "R01"
+      ]
+    },
+    {
+      "id": "R06",
+      "label": "图表计算",
+      "team": "engineering",
+      "start_min": 90,
+      "end_min": 135,
+      "start_time": "10:30",
+      "end_time": "11:15",
+      "minutes": 45,
+      "depends": [
+        "R03"
+      ]
+    },
+    {
+      "id": "R07",
+      "label": "主海报构建",
+      "team": "design",
+      "start_min": 90,
+      "end_min": 160,
+      "start_time": "10:30",
+      "end_time": "11:40",
+      "minutes": 70,
+      "depends": [
+        "R04",
+        "R05"
+      ]
+    },
+    {
+      "id": "R08",
+      "label": "驾驶舱构建",
+      "team": "engineering",
+      "start_min": 135,
+      "end_min": 200,
+      "start_time": "11:15",
+      "end_time": "12:20",
+      "minutes": 65,
+      "depends": [
+        "R04",
+        "R06"
+      ]
+    },
+    {
+      "id": "R09",
+      "label": "手机适配",
+      "team": "design",
+      "start_min": 160,
+      "end_min": 205,
+      "start_time": "11:40",
+      "end_time": "12:25",
+      "minutes": 45,
+      "depends": [
+        "R07"
+      ]
+    },
+    {
+      "id": "R10",
+      "label": "视觉回归检查",
+      "team": "design",
+      "start_min": 205,
+      "end_min": 240,
+      "start_time": "12:25",
+      "end_time": "13:00",
+      "minutes": 35,
+      "depends": [
+        "R07",
+        "R08",
+        "R09"
+      ]
+    },
+    {
+      "id": "R11",
+      "label": "产物与数据核验",
+      "team": "engineering",
+      "start_min": 205,
+      "end_min": 235,
+      "start_time": "12:25",
+      "end_time": "12:55",
+      "minutes": 30,
+      "depends": [
+        "R08",
+        "R09"
+      ]
+    },
+    {
+      "id": "R12",
+      "label": "交付归档",
+      "team": "design",
+      "start_min": 240,
+      "end_min": 260,
+      "start_time": "13:00",
+      "end_time": "13:20",
+      "minutes": 20,
+      "depends": [
+        "R10",
+        "R11"
+      ]
+    }
+  ]
+}

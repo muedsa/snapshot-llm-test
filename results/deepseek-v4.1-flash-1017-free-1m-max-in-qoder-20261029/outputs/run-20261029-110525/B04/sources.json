@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "path_base": "suite_root",
+  "note": "本辑只用官方文档与本次真实请求结果；没有引用第三方图片或未核实的二手材料。文档于本次运行下载并缓存，哈希为缓存文件实测值。",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Open Snapshot：AI 使用指南",
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "cached_path": "tmp/run-20261029-110525/_suite/docs/ai-guide.md",
+      "sha256": "fe02e012370d4b31c4281ef5e23d67dc7f4a2370b29a86b87a3731dbcb492ff2",
+      "sections_used": ["最小示例", "生成 DSL 时的要点", "错误处理"]
+    },
+    {
+      "id": "S2",
+      "title": "类 DOM 解析器（parser.md）",
+      "url": "https://snapshot.muedsa.com/guides/parser.md",
+      "cached_path": "tmp/run-20261029-110525/_suite/docs/parser.md",
+      "sha256": "59dc2887f9658a5523f0c67333eed1b595d3f02395ae5d1b88c445a9e1982b47",
+      "sections_used": ["文本与 CDATA", "进阶：处理流程", "错误处理"]
+    },
+    {
+      "id": "S3",
+      "title": "Parser 标签参考（parser-tags.md）",
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "cached_path": "tmp/run-20261029-110525/_suite/docs/parser-tags.md",
+      "sha256": "0d7ccac2bc521f91721dbe7c2c46241c656396a862d48bb276a01347aee397f3",
+      "sections_used": ["Snapshot", "Container", "Row 与 Column", "Stack", "Positioned", "约束与溢出", "Opacity 与 Transform", "ColorFiltered、ImageFiltered 与 BackdropFilter", "ClipRect、ClipOval 与 ClipRRect"]
+    },
+    {
+      "id": "S4",
+      "title": "Parser 文本属性详解（parser-text.md）",
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "cached_path": "tmp/run-20261029-110525/_suite/docs/parser-text.md",
+      "sha256": "503623d646157a6c7b8aeeff851a29ce05b9704ac944cd7fdc396c9c3bdc613c",
+      "sections_used": ["字体与度量", "基线与混排", "平台与字体一致性"]
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "statement": "请求体是 UTF-8 纯文本 DSL；成功响应为图片二进制，失败响应为带 code、message、requestId 的 JSON。",
+      "source": "S1",
+      "section": "最小示例；错误处理",
+      "used_in_cases": [1, 10]
+    },
+    {
+      "id": "C02",
+      "statement": "解析流水线为 Reader → Tokenizer → Element 树 → WidgetParser → Widget 树 → RenderBox → 图片字节。",
+      "source": "S2",
+      "section": "进阶：处理流程",
+      "used_in_cases": [2]
+    },
+    {
+      "id": "C03",
+      "statement": "解析器不做 HTML 实体解码；文本中出现 < 或 > 时使用 CDATA。",
+      "source": "S2",
+      "section": "文本与 CDATA",
+      "used_in_cases": [2]
+    },
+    {
+      "id": "C04",
+      "statement": "根 Canvas 的尺寸来自根 Widget 的布局结果；约束从根向下传，尺寸从子节点向上回传。",
+      "source": "S3",
+      "section": "Snapshot；约束与溢出",
+      "used_in_cases": [3]
+    },
+    {
+      "id": "C05",
+      "statement": "Row/Column 只有在主轴有界时，Expanded 与 Spacer 才能分配剩余空间。",
+      "source": "S3",
+      "section": "Row 与 Column",
+      "used_in_cases": [3, 6]
+    },
+    {
+      "id": "C06",
+      "statement": "fontSize 是逻辑像素，行高与基线由字体度量决定；字体必须来自服务实际可用列表。",
+      "source": "S4",
+      "section": "字体与度量；平台与字体一致性",
+      "used_in_cases": [4]
+    },
+    {
+      "id": "C07",
+      "statement": "8 位颜色写作 #RRGGBBAA，最后两位是 alpha；设置渐变时 gradientColors 至少两种颜色。",
+      "source": "S3",
+      "section": "Container",
+      "used_in_cases": [5]
+    },
+    {
+      "id": "C08",
+      "statement": "Flex 先排固定子节点，再按 flex 份额分配剩余主轴空间；Flexible 允许子节点更小，Spacer 不绘制。",
+      "source": "S3",
+      "section": "Row 与 Column",
+      "used_in_cases": [6]
+    },
+    {
+      "id": "C09",
+      "statement": "Positioned 是唯一可用四边定位的子节点类型，且必须是 Stack 的直接子节点；Stack 默认按最大子节点收缩。",
+      "source": "S3",
+      "section": "Stack；Positioned",
+      "used_in_cases": [7]
+    },
+    {
+      "id": "C10",
+      "statement": "Transform 需要 16 个列主序 4×4 浮点数；旋转中心可用 origin 或 alignment 指定，矩阵不改变布局尺寸。",
+      "source": "S3",
+      "section": "Opacity 与 Transform",
+      "used_in_cases": [8]
+    },
+    {
+      "id": "C11",
+      "statement": "ImageFiltered 模糊整个子树，BackdropFilter 读取已绘制背景；裁剪可限定滤镜范围。",
+      "source": "S3",
+      "section": "ColorFiltered、ImageFiltered 与 BackdropFilter；ClipRect、ClipOval 与 ClipRRect",
+      "used_in_cases": [9]
+    },
+    {
+      "id": "C12",
+      "statement": "400 PARSE_ERROR 应修正 DSL；429 与部分 503 可参考 Retry-After 延迟重试，不要原样重试格式错误。",
+      "source": "S1",
+      "section": "错误处理",
+      "used_in_cases": [1, 10]
+    }
+  ]
+}

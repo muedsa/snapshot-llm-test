@@ -1,0 +1,147 @@
+{
+  "task_id": "A07",
+  "title": "三线换乘图与路线核验",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "三条线路按 45°/90° 折线绘制，S04/S05/S08 为双线环换乘站；颜色加线路字母。16 站均可读，无障碍状态用绿点/空心灰点区分并在图例说明。路线按“边数最少、再换乘最少”计算：Q1 6 边 1 换乘（无障碍）、Q2 6 边 1 换乘但在无设施 S05 换乘（不可无障碍，给 6 边 2 换乘替代）、Q3 4 边 1 换乘（无障碍）。旅行卡逐站展示站序、线路段与换乘点。",
+  "requirements": [
+    {
+      "text": "1600×1000 示意图 + 720×1280 旅行卡",
+      "evidence": "两图尺寸正确，均服务真实响应"
+    },
+    {
+      "text": "16 站名称/编号完整、线路折线 45°/90°、非地理声明",
+      "evidence": "16 站标签齐全；页眉“非地理示意图”；线路段均为 45° 或 90°"
+    },
+    {
+      "text": "共享站为换乘、交叉无站点不误导",
+      "evidence": "S04/S05/S08 双环；页脚说明交叉无圆环不构成换乘"
+    },
+    {
+      "text": "无障碍属性标注与图例",
+      "evidence": "绿点/空心灰点；S03/S05/S09/S14 无设施"
+    },
+    {
+      "text": "3 条查询最少边+最少换乘；无障碍替代",
+      "evidence": "routes.json：6/6/4 边，换乘 1/1/1；Q2 替代 6 边 2 换乘"
+    },
+    {
+      "text": "routes.json 站序、线路段、边数、换乘",
+      "evidence": "routes.json 完整"
+    }
+  ],
+  "files": [
+    {
+      "file": "network-map.snapshot",
+      "purpose": "1600×1000 地图 DSL",
+      "dsl": "network-map.png",
+      "status": "完成"
+    },
+    {
+      "file": "network-map.png",
+      "purpose": "地图",
+      "dsl": "network-map.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "travel-card.snapshot",
+      "purpose": "720×1280 旅行卡 DSL",
+      "dsl": "travel-card.png",
+      "status": "完成"
+    },
+    {
+      "file": "travel-card.png",
+      "purpose": "旅行卡",
+      "dsl": "travel-card.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "routes.json",
+      "purpose": "路线与无障碍核验",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A07/network-map.png",
+      "at": "2026-10-29T11:31:39+0800",
+      "result": "站点标签被线穿过、S16/S12 标签重叠"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A07/travel-card.png",
+      "at": "2026-10-29T11:32:56+0800",
+      "result": "正文与无障碍说明重叠"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A07/network-map.png",
+      "at": "2026-10-29T11:33:20+0800",
+      "result": "标签底色、换乘子标签、S16 修正后通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A07/travel-card.png",
+      "at": "2026-10-29T11:33:16+0800",
+      "result": "卡片增高、正文 20 后全部可见；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A07-map-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A07/drafts/gen_a07.py",
+      "image": "outputs/run-20261029-110525/A07/network-map.png",
+      "at": "2026-10-29T11:31:39+0800",
+      "problem": "标签与线重叠、S16/S12 冲突",
+      "change": "标签底色、移动 S16、删换乘子标签",
+      "result": "通过"
+    },
+    {
+      "id": "A07-card-v1",
+      "type": "visual",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A07/drafts/gen_a07.py",
+      "image": "outputs/run-20261029-110525/A07/travel-card.png",
+      "at": "2026-10-29T11:32:56+0800",
+      "problem": "正文重叠",
+      "change": "卡片增高、固定段落位置",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "syntax",
+      "problem": "旅行卡分段文案色值未插值、缺少 f 前缀",
+      "cause": "字符串拼接使用普通字符串",
+      "fix": "改为 f-string 并预算 bgacc",
+      "verify": "200",
+      "evidence": "requests.jsonl"
+    },
+    {
+      "type": "visual",
+      "problem": "地图站名被线路穿过",
+      "cause": "标签无底色且位于线路正上方",
+      "fix": "加半透明底色、移动 S16",
+      "verify": "最终图可读",
+      "evidence": "outputs/run-20261029-110525/A07/network-map.png"
+    }
+  ],
+  "notes": "路线 tie-break 必须显式实现为 (边数, 换乘数) 字典序；无障碍约束只在换乘站生效，可乘车通过无设施站。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot 文本请求、图片响应、错误 JSON、/fonts",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform/Text 与属性限制",
+      "used_in": "全部布局"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize/fontStyle/maxLines 与文本换行",
+      "used_in": "标签与注释"
+    }
+  ]
+}

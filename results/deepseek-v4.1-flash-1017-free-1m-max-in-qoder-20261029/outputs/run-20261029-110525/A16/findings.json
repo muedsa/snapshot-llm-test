@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "task_id": "A16",
+  "path_base": "output_dir",
+  "source": "inputs/source.csv",
+  "flawed_report": "inputs/flawed-report.png",
+  "findings": [
+    {
+      "id": "F1",
+      "kind": "数值错误",
+      "location": "左上标题「季度复盘：Q3利润最高」",
+      "phenomenon": "标题声称 Q3 利润最高",
+      "source_check": "Q3 profit 128−96=32；Q4 180−126=54",
+      "impact": "把最高利润季度说错，资源建议方向相反",
+      "fix": "标题改为 Q4 利润最高、Q3 收入回落",
+      "final_check": "corrected-report 标题与利润明细一致"
+    },
+    {
+      "id": "F2",
+      "kind": "数值错误",
+      "location": "利润明细 Q3「42 万元」",
+      "phenomenon": "Q3 利润写 42 万",
+      "source_check": "128−96=32 万；42 万无法由本表推出",
+      "impact": "高估 Q3 利润 10 万，支撑了错误标题",
+      "fix": "改为 32 万",
+      "final_check": "Q3 行显示 32 万元"
+    },
+    {
+      "id": "F3",
+      "kind": "图例/编码错误",
+      "location": "图表图例（右上）与柱色",
+      "phenomenon": "蓝色图例写「成本」、橙色写「收入」，但蓝柱 120/135/128/180 与 revenue 一致，橙柱 90/108/96/126 与 cost 一致",
+      "source_check": "两组柱高逐季对应 revenue/cost 列",
+      "impact": "读者把收入与成本完全读反",
+      "fix": "蓝=收入、橙=成本，图例与柱色一致",
+      "final_check": "图例与柱高对应正确"
+    },
+    {
+      "id": "F4",
+      "kind": "叙事错误",
+      "location": "副标题「收入持续上升，全年保持增长」",
+      "phenomenon": "声称收入持续上升",
+      "source_check": "Q3 128 < Q2 135，环比 −5.2%",
+      "impact": "掩盖 Q3 收入回落",
+      "fix": "改为 Q3 收入回落、Q4 反弹",
+      "final_check": "副标题与数据一致"
+    },
+    {
+      "id": "F5",
+      "kind": "坐标轴错误",
+      "location": "纵轴刻度 100–200",
+      "phenomenon": "柱图从 100 起，视觉夸大差异",
+      "source_check": "数据最小值 90，轴应含 0",
+      "impact": "放大季度差异，误导比较",
+      "fix": "0–200 共同零起点",
+      "final_check": "修正图 0 起点、柱高=值/200"
+    },
+    {
+      "id": "F6",
+      "kind": "结论错误",
+      "location": "右下「重点观察 · Q3」",
+      "phenomenon": "称 Q3 利润超过其他季度并建议集中资源",
+      "source_check": "Q4 利润 54 > Q3 32；Q3 利润率 25% = Q1，低于 Q4 30%",
+      "impact": "建议缺乏数据依据",
+      "fix": "改为 Q4 最高；Q3 的改善来自成本下降",
+      "final_check": "结论卡三条均有数值"
+    },
+    {
+      "id": "F7",
+      "kind": "叙事遗漏",
+      "location": "全图",
+      "phenomenon": "未解释 Q3 收入下降但利润上升",
+      "source_check": "成本 108→96，降 12 万；收入降 7 万",
+      "impact": "错过真正的经营解释",
+      "fix": "结论中加入成本下降 11.1%",
+      "final_check": "结论卡第三条"
+    }
+  ],
+  "uncertain": [
+    {
+      "item": "Q3 的 42 万是否为排版笔误或由其他口径计算",
+      "why_uncertain": "图片无计算过程，source.csv 只能得到 32 万；无法确认作者意图",
+      "treatment": "按源数据修正为 32 万，不推测其他口径"
+    },
+    {
+      "item": "图例颜色对调是否有意为之",
+      "why_uncertain": "无旧 DSL；但柱高与列名可核对，编码与数据不一致是客观事实",
+      "treatment": "记为编码错误，不评价审美"
+    },
+    {
+      "item": "字体、留白、圆角等视觉偏好",
+      "why_uncertain": "不属于数值或叙事错误",
+      "treatment": "不作为 finding，仅在新版风格中改进"
+    }
+  ],
+  "not_errors": [
+    "图表使用分组柱而非折线，是合理的表达选择",
+    "配色审美与圆角大小不属于数据错误"
+  ]
+}

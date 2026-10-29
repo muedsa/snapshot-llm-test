@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "source": "inputs/conversion.csv",
+  "unit": "visits=次, conversions=笔, rate=成交/访问",
+  "rows": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "visits": 8000,
+      "conversions": 2400,
+      "fraction": "2400/8000",
+      "display_rate": "30.00%"
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "visits": 2000,
+      "conversions": 200,
+      "fraction": "200/2000",
+      "display_rate": "10.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "visits": 2000,
+      "conversions": 700,
+      "fraction": "700/2000",
+      "display_rate": "35.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "visits": 8000,
+      "conversions": 960,
+      "fraction": "960/8000",
+      "display_rate": "12.00%"
+    }
+  ],
+  "totals": [
+    {
+      "period": "前期",
+      "visits": 10000,
+      "conversions": 2600,
+      "rate": 0.26
+    },
+    {
+      "period": "后期",
+      "visits": 10000,
+      "conversions": 1660,
+      "rate": 0.166
+    }
+  ],
+  "weights": [
+    {
+      "period": "前期",
+      "direct": 0.8,
+      "promo": 0.2
+    },
+    {
+      "period": "后期",
+      "direct": 0.2,
+      "promo": 0.8
+    }
+  ],
+  "weighted_formula": "overall = w_direct * rate_direct + w_promo * rate_promo",
+  "decomposition": {
+    "delta_overall": -0.094,
+    "mix_effect": -0.12000000000000001,
+    "within_channel_effect": 0.025999999999999992,
+    "check_sum": -0.09400000000000001,
+    "formula": "Δ = Σ(Δw_i * r_i,early) + Σ(w_i,late * Δr_i)"
+  },
+  "conclusion": {
+    "text": "两个渠道转化率均上升（直接 30%→35%，推广 10%→12%），但访问构成从 80% 直接转为 80% 推广，构成效应 −12.0pp 超过渠道内改善 +2.6pp，总体下降 9.4pp。",
+    "referenced_fields": [
+      "rows",
+      "totals",
+      "weights",
+      "decomposition"
+    ],
+    "causality_limit": "Observational period comparison; no causal claim."
+  },
+  "checks": {
+    "overall_is_total_conversions_over_total_visits": [
+      "2600/10000",
+      "1660/10000"
+    ],
+    "no_averaging_of_channel_rates": true,
+    "equal_length_composition_bars": true,
+    "rate_axis": [
+      0,
+      100
+    ],
+    "rate_axis_unit": "%"
+  }
+}

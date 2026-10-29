@@ -1,0 +1,150 @@
+{
+  "task_id": "A24",
+  "title": "双团队约束下的发布作战计划",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "对 12 任务做 2 团队资源约束搜索：同团队串行、依赖满足、允许 R05/R09/R12 选队；得到 09:00 起、13:20 完成（260min），缓冲 160min，关键路径 255min、资源下界 242.5min。三图共用同一排程：1920×1080 泳道、1200×1600 决策简报、720×1280 行动卡；依赖以编号索引展示，不画满交叉线。",
+  "requirements": [
+    {
+      "text": "可行且尽早排程，12 任务完整时长",
+      "evidence": "schedule.json；conflicts=[], depbad=[], duration check True"
+    },
+    {
+      "text": "依赖/团队/起止可读，空档与截止线",
+      "evidence": "泳道图与索引；16:00 截止线、缓冲带"
+    },
+    {
+      "text": "关键路径与工作量下界；不称最优",
+      "evidence": "审计 255/242.5/260；proven_optimal false"
+    },
+    {
+      "text": "三图一致、横屏≥20/竖页≥24/手机≥20",
+      "evidence": "同一 schedule；主要正文 20/22+"
+    },
+    {
+      "text": "brief 风险/对策/依据",
+      "evidence": "K1-K3 + 排程依据"
+    },
+    {
+      "text": "audit/content-map",
+      "evidence": "schedule-audit.json / content-map.json"
+    }
+  ],
+  "files": [
+    {
+      "file": "execution-board.snapshot",
+      "purpose": "1920×1080 DSL",
+      "dsl": "execution-board.png",
+      "status": "完成"
+    },
+    {
+      "file": "execution-board.png",
+      "purpose": "泳道执行图",
+      "dsl": "execution-board.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "decision-brief.snapshot",
+      "purpose": "1200×1600 DSL",
+      "dsl": "decision-brief.png",
+      "status": "完成"
+    },
+    {
+      "file": "decision-brief.png",
+      "purpose": "决策简报",
+      "dsl": "decision-brief.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "action-card.snapshot",
+      "purpose": "720×1280 DSL",
+      "dsl": "action-card.png",
+      "status": "完成"
+    },
+    {
+      "file": "action-card.png",
+      "purpose": "手机行动卡",
+      "dsl": "action-card.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "schedule.json",
+      "purpose": "精确排程",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "schedule-audit.json",
+      "purpose": "资源/依赖/下界审计",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "content-map.json",
+      "purpose": "三图区域映射",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A24/execution-board.png",
+      "at": "2026-10-29T04:25:11+0800",
+      "result": "泳道/缓冲/截止线完整；短块时间已改双行"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A24/decision-brief.png",
+      "at": "2026-10-29T04:25:11+0800",
+      "result": "KPI/关键路径/12 任务/风险完整；通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A24/action-card.png",
+      "at": "2026-10-29T04:23:17+0800",
+      "result": "12 任务时序、团队、风险徽标完整；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A24-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A24/drafts/gen_a24.py",
+      "image": "outputs/run-20261029-110525/A24/execution-board.png",
+      "at": "2026-10-29T04:22:49+0800",
+      "problem": "缓冲带盖块、简报 KPI 压标题、短块时间断行",
+      "change": "重排缓冲/简报间距/短块时间双行",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "缓冲带覆盖 R12 边缘",
+      "cause": "绘制顺序",
+      "fix": "缓冲带先画并右移",
+      "verify": "R12 完整",
+      "evidence": "outputs/run-20261029-110525/A24/execution-board.png"
+    },
+    {
+      "type": "visual",
+      "problem": "简报 KPI 压住章节标题；&amp; 实体",
+      "cause": "间距/转义",
+      "fix": "下移 KPI 与章节、改写标题",
+      "verify": "无重叠/无实体",
+      "evidence": "outputs/run-20261029-110525/A24/decision-brief.png"
+    }
+  ],
+  "notes": "用搜索而非手排得到 260min 方案，并明确它不是已证明最优；三图共用一份 schedule。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "渲染接口/type 仅 png/jpg/webp",
+      "used_in": "A23/A24"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform",
+      "used_in": "全部布局"
+    }
+  ]
+}

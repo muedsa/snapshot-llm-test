@@ -1,0 +1,178 @@
+{
+  "task_id": "A02",
+  "title": "三会场密集会议日程",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "宽图用 09:00–16:00 单一线性时间轴与 A/B/C 三条泳道；块宽严格等于时长×比例（40 分钟=155px，30 分钟=116px），短块只放编号/时间/标题，完整标题、讲者、类别与起止时间放在下方两列编号索引。午休 12:00–13:00 作为跨三泳道的独立色带，不并入任何活动。手机图改为上午/午休/下午分组的 15 行列表，保留编号、标题、会场、起止时间，并注明“讲者详见完整日程”。",
+  "requirements": [
+    {
+      "text": "1920×1200 泳道日程与 720×1280 手机导览",
+      "evidence": "两张最终 PNG 实际尺寸与 DSL 根 Container 一致"
+    },
+    {
+      "text": "块位置/长度按真实起止时间比例；空档保留",
+      "evidence": "scale=3.881 px/min；40 分钟块宽 155.24px；A 会场 09:40–10:00 空档可见"
+    },
+    {
+      "text": "午休 12:00–13:00 跨三泳道且不合并为活动",
+      "evidence": "独立色带 x=948.6–1181.4，贯穿三泳道；无活动跨午休"
+    },
+    {
+      "text": "15 项活动的编号、标题、讲者、起止时间、类别均可读",
+      "evidence": "宽图编号索引 15 行含全部字段；短块用编号映射"
+    },
+    {
+      "text": "注明读图方法与会场容量",
+      "evidence": "页眉注释“块宽=实际时长…”；图例 A 320 人 / B 80 人 / C 160 人"
+    },
+    {
+      "text": "手机图保留 15 项编号/标题/会场/起止时间，注明讲者位置",
+      "evidence": "15 行全部可见；页眉写“讲者详见完整日程”"
+    },
+    {
+      "text": "schedule-audit.json 含每场时长、各会场空档、冲突检查与两图映射",
+      "evidence": "schedule-audit.json 已生成并核对 conflicts=0"
+    }
+  ],
+  "files": [
+    {
+      "file": "agenda-wide.snapshot",
+      "purpose": "1920×1200 泳道日程 DSL",
+      "dsl": "agenda-wide.png",
+      "status": "完成"
+    },
+    {
+      "file": "agenda-wide.png",
+      "purpose": "1920×1200 最终图",
+      "dsl": "agenda-wide.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "agenda-mobile.snapshot",
+      "purpose": "720×1280 手机导览 DSL",
+      "dsl": "agenda-mobile.png",
+      "status": "完成"
+    },
+    {
+      "file": "agenda-mobile.png",
+      "purpose": "720×1280 最终图",
+      "dsl": "agenda-mobile.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "schedule-audit.json",
+      "purpose": "时长、空档、冲突、映射审计",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A02/agenda-wide.png",
+      "at": "2026-10-29T11:20:18+0800",
+      "result": "S15 文本溢出、索引只有左列（右列掉到画布外）"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A02/agenda-wide.png",
+      "at": "2026-10-29T11:22:00+0800",
+      "result": "索引双列恢复、S15 仍溢出，改为窄块只放编号/时间/标题"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A02/agenda-mobile.png",
+      "at": "2026-10-29T11:20:18+0800",
+      "result": "时间与编号重叠、底部信息条被裁"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A02/agenda-mobile.png",
+      "at": "2026-10-29T11:23:00+0800",
+      "result": "时间单行、15 行完整体；底部条移除后通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A02/agenda-wide.png",
+      "at": "2026-10-29T11:23:03+0800",
+      "result": "S15 与索引完整，通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A02-wide-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A02/drafts/gen_a02.py",
+      "image": "outputs/run-20261029-110525/A02/agenda-wide.png",
+      "at": "2026-10-29T11:20:18+0800",
+      "problem": "S15 溢出、索引右列掉出画布",
+      "change": "索引改 Row 双列；S15 窄块改堆叠",
+      "result": "第二轮修复，仍需收窄 S15"
+    },
+    {
+      "id": "A02-wide-v2",
+      "type": "visual",
+      "parent": "A02-wide-v1",
+      "dsl": "outputs/run-20261029-110525/A02/agenda-wide.snapshot",
+      "image": "outputs/run-20261029-110525/A02/agenda-wide.png",
+      "at": "2026-10-29T11:22:00+0800",
+      "problem": "S15 底部文字被裁",
+      "change": "窄块仅保留编号/时间/标题，讲者见索引",
+      "result": "通过"
+    },
+    {
+      "id": "A02-mobile-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A02/drafts/gen_a02.py",
+      "image": "outputs/run-20261029-110525/A02/agenda-mobile.png",
+      "at": "2026-10-29T11:20:18+0800",
+      "problem": "时间/编号重叠、底部条被裁",
+      "change": "时间改单行、收紧行高、移除底部条",
+      "result": "通过"
+    },
+    {
+      "id": "A02-mobile-v2",
+      "type": "visual",
+      "parent": "A02-mobile-v1",
+      "dsl": "outputs/run-20261029-110525/A02/agenda-mobile.snapshot",
+      "image": "outputs/run-20261029-110525/A02/agenda-mobile.png",
+      "at": "2026-10-29T11:23:00+0800",
+      "problem": "复查",
+      "change": "无",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "S15（15:30–16:00，30 分钟）块内文字溢出",
+      "cause": "30 分钟块仅 116px 宽，仍按常规块放讲者/类别",
+      "fix": "窄块只放编号/时间/标题，完整信息进索引",
+      "verify": "最终图 S15 全部可见",
+      "evidence": "outputs/run-20261029-110525/A02/agenda-wide.png"
+    },
+    {
+      "type": "visual",
+      "problem": "索引第二列落在画布外",
+      "cause": "外层用 Column 纵向堆叠了两个 890px 容器",
+      "fix": "改为 Row 双列",
+      "verify": "S01–S15 全部出现在两列中",
+      "evidence": "outputs/run-20261029-110525/A02/agenda-wide.png"
+    }
+  ],
+  "notes": "经验：时间比例图先用 scale 计算块宽，再为 30/40 分钟窄块设计降级排版；索引是保证短块信息完整的关键。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot UTF-8 文本请求、图片二进制响应、错误 JSON 与 /fonts",
+      "used_in": "渲染与字体选择"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Row/Column/Transform/Text 属性与限制",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、maxLines、overflow 与文本换行",
+      "used_in": "文字排版"
+    }
+  ]
+}

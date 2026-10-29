@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "product": "余味 AFTERTASTE",
+  "user": "阿岚（采购者），与室友小满、阿哲同住 302",
+  "fictional": true,
+  "journey_order": [
+    "case-02",
+    "case-01",
+    "case-04",
+    "case-03",
+    "case-05",
+    "case-06",
+    "case-07",
+    "case-10",
+    "case-08",
+    "case-09"
+  ],
+  "nodes": [
+    {
+      "step": 1,
+      "case_id": "case-02",
+      "title": "小票入库",
+      "time": "2026-10-29 周四 18:30",
+      "device": "手机 390×844",
+      "entry_from": null,
+      "user_goal": "把 10/28 的纸面小票补进共享库存，只确认看不清的那一行。",
+      "state_before": {
+        "tracked_items": [
+          "吐司"
+        ],
+        "unlogged_receipt": true,
+        "due_today": 0
+      },
+      "state_after": {
+        "tracked_items": 8,
+        "due_today": 3,
+        "low_confidence_fixed": "番茄 3 个的日期改为 11/02",
+        "receipt_total": 68.4
+      },
+      "shared_data": [
+        "receipt_scan",
+        "items"
+      ],
+      "next": "case-01",
+      "note": "识别 7 行，页面只显示需要确认的 3 行；其余 4 行自动归类。"
+    },
+    {
+      "step": 2,
+      "case_id": "case-01",
+      "title": "今晚三样",
+      "time": "2026-10-29 周四 18:34",
+      "device": "手机 390×844",
+      "entry_from": "case-02",
+      "user_goal": "一眼看到今晚必须先吃的 3 样，并进入今晚的菜单。",
+      "state_before": {
+        "tracked_items": 8,
+        "due_today": 3,
+        "rescued_this_week": 6
+      },
+      "state_after": {
+        "view": "3 样今晚到期",
+        "next": "看今晚的菜"
+      },
+      "shared_data": [
+        "items",
+        "week"
+      ],
+      "next": "case-04",
+      "note": "首页只强调到期排序，不展示全部库存；其余 5 样收在“还有 5 样”。"
+    },
+    {
+      "step": 3,
+      "case_id": "case-04",
+      "title": "把今晚吃掉",
+      "time": "2026-10-29 周四 18:50",
+      "device": "厨房平板 1200×900",
+      "entry_from": "case-01",
+      "user_goal": "从三个方案里选一个覆盖全部 3 样临期食材、且不需要额外采购的晚饭。",
+      "state_before": {
+        "menu": null,
+        "due_items": [
+          "菠菜",
+          "口蘑",
+          "鸡胸"
+        ],
+        "pantry": [
+          "米",
+          "蒜",
+          "酸奶",
+          "盐",
+          "黑胡椒"
+        ]
+      },
+      "state_after": {
+        "menu": "菠菜口蘑鸡肉烩饭",
+        "coverage": "3/3",
+        "servings": 3,
+        "cook": "小满",
+        "extra_purchase": 0
+      },
+      "shared_data": [
+        "recipes",
+        "items"
+      ],
+      "next": "case-03",
+      "note": "另两个方案分别缺面条或需要先检查过期吐司；因此不选。"
+    },
+    {
+      "step": 4,
+      "case_id": "case-03",
+      "title": "一把菠菜的档案",
+      "time": "2026-10-29 周四 18:58",
+      "device": "手机 390×844",
+      "entry_from": "case-05",
+      "user_goal": "在小满开做前确认菠菜怎么放、还能不能吃。",
+      "state_before": {
+        "item": "菠菜 200g",
+        "left_days": 0,
+        "claimed": true
+      },
+      "state_after": {
+        "storage": "厨房纸包住，装保鲜袋，冷藏",
+        "safety": "发黏或发酸就不要吃",
+        "action": "看今晚菜单"
+      },
+      "shared_data": [
+        "items",
+        "recipes"
+      ],
+      "next": "case-05",
+      "note": "时间线上 18:50 小满已认领，因此本页不再提供“今晚做”作为主操作，而是“看今晚菜单”。"
+    },
+    {
+      "step": 5,
+      "case_id": "case-05",
+      "title": "谁来做",
+      "time": "2026-10-29 周四 19:02",
+      "device": "手机 390×844",
+      "entry_from": "case-04",
+      "user_goal": "确认阿哲不回来吃、小满掌勺、阿岚补米，并把菜单同步给家里。",
+      "state_before": {
+        "eaters": 3,
+        "cook": "小满",
+        "rice": "不足",
+        "takeout": false
+      },
+      "state_after": {
+        "eaters": 3,
+        "cook": "小满",
+        "rice": "阿岚 19:10 带回",
+        "dishwasher": "阿岚",
+        "menu_synced": true
+      },
+      "shared_data": [
+        "handoff",
+        "household",
+        "recipes"
+      ],
+      "next": "case-06",
+      "note": "改点外卖会把 3 样食材顺延 1 天，因此保留做饭方案。"
+    },
+    {
+      "step": 6,
+      "case_id": "case-06",
+      "title": "冰箱门卡",
+      "time": "2026-10-29 周四 19:05",
+      "device": "墨水屏 600×800",
+      "entry_from": "case-05",
+      "user_goal": "路过冰箱的人不用打开手机就知道今晚吃什么、谁掌勺、多久。",
+      "state_before": {
+        "display": "旧菜单",
+        "last_sync": "18:55"
+      },
+      "state_after": {
+        "display": "菠菜 / 口蘑 / 鸡胸",
+        "cook": "小满",
+        "minutes": 25,
+        "last_sync": "19:05"
+      },
+      "shared_data": [
+        "recipes",
+        "household"
+      ],
+      "next": "case-07",
+      "note": "门卡不显示完整库存；只承担“最后一瞥”。"
+    },
+    {
+      "step": 7,
+      "case_id": "case-07",
+      "title": "灶台模式",
+      "time": "2026-10-29 周四 19:20",
+      "device": "手机横屏 844×390",
+      "entry_from": "case-06",
+      "user_goal": "手上是油时也能看清第 3 步、计时与还差哪样食材。",
+      "state_before": {
+        "step": 2,
+        "timer": null,
+        "checked": [
+          "菠菜",
+          "口蘑"
+        ]
+      },
+      "state_after": {
+        "step": 3,
+        "timer": "04:00",
+        "checked": [
+          "菠菜",
+          "口蘑"
+        ],
+        "pending": [
+          "鸡胸"
+        ]
+      },
+      "shared_data": [
+        "cooking",
+        "recipes"
+      ],
+      "next": "case-10",
+      "note": "计时 4 分钟与第 3 步同时进行；下一步回到 6 步流程。"
+    },
+    {
+      "step": 8,
+      "case_id": "case-10",
+      "title": "十月浪费小票",
+      "time": "2026-10-31 周六 21:10",
+      "device": "热敏小票 720×1280",
+      "entry_from": "case-07",
+      "user_goal": "月末把“没救回”的 5 件与“救回”的 31 件打印出来，贴在冰箱上。",
+      "state_before": {
+        "month_rescued": 31,
+        "month_wasted": 5
+      },
+      "state_after": {
+        "printed": true,
+        "rescued_value": 186.4,
+        "wasted_value": 28.6,
+        "rescued_kg": 8.6,
+        "wasted_kg": 1.7
+      },
+      "shared_data": [
+        "month"
+      ],
+      "next": "case-08",
+      "note": "小票只列损失明细；救回以汇总与对比条呈现，避免把账本变成指责清单。"
+    },
+    {
+      "step": 9,
+      "case_id": "case-08",
+      "title": "本周账本",
+      "time": "2026-11-01 周日 10:20",
+      "device": "A4 打印 1240×1754",
+      "entry_from": "case-10",
+      "user_goal": "回看这一周救回与浪费，决定下周的三个动作。",
+      "state_before": {
+        "week_rescued": 9,
+        "week_wasted": 2,
+        "rate": 0.82
+      },
+      "state_after": {
+        "actions": [
+          "只买 5 样",
+          "周三清冰箱",
+          "酸奶买 2 杯"
+        ],
+        "month_total": 31
+      },
+      "shared_data": [
+        "week",
+        "month"
+      ],
+      "next": "case-09",
+      "note": "四周 6+8+8+9=31，与十月小票 31 件一致。"
+    },
+    {
+      "step": 10,
+      "case_id": "case-09",
+      "title": "只买缺的",
+      "time": "2026-11-01 周日 11:01",
+      "device": "手机 390×844",
+      "entry_from": "case-08",
+      "user_goal": "按下周菜单生成清单，去掉家里已有的重复项，控制在预算内。",
+      "state_before": {
+        "budget": 90.0,
+        "selected": 0,
+        "duplicates": [
+          "番茄",
+          "牛奶",
+          "米"
+        ]
+      },
+      "state_after": {
+        "selected": 46.4,
+        "buy_items": 5,
+        "skipped": 1,
+        "removed_duplicates": 3,
+        "share_target": "阿哲"
+      },
+      "shared_data": [
+        "grocery",
+        "recipes"
+      ],
+      "next": null,
+      "note": "清单与周账本“只买 5 样”一致；番茄因家里还有 2 个不买。"
+    }
+  ],
+  "consistency_checks": [
+    "库存 8 件 = 首页 3 件今晚到期 + 5 件其他；小票 7 行加原有吐司，米与常备合并。",
+    "菜单 3/3 覆盖 = 菠菜 + 口蘑 + 鸡胸；灶台清单与菜谱步骤同源。",
+    "周账本 9 救回 + 2 浪费 = 11 件；82% 取整；四周件数合计 31 与十月小票一致。",
+    "采购清单 5 件合计 ¥46.40；预算 ¥90；番茄不买、牛奶与米从清单移除。"
+  ],
+  "assumptions": [
+    "保质期为购买日加品类估算，不是食品安全保证。",
+    "金额按购买价；重量按品类均值；CO₂e 按 2.5 kg CO₂e / kg 食物估算。",
+    "小票识别、OCR 置信度与日期补全为静态演示，未接真实识别模型。",
+    "墨水屏、热敏打印与厨房平板均为界面效果，不含硬件验证。"
+  ],
+  "validation_boundary": "未做真实用户访谈、可用性测试或上线验证；人物、商店、金额与日期均为虚构演示。"
+}

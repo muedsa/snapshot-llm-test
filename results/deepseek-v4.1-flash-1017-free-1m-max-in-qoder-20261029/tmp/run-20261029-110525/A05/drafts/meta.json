@@ -1,0 +1,138 @@
+{
+  "task_id": "A05",
+  "title": "不规则采样与缺测的仪表报告",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "三张纵向堆叠的趋势图共享同一条 08:00–12:30 真实时间轴（x=120+分钟/270×1250），半小时间隔网格贯穿三图。每个真实读数画独立空心圆标记；缺失点画灰色 × 与竖线，线段只在相邻两个实测点之间连接，缺测处断开。压差图中性零线加深，09:40–10:50 用浅琥珀带标出三个负值实测点，并明确“仅采样点为负”。下方 12 时点表分两栏，缺测写“—”。",
+  "requirements": [
+    {
+      "text": "1440×1000 三联趋势与真实时间比例共享横轴",
+      "evidence": "三图 x 映射一致；08:00–12:30 标签齐全"
+    },
+    {
+      "text": "温度/湿度缺测处线段断开、不补值",
+      "evidence": "温度在 09:15、11:40 断；湿度在 09:40 断；图中 × 与图例"
+    },
+    {
+      "text": "压差可正可负、零线清晰、标注负值区段",
+      "evidence": "零线加深；09:40–10:50 三个负样本带注释"
+    },
+    {
+      "text": "每个真实读数有独立标记",
+      "evidence": "10+11+12 个空心圆标记"
+    },
+    {
+      "text": "各指标有效数与观测 min/max",
+      "evidence": "KPI：10/12、11/12、12/12 与范围"
+    },
+    {
+      "text": "全部 12 时点简表，缺测以 —",
+      "evidence": "两栏 6+6 行，09:15 温度与 09:40 湿度为 —"
+    },
+    {
+      "text": "图例含缺测与断线；正文≥20、轴/表≥18",
+      "evidence": "图例在页眉；正文 20、轴 18、表 18/19"
+    },
+    {
+      "text": "normalized-data.json 含分钟偏移、null、范围、有效数、连接段",
+      "evidence": "normalized-data.json 完整"
+    }
+  ],
+  "files": [
+    {
+      "file": "sensor-report.snapshot",
+      "purpose": "1440×1000 DSL",
+      "dsl": "sensor-report.png",
+      "status": "完成"
+    },
+    {
+      "file": "sensor-report.png",
+      "purpose": "最终图",
+      "dsl": "sensor-report.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "normalized-data.json",
+      "purpose": "分钟偏移、缺测、范围与连接段",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A05/sensor-report.png",
+      "at": "2026-10-29T11:27:08+0800",
+      "result": "三图空白（坐标被裁剪）、页眉副标题被 KPI 压住"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A05/sensor-report.png",
+      "at": "2026-10-29T11:27:31+0800",
+      "result": "趋势可见；湿度缺测 × 不明显、12:30 轴标签缺失"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A05/sensor-report.png",
+      "at": "2026-10-29T11:28:09+0800",
+      "result": "对齐、缺测、负值带与 12 行表全部完整；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A05-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A05/drafts/gen_a05.py",
+      "image": "outputs/run-20261029-110525/A05/sensor-report.png",
+      "at": "2026-10-29T11:27:08+0800",
+      "problem": "图表内容被卡片裁剪、页眉重叠",
+      "change": "图表改页面级坐标；页眉压缩",
+      "result": "趋势可见"
+    },
+    {
+      "id": "A05-v2",
+      "type": "visual",
+      "parent": "A05-v1",
+      "dsl": "outputs/run-20261029-110525/A05/sensor-report.snapshot",
+      "image": "outputs/run-20261029-110525/A05/sensor-report.png",
+      "at": "2026-10-29T11:27:31+0800",
+      "problem": "湿度缺测标记弱、12:30 缺标签",
+      "change": "加深 ×；补 12:30；调整绘图区顶部",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "三张图全空白",
+      "cause": "卡片内 Stack 使用页面绝对坐标，内容被裁剪",
+      "fix": "所有图表元素提升到页面级 Stack",
+      "verify": "趋势、网格、标记全部显示",
+      "evidence": "outputs/run-20261029-110525/A05/sensor-report.png"
+    },
+    {
+      "type": "visual",
+      "problem": "12:30 轴标签与缺测标记不可见",
+      "cause": "标签被卡片背景覆盖；× 颜色过浅",
+      "fix": "标签后绘、× 改深灰",
+      "verify": "最终图可见",
+      "evidence": "outputs/run-20261029-110525/A05/sensor-report.png"
+    }
+  ],
+  "notes": "经验：共享时间轴必须统一 x 映射并让网格线在三图内重复绘制；缺测用“断线 + × + 图例”三重编码，避免被读成 0。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot UTF-8 文本请求、图片二进制响应、错误 JSON 与 /fonts",
+      "used_in": "渲染与字体选择"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Row/Column/Transform/Text 属性与限制",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、maxLines、overflow 与文本换行",
+      "used_in": "文字排版"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "task_id": "A16",
+  "title": "从错误图表恢复可信叙事",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "先查看原图并逐项以 source.csv 复核：发现图例把收入/成本颜色对调、Q3 利润 42 应为 32、标题“Q3利润最高”不成立（Q4 54 最高）、副标题“收入持续上升”不成立（Q3 环比 −5.2%）、Y 轴从 100 起、Q3 重点观察无依据。重制为 1280×900：共同 0–200 轴的收入/成本分组柱、四季利润明细与利润率、三条有数值的结论，以及原图问题脚注。",
+  "requirements": [
+    {
+      "text": "1280×900 可信报告、季度复盘主题",
+      "evidence": "尺寸正确，标题季度复盘"
+    },
+    {
+      "text": "四季收入/成本分组柱、共同零起点、万元、全季度",
+      "evidence": "0–200 轴、8 根柱、单位标注"
+    },
+    {
+      "text": "柱高对应数值",
+      "evidence": "柱高=值/200×280；180/126 等与轴一致"
+    },
+    {
+      "text": "利润明细与一条数据依据标题",
+      "evidence": "30/27/32/54；标题 Q4 最高、Q3 回落"
+    },
+    {
+      "text": "findings.json 每项位置/现象/核对/影响/修正/复查 + 不确定项",
+      "evidence": "7 confirmed + 3 uncertain"
+    },
+    {
+      "text": "corrected-data.json 计算与轴定义",
+      "evidence": "两文件完整"
+    },
+    {
+      "text": "正文≥22、标注≥18",
+      "evidence": "正文 22、注释 18"
+    }
+  ],
+  "files": [
+    {
+      "file": "corrected-report.snapshot",
+      "purpose": "1280×900 DSL",
+      "dsl": "corrected-report.png",
+      "status": "完成"
+    },
+    {
+      "file": "corrected-report.png",
+      "purpose": "修正报告",
+      "dsl": "corrected-report.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "findings.json",
+      "purpose": "问题清单",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "corrected-data.json",
+      "purpose": "计算与轴",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A16/corrected-report.png",
+      "at": "2026-10-29T04:03:30+0800",
+      "result": "图表/利润/结论完整；标注偏小"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A16/corrected-report.png",
+      "at": "2026-10-29T04:03:44+0800",
+      "result": "标注≥18 后通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A16-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A16/drafts/gen_a16.py",
+      "image": "outputs/run-20261029-110525/A16/corrected-report.png",
+      "at": "2026-10-29T04:03:30+0800",
+      "problem": "部分标注 15–17px",
+      "change": "统一到 18px",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "数值标签与刻度过小",
+      "cause": "初版 15–17px",
+      "fix": "18px",
+      "verify": "通过",
+      "evidence": "outputs/run-20261029-110525/A16/corrected-report.png"
+    }
+  ],
+  "notes": "先证据后结论：图例错配通过柱高与 CSV 列逐项对应确认；Q3 42 无法由本表推出，按 32 修正并把作者意图列为不确定。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "渲染接口",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Text",
+      "used_in": "全部布局"
+    }
+  ]
+}

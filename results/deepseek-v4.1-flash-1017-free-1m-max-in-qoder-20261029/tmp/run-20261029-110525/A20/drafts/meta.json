@@ -1,0 +1,120 @@
+{
+  "task_id": "A20",
+  "title": "二十四密集点的无重叠标注",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "1600×1100 示意地图，24 点严格按 px=280+10.4×x、py=920−7.6×y 映射。标签按 x 中位数分左右两侧，各 12 个、180×40、行距 56；引导线从点圆周连到自身标签边。审计计算：标签间距最小 16px、线穿标签 0、线穿非本点 0、引导线交叉 1（M21/M07，≤3）、边界通过；最高 3 个 M10 93 / M08 91 / M23 90 用金环。中心 6 点放大检查。",
+  "requirements": [
+    {
+      "text": "1600×1100、主图 1040×760、24 点 d12 精确映射",
+      "evidence": "label-layout.json anchor_px 与公式"
+    },
+    {
+      "text": "每点 ID/name/value 可读、标签不遮点",
+      "evidence": "24 标签 20px；线穿点 0；标签在外侧"
+    },
+    {
+      "text": "标签盒间距≥4、线不穿标签；>24px 有引导线",
+      "evidence": "最小间距 16px；线穿标签 0；全部>24"
+    },
+    {
+      "text": "引导线交叉≤3、不连错点",
+      "evidence": "1 处交叉 M21/M07；端点各自身标签"
+    },
+    {
+      "text": "坐标轴/范围/单位/最高3",
+      "evidence": "0–100 轴、指数、金环 M10/M08/M23"
+    },
+    {
+      "text": "放大中心 6 点与整体查看",
+      "evidence": "zoom-center.png 与全图已查看"
+    }
+  ],
+  "files": [
+    {
+      "file": "annotated-map.snapshot",
+      "purpose": "1600×1100 DSL",
+      "dsl": "annotated-map.png",
+      "status": "完成"
+    },
+    {
+      "file": "annotated-map.png",
+      "purpose": "最终图",
+      "dsl": "annotated-map.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "label-layout.json",
+      "purpose": "锚点/标签盒/引导线",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "layout-audit.json",
+      "purpose": "几何审计",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A20/annotated-map.png",
+      "at": "2026-10-29T04:14:25+0800",
+      "result": "轴标签缺失、点/标签偏移"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A20/annotated-map.png",
+      "at": "2026-10-29T04:14:45+0800",
+      "result": "24 标签/线/轴完整；1 处交叉"
+    },
+    {
+      "image": "tmp/run-20261029-110525/A20/zoom-center.png",
+      "at": "2026-10-29T04:14:58+0800",
+      "result": "中心 6 点清楚、线不穿圆、标签不遮点"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A20-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A20/drafts/gen_a20.py",
+      "image": "outputs/run-20261029-110525/A20/annotated-map.png",
+      "at": "2026-10-29T04:14:25+0800",
+      "problem": "轴标签被裁剪、点偏移",
+      "change": "轴与覆盖层改页面坐标",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "x/y 轴标签缺失",
+      "cause": "在 Map Stack 外溢被裁剪",
+      "fix": "页面级重绘刻度",
+      "verify": "0–100 双轴完整",
+      "evidence": "outputs/run-20261029-110525/A20/annotated-map.png"
+    },
+    {
+      "type": "visual",
+      "problem": "点与标签偏移",
+      "cause": "页面坐标放入 Map Stack",
+      "fix": "Map 只画网格，覆盖层页面级",
+      "verify": "锚点对齐",
+      "evidence": "outputs/run-20261029-110525/A20/label-layout.json"
+    }
+  ],
+  "notes": "侧栏标签+直线引导在本题点分布下仅 1 处交叉；标签行距 56、盒高 40 保证 16px 间距。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "渲染接口与错误",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform",
+      "used_in": "全部布局"
+    }
+  ]
+}

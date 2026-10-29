@@ -1,0 +1,136 @@
+{
+  "task_id": "A18",
+  "title": "守恒对象的三幕视觉叙事",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "三幕并置 1600×1000：15 个 U01–U15 单元（蓝/橙/灰各 5、直径 36）与 3 个同形节点 N01–N03。第一幕三层环围绕 N01，第二幕挤压成 3×5 块且 N01 纵向 0.82 形变，第三幕三组各 5 个、每组混色。先做 A/B 两版 1600×1000 实际预览，看图选 A；连线先画、圆点后画，避免线遮圆。",
+  "requirements": [
+    {
+      "text": "三幕各同一组 15 单元与 3 节点、ID 稳定",
+      "evidence": "story-audit.json U01–U15 / N01–N03；每幕 15+3"
+    },
+    {
+      "text": "单元直径 36、不重叠、线不遮圆",
+      "evidence": "最小圆心距 40/49.79px；线在圆下绘制；审计计算"
+    },
+    {
+      "text": "第三幕每节点 5 个且至少两色",
+      "evidence": "N01/N02/N03 各 5；组色 3/3/2 种"
+    },
+    {
+      "text": "仅幕名与总标题；过载不用警告文字",
+      "evidence": "图中文字只有标题与 I/II/III 幕名"
+    },
+    {
+      "text": "两版预览并选择",
+      "evidence": "tmp preview-a/b 均渲染查看；rationale 记录"
+    },
+    {
+      "text": "400px 缩略仍可读",
+      "evidence": "thumb-400.png 已查看"
+    }
+  ],
+  "files": [
+    {
+      "file": "three-act-story.snapshot",
+      "purpose": "1600×1000 DSL",
+      "dsl": "three-act-story.png",
+      "status": "完成"
+    },
+    {
+      "file": "three-act-story.png",
+      "purpose": "最终图",
+      "dsl": "three-act-story.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "story-audit.json",
+      "purpose": "三幕坐标/接收/几何审计",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "rationale.md",
+      "purpose": "叙事与选择说明",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "tmp/run-20261029-110525/A18/preview-a.png",
+      "at": "2026-10-29T04:10:08+0800",
+      "result": "三环/挤压/三分三幕清晰"
+    },
+    {
+      "image": "tmp/run-20261029-110525/A18/preview-b.png",
+      "at": "2026-10-29T04:10:08+0800",
+      "result": "单环/单列/三角，第二幕过长"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A18/three-act-story.png",
+      "at": "2026-10-29T04:10:50+0800",
+      "result": "三幕完整、第三幕混色；通过"
+    },
+    {
+      "image": "tmp/run-20261029-110525/A18/thumb-400.png",
+      "at": "2026-10-29T04:10:57+0800",
+      "result": "400px 宽仍能分辨三种构图"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A18-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A18/drafts/gen_a18.py",
+      "image": "tmp/run-20261029-110525/A18/preview-a.png",
+      "at": "2026-10-29T04:10:08+0800",
+      "problem": "预览坐标错位",
+      "change": "卡片内坐标减去原点",
+      "result": "通过"
+    },
+    {
+      "id": "A18-v2",
+      "type": "visual",
+      "parent": "A18-v1",
+      "dsl": "outputs/run-20261029-110525/A18/three-act-story.snapshot",
+      "image": "outputs/run-20261029-110525/A18/three-act-story.png",
+      "at": "2026-10-29T04:10:50+0800",
+      "problem": "第三幕按色分组",
+      "change": "改为混色五元组",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "预览只显示第一幕",
+      "cause": "幕内绝对坐标未减卡片原点",
+      "fix": "改为卡片局部坐标",
+      "verify": "三幕完整",
+      "evidence": "outputs/run-20261029-110525/A18/three-act-story.png"
+    },
+    {
+      "type": "logical",
+      "problem": "第三幕各组单色",
+      "cause": "按 ID 顺序切成三组",
+      "fix": "GIDS 混色分组",
+      "verify": "每组≥2色",
+      "evidence": "outputs/run-20261029-110525/A18/story-audit.json"
+    }
+  ],
+  "notes": "守恒叙事用同一组 ID/尺寸，先画线后画圆保证线不遮圆；过载用间距与节点形变表达，不用文字。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "渲染接口与错误",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform",
+      "used_in": "全部布局"
+    }
+  ]
+}

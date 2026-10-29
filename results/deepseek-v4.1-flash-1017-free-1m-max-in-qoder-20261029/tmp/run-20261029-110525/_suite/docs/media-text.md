@@ -1,0 +1,208 @@
+# 图片、文本与富文本
+
+> 图片来源与适配、文本基线、中英文与图文混排、TextStyle 和行内图片。
+
+图片先选“来源”和“如何放进框里”；文字先确定字体与可用宽度，再决定换行和混排。只想解决一个问题时，可以直接跳到[图片适配](#%E9%BB%98%E8%AE%A4%E9%80%82%E9%85%8D%E4%B8%8E%E8%BF%81%E7%A7%BB)、[普通文本](#%E6%99%AE%E9%80%9A%E6%96%87%E6%9C%AC)或[基线与混排](#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)。加载本地图片的完整程序见[资源管理示例](/guides/rendering/#%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E5%B9%B6%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90)，中文部署见[字体配置](/guides/fonts/)。
+
+## 图片 Widget
+
+| Widget                                                       | 图片来源                               |
+| ------------------------------------------------------------ | ---------------------------------- |
+| [`RawImage`](/widgets/image/raw-image/)                      | 已经解码的 Skia `Image`                 |
+| [`ProviderImage`](/widgets/image/provider-image/)            | `() -> Image` 提供函数；构造 Widget 时立即调用 |
+| [`CachedNetworkImage`](/widgets/image/cached-network-image/) | URL，通过全局网络缓存同步获取                   |
+
+它们共享大部分绘制参数：
+
+| 参数                         | 含义                                                     |
+| -------------------------- | ------------------------------------------------------ |
+| `width` / `height`         | 图片盒尺寸；可以只指定一个维度                                        |
+| `fit`                      | 普通图片省略时按 `SCALE_DOWN`；可显式设置 `FILL`、`CONTAIN`、`COVER` 等 |
+| `alignment`                | 图片在目标盒中的对齐位置                                           |
+| `repeat`                   | 不重复、横向、纵向或双向平铺                                         |
+| `scale`                    | 像素密度：每个逻辑像素对应的图像像素数                                    |
+| `opacity`                  | 0 到 1 的透明度                                             |
+| `color` / `colorBlendMode` | 颜色叠加和混合模式                                              |
+
+`scale` 必须是有限正数。图片尺寸为零、缩放和平铺等边界情况由当前实现校验或安全处理；不要依赖零尺寸图片产生可见内容。
+
+### 默认适配与迁移
+
+普通图片的 `fit = null` 按 `BoxFit.SCALE_DOWN` 处理：保持宽高比，只在放不下时缩小，不把小图放大，剩余空间按 `alignment` 对齐。底层 `RenderImage` / `paintImage` 或 `DecorationImage` 指定 `centerSlice` 时，省略 `fit` 则按 `FILL` 九宫格填满。适配只决定盒内如何绘制，不改变组件自身的布局尺寸。
+
+这套默认值与 Flutter 一致，`RawImage`、`ProviderImage`、`CachedNetworkImage`、行内图片和 `DecorationImage` 共用绘制规则；Parser 的 `<Image>` / `<Emoji>` 省略 `fit` 也按 `SCALE_DOWN`。
+
+升级后如何保留旧图片效果
+
+此前普通图片默认拉伸铺满，九宫格默认只缩不放。保留普通图片的旧效果，请显式设置 `fit = BoxFit.FILL`（Parser 写 `fit="FILL"`）；保留九宫格的旧效果，请显式设置 `fit = BoxFit.SCALE_DOWN`。原本已显式指定 `fit` 的适配策略不变。
+
+### 像素密度与逻辑尺寸
+
+自然逻辑尺寸 = 图像像素尺寸 ÷ `scale`。例如 `40 × 20` 像素图片在 `scale = 2f` 时为 `20 × 10` 逻辑像素，在 `scale = 0.5f` 时为 `80 × 40`。它不是对目标框或输出画布直接做缩放。
+
+布局和 `fit` 按逻辑尺寸计算，实际采样源矩形再换回图像像素；非 `1` 的 `scale` 不会导致错误截取源图。平铺间距也按适配后的逻辑尺寸计算。底层九宫格的 `centerSlice` 使用逻辑坐标，坐标示例和适配限制见 [RawImage 的九宫格说明](/widgets/image/raw-image/#%E5%BA%95%E5%B1%82%E4%B9%9D%E5%AE%AB%E6%A0%BC-centerslice)。
+
+### 重复平铺数量上限
+
+`REPEAT`、`REPEAT_X` 和 `REPEAT_Y` 每次绘制默认最多生成 100,000 个平铺矩形。超过上限时会在绘制前抛出 `IllegalArgumentException`，不会只绘制一部分；这也适用于 Parser 的 `<Image>` 和 `<Emoji>`。应用可在服务端设置全局配置 `ImageRepeatConfig.maxTileCount = 10_000`（必须大于 0），解析文本不能修改该上限。限制越低，越能避免极小图片在大画布上重复绘制耗尽内存。
+
+Parser 的 `<Image>` 和 `<Emoji>` 还可使用 `dataUri` 代替 `url`；两者必须且只能指定其一。默认解码器只支持 PNG、JPEG、WebP 的 Base64 Data URI。需要额外格式、输入限额或安全检查时，可向 `Parser(dataUriImageDecoder = ...)` 注入自定义解码器。`noCache` 仅适用于 URL。
+
+```kotlin
+RawImage(
+    image = image,
+    width = 320f,
+    height = 180f,
+    fit = BoxFit.COVER,
+    alignment = BoxAlignment.CENTER,
+)
+```
+
+### 网络图片注意事项
+
+内置网络图片访问不能直接用于生产环境
+
+`CachedNetworkImage` 不是异步加载组件，获取和解码发生在构建/绘制调用链内。Snapshot 内置缓存没有提供完整的生产级网络安全边界；服务端应自行实现 `NetworkImageCache`，并处理：
+
+* 网络超时和失败策略；
+* 响应体大小限制；
+* 缓存容量和淘汰；
+* 渲染线程是否允许阻塞；
+* 不可信 URL 带来的 SSRF 风险。
+
+`noCache` 只表示绕过缓存，并不会让网络访问变得更安全。接口与安全要求详见 [CachedNetworkImage](/widgets/image/cached-network-image/)；也可以自行下载、校验并解码为 `Image`，再交给 `RawImage`。
+
+## 普通文本
+
+### 先区分文本基线与组件边缘
+
+Text / RichText 按字体度量和基线排字，布局盒的顶部、底部不等于可见笔画的顶部、底部。同样字号也不保证同样高度：中英文混排可能看起来高低错位；Text 与图标、Image 同行时，盒子已居中或底部已对齐，文字仍可能偏上或偏下；换到另一平台的默认字体后，垂直位置也可能变化。
+
+设计混排布局时应明确要对齐的是文字基线、组件盒，还是可见内容；不要仅靠设置相同的 `fontSize` 或 `height` 判断效果。下面给出推荐写法，度量原理见[文本基线与可见边界](/reference/text-layout/#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E5%8F%AF%E8%A7%81%E8%BE%B9%E7%95%8C)，文本模板见[DSL 基线与混排](/reference/parser-text/#%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)。 文本换行需要有限的可用宽度。Row 中通常用 Expanded 包住 Text 或其外层 Column；Column 的弹性子节点会保留父级最大宽度。完整示例见[固定图标与自适应文本](/guides/examples/#%E5%9B%BA%E5%AE%9A%E5%9B%BE%E6%A0%87%E4%B8%8E%E8%87%AA%E9%80%82%E5%BA%94%E6%96%87%E6%9C%AC)。
+
+| 需求                 | 设置                                           |
+| ------------------ | -------------------------------------------- |
+| 自动换行               | 保持 `softWrap = true`，并提供有限宽度                 |
+| 单行超出显示省略号          | `maxLines = 1` + `overflow = ELLIPSIS`，并限制宽度 |
+| 多行摘要               | `maxLines = 2`（或其他正数）+ `overflow = ELLIPSIS` |
+| 原样保留 Parser 文本首尾空白 | 在 Text 中使用 Raw                               |
+| 一段文字包含不同样式         | Kotlin 使用 RichText / TextSpan，Parser 嵌套 Text |
+
+```kotlin
+SizedBox(width = 320f) {
+    Text(
+        text = "Hello Snapshot，这段较长的标题最多显示两行，超出部分显示省略号。",
+        style = TextStyle(
+            color = 0xFF0F172A.toInt(),
+            fontSize = 32f,
+            fontStyle = FontStyle.BOLD,
+            fontFamilies = listOf("Noto Sans SC"),
+        ),
+        maxLines = 2,
+        overflow = TextOverflow.ELLIPSIS,
+    )
+}
+```
+
+`Text` 是对单个根 `TextSpan` 的便捷封装。常用参数：对齐方向、换行开关、溢出策略、最大行数、StrutStyle、宽度基准和高度模式。
+
+## 文本基线与混排
+
+| 场景                      | 推荐做法                                                              | 仍需检查                              |
+| ----------------------- | ----------------------------------------------------------------- | --------------------------------- |
+| 一句话里的中文、英文、数字，或仅颜色/字重不同 | 使用一个 Text；不同样式放进同一个 RichText 的 TextSpan，统一父级字体                    | 字体缺字后的 fallback，以及不同字形本身的视觉高度     |
+| 多个独立 Text 同行，尤其字号不同     | `Row(crossAxisAlignment = BASELINE, textBaseline = ALPHABETIC)`   | 对齐的是各段首行基线，多行文本的底部不会一起对齐          |
+| 独立图标 / 图片与文字组成按钮或标签     | 固定图标盒尺寸，使用 `Row(crossAxisAlignment = CENTER)`；长文本再用 Expanded 提供宽度 | 这是盒居中；图片透明边缘和字体留白仍影响视觉中心          |
+| 图标 / 图片需要跟随文字换行         | 使用 WidgetSpan / ImageEmojiSpan，显式指定尺寸与 `alignment`；可先试 MIDDLE     | 对齐文字行盒，不保证图标内容与每个字的笔画上下边缘齐平       |
+| 多行中英文、不同字号造成行距跳动        | 固定字体集合，再配置 StrutStyle                                             | Strut 控制行度量，不会改写字形；强制行高过小可能重叠或被裁剪 |
+
+### 独立文字按基线对齐
+
+以下两段是 `SnapshotPNG { … }` 内的 Kotlin 组件片段。依赖配置见[快速开始](/guides/quickstart/)，组件与枚举导入可复制[参数效果对比的公共导入](/guides/visual-reference/#%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%BF%90%E8%A1%8C)，并补充 `import org.jetbrains.skia.paragraph.BaselineMode`。示例字体需在渲染环境中实际存在。
+
+```kotlin
+Container(width = 420f, padding = com.muedsa.geometry.EdgeInsets.all(16f)) {
+    Row(
+        crossAxisAlignment = CrossAxisAlignment.BASELINE,
+        textBaseline = BaselineMode.ALPHABETIC,
+    ) {
+        Text("价格", style = TextStyle(fontSize = 20f, fontFamilies = listOf("Noto Sans SC")))
+        SizedBox(width = 12f)
+        Text("128.00", style = TextStyle(fontSize = 36f, fontFamilies = listOf("Noto Sans SC")))
+        SizedBox(width = 8f)
+        Text("CNY", style = TextStyle(fontSize = 20f, fontFamilies = listOf("Noto Sans SC")))
+    }
+}
+```
+
+`ALPHABETIC` 是中英文、数字混排常用的起点，不保证中文与拉丁字母的笔画底边完全相同。`IDEOGRAPHIC` 是另一种字体基线，不能当作“有中文就能自动修正”的开关。Row 选择 BASELINE 时必须提供 `textBaseline`；普通图片没有真实文字基线，放在这种 Row 中也不会自动获得与文字相同的基线语义。
+
+### 一段文字里的图标与不同样式
+
+把共用字体放在父 TextSpan，图标与旁边的文字一起继承。这里用固定尺寸的色块代表状态图标，可替换成同尺寸的 RawImage / ProviderImage；图片应预先准备好。
+
+```kotlin
+Container(width = 420f, padding = com.muedsa.geometry.EdgeInsets.all(16f)) {
+    RichText {
+        TextSpan(style = TextStyle(fontSize = 24f, fontFamilies = listOf("Noto Sans SC"))) {
+            TextSpan(text = "状态 Status ")
+            WidgetSpan(alignment = PlaceholderAlignment.MIDDLE) {
+                Container(width = 18f, height = 18f, color = 0xFF22C55E.toInt())
+            }
+            TextSpan(text = " Ready", style = TextStyle(color = 0xFF0369A1.toInt()))
+        }
+    }
+}
+```
+
+如果图标底边应落在文字基线上，可考虑 `ABOVE_BASELINE` 并显式设置 `baseline = BaselineMode.ALPHABETIC`；若应贴着行盒底部则用 `BOTTOM`。这些位置并不相同。图片内部的透明留白、`fit` 和 `imageAlignment` 还会影响可见图形的位置，参见[行内对齐规则](/reference/text-layout/#widgetspan-%E4%B8%8E-emoji-%E5%AF%B9%E9%BD%90)与[实际渲染对比](/guides/visual-reference/#%E8%A1%8C%E5%86%85%E5%9B%BE%E6%A0%87%E5%AF%B9%E9%BD%90)。
+
+先固定字体和对齐语义，再决定是否需要少量视觉微调。不要把某台机器上试出的 `translateY` 当作通用基线修复：Transform 只改变绘制位置，不重新计算行高或为邻行留空间；字体、字号或内容一变，偏移就可能不再合适。
+
+## TextStyle
+
+逐字段的类型、默认值和继承规则见 [TextStyle 与文本装饰](/reference/text-style/)；行高、StrutStyle 和宽度基准见[段落参考](/reference/text-layout/)。Parser 写法无需再跳到上游仓库，可直接查[文本属性详解](/reference/parser-text/)。
+
+文本样式覆盖字体、字号、颜色、字距、词距、高度、装饰线、前景/背景 Paint、阴影、字体特性等。字体查找由 Skia Paragraph 处理；在服务器或 CI 中要确保字体实际存在。
+
+[字体配置指南](/guides/fonts/)给出从 classpath 加载、注册字体并在 Kotlin / DSL 中使用的完整程序。
+
+`fontFamilies = listOf("Noto Sans SC")` 或 Parser 的 `fontFamily="Noto Sans SC"` 只是请求字体名称，不会下载或安装字体。应在实际渲染进程所在的机器或容器中配置字体；浏览器中能显示中文不代表服务端拥有同一套字体。Parser 的多字体写法为 `fontFamily="Noto Sans SC,Arial"`，逗号后不要添加空格。
+
+为了得到跨机器稳定的文本结果：
+
+1. 显式提供字体文件或固定字体集合；
+2. 不依赖操作系统默认字体，并固定缺字时使用的回退字体、字体版本和字重；相同族名也不代表相同文件；
+3. 测试中使用 `testkit` 附带的 Noto Sans SC；
+4. 对文本优先断言度量和像素区域，不轻易把整段抗锯齿文本做跨平台 Golden。
+
+跨平台差异不仅是字宽：字体的 ascent、descent、leading 和 fallback 会改变行高及基线距离。因此应在实际部署的系统 / 容器上检查 `中文 Agjp 0123`、带重音字母、Emoji 和会换行的内容。`fontSize = 24f` 并不代表文本盒高恰好为 24，也不保证在每个平台离盒顶的距离一致。
+
+## 富文本
+
+```kotlin
+RichText(maxLines = 2, overflow = TextOverflow.ELLIPSIS) {
+    TextSpan(
+        text = "Snapshot ",
+        style = TextStyle(fontSize = 32f, color = 0xFF0F172A.toInt()),
+    )
+    TextSpan(
+        text = "renders",
+        style = TextStyle(fontSize = 32f, color = 0xFF38BDF8.toInt()),
+    )
+}
+```
+
+子 `TextSpan` 会继承父 Span 未覆盖的样式。不要在 `RichText` Widget 中直接嵌套普通 Widget；可通过 `WidgetSpan` 把一个 Widget 作为行内占位盒。Parser 的 `<Text>` 现支持嵌套 `<WidgetSpan>`，也支持装饰线、文本阴影、OpenType 特性、前景画笔、StrutStyle 等属性，详见[标签参考](/reference/parser-tags/)。
+
+## 行内 Widget 与 Emoji
+
+`WidgetSpan` 可以把一个 Widget 作为段落中的占位盒；`ImageEmojiSpan` 针对图片 Emoji 提供更方便的尺寸和基线处理。
+
+行内对象的关键参数是 `PlaceholderAlignment` 和 `BaselineMode`。使用 `BASELINE`、`ABOVE_BASELINE`、`BELOW_BASELINE` 时，应明确基线类型；使用 `TOP`、`BOTTOM`、`MIDDLE` 时按占位盒对齐。
+
+## TextPainter
+
+当你需要先测量再决定其他布局时，可以使用 `TextPainter`：设置 InlineSpan、文字方向和宽度约束后调用 layout，再读取宽高、基线和行信息。
+
+不要复用已经改变样式但尚未重新 layout 的测量结果。字体、字号、最大宽度、方向或 Span 变化后都应重新布局。

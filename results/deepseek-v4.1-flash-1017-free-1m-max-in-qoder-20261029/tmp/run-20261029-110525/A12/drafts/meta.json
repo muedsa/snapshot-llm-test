@@ -1,0 +1,183 @@
+{
+  "task_id": "A12",
+  "title": "四断点完整内容视觉系统",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "同一内容模型生成 360×800、768×1024、1440×900、1920×1080 四画布。统一深色 24px 圆角头部、三根信号条、白卡编号体系与页脚；手机单列 6 卡，平板 2×3，桌面与大屏 3×2。标题/副标题/日期/时间/地点/CTA/网站与六张卡 title/detail 全部保留，无省略号。",
+  "requirements": [
+    {
+      "text": "四尺寸完整内容、无裁切/拉伸",
+      "evidence": "四张 PNG 实际尺寸；六卡标题与 detail 全部出现"
+    },
+    {
+      "text": "手机正文≥16、卡标题≥18；其余正文≥20、主标题≥40",
+      "evidence": "手机 16/18、平板 20/44、桌面 20/64、大屏 22/88"
+    },
+    {
+      "text": "安全边距手机16/其他32、文字盒不重叠",
+      "evidence": "content-map.json 坐标；实图复查"
+    },
+    {
+      "text": "统一色彩/形态/层级",
+      "evidence": "同一 design-tokens 色板、头部、信号条、卡片"
+    },
+    {
+      "text": "design-tokens.json 与 content-map.json",
+      "evidence": "两文件完整；map 逐字段 original/displayed/box/size/complete"
+    }
+  ],
+  "files": [
+    {
+      "file": "mobile.snapshot",
+      "purpose": "360×800 DSL",
+      "dsl": "mobile.png",
+      "status": "完成"
+    },
+    {
+      "file": "mobile.png",
+      "purpose": "窄手机",
+      "dsl": "mobile.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "tablet.snapshot",
+      "purpose": "768×1024 DSL",
+      "dsl": "tablet.png",
+      "status": "完成"
+    },
+    {
+      "file": "tablet.png",
+      "purpose": "平板",
+      "dsl": "tablet.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "desktop.snapshot",
+      "purpose": "1440×900 DSL",
+      "dsl": "desktop.png",
+      "status": "完成"
+    },
+    {
+      "file": "desktop.png",
+      "purpose": "桌面",
+      "dsl": "desktop.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "stage.snapshot",
+      "purpose": "1920×1080 DSL",
+      "dsl": "stage.png",
+      "status": "完成"
+    },
+    {
+      "file": "stage.png",
+      "purpose": "大屏",
+      "dsl": "stage.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "design-tokens.json",
+      "purpose": "色板/字号/间距/组件",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "content-map.json",
+      "purpose": "四画布字段映射",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A12/mobile.png",
+      "at": "2026-10-29T11:45:54+0800",
+      "result": "页眉重叠、页脚相撞"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A12/mobile.png",
+      "at": "2026-10-29T11:50:05+0800",
+      "result": "页眉/卡片/页脚全部可读；通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A12/tablet.png",
+      "at": "2026-10-29T11:48:57+0800",
+      "result": "页脚左右相撞"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A12/tablet.png",
+      "at": "2026-10-29T11:50:05+0800",
+      "result": "页脚分离；通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A12/desktop.png",
+      "at": "2026-10-29T11:49:06+0800",
+      "result": "布局完整、页脚不撞；通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A12/stage.png",
+      "at": "2026-10-29T11:50:09+0800",
+      "result": "布局完整、页脚不撞；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A12-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A12/drafts/gen_a12.py",
+      "image": "outputs/run-20261029-110525/A12/mobile.png",
+      "at": "2026-10-29T11:45:54+0800",
+      "problem": "手机页眉重叠/页脚相撞",
+      "change": "头部增高、标题下移、手机页脚合并",
+      "result": "通过"
+    },
+    {
+      "id": "A12-v2",
+      "type": "visual",
+      "parent": "A12-v1",
+      "dsl": "outputs/run-20261029-110525/A12/tablet.snapshot",
+      "image": "outputs/run-20261029-110525/A12/tablet.png",
+      "at": "2026-10-29T11:48:57+0800",
+      "problem": "平板页脚左右相撞",
+      "change": "左页脚仅网站、右页脚放尺寸",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "手机页眉 eyebrow 与标题重叠、页脚左右相撞",
+      "cause": "title_dy 过小、页脚同排",
+      "fix": "增高头部、下移标题、页脚合并",
+      "verify": "最终图可读",
+      "evidence": "outputs/run-20261029-110525/A12/mobile.png"
+    },
+    {
+      "type": "transport",
+      "problem": "stage 首次渲染 TypeError terminated",
+      "cause": "传输中断（非 DSL）",
+      "fix": "同 DSL 重试",
+      "verify": "第二次 200",
+      "evidence": "tmp/requests.jsonl"
+    }
+  ],
+  "notes": "响应式由同一内容与参数生成；卡片高度需按最长标题 2 行 + detail 1 行预留，foot 不抢正文空间。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot 文本请求、图片响应、错误处理",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Transform/Container/Stack/Text/滤镜/裁剪属性",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、文本换行",
+      "used_in": "文字排版"
+    }
+  ]
+}

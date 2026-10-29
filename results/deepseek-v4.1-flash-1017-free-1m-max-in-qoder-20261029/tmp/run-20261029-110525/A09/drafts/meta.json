@@ -1,0 +1,102 @@
+{
+  "task_id": "A09",
+  "title": "十二个非对称图形变换标本",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "4×3 网格，每格 300×250、间距 32，整体在 1600×1200 居中。印章的 3 个矩形与圆点全部放在同一个 Transform.matrix 子树中；12 个矩阵由操作列表按顺序组合（围绕 60,60），T07/T08 顺序不同、矩阵与外接框不同。格内十字与 50px 刻度辅助核对。",
+  "requirements": [
+    {
+      "text": "4×3、每格 300×250、间距 32、整体居中",
+      "evidence": "网格起点 152,260；总宽 1296、总高 814"
+    },
+    {
+      "text": "12 个变换按列表顺序、围绕 (60,60)",
+      "evidence": "geometry-audit.json 每个矩阵与操作序列；T07/T08 矩阵不同"
+    },
+    {
+      "text": "每格主体用 Transform.matrix，圆点随同变换",
+      "evidence": "每格一个 Transform.matrix，矩形与圆点都在其子树"
+    },
+    {
+      "text": "编号/短名/刻度辅助线齐全、不裁切",
+      "evidence": "每格 ID 22px、短名 20px、十字与 50px 刻度；clipBehavior=NONE"
+    },
+    {
+      "text": "geometry-audit.json 矩阵/四角/圆心/外接框与 ±1.5px 核对",
+      "evidence": "pixel_check 12 格全部通过，最大偏差 1.11px"
+    }
+  ],
+  "files": [
+    {
+      "file": "transform-atlas.snapshot",
+      "purpose": "1600×1200 DSL",
+      "dsl": "transform-atlas.png",
+      "status": "完成"
+    },
+    {
+      "file": "transform-atlas.png",
+      "purpose": "最终图",
+      "dsl": "transform-atlas.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "geometry-audit.json",
+      "purpose": "矩阵与像素核对",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A09/transform-atlas.png",
+      "at": "2026-10-29T11:37:23+0800",
+      "result": "12 格与矩阵方向正确；顶部留白偏大"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A09/transform-atlas.png",
+      "at": "2026-10-29T11:37:52+0800",
+      "result": "网格上移、加读法后平衡；12 格完整，通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A09-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A09/drafts/gen_a09.py",
+      "image": "outputs/run-20261029-110525/A09/transform-atlas.png",
+      "at": "2026-10-29T11:37:23+0800",
+      "problem": "顶部留白过大",
+      "change": "网格上移、加读法说明",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "顶部留白偏大",
+      "cause": "网格起点 300、内容高度 814",
+      "fix": "起点改 260 加读法行",
+      "verify": "布局平衡",
+      "evidence": "outputs/run-20261029-110525/A09/transform-atlas.png"
+    }
+  ],
+  "notes": "矩阵按列主序输出；像素核对用 alpha>200 的非背景色外接框，旋转格容差 1.5px。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "POST /snapshot 文本请求、图片响应、错误处理",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Transform/Container/Stack/Text/滤镜/裁剪属性",
+      "used_in": "全部 DSL"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-text.md",
+      "knowledge": "fontSize、fontStyle、文本换行",
+      "used_in": "文字排版"
+    }
+  ]
+}

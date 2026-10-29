@@ -1,0 +1,176 @@
+{
+  "task_id": "A19",
+  "title": "构造可核验的视觉题场",
+  "status": "completed",
+  "stop_reason": "需求满足并完成视觉自检",
+  "design": "8×8 网格 64 对象，固定种子 0 的平衡分配：4 色×4 形各 16、16 组合全覆盖、每色/每形含 48/64/80、每行≥3 色≥3 形；圆环内径为外径一半。另做 800×800 遮挡 A/B：可见前景相同，隐藏内容不同且完全被不透明板覆盖，两 PNG 像素数组完全相同。12+2 题与答案/方法/坐标容差写入 JSON。",
+  "requirements": [
+    {
+      "text": "1600×1600、8×8、G01–G64、每格一个主体",
+      "evidence": "grid-scene.png；64 对象"
+    },
+    {
+      "text": "4 色/4 形各 16、全组合覆盖、每色每形三尺寸",
+      "evidence": "scene-data.json 频数与组合"
+    },
+    {
+      "text": "每行≥3 色≥3 形、圆环内径一半、编号外置",
+      "evidence": "scene-data rows；ring 厚度 0.25×外径"
+    },
+    {
+      "text": "12 题覆盖复合/关系/距离/排序/包围框/计数，≥4 两步",
+      "evidence": "questions.json Q1–Q12"
+    },
+    {
+      "text": "遮挡 A/B 可见相同、隐藏不同、不能虚线泄漏",
+      "evidence": "equivalence.json 像素差 0；隐藏位于不透明板内"
+    },
+    {
+      "text": "2 道遮挡题，至少 1 题答案“无法确定”",
+      "evidence": "OQ1 无法确定；OQ2 可见橙圆 1"
+    },
+    {
+      "text": "scene/questions/answers/equivalence 四 JSON",
+      "evidence": "四文件完整"
+    }
+  ],
+  "files": [
+    {
+      "file": "grid-scene.snapshot",
+      "purpose": "网格 DSL",
+      "dsl": "grid-scene.png",
+      "status": "完成"
+    },
+    {
+      "file": "grid-scene.png",
+      "purpose": "1600×1600 题场",
+      "dsl": "grid-scene.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "occlusion.snapshot",
+      "purpose": "遮挡 A DSL",
+      "dsl": "occlusion.png",
+      "status": "完成"
+    },
+    {
+      "file": "occlusion.png",
+      "purpose": "800×800 A",
+      "dsl": "occlusion.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "occlusion-alternative.snapshot",
+      "purpose": "遮挡 B DSL",
+      "dsl": "occlusion-alternative.png",
+      "status": "完成"
+    },
+    {
+      "file": "occlusion-alternative.png",
+      "purpose": "800×800 B",
+      "dsl": "occlusion-alternative.snapshot",
+      "status": "完成"
+    },
+    {
+      "file": "scene-data.json",
+      "purpose": "种子/频数/几何",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "questions.json",
+      "purpose": "14 题",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "answers.json",
+      "purpose": "答案与方法",
+      "dsl": "-",
+      "status": "完成"
+    },
+    {
+      "file": "equivalence.json",
+      "purpose": "遮挡像素等价",
+      "dsl": "-",
+      "status": "完成"
+    }
+  ],
+  "reviews": [
+    {
+      "image": "outputs/run-20261029-110525/A19/grid-scene.png",
+      "at": "2026-10-29T04:12:19+0800",
+      "result": "形状被网格原点偏移，部分格子空"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A19/grid-scene.png",
+      "at": "2026-10-29T04:12:47+0800",
+      "result": "64 对象归位、圆环内径一半；通过"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A19/occlusion.png",
+      "at": "2026-10-29T04:12:19+0800",
+      "result": "可见前景完整、遮挡板不透明"
+    },
+    {
+      "image": "outputs/run-20261029-110525/A19/occlusion-alternative.png",
+      "at": "2026-10-29T04:12:53+0800",
+      "result": "与 A 像素完全相同；通过"
+    }
+  ],
+  "iterations": [
+    {
+      "id": "A19-v1",
+      "type": "baseline",
+      "parent": null,
+      "dsl": "tmp/run-20261029-110525/A19/drafts/gen_a19.py",
+      "image": "outputs/run-20261029-110525/A19/grid-scene.png",
+      "at": "2026-10-29T04:12:19+0800",
+      "problem": "形状偏移 160px",
+      "change": "shape 坐标减网格原点",
+      "result": "通过"
+    },
+    {
+      "id": "A19-v2",
+      "type": "visual",
+      "parent": "A19-v1",
+      "dsl": "outputs/run-20261029-110525/A19/grid-scene.snapshot",
+      "image": "outputs/run-20261029-110525/A19/grid-scene.png",
+      "at": "2026-10-29T04:12:47+0800",
+      "problem": "圆环内径不是一半",
+      "change": "环厚 0.25×外径",
+      "result": "通过"
+    }
+  ],
+  "issues": [
+    {
+      "type": "visual",
+      "problem": "64 对象错位/空格",
+      "cause": "形状使用页面坐标放入网格 Stack",
+      "fix": "减网格原点",
+      "verify": "64 格全部有对象",
+      "evidence": "outputs/run-20261029-110525/A19/grid-scene.png"
+    },
+    {
+      "type": "visual",
+      "problem": "圆环内径不为一半",
+      "cause": "环厚 18%",
+      "fix": "25% 外径",
+      "verify": "内径=外径/2",
+      "evidence": "outputs/run-20261029-110525/A19/grid-scene.png"
+    }
+  ],
+  "notes": "遮挡等价要做到可见层与渲染参数完全一致、隐藏层不外溢；同字节 PNG 是更强证据但不是要求。",
+  "docs": [
+    {
+      "url": "https://open-snapshot.muedsa.com/ai-guide.md",
+      "knowledge": "渲染接口与错误",
+      "used_in": "渲染"
+    },
+    {
+      "url": "https://snapshot.muedsa.com/reference/parser-tags.md",
+      "knowledge": "Container/Stack/Positioned/Transform",
+      "used_in": "全部布局"
+    }
+  ]
+}
