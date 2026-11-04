@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "answers": [
+    {
+      "id": "Q01",
+      "answer": [
+        "purple",
+        "rounded",
+        64
+      ],
+      "method": "按编号 G29 定位到 (行 4, 列 5)，直接读属性；尺寸取形状外接框边长",
+      "tolerance": "颜色/形状为类别值，尺寸 ±2 px",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q02",
+      "answer": [
+        "G21",
+        "G23",
+        "G35",
+        "G36"
+      ],
+      "method": "依次筛选 color=purple 且 shape=ring 的对象；圆环按内外两圆判定",
+      "tolerance": "编号集合精确匹配",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q03",
+      "answer": {
+        "answer": "G17",
+        "dx_px": -920.0
+      },
+      "method": "比较两对象中心 x 坐标（非包围框边缘）；同一行时列号越小 x 越小",
+      "tolerance": "x 差 ±1 px",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q04",
+      "answer": 1821.5,
+      "method": "sqrt((x2-x1)^2+(y2-y1)^2)，用两对象中心坐标",
+      "tolerance": "±1.5 px",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q05",
+      "answer": [
+        "G18",
+        "G21",
+        "G19"
+      ],
+      "method": "先取 row=3 的 8 个对象，再按 (-size, col) 排序",
+      "tolerance": "编号序列精确匹配",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q06",
+      "answer": {
+        "left": 116.0,
+        "top": 116.0,
+        "right": 1476.0,
+        "bottom": 1476.0
+      },
+      "method": "对每个绿色对象取其外接框，再取四个方向的极值",
+      "tolerance": "±2 px",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q07",
+      "answer": 4,
+      "method": "计数 color=blue 且 shape=ring 的对象",
+      "tolerance": "整数精确",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q08",
+      "answer": "G24",
+      "method": "第一步筛 size=64；第二步按 (-col, row) 取第一",
+      "tolerance": "编号精确",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q09",
+      "answer": 6,
+      "method": "第一步筛 shape=ring；第二步计数 size=80",
+      "tolerance": "整数精确",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q10",
+      "answer": 368.0,
+      "method": "第一步取 row=5 的橙色与紫色各一个；第二步取中心 x 差的绝对值",
+      "tolerance": "±1.5 px",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q11",
+      "answer": {
+        "id": "G34",
+        "col_gap": 1
+      },
+      "method": "第一步取与 G33 同行(row=4)的蓝色对象；第二步取列号大于 G33 且最小的那个",
+      "tolerance": "编号精确，列差为整数",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "Q12",
+      "answer": [
+        "G08",
+        "G16",
+        "G17",
+        "G22",
+        "G48"
+      ],
+      "method": "先筛绿+48，再按 (row, col) 排序",
+      "tolerance": "编号序列精确匹配",
+      "visibility_basis": "仅凭 grid-scene.png 可见内容"
+    },
+    {
+      "id": "O01",
+      "answer": "无法确定",
+      "method": "遮挡区域被不透明矩形完全覆盖，可见图像中该区域没有任何像素信息；遮挡物下方可能为空，也可能有任意对象，因此无法由可见图确定。",
+      "tolerance": "—",
+      "visibility_basis": "occlusion.png 中 (270,300)-(530,500) 区域被 #1D2738 不透明矩形覆盖"
+    },
+    {
+      "id": "O02",
+      "answer": {
+        "total": 5,
+        "by_color": {
+          "#F0B429": 1,
+          "#22B573": 1,
+          "#8B5CF6": 1,
+          "#E07B39": 1,
+          "#38BDF8": 1
+        }
+      },
+      "method": "只统计可见区域内的形状；遮挡区内一律不计",
+      "tolerance": "整数精确",
+      "visibility_basis": "五个可见对象分别位于四角与底部中央"
+    }
+  ],
+  "notes": [
+    "全部答案由 scene-data.json 的几何直接计算，不依赖隐藏对象数量。",
+    "O01 的正确答案是「无法确定」，因为遮挡区在可见图中没有任何像素。"
+  ]
+}

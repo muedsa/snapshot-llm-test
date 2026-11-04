@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "generated_at": "2026-11-03T16:16:07+08:00",
+  "initial_attempt": {
+    "request_id": "A03-R0001",
+    "http_status": 400,
+    "code": "PARSE_ERROR",
+    "request_file": "tmp/20261103T152640-suite/A03/attempts/attempt-01-original.snapshot",
+    "response_file": "tmp/20261103T152640-suite/A03/responses/A03-R0001.bin",
+    "note": "原稿未做任何修改直接提交"
+  },
+  "issues": [
+    {
+      "id": "I1",
+      "source_line": 2,
+      "node": "<Container padding=\"24 32\">",
+      "category": "explicit-error",
+      "observed": {
+        "http_status": 400,
+        "code": "PARSE_ERROR",
+        "request_id": "A03-R0001",
+        "message": "属性值无效 [padding]，元素 <Container>；格式：十进制数，或 (垂直,水平)，或 (左,上,右,下)；元组内不含空白 at position 91 (line 2, column 23)",
+        "evidence": "tmp/20261103T152640-suite/A03/responses/A03-R0001.bin"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md#通用属性格式 (EdgeInsets: \"12\" / \"(8,16)\" / \"(8,12,16,20)\")",
+      "fix": "改为 padding=\"(24,32)\"；最终版按题面安全边距统一使用 32",
+      "verification": "attempt-02 返回错误推进到下一处（Transform），证明本处已通过解析"
+    },
+    {
+      "id": "I2",
+      "source_line": 10,
+      "node": "<Transform rotate=\"-8\">",
+      "category": "explicit-error",
+      "observed": {
+        "http_status": 400,
+        "code": "PARSE_ERROR",
+        "request_id": "A03-R0002",
+        "message": "缺少必填属性 [matrix]，元素 <Transform> at position 466 (line 10, column 7)",
+        "evidence": "tmp/20261103T152640-suite/A03/responses/A03-R0002.bin"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md#opacity-与-transform (matrix 为必填，16 个有限浮点、列主序)",
+      "fix": "rotate 不是 Parser 属性；改为 2D 旋转矩阵 θ=-8°（画布 y 向下，负角为视觉逆时针）：(0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1)，并以 alignment=\"CENTER\" 绕自身中心旋转",
+      "verification": "attempt-03 通过解析进入建树阶段；最终图 REVIEW 标签逆时针倾斜，见系统截图"
+    },
+    {
+      "id": "I3",
+      "source_line": 7,
+      "node": "<Positioned right=\"20\"> 直接位于 <Row> 内",
+      "category": "explicit-error",
+      "observed": {
+        "http_status": 400,
+        "code": "RENDER_ERROR",
+        "request_id": "A03-R0003",
+        "message": "renderBox.parentData must be StackParentData",
+        "evidence": "tmp/20261103T152640-suite/A03/responses/A03-R0003.bin"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md#positioned (Positioned 必须是 Stack / IndexedStack 的直接子节点)",
+      "fix": "把 LIVE 从 Row 中移出，改放到页面级 <Stack> 的 Positioned 中；Row 只保留指标卡",
+      "verification": "attempt-04 不再报 StackParentData，错误推进到布局阶段"
+    },
+    {
+      "id": "I4",
+      "source_line": 3,
+      "node": "<Column> + <Spacer flex=\"1\"/> 处于无界高度",
+      "category": "layout-error",
+      "observed": {
+        "http_status": 400,
+        "code": "RENDER_ERROR",
+        "request_id": "A03-R0004",
+        "message": "Layout size is infinite",
+        "evidence": "tmp/20261103T152640-suite/A03/responses/A03-R0004.bin"
+      },
+      "doc_source": "https://snapshot.muedsa.com/guides/quickstart.md（根节点必须有有限尺寸）与 templates 说明；Spacer 需要有限主轴空间",
+      "fix": "根节点改为 <Container width=\"1280\" height=\"800\">，把紧约束传给 Stack/Column，Spacer 才有确定空间",
+      "verification": "attempt-05 返回 200 且实测输出 1280×800"
+    },
+    {
+      "id": "I5",
+      "source_line": 1,
+      "node": "<Snapshot width=\"1280\" height=\"800\">",
+      "category": "silent-ignore",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0006",
+        "message": "探针请求 Snapshot width=800 height=400、子节点 200×100，实际输出 200×100",
+        "evidence": "tmp/20261103T152640-suite/A03/attempts/attempt-06-snapshot-attrs-probe.png"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md#snapshot （Snapshot 仅支持 background / debug / type，未知属性被忽略）",
+      "fix": "不再依赖根标签宽高，改由根 Container 显式给出画布尺寸",
+      "verification": "attempt-05 与最终图实测均为 1280×800"
+    },
+    {
+      "id": "I6",
+      "source_line": 4,
+      "node": "<Text font-size=\"44\">System Pulse</Text>",
+      "category": "silent-ignore",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0005",
+        "message": "标题按默认字号 14 渲染（attempt-05 实图可见），且因 Column 默认 CENTER 被居中",
+        "evidence": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.png"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md（标签名与属性名区分大小写，未知属性会被忽略）",
+      "fix": "font-size → fontSize=\"44\"；标题改为在页面级 Stack 中左上定位，避免 Column 居中",
+      "verification": "最终图标题为 44px、左对齐、与 LIVE 标签不重叠"
+    },
+    {
+      "id": "I7",
+      "source_line": 10,
+      "node": "<Container color=\"#33FFFFFF\">",
+      "category": "semantic-alpha",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0005",
+        "message": "REVIEW 底为不透明青色（#33FFFFFF 被按 RRGGBBAA 解析：R=33 G=FF B=FF A=FF）",
+        "evidence": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.png"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md#颜色 (8 位十六进制为 #RRGGBBAA；旧版 #AARRGGBB 写法已迁移)",
+      "fix": "改为 #FFFFFF33（白 20% 不透明度）；文字单独使用 #FFFFFF 全不透明",
+      "verification": "最终图 REVIEW 为 20% 白底，背景彩色条可透出，文字清晰不透明"
+    },
+    {
+      "id": "I8",
+      "source_line": 11,
+      "node": "<ImageFiltered> 包住整块说明卡（含文字）",
+      "category": "visual-semantics",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0005",
+        "message": "说明卡内文字与背景一起被高斯模糊，文字不可读",
+        "evidence": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.png"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md#colorfilteredimagefiltered-与-backdropfilter（ImageFiltered 作用于整个子树）",
+      "fix": "拆层：卡外彩色条保持锐利；卡内用 ClipRRect + ImageFiltered(σ=10) 只模糊彩色条副本；卡片底色/描边与 28px 文案作为独立层绘制在模糊之上",
+      "verification": "最终图卡内为柔和色带、文字边缘锐利；crop 局部核对通过"
+    },
+    {
+      "id": "I9",
+      "source_line": 6,
+      "node": "Row 内只有一个 Expanded 指标卡",
+      "category": "requirement-gap",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0005",
+        "message": "原稿只有一张 360px 指标卡，且被 Expanded 拉满整行；题面要求三张等宽卡片",
+        "evidence": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.png"
+      },
+      "doc_source": "题面 A03 第 2 段；https://snapshot.muedsa.com/reference/parser-tags.md#row-与-column",
+      "fix": "改为三张 389px 等宽卡片（32 + 3×389 + 2×24 = 1247，落在 1248 安全边界内）",
+      "verification": "最终图三卡等宽、同行、间距一致"
+    },
+    {
+      "id": "I10",
+      "source_line": 7,
+      "node": "LIVE 标签无尺寸",
+      "category": "requirement-gap",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0005",
+        "message": "LIVE 仅有文字，无 96×36 尺寸，也未避开标题",
+        "evidence": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.png"
+      },
+      "doc_source": "题面 A03 第 2 段（96×36，不能盖住标题）",
+      "fix": "改为 96×36 胶囊，右上定位 x=1152..1248、y=34..70；标题仅到 x≈322，互不重叠",
+      "verification": "最终图实测 LIVE 96×36，标题与标签之间留有 >800px 空白"
+    },
+    {
+      "id": "I11",
+      "source_line": 2,
+      "node": "padding=\"(24,32)\" 与题面安全边距 32 不符",
+      "category": "requirement-gap",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0005",
+        "message": "纵向内边距 24 < 32，元素可能贴近画布上下边缘",
+        "evidence": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.png"
+      },
+      "doc_source": "题面 A03 第 2 段（安全边距 32）",
+      "fix": "所有元素按 32px 安全框定位：标题 (32,32)、指标卡 y=128、REVIEW 旋转后包围盒 1075..1241 × 687..765",
+      "verification": "最终图四边留白均 ≥32px（右 39、下 35）"
+    },
+    {
+      "id": "I12",
+      "source_line": 11,
+      "node": "说明卡 500×150 的取景与彩色条关系",
+      "category": "visual-semantics",
+      "observed": {
+        "http_status": 200,
+        "request_id": "A03-R0008",
+        "message": "使用 BackdropFilter 时实图显示卡内彩色条仍清晰锐利：模糊结果叠加在原有内容之上，未形成干净的『只模糊卡内背景』效果",
+        "evidence": "tmp/20261103T152640-suite/A03/preview-backdrop.png"
+      },
+      "doc_source": "https://snapshot.muedsa.com/reference/parser-tags.md#colorfilteredimagefiltered-与-backdropfilter（BackdropFilter 读取已有背景，建议配合裁剪限定区域）",
+      "fix": "改用显式分层方案（见 I8），不再依赖 BackdropFilter 的合成顺序",
+      "verification": "最终图卡内背景为模糊色带，卡外彩色条锐利，文字层独立清晰"
+    }
+  ],
+  "versions": [
+    {
+      "version": "attempt-01",
+      "parent": null,
+      "type": "as-submitted",
+      "dsl": "tmp/20261103T152640-suite/A03/attempts/attempt-01-original.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0001.bin",
+      "png": null,
+      "http_status": 400,
+      "viewed": false,
+      "note": "原稿原样提交：PARSE_ERROR（padding 值非法，line 2 col 23）"
+    },
+    {
+      "version": "attempt-02",
+      "parent": "attempt-01",
+      "type": "syntax-fix",
+      "dsl": "tmp/20261103T152640-suite/A03/attempts/attempt-02-padding.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0002.bin",
+      "png": null,
+      "http_status": 400,
+      "viewed": false,
+      "note": "padding 改为 (24,32)：暴露第 2 个显式错误 Transform 缺 matrix"
+    },
+    {
+      "version": "attempt-03",
+      "parent": "attempt-02",
+      "type": "syntax-fix",
+      "dsl": "tmp/20261103T152640-suite/A03/attempts/attempt-03-transform.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0003.bin",
+      "png": null,
+      "http_status": 400,
+      "viewed": false,
+      "note": "补 4x4 列主序旋转矩阵：暴露 RENDER_ERROR（Positioned 不在 Stack 内）"
+    },
+    {
+      "version": "attempt-04",
+      "parent": "attempt-03",
+      "type": "syntax-fix",
+      "dsl": "tmp/20261103T152640-suite/A03/attempts/attempt-04-stack.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0004.bin",
+      "png": null,
+      "http_status": 400,
+      "viewed": false,
+      "note": "Positioned 移到页面级 Stack：暴露 RENDER_ERROR『Layout size is infinite』"
+    },
+    {
+      "version": "attempt-05",
+      "parent": "attempt-04",
+      "type": "visual",
+      "dsl": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0005.bin",
+      "png": "tmp/20261103T152640-suite/A03/attempts/attempt-05-bounded.png",
+      "http_status": 200,
+      "viewed": true,
+      "note": "加 1280×800 根 Container 后首次出图：标题仅 14px、REVIEW 为不透明青色、说明卡文字一并糊掉"
+    },
+    {
+      "version": "attempt-06",
+      "parent": "attempt-04",
+      "type": "diagnostic-probe",
+      "dsl": "tmp/20261103T152640-suite/A03/attempts/attempt-06-snapshot-attrs-probe.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0006.bin",
+      "png": "tmp/20261103T152640-suite/A03/attempts/attempt-06-snapshot-attrs-probe.png",
+      "http_status": 200,
+      "viewed": false,
+      "note": "探针：<Snapshot width=800 height=400> 实际输出 200×100，证明根标签宽高被静默忽略"
+    },
+    {
+      "version": "final-v1",
+      "parent": "attempt-05",
+      "type": "visual",
+      "dsl": "outputs/20261103T152640-suite/A03/system-pulse.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0008.bin",
+      "png": "tmp/20261103T152640-suite/A03/versions/final-v1-backdrop.png",
+      "http_status": 200,
+      "viewed": true,
+      "note": "重写版式；BackdropFilter 版本实图显示卡内彩色条仍为锐利（模糊结果未替换原背景）"
+    },
+    {
+      "version": "final-v2",
+      "parent": "final-v1",
+      "type": "visual",
+      "dsl": "outputs/20261103T152640-suite/A03/system-pulse.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0014.bin",
+      "png": "tmp/20261103T152640-suite/A03/versions/final-v4-sigma10.png",
+      "http_status": 200,
+      "viewed": true,
+      "note": "改为『卡外锐利条 + 卡内 ImageFiltered(σ=10) 模糊副本 + 独立文字层』，最终交付"
+    },
+    {
+      "version": "final-v2b",
+      "parent": "final-v1",
+      "type": "visual",
+      "dsl": "outputs/20261103T152640-suite/A03/system-pulse.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0013.bin",
+      "png": "tmp/20261103T152640-suite/A03/versions/final-v3-sigma10-round.png",
+      "http_status": 200,
+      "viewed": true,
+      "note": "σ 降到 10、彩色条端点为圆角；实图确认色带可辨但端点与卡边衔接略生硬"
+    },
+    {
+      "version": "final-v3",
+      "parent": "final-v2b",
+      "type": "visual",
+      "dsl": "outputs/20261103T152640-suite/A03/system-pulse.snapshot",
+      "response": "tmp/20261103T152640-suite/A03/responses/A03-R0014.bin",
+      "png": "outputs/20261103T152640-suite/A03/system-pulse.png",
+      "http_status": 200,
+      "viewed": true,
+      "note": "彩色条改直角端点，与卡片边界衔接自然；最终交付"
+    }
+  ],
+  "final_artifact": {
+    "dsl": "system-pulse.snapshot",
+    "png": "system-pulse.png",
+    "size": [
+      1280,
+      800
+    ]
+  },
+  "checks": {
+    "canvas_1280x800": {
+      "passed": true,
+      "method": "PNG IHDR 实测"
+    },
+    "safe_margin_32": {
+      "passed": true,
+      "method": "全部元素边界 ≥32px：右 39 / 下 35 / 左 32 / 上 32"
+    },
+    "title_44px": {
+      "passed": true,
+      "method": "DSL fontSize=44 且实图可见"
+    },
+    "three_equal_metric_cards": {
+      "passed": true,
+      "method": "389×176 ×3，x=32/445/858"
+    },
+    "live_96x36_no_title_overlap": {
+      "passed": true,
+      "method": "LIVE x=1152..1248；标题 x=32..322"
+    },
+    "review_160x56_ccw8_white20_text24": {
+      "passed": true,
+      "method": "Container 160×56 + #FFFFFF33；Transform 矩阵 θ=-8°（视觉逆时针）；文字 24px 不透明"
+    },
+    "center_card_500x150_radius24": {
+      "passed": true,
+      "method": "x=390..890, y=444..594, borderRadius=24"
+    },
+    "stripes_cross_both_edges": {
+      "passed": true,
+      "method": "彩色条 x=250..1030，跨卡左边界 390 与右边界 890"
+    },
+    "background_only_blur": {
+      "passed": true,
+      "method": "卡内 ImageFiltered(σ=10) 仅作用于彩色条副本；文案层单独绘制后置顶"
+    },
+    "text_28px": {
+      "passed": true,
+      "method": "说明 28px；三指标文案 28px"
+    },
+    "all_elements_visible": {
+      "passed": true,
+      "method": "最终图逐元素目视 + 像素边界检查"
+    }
+  },
+  "artifact_versions": {
+    "note": "同一输出路径的历次渲染已按原始响应字节还原到临时目录，便于逐版查看",
+    "versions_dir": "tmp/20261103T152640-suite/A03/versions/",
+    "files": [
+      "tmp/20261103T152640-suite/A03/versions/attempt-05-bounded.png",
+      "tmp/20261103T152640-suite/A03/versions/final-v1-backdrop.png",
+      "tmp/20261103T152640-suite/A03/versions/final-v1b-rebalanced.png",
+      "tmp/20261103T152640-suite/A03/versions/final-v2-sigma18.png",
+      "tmp/20261103T152640-suite/A03/versions/final-v3-sigma10-round.png",
+      "tmp/20261103T152640-suite/A03/versions/final-v4-sigma10.png"
+    ]
+  }
+}

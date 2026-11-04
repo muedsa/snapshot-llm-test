@@ -1,0 +1,65 @@
+<Snapshot background="#0B1220" type="png">
+<Container width="900" height="500">
+<Stack alignment="TOP_LEFT" clipBehavior="HARD_EDGE">
+  <!-- test 1: nested stack relative coords, positioned box at 60,60 size 200x120 -->
+  <Positioned left="60" top="60"><Container width="200" height="120" color="#1E293B">
+    <Stack alignment="TOP_LEFT"><Positioned left="20" top="20"><Container width="40" height="40" color="#22D3EE"/></Positioned></Stack>
+  </Container></Positioned>
+  <!-- test 2: inside a SizedBox nested in Positioned, child at 300 -->
+  <Positioned left="320" top="60"><SizedBox width="200" height="120"><Stack alignment="TOP_LEFT" clipBehavior="HARD_EDGE">
+    <Positioned left="300" top="20"><Container width="40" height="40" color="#FBBF24"/></Positioned>
+    <Positioned left="20" top="70"><Container width="40" height="40" color="#F472B6"/></Positioned>
+  </Stack></SizedBox></Positioned>
+  <!-- test 3: ImageFiltered with a blurred rect, bounded box 200x120 at 580,60 -->
+  <Positioned left="580" top="60"><SizedBox width="200" height="120"><ImageFiltered sigmaX="10" sigmaY="10" tileMode="CLAMP">
+    <Stack alignment="TOP_LEFT" clipBehavior="NONE">
+      <Positioned left="0" top="0"><Container width="200" height="16" color="#34D399"/></Positioned>
+      <Positioned left="0" top="60"><Container width="200" height="16" color="#A78BFA"/></Positioned>
+    </Stack>
+  </ImageFiltered></SizedBox></Positioned>
+  <!-- test 4: sharp stripes behind, blurred copy on top, clipped by ClipRRect -->
+  <Positioned left="60" top="240"><Stack alignment="TOP_LEFT" clipBehavior="NONE">
+    <Positioned left="0" top="0"><Container width="200" height="8" color="#EF4444"/></Positioned>
+    <Positioned left="0" top="30"><Container width="200" height="8" color="#22D3EE"/></Positioned>
+    <Positioned left="0" top="60"><Container width="200" height="8" color="#FBBF24"/></Positioned>
+    <Positioned left="0" top="90"><Container width="200" height="8" color="#34D399"/></Positioned>
+  </Stack></Positioned>
+  <Positioned left="60" top="240"><ClipRRect borderRadius="0" clipBehavior="ANTI_ALIAS">
+    <SizedBox width="200" height="120"><ImageFiltered sigmaX="8" sigmaY="8" tileMode="CLAMP">
+      <Stack alignment="TOP_LEFT" clipBehavior="NONE">
+        <Positioned left="-20" top="0"><Container width="240" height="8" color="#EF4444"/></Positioned>
+        <Positioned left="-20" top="30"><Container width="240" height="8" color="#22D3EE"/></Positioned>
+        <Positioned left="-20" top="60"><Container width="240" height="8" color="#FBBF24"/></Positioned>
+        <Positioned left="-20" top="90"><Container width="240" height="8" color="#34D399"/></Positioned>
+      </Stack>
+    </ImageFiltered></SizedBox>
+  </ClipRRect></Positioned>
+  <!-- test 5: covering rect then blurred copy -->
+  <Positioned left="320" top="240"><Container width="200" height="120" color="#0B1220F2"/></Positioned>
+  <Positioned left="320" top="240"><Stack alignment="TOP_LEFT" clipBehavior="NONE">
+    <Positioned left="0" top="0"><Container width="200" height="8" color="#EF4444"/></Positioned>
+    <Positioned left="0" top="30"><Container width="200" height="8" color="#22D3EE"/></Positioned>
+  </Stack></Positioned>
+  <Positioned left="320" top="240"><ClipRRect borderRadius="0" clipBehavior="ANTI_ALIAS">
+    <SizedBox width="200" height="120"><ImageFiltered sigmaX="8" sigmaY="8" tileMode="CLAMP">
+      <Stack alignment="TOP_LEFT" clipBehavior="NONE">
+        <Positioned left="-20" top="0"><Container width="240" height="8" color="#EF4444"/></Positioned>
+        <Positioned left="-20" top="30"><Container width="240" height="8" color="#22D3EE"/></Positioned>
+      </Stack>
+    </ImageFiltered></SizedBox>
+  </ClipRRect></Positioned>
+  <!-- test 6: ClipRect + BackdropFilter with a 1/255 child over stripes -->
+  <Positioned left="580" top="240"><Stack alignment="TOP_LEFT" clipBehavior="NONE">
+    <Positioned left="0" top="0"><Container width="200" height="8" color="#EF4444"/></Positioned>
+    <Positioned left="0" top="30"><Container width="200" height="8" color="#22D3EE"/></Positioned>
+    <Positioned left="0" top="60"><Container width="200" height="8" color="#FBBF24"/></Positioned>
+    <Positioned left="0" top="90"><Container width="200" height="8" color="#34D399"/></Positioned>
+  </Stack></Positioned>
+  <Positioned left="580" top="240"><ClipRect clipBehavior="ANTI_ALIAS">
+    <BackdropFilter sigmaX="8" sigmaY="8" tileMode="CLAMP">
+      <Container width="200" height="120" color="#FFFFFF02"/>
+    </BackdropFilter>
+  </ClipRect></Positioned>
+</Stack>
+</Container>
+</Snapshot>

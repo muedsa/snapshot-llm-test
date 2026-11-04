@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "task_id": "A20",
+  "path_base": "output_dir",
+  "checks": {
+    "label_pair_min_distance": {
+      "value": 10.0,
+      "pair": [
+        "M01",
+        "M02"
+      ],
+      "required": ">= 4",
+      "passed": true
+    },
+    "label_overlaps": {
+      "count": 0,
+      "items": [],
+      "passed": true
+    },
+    "label_covers_foreign_dot": {
+      "count": 0,
+      "items": [],
+      "passed": true
+    },
+    "leader_through_other_label": {
+      "count": 0,
+      "items": [],
+      "passed": true
+    },
+    "leader_crossings": {
+      "count": 1,
+      "items": [
+        {
+          "pair": [
+            "M17",
+            "M24"
+          ],
+          "point": [
+            361.356,
+            804.13
+          ]
+        }
+      ],
+      "allowed": 3,
+      "passed": true
+    },
+    "leader_required_matches": {
+      "passed": true,
+      "method": "锚点到自有标签盒最短距离 >24 时才必须画引导线"
+    },
+    "label_inside_canvas": {
+      "passed": true
+    },
+    "dots_not_covered": {
+      "passed": true
+    },
+    "no_point_removed": {
+      "passed": true
+    },
+    "labels_do_not_hide_own_dot": {
+      "passed": true,
+      "method": "每个标签盒都在主图区之外（x<280 或 x>1320），不可能压住任何点"
+    }
+  },
+  "zoom_review": {
+    "points": [
+      "M06",
+      "M08",
+      "M09",
+      "M10",
+      "M11",
+      "M12"
+    ],
+    "method": "渲染后放大 2× 查看这 6 个中心点及其引导线，再查看整图",
+    "result": "2.2× 放大中心区：M06/M08/M09/M10/M11/M12 六个 12px 点互不接触，最小间距 32px；六条引导线从各自圆周出发，穿过点与点之间的空隙，未进入任何标签盒；TOP1(M10)、TOP2(M08) 的橙色圆环完整，TOP3(M23) 独立在右侧。整图复查：24 个标签两列排布、无重叠、无换行溢出。",
+    "crop": "tmp/<run_id>/A20/crop-center.png（640,380–980,620，2.2×）"
+  },
+  "summary": {
+    "labels": 24,
+    "leaders": 24,
+    "shrunk_dots": 0
+  }
+}

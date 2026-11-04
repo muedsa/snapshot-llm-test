@@ -1,0 +1,206 @@
+# 快速开始
+
+> 用 Kotlin 生成第一张 Snapshot 图片。
+
+## 你将得到什么
+
+这篇指南面向已有 Kotlin/JVM Gradle 项目的读者：配置依赖后运行一个 `main()`，在项目目录得到 `320 × 180` 的红色 PNG。只想在线尝试时，可以先打开[完整模板示例](/guides/examples/)，无需安装 JVM 环境。
+
+下面是完整的 `src/main/kotlin/Main.kt`，不声明 package。先完成下一节的依赖配置，再运行它：
+
+```kotlin
+import com.muedsa.snapshot.SnapshotPNG
+import com.muedsa.snapshot.widget.Container
+import org.jetbrains.skia.Color
+import java.io.File
+
+
+fun main() {
+    File("out.png").writeBytes(
+        SnapshotPNG {
+            Container(width = 320f, height = 180f, color = Color.RED)
+        }
+    )
+}
+```
+
+## 添加依赖
+
+准备 JDK 17 和 Gradle 项目，使用项目自带的 Wrapper 执行命令。Snapshot 库以 Java 11 为编译目标，下面的示例应用使用 JDK 17。
+
+项目通过 GitHub Packages 发布快照版本。先在用户级 `~/.gradle/gradle.properties` 配置具备 `read:packages` 权限的凭据（Windows 对应 `%USERPROFILE%\.gradle\gradle.properties`），不要将实际令牌提交到仓库：
+
+```properties
+gpr.user=YOUR_GITHUB_USERNAME
+gpr.key=YOUR_CLASSIC_PAT
+```
+
+然后在 `build.gradle.kts` 中配置插件、仓库与依赖，已有项目合并相应配置即可。以下以 Windows x64 为例；其他平台请在[安装与构建](/guides/installation/#%E4%BB%8E-github-packages-%E5%BC%95%E5%85%A5)中选择对应的 Skiko runtime：
+
+```kotlin
+plugins {
+    kotlin("jvm") version "2.4.21"
+    application
+}
+
+
+repositories {
+    mavenCentral()
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+    maven {
+        url = uri("https://maven.pkg.github.com/muedsa/snapshot")
+        credentials {
+            username = providers.gradleProperty("gpr.user").orNull
+            password = providers.gradleProperty("gpr.key").orNull
+        }
+    }
+}
+
+
+dependencies {
+    implementation("com.muedsa.snapshot:snapshot-core:0.0.0-SNAPSHOT")
+    implementation("org.jetbrains.skiko:skiko-awt-runtime-windows-x64:0.0.0-SNAPSHOT")
+}
+
+
+kotlin { jvmToolchain(17) }
+application { mainClass.set("MainKt") }
+```
+
+如果要使用类 DOM 解析器，把依赖换为 `snapshot-parser`；它会传递 `core`，但仍需保留平台 runtime。Linux、macOS 或 ARM64 不能直接照抄上述 Windows x64 坐标。
+
+## 运行与检查输出
+
+在项目根目录运行：
+
+```powershell
+# Windows PowerShell
+.\gradlew.bat run
+```
+
+```bash
+# macOS / Linux
+./gradlew run
+```
+
+工作目录会出现 `out.png`。调整根 Container 的宽高后再次运行，即可改变输出尺寸。如果自行添加了 package，记得同步修改 `application.mainClass`。下载失败或原生库无法加载时，见[安装排错](/guides/installation/#%E5%AE%89%E8%A3%85%E6%8E%92%E9%94%99)。
+
+## 常见输出格式
+
+```kotlin
+SnapshotPNG { /* Widget tree */ }
+SnapshotJPEG { /* Widget tree */ }
+SnapshotWEBP { /* Widget tree */ }
+```
+
+根节点必须有有限尺寸
+
+无子节点、无约束的 `Container()` 与空的 `Row {}` 都会得到空尺寸，无法创建有效 Surface。请使用 `width`、`height` 或 `SizedBox` 为根布局建立非零尺寸。
+
+## 构建一张完整卡片
+
+下面替换 `Main.kt`，同时使用固定画布、内边距、圆角、Flex 布局与文本样式：
+
+```kotlin
+import com.muedsa.geometry.BoxAlignment
+import com.muedsa.geometry.EdgeInsets
+import com.muedsa.snapshot.SnapshotPNG
+import com.muedsa.snapshot.paint.decoration.BorderRadius
+import com.muedsa.snapshot.paint.decoration.BoxDecoration
+import com.muedsa.snapshot.paint.text.TextStyle
+import com.muedsa.snapshot.rendering.flex.CrossAxisAlignment
+import com.muedsa.snapshot.widget.*
+import com.muedsa.snapshot.widget.text.Text
+import org.jetbrains.skia.FontStyle
+import java.io.File
+
+
+fun main() {
+    File("snapshot-card.png").writeBytes(createCard())
+}
+
+
+fun createCard(): ByteArray = SnapshotPNG(background = 0xFF020617.toInt()) {
+    Container(
+        width = 720f,
+        height = 360f,
+        padding = EdgeInsets.all(36f),
+        alignment = BoxAlignment.CENTER_LEFT,
+        decoration = BoxDecoration(
+            color = 0xFF0F172A.toInt(),
+            borderRadius = BorderRadius.circular(28f),
+        ),
+    ) {
+        Column(crossAxisAlignment = CrossAxisAlignment.START) {
+            Text(
+                "SNAPSHOT",
+                style = TextStyle(
+                    color = 0xFF38BDF8.toInt(),
+                    fontSize = 18f,
+                    fontStyle = FontStyle.BOLD,
+                ),
+            )
+            SizedBox(height = 18f)
+            Text(
+                "Layout first. Paint second.",
+                style = TextStyle(
+                    color = 0xFFF8FAFC.toInt(),
+                    fontSize = 42f,
+                    fontStyle = FontStyle.BOLD,
+                ),
+            )
+            SizedBox(height = 12f)
+            Text(
+                "用 Kotlin Widget 树生成确定性的图片。",
+                style = TextStyle(color = 0xFF94A3B8.toInt(), fontSize = 22f),
+            )
+        }
+    }
+}
+```
+
+这里的根 Container 明确给出 `720 × 360`，所以输出图片就是该尺寸。背景先被填充为深色，Container 再绘制圆角卡片。
+
+## 使用类 DOM 输入
+
+如果图片结构来自配置、模板或 HTTP 请求，可以使用 parser 模块。依赖改为 `snapshot-parser` 后，用下面代码替换 `Main.kt`：
+
+```kotlin
+import com.muedsa.snapshot.parser.Parser
+import java.io.File
+import java.io.StringReader
+
+
+fun main() {
+    val source = """
+        <Snapshot background="#020617" type="png">
+          <Container width="720" height="360" padding="36" color="#0F172A" borderRadius="28">
+            <Column crossAxisAlignment="START">
+              <Text color="#38BDF8" fontSize="18" fontStyle="BOLD">SNAPSHOT</Text>
+              <Text color="#F8FAFC" fontSize="42" fontStyle="BOLD">Layout first. Paint second.</Text>
+            </Column>
+          </Container>
+        </Snapshot>
+    """.trimIndent()
+
+
+    val image = Parser().parse(StringReader(source)).snapshot()
+    File("parser-card.png").writeBytes(image)
+}
+```
+
+Parser 是受控子集
+
+Parser 已内置 Flex、比例布局、基础滤镜、SVG 路径裁剪、富文本行内 Widget、Data URI 图片等共 39 个标签，但仍少于完整 Kotlin DSL。请以[标签与属性参考](/reference/parser-tags/)为准，未覆盖的能力可以注册自定义标签。
+
+## 选择下一篇
+
+[渲染入口与输出](/guides/rendering/)了解 PNG、JPEG、WebP、Surface 与画布尺寸。
+
+[约束、布局与调试](/guides/layout/)排查宽高、Flex、Stack、溢出与裁剪问题。
+
+[类 DOM 解析器](/guides/parser/)用文本模板构建 Widget 树并生成图片。
+
+[测试与 Golden](/guides/testing/)用布局、像素和 Golden 测试防止视觉回归。
+
+下一步：阅读[核心概念](/guides/concepts/)了解约束布局，或直接查看[Widget 与布局](/guides/widgets/)。接入中文业务时，继续配置[应用字体](/guides/fonts/)和[动态数据模板](/guides/data-templates/)，再用[测试指南](/guides/testing/)保护布局结果。

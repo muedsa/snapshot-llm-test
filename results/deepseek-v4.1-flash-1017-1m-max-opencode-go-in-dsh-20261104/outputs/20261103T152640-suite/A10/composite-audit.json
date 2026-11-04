@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "generated_at": "2026-11-03T17:24:14+08:00",
+  "canvas": {
+    "size": [
+      1440,
+      1100
+    ],
+    "areas": [
+      {
+        "id": 1,
+        "origin": [
+          208,
+          160
+        ],
+        "size": [
+          320,
+          240
+        ]
+      },
+      {
+        "id": 2,
+        "origin": [
+          560,
+          160
+        ],
+        "size": [
+          320,
+          240
+        ]
+      },
+      {
+        "id": 3,
+        "origin": [
+          912,
+          160
+        ],
+        "size": [
+          320,
+          240
+        ]
+      },
+      {
+        "id": 4,
+        "origin": [
+          208,
+          500
+        ],
+        "size": [
+          320,
+          240
+        ]
+      },
+      {
+        "id": 5,
+        "origin": [
+          560,
+          500
+        ],
+        "size": [
+          320,
+          240
+        ]
+      },
+      {
+        "id": 6,
+        "origin": [
+          912,
+          500
+        ],
+        "size": [
+          320,
+          240
+        ]
+      }
+    ],
+    "gaps": {
+      "x": 32,
+      "between_rows": 100
+    }
+  },
+  "experiments": [
+    {
+      "id": "①",
+      "composition": "红 #FF000080 → 蓝 #0000FF80 覆盖，白底 source-over",
+      "alpha": {
+        "byte": 128,
+        "ratio": 0.50196078
+      },
+      "rects_local": {
+        "red": [
+          40,
+          40,
+          160,
+          120
+        ],
+        "blue": [
+          120,
+          80,
+          160,
+          120
+        ]
+      },
+      "blue_on_top": true,
+      "sample_local": [
+        180,
+        100
+      ],
+      "theoretical_float": [
+        127.0,
+        63.25098,
+        191.25098
+      ],
+      "rounded_rgb": [
+        127,
+        63,
+        191
+      ]
+    },
+    {
+      "id": "②",
+      "composition": "不透明红、蓝依次放入 Opacity(0.5)，组结果再与白底混合",
+      "group_opacity": 0.5,
+      "rects_local": {
+        "red": [
+          40,
+          40,
+          160,
+          120
+        ],
+        "blue": [
+          120,
+          80,
+          160,
+          120
+        ]
+      },
+      "blue_on_top": true,
+      "sample_local": [
+        180,
+        100
+      ],
+      "group_result_rgb": [
+        0,
+        0,
+        255
+      ],
+      "theoretical_float": [
+        127.5,
+        127.5,
+        255.0
+      ],
+      "rounded_rgb": [
+        128,
+        128,
+        255
+      ]
+    }
+  ],
+  "pixel_samples": [
+    {
+      "experiment": 1,
+      "sampled_pixel": [
+        388,
+        260
+      ],
+      "alpha_channel": 255,
+      "theoretical_float": [
+        127.0,
+        63.25098,
+        191.25098
+      ],
+      "rounded_rgb": [
+        127,
+        63,
+        191
+      ],
+      "actual_rgb": [
+        127,
+        63,
+        191
+      ],
+      "abs_error_per_channel": [
+        0,
+        0,
+        0
+      ],
+      "passed": true,
+      "observation": "逐元素 50% alpha 两次 source-over，实测与浮点理论值逐通道一致。"
+    },
+    {
+      "experiment": 2,
+      "sampled_pixel": [
+        740,
+        260
+      ],
+      "alpha_channel": 255,
+      "theoretical_float": [
+        127.5,
+        127.5,
+        255.0
+      ],
+      "rounded_rgb": [
+        128,
+        128,
+        255
+      ],
+      "actual_rgb": [
+        126,
+        126,
+        255
+      ],
+      "abs_error_per_channel": [
+        2,
+        2,
+        0
+      ],
+      "passed": true,
+      "observation": "组不透明度 0.5 在实现中先合成 8 位图层再混合，实测 (126,126,255) 比理论 127.5 低 2，仍在 ±3 容差内；①使用 128/255 逐元素混合，实测与理论完全一致 (127,63,191)。"
+    }
+  ],
+  "alpha_semantics": {
+    "128_over_255": 0.50196078,
+    "why_differs": "颜色属性的 8 位 alpha 除以 255 得 0.50196；Opacity 的 0.5 是精确一半。①的红蓝各自与背景混合两次，②只在最后混合一次，结果在 R 通道相差 1。"
+  },
+  "pairs": [
+    {
+      "pair": "③④",
+      "shared": [
+        "条纹 #E11D48 / #F59E0B / #0EA5E9，宽 16 间隔 10，相位一致",
+        "卡片 240×160、圆角 20、局部 (40,40)",
+        "白底、24px 文字、深色矩形 84×42、白圆 r=22",
+        "sigmaX = sigmaY = 6"
+      ],
+      "only_difference": "③ 只对卡内背景条纹施加 ImageFiltered，文字与形状为独立锐利层；④ 把背景 + 文字 + 形状放进同一 ImageFiltered 子树",
+      "text_③": "SHARP",
+      "text_④": "BLUR"
+    },
+    {
+      "pair": "⑤⑥",
+      "shared": [
+        "场景：蓝条 (16,96,288,40)、深色矩形 (96,52,128,72)+阴影、绿圆 r=28、红块两枚",
+        "ColorFiltered color=#F6B94A blendMode=MULTIPLY",
+        "sigmaX = sigmaY = 6"
+      ],
+      "only_difference": "⑥ 在结果最外层增加 ClipPath 圆形（圆心 (160,120)、半径 100）；⑤ 不裁剪"
+    }
+  ],
+  "visual_judgements": [
+    {
+      "area": "③",
+      "text_sharp": true,
+      "background_blurred": true,
+      "effect_spills_outside_card": false,
+      "observed": "卡内条纹变成柔和色带、'SHARP' 字形边缘锐利；卡外条纹仍是 16px 硬边",
+      "dsl_node": "ClipRRect > ImageFiltered(σ=6) > 条纹副本，其后独立绘制文字与形状",
+      "doc": "https://snapshot.muedsa.com/reference/parser-tags.md#colorfilteredimagefiltered-与-backdropfilter"
+    },
+    {
+      "area": "④",
+      "text_sharp": false,
+      "background_blurred": true,
+      "effect_spills_outside_card": false,
+      "observed": "'BLUR' 字与深色矩形边缘都出现高斯晕散，无法辨认字形；卡外条纹不受影响",
+      "dsl_node": "ClipRRect > ImageFiltered(σ=6) > (白底+条纹+文字+形状+描边)",
+      "doc": "https://snapshot.muedsa.com/reference/parser-tags.md#colorfilteredimagefiltered-与-backdropfilter"
+    },
+    {
+      "area": "⑤",
+      "multiply_colored": true,
+      "blurred": true,
+      "clipped": false,
+      "observed": "整区被 #F6B94A 相乘为暖色；蓝条与深色矩形边界晕散；四角均有滤镜效果，无裁剪边界",
+      "dsl_node": "ColorFiltered(MULTIPLY) > ImageFiltered(σ=6) > 场景 Stack",
+      "doc": "https://snapshot.muedsa.com/reference/parser-tags.md#colorfilteredimagefiltered-与-backdropfilter"
+    },
+    {
+      "area": "⑥",
+      "multiply_colored": true,
+      "blurred": true,
+      "clipped": true,
+      "observed": "圆形边界清晰，蓝条在圆周处被切断；圆外保持未着色的白底",
+      "dsl_node": "ClipPath(circle r=100) > ColorFiltered > ImageFiltered > 场景",
+      "doc": "https://snapshot.muedsa.com/reference/parser-tags.md#clippath"
+    }
+  ],
+  "checks": {
+    "six_areas_320x240_white": {
+      "passed": true,
+      "method": "六区原点与尺寸见 canvas.areas"
+    },
+    "gap_at_least_32": {
+      "passed": true,
+      "method": "横向间距 32px；行间 100px"
+    },
+    "captions_outside_areas": {
+      "passed": true,
+      "method": "编号与说明均绘制在区域下方"
+    },
+    "sigma_6_everywhere": {
+      "passed": true,
+      "method": "③④⑤⑥ DSL 中 sigmaX=sigmaY=6"
+    },
+    "alpha_128_vs_half": {
+      "passed": true,
+      "method": "理论 R 通道 127.0 vs 127.5，实测见 pixel_samples"
+    },
+    "samples_within_tolerance": {
+      "passed": true,
+      "tolerance": 3,
+      "method": "读取未预乘 RGBA，alpha 须 255，逐通道误差 ≤3"
+    },
+    "pairs_share_parameters": {
+      "passed": true,
+      "method": "见 pairs[].shared / only_difference"
+    }
+  }
+}

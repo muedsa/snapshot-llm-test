@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "task_id": "A13",
+  "path_base": "output_dir",
+  "brand": {
+    "name_cn": "叠光",
+    "name_en": "Layerlight",
+    "concept": "信息叠加后仍然清晰",
+    "tagline": "把复杂信息，组织成清晰画面"
+  },
+  "colors": {
+    "ink": "#101826",
+    "blue": "#2F6BFF",
+    "amber": "#FFB020",
+    "paper": "#0C1322",
+    "alpha": {
+      "back": 0.9,
+      "mid": 0.8,
+      "front": 0.88,
+      "core": 1.0
+    }
+  },
+  "geometry_reference_box": [
+    512,
+    512
+  ],
+  "components": [
+    {
+      "id": "S1",
+      "primitive": "rounded square",
+      "instance": "back layer",
+      "geometry": {
+        "x": 72,
+        "y": 72,
+        "w": 264,
+        "h": 264,
+        "radius": 60
+      },
+      "fill": "#101826E6",
+      "dsl": "Container border-radius 60",
+      "count": 1
+    },
+    {
+      "id": "S2",
+      "primitive": "rounded square",
+      "instance": "middle layer",
+      "geometry": {
+        "x": 152,
+        "y": 124,
+        "w": 206,
+        "h": 206,
+        "radius": 46
+      },
+      "fill": "#2F6BFFCC",
+      "dsl": "Container border-radius 46",
+      "count": 2
+    },
+    {
+      "id": "S3",
+      "primitive": "rounded square",
+      "instance": "front layer",
+      "geometry": {
+        "x": 204,
+        "y": 196,
+        "w": 164,
+        "h": 164,
+        "radius": 34
+      },
+      "fill": "#FFB020E0",
+      "dsl": "Container border-radius 34",
+      "count": 3
+    },
+    {
+      "id": "S4",
+      "primitive": "circle",
+      "instance": "clarity core",
+      "geometry": {
+        "x": 256,
+        "y": 255,
+        "w": 60,
+        "h": 60,
+        "radius": 30
+      },
+      "fill": "#FFFFFF",
+      "dsl": "Container border-radius 30",
+      "count": 4
+    }
+  ],
+  "component_count": 4,
+  "count_rationale": "四个可独立辨认的母形实例：三个圆角方块 + 一个圆点；负空间（层间透出的深色缺口）由叠加自然产生，不另计。",
+  "clear_space": {
+    "minimum_ratio_of_mark": 0.18,
+    "rule": "方形安全区边长 = 标志外框 × 1.18，四周留白不小于外框的 9%"
+  },
+  "small_size_rules": {
+    "min_render_px": 32,
+    "core_kept": true,
+    "note": "32px 时三层仍各有 2 个可见圆角，白色核点直径约 3.2px 保留"
+  },
+  "applications": [
+    {
+      "file": "symbol-color.png",
+      "size": [
+        512,
+        512
+      ],
+      "background": "transparent",
+      "mark_scale": 1.0,
+      "mark_origin": [
+        0,
+        0
+      ],
+      "mode": "color"
+    },
+    {
+      "file": "symbol-black.png",
+      "size": [
+        512,
+        512
+      ],
+      "background": "transparent",
+      "mark_scale": 1.0,
+      "mark_origin": [
+        0,
+        0
+      ],
+      "mode": "black"
+    },
+    {
+      "file": "brand-banner.png",
+      "size": [
+        1200,
+        400
+      ],
+      "background": "#0C1322",
+      "mark_scale": 0.56,
+      "mark_origin": [
+        64,
+        55
+      ],
+      "mode": "color",
+      "text": [
+        "叠光",
+        "Layerlight",
+        "把复杂信息，组织成清晰画面",
+        "layerlight.example.org"
+      ]
+    },
+    {
+      "file": "launch-poster.png",
+      "size": [
+        1080,
+        1350
+      ],
+      "background": "#0C1322",
+      "mark_scale": 0.92,
+      "mark_origin": [
+        228,
+        120
+      ],
+      "mode": "color",
+      "text": [
+        "叠光",
+        "Layerlight",
+        "把复杂信息，组织成清晰画面",
+        "2026.11.07 · ONLINE",
+        "OPEN BETA",
+        "layerlight.example.org"
+      ]
+    }
+  ],
+  "anti_patterns": [
+    "不使用现成标志",
+    "不把文字整体当图标",
+    "不使用外部图片",
+    "横幅与海报均由同一 DSL 几何函数重绘，未嵌入图标 PNG"
+  ],
+  "black_check": {
+    "file": "symbol-black.png",
+    "size": [
+      512,
+      512
+    ],
+    "violating_pixels": 0,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "nonzero_alpha_pixels": 76543,
+    "passed": true
+  },
+  "thumbnail_check": {
+    "tool": "Pillow 12.3.0",
+    "resample": "LANCZOS on premultiplied alpha, then un-premultiply",
+    "sizes": [
+      32,
+      32
+    ],
+    "previews": [
+      "previews/symbol-color-32.png",
+      "previews/symbol-black-32.png",
+      "previews/thumb-sheet.png"
+    ]
+  }
+}

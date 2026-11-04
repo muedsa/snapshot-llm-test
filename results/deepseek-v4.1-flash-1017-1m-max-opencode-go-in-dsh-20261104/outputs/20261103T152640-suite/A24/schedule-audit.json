@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "objective": "最小化所有任务的最大 end（makespan），基准 09:00=0",
+  "feasible_schedule_makespan": 260,
+  "bounds": {
+    "critical_path_min": 255,
+    "work_total_min": 485,
+    "resource_lower_bound_min": 242.5,
+    "note": "关键路径只考虑依赖与时长；资源下界=总工时/2（两团队）。真实下界取两者较大值。"
+  },
+  "gap_to_critical_path": 5,
+  "optimality": "未知；未提供全局最优证明。该排程在关键路径下界之上 5 分钟，并通过枚举 3 个可选团队任务的 8 种组合取最小 makespan。",
+  "checks": {
+    "no_team_overlap": true,
+    "dependencies_respected": true,
+    "durations_exact": true,
+    "within_window": true,
+    "all_12_scheduled": true,
+    "flexible_assigned_to_one_team": true
+  },
+  "gaps": {
+    "design": [
+      [
+        85,
+        90,
+        5
+      ]
+    ],
+    "engineering": [
+      [
+        200,
+        205,
+        5
+      ]
+    ]
+  }
+}

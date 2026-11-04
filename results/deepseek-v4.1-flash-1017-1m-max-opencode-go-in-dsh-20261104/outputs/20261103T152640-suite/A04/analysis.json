@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "generated_at": "2026-11-03T16:23:24+08:00",
+  "units": {
+    "visits": "次",
+    "conversions": "笔",
+    "rate": "%"
+  },
+  "groups": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "numerator": 2400,
+      "denominator": 8000,
+      "exact_fraction": "2400/8000",
+      "exact_decimal": 0.3,
+      "display_pct": 30.0
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "numerator": 200,
+      "denominator": 2000,
+      "exact_fraction": "200/2000",
+      "exact_decimal": 0.1,
+      "display_pct": 10.0
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "numerator": 700,
+      "denominator": 2000,
+      "exact_fraction": "700/2000",
+      "exact_decimal": 0.35,
+      "display_pct": 35.0
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "numerator": 960,
+      "denominator": 8000,
+      "exact_fraction": "960/8000",
+      "exact_decimal": 0.12,
+      "display_pct": 12.0
+    }
+  ],
+  "periods": [
+    {
+      "period": "前期",
+      "numerator": 2600,
+      "denominator": 10000,
+      "weighted_formula": "(2400 + 200) / (8000 + 2000)",
+      "exact_decimal": 0.26,
+      "display_pct": 26.0,
+      "visit_share": {
+        "直接访问": 0.8,
+        "推广访问": 0.2
+      }
+    },
+    {
+      "period": "后期",
+      "numerator": 1660,
+      "denominator": 10000,
+      "weighted_formula": "(700 + 960) / (2000 + 8000)",
+      "exact_decimal": 0.166,
+      "display_pct": 16.6,
+      "visit_share": {
+        "直接访问": 0.2,
+        "推广访问": 0.8
+      }
+    }
+  ],
+  "axes": [
+    {
+      "chart": "channel_rates",
+      "unit": "%",
+      "domain": [
+        0,
+        100
+      ],
+      "zero_line": true,
+      "pixel_mapping": {
+        "plot_box": [
+          120.0,
+          214.0,
+          712.0,
+          392.0
+        ],
+        "formula": "y = 392 - value / 100 * 178"
+      }
+    },
+    {
+      "chart": "visit_mix",
+      "unit": "次",
+      "bar_width_px": 566,
+      "equal_length": true,
+      "segment_widths_px": {
+        "前期": [
+          452.8,
+          113.2
+        ],
+        "后期": [
+          113.2,
+          452.8
+        ]
+      }
+    }
+  ],
+  "decomposition": {
+    "total_change_pp": -9.4,
+    "counterfactual_late_mix_early_rates_pct": 14.0,
+    "mix_effect_pp": -12.0,
+    "rate_effect_pp": 2.6,
+    "check_sum_pp": -9.4,
+    "method": "sequential: 前期总体 → 用后期访问结构重算（保留前期渠道率）→ 后期实际总体"
+  },
+  "naive_average": {
+    "early_pct": 20.0,
+    "late_pct": 23.5,
+    "delta_pp": 3.5,
+    "why_wrong": "两个渠道分母不同（8000/2000 → 2000/8000），等权平均忽略了访问结构"
+  },
+  "conclusions": [
+    {
+      "claim": "两渠道转化率均上升",
+      "values": [
+        "30.00→35.00 (+5.00pp)",
+        "10.00→12.00 (+2.00pp)"
+      ],
+      "support": "groups[*].display_pct"
+    },
+    {
+      "claim": "总体转化率下降 9.40pp",
+      "values": [
+        "26.00% → 16.60%"
+      ],
+      "support": "periods[*].display_pct（成交总数/访问总数）"
+    },
+    {
+      "claim": "结构效应主导",
+      "values": [
+        "mix -12.00pp",
+        "rate +2.60pp"
+      ],
+      "support": "decomposition"
+    },
+    {
+      "claim": "平均渠道比例会得出相反方向",
+      "values": [
+        "20.00% → 23.50% (+3.50pp)"
+      ],
+      "support": "naive_average"
+    }
+  ],
+  "limitations": [
+    "仅两期、两渠道，样本时点未说明抽样方式",
+    "未记录投放成本、时段、落地页版本、用户来源质量等混杂因素",
+    "因此不能证明访问结构变化是总体下降的原因，也不能推断维持原结构时总体转化率必然不变",
+    "本图只做构成分解，不做统计显著性检验"
+  ],
+  "deliverables": {
+    "png": {
+      "path": "conversion-story.png",
+      "size": [
+        1600,
+        1000
+      ]
+    },
+    "dsl": "conversion-story.snapshot"
+  }
+}

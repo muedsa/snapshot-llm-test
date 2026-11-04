@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "task_id": "B05",
+  "path_base": "output_dir",
+  "product": "MediSort 药盒（实体 + 家属端 + 药师端 + 纸质卡）",
+  "persona": {
+    "patient": "张阿姨，72 岁，独居",
+    "family": "张蕾（女儿）",
+    "pro": "李药师（社区药房）"
+  },
+  "steps": [
+    {
+      "order": 1,
+      "case": "case-08",
+      "stage": "启用",
+      "actor": "女儿",
+      "goal": "把药盒连上手机",
+      "screen_state": "搜索中已找到设备",
+      "before": "药盒只有说明书",
+      "after": "手机显示 MediSort-0417 已连接"
+    },
+    {
+      "order": 2,
+      "case": "case-05",
+      "stage": "配置",
+      "actor": "女儿 + 药师",
+      "goal": "录入 4 种药与 4 个时间点",
+      "screen_state": "时间表列表，标注待药师复核",
+      "before": "纸质处方",
+      "after": "时间表 v3，2 小时内复核生效"
+    },
+    {
+      "order": 3,
+      "case": "case-09",
+      "stage": "审核",
+      "actor": "药师",
+      "goal": "检查相互作用并写服药说明",
+      "screen_state": "三条检查结果，一条轻微提示",
+      "before": "家属提交的时间表",
+      "after": "通过并发送，家属收到说明"
+    },
+    {
+      "order": 4,
+      "case": "case-01",
+      "stage": "日常",
+      "actor": "张阿姨",
+      "goal": "知道下一次几点吃药",
+      "screen_state": "待机屏，显示 12:30 与今日 1/4",
+      "before": "需要翻药袋",
+      "after": "抬头就能看到"
+    },
+    {
+      "order": 5,
+      "case": "case-02",
+      "stage": "提醒",
+      "actor": "张阿姨",
+      "goal": "到点被明确提醒",
+      "screen_state": "全屏绿色提醒 + 两个按钮",
+      "before": "可能错过",
+      "after": "药格亮起，两个选择"
+    },
+    {
+      "order": 6,
+      "case": "case-03",
+      "stage": "确认",
+      "actor": "张阿姨",
+      "goal": "确认已服药并看到下一次",
+      "screen_state": "✓ 已记录，连续 9 天按时",
+      "before": "吃没吃无人知道",
+      "after": "记录 + 家属收到通知"
+    },
+    {
+      "order": 7,
+      "case": "case-04",
+      "stage": "查看",
+      "actor": "女儿",
+      "goal": "确认妈妈今天的状态",
+      "screen_state": "2/4 次、下次 19:00、本周 26/28",
+      "before": "只能打电话问",
+      "after": "一眼看到，并可一键拨号"
+    },
+    {
+      "order": 8,
+      "case": "case-06",
+      "stage": "补药",
+      "actor": "女儿",
+      "goal": "在吃完前补上",
+      "screen_state": "只剩 6 天，两个药房可选",
+      "before": "临时跑药房",
+      "after": "提前 6 天下单"
+    },
+    {
+      "order": 9,
+      "case": "case-07",
+      "stage": "复盘",
+      "actor": "女儿 + 药师",
+      "goal": "发现漏服规律",
+      "screen_state": "周报：92.9%，两次漏服都在晚上",
+      "before": "只知道「有时候忘」",
+      "after": "定位到 19:00，建议调整药格位置"
+    },
+    {
+      "order": 10,
+      "case": "case-10",
+      "stage": "兜底",
+      "actor": "张阿姨 + 家属",
+      "goal": "不依赖手机也能查",
+      "screen_state": "A5 纸质卡，四次用药与应急电话",
+      "before": "手机没电就没法查",
+      "after": "冰箱上贴着，随时可看"
+    }
+  ],
+  "screen_order_note": "文件按界面类型编号（case-01…10），journey 的顺序是实际使用顺序。",
+  "assumptions": [
+    "未做真实用户测试",
+    "相互作用文案为演示",
+    "设备硬件未选型",
+    "家属端只做查看与配置，不做社交"
+  ]
+}

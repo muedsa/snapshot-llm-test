@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "day": "2026-11-07",
+  "timezone": "+08:00",
+  "window_minutes": 420,
+  "start_wall": "2026-11-07T09:00:00+08:00",
+  "deadline_wall": "2026-11-07T16:00:00+08:00",
+  "unit": "分钟，以 09:00 为 0",
+  "makespan_min": 260,
+  "makespan_clock": "13:20",
+  "buffer_min": 160,
+  "team_assignment": {
+    "R05": "engineering",
+    "R09": "design",
+    "R12": "design"
+  },
+  "tasks": [
+    {
+      "id": "R01",
+      "label": "需求核对",
+      "team": "design",
+      "start_min": 0,
+      "end_min": 25,
+      "minutes": 25,
+      "start": "09:00",
+      "end": "09:25",
+      "deps": []
+    },
+    {
+      "id": "R02",
+      "label": "服务与字体探测",
+      "team": "engineering",
+      "start_min": 0,
+      "end_min": 20,
+      "minutes": 20,
+      "start": "09:00",
+      "end": "09:20",
+      "deps": []
+    },
+    {
+      "id": "R03",
+      "label": "数据清洗",
+      "team": "engineering",
+      "start_min": 20,
+      "end_min": 60,
+      "minutes": 40,
+      "start": "09:20",
+      "end": "10:00",
+      "deps": [
+        "R02"
+      ]
+    },
+    {
+      "id": "R04",
+      "label": "视觉系统",
+      "team": "design",
+      "start_min": 25,
+      "end_min": 85,
+      "minutes": 60,
+      "start": "09:25",
+      "end": "10:25",
+      "deps": [
+        "R01"
+      ]
+    },
+    {
+      "id": "R05",
+      "label": "文案审校",
+      "team": "engineering",
+      "start_min": 60,
+      "end_min": 90,
+      "minutes": 30,
+      "start": "10:00",
+      "end": "10:30",
+      "deps": [
+        "R01"
+      ]
+    },
+    {
+      "id": "R06",
+      "label": "图表计算",
+      "team": "engineering",
+      "start_min": 90,
+      "end_min": 135,
+      "minutes": 45,
+      "start": "10:30",
+      "end": "11:15",
+      "deps": [
+        "R03"
+      ]
+    },
+    {
+      "id": "R07",
+      "label": "主海报构建",
+      "team": "design",
+      "start_min": 90,
+      "end_min": 160,
+      "minutes": 70,
+      "start": "10:30",
+      "end": "11:40",
+      "deps": [
+        "R04",
+        "R05"
+      ]
+    },
+    {
+      "id": "R08",
+      "label": "驾驶舱构建",
+      "team": "engineering",
+      "start_min": 135,
+      "end_min": 200,
+      "minutes": 65,
+      "start": "11:15",
+      "end": "12:20",
+      "deps": [
+        "R04",
+        "R06"
+      ]
+    },
+    {
+      "id": "R09",
+      "label": "手机适配",
+      "team": "design",
+      "start_min": 160,
+      "end_min": 205,
+      "minutes": 45,
+      "start": "11:40",
+      "end": "12:25",
+      "deps": [
+        "R07"
+      ]
+    },
+    {
+      "id": "R10",
+      "label": "视觉回归检查",
+      "team": "design",
+      "start_min": 205,
+      "end_min": 240,
+      "minutes": 35,
+      "start": "12:25",
+      "end": "13:00",
+      "deps": [
+        "R07",
+        "R08",
+        "R09"
+      ]
+    },
+    {
+      "id": "R11",
+      "label": "产物与数据核验",
+      "team": "engineering",
+      "start_min": 205,
+      "end_min": 235,
+      "minutes": 30,
+      "start": "12:25",
+      "end": "12:55",
+      "deps": [
+        "R08",
+        "R09"
+      ]
+    },
+    {
+      "id": "R12",
+      "label": "交付归档",
+      "team": "design",
+      "start_min": 240,
+      "end_min": 260,
+      "minutes": 20,
+      "start": "13:00",
+      "end": "13:20",
+      "deps": [
+        "R10",
+        "R11"
+      ]
+    }
+  ],
+  "teams": {
+    "design": [
+      {
+        "id": "R01",
+        "start": 0,
+        "end": 25
+      },
+      {
+        "id": "R04",
+        "start": 25,
+        "end": 85
+      },
+      {
+        "id": "R07",
+        "start": 90,
+        "end": 160
+      },
+      {
+        "id": "R09",
+        "start": 160,
+        "end": 205
+      },
+      {
+        "id": "R10",
+        "start": 205,
+        "end": 240
+      },
+      {
+        "id": "R12",
+        "start": 240,
+        "end": 260
+      }
+    ],
+    "engineering": [
+      {
+        "id": "R02",
+        "start": 0,
+        "end": 20
+      },
+      {
+        "id": "R03",
+        "start": 20,
+        "end": 60
+      },
+      {
+        "id": "R05",
+        "start": 60,
+        "end": 90
+      },
+      {
+        "id": "R06",
+        "start": 90,
+        "end": 135
+      },
+      {
+        "id": "R08",
+        "start": 135,
+        "end": 200
+      },
+      {
+        "id": "R11",
+        "start": 205,
+        "end": 235
+      }
+    ]
+  }
+}

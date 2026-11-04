@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "task_id": "A07",
+  "path_base": "output_dir",
+  "generated_at": "2026-11-03T16:57:20+08:00",
+  "graph": {
+    "stations": 16,
+    "edges": 16,
+    "lines": {
+      "R": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S12"
+      ],
+      "B": [
+        "S07",
+        "S08",
+        "S04",
+        "S09",
+        "S10",
+        "S11"
+      ],
+      "G": [
+        "S13",
+        "S14",
+        "S08",
+        "S15",
+        "S05",
+        "S16"
+      ]
+    },
+    "interchanges": [
+      {
+        "id": "S04",
+        "name": "中心",
+        "lines": [
+          "R",
+          "B"
+        ],
+        "accessible": true
+      },
+      {
+        "id": "S05",
+        "name": "东桥",
+        "lines": [
+          "R",
+          "G"
+        ],
+        "accessible": false
+      },
+      {
+        "id": "S08",
+        "name": "工坊",
+        "lines": [
+          "B",
+          "G"
+        ],
+        "accessible": true
+      }
+    ],
+    "inaccessible": [
+      {
+        "id": "S03",
+        "name": "书院"
+      },
+      {
+        "id": "S05",
+        "name": "东桥"
+      },
+      {
+        "id": "S09",
+        "name": "花园"
+      },
+      {
+        "id": "S14",
+        "name": "公园"
+      }
+    ]
+  },
+  "definitions": {
+    "edge": "相邻两站之间的一段乘车区间",
+    "transfer": "改变乘坐线路；首次上车不计为换乘",
+    "objective": "先最少站间边数，再最少换乘次数",
+    "accessible_rule": "起终点必须有设施；换乘站必须有设施；可乘车通过无设施车站"
+  },
+  "queries": [
+    {
+      "from": "S01",
+      "to": "S11",
+      "from_name": "松林",
+      "to_name": "会展",
+      "plain": {
+        "station_ids": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "stations": [
+          "松林",
+          "北门",
+          "书院",
+          "中心",
+          "花园",
+          "南门",
+          "会展"
+        ],
+        "segments": [
+          {
+            "line": "R",
+            "line_name": "红线",
+            "from": "松林",
+            "to": "中心",
+            "stops": 3
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "from": "中心",
+            "to": "会展",
+            "stops": 3
+          }
+        ],
+        "edges": 6,
+        "transfers": 1,
+        "transfer_station_ids": [
+          "S04"
+        ],
+        "transfer_stations": [
+          "中心"
+        ],
+        "accessible_ok": true,
+        "blocking_stations": []
+      },
+      "alternative": null
+    },
+    {
+      "from": "S13",
+      "to": "S12",
+      "from_name": "石溪",
+      "to_name": "机场",
+      "plain": {
+        "station_ids": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "stations": [
+          "石溪",
+          "公园",
+          "工坊",
+          "剧院",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "segments": [
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "from": "石溪",
+            "to": "东桥",
+            "stops": 4
+          },
+          {
+            "line": "R",
+            "line_name": "红线",
+            "from": "东桥",
+            "to": "机场",
+            "stops": 2
+          }
+        ],
+        "edges": 6,
+        "transfers": 1,
+        "transfer_station_ids": [
+          "S05"
+        ],
+        "transfer_stations": [
+          "东桥"
+        ],
+        "accessible_ok": false,
+        "blocking_stations": [
+          "东桥"
+        ]
+      },
+      "alternative": {
+        "station_ids": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "stations": [
+          "石溪",
+          "公园",
+          "工坊",
+          "中心",
+          "东桥",
+          "江湾",
+          "机场"
+        ],
+        "segments": [
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "from": "石溪",
+            "to": "工坊",
+            "stops": 2
+          },
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "from": "工坊",
+            "to": "中心",
+            "stops": 1
+          },
+          {
+            "line": "R",
+            "line_name": "红线",
+            "from": "中心",
+            "to": "机场",
+            "stops": 3
+          }
+        ],
+        "edges": 6,
+        "transfers": 2,
+        "transfer_station_ids": [
+          "S08",
+          "S04"
+        ],
+        "transfer_stations": [
+          "工坊",
+          "中心"
+        ],
+        "accessible_ok": true
+      }
+    },
+    {
+      "from": "S07",
+      "to": "S16",
+      "from_name": "西港",
+      "to_name": "研究所",
+      "plain": {
+        "station_ids": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "stations": [
+          "西港",
+          "工坊",
+          "剧院",
+          "东桥",
+          "研究所"
+        ],
+        "segments": [
+          {
+            "line": "B",
+            "line_name": "蓝线",
+            "from": "西港",
+            "to": "工坊",
+            "stops": 1
+          },
+          {
+            "line": "G",
+            "line_name": "绿线",
+            "from": "工坊",
+            "to": "研究所",
+            "stops": 3
+          }
+        ],
+        "edges": 4,
+        "transfers": 1,
+        "transfer_station_ids": [
+          "S08"
+        ],
+        "transfer_stations": [
+          "工坊"
+        ],
+        "accessible_ok": true,
+        "blocking_stations": []
+      },
+      "alternative": null
+    }
+  ],
+  "map_positions": {
+    "S01": [
+      120,
+      600
+    ],
+    "S02": [
+      300,
+      600
+    ],
+    "S03": [
+      480,
+      600
+    ],
+    "S04": [
+      580,
+      600
+    ],
+    "S05": [
+      1060,
+      600
+    ],
+    "S06": [
+      1280,
+      600
+    ],
+    "S12": [
+      1440,
+      600
+    ],
+    "S07": [
+      400,
+      240
+    ],
+    "S08": [
+      580,
+      240
+    ],
+    "S09": [
+      580,
+      820
+    ],
+    "S10": [
+      760,
+      820
+    ],
+    "S11": [
+      940,
+      820
+    ],
+    "S13": [
+      240,
+      420
+    ],
+    "S14": [
+      400,
+      420
+    ],
+    "S15": [
+      900,
+      240
+    ],
+    "S16": [
+      1060,
+      740
+    ]
+  }
+}
