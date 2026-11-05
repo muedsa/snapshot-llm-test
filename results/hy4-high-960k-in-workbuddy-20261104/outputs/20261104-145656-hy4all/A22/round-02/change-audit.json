@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "task_id": "A22",
+  "path_base": "output_dir",
+  "round": 2,
+  "baseline": {
+    "round": 1,
+    "files": [
+      "round-01/dashboard.png",
+      "round-01/dashboard.snapshot",
+      "round-01/computed-data.json",
+      "round-01/layout-map.json"
+    ]
+  },
+  "changes": [
+    {
+      "field": "2026-08.refund_amount",
+      "old": 15048,
+      "new": 25048,
+      "source": "rounds/round-02.md",
+      "propagation": [
+        "months[4].refund_amount 重算",
+        "months[4].net_revenue / operating_profit / refund_rate 重算",
+        "totals 总退款/总净收入/总利润/总体退款率重算",
+        "KPI 总净收入/总经营利润卡数值",
+        "柱图该月净收入/利润柱高按重算值绘制（9 月利润转负，柱向下画到负轴区）",
+        "表格该月净收入/利润/退款率单元格",
+        "主结论按更正后数值重写"
+      ],
+      "output_locations": [
+        "round-02/computed-data.json:months[4]",
+        "round-02/dashboard.png:bar_chart/table/conclusion"
+      ]
+    },
+    {
+      "field": "2026-09.operating_cost",
+      "old": 138000,
+      "new": 208000,
+      "source": "rounds/round-02.md",
+      "propagation": [
+        "months[5].operating_cost 重算",
+        "months[5].net_revenue / operating_profit / refund_rate 重算",
+        "totals 总退款/总净收入/总利润/总体退款率重算",
+        "KPI 总净收入/总经营利润卡数值",
+        "柱图该月净收入/利润柱高按重算值绘制（9 月利润转负，柱向下画到负轴区）",
+        "表格该月净收入/利润/退款率单元格",
+        "主结论按更正后数值重写"
+      ],
+      "output_locations": [
+        "round-02/computed-data.json:months[5]",
+        "round-02/dashboard.png:bar_chart/table/conclusion"
+      ]
+    }
+  ],
+  "preserved": [
+    {
+      "item": "主区域边界",
+      "evidence": "layout-map.json comparison 各区域分量差 = 0 ≤2px；画布 1600×1000 不变"
+    },
+    {
+      "item": "主字体/字号/色彩/视觉系统",
+      "evidence": "REGION_STYLE 跨轮相同，正文≥22，共用零起点与同一比例柱图"
+    },
+    {
+      "item": "公式与显示精度",
+      "evidence": "沿用 TASK.md 三轮共同口径：Decimal half-up、整数元、百分比两位"
+    },
+    {
+      "item": "未指定月份数据",
+      "evidence": "除轮次指定字段/新增行外，其余月份六项原值不变；computed-data.json months 可逐项比对"
+    },
+    {
+      "item": "原始 CSV",
+      "evidence": "inputs/monthly.csv 未修改；round-XX/monthly.csv 仅为该轮计算所用数据快照"
+    }
+  ],
+  "regression": [
+    {
+      "kind": "data",
+      "method": "按更正后数据全量重算 net/profit/退款率/转化率/汇总/KPI，Decimal 未舍入值参与",
+      "result": "computed-data.json 已生成，见 checks；9 月利润 -5,632",
+      "evidence": "round-02/computed-data.json"
+    },
+    {
+      "kind": "axis",
+      "method": "柱图 y 轴 vmin=-20000 vmax=240000，zero_line_px=599.692，负值柱从零线向下 |v|*scale 像素，不裁切不画正",
+      "result": "负轴范围已加入（negative_axis=True），柱高按重算值，9 月利润柱为红色向下",
+      "evidence": "round-02/computed-data.json:axes + dashboard.png:bar_chart"
+    },
+    {
+      "kind": "layout",
+      "method": "layout-map.json comparison 逐区域计算与上轮 box 的分量差",
+      "result": "全部 0 ≤2px",
+      "evidence": "round-02/layout-map.json"
+    },
+    {
+      "kind": "visual_review",
+      "method": "用 ViewImage 打开 round-02/dashboard.png 逐项检查文字/柱高/负轴/表格/结论/边界",
+      "result": "已真实看图：共 2 次 ViewImage：v1 首版 1 次发现图例缺陷、v2 修复版 1 次复查通过；v1(真实观察)：负利润柱、负轴、KPI、表格、结论、脚注均正确，但柱图右上第三图例『负值』被裁成单字『负』(40px 盒放不下 2×22px 字)，且该图例与『经营利润』图例文字盒重叠、显得像『经营利润负』；v2 修复后逐项复查：图例三项重排为 净收入(634)/经营利润(766)/负值(906)，『负值』盒加宽到 56px 两字完整、三组互不压字；9 月红色负柱仍向下画到零线以下、带 -5,632 标注、−20k 负刻度与零线齐全；KPI/13.32%/-5,632/结论/脚注完整；无新重叠/溢出；v1 全部产物(dashboard.png/.snapshot、computed-data.json、layout-map.json、change-audit.json、monthly.csv + v1 版 build.py)保留在 tmp/<run_id>/A22/round-02/v1/",
+      "evidence": "round-02/snapshot-usage.md + ViewImage 打开 round-02/dashboard.png"
+    }
+  ],
+  "status": "reviewed"
+}

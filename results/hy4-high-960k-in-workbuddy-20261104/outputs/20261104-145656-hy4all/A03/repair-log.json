@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "initial_attempt": {
+    "request_id": "A03-v0-verbatim-52248-0",
+    "http_status": 400,
+    "code": "PARSE_ERROR",
+    "raw_response": "tmp/20261104-145656-hy4all/A03/probes/v0-verbatim.response.bin",
+    "original_dsl": "tasks/A03-semantic-debugging/inputs/broken.snapshot",
+    "verbatim_copy": "tmp/20261104-145656-hy4all/A03/probes/v0-verbatim.snapshot",
+    "message": "属性值无效 [padding]，元素 <Container>；diagnostic.attributeName=padding, line=2, column=23"
+  },
+  "issues": [
+    {
+      "id": "I01",
+      "source": "line 2, <Container padding=\"24 32\">",
+      "category": "explicit_error",
+      "evidence": "真实服务 400 PARSE_ERROR，code=PARSE_ERROR，diagnostic.attributeName=padding，position.line=2，format 要求十进制或 (v,h)/(l,t,r,b)",
+      "doc_source": "reference/parser-tags.md 通用属性格式 / EdgeInsets；openapi.yaml 400 响应",
+      "fix": "改为 padding=\"(24,32)\"，元组内不含空白",
+      "verification": "v1 提交后该错误消失，服务改报下一个错误"
+    },
+    {
+      "id": "I02",
+      "source": "line 10, <Transform rotate=\"-8\">",
+      "category": "explicit_error",
+      "evidence": "400 PARSE_ERROR：缺少必填属性 [matrix]，elementName=Transform，format=(m0..m15) 16 个有限浮点列主序",
+      "doc_source": "reference/parser-tags.md Transform 章节（matrix 必填，列主序 4×4）",
+      "fix": "用 cos/sin(-8°) 构造列主序矩阵 (0.990268,-0.139173,0,0,0.139173,0.990268,0,0,0,0,1,0,0,0,0,1)，rotate 属性不再保留",
+      "verification": "v3 提交后 Transform 错误消失；最终图 REVIEW 标签实际逆时针倾斜 8°，文字不透明"
+    },
+    {
+      "id": "I03",
+      "source": "line 3-12 <Column> + <Spacer flex=\"1\"> 无有界高度",
+      "category": "explicit_error",
+      "evidence": "400 RENDER_ERROR：Layout size is infinite（v3 真实响应）",
+      "doc_source": "guides/examples.md（Spacer 需要有限主轴空间）/ reference/parser-tags.md Spacer",
+      "fix": "改为固定 1280×800 画布的 Stack + Positioned 绝对布局，全部子元素有界；Spacer 不再需要",
+      "verification": "v4 取得 200 image/png；最终图尺寸 1280×800"
+    },
+    {
+      "id": "I04",
+      "source": "line 4, <Text font-size=\"44\">",
+      "category": "silent_ignore",
+      "evidence": "v4 实际图片中标题只有约 14px（根 Text 默认字号），无报错；属性名应为 camelCase fontSize",
+      "doc_source": "reference/parser-tags.md：未知属性会被忽略；reference/parser-text.md fontSize",
+      "fix": "改为 fontSize=\"44\" fontFamily=\"Inter\" fontStyle=\"BOLD\"，并用 32px 安全边距定位",
+      "verification": "最终图标题为 44px 白色粗体，位于左上角且未被 LIVE 覆盖"
+    },
+    {
+      "id": "I05",
+      "source": "line 1, <Snapshot width=\"1280\" height=\"800\">",
+      "category": "silent_ignore",
+      "evidence": "根 Snapshot 仅有 background/debug/type 三个属性；v4 之前画布由内容撑开并报无限尺寸，加固定 Container 后才得 1280×800",
+      "doc_source": "reference/parser-tags.md Snapshot 章节",
+      "fix": "删除根上的 width/height，改由 Stack 内固定尺寸 Container 定义 1280×800 画布",
+      "verification": "最终 PNG 为 1280×800"
+    },
+    {
+      "id": "I06",
+      "source": "line 7, <Positioned right=\"20\"> 置于 <Row> 内",
+      "category": "silent_ignore",
+      "evidence": "Positioned 必须是 Stack/IndexedStack 的直接子节点；服务未报错但 LIVE 出现在指标卡右侧而非右上（v4 实际图片）",
+      "doc_source": "reference/parser-tags.md Positioned / Stack 章节",
+      "fix": "改用 Stack 绝对定位，LIVE 96×36 放在 (1152,36)，与标题水平距离足够不遮挡",
+      "verification": "最终图右上角 LIVE 标签 96×36 清晰可见，标题完整"
+    },
+    {
+      "id": "I07",
+      "source": "line 10, color=\"#33FFFFFF\"",
+      "category": "silent_ignore",
+      "evidence": "旧 AARRGGBB 写法现按 CSS #RRGGBBAA 解析；v4 实际图片中 REVIEW 底是不透明青色 #33FFFF，而非 20% 白",
+      "doc_source": "reference/parser-tags.md 颜色章节 8 位十六进制迁移说明",
+      "fix": "改为 #FFFFFF33（alpha=0x33≈20%），并让文字单独以不透明 #FFFFFF 24px 绘制",
+      "verification": "最终图 REVIEW 为 20% 半透明白底 + 不透明白字"
+    },
+    {
+      "id": "I08",
+      "source": "line 11, <ImageFiltered> 包住整张说明卡",
+      "category": "visual_only",
+      "evidence": "v4 实际图片中“Background-only blur”文字与卡片一起被高斯模糊，完全不可读；ImageFiltered 作用于整个子树",
+      "doc_source": "guides/media-text.md / reference/parser-tags.md ImageFiltered 与 BackdropFilter 区别；ai-guide.md 滤镜说明",
+      "fix": "先尝试 ClipRRect + BackdropFilter，但两次独立探针（probes/backdrop-probe*.png）证实本服务实例 BackdropFilter 未产生可见模糊；改用 ClipRRect(24) + ImageFiltered(sigma=6) 只作用于卡内背景副本（深色底 + 四条彩条），文字作为独立 Positioned 画在滤镜之外；卡外的原始彩条保持锐利",
+      "verification": "最终图彩色细条在卡外锐利、卡内明显柔化，28px 文字锐利可读；探针图与最终图均已实际查看"
+    },
+    {
+      "id": "I09",
+      "source": "line 6, 仅 1 个 Expanded 指标卡；line 6 卡内 width=360 与 Expanded 紧约束冲突",
+      "category": "visual_only",
+      "evidence": "v4 实际图片只有一张 USAGE 卡片且占据整行，另外两张指标缺失，大片空白",
+      "doc_source": "guides/examples.md Expanded 用法；reference/parser-tags.md Expanded/Flexible",
+      "fix": "改为三个等宽 392px 卡片，按绝对坐标并排，文案 USAGE 72% / LATENCY 148 ms / SUCCESS 99.2% 均 28px",
+      "verification": "最终图第一行三张等宽指标卡完整可读"
+    }
+  ],
+  "versions": [
+    {
+      "label": "v0-verbatim",
+      "parent": null,
+      "type": "syntax-fix",
+      "dsl": "tmp/20261104-145656-hy4all/A03/probes/v0-verbatim.snapshot",
+      "response": "tmp/20261104-145656-hy4all/A03/probes/v0-verbatim.response.bin",
+      "png": null,
+      "http_status": 400,
+      "request_id": "A03-v0-verbatim-52248-0",
+      "viewed": false,
+      "note": "{\"code\":\"PARSE_ERROR\",\"message\":\"属性值无效 [padding]，元素 <Container>\\n格式：十进制数，或 (垂直,水平)，或 (左,上,右,下)；元组内不含空白\\n示例：8 / (8,16) / (1,2,3,4) at position 92\",\"requestId\":\"A03-v0-verbatim-52248-0\",\"diagnostic\":{\"attributeName\":\"paddi"
+    },
+    {
+      "label": "v1-padding-fixed",
+      "parent": "v0-verbatim",
+      "type": "syntax-fix",
+      "dsl": "tmp/20261104-145656-hy4all/A03/probes/v1-padding-fixed.snapshot",
+      "response": "tmp/20261104-145656-hy4all/A03/probes/v1-padding-fixed.response.bin",
+      "png": null,
+      "http_status": 400,
+      "request_id": "A03-v1-padding-fixed-55020-0",
+      "viewed": false,
+      "note": "{\"code\":\"PARSE_ERROR\",\"message\":\"缺少必填属性 [matrix]，元素 <Transform>\\n格式：(m0,m1,…,m15)；16 个有限浮点数，列优先排列，逗号分隔且不含空白\\n示例：(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1) at position 475\",\"requestId\":\"A03-v1-padding-fixed-55020-0\",\"diagnostic\":{"
+    },
+    {
+      "label": "v2-positioned-fixed",
+      "parent": "v1-padding-fixed",
+      "type": "syntax-fix",
+      "dsl": "tmp/20261104-145656-hy4all/A03/probes/v2-positioned-fixed.snapshot",
+      "response": "tmp/20261104-145656-hy4all/A03/probes/v2-positioned-fixed.response.bin",
+      "png": null,
+      "http_status": 400,
+      "request_id": "A03-v2-positioned-fixed-41582-1",
+      "viewed": false,
+      "note": "{\"code\":\"PARSE_ERROR\",\"message\":\"缺少必填属性 [matrix]，元素 <Transform>\\n格式：(m0,m1,…,m15)；16 个有限浮点数，列优先排列，逗号分隔且不含空白\\n示例：(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1) at position 534\",\"requestId\":\"A03-v2-positioned-fixed-41582-1\",\"diagnostic"
+    },
+    {
+      "label": "v3-transform-fixed",
+      "parent": "v2-positioned-fixed",
+      "type": "syntax-fix",
+      "dsl": "tmp/20261104-145656-hy4all/A03/probes/v3-transform-fixed.snapshot",
+      "response": "tmp/20261104-145656-hy4all/A03/probes/v3-transform-fixed.response.bin",
+      "png": null,
+      "http_status": 400,
+      "request_id": "A03-v3-transform-fixed-44115-0",
+      "viewed": false,
+      "note": "{\"code\":\"RENDER_ERROR\",\"message\":\"Layout size is infinite\",\"requestId\":\"A03-v3-transform-fixed-44115-0\"}"
+    },
+    {
+      "label": "v4-bounded-root",
+      "parent": "v3-transform-fixed",
+      "type": "baseline",
+      "dsl": "tmp/20261104-145656-hy4all/A03/probes/v4-bounded-root.snapshot",
+      "response": "tmp/20261104-145656-hy4all/A03/probes/v4-bounded-root.response.bin",
+      "png": "tmp/20261104-145656-hy4all/A03/probes/v4-bounded-root.png",
+      "http_status": 200,
+      "request_id": "A03-v4-bounded-root-46939-0",
+      "viewed": true,
+      "note": ""
+    },
+    {
+      "label": "v5-final",
+      "parent": "v4-bounded-root",
+      "type": "visual",
+      "dsl": "outputs/20261104-145656-hy4all/A03/system-pulse.snapshot",
+      "response": null,
+      "png": "outputs/20261104-145656-hy4all/A03/system-pulse.png",
+      "http_status": 200,
+      "request_id": null,
+      "viewed": true,
+      "note": "按 I04–I09 的静默/视觉问题重构，实际打开最终图确认全部元素完整"
+    }
+  ],
+  "final": {
+    "png": "system-pulse.png",
+    "dsl": "system-pulse.snapshot",
+    "size": [
+      1280,
+      800
+    ],
+    "background": "#0B1220",
+    "safe_margin": 32,
+    "checks": [
+      "title_44px",
+      "live_96x36_not_over_title",
+      "three_equal_metric_cards_28px",
+      "review_160x56_ccw_8deg_white20_text_opaque_24px",
+      "explainer_500x150_radius24",
+      "backdrop_only_blur_text_sharp",
+      "bars_cross_both_card_borders"
+    ]
+  }
+}

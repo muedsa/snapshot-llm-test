@@ -1,0 +1,219 @@
+# Parser 文本属性详解
+
+> Text、Raw、WidgetSpan 与 Emoji 的基线与混排、完整文本属性、Strut 和可运行示例。
+
+本页将[标签参考](/reference/parser-tags/#text)中的文本属性展开。属性名和枚举值区分大小写；布尔值请显式写 `"true"` / `"false"`。当前布尔解析仅将忽略大小写的 true 当作真，拼错不一定报错。
+
+## 从常见任务开始
+
+`<Text>` 使用与 Kotlin 相同的段落布局。中英文、数字、图标混排时，相同 `fontSize` 不保证可见顶部或底部一致；`<Row crossAxisAlignment="CENTER">` 也只对齐组件盒的中心。服务端默认字体或缺字回退不同，还可能让同一 DSL 在不同平台上出现垂直偏移。请先确定要对齐的对象，再按下方[基线与混排](#%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)选择设置。 常用配置只需要几项：标题设 `fontSize` / `fontStyle` / `color`；摘要设有限宽度、`maxLines` 和 `overflow="ELLIPSIS"`；不同样式嵌套 Text；需要保留空格时用 Raw。自带字体的配置在渲染服务中完成，见[字体指南](/guides/fonts/)。
+
+胶囊内的文字不要按字号计算 top
+
+`Positioned.top` 定位子组件布局盒，`fontSize` 不是行盒或字形高度。优先把整个胶囊放进一个 Positioned，再用 Container 的 `alignment="CENTER"` 居中文字。Text 不支持 `width` / `align`；宽度由外层布局提供，水平对齐属性为 `textAlign`。完整模板、混排选择与测量公式见[文字垂直居中与胶囊标签](/guides/text-alignment/)。
+
+## 作用域与未设置值
+
+| 配置       | 最外层 Text  | 嵌套 Text / Raw | WidgetSpan                     |
+| -------- | --------- | ------------- | ------------------------------ |
+| 文本样式     | 根 Span 样式 | 按字段继承 / 覆盖    | Span 样式，不会给内部 Widget 自动设置颜色或背景 |
+| 段落参数     | 生效        | 不生效，不产生新段落    | 不生效                            |
+| strut 属性 | 生效        | 不生效           | 不生效                            |
+
+未指定的样式字段继承祖先；根字号回退 14，颜色回退黑色，其余沿用 Skia 行为。“未设置”不是 0，也不是清除祖先配置。Raw 保留首尾空白；普通 Text 的 text 属性和普通文本节点会 trim。需要保留片段间空格时使用 Raw。
+
+## 字体与度量
+
+| 属性              | 类型        | 默认 / 回退      | 说明                                             |
+| --------------- | --------- | ------------ | ---------------------------------------------- |
+| `text`          | string    | 未设置          | 属性形式的文字，位于标签子内容之前；普通 Text 会 trim，Raw 不 trim    |
+| `color`         | CSS color | 继承，根为黑色      | 字色；前景画笔存在时由画笔绘制                                |
+| `fontSize`      | float     | 继承，根为 14     | 逻辑像素字号，使用有限正数                                  |
+| `fontFamily`    | string    | 继承 / 系统字体    | 英文逗号分隔，不逐项 trim；写 Noto Sans SC,Arial，逗号后不要加空格  |
+| `fontStyle`     | enum      | 继承 / Skia 默认 | NORMAL、BOLD、ITALIC、BOLD\_ITALIC                |
+| `height`        | float     | 继承 / 字体度量    | 行高倍数，不是像素；使用有限正数                               |
+| `topRatio`      | float     | 继承 / Skia 默认 | ascent 在 ascent+descent 中的比例：0..1；-1 按字体度量比例分配 |
+| `letterSpacing` | float     | 继承 / Skia 默认 | 额外字距，有限逻辑像素，可为负数                               |
+| `wordSpacing`   | float     | 继承 / Skia 默认 | 额外词间距，有限逻辑像素                                   |
+| `locale`        | string    | 继承 / Skia 默认 | 例如 zh-CN、en-US，不是翻译功能                          |
+| `baselineMode`  | enum      | 继承 / Skia 默认 | ALPHABETIC、IDEOGRAPHIC                         |
+| `fontEdging`    | enum      | 继承 / Skia 默认 | ALIAS、ANTI\_ALIAS、SUBPIXEL\_ANTI\_ALIAS        |
+| `fontHinting`   | enum      | 继承 / Skia 默认 | NONE、SLIGHT、NORMAL、FULL                        |
+| `subpixel`      | bool      | 继承 / Skia 默认 | 子像素字形定位，不等于 fontEdging                         |
+
+基础 Float 属性多数仅做数值解析；推荐输入不表示 Parser 对每项都严格校验。外部输入应由应用额外约束。
+
+## 基线与混排
+
+### 配置应该写在哪个标签上
+
+| 目标                    | DSL 写法                                                                                    | 注意                                               |
+| --------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| 多个独立文字组件共用基线          | `<Row crossAxisAlignment="BASELINE" textBaseline="ALPHABETIC">`                           | 对齐各子组件的真实基线；多行 Text 使用首行基线                       |
+| 同一句话里的多种样式            | 一个外层 `<Text>`，内部嵌套 `<Text>` / `<Raw>`                                                     | 共享段落；共同字体、字号放在外层，空格用 Raw 保留                      |
+| 选择文字样式基线模式            | `<Text baselineMode="ALPHABETIC">`                                                        | 不等于 Row 的 textBaseline，也不会让兄弟组件自动对齐              |
+| 图标与文字同行，包括胶囊标签或跟随正文换行 | 优先在同一个 Text 中使用 `<WidgetSpan alignment="MIDDLE">`；图片也可用 `<Emoji alignment="MIDDLE" …>`    | 显式指定内部 Widget 或 Emoji 的宽高；`MIDDLE` 不是 `CENTER`   |
+| 图标底边落在文字基线上           | `alignment="ABOVE_BASELINE" baseline="ALPHABETIC"`                                        | 与 `BOTTOM` 的行盒底部对齐不同                             |
+| 稳定多行的支撑度量             | 在最外层 `<Text>` 上配置 `strutFontFamily`、`strutFontSize`、`strutHeight`、`strutHeightOverridden` | Strut 不会继承文本字体；通常先保持 `strutHeightForced="false"` |
+
+`ALPHABETIC` 是中英文、数字混排的常用起点；`IDEOGRAPHIC` 是另一种字体基线，不是自动纠正中文高低差的开关。同一行中应统一选择，再检查实际字体的结果。三组基线参数的区别与多行限制见[基线设置参考](/reference/text-layout/#%E4%B8%89%E5%A4%84%E5%9F%BA%E7%BA%BF%E8%AE%BE%E7%BD%AE%E7%9A%84%E5%8C%BA%E5%88%AB)。
+
+同行的状态图标应优先放进 Text 的 WidgetSpan，让图标和文字由同一个段落排版，见[胶囊标签示例](/guides/text-alignment/#%E4%B8%AD%E8%8B%B1%E6%96%87%E4%B8%8E%E5%9B%BE%E6%A0%87%E6%80%8E%E6%A0%B7%E7%BB%84%E5%90%88)。图片需要独占一栏、与文字区域分别布局时，可用 Row 做区域对齐。普通图片没有真实文字基线，Row BASELINE 不会自动把图片底边放到文字基线上；需要这种语义时使用行内 WidgetSpan / Emoji。
+
+### 示例：不同字号的独立文字
+
+以下两个完整示例均输出 480×200，可交给本地 Parser；渲染环境需已安装 `Noto Sans SC`。字号不同的文字共享基线，但字形顶部不应因此一样高。
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="200" padding="24">
+    <Row crossAxisAlignment="BASELINE" textBaseline="ALPHABETIC">
+      <Text fontFamily="Noto Sans SC" fontSize="20">价格</Text>
+      <SizedBox width="12" />
+      <Text fontFamily="Noto Sans SC" fontSize="36">128.00</Text>
+      <SizedBox width="8" />
+      <Text fontFamily="Noto Sans SC" fontSize="20">CNY</Text>
+    </Row>
+  </Container>
+</Snapshot>
+```
+
+对比时可以把 Row 改成 `crossAxisAlignment="CENTER"` 或 `"END"`，观察组件盒对齐与文字基线对齐的差异。不要给 Text 设置 `height="36"` 来表示 36 像素高：这里的 height 是行高倍数；容器高度才是布局尺寸。
+
+### 示例：中英文与图标共享文本流
+
+共用字体、字号与样式基线放在最外层 Text；Raw 保留英文片段前后的空格。示例中的色块代表固定尺寸的状态图标，也可在 WidgetSpan 中换成具有明确尺寸的 `<Image url="…" width="18" height="18" />` 或 Data URI 图片。
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="200" padding="24">
+    <Text fontFamily="Noto Sans SC" fontSize="24" baselineMode="ALPHABETIC">
+      <Raw>状态 Status </Raw>
+      <WidgetSpan alignment="MIDDLE">
+        <Container width="18" height="18" color="#22C55E" />
+      </WidgetSpan>
+      <Raw color="#0369A1"> Ready</Raw>
+    </Text>
+  </Container>
+</Snapshot>
+```
+
+如果使用 `<Emoji>`，同样建议显式设置 `alignment="MIDDLE" width="18" height="18"`，并提供 `url` 或 `dataUri`。Emoji 默认 BASELINE，WidgetSpan 默认 BOTTOM，直接互换且省略 alignment 会改变垂直位置。Emoji 的 `imageAlignment` 只调整图片在占位盒内的绘制位置，不能替代占位对齐。图片透明留白也不会被自动识别为对齐边缘。
+
+### 平台与字体一致性
+
+`fontFamily="Noto Sans SC"` 只请求服务端字体，不会安装字体，也不会使用浏览器 CSS 字体。要减少 Windows、Linux、macOS 或容器之间的偏移，应固定同一份字体文件、版本和字重，并为中文、拉丁字符与 Emoji 准备明确的缺字回退。多字体名称写成 `fontFamily="Noto Sans SC,Arial"`，但列表中的字体均须在目标环境存在。
+
+文本字体、Strut 字体和回退集合都应检查；只固定其中一项，仍可能出现行高或基线变化。`height`、`topRatio` 与 `textHeightMode` 调整的是行度量，不能代替字体配置或保证字形边缘齐平。不要先加固定平移来掩盖差异；先按[排查顺序](/reference/text-layout/#%E6%8E%92%E6%9F%A5%E4%B8%8E%E5%BA%A6%E9%87%8F%E9%A1%BA%E5%BA%8F)验证，再处理确实需要的视觉微调。
+
+## 前景画笔与背景
+
+| 属性                      | 类型 / 取值                           | 默认            | 说明                         |
+| ----------------------- | --------------------------------- | ------------- | -------------------------- |
+| `foregroundColor`       | CSS color                         | 未设置           | 创建前景画笔；其他 foreground 参数的前提 |
+| `foregroundMode`        | FILL / STROKE / STROKE\_AND\_FILL | Skia Paint 默认 | 填充、描边、两者同时                 |
+| `foregroundStrokeWidth` | float                             | Skia Paint 默认 | 有限非负描边宽度，逻辑像素              |
+| `foregroundStrokeMiter` | float                             | Skia Paint 默认 | 尖角斜接限制，有限正数                |
+| `foregroundStrokeCap`   | BUTT / ROUND / SQUARE             | Skia Paint 默认 | 笔触端点形状                     |
+| `foregroundStrokeJoin`  | MITER / ROUND / BEVEL             | Skia Paint 默认 | 笔触转角连接方式                   |
+| `foregroundAntiAlias`   | bool                              | Skia Paint 默认 | 画笔抗锯齿                      |
+| `backgroundColor`       | CSS color                         | 未设置           | 文本运行区域背景，不是整个布局框背景         |
+
+修饰项必须在本标签同时指定 foregroundColor；不能借用父标签的颜色通过校验。新前景画笔整体替换继承的画笔。Parser 不支持任意 Shader 或图片滤镜作为文本画笔。
+
+## 装饰线
+
+下面默认值在本标签指定 decoration 后才适用；完全省略时继承父 Span 的整个装饰对象。
+
+| 属性                    | 类型 / 取值                                     | 默认    | 说明                        |
+| --------------------- | ------------------------------------------- | ----- | ------------------------- |
+| `decoration`          | UNDERLINE / OVERLINE / LINE\_THROUGH / NONE | 未设置   | 英文逗号组合；NONE 取消继承且不能与其他值混用 |
+| `decorationColor`     | CSS color                                   | 黑色    | 不自动跟随 color               |
+| `decorationLineStyle` | SOLID / DOUBLE / DOTTED / DASHED / WAVY     | SOLID | 线型                        |
+| `decorationThickness` | float                                       | 1     | 有限正数，相对粗细倍数，不是像素          |
+| `decorationGaps`      | bool                                        | true  | 是否避让字形                    |
+
+修饰项必须在本标签同时指定 decoration。子 Span 的新 decoration 整体替换父装饰，不会仅覆盖一个子字段。
+
+## 阴影与字体特性
+
+| 属性             | 默认       | 语法与限制                                                                                  |
+| -------------- | -------- | -------------------------------------------------------------------------------------- |
+| `textShadow`   | 继承 / 未设置 | `offsetX offsetY [blurSigma] [color]`；偏移有限，sigma 有限非负，默认 sigma 0、黑色；多项用逗号分隔            |
+| `fontFeatures` | 继承 / 未设置 | 空白分隔四位小写字母/数字标签；`liga` / `+liga` 为 1，`-kern` 为 0，`tnum=2` 为指定非负整数，`smcp[2:8]` 可解析为范围字段 |
+
+二者均可用 NONE 清除继承，NONE 不可与其他项混用。textShadow 的颜色函数内部逗号不分隔阴影；它使用 sigma，与 boxShadow 的 blurRadius 不同。字体特性是否生效取决于字体支持；范围起点不能大于终点。
+
+当前 Skiko 的段落样式只接收特性的 tag/value，不使用已解析的 start/end。需要按文本片段应用特性时拆分嵌套 Text / Raw，而不要依赖范围语法，详见 [FontFeature](/reference/text-style/#fontfeature-%E5%AD%97%E4%BD%93%E7%89%B9%E6%80%A7)。
+
+## 段落参数
+
+只对最外层 Text 生效；嵌套 Text 不能独立居中或另起一个段落。
+
+| 属性               | 类型 / 取值                                                              | 默认      | 说明                                   |
+| ---------------- | -------------------------------------------------------------------- | ------- | ------------------------------------ |
+| `textAlign`      | LEFT / RIGHT / CENTER / JUSTIFY / START / END                        | START   | 行对齐；START / END 跟随方向                 |
+| `textDirection`  | LTR / RTL                                                            | LTR     | 文字方向                                 |
+| `softWrap`       | bool                                                                 | true    | 是否按有限宽度软换行                           |
+| `overflow`       | CLIP / FADE / ELLIPSIS / VISIBLE                                     | CLIP    | ELLIPSIS 设置省略号；FADE / VISIBLE 的限制见下方 |
+| `maxLines`       | int                                                                  | 未设置     | 使用正整数；有限高度仍可能裁剪文字                    |
+| `textWidthBasis` | PARENT / LONGESTLINE                                                 | PARENT  | 测量宽度基准，不突破父约束                        |
+| `textHeightMode` | ALL / DISABLE\_FIRST\_ASCENT / DISABLE\_LAST\_DESCENT / DISABLE\_ALL | Skia 默认 | 控制首行 ascent / 末行 descent 的高度调整       |
+
+当前 FADE 没有渐隐实现，VISIBLE 在检测到溢出时仍会被裁剪。宽度基准、换行与省略号的组合详见[段落布局](/reference/text-layout/#%E6%8D%A2%E8%A1%8C%E5%AE%BD%E5%BA%A6%E4%B8%8E%E6%BA%A2%E5%87%BA)。
+
+## Strut 段落支撑
+
+不指定任何 strut 属性时不显式启用。出现任意一项即创建 StrutStyle 并默认启用，默认字体度量独立于 TextStyle；可用 strutEnabled=false 暂停。
+
+| 属性                      | 类型 / 取值                               | 创建后的默认  | 说明                                     |
+| ----------------------- | ------------------------------------- | ------- | -------------------------------------- |
+| `strutEnabled`          | bool                                  | true    | 是否启用                                   |
+| `strutFontFamily`       | string                                | Skia 默认 | 英文逗号列表；与 fontFamily 不同，此处逐项 trim，空名称报错 |
+| `strutFontStyle`        | NORMAL / BOLD / ITALIC / BOLD\_ITALIC | Skia 默认 | 支撑字体样式                                 |
+| `strutFontSize`         | float                                 | Skia 默认 | 有限正数字号，逻辑像素                            |
+| `strutHeight`           | float                                 | Skia 默认 | 有限正数行高倍数                               |
+| `strutLeading`          | float                                 | Skia 默认 | 相对于支撑字号的额外行距比例，必须有限                    |
+| `strutHeightForced`     | bool                                  | false   | 强制采用 Strut 度量，较大字形可能重叠                 |
+| `strutHeightOverridden` | bool                                  | false   | 使用显式 strutHeight 覆盖字体度量                |
+
+需要等高行时，同时设置 strutFontSize、strutHeight、strutHeightOverridden=true，再按需设 strutHeightForced=true。不支持 strutTopRatio；原因见[StrutStyle](/reference/text-layout/#strutstyle)。
+
+## 完整示例：描边与装饰线
+
+整段交给本地 Parser 或兼容版本的 Playground 服务，输出 480×200；字体环境可能影响字宽。
+
+```xml
+<Snapshot background="#F1F5F9">
+  <Container width="480" height="200" padding="24">
+    <Column crossAxisAlignment="START">
+      <Text fontSize="32" foregroundColor="#0369A1"
+            foregroundMode="STROKE_AND_FILL" foregroundStrokeWidth="1"
+            foregroundStrokeJoin="ROUND">描边文字</Text>
+      <SizedBox height="16" />
+      <Text fontSize="24" color="#0F172A" decoration="UNDERLINE"
+            decorationColor="#0284C7" decorationLineStyle="WAVY">
+        波浪下划线<Raw decoration="NONE"> / 取消装饰</Raw>
+      </Text>
+    </Column>
+  </Container>
+</Snapshot>
+```
+
+## 完整示例：固定行高与显式换行
+
+Raw 保留换行。这里显式固定文本字体和 Strut 字体，再用 `strutHeightForced="true"` 演示固定行度量；这不会统一中英文字形的可见高度。只需提供最小行高时先改为 false，让更高的字符或行内图标可以撑开行盒。强制高度过小会使内容重叠或被外层裁剪，不要用 Container 的 height 代替行高属性。
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="200" padding="24">
+    <Text fontFamily="Noto Sans SC" fontSize="20" color="#0F172A"
+          strutFontFamily="Noto Sans SC" strutFontSize="24" strutHeight="1.5"
+          strutHeightOverridden="true" strutHeightForced="true"><Raw>第一行：中文与 Latin
+第二行：保持统一的行距
+第三行：1234567890</Raw></Text>
+  </Container>
+</Snapshot>
+```
+
+继续阅读 [WidgetSpan](/widgets/text/widget-span/) 和 [Emoji 属性](/reference/parser-tags/#emoji)；占位对齐与图片对齐是两组不同参数。

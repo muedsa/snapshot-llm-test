@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "task_id": "A16",
+  "path_base": "output_dir",
+  "source": "inputs/source.csv (only trusted data)",
+  "quarters": [
+    {
+      "quarter": "Q1",
+      "revenue_wan": 120,
+      "cost_wan": 90,
+      "profit_wan": 30
+    },
+    {
+      "quarter": "Q2",
+      "revenue_wan": 135,
+      "cost_wan": 108,
+      "profit_wan": 27
+    },
+    {
+      "quarter": "Q3",
+      "revenue_wan": 128,
+      "cost_wan": 96,
+      "profit_wan": 32
+    },
+    {
+      "quarter": "Q4",
+      "revenue_wan": 180,
+      "cost_wan": 126,
+      "profit_wan": 54
+    }
+  ],
+  "axes": {
+    "unit": "万元 (10k CNY)",
+    "zero_line_px": 500,
+    "vmin": 0,
+    "vmax": 200,
+    "pixel_mapping": "y = 500 - value * (500-250)/200 = 500 - value * 1.25",
+    "scale_px_per_wan": 1.25,
+    "ticks": [
+      0,
+      40,
+      80,
+      120,
+      160,
+      200
+    ],
+    "grid_line_px": [
+      500.0,
+      450.0,
+      400.0,
+      350.0,
+      300.0,
+      250.0
+    ],
+    "shared_zero_baseline": true,
+    "group_centers_px": [
+      246.25,
+      518.75,
+      791.25,
+      1063.75
+    ],
+    "bar_width_px": 52,
+    "bars": [
+      {
+        "quarter": "Q1",
+        "series": "revenue",
+        "value_wan": 120,
+        "x_px": 188.25,
+        "top_px": 350.0,
+        "height_px": 150.0,
+        "color": "#245CE4"
+      },
+      {
+        "quarter": "Q2",
+        "series": "revenue",
+        "value_wan": 135,
+        "x_px": 460.75,
+        "top_px": 331.25,
+        "height_px": 168.75,
+        "color": "#245CE4"
+      },
+      {
+        "quarter": "Q3",
+        "series": "revenue",
+        "value_wan": 128,
+        "x_px": 733.25,
+        "top_px": 340.0,
+        "height_px": 160.0,
+        "color": "#245CE4"
+      },
+      {
+        "quarter": "Q4",
+        "series": "revenue",
+        "value_wan": 180,
+        "x_px": 1005.75,
+        "top_px": 275.0,
+        "height_px": 225.0,
+        "color": "#245CE4"
+      },
+      {
+        "quarter": "Q1",
+        "series": "cost",
+        "value_wan": 90,
+        "x_px": 252.25,
+        "top_px": 387.5,
+        "height_px": 112.5,
+        "color": "#F28C28"
+      },
+      {
+        "quarter": "Q2",
+        "series": "cost",
+        "value_wan": 108,
+        "x_px": 524.75,
+        "top_px": 365.0,
+        "height_px": 135.0,
+        "color": "#F28C28"
+      },
+      {
+        "quarter": "Q3",
+        "series": "cost",
+        "value_wan": 96,
+        "x_px": 797.25,
+        "top_px": 380.0,
+        "height_px": 120.0,
+        "color": "#F28C28"
+      },
+      {
+        "quarter": "Q4",
+        "series": "cost",
+        "value_wan": 126,
+        "x_px": 1069.75,
+        "top_px": 342.5,
+        "height_px": 157.5,
+        "color": "#F28C28"
+      }
+    ]
+  },
+  "conclusion": {
+    "headline": "季度复盘 · Q4 收入与利润均创新高",
+    "focus_quarter": "Q4",
+    "text": "Q4 收入 180 万元、利润 54 万元均为四季最高；利润较 Q3 的 32 万元增加 22 万元。Q3 收入 128 万元较 Q2 的 135 万元回落 7 万元，增长并非连续。",
+    "referenced_fields": [
+      "quarters[3].revenue_wan",
+      "quarters[3].profit_wan",
+      "quarters[2].profit_wan",
+      "quarters[2].revenue_wan",
+      "quarters[1].revenue_wan"
+    ],
+    "values": {
+      "total_revenue_wan": 563,
+      "total_cost_wan": 420,
+      "total_profit_wan": 143,
+      "best_profit_quarter": "Q4",
+      "best_profit_wan": 54,
+      "worst_profit_quarter": "Q2",
+      "worst_profit_wan": 27,
+      "q4_vs_q3_profit_delta_wan": 22,
+      "q3_vs_q2_revenue_delta_wan": -7
+    }
+  },
+  "evidence": {
+    "png": "corrected-report.png",
+    "dsl": "corrected-report.snapshot",
+    "checks": [
+      "profit = revenue - cost",
+      "all 8 bar heights = value * 1.25",
+      "shared zero baseline y=500",
+      "legend color bound to correct series"
+    ]
+  }
+}

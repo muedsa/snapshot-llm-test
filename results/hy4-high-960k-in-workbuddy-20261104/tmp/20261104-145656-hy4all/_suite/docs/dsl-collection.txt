@@ -1,0 +1,2355 @@
+<SYSTEM>DSL: Parser 模板语法、标签属性、错误处理与语言服务。</SYSTEM>
+
+# 文档导读
+
+> 按目标选择 Kotlin、文本模板或在线编辑器，并找到示例、参数与排错入口。
+
+Snapshot 把布局描述渲染成图片。第一次使用可以先在 Playground 运行一段模板；需要在 JVM 应用中生成图片时，再安装 Kotlin 依赖。无需按侧栏顺序读完所有 API。
+
+## 选择你的起点
+
+| 你想做什么                | 从这里开始                                   | 接下来阅读                                                                                          |
+| -------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 先看看能生成什么             | [在线 Playground](/playground/)           | [完整模板示例](/guides/examples/)                                                                    |
+| 在 Kotlin / JVM 应用中出图 | [快速开始](/guides/quickstart/)             | [安装与构建](/guides/installation/)、[渲染入口](/guides/rendering/)                                      |
+| 用文本或配置描述图片           | [类 DOM 解析器](/guides/parser/)            | [标签与属性参考](/reference/parser-tags/)                                                             |
+| 编写 `.snapshot` 文件    | [DSL 语言服务](/guides/language-server/)    | Playground 或 VS Code 扩展                                                                        |
+| 调整尺寸、对齐或裁剪           | [约束、布局与调试](/guides/layout/)             | [按用途选择 Widget](/guides/widgets/)                                                               |
+| 中文缺字、部署后字体不同         | [字体与跨平台文字](/guides/fonts/)              | [文本基线与混排](/guides/media-text/#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92) |
+| 把订单、标题或列表画成图         | [用业务数据生成图片](/guides/data-templates/)    | [测试与 Golden](/guides/testing/)                                                                 |
+| 多个页面共用卡片、标签或订单行      | [编写可复用组件](/guides/reusable-components/) | [自定义 Parser 标签](/reference/parser-errors/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE)       |
+| 让 AI 辅助生成布局或排查错误     | [使用 AI 辅助开发](/guides/ai-development/)   | Markdown 文档入口与可复制提示词                                                                           |
+| 图片结果不符合预期            | [常见问题](/reference/faq/)                 | [解析错误与扩展](/reference/parser-errors/)                                                           |
+
+## Kotlin DSL 与文本模板怎么选
+
+| 对比     | Kotlin DSL                        | Parser 文本模板                                |
+| ------ | --------------------------------- | ------------------------------------------ |
+| 输入     | Kotlin 代码与 Widget 树               | `<Snapshot>…</Snapshot>` 文本                |
+| 适合     | 动态布局、自定义组件、直接使用 Skia              | 受控模板、在线编辑、服务端接收文本                          |
+| 输出     | `SnapshotPNG` 等返回图片字节             | `Parser().parse(reader).snapshot()` 返回图片字节 |
+| 能力范围   | 完整 Widget 与底层 API                 | 默认 39 个标签，可注册自定义标签                         |
+| 颜色写法   | ARGB `Int`，如 `0x80FF0000.toInt()` | CSS 颜色，如 `#FF000080`                       |
+| 默认画布背景 | 白色                                | 透明                                         |
+
+两种入口共用布局和绘制逻辑，但默认值、参数名和写法并非完全一致。迁移模板时请显式设置背景和图片 `fit`，并查阅相应入口的参数表。
+
+## 示例怎么使用
+
+* [快速开始](/guides/quickstart/)提供带 `main()` 的 Kotlin 程序；[完整模板示例](/guides/examples/)中的每个 XML 代码块都带根标签，可整段复制到 Playground。
+* Widget API 页主要展示组件片段：放进 `SnapshotPNG { … }` 或自己的 `ChildSlot` 作用域中使用，省略的 import 按组件类型补齐。
+* 标签参考中的局部片段需要包入 `<Snapshot>`，并满足父子关系。例如 `<Expanded>` 必须直接位于 `<Row>`、`<Column>` 或 `<Flex>` 下。
+* 标有 `/* ... */` 的代码是结构示意，需补上实际内容；根布局必须最终得到有限、非零的宽高。
+
+## 先理解这四个规则
+
+1. **图片尺寸由布局决定。** 固定画布用根 `SizedBox` 或 `Container`；父约束仍优先于子组件期望的尺寸。
+2. **布局与绘制分开。** Transform、阴影和滤镜可能画到布局框外；用 Clip 组件明确限定绘制范围。
+3. **文本需要宽度约束才能按预期换行。** 在 Row 里通常用 Expanded 为文本分配剩余宽度；在 Column 里保留父级最大宽度。
+4. **编辑器诊断不等于渲染验证。** LSP 检查语法和部分属性，Parser、图片解码与布局在实际运行时完成。
+
+## 从示例走到业务代码
+
+先固定一张图的尺寸并让最小示例出图，再逐步替换内容，通常比一次接入所有数据更容易排错：
+
+1. 从[完整模板](/guides/examples/)或[快速开始](/guides/quickstart/)选一个接近目标的布局，确认输出尺寸。
+2. 替换一组真实数据，明确长标题、缺图、空值和超长列表的处理方式，见[业务数据模板](/guides/data-templates/)。
+3. 把重复结构提取成[组合函数](/guides/reusable-components/)或[自定义标签](/reference/parser-errors/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE)，保留尺寸与字体约定。
+4. 检查最长文本、混排和裁剪，再给稳定的结果加[布局或图像测试](/guides/testing/)。
+
+如果组件明明写了宽高却没有按预期显示，先看[紧约束与宽松约束的对比](/guides/layout/#%E6%9C%89%E4%B8%8A%E9%99%90%E4%B8%8D%E7%AD%89%E4%BA%8E%E5%9B%BA%E5%AE%9A%E5%B0%BA%E5%AF%B8)。如果模板解析成功但出图失败，按[解析、建树、渲染三个阶段](/reference/parser-errors/#%E6%AF%8F%E4%B8%80%E6%AD%A5%E6%88%90%E5%8A%9F%E6%84%8F%E5%91%B3%E7%9D%80%E4%BB%80%E4%B9%88)定位问题。
+
+## 查找参数与行为
+
+常用组件页给出调用入口；遇到对象型参数时继续查[TextStyle](/reference/text-style/)、[段落与行高](/reference/text-layout/)、[BoxDecoration](/reference/box-decoration/)、[边框](/reference/borders/)、[阴影](/reference/box-shadow/)、[装饰图片](/reference/decoration-image/)或[渐变](/reference/gradients/)。想先理解区别，可看[参数效果对比](/guides/visual-reference/)。
+
+[Widget 选型](/guides/widgets/)按布局、绘制、图片和文本用途找到组件。
+
+[Parser 标签参考](/reference/parser-tags/)查询子节点限制、属性格式和默认值。
+
+[常见问题](/reference/faq/)从尺寸、换行、裁剪或图片异常开始排查。
+
+[源码索引](/reference/source-index/)进一步阅读实现与回归测试。
+
+本站说明对应 Snapshot 的持续更新快照。使用旧版依赖或独立部署的渲染服务时，新标签与行为可能尚未同步；版本获取方式见[安装与构建](/guides/installation/)。
+
+# 类 DOM 解析器
+
+> 用轻量标签文本描述一棵 Widget 树。
+
+`snapshot-parser` 将类 DOM 文本解析为 `core` 的 Widget 树。根标签必须是 `Snapshot`，标签名和属性名区分大小写。
+
+## 在应用中生成第一张图
+
+先按[安装指南](/guides/installation/)配置 core、parser 和平台 runtime。下面是完整 Kotlin 程序，运行后在当前目录生成 `parser-demo.png`：
+
+```kotlin
+import com.muedsa.snapshot.parser.Parser
+import java.io.StringReader
+import java.io.File
+
+
+fun main() {
+    val text = """
+    <Snapshot background="#FFFFFF" type="png">
+        <Column>
+            <Row>
+                <Container color="#FF0000" width="200" height="200" />
+                <Container color="#00FF00" width="200" height="200" />
+            </Row>
+            <Text color="#111827" fontSize="24">Hello Snapshot</Text>
+        </Column>
+    </Snapshot>
+    """.trimIndent()
+
+
+    val bytes = Parser().parse(StringReader(text)).snapshot()
+    File("parser-demo.png").writeBytes(bytes)
+}
+```
+
+上方先画两个并排的 200×200 色块，再在下方画一行文字；图片宽为 400，高度随字体度量增加。需要固定输出尺寸时，在 Column 外包一层指定宽高的 Container。XML 部分也可以单独复制到 [Playground](/playground/)。
+
+`snapshot()` 根据根标签的 `type` 返回编码后的字节。输入流用 `StringReader`；读取文件时使用 `file.reader().use { parser.parse(it) }`，由调用方关闭 Reader。
+
+Parser 实例可以复用
+
+`parse()` 会在每次调用前重置元素栈、根元素和 Tokenizer，因此同一个 `Parser` 可以连续解析多个文档，也可以在一次解析失败后继续使用。该方法使用 `@Synchronized`：同一实例的并发调用会串行执行；需要并行吞吐时应使用多个实例或实例池。
+
+## 常用标签
+
+`Snapshot`、`Container`、`SizedBox`、`Row`、`Column`、`Stack`、`Positioned`、`Image`、`Text` 和 `Raw` 是最常用的标签。`Container` 可以通过 `padding`、`border`、`borderRadius`、`boxShadow` 等属性表达常见卡片样式。
+
+默认管理器目前注册 39 个标签，还包括：
+
+* 基础布局：`Padding`、`Align`、`Center`、`AspectRatio`、`FractionallySizedBox`、`UnconstrainedBox`；
+* Flex 与子项：`Flex`、`Expanded`、`Flexible`、`Spacer`；
+* 约束与溢出：`ConstrainedBox`、`LimitedBox`、`OverflowBox`、`SizedOverflowBox`、`IndexedStack`；
+* 绘制效果：`Opacity`、`Transform`、`ColoredBox`、`DecoratedBox`、`ColorFiltered`、`ImageFiltered`、`BackdropFilter`；
+* 裁剪：`ClipRect`、`ClipOval`、`ClipRRect`、`ClipPath`（SVG 路径）；
+* 装饰与行内内容：`Border`、`Emoji`、`WidgetSpan`。
+
+详见[标签与属性参考](/reference/parser-tags/)。
+
+编写类 DOM DSL 时，可以使用 [`snapshot-lsp`](/guides/language-server/) 获取标签、属性和枚举补全、悬停说明及实时诊断；[在线 Playground](/playground/) 已集成这项语言服务。
+
+## 复用 Parser
+
+当标签管理器配置相同，可以长期持有一个 Parser：
+
+```kotlin
+val parser = Parser()
+
+
+val first = parser.parse(StringReader(firstSource)).snapshot()
+val second = parser.parse(StringReader(secondSource)).snapshot()
+```
+
+即使 `firstSource` 解析失败，下一次 `parse()` 仍会从干净状态开始。`@Synchronized` 仅串行化同一实例的 `parse()`，返回元素后的 `createWidget()` / `snapshot()` 不在该锁内；不要把它当作整个渲染服务的串行保证。复用期间不要并发修改 `WidgetParserManager`，渲染并发由应用按字体、缓存及资源使用情况单独控制。
+
+## 一个更完整的模板
+
+```xml
+<Snapshot background="#020617" type="png">
+  <Stack alignment="TOP_LEFT">
+    <Container width="640" height="360" color="#0F172A" />
+    <Positioned left="32" top="28" right="32">
+      <Column crossAxisAlignment="START">
+        <Text color="#38BDF8" fontSize="16" fontStyle="BOLD">SNAPSHOT REPORT</Text>
+        <Container height="16" />
+        <Text color="#F8FAFC" fontSize="36" fontStyle="BOLD">Declarative image rendering</Text>
+        <Container height="12" />
+        <Text color="#94A3B8" fontSize="20">Widget tree → layout → Skia → image</Text>
+      </Column>
+    </Positioned>
+    <Positioned right="32" bottom="28">
+      <Border border="1 SOLID #334155" borderRadius="16" boxShadow="ELEVATION_4">
+        <Container padding="(10,16)" color="#1E293B">
+          <Text color="#E2E8F0" fontSize="16">PNG · JPEG · WebP</Text>
+        </Container>
+      </Border>
+    </Positioned>
+  </Stack>
+</Snapshot>
+```
+
+Parser 能力与 Kotlin DSL 不完全相同
+
+Parser 已覆盖常用布局、Flex、约束、变换、裁剪与基础滤镜能力，但仍不是全部 Kotlin DSL 的一一映射。`Stack` / `IndexedStack` 支持 `fit` 和 `clipBehavior`；`ClipPath` 支持 SVG 路径裁剪，依赖布局尺寸动态计算路径或构造复杂滤镜时仍需 Kotlin DSL。模板设计应以标签参考为准。
+
+## SVG 路径裁剪
+
+`<ClipPath>` 通过必填的 `path` 属性描述 SVG 路径；可使用 `viewBox` 和 `fit` 映射到组件尺寸，或通过 `fillRule="EVEN_ODD"` 实现多轮廓镂空。路径本身不决定布局尺寸：
+
+```xml
+<Snapshot>
+  <SizedBox width="240" height="160">
+    <ClipPath path="M0 0 H100 V100 H0 Z M25 25 H75 V75 H25 Z"
+              viewBox="0 0 100 100" fit="CONTAIN" fillRule="EVEN_ODD">
+      <Container color="#00C853" />
+    </ClipPath>
+  </SizedBox>
+</Snapshot>
+```
+
+属性与坐标规则见 [ClipPath 标签参考](/reference/parser-tags/#clippath)。[在线 Playground](/playground/) 支持对应的标签、属性和枚举补全，可以将上例复制到编辑器中。
+
+渲染服务也需要更新 Parser
+
+编辑器的语言服务与服务端 Parser 独立更新。如果运行时出现 `Unknown element tag [ClipPath]`，需要将渲染服务的 `snapshot-parser` 依赖更新到支持该标签的版本。
+
+## 图片来源与扩展
+
+`Image` 和文本内的 `Emoji` 必须且只能设置 `url` 或 `dataUri`。前者同步访问网络；默认 Data URI 解码器只支持 PNG、JPEG、WebP 的 Base64 内容，可通过 `Parser(dataUriImageDecoder = ...)` 注入自定义实现。`noCache` 仅适用于 URL。默认每个 `Parser` 拥有独立的标签注册表；自定义标签可基于 `WidgetParserManager.withDefaults()` 注册。
+
+业务数据不应直接作为标签文本插值，完整安全插入示例见[用业务数据生成图片](/guides/data-templates/)。
+
+## 文本中的特殊字符
+
+### 属性引号与自闭合
+
+推荐给属性值加引号，尤其是含空白的颜色函数、SVG 路径或文本。无引号 URL / 路径中的 `/` 可以属于值；此时自闭合标记 `/>` 前需要空白：
+
+```xml
+<Image url=https://example.com/a.png />
+<Image url="https://example.com/a.png"/>
+```
+
+两种写法都将 URL 与自闭合标记分开；不应写成 `url=https://example.com/a.png/>`，否则末尾的 `/` 会进入属性值，也不再是自闭合标签。示例 URL 只用于说明语法，不保证可下载图片。
+
+### 文本与 CDATA
+
+解析器不做 HTML 实体解码。文本中要包含 `<` 或 `>` 时，使用 CDATA：
+
+```xml
+<Text><![CDATA[ken_test <a></a> 233]]></Text>
+```
+
+`Text` 会裁剪首尾空白；需要保留原始空白时使用 `Raw`。非文本标签中不能出现非空白原始文本。
+
+`<!-- ... -->` 注释可位于根标签前后、标签之间和文本中，解析时会被忽略；空注释 `<!---->` 也有效：
+
+```xml
+<!-- 页面说明 -->
+<Snapshot>
+  <!---->
+  <Text>前<!-- 不显示 -->后<![CDATA[<!-- 原文 -->]]></Text>
+</Snapshot>
+<!-- 结束说明 -->
+```
+
+上例的文本内容为 `前后<!-- 原文 -->`：CDATA 内的注释样式字符仍按原文保留。注释必须以 `-->` 结束，否则在 EOF 处抛出 `ParseException`；CDATA 未闭合时则会将已读取内容作为文本输出，行为与注释不同。`<!DOCTYPE ...>` 仍不受支持。
+
+## 错误处理
+
+解析与建树阶段可捕获 `ParseException`：`pos` 提供行、列和偏移，`message` 提供可读提示，`cause` 保留原始异常；`toString()` 会把位置加到提示前。根标签属性在 `parse()` 时校验，其他标签属性在 `createWidget()` / `snapshot()` 时校验；空文档也会抛 `ParseException`。
+
+包含提交 `a7974dd` 的 Parser 还会在属性错误后补充中文填写说明。例如 `mainAxisAlignment="MIDDLE"` 会提示实际值、枚举格式，以及 `START`、`END`、`CENTER` 等可用值。需要按字段展示时，读取可选的 `attributeDiagnostic`，位置仍从 `pos` 读取。
+
+属性缺失、只写名称和空字符串可以区分；结构错误或组件组合约束不一定有属性诊断。Parser 仍然首错即抛，语法、默认值和布尔转换规则保持不变。完整字段、可运行的捕获示例及版本边界见[属性错误提示与结构化诊断](/reference/parser-errors/#%E5%B1%9E%E6%80%A7%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA)。
+
+自建 HTTP 服务可以将 `ParseException` 映射为 400 Bad Request；布局尺寸为空或无限则更适合作为 422 Unprocessable Content。已有服务以其实际响应协议为准。
+
+## 安全边界
+
+Parser 不是安全沙箱
+
+当输入来自用户时，不应把 Parser 当作完整安全沙箱。特别是 `Image` 和 `Emoji` 可以发起同步网络请求。服务端至少应在外层限制请求大小、解析深度、可访问域名、私网地址、下载体积、连接超时、渲染总时长和并发量，并为网络图片提供自定义的安全 `NetworkImageCache` 实现。
+
+错误分类、HTTP 映射和自定义标签见[错误处理与扩展](/reference/parser-errors/)。
+
+## 将模板用于实际开发
+
+先从内置标签完成布局；重复的业务外观可以[注册自定义标签](/reference/parser-errors/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE)，例如带固定间距与背景的订单卡片。注册只对配置过的 Parser 生效，不能把自定义模板直接交给未配置该标签的在线服务。
+
+生成动态模板时，应用负责循环、条件与字符串处理，Parser 不执行这些表达式。按[业务数据模板](/guides/data-templates/)插入文本，并明确空值和超长内容的处理方式。需要 AI 帮助编写时，使用[DSL 文档入口和提示词](/guides/ai-development/#%E7%94%9F%E6%88%90-parser-%E6%A8%A1%E6%9D%BF)提供准确的标签、属性与版本信息。
+
+## 进阶：处理流程
+
+```text
+Reader → Tokenizer → Element 树 → WidgetParser → Widget 树 → RenderBox → 图片字节
+```
+
+Tokenizer 负责标签、属性、文本、注释和 CDATA；Parser 维护元素栈；`WidgetParserManager` 根据标签名选择构建器；根 `SnapshotElement.snapshot()` 最终调用 core 的渲染入口。
+
+# 使用 AI 辅助开发
+
+> 为 AI 工具提供按需读取的文档入口，明确 Kotlin 与 Parser 模板的区别，并验证生成结果。
+
+让 AI 帮你写 Snapshot 布局时，先告诉它使用 **Kotlin API 还是 Parser 文本模板**，再提供对应文档。Snapshot 的布局方式与 Flutter 相近，但不能直接复制 Flutter、HTML 或 CSS 的组件和属性。
+
+## 给工具哪些文档
+
+将 [llms.txt](https://snapshot.muedsa.com/llms.txt) 作为起点。它是索引，工具可以按任务读取几篇相关页面，不必每次加载整个网站。
+
+| 入口                                                             | 适合的任务                             |
+| -------------------------------------------------------------- | --------------------------------- |
+| [文档索引](https://snapshot.muedsa.com/llms.txt)                   | 查找单页和主题合集                         |
+| [Kotlin 合集](https://snapshot.muedsa.com/_llms-txt/kotlin.txt)  | JVM 接入、组件组合、布局与绘制                 |
+| [Parser DSL 合集](https://snapshot.muedsa.com/_llms-txt/dsl.txt) | 生成 `.snapshot` 模板、查询标签和属性、定位错误    |
+| [全文合集](https://snapshot.muedsa.com/llms-full.txt)              | 确实需要全站内容，且工具允许较大上下文时              |
+| [精简合集](https://snapshot.muedsa.com/llms-small.txt)             | 不需要首页、源码索引和视觉对比页时；它仍保留大部分正文，并非短摘要 |
+
+单页 Markdown 与网页使用同一份正文。例如 [Parser 标签参考](/reference/parser-tags/)对应 [parser-tags.md](https://snapshot.muedsa.com/reference/parser-tags.md)：把文档路径末尾的 `/` 替换为 `.md` 即可。首页使用 `/index.md`；Playground 和 404 没有 Markdown 版本。
+
+工具无法访问网络时，可以打开单页 Markdown，把相关内容提供给它。`llms.txt` 不会自动让所有 AI 工具读取本站；需要由你提供入口，或由工具主动发现和读取。
+
+## 生成 Parser 模板
+
+以下提示词可以直接使用，也可以替换尺寸和业务内容：
+
+```text
+请用 Snapshot Parser 文本 DSL 生成一张 640×360 的订单摘要卡片。
+
+
+先读取 https://snapshot.muedsa.com/llms.txt，并按需读取：
+- https://snapshot.muedsa.com/guides/parser.md
+- https://snapshot.muedsa.com/reference/parser-tags.md
+- https://snapshot.muedsa.com/reference/parser-text.md
+- https://snapshot.muedsa.com/guides/text-alignment.md
+- https://snapshot.muedsa.com/guides/data-templates.md
+
+
+使用白色背景、一个标题、三条订单信息和右下角的总金额。
+根节点提供明确尺寸，长标题最多两行，金额必须完整显示。
+胶囊、按钮优先用容器 alignment="CENTER" 对齐；Stack + Positioned 优先定位完整组件。
+不要用 (容器高 - fontSize) / 2 或固定的中英文偏移表定位文字。
+同行图标优先放进同一个 Text，用 WidgetSpan alignment="MIDDLE" 并明确图标尺寸。
+独立文本按需使用 BASELINE；实际渲染后放大检查局部。
+只使用文档列出的标签和属性，不假设支持 HTML/CSS、Flutter Widget 或模板表达式。
+颜色使用 Parser 支持的 CSS 写法；说明使用的字体及其部署要求。
+先用文字说明布局尺寸如何分配，再提供完整的 <Snapshot> 根模板。
+若能调用渲染工具，请实际渲染并检查图片；否则明确说明尚未运行。
+```
+
+保存为 `.snapshot` 后，用 [VS Code 扩展或 Playground](/guides/language-server/)检查语法，再实际运行。标签存在不代表任意组合都有效：Expanded 必须是 Flex 的直接子节点；文本在 Row 中也需要有限宽度才会按预期换行。
+
+AI 容易把每个字块拆成独立 Positioned，再按字号猜坐标。标签和按钮应优先整体定位，让内部布局负责对齐；确实要绝对定位文字时，读取[实际段落高度与墨迹边界的计算方法](/guides/text-alignment/#%E5%BF%85%E9%A1%BB%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E6%97%B6%E6%80%8E%E6%A0%B7%E8%AE%A1%E7%AE%97)，不要虚构字体度量。文字盒居中后仍需检查可见字形，不应只以“已使用 CENTER”作为验收结论。
+
+如果通过 Open Snapshot 等 HTTP 服务出图，另外向 AI 提供**该服务**的接口文档：请求方式、路径、允许的图片来源、资源限制和错误字段由服务决定。本站的 Parser 说明不能代替服务接口契约。
+
+## 生成 Kotlin 代码
+
+Kotlin 任务可以这样描述：
+
+```text
+请在已有 Kotlin/JVM 应用中编写 Snapshot 分享卡片函数，返回 PNG 字节。
+目标尺寸 720×360，输入标题和三条统计数据；长标题需要省略，背景为白色。
+
+
+先读取 https://snapshot.muedsa.com/llms.txt，重点查阅：
+- https://snapshot.muedsa.com/guides/quickstart.md
+- https://snapshot.muedsa.com/guides/reusable-components.md
+- https://snapshot.muedsa.com/guides/rendering.md
+- https://snapshot.muedsa.com/reference/text-style.md
+
+
+请给出完整 import 与函数，用 ChildSlot 组合组件。
+颜色使用 Kotlin ARGB Int，尺寸使用 Float；说明调用方需要提供的字体或图片。
+沿用项目现有依赖，不虚构版本、类型或可下载的 testkit 坐标。
+补充输出尺寸、长文本和空数据的验证方法，并区分已经执行与建议执行的检查。
+```
+
+传入业务字符串时优先直接调用 Kotlin API。生成 Parser 模板的应用应使用[CDATA 文本插入方式](/guides/data-templates/#%E6%96%87%E6%9C%AC%E6%A8%A1%E6%9D%BF%E6%8A%8A%E4%B8%9A%E5%8A%A1%E6%96%87%E5%AD%97%E6%94%BE%E8%BF%9B-cdata)，不要把任意字符串直接拼进标签或属性。
+
+## 验证生成结果
+
+按下面的顺序检查，错误更容易定位：
+
+1. **查 API。** 确认标签、参数及默认值属于当前入口。Kotlin 的 `0x80FF0000.toInt()` 与 Parser 的 `#FF000080` 都表示半透明红色，字节顺序却不同；两者默认画布背景也不同。
+2. **编译或检查模板。** Kotlin 先编译；DSL 先看 LSP 提示，再执行 Parser。`parse()` 成功只代表读取了元素树，不能证明图片可以生成。
+3. **实际渲染。** 检查字体、图片解码和布局。服务端引擎可能落后于文档和编辑器版本；遇到未知标签时先核对版本。
+4. **看图片。** 检查文本基线、长文字截断、透明边缘、裁剪和留白。“请求成功”或“得到 PNG”不代表内容符合要求。
+5. **保留回归。** 用最长标题、空值、中英文混排等边界数据复测；稳定后加入[布局、像素或 Golden 测试](/guides/testing/)。
+
+报错时给 AI 提供最小模板、实际引擎版本、位置与结构化诊断；效果不对时，再补上输出图片和预期效果。优先让它解释原因并修改相关部分，避免同时改动所有尺寸、字体和对齐参数。
+
+## 模型评测与结果
+
+[snapshot-llm-test](https://github.com/muedsa/snapshot-llm-test) 提供一套 Snapshot DSL 作图任务，用于评测 AI 理解需求、编写模板、渲染图片并迭代改进的能力。仓库包含任务说明、输入资料、运行配置和报告模板，使用方法见仓库 README。
+
+仓库中的 [results 目录](https://github.com/muedsa/snapshot-llm-test/tree/main/results)是**评测结果**，可查看各次评测保留的作图成果与相关记录。
+
+进入某个模型的结果目录后，打开 `outputs/[runId]/_suite/gallery.md`，即可直接查看**作图任务结果画廊**，浏览图片预览并访问原始 PNG 和对应 DSL。`[runId]` 为该次运行的目录名。
+
+# 用业务数据生成图片
+
+> 用 Kotlin 组织动态布局，或安全地把文本填入 Parser 模板。
+
+做订单卡片、排行榜或分享图时，布局通常固定，标题、价格和列表来自业务数据。已有 Kotlin 应用优先直接传值给 Widget；需要保存或编辑文本模板时，再把数据转换成 DSL。
+
+## Kotlin：直接传入字符串和列表
+
+下面是可放入应用的完整函数，沿用[安装指南](/guides/installation/)的 core 依赖。它返回 480×240 的 PNG，可直接保存或作为 HTTP 响应；标题中即使包含 `<`、`&` 或引号，也只会作为文字绘制：
+
+```kotlin
+import com.muedsa.geometry.EdgeInsets
+import com.muedsa.snapshot.SnapshotPNG
+import com.muedsa.snapshot.paint.text.TextStyle
+import com.muedsa.snapshot.rendering.flex.CrossAxisAlignment
+import com.muedsa.snapshot.paint.text.TextOverflow
+import com.muedsa.snapshot.widget.*
+import com.muedsa.snapshot.widget.text.Text
+
+
+fun orderCard(title: String, lines: List<String>): ByteArray = SnapshotPNG {
+    Container(width = 480f, height = 240f, padding = EdgeInsets.all(24f)) {
+        Column(crossAxisAlignment = CrossAxisAlignment.START) {
+            Text(title, style = TextStyle(fontSize = 28f), maxLines = 1, overflow = TextOverflow.ELLIPSIS)
+            SizedBox(height = 16f)
+            for (line in lines.take(3)) {
+                Text(line, style = TextStyle(fontSize = 18f), maxLines = 1, overflow = TextOverflow.ELLIPSIS)
+                SizedBox(height = 8f)
+            }
+        }
+    }
+}
+```
+
+`lines.take(3)` 是本例的产品选择：画布固定，只展示前三条。实际业务要明确超出内容是分页、截断还是增高，不能期待固定画布自动容纳任意列表。中文部署还需[配置字体](/guides/fonts/)。
+
+当同一种行、金额区或卡片需要重复使用时，把它提取为 `ChildSlot` 组合函数，让调用方负责画布、列表数量与间距，见[编写可复用组件](/guides/reusable-components/)。
+
+## 文本模板：把业务文字放进 CDATA
+
+Parser 不是模板引擎，不执行变量、循环或表达式。字符串插值由你的应用负责。它也不做 HTML 实体解码，因此不能照搬 `&lt;`、`&amp;` 作为转义方案。
+
+最稳妥的文本插入位置是 `<Text>` / `<Raw>` 的 CDATA 内容。字符串中的 `]]>` 会提前结束 CDATA，必须拆成相邻的两个 CDATA 段：
+
+```kotlin
+import com.muedsa.snapshot.parser.Parser
+import java.io.StringReader
+
+
+fun dslText(value: String): String =
+    "<![CDATA[" + value.replace("]]>", "]]]]><![CDATA[>") + "]]>"
+
+
+fun templateCard(title: String): ByteArray {
+    require(title.length <= 200) { "标题过长" }
+    val source = """
+        <Snapshot background="#FFFFFF" type="png">
+          <Container width="480" height="120" padding="24">
+            <Text fontSize="28" maxLines="1" overflow="ELLIPSIS"><Raw>${dslText(title)}</Raw></Text>
+          </Container>
+        </Snapshot>
+    """.trimIndent()
+    return Parser().parse(StringReader(source)).snapshot()
+}
+```
+
+例如 `templateCard("A < B & C ]]> D")` 会把整段内容当作文字，既不创建额外标签，也不丢失 `]]>`。这里用 Raw 保留业务文本的首尾空格；普通 Text 会 trim。整个标题仍受单行省略和画布宽度限制。
+
+## 属性值应先校验，再格式化
+
+CDATA 只适用于文本内容，不能用于属性值。不要把任意业务字符串直接拼进 `color="…"`、`url="…"`、SVG 路径或标签名。
+
+| 数据        | 推荐处理                                         |
+| --------- | -------------------------------------------- |
+| 宽高、字号、间距  | 转成数值，检查有限性和业务范围，再输出                          |
+| 对齐、fit、字体 | 从应用允许的固定选项中选择                                |
+| 颜色        | 在应用中解析并输出统一的 CSS 格式；DSL 8 位十六进制为 `#RRGGBBAA` |
+| URL / 图片  | 先检查来源、访问权限和体积；复杂来源可在 Kotlin 中预加载 Image       |
+| 多行、多列、可选块 | 由应用生成固定结构；或直接用 Kotlin 的循环与条件组合 Widget        |
+
+如果属性确实需要包含任意引号或特殊字符，优先改用 Kotlin API，不要猜测 Parser 是否支持某种 HTML 转义。文本安全插入也不能替代服务端的请求大小、图片访问和渲染资源限制，详见[错误处理与扩展](/reference/parser-errors/)。
+
+## 用边界数据检查模板
+
+除了正常数据，至少试一次空标题、很长的中文标题、中英文混排、含 `<` / `&` / `]]>` 的文本，以及超出预期条数的列表。检查输出尺寸和截断是否符合产品需求，测试方法见[测试指南](/guides/testing/)。
+
+# 完整模板示例
+
+> 可整段复制到 Playground 的信息卡片、图文布局和 SVG 裁剪票券。
+
+下面每个示例都包含完整的 `<Snapshot>` 根节点，不需要网络图片。可以复制代码到[在线 Playground](/playground/)尝试运行，也可保存为 `.snapshot` 文件，交给 [Parser](/guides/parser/) 处理。预览由本地 Snapshot 渲染，字体与实际部署环境不同可能使文字宽度略有差异。
+
+示例与服务版本
+
+这些模板已使用当前本地 Parser 验证。在线服务独立部署，可能尚未包含最新标签或行为；例如票券示例需要支持 ClipPath 的版本。若出现 `Unknown element tag [ClipPath]`，请更新实际渲染服务的 Parser，或使用本地新版 Parser 运行；编辑器能补全不代表服务端已支持。
+
+| 示例                                                                                                        | 输出尺寸      | 练习内容                   |
+| --------------------------------------------------------------------------------------------------------- | --------- | ---------------------- |
+| [信息卡片](#%E4%BF%A1%E6%81%AF%E5%8D%A1%E7%89%87)                                                             | 560 × 280 | 固定画布、圆角、padding、Spacer |
+| [固定图标与自适应文本](#%E5%9B%BA%E5%AE%9A%E5%9B%BE%E6%A0%87%E4%B8%8E%E8%87%AA%E9%80%82%E5%BA%94%E6%96%87%E6%9C%AC) | 560 × 220 | Row、Expanded、换行与省略号    |
+| [SVG 路径票券](#svg-%E8%B7%AF%E5%BE%84%E7%A5%A8%E5%88%B8)                                                     | 560 × 220 | ClipPath、viewBox、镂边裁剪  |
+
+## 信息卡片
+
+![带标题、说明和底部状态栏的信息卡片](/examples/info-card.png)
+
+```xml
+<Snapshot background="#E8EEF5" type="png">
+  <Container width="560" height="280" padding="24">
+    <Container padding="28" color="#FFFFFF" borderRadius="20">
+      <Column crossAxisAlignment="START">
+        <Text color="#0369A1" fontSize="14" fontStyle="BOLD">SNAPSHOT / WEEKLY</Text>
+        <SizedBox height="12" />
+        <Text color="#0F172A" fontSize="28" fontStyle="BOLD">让信息成为一张图片</Text>
+        <SizedBox height="8" />
+        <Text color="#475569" fontSize="16">用布局表达层级，用留白组织内容。</Text>
+        <Spacer />
+        <Row crossAxisAlignment="CENTER">
+          <Text color="#0F172A" fontSize="18" fontStyle="BOLD">128 次构建</Text>
+          <Spacer />
+          <Container padding="(6,12)" color="#DCFCE7" borderRadius="10">
+            <Text color="#166534" fontSize="14">全部通过</Text>
+          </Container>
+        </Row>
+      </Column>
+    </Container>
+  </Container>
+</Snapshot>
+```
+
+外层 Container 确定输出尺寸，内层 Container 负责卡片背景和圆角。Column 中的 Spacer 吸收剩余高度，让状态栏靠近底部；Row 中的 Spacer 则把两项推向左右两端。
+
+可先修改标题、`padding` 或根宽高，观察文字换行和留白如何变化。Spacer 需要有限主轴空间，这里由外层固定尺寸提供。
+
+## 固定图标与自适应文本
+
+![左侧固定尺寸标识和右侧自适应宽度的文字说明](/examples/flex-text.png)
+
+```xml
+<Snapshot background="#FFFFFF" type="png">
+  <Container width="560" height="220" padding="28" color="#F1F5F9">
+    <Row crossAxisAlignment="START">
+      <Container width="72" height="72" color="#0369A1" borderRadius="18" alignment="CENTER">
+        <Text color="#FFFFFF" fontSize="36" fontStyle="BOLD">S</Text>
+      </Container>
+      <SizedBox width="20" />
+      <Expanded>
+        <Column mainAxisSize="MIN" crossAxisAlignment="START">
+          <Text color="#0F172A" fontSize="24" fontStyle="BOLD" maxLines="2" overflow="ELLIPSIS">给文字明确的可用宽度</Text>
+          <SizedBox height="12" />
+          <Text color="#475569" fontSize="16" maxLines="3" overflow="ELLIPSIS">左侧图标保持固定尺寸，右侧文本使用 Row 的剩余宽度。把画布调窄后，文字会换行，超过行数时显示省略号。</Text>
+        </Column>
+      </Expanded>
+    </Row>
+  </Container>
+</Snapshot>
+```
+
+Expanded 必须直接放在 Row 下：它把剩余宽度传给 Column 和 Text。`maxLines` 控制最多显示几行，`overflow="ELLIPSIS"` 决定超出后的显示方式。
+
+尝试把根宽度从 `560` 改为 `420`；若移除 Expanded，Row 的普通子节点可能获得无界主轴宽度，文本便无法按预期换行。参见 [Flex 布局](/guides/layout/#flex-%E5%B8%83%E5%B1%80)。
+
+## SVG 路径票券
+
+![左右两侧带弧形缺口的深色票券](/examples/path-ticket.png)
+
+```xml
+<Snapshot background="#E8EEF5" type="png">
+  <SizedBox width="560" height="220">
+    <ClipPath path="M0 0 H560 V80 Q520 110 560 140 V220 H0 V140 Q40 110 0 80 Z"
+              viewBox="0 0 560 220" fit="FILL">
+      <Container color="#0F172A" padding="36">
+        <Column crossAxisAlignment="START">
+          <Text color="#38BDF8" fontSize="14" fontStyle="BOLD">SNAPSHOT / ADMIT ONE</Text>
+          <Spacer />
+          <Text color="#F8FAFC" fontSize="30" fontStyle="BOLD">把想法渲染出来</Text>
+          <SizedBox height="10" />
+          <Text color="#94A3B8" fontSize="16">SVG 路径 · 声明式布局 · 离线出图</Text>
+        </Column>
+      </Container>
+    </ClipPath>
+  </SizedBox>
+</Snapshot>
+```
+
+SizedBox 决定布局尺寸，`viewBox` 只负责把路径坐标映射到该尺寸。两段 `Q` 曲线形成侧边缺口，缺口露出 Snapshot 的浅色背景。
+
+将 `fit` 改为 `CONTAIN` 并改变宽高比，可以保持路径比例；要做多轮廓镂空，见 [ClipPath 的 EVEN\_ODD 示例](/reference/parser-tags/#clippath)。运行服务需要包含支持 ClipPath 的 Parser。
+
+## 接入业务数据
+
+完整的 Kotlin 动态卡片与 CDATA 文本插入函数见[用业务数据生成图片](/guides/data-templates/)，其中包括输入含 `]]>` 时的处理方式。
+
+示例中的字符串可以由应用生成，但 Parser 不提供变量替换或 HTML 实体解码。动态文本包含 `<` 等字符时，使用 CDATA，并处理输入中的 `]]>`，避免提前结束 CDATA；不要把任意文本直接拼接到标签或属性中。复杂数据组合也可以直接使用 Kotlin DSL。
+
+继续阅读[标签与属性参考](/reference/parser-tags/)查参数，或在[常见问题](/reference/faq/)中排查尺寸、换行与裁剪。
+
+# 字体与跨平台文字
+
+> 把字体打包进应用，供 Kotlin 与文本 DSL 使用，并排查缺字和基线偏移。
+
+如果本机正常、服务器却出现方框、换行变化或文字上下偏移，先检查渲染进程使用的字体。`fontFamily` 只是字体名称，不会下载字体；网页 CSS 和浏览器字体也不会传给 JVM 或 Open Snapshot 服务。
+
+## 准备字体文件
+
+下面使用 Noto Sans CJK SC 的简体中文静态字体。打开官方仓库的文件页，通过 **Download raw file** 下载以下两个文件；链接固定到同一版本 `Sans2.004`，便于复现：
+
+| 文件                          | 用途        | 获取位置                                                                                                                       |
+| --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `NotoSansCJKsc-Regular.otf` | 常规字重（400） | [官方 Regular 文件](https://github.com/notofonts/noto-cjk/blob/Sans2.004/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf) |
+| `NotoSansCJKsc-Bold.otf`    | 粗体（700）   | [官方 Bold 文件](https://github.com/notofonts/noto-cjk/blob/Sans2.004/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf)       |
+
+将原始字体文件和同版本的 [SIL Open Font License](https://github.com/notofonts/noto-cjk/blob/Sans2.004/LICENSE) 放进应用资源目录。不要保存 GitHub 文件预览网页，也不需要把 `.otf` 改名成 `.ttf`：
+
+```text
+src/main/resources/fonts/
+  NotoSansCJKsc-Regular.otf
+  NotoSansCJKsc-Bold.otf
+  LICENSE
+```
+
+打包时这些文件会进入 classpath，读取不依赖应用的启动目录。也可以选择其他覆盖所需语言、允许随应用分发的字体，但要同步修改文件名并保留对应许可证。
+
+静态字体通常一个文件对应一个字重；可变字体则把多个字重放在一个文件中，两者不能只靠改文件名互换。本文用两个静态文件演示明确的 Regular / Bold 匹配；仅加载 Regular 再请求 `BOLD`，不能保证使用到设计好的粗体字形。
+
+## 注册字体并选择字重
+
+下面可作为完整的 `Main.kt`，依赖配置沿用[快速开始](/guides/quickstart/)。运行后得到 480×160 的 `font-demo.png`，上下两行分别使用常规和粗体：
+
+```kotlin
+import com.muedsa.geometry.EdgeInsets
+import com.muedsa.snapshot.SnapshotPNG
+import com.muedsa.snapshot.paint.text.TextPainter
+import com.muedsa.snapshot.paint.text.TextStyle
+import com.muedsa.snapshot.rendering.flex.CrossAxisAlignment
+import com.muedsa.snapshot.widget.Column
+import com.muedsa.snapshot.widget.Container
+import com.muedsa.snapshot.widget.SizedBox
+import com.muedsa.snapshot.widget.text.Text
+import org.jetbrains.skia.Data
+import org.jetbrains.skia.FontMgr
+import org.jetbrains.skia.FontStyle
+import org.jetbrains.skia.Typeface
+import org.jetbrains.skia.paragraph.TypefaceFontProvider
+import java.io.File
+
+
+object AppFonts {
+    const val FAMILY = "AppSans"
+    // 对象随进程保留；渲染期间不要关闭字体或 provider。
+    val regular = load("/fonts/NotoSansCJKsc-Regular.otf")
+    val bold = load("/fonts/NotoSansCJKsc-Bold.otf")
+    private val provider = TypefaceFontProvider()
+        .registerTypeface(regular, FAMILY)
+        .registerTypeface(bold, FAMILY)
+
+
+    private fun load(path: String): Typeface =
+        checkNotNull(AppFonts::class.java.getResourceAsStream(path)) {
+            "字体没有打包进应用：$path"
+        }.use { stream ->
+            Data.makeFromBytes(stream.readBytes()).use { data ->
+                checkNotNull(FontMgr.default.makeFromData(data)) { "无法解码字体：$path" }
+            }
+        }
+
+
+    fun install() {
+        TextPainter.FONT_COLLECTION.setAssetFontManager(provider)
+    }
+}
+
+
+fun main() {
+    AppFonts.install() // 应用启动时调用，在接收渲染请求之前完成。
+    val png = SnapshotPNG {
+        Container(width = 480f, height = 160f, padding = EdgeInsets.all(24f)) {
+            Column(crossAxisAlignment = CrossAxisAlignment.START) {
+                Text("常规 Regular 中文 Agjp", style = TextStyle(
+                    fontFamilies = listOf(AppFonts.FAMILY),
+                    fontStyle = FontStyle.NORMAL, fontSize = 28f,
+                ))
+                SizedBox(height = 12f)
+                Text("粗体 Bold 中文 Agjp", style = TextStyle(
+                    fontFamilies = listOf(AppFonts.FAMILY),
+                    fontStyle = FontStyle.BOLD, fontSize = 28f,
+                ))
+            }
+        }
+    }
+    File("font-demo.png").writeBytes(png)
+}
+```
+
+`AppSans` 是注册时选定的别名，使用别名可以避免依赖字体文件内部的族名。两个文件都注册为 `AppSans`，字重来自字体文件自身的元数据；`fontStyle` 再选择常规或粗体。只重命名文件不会改变字重，这两个文件也不提供真正的斜体字形。
+
+`TextPainter.FONT_COLLECTION` 是进程级共享对象，应该在启动阶段配置一次；不要按请求来回切换字体管理器。增加字体族时，将字体以另一个别名注册到同一个 provider，再一次性安装；重复设置新的 manager 会替换此前的配置。
+
+仅在 Kotlin 中使用时，也可直接写 `TextStyle(typeface = AppFonts.regular)` 或 `TextStyle(typeface = AppFonts.bold)` 选择具体文件。通过 `fontFamilies` + `fontStyle` 选择更适合与 DSL 共用命名配置。
+
+## 同一套字体供 DSL 使用
+
+在**运行 Parser 的 JVM** 中先调用 `AppFonts.install()`，再解析：
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="160" padding="24">
+    <Column crossAxisAlignment="START">
+      <Text fontFamily="AppSans" fontSize="28" fontStyle="NORMAL">常规 Regular 中文 Agjp</Text>
+      <SizedBox height="12" />
+      <Text fontFamily="AppSans" fontSize="28" fontStyle="BOLD">粗体 Bold 中文 Agjp</Text>
+    </Column>
+  </Container>
+</Snapshot>
+```
+
+相邻的两个 Text 是两个段落，需要各自设置字体。同一个 Text 内部则可让嵌套 Text / Raw 继承样式；例如 `<Text fontFamily="AppSans"><Text fontStyle="BOLD">标题</Text><Raw> 正文</Raw></Text>` 会保留同一字体族，只切换标题的字重。
+
+这个别名只在你配置过的渲染进程里存在。把模板复制到公共 Playground，并不会把本地字体一起上传；公共服务能使用哪些字体取决于服务的部署配置。
+
+## 缺字与备用字体
+
+中文字体不一定包含 Emoji、罕用符号或其他语言。发现方框或部分字符高低不同，先检查所用字体是否包含这些字符，再准备备用字体，避免只调整坐标掩盖缺字回退。
+
+例如将备用字体以 `AppSymbols` 别名注册到同一 provider 后，Kotlin 可写 `fontFamilies = listOf("AppSans", "AppSymbols")`，DSL 可写 `fontFamily="AppSans,AppSymbols"`。这里的 `AppSymbols` 是你注册的别名，不是 Snapshot 自带字体；逗号后不要加空格。
+
+字体列表仍未覆盖的字符可能回退到系统字体，因此仅注册一个族或两个字重，还不能保证所有平台逐像素一致。需要固定 Emoji 外观时，也可使用 [WidgetSpan / Emoji](/reference/parser-tags/#emoji) 放入明确的图片资源。
+
+## 中英文与图文混排怎样对齐
+
+字体的基线是排字参考线；文字盒还包含上方和下方的度量空间。字号相同、盒子居中，都不保证笔画顶部或底部一致。
+
+| 情况          | 先这样处理                                             |
+| ----------- | ------------------------------------------------- |
+| 一句话里中英文高低不一 | 放进同一个 Text / RichText，统一字体；检查是否缺字回退               |
+| 不同字号的价格与单位  | 使用 Row 的 `BASELINE` + `textBaseline = ALPHABETIC` |
+| 图标与标签文字同行   | 优先放进同一段落的 WidgetSpan，固定图标尺寸并显式设置 `MIDDLE`；检查透明留白  |
+| 图片跟随文字换行    | 用 WidgetSpan / Emoji 的 `MIDDLE` 或明确的基线位置          |
+| 多行文字行距跳动    | 固定字体后再配置 Strut，别先用固定偏移掩盖问题                        |
+
+可复制的 Kotlin 示例见[文本基线与混排](/guides/media-text/#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)，DSL 示例见[文本属性详解](/reference/parser-text/#%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)。其中也说明了当前 Padding / Align 基线转发的限制。
+
+## 部署后怎样验证
+
+先用固定输入 `中文 Agjp 0123` 出一张图，再加入实际业务会出现的 Emoji、重音字母、不同字重和长标题。检查缺字、换行点、基线及末行裁剪；最后在实际容器中重复一次。
+
+同一族名可能对应不同版本的字体文件。需要稳定结果时，把字体文件、字体许可证、Snapshot / Skiko 版本和运行平台一起纳入部署记录。测试方法见[测试与 Golden](/guides/testing/)，不要只比较本机浏览器中的显示效果。
+
+# Snapshot DSL 语言服务
+
+> 使用 snapshot-lsp 为类 DOM DSL 提供补全、悬停与实时诊断。
+
+[`snapshot-lsp`](https://github.com/muedsa/snapshot-lsp) 是 Snapshot 类 DOM DSL 的独立 TypeScript 语言服务。它在输入时提示标签、属性和错误，编写 DSL 不需要启动 JVM 渲染器。普通使用者选择下方的 Playground 或 VS Code 即可；自己开发编辑器时，再阅读后面的 LSP（编辑器与语言服务的通信协议）接入说明。
+
+## 能提供什么
+
+* 覆盖 Parser 默认注册的 39 个标签及其属性，包含 SVG 路径裁剪的 `ClipPath`；提供标签、属性、枚举值和闭合标签补全，以及悬停说明。
+* 对未知标签或属性、重复属性、缺少必填属性、根节点错误、父子关系、子节点数量和部分属性值进行实时诊断；颜色检查支持 Parser 的常用 CSS 颜色写法。
+* 容忍编辑过程中暂时未写完的标签，便于继续补全。
+
+标签和属性名区分大小写。Parser 可能静默忽略未知属性，而语言服务会发出警告，帮助发现拼写错误。
+
+`@muedsa/snapshot-lsp` 从 `0.2.0` 起支持 `ClipPath`：提供必填 `path` 提示、`viewBox` 格式检查，以及 `fit`、`fillRule`、`clipBehavior` 枚举补全。SVG 路径命令的完整语法与坐标有效性由 Parser 校验。使用规则见 [ClipPath 标签参考](/reference/parser-tags/#clippath)。
+
+## 在线体验
+
+打开[在线 Playground](/playground/)即可使用 Monaco 编辑器中的补全、悬停和问题提示。网站将 `@muedsa/snapshot-lsp/browser` 放在 Web Worker 中运行：编辑时的语言服务在浏览器内完成；点击“运行”才会将 DSL 发往 Open Snapshot 服务生成图片。
+
+## 在 VS Code 中使用
+
+可以安装独立的 [Snapshot DSL 扩展](https://github.com/muedsa/vscode-snapshot-lsp)。它已将客户端与语言服务器打包在 VSIX 内，使用者无需单独安装 npm 包或配置 GitHub Packages 令牌。
+
+1. 按扩展仓库的说明获取 VSIX（工作流产物或自行打包）。
+2. 在 VS Code 扩展视图中选择“从 VSIX 安装”。
+3. 打开 `.snapshot` 文件，即可使用补全、诊断、悬停、语法着色、大纲与格式化。
+
+语言服务无响应时，可在命令面板运行“Snapshot: 重启语言服务器”。扩展只负责编辑体验，图片仍需通过 Parser 或 Playground 渲染。VSIX 获取和支持的 VS Code 版本以扩展仓库说明为准。
+
+## 手动接入 LSP 客户端
+
+包发布在 GitHub Packages，要求 Node.js 22 或更高版本。在**用户级** `.npmrc` 或 pnpm 全局配置中指定 registry，并通过环境变量提供具备 `read:packages` 权限的令牌：
+
+```ini
+@muedsa:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+不要把实际令牌写进仓库。新版 pnpm 不展开项目级 `.npmrc` 中的环境变量占位符；请使用用户级配置，详见[项目维护说明](https://github.com/muedsa/snapshot-web#%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91)。配置好 `NODE_AUTH_TOKEN` 后安装：
+
+```bash
+pnpm add -D @muedsa/snapshot-lsp@^0.2.1
+```
+
+在支持 LSP 的编辑器中，将 `.snapshot` 文件关联到语言 ID `snapshot`，并以 stdio 启动服务：
+
+```bash
+pnpm exec snapshot-lsp --stdio
+```
+
+服务实现了文档同步、补全、悬停和诊断发布。具体的服务启动配置由编辑器或其 LSP 客户端决定；此 npm 包是通用语言服务器，VS Code 用户可以直接使用上面的独立扩展。
+
+## 在浏览器中集成
+
+在浏览器应用中，也可将服务放进 Worker，并用支持 Web Worker 传输的 LSP 客户端连接：
+
+```ts
+import { startBrowserWorkerServer } from '@muedsa/snapshot-lsp/browser';
+
+
+startBrowserWorkerServer(self);
+```
+
+本网站使用 Monaco 自带的 `monaco.lsp` 客户端连接 Worker。集成 0.2.1 时注意两项协议约定：
+
+1. 客户端只有在初始化时显式声明 `textDocument.completion.completionItem.snippetSupport: true`，才会收到含占位符的 snippet；缺省或 false 返回普通文本，例如 `width=""`。
+2. 接受补全时必须同时应用 `textEdit` 和可选的 `additionalTextEdits`。多行属性值使用单行主编辑及不重叠的额外编辑，遗漏后者会残留旧值或换行。不要只取 `insertText` 或按当前单词范围替换。
+
+本网站在发送初始化报文时显式补充 `snippetSupport: true`，保留其他能力字段；补全结果（含额外编辑）仍由 Monaco 原生处理。自行接入时也应确认能力协商与实际编辑器行为一致。
+
+### 直接使用语言核心
+
+不经 LSP 连接时，可直接调用 `SnapshotLanguageService`。核心 API 为兼容旧调用，默认支持 snippet；不解析 snippet 的宿主需要显式关闭：
+
+```ts
+import { SnapshotLanguageService, type CompletionOptions } from '@muedsa/snapshot-lsp';
+
+
+const service = new SnapshotLanguageService();
+const text = '<Snapshot><Container wi';
+const options: CompletionOptions = { snippetSupport: false };
+const items = service.completions(text, { line: 0, character: text.length }, undefined, options);
+// 接受候选时，同样要处理 textEdit 和 additionalTextEdits。
+```
+
+扩展目录的 `AttributeSpec.valueType` 可复用内置值域（类型为导出的 `ValueType`），也可用 `values` 显式覆盖候选；Parser 的自定义标签注册仍需单独完成。
+
+## 版本与编辑行为
+
+* 在已有属性名中接受补全时保留原赋值、引号和空白；闭合标签按当前位置仍打开的父节点提示，并补齐缺少的 `>`。
+* 改进不完整标签恢复，标签候选同时考虑前后的子节点数量，避免提示重复根节点或超过单子节点限制的内容。
+* 补齐方向、对齐、图片重复、渐变平铺、文本、字体和画笔模式等枚举；补全与诊断使用相同值域，颜色属性别名也按 CSS 颜色检查。
+* 正确处理无引号 URL / 路径中的 `/`，提示完整标签中必填属性缺少值的情况，并允许 Raw 内嵌套 WidgetSpan。
+
+网站已升级到 0.2.1。语言服务升级不会同步升级服务端 Parser，实际渲染能力仍以部署的 Open Snapshot 版本为准。
+
+## 与 Parser 的分工
+
+语言服务只做静态检查，不会解码图片、执行布局或生成图片。复杂的属性组合约束和最终解析结果仍以 `snapshot-parser` 为准；语言服务的提示不能替代实际解析与渲染测试。
+
+Parser 的 [`ParseException.attributeDiagnostic`](/reference/parser-errors/#%E8%AF%BB%E5%8F%96%E7%BB%93%E6%9E%84%E5%8C%96%E8%AF%8A%E6%96%AD) 是 Kotlin Parser 提供的错误信息，与编辑器的 LSP 诊断是两套接口。新增属性填写说明不会自动扩展 LSP 协议或 HTTP 响应字段，在线服务的提示仍取决于后端部署版本。
+
+如果为 Parser 注册了自定义标签，还需要单独扩展语言服务的标签目录；仅注册 `WidgetParserManager` 不会自动让编辑器认识新标签。扩展接口和最新接入说明见 [`snapshot-lsp` 项目](https://github.com/muedsa/snapshot-lsp)。
+
+# 文字垂直居中与胶囊标签
+
+> 区分文字布局盒、基线和可见字形，正确定位中文胶囊标签，并处理中英文与图标混排。
+
+胶囊、按钮里的中文偏下时，先检查是不是把字号当成了文字高度。`fontSize="20"` 不代表文字占用 20 像素高；用 `(容器高 - fontSize) / 2` 计算位置，往往会把文字放错。
+
+top 定位盒子，不定位可见笔画
+
+`top` 是 **Positioned 的属性**，表示其子组件布局盒的顶部相对 Stack 顶部的位置。直接定位 Text 时，这个起点也是段落的绘制起点，不是字形的顶部或基线。若中间还有 padding、对齐或 Transform，还要计入这些层带来的位移。对单行文本，可以从实际段落高度理解行盒；多行段落则包含多行及其行间度量，不能当成一个字的高度。
+
+**默认做法：定位整个标签，让容器居中文字；只有确实需要分离定位时才测量。** 布局居中解决组件盒的位置，可见笔画是否看起来居中仍需用实际字体检查。
+
+## 为什么中文和图标容易显得偏下
+
+* **字号、行盒、可见字形是三个尺寸。** 字体的 ascent、descent、leading，显式行高、Strut 和行内占位符都会参与段落度量，不能固定认为行高等于 `1.2` 或 `1.35 × fontSize`。
+* **不同字符的可见边缘不同。** `OK`、`Agjp`、数字与汉字占用的区域不同；共用基线不代表笔画的顶边、底边或视觉中心相同。
+* **混排可能使用多份字体。** 缺字回退、Emoji 或符号字体可能改变一行的度量；固定一个字体名称也不代表所有字符都来自同一文件。行内图片按占位盒参与布局，源图的透明留白不会自动扣除。
+* **紧凑的外框让误差更显眼。** 在高度 44 的标签中，几像素的上下偏差就很明显；更换字号、字重、字体、内容或渲染环境后，旧的偏移值可能失效。
+
+偏差可能向上，也可能向下。固定字体、内容、样式和渲染环境后，它可以测量和复现，并非随机变化。不要使用“中文统一加 `0.02 × 字号`、英文统一减 `0.03 × 字号`”之类的通用校正表，也不要根据字体文件中的某一组度量，直接推断最终段落高度。
+
+## 首选：把胶囊作为一个组件定位
+
+下面是可完整运行的 DSL：画布 240×192，胶囊左上角为 `(20,124)`，尺寸 120×44。Stack 只定位整个胶囊，Container 的 `alignment="CENTER"` 负责把文字组件盒放在中心，不用猜文字的 `top`。
+
+```xml
+<Snapshot background="#FFFFFF">
+  <SizedBox width="240" height="192">
+    <Stack>
+      <Positioned left="20" top="124" width="120" height="44">
+        <Container color="#1F7A4D" borderRadius="22"
+                   padding="(0,12)" alignment="CENTER">
+          <Text fontFamily="Noto Sans SC" fontSize="20" color="#FFFFFF"
+                maxLines="1" overflow="ELLIPSIS">已完成</Text>
+        </Container>
+      </Positioned>
+    </Stack>
+  </SizedBox>
+</Snapshot>
+```
+
+示例请求 `Noto Sans SC`；需要在实际渲染进程中提供该字体，或改成服务端已配置的字体名。`fontFamily` 不会下载字体，配置方法见[字体指南](/guides/fonts/)。长标签在这里选择单行省略；如果业务内容必须完整显示，应增加宽度或改用可增高的布局。
+
+容器对齐的是 Text 布局盒，**不保证字形墨迹到上下边缘的距离完全相同**。先采用这种稳定布局，再决定是否需要[基于测量的视觉校准](#%E5%BF%85%E9%A1%BB%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E6%97%B6%E6%80%8E%E6%A0%B7%E8%AE%A1%E7%AE%97)。不要为了“居中”随意设置 Text 的 `height="1"` 或强制 Strut；压缩行度量可能让笔画伸出行盒，甚至被裁剪。
+
+### DSL 属性不要混用
+
+| 想控制什么      | 应该写在哪里                                                          | 常见误写                                     |
+| ---------- | --------------------------------------------------------------- | ---------------------------------------- |
+| 标签的位置      | `<Positioned left="…" top="…">`                                 | 把 `top` 写在 Text 上                        |
+| 文字可用宽度     | 外层 SizedBox / Container，或 Positioned 的 `width` / 左右边距           | `<Text width="96">`；Text 没有该属性           |
+| 文字组件在标签内居中 | `<Container alignment="CENTER">` 或 `<Align alignment="CENTER">` | 仅设置水平文字对齐，期待它也垂直居中                       |
+| 段落的水平对齐    | `<Text textAlign="CENTER">`，并提供可用宽度                             | `<Text align="CENTER">`；不是当前属性名          |
+| 标签高度       | 容器的 `height`                                                    | `<Text height="44">`；Text 的 height 是行高倍数 |
+
+当前 Parser 通常忽略未知属性，错误写法可能不报错。`textAlign="CENTER"` 只管水平方向；当文本盒本身只有文字那么宽时，也没有额外空间可供水平对齐。
+
+## 中英文与图标怎样组合
+
+| 内容                     | 推荐布局                                                     | 需要检查的边界                    |
+| ---------------------- | -------------------------------------------------------- | -------------------------- |
+| 同一句话，如“已保存 PDF”        | 放在一个 Text 中；不同样式用嵌套 Text / Raw                           | 字体回退、片段间空格，以及整行的可见边界       |
+| 多个独立文本，如“价格”与大号数字      | Row 的 `BASELINE` + `textBaseline="ALPHABETIC"`           | 文字基线对齐，不是把不同字形的上下边缘都对齐     |
+| 与文字同行的状态图标，包括胶囊、按钮内的图标 | 优先放进同一个 Text，使用 `WidgetSpan alignment="MIDDLE"`，内部图标明确宽高 | 由同一段落安排行内位置；仍需检查字体和图片的透明留白 |
+| 要随正文换行的图标              | 同样用 WidgetSpan / Emoji，显式给尺寸和 `alignment`                | 行内占位符参与换行，也可能改变行高          |
+| 独占一栏的图片与多行说明           | Row 分别布局图片与文本区域，按设计选 `CENTER` 或 `START`                  | 这是独立区域的盒对齐，不是文本行内对齐        |
+
+同一行标签中的图标属于文本内容的一部分，推荐让它通过 WidgetSpan 参与同一个 Text 的排版。共用字体、字号放在外层 Text，外层 Container 居中整个段落。下面用白色圆点代表状态图标，输出 200×44；WidgetSpan 内可替换成同尺寸 Image：
+
+```xml
+<Snapshot background="transparent">
+  <Container width="200" height="44" padding="(0,12)"
+             color="#1F7A4D" borderRadius="22" alignment="CENTER">
+    <Text fontFamily="Noto Sans SC" fontSize="20" color="#FFFFFF"
+          maxLines="1" overflow="ELLIPSIS">
+      <WidgetSpan alignment="MIDDLE">
+        <Container width="18" height="18" color="#FFFFFF" borderRadius="9" />
+      </WidgetSpan>
+      <Raw> 已保存 PDF</Raw>
+    </Text>
+  </Container>
+</Snapshot>
+```
+
+Raw 保留图标与文字之间的前导空格，间隔宽度由字体决定。Text 从容器获得有限宽度，长文案按单行省略处理；需要换行时调整 `maxLines` 和外框高度。图标大小由内部 Container 的宽高决定，不会随外层字号自动缩放。
+
+`MIDDLE` 对齐的是文字行盒，不是汉字或图标的墨迹中心；它与容器的 `CENTER` 各有作用。WidgetSpan 默认是 `BOTTOM`，应显式设置 `alignment="MIDDLE"`。行内图标可能增加行高，图片透明留白也仍需检查；不能把使用 WidgetSpan 等同于保证视觉上绝对居中。
+
+不要为了让汉字与英文笔画顶边一样高，把同一句话按语言拆成多段并各自加偏移；先保留共同基线，检查实际字体与回退。多个独立 Text 的基线对齐及行内图标示例见[DSL 基线与混排](/reference/parser-text/#%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)。
+
+## 必须绝对定位时怎样计算
+
+先明确坐标系：以下 `Y` 是目标内容区顶部在 Stack 中的坐标，`H` 是内容区高度；没有额外 padding、变换或缩放。若胶囊有上下 padding，先从外框扣出内容区再计算。
+
+### 按实际段落高度居中
+
+保持文本、字体文件与字重、字号、行高、Strut、宽度、换行和省略设置一致，测量实际段落高度 `L`：
+
+```text
+topBox = Y + (H - L) / 2
+```
+
+这只保证段落盒居中，和按字号计算不同，也不等于字形墨迹居中。`L` 不能直接取父容器强制给 Text 的高度；应使用未被该高度拉伸或裁剪的自然段落高度。若 `L > H`，先处理容纳空间，向上挪动不能解决放不下的问题。
+
+Kotlin 中可用相同设置的 `TextPainter`，调用 `layout(minWidth = …, maxWidth = …)` 后读取 `height`；它返回段落高度。也可从已布局且未强制高度的 Text RenderBox 获取尺寸。`debug` 能辅助看到盒与基线，但这些线不是字形紧包围框，具体接口见[文本度量](/reference/text-layout/#%E6%8E%92%E6%9F%A5%E4%B8%8E%E5%BA%A6%E9%87%8F%E9%A1%BA%E5%BA%8F)。
+
+DSL 自身没有查询字形边界或计算表达式的属性。如果渲染服务也没有提供测量数据，优先使用容器对齐；需要精确定位时，由 Kotlin 宿主测量，或对固定环境渲染校准图，再由应用把计算结果填入模板。不要直接把公式字符串写进 `top`。
+
+### 按可见字形边界校准
+
+若要求可见笔画到容器上下边缘的距离相等，测量**整段实际内容**相对段落绘制起点的墨迹顶边 `a` 和底边 `b`。不要只取某个汉字、最高字符或最大的字号，也不要把阴影当成文字笔画：
+
+```text
+inkHeight = b - a
+topInk = Y + (H - inkHeight) / 2 - a
+       = Y + H / 2 - (a + b) / 2
+相对盒居中的修正量 Δ = L / 2 - (a + b) / 2
+```
+
+Y 轴向下为正：墨迹中心低于段落盒中心时，`Δ` 为负，应上移；高于时才下移。以下数字**仅演示计算，不是任何字体的预设度量**：
+
+| 已知量                            | 计算结果                       |
+| ------------------------------ | -------------------------- |
+| `Y = 124`、`H = 44`、实测 `L = 30` | 盒居中 `topBox = 131`         |
+| 相对段落起点，实测 `a = 6`、`b = 26`     | 墨迹高 20，墨迹居中 `topInk = 130` |
+| 两种结果之差                         | `Δ = -1`，向上移 1；不是再向下加 1    |
+
+固定环境下，可将同样的文字单独绘制到有足够留白的透明图层，用非透明像素的边界估计 `a`、`b`。要统一 Alpha 阈值与坐标单位；按像素计算时，底边取最后一个有效像素行的下一条边。截图也可用于估计，但需要排除背景、边框、阴影和裁剪后的假边界。空字符串或纯空白没有墨迹边界，应保留布局盒对齐或按业务隐藏标签。
+
+这个公式实现的是**墨迹包围框的几何居中**，不能完全表达笔画密度带来的光学重心。需要进一步微调时，将结果作为具体字体、样式和组件的校准值记录，并在目标环境复测；不要推广成按“中文 / 英文”分类的通用常数。Transform 只移动绘制内容，不增加布局空间，微调后还要检查裁剪。
+
+## 出图后怎样验收
+
+1. **先看原始输出，再放大局部。** 在最终展示尺寸看整体效果，把胶囊区域放大 3–4 倍检查上下留白、笔画裁剪和图标透明边缘；不能只凭整图缩略图判断。
+2. **做同一套样本。** 使用“已完成”、`OK`、`Agjp`、`0123`、“已保存 PDF”和图标组合，覆盖实际字号、字重及标签高度。不要让每段文字各自微调到破坏同组标签的基线一致性。
+3. **检查长文案。** 加入会省略、换行、回退到其他字体的内容；放大、换字体或启用 Strut 后重新测量。
+4. **记录条件。** 保存字体文件与版本、渲染引擎版本、文本样式、目标尺寸和校准结果。它们不变时偏差才可复现；在实际服务环境确认后再批量套用。
+
+`height`、`topRatio`、`textHeightMode` 和 `strut*` 可以调整行度量，但不会自动识别墨迹中心。不要把“压低行高后看起来更居中”作为唯一验收条件，还应确认重音字母、下伸字母、中文和行内图标都完整可见。
+
+# 枚举速查
+
+> 布局、绘制、图片、文本和解析器常用枚举值。
+
+本页用于查拼写。先确定用途再选值：布局分布见 [Row](/widgets/layout/row/)，图片缩放见 [BoxFit 图示](/guides/visual-reference/#%E5%9B%BE%E7%89%87%E9%80%82%E9%85%8D-boxfit)，文字上下关系见[基线对齐](/reference/text-layout/)。同名值属于不同枚举时含义不同，例如图片的 `fit` 与 ClipPath 的 `fit` 不能互换全部取值。
+
+| 枚举                     | 可用值                                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------------------------------- |
+| `Axis`                 | `HORIZONTAL`、`VERTICAL`                                                                                 |
+| `MainAxisAlignment`    | `START`、`END`、`CENTER`、`SPACE_BETWEEN`、`SPACE_AROUND`、`SPACE_EVENLY`                                    |
+| `CrossAxisAlignment`   | `START`、`END`、`CENTER`、`STRETCH`、`BASELINE`                                                             |
+| `MainAxisSize`         | `MIN`、`MAX`                                                                                             |
+| `FlexFit`              | `TIGHT`、`LOOSE`                                                                                         |
+| `VerticalDirection`    | `UP`、`DOWN`                                                                                             |
+| `StackFit`             | `LOOSE`、`EXPAND`、`PASSTHROUGH`                                                                          |
+| `ClipBehavior`         | `NONE`、`HARD_EDGE`、`ANTI_ALIAS`、`ANTI_ALIAS_WITH_SAVE_LAYER`                                            |
+| `DecorationPosition`   | `BACKGROUND`、`FOREGROUND`                                                                               |
+| `BoxShape`             | `RECTANGLE`、`CIRCLE`                                                                                    |
+| `BorderStyle`          | `NONE`、`SOLID`                                                                                          |
+| `BoxFit`               | `FILL`、`CONTAIN`、`COVER`、`FIT_WIDTH`、`FIT_HEIGHT`、`NONE`、`SCALE_DOWN`                                   |
+| `ImageRepeat`          | `REPEAT`、`REPEAT_X`、`REPEAT_Y`、`NO_REPEAT`                                                              |
+| `TextOverflow`         | `CLIP`、`FADE`、`ELLIPSIS`、`VISIBLE`                                                                      |
+| `TextWidthBasis`       | `PARENT`、`LONGESTLINE`                                                                                  |
+| `Direction`            | `LTR`、`RTL`                                                                                             |
+| `BaselineMode`         | `ALPHABETIC`、`IDEOGRAPHIC`                                                                              |
+| `PlaceholderAlignment` | `BASELINE`、`ABOVE_BASELINE`、`BELOW_BASELINE`、`TOP`、`BOTTOM`、`MIDDLE`                                    |
+| `ContainerMode`        | `NONE`、`SINGLE`、`MULTIPLE`                                                                              |
+| `FontStyle`            | `NORMAL`、`BOLD`、`ITALIC`、`BOLD_ITALIC`                                                                  |
+| `FilterBlurMode`       | `NORMAL`、`SOLID`、`OUTER`、`INNER`                                                                        |
+| `FilterTileMode`       | `CLAMP`、`REPEAT`、`MIRROR`、`DECAL`，效果见[渐变参考](/reference/gradients/#%E5%85%B1%E7%94%A8%E5%8F%82%E6%95%B0) |
+| `Alignment`（段落）        | `LEFT`、`RIGHT`、`CENTER`、`JUSTIFY`、`START`、`END`                                                         |
+| `HeightMode`           | `ALL`、`DISABLE_FIRST_ASCENT`、`DISABLE_LAST_DESCENT`、`DISABLE_ALL`                                       |
+| `FontEdging`           | `ALIAS`、`ANTI_ALIAS`、`SUBPIXEL_ANTI_ALIAS`                                                              |
+| `FontHinting`          | `NONE`、`SLIGHT`、`NORMAL`、`FULL`                                                                         |
+| `DecorationLineStyle`  | `SOLID`、`DOUBLE`、`DOTTED`、`DASHED`、`WAVY`                                                               |
+| `PaintMode`            | `FILL`、`STROKE`、`STROKE_AND_FILL`                                                                       |
+| `PaintStrokeCap`       | `BUTT`、`ROUND`、`SQUARE`                                                                                 |
+| `PaintStrokeJoin`      | `MITER`、`ROUND`、`BEVEL`                                                                                 |
+
+`FontStyle` 是带常用常量的类，并非 Kotlin 枚举；Parser 只开放表中四个名称。`BlendMode` 来自 Skia，常见 `SRC_OVER`、`SRC_IN`、`MULTIPLY`、`SCREEN`；绘制顺序和背景内容会影响结果，不应把不同混合模式当作颜色别名。
+
+枚举可解析不意味着效果已经完整实现。当前 TextOverflow 的 FADE / VISIBLE 限制见[段落布局](/reference/text-layout/#%E6%8D%A2%E8%A1%8C%E5%AE%BD%E5%BA%A6%E4%B8%8E%E6%BA%A2%E5%87%BA)。
+
+## BoxAlignment
+
+预置常量：`TOP_LEFT`、`TOP_CENTER`、`TOP_RIGHT`、`CENTER_LEFT`、`CENTER`、`CENTER_RIGHT`、`BOTTOM_LEFT`、`BOTTOM_CENTER`、`BOTTOM_RIGHT`。
+
+它不是枚举，也可以通过 `BoxAlignment(x, y)` 创建自定义对齐，其中 x、y 通常位于 -1 到 1：`(-1,-1)` 是左上，`(0,0)` 是中心，`(1,1)` 是右下。
+
+## AlignmentDirectional
+
+方向感知版本包含：`TOP_START`、`TOP_CENTER`、`TOP_END`、`CENTER_START`、`CENTER`、`CENTER_END`、`BOTTOM_START`、`BOTTOM_CENTER`、`BOTTOM_END`。使用时必须结合文字方向解析 start/end。
+
+# 常见问题
+
+> 尺寸、布局、Parser、网络图片、文本和调试的常见问题。
+
+## 按现象查找
+
+| 现象                         | 先看哪里                                                                                                                      |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 安装、下载或原生库加载失败              | [安装排错](/guides/installation/#%E5%AE%89%E8%A3%85%E6%8E%92%E9%94%99)                                                        |
+| 出图尺寸不对、Flex 无法分配空间         | [约束与布局](/guides/layout/)                                                                                                  |
+| 子组件写了 width / height 仍占满父盒 | [紧约束与 Align](/guides/layout/#%E6%9C%89%E4%B8%8A%E9%99%90%E4%B8%8D%E7%AD%89%E4%BA%8E%E5%9B%BA%E5%AE%9A%E5%B0%BA%E5%AF%B8)  |
+| 长文本不换行、宽度溢出                | [自适应文本完整示例](/guides/examples/#%E5%9B%BA%E5%AE%9A%E5%9B%BE%E6%A0%87%E4%B8%8E%E8%87%AA%E9%80%82%E5%BA%94%E6%96%87%E6%9C%AC) |
+| 中文缺字、图文高低不齐                | [字体配置](/guides/fonts/)与[基线混排](/guides/media-text/#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)        |
+| 胶囊中文偏下，手写 top 很难调准         | [文字垂直居中与胶囊标签](/guides/text-alignment/)                                                                                    |
+| 需要把业务字符串填入模板               | [动态数据与 CDATA](/guides/data-templates/)                                                                                    |
+| 图片没有铺满或密度不对                | [默认适配与迁移](/guides/media-text/#%E9%BB%98%E8%AE%A4%E9%80%82%E9%85%8D%E4%B8%8E%E8%BF%81%E7%A7%BB)                            |
+| 语法或属性报错                    | [Parser 错误分类](/reference/parser-errors/)                                                                                  |
+| 编辑器没有补全或提示                 | [DSL 语言服务](/guides/language-server/)                                                                                      |
+| 找不到文本、渐变或装饰对象的详细参数         | [公共配置阅读入口](/guides/overview/#%E6%9F%A5%E6%89%BE%E5%8F%82%E6%95%B0%E4%B8%8E%E8%A1%8C%E4%B8%BA)                             |
+| 需要复用业务组件或模板标签              | [组合函数](/guides/reusable-components/)与[标签注册](/reference/parser-errors/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE)      |
+| 想给 AI 提供准确的文档与示例           | [AI 辅助开发](/guides/ai-development/)                                                                                        |
+
+## 为什么子组件写了宽高，却仍然占满父组件？
+
+父级如果传来固定尺寸，子节点就没有缩小的余地。例如 200×100 的 SizedBox 直接包住 80×40 的 Container，Container 仍会得到 200×100。中间加入 Align 后，Align 保留外层尺寸，并允许内容选择较小尺寸；完整对比见[有上限，不等于固定尺寸](/guides/layout/#%E6%9C%89%E4%B8%8A%E9%99%90%E4%B8%8D%E7%AD%89%E4%BA%8E%E5%9B%BA%E5%AE%9A%E5%B0%BA%E5%AF%B8)。
+
+## 可以缓存一棵 Widget 树，修改参数后继续出图吗？
+
+推荐复用数据和构建函数，每次重新建树。Widget 槽位和部分属性可变，某些配置还会在构造时转换；例如修改 `Container.width` 不会自动重新生成其 `constraints`。同时不要把 RenderBox 在多个请求间并发共享。完整建议见[数据变化时重新建树](/guides/reusable-components/#%E6%95%B0%E6%8D%AE%E5%8F%98%E5%8C%96%E6%97%B6%E9%87%8D%E6%96%B0%E5%BB%BA%E6%A0%91)。
+
+## 中文、英文和图标为什么看起来不在同一高度？
+
+相同字号不代表相同字形高度；文本盒包含字体留白，图片还可能带透明边缘。先固定字体，多个独立 Text 同行用 BASELINE；同行图标优先放进 Text / RichText 的 WidgetSpan，明确尺寸并设置 MIDDLE。只有图片与文本是独立布局区域时才按盒对齐。不要直接给所有文本加一个固定 Y 偏移，见[混排示例](/guides/media-text/#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)。
+
+## 为什么胶囊里的中文偏下，设置 CENTER 也不一定完全解决？
+
+`fontSize` 不是 Text 的高度，`Positioned.top` 也不是字形顶边。先把背景和文字组合成一个容器，用 `alignment="CENTER"` 对齐文字盒；这可以避免手算位置的误差，但字体上下留白仍可能不对称。需要让可见笔画的上下边距相等时，应按实际字体测量整段墨迹边界，不能统一套用某个行高倍数或偏移常数。完整模板和校准公式见[文字垂直居中](/guides/text-alignment/)。
+
+## 如何加载自己的图片和中文字体？
+
+图片需要先解码为 Skia Image，不能把文件路径传给 RawImage；完整代码见[本地图片与资源释放](/guides/rendering/#%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E5%B9%B6%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90)。字体需要在渲染进程中安装或注册，见[字体指南](/guides/fonts/)。公共 Playground 不能直接读取本机文件或字体。
+
+## 为什么 FADE 没有渐隐，VISIBLE 仍被裁剪？
+
+当前 TextOverflow 接受这些名称，但 RenderParagraph 检测到溢出时仍统一裁剪；只有 ELLIPSIS 会为 Skia 额外配置省略号。这是当前实现边界，不是改一个父容器属性就能恢复的效果。见[段落布局说明](/reference/text-layout/#%E6%8D%A2%E8%A1%8C%E5%AE%BD%E5%BA%A6%E4%B8%8E%E6%BA%A2%E5%87%BA)。
+
+## 为什么空 `Container()` 报尺寸为空？
+
+无子节点、无约束的 Container 在无界根约束下会被限制为零尺寸，无法创建有效 Surface。给它非零的 `width` 和 `height`，或让子节点产生非零尺寸。其他布局仍可能因无界约束产生无限尺寸，两类异常应分别排查。
+
+## 为什么空 `Row {}` 报尺寸为空？
+
+没有子节点的 Flex 在主轴上收缩到 0，最终无法创建有效 Surface。添加内容或外层固定尺寸。
+
+## 如何得到固定画布？
+
+使用固定尺寸的根 `Container` / `SizedBox`。Snapshot 没有独立 canvasWidth 参数，Surface 尺寸来自根布局。
+
+## 如何生成 2× 图片？
+
+把布局中的尺寸、间距、字号等整体放大两倍。只让 `initSurface` 返回更大 Surface 不会缩放内容。
+
+## 为什么 color 和 decoration 不能同时使用？
+
+Container 会检查两者互斥。需要颜色和边框、圆角、渐变一起使用时：
+
+```kotlin
+decoration = BoxDecoration(
+    color = 0xFFFFFFFF.toInt(),
+    border = Border.all(...),
+)
+```
+
+Parser 的 Container 已自动做这层转换。
+
+## Stack 中的阴影为什么被切掉？
+
+Stack 默认 `clipBehavior = HARD_EDGE`，但只在直接子节点布局矩形越界时启用裁剪；启用后阴影也可能被切掉。允许越界绘制时改为 `ClipBehavior.NONE`（Parser 写 `clipBehavior="NONE"`），同时确认更外层没有其他 Clip。反过来，只有阴影、变换或深层子孙绘制越界时，Stack 不保证裁剪；需要无条件裁到容器边界时外包 `ClipRect`。
+
+## Column 中的 Expanded / Flexible 会解除宽度限制吗？
+
+不会。弹性分配只改变主轴高度，子节点仍受父级最大宽度约束；文本默认据此换行。非 `STRETCH` 对齐允许更窄，只有 `crossAxisAlignment = STRETCH` 才要求填满宽度。父级本来无界时仍需先提供宽度约束，详见 [Column](/widgets/layout/column/#%E5%BC%B9%E6%80%A7%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E5%AE%BD%E5%BA%A6%E4%B8%8E%E6%96%87%E6%9C%AC%E6%8D%A2%E8%A1%8C)。
+
+## 升级后图片不再铺满目标框怎么办？
+
+普通图片省略 `fit` 现在按 `SCALE_DOWN` 等比缩小、不放大；要保留旧版拉伸铺满效果，请显式设置 `fit = BoxFit.FILL`，Parser 的 `<Image>` / `<Emoji>` 写 `fit="FILL"`。底层九宫格省略 `fit` 则改为 `FILL`，要保留原先只缩不放的效果，显式设置 `SCALE_DOWN`。这改变的是绘制适配，不改变组件布局尺寸。
+
+## 图片 scale 是直接放大目标框吗？
+
+不是。它是像素密度，自然逻辑尺寸 = 图像像素尺寸 ÷ scale；`40 × 20` 像素图片在 `scale = 2f` 时为 `20 × 10`。平铺间距与九宫格 `centerSlice` 都使用逻辑坐标，完整说明见 [RawImage](/widgets/image/raw-image/)。
+
+## 为什么 ColorFiltered 仍可能给背景染色？
+
+ColorFiltered 会依据可确定的子树绘制边界限制作用范围；但通用 ImageFiltered 未提供 `outputBounds` 时，模糊、位移等效果的输出范围无法安全推断，会保留不裁剪回退。高斯模糊可传入 `outputBounds = blurImageFilterBounds(sigmaX, sigmaY)`；Parser 的 `<ImageFiltered>` 会自动提供这个边界。包含 BackdropFilter 或自定义绘制时，可用外层 ClipRect 等组件明确限定区域。
+
+`SRC`、`MULTIPLY` 等混合模式还可能给绘制边界内的透明间隙着色。参数和示例见 [ColorFiltered](/widgets/painting/color-filtered/#%E7%BB%98%E5%88%B6%E8%BE%B9%E7%95%8C) 与 [ImageFiltered](/widgets/painting/image-filtered/#%E4%B8%8E-colorfiltered-%E5%B5%8C%E5%A5%97)。
+
+## Parser 能使用 Expanded、Opacity 或 Transform 吗？
+
+可以。默认管理器已注册 `Expanded`、`Flexible`、`Opacity` 和 `Transform`，也支持常用约束、溢出和基础裁剪标签。完整集合和属性见[标签与属性参考](/reference/parser-tags/)。
+
+`Flex`、`Spacer`、`IndexedStack`、比例布局、基础滤镜和 `WidgetSpan` 也在默认标签集合中。
+
+`ClipPath` 也已内置，可通过 SVG 路径字符串、`viewBox` 和填充规则实现复杂裁剪与镂空，详见 [ClipPath 标签参考](/reference/parser-tags/#clippath)。需要按布局尺寸动态计算路径时，可以使用 Kotlin DSL 的 `clipper` 回调。
+
+## 为什么 Parser 的属性没有生效也没有报错？
+
+未知属性会被静默忽略。检查拼写、大小写和属性格式；布尔值要显式写 `"true"`。某些属性错误直到 `createWidget()` 或 `snapshot()` 才会出现。
+
+属性诊断增强也没有将布尔解析改成严格校验：已赋值的文本只有 `true`（忽略大小写）转换为 true，其余文本转换为 false，不会因为拼写错误自动报错。
+
+## 属性报错时，怎样知道正确写法？
+
+当前 Parser（旧依赖需包含提交 `a7974dd`）会在属性错误提示中追加实际输入、格式、示例和适用的可用值。例如 `ClipPath.fit` 只提示实际支持的 `FILL` / `CONTAIN`，不是全部图片适配枚举。
+
+程序中可读取 `ParseException.attributeDiagnostic`；位置仍读 `pos`，不要拆分 `message`。其中 `attributePresent` 与 `rawValue` 可区分属性缺失、未赋值和空字符串。完整字段与示例见[结构化诊断](/reference/parser-errors/#%E8%AF%BB%E5%8F%96%E7%BB%93%E6%9E%84%E5%8C%96%E8%AF%8A%E6%96%AD)。在线服务是否返回这些信息取决于后端版本及其响应协议。
+
+## 为什么错误没有 attributeDiagnostic？
+
+结构错误、组件组合约束和统一属性入口之外的校验可能没有该字段；自定义解析器直接抛出的 `ParseException` 也不会自动补充属性诊断。即使有诊断，自定义属性的 `valueInfo` 也可为 null，直接解析属性 Map 时的 `elementName` 也可为 null。
+
+调用方应保留 `message` 和 `pos` 的回退展示。只有首个错误会被抛出，不会一次列出全部问题，详见[诊断边界](/reference/parser-errors/#%E8%AF%8A%E6%96%AD%E8%BE%B9%E7%95%8C)。
+
+## 文本中怎样写 `<` 和 `>`？
+
+使用 CDATA。解析器不实现 HTML 实体解码，因此 `&lt;` 不会变成 `<`。
+
+`<!-- ... -->` 是注释，会从解析结果中消失；如果需要显示字面量 `<!-- ... -->`，也应将其放进 CDATA。
+
+## Parser 可以复用吗？
+
+可以。`parse()` 会在每次调用前重置内部状态，解析失败后也能继续处理下一个文档。该方法使用 `@Synchronized`，只串行化解析调用；后续 `createWidget()` / `snapshot()` 不在该锁内，渲染并发仍需应用自行控制。详见 [Parser 实例生命周期](/reference/parser-errors/#parser-%E5%AE%9E%E4%BE%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)。
+
+## 网络图片是异步的吗？
+
+不是。`CachedNetworkImage` 以及使用 `url` 的 `Image`、`Emoji` 会同步获取网络图片。若使用 `dataUri`，则在建树阶段由解码器本地处理；默认仅支持 PNG、JPEG、WebP Base64 Data URI。服务端仍需为不可信输入设置大小、时间和网络访问限制。
+
+## 怎样调试布局？
+
+先用 `layoutWidget` 获取 RenderBox，再用 `toLayoutNode()` 查看尺寸与全局偏移；需要视觉辅助时启用 `debug = true`。测试中优先用 testkit 的布局断言。
+
+`LayoutNode` 的累计偏移不包含 Transform 等画布矩阵。查询变换后的绘制坐标时，在布局完成后使用 `getTransformTo(ancestor)`；目标只能是自身或祖先，其他目标会抛出 `IllegalArgumentException`，见[坐标变换说明](/guides/layout/#%E6%9F%A5%E8%AF%A2%E5%88%B0%E7%A5%96%E5%85%88%E7%9A%84%E7%BB%98%E5%88%B6%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2)。
+
+## 为什么文本 Golden 在不同系统不一致？
+
+字体选择、字体版本、Hinting 和抗锯齿都可能不同。固定字体文件，并优先测试文本度量、基线和区域采样；只有环境稳定时才对整段文字做像素级 Golden。
+
+## 如何输出到窗口而不是文件？
+
+先 `layoutWidget`，再在已有 Skia Canvas 上调用 `drawRenderBox`。仓库的 `DrawToDevice.kt` 包含接入 Skiko 渲染回调的示例。
+
+# 错误处理与扩展
+
+> Parser 的属性诊断、异常分类、服务端映射和自定义标签与属性扩展。
+
+模板报错时，先根据 `pos` 找行列，再看属性填写提示；看起来没报错却效果不对时，检查拼写、空白和默认值。程序接入时先用下方的 ParseException 捕获示例，只有需要新增标签才读扩展部分。
+
+本文的“解析”是读取标签结构，“建树”是把标签转成组件，“渲染”是布局、绘制和编码。错误可能发生在不同阶段，所以应将 `parse()` 和 `snapshot()` 都放进同一个错误处理范围。
+
+## 文本与空白规则
+
+* `<Text>` 中的普通文本会 trim；`<Raw>` 原样保留；
+* 非文本标签内只能出现缩进、换行等纯空白；
+* `&` 不会进行 HTML 实体解码；`&amp;` 会保留为字面量；
+* 文本中需要 `<` 或 `>` 时使用 CDATA；
+* 支持 `<!-- ... -->` 注释（包括 `<!---->` 空注释）；可放在根标签前后、标签之间或文本中，内容不会进入元素树或文本；
+* CDATA 内的 `<!-- ... -->` 是普通文本；`<!DOCTYPE ...>` 仍不支持；
+* 标签可以在 EOF 时自动闭合，但不建议依赖此行为；
+* 不匹配的结束标签可能被忽略，因此应在输入前做格式校验或依赖测试覆盖。
+
+```xml
+<Text fontSize="20">
+  <Raw><![CDATA[保留空白与 <tag> 字符]]></Raw>
+</Text>
+```
+
+## ParseException
+
+解析与建树阶段的结构、属性错误会包装为 `ParseException`。位置存放在 `pos`，原始异常存放在 `cause`；`message` 是可读的错误提示，`toString()` 才会在提示前加上 `Pos[行:列]~偏移:`。
+
+行、列从 1 起，字符偏移从 0 起；位置未设置时为 `TrackPos.UNSET`（-1），在字符串中显示为 `UNSET`。不要从完整错误字符串中拆分位置或属性字段。
+
+属性诊断的版本要求
+
+以下填写说明和 `attributeDiagnostic` 字段对应包含提交 `a7974dd` 的 Parser 实现。使用这些 API 前请确认依赖版本已包含该变更；在线服务的提示取决于服务端部署版本，Kotlin 异常字段也不会自动成为 HTTP 响应字段。
+
+### 属性错误提示
+
+属性解析失败时，提示保留原有错误首行，并追加所在元素、实际输入、期望格式、可用值和示例。例如：
+
+```xml
+<Snapshot>
+  <Row mainAxisAlignment="MIDDLE"/>
+</Snapshot>
+```
+
+调用 `createWidget()` 时，`message` 包含以下内容（第一行的底层枚举异常细节已省略）：
+
+```text
+Attr [mainAxisAlignment] value is invalid: …
+元素：<Row>；实际值："MIDDLE"；格式：以下取值之一，区分大小写；可用值：START, END, CENTER, SPACE_BETWEEN, SPACE_AROUND, SPACE_EVENLY；示例：START
+```
+
+内置说明覆盖数值、CSS 颜色、对齐、边距、半径、偏移、矩阵、边框、阴影、渐变列表、文本装饰、字体特性、SVG 路径、`viewBox`、URL 和 Data URI。枚举候选从实际枚举定义生成；`ClipPath.fit` 仅列出 `FILL` / `CONTAIN`，`fillRule` 仅列出 `NON_ZERO` / `EVEN_ODD`。改名或带前缀的内置属性也保留类型说明，例如 `foregroundGradientBegin`。
+
+完整 `message` 会随填写说明变化，不建议依赖其精确字符串匹配；需要自动化处理时优先读取下面的结构化字段。
+
+### 读取结构化诊断
+
+需要分别展示字段时，读取 `ParseException.attributeDiagnostic: AttributeDiagnostic?`：
+
+| 字段                 | 类型                    | 含义                                            |
+| ------------------ | --------------------- | --------------------------------------------- |
+| `attributeName`    | `String`              | 出错的属性名，使用当前属性的实际名称                            |
+| `rawValue`         | `String?`             | Parser 读取的完整原始值；属性缺失或只写名称时为 null，空字符串保留为 `""` |
+| `attributePresent` | `Boolean`             | 输入中是否提供该属性，用于区分缺失与未赋值                         |
+| `valueInfo`        | `AttributeValueInfo?` | 属性填写说明；自定义属性可以不提供                             |
+| `elementName`      | `String?`             | 所在标签；根标签和嵌套行内节点也有上下文，直接使用属性 Map 接口时可为 null    |
+
+`AttributeValueInfo` 的字段为：
+
+| 字段              | 类型             | 含义                             |
+| --------------- | -------------- | ------------------------------ |
+| `format`        | `String`       | 期望的填写格式；不替代组件自身的范围或组合校验        |
+| `examples`      | `List<String>` | 示例值，默认空列表                      |
+| `allowedValues` | `List<String>` | 枚举项或关键字，默认空列表；复合格式中可能只对应其中一个字段 |
+
+例如边框格式中的可用值是样式枚举项，不能只填写 `SOLID`，仍需按 `format` 填写宽度、样式和颜色。
+
+```kotlin
+import com.muedsa.snapshot.parser.ParseException
+import com.muedsa.snapshot.parser.Parser
+import java.io.StringReader
+
+
+fun explainDocument(source: String) {
+    try {
+        Parser().parse(StringReader(source)).createWidget()
+    } catch (error: ParseException) {
+        println("位置：${error.pos.line}:${error.pos.column}，偏移：${error.pos.pos}")
+        error.attributeDiagnostic?.let { diagnostic ->
+            println("元素：${diagnostic.elementName}，属性：${diagnostic.attributeName}")
+            println("是否提供：${diagnostic.attributePresent}，原值：${diagnostic.rawValue}")
+            println("格式：${diagnostic.valueInfo?.format}")
+            println("可用值：${diagnostic.valueInfo?.allowedValues?.joinToString()}")
+            println("示例：${diagnostic.valueInfo?.examples?.joinToString()}")
+        }
+        println(error.message) // 完整可读提示；error.cause 保留原始异常
+    }
+}
+```
+
+### 缺失、未赋值与空字符串
+
+以下三种输入可以区分，但是否允许仍由具体属性定义决定：
+
+| 输入                              | `attributePresent` | `rawValue` | 提示中的实际值 |
+| ------------------------------- | ------------------ | ---------- | ------- |
+| `<AspectRatio/>`                | false              | null       | 未提供属性   |
+| `<AspectRatio aspectRatio/>`    | true               | null       | 未赋值     |
+| `<AspectRatio aspectRatio=""/>` | true               | `""`       | `""`    |
+
+属性值格式错误通常指向值的起始字符；只写属性名时指向属性名；缺少必填属性时指向所在标签的起始位置。直接解析属性 Map 时可能缺少标签位置，调用方应处理未设置的位置。
+
+提示中的“实际值”最多预览原值的前 120 个字符，并转义换行、制表符等字符；结构化的 `rawValue` 保留完整内容。用于日志或界面时，应自行选择展示长度。
+
+### 诊断边界
+
+* 仍然在首个错误处抛出异常，不汇总全部问题；根标签属性在 `parse()` 时校验，其余标签属性在 `createWidget()` / `snapshot()` 时校验。
+* 结构错误、组件组合约束以及统一属性解析入口之外的校验可能没有 `attributeDiagnostic`。自定义解析器主动抛出的 `ParseException` 也不会被自动补成属性诊断。
+* 填写说明不改变内置属性语法、默认值或布尔转换规则。例如已赋值的布尔文本只有 `true`（忽略大小写）转换为 true，其余文本转换为 false；不会因为增加格式说明就改成严格报错。
+
+### 解析阶段错误
+
+| 条件                         | 典型错误                                                                |
+| -------------------------- | ------------------------------------------------------------------- |
+| 首标签不是 Snapshot             | `First tag must be 'Snapshot'`                                      |
+| 输入为空或全是空白                  | `Document must contain root element [Snapshot]`                     |
+| 第二次出现 Snapshot             | `Tag 'Snapshot' only be used as the first`                          |
+| 未知标签                       | `Unknown element tag`                                               |
+| 重复属性                       | `exist duplicate attr`                                              |
+| 叶子标签出现子节点                  | `can not have child element`                                        |
+| 单子节点标签出现第二个子节点             | `only can have one child`                                           |
+| 普通容器内出现文本                  | `Not Support RAWTEXT`                                               |
+| 注释直到 EOF 仍未遇到 `-->`        | `Unexpectedly reached end of file (EOF) in input state [COMMENT]`   |
+| `<!DOCTYPE ...>` 等不支持的标记声明 | `Unexpected character '<' in input state [MARKUP_DECLARATION_OPEN]` |
+
+### 构建 Widget 阶段错误
+
+| 条件                                                     | 表现                                                                                |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Image / Emoji 未指定来源或同时指定两种来源                           | 必须且只能设置 `url` 或 `dataUri`                                                         |
+| Data URI 格式或图片数据错误                                     | 指向 `dataUri` 属性值                                                                  |
+| 颜色或 Insets 格式错误                                        | 对应 AttrDefine 的格式异常；颜色支持的写法见[标签与属性参考](/reference/parser-tags/#%E9%A2%9C%E8%89%B2) |
+| 枚举名无效                                                  | `IllegalArgumentException` 被包装，属性提示补充实际支持的可用值                                     |
+| Text 中出现非行内标签                                          | `Unknown inline span type`                                                        |
+| Raw / Emoji / WidgetSpan 用在 Text 外                     | `can only be used in the Text`                                                    |
+| WidgetSpan 缺少子标签                                       | `must have exactly one child element`                                             |
+| Expanded / Flexible / Spacer 不在 Flex、Row 或 Column 直属层级 | `must be a direct child of Flex, Row or Column`                                   |
+| Expanded 使用 `fit` 属性                                   | `does not support attr [fit]`                                                     |
+| Opacity 超出 0 到 1                                       | 参数范围异常                                                                            |
+| Transform 缺少矩阵或矩阵格式错误                                  | `Attr [matrix]` 对应格式异常                                                            |
+| ClipPath 缺少路径、路径语法或坐标无效                                | `path` 属性错误；缺少属性时指向标签，有值时通常指向属性值起始位置                                              |
+| ClipPath 的 viewBox、fit 或 fillRule 无效                   | 对应属性的格式或取值异常；viewBox 宽高须有限且大于 0，fit 仅支持 FILL / CONTAIN                            |
+| 约束的最小值大于最大值                                            | `BoxConstraints` 参数异常                                                             |
+| 装饰线修饰参数缺少 `decoration`                                 | `Attr [decoration] is required`                                                   |
+| 前景画笔修饰参数缺少 `foregroundColor`                           | `Attr [foregroundColor] is required`                                              |
+| `fontFeatures`、`textShadow` 或 `strut*` 格式错误            | 对应属性名及属性值起始位置                                                                     |
+
+这里的“建树”指调用 `createWidget()` 创建 Widget 树，并非仅调用 `parse()` 创建元素树。只验证 `parse()` 成功，不能保证所有属性和组件组合都有效。
+
+### 渲染阶段错误
+
+渲染错误不一定是 `ParseException`：
+
+| 条件                                          | 异常                                                  |
+| ------------------------------------------- | --------------------------------------------------- |
+| Snapshot 没有根 Widget                         | `IllegalStateException`                             |
+| 根布局尺寸为 0                                    | `IllegalArgumentException: Layout size is empty`    |
+| 根布局尺寸无限                                     | `IllegalArgumentException: Layout size is infinite` |
+| 图片重复平铺预计超过 `ImageRepeatConfig.maxTileCount` | `IllegalArgumentException`；默认上限为 100,000 个矩形        |
+
+## HTTP 服务错误映射
+
+建议将错误分层映射：
+
+```kotlin
+try {
+    val element = Parser().parse(StringReader(body))
+    val contentType = when (element.type) {
+        "png" -> ContentType.Image.PNG
+        "jpg" -> ContentType.Image.JPEG
+        "webp" -> ContentType.parse("image/webp")
+        else -> error("Unsupported image type")
+    }
+    call.respondBytes(element.snapshot(), contentType)
+} catch (e: ParseException) {
+    call.respond(HttpStatusCode.BadRequest, e.toString())
+} catch (e: IllegalArgumentException) {
+    call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: "Invalid layout")
+} catch (e: IllegalStateException) {
+    call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: "Invalid widget tree")
+}
+```
+
+根标签的 `type` 决定实际编码格式；不要把所有响应都标记为 `image/png`。
+
+上例使用 `e.toString()` 同时返回位置和完整提示；若只返回 `e.message`，不会自动带上 `e.pos`。需要 JSON 字段化响应时，应由服务端定义 DTO，显式映射位置与可选的 `attributeDiagnostic`，并为没有属性诊断的错误保留普通消息。
+
+这里是自建 HTTP 服务的映射建议，不代表公开 Open Snapshot 服务的现有响应协议。接入已有服务时，应以其实际状态码与响应字段为准。
+
+异常映射不能替代安全限制
+
+对公网服务还必须增加请求体上限、标签深度限制、URL 与解析后 IP 校验、网络超时、图片大小限制、总体渲染超时及并发限制。网络图片应使用自行实现的安全 `NetworkImageCache`，不要直接依赖默认实现。
+
+## Parser 实例生命周期
+
+Parser 实例可以复用
+
+`Parser.parse()` 会先清空元素栈和根元素并创建新的 Tokenizer，因此同一实例可以重复解析多个文档；一次调用抛出异常也不会污染下一次调用。
+
+例如：
+
+```kotlin
+val parser = Parser()
+
+
+fun render(source: String): ByteArray =
+    parser.parse(StringReader(source)).snapshot()
+```
+
+`parse()` 使用 `@Synchronized`，同一 Parser 的解析调用会依次执行；但返回元素后的 `createWidget()` / `snapshot()` 并未被这把锁串行化。上面的 `render()` 函数因此不是整个渲染流程的同步封装。应用仍需独立控制渲染并发，且复用期间不要并发修改 `WidgetParserManager` 或共享全局配置。
+
+### 每一步成功意味着什么
+
+| 调用                       | 已完成的工作                            | 还不能保证的事              |
+| ------------------------ | --------------------------------- | -------------------- |
+| `parse(reader)`          | 读取标签结构，创建 Element 树，校验根标签属性       | 子标签属性合法、图片能下载、布局能完成  |
+| `element.createWidget()` | 解析子标签属性并构建 Widget；网络图片可能已在此阶段同步加载 | 根尺寸有限、文本布局正确、绘制和编码成功 |
+| `element.snapshot()`     | 重新建 Widget 树，完成布局、绘制和图片编码         | 图片内容符合业务预期，需要查看结果和测试 |
+
+不要把 `createWidget()` 当成没有副作用的纯校验器：它可能访问网络、解码图片。先调用它，再调用 `snapshot()`，也不会自动复用刚才的 Widget；通常直接对一次 `snapshot()` 调用捕获错误即可。
+
+返回的 Element 树保存可变属性和子节点，不是不可变的模板缓存。根标签的 `type`、`background`、`debug` 在解析时已经读取；之后修改 `attrs` 不会自动更新这些值。动态数据应在生成源文本时填入，再重新解析，见[业务数据模板](/guides/data-templates/)。
+
+## 自定义标签
+
+当一组固定样式需要在多个模板中复用，可以把它注册为标签。下面是使用 `snapshot-parser` 依赖的完整程序：新增 `<MyCard variant="small|large">`，固定宽 320，高度分别为 96 / 144，四周 padding 为 16；内容使用已有的 Text、Column 等标签。
+
+```kotlin
+import com.muedsa.geometry.EdgeInsets
+import com.muedsa.snapshot.parser.ContainerMode
+import com.muedsa.snapshot.parser.Element
+import com.muedsa.snapshot.parser.Parser
+import com.muedsa.snapshot.parser.attr.AttributeValueInfo
+import com.muedsa.snapshot.parser.attr.required.RequiredStringAttrDefine
+import com.muedsa.snapshot.parser.widget.WidgetParser
+import com.muedsa.snapshot.parser.widget.WidgetParserManager
+import com.muedsa.snapshot.widget.Container
+import com.muedsa.snapshot.widget.Widget
+import java.io.File
+import java.io.StringReader
+
+
+class MyCardParser : WidgetParser {
+    override val id: String = "MyCard"
+    override val containerMode = ContainerMode.SINGLE
+
+
+    private val variantAttr = RequiredStringAttrDefine(
+        name = "variant",
+        valueInfo = AttributeValueInfo.choices(listOf("small", "large")),
+    ) { attr, value ->
+        require(value == "small" || value == "large") {
+            "Attr [${attr.name}] must be small or large"
+        }
+    }
+
+
+    override fun buildWidget(element: Element): Widget {
+        val variant = WidgetParser.parseAttrValue(variantAttr, element.attrs)
+        return Container(
+            width = 320f,
+            height = if (variant == "small") 96f else 144f,
+            padding = EdgeInsets.all(16f),
+            color = 0xFFF1F5F9.toInt(),
+        ).also { WidgetParser.createWidgetForChildElement(it, element.children) }
+    }
+}
+
+
+fun main() {
+    val manager = WidgetParserManager.withDefaults().also {
+        it.register(MyCardParser())
+    }
+    val parser = Parser(manager)
+    val source = """
+        <Snapshot background="#FFFFFF" type="png">
+          <MyCard variant="small">
+            <Text fontSize="20" color="#0F172A">Reusable card</Text>
+          </MyCard>
+        </Snapshot>
+    """.trimIndent()
+    val bytes = parser.parse(StringReader(source)).snapshot()
+    File("custom-card.png").writeBytes(bytes)
+}
+```
+
+运行后生成 320×96 的 `custom-card.png`。将 `variant` 改为 `large` 得到 320×144；改为 `medium` 或删除该属性，会在 `snapshot()` 建树时得到带属性位置和候选值的 `ParseException`。
+
+`buildWidget()` 返回一个 Widget 对象，`createWidgetForChildElement()` 再把子标签转换为组件并挂载。这里的 Container 是构造器；在普通函数中只创建对象，不会自动挂到某个外部 DSL 上。
+
+| 容器模式       | 可以写哪些子节点 | 常见用途                           |
+| ---------- | -------- | ------------------------------ |
+| `NONE`     | 不允许      | 图片等叶子标签                        |
+| `SINGLE`   | 0 或 1 个  | 卡片、背景、裁剪包装                     |
+| `MULTIPLE` | 多个       | 自定义排列容器，返回的 Widget 也必须能容纳多个子节点 |
+
+`SINGLE` 不代表必须有一个子节点。若组件要求恰好一个，应在 `buildWidget()` 中额外校验数量。MyCard 可以为空；需要多段内容时，在它里面放一个 Column。声明容器模式也不会自动添加排版逻辑。
+
+`WidgetParserManager.withDefaults()` 每次创建独立的注册表和内置解析器，不要修改已弃用的全局 `DEFAULT_MANAGER`。`copy()` 只复制注册表，里面的 WidgetParser 对象仍是同一批引用；自定义解析器应避免保存“当前请求”等可变状态。`register()` 会替换同名标签，业务标签应使用清晰且不与内置标签冲突的名称。
+
+属性通过 `AttrDefine` 和 `WidgetParser.parseAttrValue` 解析，可以保留位置与统一异常格式。候选值只是说明，实际校验由上例的 `require` 执行；仅写 `AttributeValueInfo.choices()` 不会限制输入。
+
+这些自定义标签只在你配置的 Parser 实例中有效，不会自动出现在公共 Playground 或已部署服务中。编辑器补全也需要单独扩展 [LSP 标签目录](/guides/language-server/#%E4%B8%8E-parser-%E7%9A%84%E5%88%86%E5%B7%A5)。新增 Text 内的行内 Span 类型还需要扩展 `Element.parseInlineSpan()` 的分支，不能仅靠普通标签注册完成。
+
+### 自定义属性的填写说明
+
+继承 `AttrDefine` 时，可覆盖 `valueInfo: AttributeValueInfo?`。`AttributeValueInfo` 只描述填写方式，不执行校验；解析、范围检查仍需由属性实现负责。通过 `WidgetParser.parseAttrValue()` 调用属性解析，才能统一包装普通解析异常并保留原始 `cause`。
+
+已有的 `StringAttrDefine`、`RequiredStringAttrDefine` 和 `NullableEnumAttrDefine` 提供带 `valueInfo` 的构造器，原构造器仍可使用。例如，为必填的自定义卡片样式提供候选并执行校验：
+
+```kotlin
+import com.muedsa.snapshot.parser.Element
+import com.muedsa.snapshot.parser.attr.AttributeValueInfo
+import com.muedsa.snapshot.parser.attr.required.RequiredStringAttrDefine
+import com.muedsa.snapshot.parser.widget.WidgetParser
+
+
+val variantAttr = RequiredStringAttrDefine(
+    name = "variant",
+    valueInfo = AttributeValueInfo.choices(listOf("small", "large")),
+) { attr, value ->
+    require(value == "small" || value == "large") {
+        "Attr [${attr.name}] must be small or large"
+    }
+}
+
+
+val cardVariantAttr = variantAttr.copyWith(name = "cardVariant")
+
+
+// 在自定义 WidgetParser.buildWidget(element) 中调用。
+fun parseCardVariant(element: Element): String =
+    WidgetParser.parseAttrValue(cardVariantAttr, element.attrs)
+```
+
+输入 `cardVariant="medium"` 时，错误使用改名后的属性名，同时保留候选说明；缺失或只写 `cardVariant` 也会报错。`copyWith()` 会保留这里的说明与校验器。自行实现复制方法时，也应保留这些信息，避免属性改名后丢失提示或校验。
+
+`AttributeValueInfo.choices()` 适合有限的字符串取值；实际 Kotlin 枚举可用 `AttributeValueInfo.enum(MyEnum.entries)` 生成说明。自定义格式可直接构造 `AttributeValueInfo(format = ..., examples = ..., allowedValues = ...)`。没有填写说明的自定义属性仍可获得属性名、实际值和原始原因；直接调用基于属性 Map 的接口时，`elementName` 可以为 null。
+
+# 标签与属性参考
+
+> 类 DOM 解析器支持的全部内置标签、属性格式和默认值。
+
+解析器默认注册 39 个标签。标签名和属性名区分大小写，未知属性会被忽略；除根标签外，属性通常在建树阶段校验。
+
+第一次写模板建议先运行[完整示例](/guides/examples/)；本页用于查参数。点击总表中的标签可跳到相应属性说明。
+
+“单个”表示最多一个子节点；出图时 Snapshot 必须有一个根 Widget，WidgetSpan 必须恰有一个子节点。`?` 表示该属性可省略，具体回退行为以默认值栏为准。局部示例需放入 `<Snapshot>` 中，并满足父子关系。
+
+## 标签总表
+
+| 标签                                                                                       | 子节点模式 | 对应能力                       |
+| ---------------------------------------------------------------------------------------- | ----- | -------------------------- |
+| [Snapshot](#snapshot)                                                                    | 单个    | 根节点、背景色、调试和图片格式            |
+| [Container](#container)                                                                  | 单个    | 尺寸、约束、间距、颜色、边框和对齐          |
+| [Border](#border)                                                                        | 单个    | 边框、圆角与阴影装饰                 |
+| [ColoredBox](#coloredbox)                                                                | 单个    | 纯色填充                       |
+| [DecoratedBox](#decoratedbox)                                                            | 单个    | 背景或前景装饰                    |
+| [Flex](#row-%E4%B8%8E-column)                                                            | 多个    | 水平或垂直 Flex                 |
+| [Row](#row-%E4%B8%8E-column)                                                             | 多个    | 横向 Flex                    |
+| [Column](#row-%E4%B8%8E-column)                                                          | 多个    | 纵向 Flex                    |
+| [Expanded](#expanded-%E4%B8%8E-flexible)                                                 | 单个    | 以紧约束占用 Flex 剩余空间           |
+| [Flexible](#expanded-%E4%B8%8E-flexible)                                                 | 单个    | 可配置份额和松紧约束的 Flex 子项        |
+| [Spacer](#expanded-%E4%B8%8E-flexible)                                                   | 无     | 占用 Flex 剩余空间               |
+| [Stack](#stack)                                                                          | 多个    | 层叠布局                       |
+| [IndexedStack](#stack)                                                                   | 多个    | 仅绘制选中子节点                   |
+| [Positioned](#positioned)                                                                | 单个    | Stack / IndexedStack 子节点定位 |
+| [SizedBox](#sizedboxpaddingalign-%E4%B8%8E-center)                                       | 单个    | 指定宽高                       |
+| [AspectRatio](#%E6%AF%94%E4%BE%8B%E4%B8%8E%E7%BA%A6%E6%9D%9F%E5%B8%83%E5%B1%80)          | 单个    | 按宽高比确定尺寸                   |
+| [FractionallySizedBox](#%E6%AF%94%E4%BE%8B%E4%B8%8E%E7%BA%A6%E6%9D%9F%E5%B8%83%E5%B1%80) | 单个    | 按父约束比例确定尺寸                 |
+| [UnconstrainedBox](#%E6%AF%94%E4%BE%8B%E4%B8%8E%E7%BA%A6%E6%9D%9F%E5%B8%83%E5%B1%80)     | 单个    | 解除子节点轴约束                   |
+| [ConstrainedBox](#constrainedbox)                                                        | 单个    | 对子节点附加最小/最大约束              |
+| [LimitedBox](#limitedbox)                                                                | 单个    | 在无界轴上限制最大尺寸                |
+| [OverflowBox](#overflowbox)                                                              | 单个    | 允许子节点突破父约束                 |
+| [SizedOverflowBox](#sizedoverflowbox)                                                    | 单个    | 请求自身尺寸，子节点沿用父约束            |
+| [Padding](#sizedboxpaddingalign-%E4%B8%8E-center)                                        | 单个    | 添加内边距                      |
+| [Align](#sizedboxpaddingalign-%E4%B8%8E-center)                                          | 单个    | 对齐并可按因子调整自身尺寸              |
+| [Center](#sizedboxpaddingalign-%E4%B8%8E-center)                                         | 单个    | 居中并可按因子调整自身尺寸              |
+| [Opacity](#opacity)                                                                      | 单个    | 整体透明度                      |
+| [Transform](#transform)                                                                  | 单个    | 4×4 矩阵变换                   |
+| [ClipRect](#cliprectclipoval-%E4%B8%8E-cliprrect)                                        | 单个    | 矩形裁剪                       |
+| [ClipOval](#cliprectclipoval-%E4%B8%8E-cliprrect)                                        | 单个    | 椭圆裁剪                       |
+| [ClipRRect](#cliprectclipoval-%E4%B8%8E-cliprrect)                                       | 单个    | 圆角矩形裁剪                     |
+| [ClipPath](#clippath)                                                                    | 单个    | SVG 路径裁剪、坐标缩放与多轮廓镂空        |
+| [ColorFiltered](#colorfilteredimagefiltered-%E4%B8%8E-backdropfilter)                    | 单个    | 颜色混合滤镜                     |
+| [ImageFiltered](#colorfilteredimagefiltered-%E4%B8%8E-backdropfilter)                    | 单个    | 子树高斯模糊                     |
+| [BackdropFilter](#colorfilteredimagefiltered-%E4%B8%8E-backdropfilter)                   | 单个    | 背景高斯模糊                     |
+| [Image](#image)                                                                          | 无     | 网络或 Data URI 图片            |
+| [Text](#text)                                                                            | 行内    | 文本与嵌套 Span                 |
+| [Raw](#raw)                                                                              | 行内多个  | 保留空白的原始文本 Span，可嵌套行内 Span  |
+| [Emoji](#emoji)                                                                          | 无     | 文本内的网络或 Data URI 图片占位符     |
+| [WidgetSpan](#widgetspan)                                                                | 单个    | 文本内嵌普通 Widget              |
+
+## 通用属性格式
+
+推荐使用带引号的属性值。无引号的 URL / 路径可以包含 `/`，但后接自闭合标记时必须用空白分隔，例如 `<Image url=https://example.com/a.png />`；带引号时可以直接写 `url="https://example.com/a.png"/>`。不要用 HTML 实体代替实际引号或字符，Parser 不做实体解码。详见[属性引号与自闭合](/guides/parser/#%E5%B1%9E%E6%80%A7%E5%BC%95%E5%8F%B7%E4%B8%8E%E8%87%AA%E9%97%AD%E5%90%88)。
+
+### 颜色
+
+颜色属性支持常用 CSS 写法：
+
+```text
+#RGB
+#RGBA
+#RRGGBB
+#RRGGBBAA
+red / rebeccapurple / transparent
+rgb(255, 0, 0) / rgba(255, 0, 0, .5)
+hsl(120, 100%, 50%) / hsla(120, 100%, 50%, 50%)
+rgb(255 0 0 / 50%) / hsl(120deg 100% 50% / 50%)
+```
+
+十六进制颜色需以 `#` 开头，支持 3、4、6、8 位；4 位与 8 位的最后一组是透明度（alpha）。例如 `#f00` 和 `#FF0000` 都是不透明红色，`#FF000080` 是约 50% 透明红色。命名颜色不区分大小写，`transparent` 表示完全透明。
+
+`rgb()`、`rgba()`、`hsl()`、`hsla()` 支持逗号分隔或空格加 `/` 的透明度写法；RGB 通道可用数字或百分比，HSL 色相可用 `deg`、`rad`、`grad`、`turn`，饱和度和亮度需写百分比。此处只支持上述常用 CSS 颜色，不支持 `currentColor`、`lab()`、`color()` 等表达式。
+
+八位十六进制颜色的迁移
+
+旧版 Parser 将八位颜色按 `#AARRGGBB` 解析；现在按 CSS 的 `#RRGGBBAA` 解析。例如旧的半透明红色 `#80FF0000` 应改为 `#FF000080`，否则颜色会改变。Kotlin DSL 中的颜色 `Int` 仍使用 `0xAARRGGBB`，不受此变更影响。
+
+### 数值与布尔值
+
+宽高、位置、字号等使用十进制 Float。布尔值必须显式写为字符串：
+
+```xml
+<Snapshot debug="true">
+```
+
+裸属性 `<Snapshot debug>` 会回退为默认值，不等价于 `true`。
+
+### EdgeInsets
+
+`padding` 和 `margin` 支持三种格式：
+
+| 格式               | 含义                       |
+| ---------------- | ------------------------ |
+| `"12"`           | 四边 12                    |
+| `"(8,16)"`       | vertical=8，horizontal=16 |
+| `"(8,12,16,20)"` | left、top、right、bottom    |
+
+括号和逗号是语法的一部分。
+
+### 对齐
+
+对齐值使用常量名：`TOP_LEFT`、`TOP_CENTER`、`TOP_RIGHT`、`CENTER_LEFT`、`CENTER`、`CENTER_RIGHT`、`BOTTOM_LEFT`、`BOTTOM_CENTER`、`BOTTOM_RIGHT`；也支持无空格的 `"(x,y)"`。
+
+### 坐标与矩阵
+
+二维坐标使用无空格的 `"(x,y)"` 格式，例如 `origin="(20,10)"`。
+
+`Transform.matrix` 使用列主序的 4×4 矩阵，共 16 个有限 Float，外层必须有括号且值之间不能有空格：
+
+```text
+(1,0,0,0,0,1,0,0,0,0,1,0,20,10,0,1)
+```
+
+### 圆角
+
+`borderRadius="16"` 设置四角。也可以使用：`borderRadiusTopLeft`、`borderRadiusTopRight`、`borderRadiusBottomLeft`、`borderRadiusBottomRight`。
+
+### 边框
+
+格式为：
+
+```text
+宽度 样式 颜色
+```
+
+例如 `"2 SOLID #38BDF8"` 或 `"2 SOLID rgb(56, 189, 248)"`。可用属性：`border`、`borderLeft`、`borderTop`、`borderRight`、`borderBottom`。单边设置会覆盖统一边框的对应边。
+
+### 阴影
+
+`boxShadow` 可使用内置 elevation 名称，例如 `ELEVATION_4`。可用层级为 0、1、2、3、4、6、8、9、12、16、24。
+
+自定义格式中，单个阴影写成 `x y [blurRadius] [spreadRadius] [color] [blurStyle]`，多个阴影用英文逗号分隔。例如：
+
+```text
+0 4 12 0 #00000033 NORMAL,0 1 3 0 #00000022 NORMAL
+```
+
+阴影颜色也可使用 `rgb()`、`hsl()` 等函数；函数内部的逗号不会被当作多个阴影的分隔符。
+
+## Snapshot
+
+| 属性           | 类型     | 默认值           | 说明                   |
+| ------------ | ------ | ------------- | -------------------- |
+| `background` | color  | `transparent` | 透明画布背景；白底需显式设置       |
+| `debug`      | bool   | `false`       | 是否绘制调试信息             |
+| `type`       | string | `png`         | `png`、`jpg` 或 `webp` |
+
+必须是文档第一个开始标签，只能出现一次，并且最终必须有一个根 Widget 子节点。
+
+## Container
+
+| 属性                                                                                          | 类型                  | 默认值               |
+| ------------------------------------------------------------------------------------------- | ------------------- | ----------------- |
+| `width` / `height`                                                                          | float?              | 未设置               |
+| `minWidth` / `maxWidth`                                                                     | float               | 0 / Infinity      |
+| `minHeight` / `maxHeight`                                                                   | float               | 0 / Infinity      |
+| `alignment`                                                                                 | alignment?          | 未设置               |
+| `padding` / `margin`                                                                        | insets?             | 未设置               |
+| `color`                                                                                     | color?              | 未设置               |
+| `border` 与四边边框                                                                              | border?             | 未设置               |
+| `borderRadius` 与四角圆角                                                                        | radius?             | 未设置               |
+| `boxShadow`                                                                                 | shadow?             | 未设置               |
+| `shape` / `backgroundBlendMode`                                                             | enum?               | `RECTANGLE` / 未设置 |
+| `gradient*`                                                                                 | 渐变属性                | 未设置               |
+| `foregroundColor` / `foregroundBorder*` / `foregroundBorderRadius*` / `foregroundBoxShadow` | 前景装饰                | 未设置               |
+| `foregroundShape` / `foregroundBackgroundBlendMode` / `foregroundGradient*`                 | 前景装饰                | 未设置               |
+| `transform` / `transformAlignment`                                                          | matrix / alignment? | 未设置               |
+| `clipBehavior`                                                                              | enum                | `NONE`            |
+
+出现任何边框或装饰属性时，解析器会构造 `BoxDecoration`，并把 `color` 合并进去，避免 DSL 中 `color` 与 `decoration` 互斥的问题。
+
+`gradientType` 为 `LINEAR`、`RADIAL` 或 `SWEEP`，设置渐变时 `gradientColors` 至少两色；可配 `gradientStops`、`gradientTileMode`、`gradientRotation`，以及对应类型的 `gradientBegin` / `gradientEnd`、`gradientCenter` / `gradientRadius` / `gradientFocal` / `gradientFocalRadius`、`gradientStartAngle` / `gradientEndAngle`。前景渐变在属性名前加 `foreground`。`clipBehavior` 非 `NONE` 时需提供背景装饰作为裁剪路径；仅设置纯色不够。
+
+| 渐变属性                                      | 格式 / 默认值                                   |
+| ----------------------------------------- | ------------------------------------------ |
+| `gradientColors`                          | 逗号分隔的至少两种颜色，逗号两侧可有空白；颜色函数内部的逗号不作为列表分隔符     |
+| `gradientStops`                           | 与颜色等长、位于 0～1 且非递减的浮点列表，允许相同位置；默认等距         |
+| `gradientRotation`                        | 有限弧度，绕绘制矩形中心旋转渐变；未设置则不旋转                   |
+| `gradientTileMode`                        | `CLAMP`（默认）、`REPEAT`、`MIRROR`、`DECAL`      |
+| `gradientBegin` / `gradientEnd`           | 线性渐变起止对齐，默认 `CENTER_LEFT` / `CENTER_RIGHT` |
+| `gradientCenter` / `gradientRadius`       | 径向渐变中心与半径，默认 `CENTER` / `0.5`；半径须大于 0      |
+| `gradientFocal` / `gradientFocalRadius`   | 焦点默认未设置，焦点半径默认 0.5（短边比例）；显式设置半径时必须指定焦点     |
+| `gradientStartAngle` / `gradientEndAngle` | 扫描渐变起止弧度，默认 `0` / `2π`，起点必须小于终点            |
+
+不同渐变类型的专用参数不可混用。完整坐标规则、取值与前景属性名见[渐变参考](/reference/gradients/#parser-%E5%AF%B9%E5%BA%94%E4%B8%8E%E9%99%90%E5%88%B6)。例如：
+
+```xml
+<Container width="320" height="120"
+  gradientType="LINEAR"
+  gradientColors="#6750A4,#03DAC6,#FFC107"
+  gradientStops="0,0.55,1"
+  gradientBegin="TOP_LEFT" gradientEnd="BOTTOM_RIGHT" />
+```
+
+```xml
+<Container
+  width="320"
+  height="180"
+  padding="(16,24)"
+  color="#0F172A"
+  border="1 SOLID #334155"
+  borderRadius="20"
+  alignment="CENTER">
+  <Text color="#F8FAFC" fontSize="24">Snapshot</Text>
+</Container>
+```
+
+## Border
+
+给已有内容添加背景装饰；虽然名为 Border，也能画背景色、圆角、阴影和渐变。装饰先画，子节点后画，等价于 `position="BACKGROUND"` 的 [DecoratedBox](#decoratedbox)。
+
+| 属性                                                                                                    | 默认值               | 说明                                                                                                                         |
+| ----------------------------------------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `color`                                                                                               | 未设置               | 背景填充色                                                                                                                      |
+| `border`                                                                                              | 无边框               | 格式如 `"2 SOLID #38BDF8"`                                                                                                    |
+| `borderLeft` / `borderTop` / `borderRight` / `borderBottom`                                           | 沿用 `border`       | 仅覆盖对应一边                                                                                                                    |
+| `borderRadius`                                                                                        | `0`               | 四角统一圆角                                                                                                                     |
+| `borderRadiusTopLeft` / `borderRadiusTopRight` / `borderRadiusBottomLeft` / `borderRadiusBottomRight` | 沿用 `borderRadius` | 单独覆盖对应一角                                                                                                                   |
+| `boxShadow`                                                                                           | 未设置               | 阴影格式见[通用属性](#%E9%98%B4%E5%BD%B1)                                                                                           |
+| `shape`                                                                                               | `RECTANGLE`       | 可选 `RECTANGLE` / `CIRCLE`；圆形不能再设置非零圆角                                                                                      |
+| `backgroundBlendMode`                                                                                 | 未设置               | 背景色与渐变的混合方式，使用 Skia BlendMode 常量名                                                                                          |
+| `gradient*`                                                                                           | 未设置               | 格式与默认值同 [Container 渐变](#container)；完整说明见[渐变参考](/reference/gradients/#parser-%E5%AF%B9%E5%BA%94%E4%B8%8E%E9%99%90%E5%88%B6) |
+
+下面是一张 240×100 的浅蓝底卡片，带 2 像素边框与 16 像素圆角：
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Border color="#E0F2FE" border="2 SOLID #0284C7" borderRadius="16">
+    <SizedBox width="240" height="100">
+      <Center><Text fontSize="24">Snapshot</Text></Center>
+    </SizedBox>
+  </Border>
+</Snapshot>
+```
+
+最多一个子节点。Border 不提供 `width`、`height` 或 `padding`，也不会为边框自动留出内边距；需要间距时显式包入 Padding，或改用 Container。圆角只改变装饰形状，不裁剪子节点；若子节点会盖住圆角或背景，用 ClipRRect 等组件明确裁剪。
+
+## ColoredBox
+
+只需纯色背景时使用 ColoredBox。它先填充自己的布局区域，再绘制子节点；不支持边框、圆角或渐变。
+
+| 属性      | 默认值 | 说明                                                     |
+| ------- | --- | ------------------------------------------------------ |
+| `color` | 必填  | 支持[CSS 颜色格式](#%E9%A2%9C%E8%89%B2)；`transparent` 表示完全透明 |
+
+```xml
+<Snapshot>
+  <ColoredBox color="#38BDF8">
+    <SizedBox width="160" height="80" />
+  </ColoredBox>
+</Snapshot>
+```
+
+输出为 160×80 的蓝色色块。最多一个子节点，自身尺寸由子节点与父约束决定；直接给 ColoredBox 写 `width` / `height` 不会生效，应使用 SizedBox 或 Container 设置尺寸。
+
+## DecoratedBox
+
+需要控制装饰与内容的绘制顺序时使用 DecoratedBox。例如给图片或色块加前景边框，让边框画在内容之上。
+
+| 属性                                                                                      | 默认值                 | 说明                                            |
+| --------------------------------------------------------------------------------------- | ------------------- | --------------------------------------------- |
+| `position`                                                                              | `BACKGROUND`        | `BACKGROUND` 先画装饰再画子节点；`FOREGROUND` 先画子节点再画装饰 |
+| `color`、`border*`、`borderRadius*`、`boxShadow`、`shape`、`backgroundBlendMode`、`gradient*` | 同 [Border](#border) | 属性名、格式和默认值完全相同；前景装饰也使用这些名称，不加 `foreground` 前缀 |
+
+```xml
+<Snapshot>
+  <DecoratedBox position="FOREGROUND" border="4 SOLID #0F172A">
+    <Container width="240" height="100" color="#38BDF8" />
+  </DecoratedBox>
+</Snapshot>
+```
+
+输出为 240×100 的蓝色矩形，深色边框覆盖在色块之上。若前景同时设置不透明 `color`，填充也会盖住子节点。最多一个子节点；与 Border 一样，不额外撑大布局、不自动添加内边距，也不裁剪子节点。需要尺寸、间距与装饰一起配置时，使用 Container。
+
+## SizedBox、Padding、Align 与 Center
+
+| 标签         | 属性                             | 默认值      | 说明                       |
+| ---------- | ------------------------------ | -------- | ------------------------ |
+| `SizedBox` | `width` / `height`             | 未设置      | 指定任一或两个轴的尺寸              |
+| `Padding`  | `padding`                      | `0`      | 使用 EdgeInsets 格式         |
+| `Align`    | `alignment`                    | `CENTER` | 子节点在可用空间中的位置             |
+| `Align`    | `widthFactor` / `heightFactor` | 未设置      | 自身尺寸为子节点对应尺寸的倍数          |
+| `Center`   | `widthFactor` / `heightFactor` | 未设置      | 等价于固定 `CENTER` 对齐的 Align |
+
+```xml
+<Padding padding="(12,20)">
+  <Align alignment="BOTTOM_RIGHT" widthFactor="2" heightFactor="1.5">
+    <SizedBox width="120" height="48" />
+  </Align>
+</Padding>
+```
+
+## Row 与 Column
+
+`Flex` 使用相同属性，但必须额外指定 `direction="HORIZONTAL"` 或 `"VERTICAL"`。
+
+| 属性                   | 默认值      | 可选值                                                                  |
+| -------------------- | -------- | -------------------------------------------------------------------- |
+| `mainAxisAlignment`  | `START`  | `START`、`END`、`CENTER`、`SPACE_BETWEEN`、`SPACE_AROUND`、`SPACE_EVENLY` |
+| `mainAxisSize`       | `MAX`    | `MIN`、`MAX`                                                          |
+| `crossAxisAlignment` | `CENTER` | `START`、`END`、`CENTER`、`STRETCH`、`BASELINE`                          |
+| `textDirection`      | `LTR`    | `LTR`、`RTL`                                                          |
+| `verticalDirection`  | `DOWN`   | `UP`、`DOWN`                                                          |
+| `textBaseline`       | 未设置      | `ALPHABETIC`、`IDEOGRAPHIC`；基线对齐时使用                                   |
+| `clipBehavior`       | `NONE`   | `NONE`、`HARD_EDGE`、`ANTI_ALIAS`、`ANTI_ALIAS_WITH_SAVE_LAYER`         |
+
+### Expanded 与 Flexible
+
+| 标签         | 属性     | 默认值     | 说明                             |
+| ---------- | ------ | ------- | ------------------------------ |
+| `Expanded` | `flex` | `1`     | 整数份额；固定使用 `TIGHT`，不接受 `fit` 属性 |
+| `Flexible` | `flex` | `1`     | 整数份额                           |
+| `Flexible` | `fit`  | `LOOSE` | `LOOSE` 或 `TIGHT`              |
+| `Spacer`   | `flex` | `1`     | 正整数，无子节点                       |
+
+三者必须是 `Flex`、`Row` 或 `Column` 的直接子节点。`Expanded` 强制填满分配到的主轴空间；`Flexible fit="LOOSE"` 允许子节点小于分配份额。`Spacer` 不绘制内容。
+
+弹性分配不解除交叉轴最大约束：Column 中的子节点仍受父级最大宽度限制，文本默认据此换行；Row 中则保留最大高度。非 `STRETCH` 对齐允许更窄或更矮，只有 `crossAxisAlignment="STRETCH"` 才强制填满交叉轴。
+
+```xml
+<SizedBox width="480" height="120">
+  <Row>
+    <Expanded flex="2"><Container color="#38BDF8" /></Expanded>
+    <Flexible flex="1" fit="TIGHT"><Container color="#A78BFA" /></Flexible>
+  </Row>
+</SizedBox>
+```
+
+## Stack
+
+| 属性              | 默认值         | 说明                             |
+| --------------- | ----------- | ------------------------------ |
+| `alignment`     | `TOP_LEFT`  | 非 Positioned 子节点对齐             |
+| `textDirection` | `LTR`       | 方向                             |
+| `fit`           | `LOOSE`     | `LOOSE`、`EXPAND`、`PASSTHROUGH` |
+| `clipBehavior`  | `HARD_EDGE` | 直接子节点布局矩形越界时的裁剪策略              |
+
+`IndexedStack` 使用相同属性，另支持 `index`（默认 `0`，从零起）。裸写 `index` 表示 `null`，不绘制子节点，但全部子节点仍参与布局。
+
+Stack / IndexedStack 根据所有直接子节点的布局矩形累计越界状态，后续未越界节点不会取消已有裁剪需求。只有阴影、变换或更深子孙的绘制越界时，不一定触发裁剪；需要无条件限制在容器边界内时外包 `<ClipRect>`。要允许越界绘制可设置 `clipBehavior="NONE"`，但祖先的裁剪仍然生效。
+
+## Positioned
+
+支持 `left`、`top`、`right`、`bottom`、`width`、`height`。每个轴最多设置三项中的两项：
+
+```xml
+<Positioned right="16" bottom="16" width="120" height="40">
+  <Container color="#38BDF8" borderRadius="20" />
+</Positioned>
+```
+
+`Positioned` 必须是 `Stack` 或 `IndexedStack` 的直接子节点。
+
+## 比例与约束布局
+
+| 标签                     | 属性                                         | 默认值          | 约束要求                                          |
+| ---------------------- | ------------------------------------------ | ------------ | --------------------------------------------- |
+| `AspectRatio`          | `aspectRatio`                              | 必填，有限正数      | 父约束至少一轴有界                                     |
+| `FractionallySizedBox` | `widthFactor` / `heightFactor`、`alignment` | 未设置、`CENTER` | 设置比例的轴必须有界；比例须有限且非负                           |
+| `UnconstrainedBox`     | `constrainedAxis`、`alignment`              | 未设置、`CENTER` | `HORIZONTAL` / `VERTICAL` 保留对应轴约束；未设置则解除双轴子约束 |
+
+三者自身仍受父约束限制。`UnconstrainedBox` 中的子节点须能在解除约束后确定有限尺寸。
+
+## 约束与溢出
+
+### ConstrainedBox
+
+| 属性                       | 默认值      |
+| ------------------------ | -------- |
+| `minWidth` / `minHeight` | `0`      |
+| `maxWidth` / `maxHeight` | Infinity |
+
+最小值不能大于同轴最大值。该标签会把指定约束叠加到父级传入的约束上。
+
+### LimitedBox
+
+支持 `maxWidth` 和 `maxHeight`，默认均为 Infinity。它只在对应轴为无界约束时对孩子施加上限。
+
+### OverflowBox
+
+| 属性                        | 默认值      |
+| ------------------------- | -------- |
+| `alignment`               | `CENTER` |
+| `minWidth` / `maxWidth`   | 未设置      |
+| `minHeight` / `maxHeight` | 未设置      |
+
+它允许为子节点指定不同于父级的约束，并按照 `alignment` 放置可能溢出的内容。
+
+### SizedOverflowBox
+
+`width` 和 `height` 均为必填 Float，`alignment` 默认为 `CENTER`。它们指定的是**自身期望的尺寸**，实际尺寸仍会被父约束限制。子节点继续按父级原始约束布局，不会收到这组期望宽高，因此可能超出本节点边界；SizedOverflowBox 本身不裁剪。
+
+作为无界根节点时，下面的 SizedOverflowBox 为 160×100，子节点为 240×140，按右下角对齐。若直接包入 Snapshot，输出画布只有 160×100，画布外的内容仍不可见：
+
+```xml
+<SizedOverflowBox width="160" height="100" alignment="BOTTOM_RIGHT">
+  <SizedBox width="240" height="140" />
+</SizedOverflowBox>
+```
+
+若父级给的是紧约束，期望尺寸就不能决定结果。下面的外层 SizedBox 要求子节点恰好为 200×200，因此 SizedOverflowBox 和内部 ColoredBox 都是 200×200，输出整张蓝色图片，而不是居中的 100×100 色块：
+
+```xml
+<Snapshot>
+  <SizedBox width="200" height="200">
+    <SizedOverflowBox width="100" height="100">
+      <ColoredBox color="#38BDF8" />
+    </SizedOverflowBox>
+  </SizedBox>
+</Snapshot>
+```
+
+与 OverflowBox 的区别是：SizedOverflowBox 请求自己的尺寸；OverflowBox 改变传给子节点的约束。Kotlin 写法见 [SizedOverflowBox](/widgets/layout/sized-overflow-box/)。
+
+## Opacity 与 Transform
+
+### Opacity
+
+`opacity` 默认为 `1`，有效范围为 0 到 1。它对整个子树应用透明度。
+
+### Transform
+
+| 属性          | 必填 | 默认值 / 说明               |
+| ----------- | -- | ---------------------- |
+| `matrix`    | 是  | 16 个 Float 的列主序 4×4 矩阵 |
+| `origin`    | 否  | `"(x,y)"`，变换原点偏移       |
+| `alignment` | 否  | 未设置；相对于子节点尺寸的变换对齐点     |
+
+```xml
+<Transform
+  matrix="(1,0,0,0,0,1,0,0,0,0,1,0,20,10,0,1)"
+  origin="(2,3)"
+  alignment="CENTER">
+  <SizedBox width="120" height="60" />
+</Transform>
+```
+
+## ColorFiltered、ImageFiltered 与 BackdropFilter
+
+| 标签               | 必填属性                | 可选属性与默认值                                  |
+| ---------------- | ------------------- | ----------------------------------------- |
+| `ColorFiltered`  | `color`、`blendMode` | 无                                         |
+| `ImageFiltered`  | `sigmaX`、`sigmaY`   | `tileMode="CLAMP"`                        |
+| `BackdropFilter` | `sigmaX`、`sigmaY`   | `tileMode="CLAMP"`、`blendMode="SRC_OVER"` |
+
+`blendMode` 使用 Skia 混合模式。`sigmaX`、`sigmaY` 必须有限且非负。后两个标签只构造高斯模糊；其他图片滤镜仍需 Kotlin DSL。
+
+`ColorFiltered` 在子树绘制边界可确定时限制颜色作用范围，保留合法溢出和阴影；部分混合模式也会给边界内的透明间隙着色。`ImageFiltered` 会按 sigma 自动提供模糊输出边界，因此下面的嵌套无需配置额外边界属性：
+
+```xml
+<ColorFiltered color="red" blendMode="MULTIPLY">
+  <ImageFiltered sigmaX="2" sigmaY="2" tileMode="CLAMP">
+    <Container width="20" height="20" color="blue" />
+  </ImageFiltered>
+</ColorFiltered>
+```
+
+`BackdropFilter` 读取已有背景，仍建议配合 ClipRect、ClipOval 或 ClipRRect 限定区域。Kotlin DSL 的通用 ImageFiltered 边界配置见 [ImageFiltered](/widgets/painting/image-filtered/#%E4%B8%8E-colorfiltered-%E5%B5%8C%E5%A5%97)。
+
+## ClipRect、ClipOval 与 ClipRRect
+
+| 标签          | `clipBehavior` 默认值 | 其他属性                   |
+| ----------- | ------------------ | ---------------------- |
+| `ClipRect`  | `HARD_EDGE`        | 无                      |
+| `ClipOval`  | `ANTI_ALIAS`       | 无                      |
+| `ClipRRect` | `ANTI_ALIAS`       | `borderRadius` 与四角圆角属性 |
+
+可选裁剪模式为 `NONE`、`HARD_EDGE`、`ANTI_ALIAS`、`ANTI_ALIAS_WITH_SAVE_LAYER`。`ClipRRect` 的圆角格式与 `Container`、`Border` 相同。
+
+```xml
+<ClipRRect borderRadius="24" clipBehavior="ANTI_ALIAS">
+  <Container width="320" height="180" color="#0F172A" />
+</ClipRRect>
+```
+
+## ClipPath
+
+最多包含一个子节点。`path` 使用 SVG 的 `d` 属性语法，支持 `M/L/H/V/Z`、`Q/T`、`C/S`、`A` 命令及多轮廓；小写命令使用相对坐标。属性内容是路径数据，不是完整 SVG 文档，也不读取路径文件或 URL。
+
+| 属性             | 默认值          | 说明                                                           |
+| -------------- | ------------ | ------------------------------------------------------------ |
+| `path`         | 必填           | 非空 SVG 路径数据，坐标必须有限                                           |
+| `viewBox`      | 未设置          | `minX minY width height`，允许空白或逗号分隔及科学计数法；四个值须有限，宽高须大于 0      |
+| `fit`          | `FILL`       | 有 `viewBox` 时生效；`FILL` 分别缩放宽高，`CONTAIN` 等比缩放并居中              |
+| `fillRule`     | `NON_ZERO`   | 非零环绕规则；`EVEN_ODD` 使用奇偶规则，可实现镂空                               |
+| `clipBehavior` | `ANTI_ALIAS` | `NONE`、`HARD_EDGE`、`ANTI_ALIAS`、`ANTI_ALIAS_WITH_SAVE_LAYER` |
+
+路径坐标与布局：
+
+* 无 `viewBox` 时，路径直接使用组件本地坐标，原点在左上角，X 向右、Y 向下；`fit` 不改变路径。
+* 有 `viewBox` 时，先减去窗口原点，再映射到实际布局尺寸。`FILL` 可能拉伸形状，`CONTAIN` 保持比例并居中。
+* `viewBox` 和路径边界都不决定布局尺寸；通常用外层 `SizedBox` 或子节点的宽高指定尺寸。
+* `viewBox` 只用于坐标映射，不额外施加矩形裁剪；如需限制在组件矩形内，可再包一层 `ClipRect`。
+* 裁剪使用路径的填充区域，未闭合轮廓按填充语义闭合。`NON_ZERO` 下轮廓方向影响镂空；`EVEN_ODD` 不依赖轮廓方向。
+
+将曲线徽章映射到 `240 × 160`：
+
+```xml
+<SizedBox width="240" height="160">
+  <ClipPath path="M0 0 H100 V75 Q50 125 0 75 Z"
+            viewBox="0 0 100 100" fit="FILL">
+    <Container color="#3F51B5" />
+  </ClipPath>
+</SizedBox>
+```
+
+使用两个同方向轮廓与 `EVEN_ODD` 镂空，中心露出背景：
+
+```xml
+<SizedBox width="240" height="160">
+  <ClipPath path="M0 0 H100 V100 H0 Z M25 25 H75 V75 H25 Z"
+            viewBox="0 0 100 100" fit="CONTAIN" fillRule="EVEN_ODD">
+    <Container color="#00C853" />
+  </ClipPath>
+</SizedBox>
+```
+
+路径在创建 Widget 时解析一次，布局时只做坐标变换。非法路径、非有限坐标、无效 `viewBox` 或枚举值会在 `createWidget()` / `snapshot()` 阶段报告带位置的 `ParseException`。需要按布局尺寸动态计算几何时，使用 Kotlin DSL 的 [ClipPath 回调](/widgets/painting/clip-path/)，或注册自定义标签。
+
+## Image
+
+| 属性                 | 必填  | 默认值 / 说明                                                                                              |
+| ------------------ | --- | ----------------------------------------------------------------------------------------------------- |
+| `url` / `dataUri`  | 二选一 | 网络 URL 或内嵌 Data URI，不能同时指定                                                                            |
+| `width` / `height` | 否   | 图片盒尺寸                                                                                                 |
+| `fit`              | 否   | 未设置时按 `SCALE_DOWN`（等比缩小、不放大）；可设 `FILL`、`CONTAIN`、`COVER`、`FIT_WIDTH`、`FIT_HEIGHT`、`NONE`、`SCALE_DOWN` |
+| `alignment`        | 否   | `CENTER`                                                                                              |
+| `repeat`           | 否   | `NO_REPEAT`、`REPEAT`、`REPEAT_X`、`REPEAT_Y`                                                            |
+| `scale`            | 否   | `1`；像素密度，必须有限且大于 0；自然逻辑尺寸 = 图像像素尺寸 ÷ scale                                                            |
+| `opacity`          | 否   | `1`                                                                                                   |
+| `color`            | 否   | 叠加色                                                                                                   |
+| `colorBlendMode`   | 否   | Skia `BlendMode` 常量名                                                                                  |
+| `noCache`          | 否   | `false`，仅适用于 `url`                                                                                    |
+
+默认 `SimpleDataUriImageDecoder` 只处理 PNG、JPEG、WebP 的 Base64 Data URI；解码发生在建树阶段，不访问网络。可通过 `Parser(dataUriImageDecoder = ...)` 注入自定义解码器。网络 URL 则由同步图片缓存获取，服务端应自行施加访问限制。
+
+`fit` 决定盒内绘制适配，不改变组件布局尺寸；默认 `SCALE_DOWN` 的剩余空间按 `alignment` 对齐。需要保留旧版省略 `fit` 时拉伸铺满的效果，请写 `fit="FILL"`。`scale` 不是目标框缩放倍数：`40 × 20` 像素图设为 `scale="2"` 后，自然逻辑尺寸为 `20 × 10`，平铺间距也按适配后的逻辑尺寸计算。`centerSlice` 仅由底层 API / DecorationImage 提供，不能作为 Parser 的 Image 属性。
+
+`repeat` 为 `REPEAT`、`REPEAT_X` 或 `REPEAT_Y` 时，单次绘制默认最多生成 100,000 个平铺矩形；超限会抛 `IllegalArgumentException`。服务端可通过 `ImageRepeatConfig.maxTileCount` 调整全局上限（必须大于 0），Parser 文本不能覆盖它。
+
+## Text
+
+以下为入口索引。每个字段的类型、取值、条件默认值、继承规则及完整示例见[Parser 文本属性详解](/reference/parser-text/)；复杂配置不要只依据总表中的“未设置”推断行为。
+
+Text 没有 `width`、`top` 或 `align` 属性；请用外层布局约束宽度、用 Positioned 定位、用 `textAlign` 控制水平文字对齐。胶囊标签推荐让 Container 居中文字，不要用字号反算 top，见[完整居中示例](/guides/text-alignment/)。
+
+混排时请显式考虑文本基线
+
+文字可见边缘与组件盒不同，同字号的中英文、文字与图片也可能高低不齐；平台默认字体和缺字回退会进一步改变垂直度量。Row 的 `textBaseline`、Text 的 `baselineMode` 与 WidgetSpan / Emoji 的 `baseline` 作用不同，推荐写法见[DSL 基线与混排](/reference/parser-text/#%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)。
+
+| 属性                                                                                                  | 默认值                                     | 说明                                                |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------- |
+| `text`                                                                                              | 未设置                                     | 属性形式的文本内容                                         |
+| `color`                                                                                             | 未设置                                     | 文本颜色                                              |
+| `fontSize`                                                                                          | 未设置                                     | 字号                                                |
+| `fontFamily`                                                                                        | 未设置                                     | 多个字体用英文逗号分隔                                       |
+| `fontStyle`                                                                                         | 未设置                                     | `NORMAL`、`BOLD`、`ITALIC`、`BOLD_ITALIC`            |
+| `height` / `topRatio` / `letterSpacing` / `wordSpacing` / `locale`                                  | 未设置                                     | 行高倍数、上下度量比例、间距和语言区域                               |
+| `baselineMode` / `fontEdging` / `fontHinting` / `subpixel`                                          | 未设置                                     | 基线选择与字体栅格化设置                                      |
+| `foregroundColor` / `foreground*` / `backgroundColor`                                               | 未设置                                     | 前景画笔与文本背景；其他 `foreground*` 参数要求 `foregroundColor` |
+| `decoration` / `decorationColor` / `decorationLineStyle` / `decorationThickness` / `decorationGaps` | 未设置时继承；创建后的默认见详解                        | 装饰线及样式；修饰参数要求 `decoration`                        |
+| `textShadow` / `fontFeatures`                                                                       | 未设置                                     | 文本阴影与 OpenType 特性；`NONE` 可取消继承                    |
+| `strut*`                                                                                            | 未设置                                     | 段落支撑样式，仅最外层 Text 生效                               |
+| `textAlign` / `textDirection` / `softWrap` / `overflow` / `maxLines`                                | `START` / `LTR` / `true` / `CLIP` / 未设置 | 段落对齐、换行和溢出，仅最外层 Text 生效                           |
+| `textWidthBasis` / `textHeightMode`                                                                 | `PARENT` / 未设置                          | 段落尺寸计算，仅最外层 Text 生效                               |
+
+`Text` 可以嵌套 `Text`、`Raw`、`Emoji` 和 `WidgetSpan`。普通文本节点会被 trim；多字体字符串不会逐项 trim，因此 `"A, B"` 的第二个名称会保留前导空格，建议写成 `"A,B"`。`decoration` 支持 `UNDERLINE`、`OVERLINE`、`LINE_THROUGH`；`textShadow` 格式为 `x y [blurSigma] [color]`；`fontFeatures` 支持 `+liga -kern tnum=2 smcp[2:8]` 等形式。详细语法见[文本属性详解](/reference/parser-text/)。
+
+`foregroundColor` 是其他前景画笔参数的前提；可搭配 `foregroundMode`（`FILL` / `STROKE` / `STROKE_AND_FILL`）、`foregroundStrokeWidth`、`foregroundStrokeMiter`、`foregroundStrokeCap`、`foregroundStrokeJoin`、`foregroundAntiAlias`。`backgroundColor` 提供纯色文本背景。
+
+`decorationColor`、`decorationLineStyle`、`decorationThickness`、`decorationGaps` 必须与 `decoration` 一起使用；可用 `decoration="NONE"` 取消继承的装饰。`textShadow` 用英文逗号分隔多条阴影，例如 `"3 4 1.5 #00000066,-2 0 #E5393566"`；`textShadow="NONE"` 可取消继承。颜色函数内部的逗号不会拆分阴影。`fontFeatures` 用空白分隔 OpenType 特性，标签为四个小写字母或数字，支持 `NONE` 取消继承。
+
+字体特性的范围语法会被解析和校验，但当前 Skiko 段落样式未使用 start/end；按片段应用请拆分 Span，见[字体特性限制](/reference/text-style/#fontfeature-%E5%AD%97%E4%BD%93%E7%89%B9%E6%80%A7)。
+
+`strutEnabled`、`strutFontFamily`、`strutFontStyle`、`strutFontSize`、`strutHeight`、`strutLeading`、`strutHeightForced`、`strutHeightOverridden` 只作用于最外层 `Text`；指定任一 `strut*` 属性即创建支撑样式，`strutFontSize` / `strutHeight` 必须是有限正数。当前 Parser 不提供 `strutTopRatio`。段落属性同样只作用于最外层 `Text`，嵌套 `Text` 仅作为行内 Span。
+
+## Raw
+
+支持 `Text` 的文本样式属性，但 `textAlign`、`softWrap`、`overflow` 等段落布局属性不会在 `Raw` 上生效。文本不做 trim，首尾空格和换行会保留；可以嵌套行内 Span，但只能出现在由最外层 `Text` 创建的行内内容树中。
+
+## WidgetSpan
+
+只能出现在最外层 `Text` 建立的行内内容树中，可以直接位于 Text 下，也可以嵌套在其中的 Text / Raw 下；不能直接放在 Row、Container 等普通布局中。WidgetSpan 自身必须恰有一个普通 Widget 子节点。`alignment` 默认为 `BOTTOM`，可设 `BASELINE`、`ABOVE_BASELINE`、`BELOW_BASELINE`、`TOP`、`BOTTOM`、`MIDDLE`；`baseline` 可设 `ALPHABETIC` 或 `IDEOGRAPHIC`，并支持 Text 的文本样式属性。
+
+BOTTOM / MIDDLE 参考文字行盒；BASELINE 使用子 Widget 基线，无真实基线的普通盒通常以盒底回退。共用字体和字号应放在父 Text，图标尺寸与 alignment 建议显式给出，见[行内对齐规则](/reference/text-layout/#widgetspan-%E4%B8%8E-emoji-%E5%AF%B9%E9%BD%90)。
+
+下面的 Raw 同时保留文字间的空格，并包含一个随文字排列的绿色状态块。Raw 内的内容刻意写在同一行，避免将格式化换行也当作文本：
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="320" height="80" padding="16">
+    <Text fontSize="24"><Raw>Status <WidgetSpan alignment="MIDDLE"><Container width="18" height="18" color="#16A34A" /></WidgetSpan> Ready</Raw></Text>
+  </Container>
+</Snapshot>
+```
+
+## Emoji
+
+| 属性                          | 必填  | 默认值 / 说明                                                |
+| --------------------------- | --- | ------------------------------------------------------- |
+| `url` / `dataUri`           | 二选一 | 网络 URL 或内嵌 Data URI，不能同时指定                              |
+| `alignment`                 | 否   | `BASELINE`；PlaceholderAlignment                         |
+| `baseline`                  | 否   | `ALPHABETIC` 或 `IDEOGRAPHIC`                            |
+| `width` / `height`          | 否   | 未设置时根据所在 Span 字号推导                                      |
+| `fit`                       | 否   | 未设置时按 `SCALE_DOWN`；可选值同 Image，小图不自动放大到占位框，需要拉伸时写 `FILL` |
+| `imageAlignment` / `repeat` | 否   | `CENTER` / `NO_REPEAT`；可选值同 Image                       |
+| `scale` / `opacity`         | 否   | 1；`scale` 是像素密度，必须有限且大于 0                               |
+| `color` / `colorBlendMode`  | 否   | 图片着色                                                    |
+
+与 WidgetSpan 一样，只能用于最外层 Text 建立的行内内容树中，也允许嵌套在其中的 Text / Raw 下；Emoji 自身不能有子节点。使用 URL 获取网络图片时会同步阻塞，Data URI 则由解码器在本地处理。
+
+# Parser 文本属性详解
+
+> Text、Raw、WidgetSpan 与 Emoji 的基线与混排、完整文本属性、Strut 和可运行示例。
+
+本页将[标签参考](/reference/parser-tags/#text)中的文本属性展开。属性名和枚举值区分大小写；布尔值请显式写 `"true"` / `"false"`。当前布尔解析仅将忽略大小写的 true 当作真，拼错不一定报错。
+
+## 从常见任务开始
+
+`<Text>` 使用与 Kotlin 相同的段落布局。中英文、数字、图标混排时，相同 `fontSize` 不保证可见顶部或底部一致；`<Row crossAxisAlignment="CENTER">` 也只对齐组件盒的中心。服务端默认字体或缺字回退不同，还可能让同一 DSL 在不同平台上出现垂直偏移。请先确定要对齐的对象，再按下方[基线与混排](#%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)选择设置。 常用配置只需要几项：标题设 `fontSize` / `fontStyle` / `color`；摘要设有限宽度、`maxLines` 和 `overflow="ELLIPSIS"`；不同样式嵌套 Text；需要保留空格时用 Raw。自带字体的配置在渲染服务中完成，见[字体指南](/guides/fonts/)。
+
+胶囊内的文字不要按字号计算 top
+
+`Positioned.top` 定位子组件布局盒，`fontSize` 不是行盒或字形高度。优先把整个胶囊放进一个 Positioned，再用 Container 的 `alignment="CENTER"` 居中文字。Text 不支持 `width` / `align`；宽度由外层布局提供，水平对齐属性为 `textAlign`。完整模板、混排选择与测量公式见[文字垂直居中与胶囊标签](/guides/text-alignment/)。
+
+## 作用域与未设置值
+
+| 配置       | 最外层 Text  | 嵌套 Text / Raw | WidgetSpan                     |
+| -------- | --------- | ------------- | ------------------------------ |
+| 文本样式     | 根 Span 样式 | 按字段继承 / 覆盖    | Span 样式，不会给内部 Widget 自动设置颜色或背景 |
+| 段落参数     | 生效        | 不生效，不产生新段落    | 不生效                            |
+| strut 属性 | 生效        | 不生效           | 不生效                            |
+
+未指定的样式字段继承祖先；根字号回退 14，颜色回退黑色，其余沿用 Skia 行为。“未设置”不是 0，也不是清除祖先配置。Raw 保留首尾空白；普通 Text 的 text 属性和普通文本节点会 trim。需要保留片段间空格时使用 Raw。
+
+## 字体与度量
+
+| 属性              | 类型        | 默认 / 回退      | 说明                                             |
+| --------------- | --------- | ------------ | ---------------------------------------------- |
+| `text`          | string    | 未设置          | 属性形式的文字，位于标签子内容之前；普通 Text 会 trim，Raw 不 trim    |
+| `color`         | CSS color | 继承，根为黑色      | 字色；前景画笔存在时由画笔绘制                                |
+| `fontSize`      | float     | 继承，根为 14     | 逻辑像素字号，使用有限正数                                  |
+| `fontFamily`    | string    | 继承 / 系统字体    | 英文逗号分隔，不逐项 trim；写 Noto Sans SC,Arial，逗号后不要加空格  |
+| `fontStyle`     | enum      | 继承 / Skia 默认 | NORMAL、BOLD、ITALIC、BOLD\_ITALIC                |
+| `height`        | float     | 继承 / 字体度量    | 行高倍数，不是像素；使用有限正数                               |
+| `topRatio`      | float     | 继承 / Skia 默认 | ascent 在 ascent+descent 中的比例：0..1；-1 按字体度量比例分配 |
+| `letterSpacing` | float     | 继承 / Skia 默认 | 额外字距，有限逻辑像素，可为负数                               |
+| `wordSpacing`   | float     | 继承 / Skia 默认 | 额外词间距，有限逻辑像素                                   |
+| `locale`        | string    | 继承 / Skia 默认 | 例如 zh-CN、en-US，不是翻译功能                          |
+| `baselineMode`  | enum      | 继承 / Skia 默认 | ALPHABETIC、IDEOGRAPHIC                         |
+| `fontEdging`    | enum      | 继承 / Skia 默认 | ALIAS、ANTI\_ALIAS、SUBPIXEL\_ANTI\_ALIAS        |
+| `fontHinting`   | enum      | 继承 / Skia 默认 | NONE、SLIGHT、NORMAL、FULL                        |
+| `subpixel`      | bool      | 继承 / Skia 默认 | 子像素字形定位，不等于 fontEdging                         |
+
+基础 Float 属性多数仅做数值解析；推荐输入不表示 Parser 对每项都严格校验。外部输入应由应用额外约束。
+
+## 基线与混排
+
+### 配置应该写在哪个标签上
+
+| 目标                    | DSL 写法                                                                                    | 注意                                               |
+| --------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| 多个独立文字组件共用基线          | `<Row crossAxisAlignment="BASELINE" textBaseline="ALPHABETIC">`                           | 对齐各子组件的真实基线；多行 Text 使用首行基线                       |
+| 同一句话里的多种样式            | 一个外层 `<Text>`，内部嵌套 `<Text>` / `<Raw>`                                                     | 共享段落；共同字体、字号放在外层，空格用 Raw 保留                      |
+| 选择文字样式基线模式            | `<Text baselineMode="ALPHABETIC">`                                                        | 不等于 Row 的 textBaseline，也不会让兄弟组件自动对齐              |
+| 图标与文字同行，包括胶囊标签或跟随正文换行 | 优先在同一个 Text 中使用 `<WidgetSpan alignment="MIDDLE">`；图片也可用 `<Emoji alignment="MIDDLE" …>`    | 显式指定内部 Widget 或 Emoji 的宽高；`MIDDLE` 不是 `CENTER`   |
+| 图标底边落在文字基线上           | `alignment="ABOVE_BASELINE" baseline="ALPHABETIC"`                                        | 与 `BOTTOM` 的行盒底部对齐不同                             |
+| 稳定多行的支撑度量             | 在最外层 `<Text>` 上配置 `strutFontFamily`、`strutFontSize`、`strutHeight`、`strutHeightOverridden` | Strut 不会继承文本字体；通常先保持 `strutHeightForced="false"` |
+
+`ALPHABETIC` 是中英文、数字混排的常用起点；`IDEOGRAPHIC` 是另一种字体基线，不是自动纠正中文高低差的开关。同一行中应统一选择，再检查实际字体的结果。三组基线参数的区别与多行限制见[基线设置参考](/reference/text-layout/#%E4%B8%89%E5%A4%84%E5%9F%BA%E7%BA%BF%E8%AE%BE%E7%BD%AE%E7%9A%84%E5%8C%BA%E5%88%AB)。
+
+同行的状态图标应优先放进 Text 的 WidgetSpan，让图标和文字由同一个段落排版，见[胶囊标签示例](/guides/text-alignment/#%E4%B8%AD%E8%8B%B1%E6%96%87%E4%B8%8E%E5%9B%BE%E6%A0%87%E6%80%8E%E6%A0%B7%E7%BB%84%E5%90%88)。图片需要独占一栏、与文字区域分别布局时，可用 Row 做区域对齐。普通图片没有真实文字基线，Row BASELINE 不会自动把图片底边放到文字基线上；需要这种语义时使用行内 WidgetSpan / Emoji。
+
+### 示例：不同字号的独立文字
+
+以下两个完整示例均输出 480×200，可交给本地 Parser；渲染环境需已安装 `Noto Sans SC`。字号不同的文字共享基线，但字形顶部不应因此一样高。
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="200" padding="24">
+    <Row crossAxisAlignment="BASELINE" textBaseline="ALPHABETIC">
+      <Text fontFamily="Noto Sans SC" fontSize="20">价格</Text>
+      <SizedBox width="12" />
+      <Text fontFamily="Noto Sans SC" fontSize="36">128.00</Text>
+      <SizedBox width="8" />
+      <Text fontFamily="Noto Sans SC" fontSize="20">CNY</Text>
+    </Row>
+  </Container>
+</Snapshot>
+```
+
+对比时可以把 Row 改成 `crossAxisAlignment="CENTER"` 或 `"END"`，观察组件盒对齐与文字基线对齐的差异。不要给 Text 设置 `height="36"` 来表示 36 像素高：这里的 height 是行高倍数；容器高度才是布局尺寸。
+
+### 示例：中英文与图标共享文本流
+
+共用字体、字号与样式基线放在最外层 Text；Raw 保留英文片段前后的空格。示例中的色块代表固定尺寸的状态图标，也可在 WidgetSpan 中换成具有明确尺寸的 `<Image url="…" width="18" height="18" />` 或 Data URI 图片。
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="200" padding="24">
+    <Text fontFamily="Noto Sans SC" fontSize="24" baselineMode="ALPHABETIC">
+      <Raw>状态 Status </Raw>
+      <WidgetSpan alignment="MIDDLE">
+        <Container width="18" height="18" color="#22C55E" />
+      </WidgetSpan>
+      <Raw color="#0369A1"> Ready</Raw>
+    </Text>
+  </Container>
+</Snapshot>
+```
+
+如果使用 `<Emoji>`，同样建议显式设置 `alignment="MIDDLE" width="18" height="18"`，并提供 `url` 或 `dataUri`。Emoji 默认 BASELINE，WidgetSpan 默认 BOTTOM，直接互换且省略 alignment 会改变垂直位置。Emoji 的 `imageAlignment` 只调整图片在占位盒内的绘制位置，不能替代占位对齐。图片透明留白也不会被自动识别为对齐边缘。
+
+### 平台与字体一致性
+
+`fontFamily="Noto Sans SC"` 只请求服务端字体，不会安装字体，也不会使用浏览器 CSS 字体。要减少 Windows、Linux、macOS 或容器之间的偏移，应固定同一份字体文件、版本和字重，并为中文、拉丁字符与 Emoji 准备明确的缺字回退。多字体名称写成 `fontFamily="Noto Sans SC,Arial"`，但列表中的字体均须在目标环境存在。
+
+文本字体、Strut 字体和回退集合都应检查；只固定其中一项，仍可能出现行高或基线变化。`height`、`topRatio` 与 `textHeightMode` 调整的是行度量，不能代替字体配置或保证字形边缘齐平。不要先加固定平移来掩盖差异；先按[排查顺序](/reference/text-layout/#%E6%8E%92%E6%9F%A5%E4%B8%8E%E5%BA%A6%E9%87%8F%E9%A1%BA%E5%BA%8F)验证，再处理确实需要的视觉微调。
+
+## 前景画笔与背景
+
+| 属性                      | 类型 / 取值                           | 默认            | 说明                         |
+| ----------------------- | --------------------------------- | ------------- | -------------------------- |
+| `foregroundColor`       | CSS color                         | 未设置           | 创建前景画笔；其他 foreground 参数的前提 |
+| `foregroundMode`        | FILL / STROKE / STROKE\_AND\_FILL | Skia Paint 默认 | 填充、描边、两者同时                 |
+| `foregroundStrokeWidth` | float                             | Skia Paint 默认 | 有限非负描边宽度，逻辑像素              |
+| `foregroundStrokeMiter` | float                             | Skia Paint 默认 | 尖角斜接限制，有限正数                |
+| `foregroundStrokeCap`   | BUTT / ROUND / SQUARE             | Skia Paint 默认 | 笔触端点形状                     |
+| `foregroundStrokeJoin`  | MITER / ROUND / BEVEL             | Skia Paint 默认 | 笔触转角连接方式                   |
+| `foregroundAntiAlias`   | bool                              | Skia Paint 默认 | 画笔抗锯齿                      |
+| `backgroundColor`       | CSS color                         | 未设置           | 文本运行区域背景，不是整个布局框背景         |
+
+修饰项必须在本标签同时指定 foregroundColor；不能借用父标签的颜色通过校验。新前景画笔整体替换继承的画笔。Parser 不支持任意 Shader 或图片滤镜作为文本画笔。
+
+## 装饰线
+
+下面默认值在本标签指定 decoration 后才适用；完全省略时继承父 Span 的整个装饰对象。
+
+| 属性                    | 类型 / 取值                                     | 默认    | 说明                        |
+| --------------------- | ------------------------------------------- | ----- | ------------------------- |
+| `decoration`          | UNDERLINE / OVERLINE / LINE\_THROUGH / NONE | 未设置   | 英文逗号组合；NONE 取消继承且不能与其他值混用 |
+| `decorationColor`     | CSS color                                   | 黑色    | 不自动跟随 color               |
+| `decorationLineStyle` | SOLID / DOUBLE / DOTTED / DASHED / WAVY     | SOLID | 线型                        |
+| `decorationThickness` | float                                       | 1     | 有限正数，相对粗细倍数，不是像素          |
+| `decorationGaps`      | bool                                        | true  | 是否避让字形                    |
+
+修饰项必须在本标签同时指定 decoration。子 Span 的新 decoration 整体替换父装饰，不会仅覆盖一个子字段。
+
+## 阴影与字体特性
+
+| 属性             | 默认       | 语法与限制                                                                                  |
+| -------------- | -------- | -------------------------------------------------------------------------------------- |
+| `textShadow`   | 继承 / 未设置 | `offsetX offsetY [blurSigma] [color]`；偏移有限，sigma 有限非负，默认 sigma 0、黑色；多项用逗号分隔            |
+| `fontFeatures` | 继承 / 未设置 | 空白分隔四位小写字母/数字标签；`liga` / `+liga` 为 1，`-kern` 为 0，`tnum=2` 为指定非负整数，`smcp[2:8]` 可解析为范围字段 |
+
+二者均可用 NONE 清除继承，NONE 不可与其他项混用。textShadow 的颜色函数内部逗号不分隔阴影；它使用 sigma，与 boxShadow 的 blurRadius 不同。字体特性是否生效取决于字体支持；范围起点不能大于终点。
+
+当前 Skiko 的段落样式只接收特性的 tag/value，不使用已解析的 start/end。需要按文本片段应用特性时拆分嵌套 Text / Raw，而不要依赖范围语法，详见 [FontFeature](/reference/text-style/#fontfeature-%E5%AD%97%E4%BD%93%E7%89%B9%E6%80%A7)。
+
+## 段落参数
+
+只对最外层 Text 生效；嵌套 Text 不能独立居中或另起一个段落。
+
+| 属性               | 类型 / 取值                                                              | 默认      | 说明                                   |
+| ---------------- | -------------------------------------------------------------------- | ------- | ------------------------------------ |
+| `textAlign`      | LEFT / RIGHT / CENTER / JUSTIFY / START / END                        | START   | 行对齐；START / END 跟随方向                 |
+| `textDirection`  | LTR / RTL                                                            | LTR     | 文字方向                                 |
+| `softWrap`       | bool                                                                 | true    | 是否按有限宽度软换行                           |
+| `overflow`       | CLIP / FADE / ELLIPSIS / VISIBLE                                     | CLIP    | ELLIPSIS 设置省略号；FADE / VISIBLE 的限制见下方 |
+| `maxLines`       | int                                                                  | 未设置     | 使用正整数；有限高度仍可能裁剪文字                    |
+| `textWidthBasis` | PARENT / LONGESTLINE                                                 | PARENT  | 测量宽度基准，不突破父约束                        |
+| `textHeightMode` | ALL / DISABLE\_FIRST\_ASCENT / DISABLE\_LAST\_DESCENT / DISABLE\_ALL | Skia 默认 | 控制首行 ascent / 末行 descent 的高度调整       |
+
+当前 FADE 没有渐隐实现，VISIBLE 在检测到溢出时仍会被裁剪。宽度基准、换行与省略号的组合详见[段落布局](/reference/text-layout/#%E6%8D%A2%E8%A1%8C%E5%AE%BD%E5%BA%A6%E4%B8%8E%E6%BA%A2%E5%87%BA)。
+
+## Strut 段落支撑
+
+不指定任何 strut 属性时不显式启用。出现任意一项即创建 StrutStyle 并默认启用，默认字体度量独立于 TextStyle；可用 strutEnabled=false 暂停。
+
+| 属性                      | 类型 / 取值                               | 创建后的默认  | 说明                                     |
+| ----------------------- | ------------------------------------- | ------- | -------------------------------------- |
+| `strutEnabled`          | bool                                  | true    | 是否启用                                   |
+| `strutFontFamily`       | string                                | Skia 默认 | 英文逗号列表；与 fontFamily 不同，此处逐项 trim，空名称报错 |
+| `strutFontStyle`        | NORMAL / BOLD / ITALIC / BOLD\_ITALIC | Skia 默认 | 支撑字体样式                                 |
+| `strutFontSize`         | float                                 | Skia 默认 | 有限正数字号，逻辑像素                            |
+| `strutHeight`           | float                                 | Skia 默认 | 有限正数行高倍数                               |
+| `strutLeading`          | float                                 | Skia 默认 | 相对于支撑字号的额外行距比例，必须有限                    |
+| `strutHeightForced`     | bool                                  | false   | 强制采用 Strut 度量，较大字形可能重叠                 |
+| `strutHeightOverridden` | bool                                  | false   | 使用显式 strutHeight 覆盖字体度量                |
+
+需要等高行时，同时设置 strutFontSize、strutHeight、strutHeightOverridden=true，再按需设 strutHeightForced=true。不支持 strutTopRatio；原因见[StrutStyle](/reference/text-layout/#strutstyle)。
+
+## 完整示例：描边与装饰线
+
+整段交给本地 Parser 或兼容版本的 Playground 服务，输出 480×200；字体环境可能影响字宽。
+
+```xml
+<Snapshot background="#F1F5F9">
+  <Container width="480" height="200" padding="24">
+    <Column crossAxisAlignment="START">
+      <Text fontSize="32" foregroundColor="#0369A1"
+            foregroundMode="STROKE_AND_FILL" foregroundStrokeWidth="1"
+            foregroundStrokeJoin="ROUND">描边文字</Text>
+      <SizedBox height="16" />
+      <Text fontSize="24" color="#0F172A" decoration="UNDERLINE"
+            decorationColor="#0284C7" decorationLineStyle="WAVY">
+        波浪下划线<Raw decoration="NONE"> / 取消装饰</Raw>
+      </Text>
+    </Column>
+  </Container>
+</Snapshot>
+```
+
+## 完整示例：固定行高与显式换行
+
+Raw 保留换行。这里显式固定文本字体和 Strut 字体，再用 `strutHeightForced="true"` 演示固定行度量；这不会统一中英文字形的可见高度。只需提供最小行高时先改为 false，让更高的字符或行内图标可以撑开行盒。强制高度过小会使内容重叠或被外层裁剪，不要用 Container 的 height 代替行高属性。
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="200" padding="24">
+    <Text fontFamily="Noto Sans SC" fontSize="20" color="#0F172A"
+          strutFontFamily="Noto Sans SC" strutFontSize="24" strutHeight="1.5"
+          strutHeightOverridden="true" strutHeightForced="true"><Raw>第一行：中文与 Latin
+第二行：保持统一的行距
+第三行：1234567890</Raw></Text>
+  </Container>
+</Snapshot>
+```
+
+继续阅读 [WidgetSpan](/widgets/text/widget-span/) 和 [Emoji 属性](/reference/parser-tags/#emoji)；占位对齐与图片对齐是两组不同参数。

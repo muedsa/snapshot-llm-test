@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "checks": [
+    {
+      "check": "12 项任务 end−start 严格等于输入 minutes(完整时长、不缩时)",
+      "method": "逐项计算 end_minute − start_minute 与 minutes 比较",
+      "evidence": "R01:25; R02:20; R04:60; R05:30; R03:40; R07:70; R06:45; R08:65; R09:45; R10:35; R11:30; R12:20",
+      "passed": true
+    },
+    {
+      "check": "所有任务落在 [0,420] 窗口(start≥0、end≤420,不跨天、16:00 整完成允许)",
+      "method": "逐项比较 0≤start 且 end≤420,窗口 09:00–16:00 连续不扣休息",
+      "evidence": "start 最小 0、end 最大 260(= 13:20)",
+      "passed": true
+    },
+    {
+      "check": "同团队半开区间 [start,end) 不重叠、不并行、不抢占;上一任务结束即可开始下一任务",
+      "method": "按团队排序后逐对比较 next.start >= prev.end",
+      "evidence": "无重叠",
+      "passed": true
+    },
+    {
+      "check": "全部依赖满足先决完成后才能开始(所有前驱 end ≤ 后继 start),未改依赖/未删检查环节",
+      "method": "逐条 depends 比较前驱 end_minute 与后继 start_minute",
+      "evidence": "全部满足",
+      "passed": true
+    },
+    {
+      "check": "每项任务的执行团队属于 tasks.teams 可选集合;两项者只任选其一,不占用两团队",
+      "method": "逐项检查 team ∈ teams_available;可选任务 R05/R09/R12 各仅赋一个团队",
+      "evidence": "R01=design(design); R02=engineering(engineering); R04=design(design); R05=engineering(design/engineering); R03=engineering(engineering); R07=design(design); R06=engineering(engineering); R08=engineering(engineering); R09=design(design/engineering); R10=design(design); R11=engineering(engineering); R12=design(design/engineering)",
+      "passed": true
+    },
+    {
+      "check": "完工分钟不早于两个下界、缓冲=420−完工",
+      "method": "finish=260 ≥ 关键路径 255 且 ≥ 工作量/2 242.5;buffer=420−260=160",
+      "evidence": "关键路径链 R01→R04→R07→R09→R10→R12 = 255;总工时 485 /2 = 242.5",
+      "passed": true
+    }
+  ],
+  "lower_bounds": {
+    "critical_path_minutes": 255,
+    "critical_path_chain": [
+      "R01",
+      "R04",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+    ],
+    "critical_path_basis": "忽略资源约束的 DAG 最长加权路径(节点权重=minutes):R01(25)+R04(60)+R07(70)+R09(45)+R10(35)+R12(20) = 255 分钟",
+    "total_work_minutes": 485,
+    "workload_div2_minutes": 242.5,
+    "workload_basis": "全部 12 项 minutes 之和 485 ÷ 2 团队 = 242.5 分钟,不提前取整",
+    "combined_lower_bound_minutes": 255
+  },
+  "finish": {
+    "finish_minute": 260,
+    "finish_time": "2026-11-07T13:20:00+08:00",
+    "buffer_minutes": 160,
+    "buffer_basis": "420 − 260 = 160 分钟",
+    "deadline_minute": 420,
+    "deadline_time": "16:00 (+08:00)",
+    "gap_over_lower_bound_minutes": 5,
+    "gap_reason": "资源约束:R05 选择 engineering 使 R03→R06→R08→R10 链延后,R10 需等 R08 于 205 分钟完成"
+  },
+  "optimality": {
+    "feasible": true,
+    "proven": false,
+    "claimed_global_optimum": false,
+    "method": "经 8 种团队分配与多种优先级搜索得到的最佳可行解 260 分钟;下界为 255.0 分钟;未做完备最优性证明,不宣称全局最优",
+    "improvement_basis": "与按 ID 顺序的基线排程 285 分钟比较,并列出 8 种分配各自最优 makespan(见 assignment_best_makespans);所有方案均满足依赖、时长与单机约束",
+    "search": {
+      "method": "8 种团队分配 × (7 种系统优先级 + 300 种固定种子随机优先级) 的非延迟列表调度,取最小 makespan",
+      "seed": 20261104,
+      "priority_orders_per_assignment": 307,
+      "note": "可行性搜索,不是完备穷举;仅当结果等于关键路径下界时才声称全局最优"
+    },
+    "assignment_best_makespans": [
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "design",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "design",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "design"
+        },
+        "best_makespan": 285
+      },
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "design",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "design",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "engineering"
+        },
+        "best_makespan": 285
+      },
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "design",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "engineering",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "design"
+        },
+        "best_makespan": 285
+      },
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "design",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "engineering",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "engineering"
+        },
+        "best_makespan": 285
+      },
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "engineering",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "design",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "design"
+        },
+        "best_makespan": 260
+      },
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "engineering",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "design",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "engineering"
+        },
+        "best_makespan": 260
+      },
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "engineering",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "engineering",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "design"
+        },
+        "best_makespan": 300
+      },
+      {
+        "assignment": {
+          "R01": "design",
+          "R02": "engineering",
+          "R03": "engineering",
+          "R04": "design",
+          "R05": "engineering",
+          "R06": "engineering",
+          "R07": "design",
+          "R08": "engineering",
+          "R09": "engineering",
+          "R10": "design",
+          "R11": "engineering",
+          "R12": "engineering"
+        },
+        "best_makespan": 300
+      }
+    ],
+    "note": "全局最优性(如声称)仅限本题给定模型:2 个单机团队、不可抢占、固定时长、end<=start 依赖、[0,420) 窗口;风险返工消耗缓冲,不加入固定时长"
+  },
+  "constraints": {
+    "start": "2026-11-07T09:00:00+08:00",
+    "deadline": "2026-11-07T16:00:00+08:00",
+    "window_minutes": 420,
+    "teams": [
+      "design",
+      "engineering"
+    ],
+    "rules": "09:00=第0分钟;16:00=第420分钟;连续窗口不扣午休;半开占用 [start,end);同团队不可并行/不可抢占;团队切换无额外耗时;全部依赖 end≤后继 start;可选任务只选一个团队"
+  },
+  "checks_source": "本文件由 build.py 依据 schedule.json 实际逐项计算,证据字段为真实数值"
+}

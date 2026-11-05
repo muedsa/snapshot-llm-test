@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "purpose": "专用审计JSON最小字段说明；不是已完成记录",
+  "common_rules": {
+    "required": "artifacts中各对象的required_fields为最小必需字段，允许扩展；数组项字段由该字段说明规定。模板说明不是执行数据，不复制说明为答案。",
+    "identity": "每份最终JSON另含schema_version:1、task_id和path_base:output_dir；多轮文件的round须与目录一致。",
+    "paths": "PNG/DSL和其他交付路径相对本题输出根。临时证据用对象{path_base:suite_root,path:tmp/<run_id>/<task_id>/...}明确基准；不写机器路径。",
+    "coordinates": "有几何时默认画布左上原点、x向右/y向下、像素单位，框为[left,top,right,bottom]；题面另定义的网格/逻辑坐标须单列并记录映射。",
+    "numbers": "单位与精度以题面为准，未指定数值容差的精确数据保持原值，不自行发明合格阈值；几何检查记录未舍入值及方法。",
+    "evidence": "结果由实际计算/图片/响应支持；passed类字段附方法与证据。无法取得值时用null并写原因，不预填成功。",
+    "rounds": "artifacts以文件基本名索引，各轮复用同一字段约定；实际交付位置以task.json完整路径为准。"
+  },
+  "artifacts": {
+    "design-tokens.json": {
+      "required_fields": {
+        "round": "integer；1/2/3，与文件目录一致",
+        "colors": "object；色值/角色/主题",
+        "typography": "object；字体/字号/行距",
+        "brand_geometry": "array；3–6核心构件与参数、跨轮继承及允许变动",
+        "changes": "array；与上轮的实际变化及理由，首轮为空"
+      }
+    },
+    "content-map.json": {
+      "required_fields": {
+        "round": "integer；所属轮次",
+        "entries": "array；稳定文案ID、原文/实际文本、两图文字框/字号/行数、继承/新增/替换及需求来源",
+        "checks": "array；完整性、碰撞和实际两图查看证据"
+      }
+    },
+    "contrast-audit.json": {
+      "required_fields": {
+        "images": "array；两图路径，各含完整text_runs、每段覆盖范围/前景与真实背景来源/最差对比度/检查方法，以及至少6处detailed_samples含最差位置",
+        "formula": "object；sRGB线性化/亮度/对比度方法、使用未舍入结果、阈值4.5",
+        "evidence": "array；复杂背景/合成/字形范围检查的实际辅助文件及说明"
+      }
+    }
+  }
+}

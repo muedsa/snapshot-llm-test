@@ -1,0 +1,28 @@
+{
+  "round": 1,
+  "title": "六个月经营诊断驾驶舱（原始 CSV 基线，含 v1→v2 裁切修复）",
+  "status": "完成",
+  "end_reason": "v2 消除脚注/副标题/结论文字裁切，逐图看图通过",
+  "started_at": "2026-11-04T17:00:00+08:00",
+  "viewed_at": "2026-11-04T17:10:00+08:00",
+  "ended_at": "2026-11-04T17:11:00+08:00",
+  "png_verdict": "完成；v2 服务真实 PNG 302543 字节，文件头 89 50 4E 47，1600×1000",
+  "image_views": 2,
+  "visual_iterations": 1,
+  "images": [
+    {"file": "dashboard.png", "size": "1600×1000 / 302543 字节 (v2)",
+     "verdict": "四 KPI(总净收入 ¥918,624 / 总经营利润 ¥262,124 / 总订单 3,045 笔 / 总体转化率 11.15%)清晰；6 组蓝/青共用零起点柱图、柱顶精确金额、月份 04月–09月 完整；两个小图(访问量/转化率)完整；6 行分月明细表(金额整数、百分比两位、8.00% 红色高亮、2026-09 完整)；管理结论卡文字完整到末尾、数据块完整；底部脚注与版权轮次文字完整；无裁切/重叠/溢出，正文≥22 可读。"}
+  ],
+  "requirements": "round-01 要求：用 inputs/monthly.csv 原始 6 个月数据做 1600×1000 驾驶舱；四 KPI 为总净收入/总经营利润/总订单/总体转化率(净收入=收入−退款，利润=净收入−operating_cost，总体率=总订单/总 sessions)；净收入/利润共用零起点柱图；六行月份/净收入/利润/退款率/转化率表；仅根据实际数值成立的主结论；所有月份原样、正文≥22；round-01/ 交付 dashboard.png/.snapshot、computed-data.json、layout-map.json(KPI/图/表/标题区域边界及主样式)；生成脚本与参数留临时目录。实测：computed-data.json 汇总 net=918624/profit=262124/orders=3045/sessions=27300/cvr=11.15%，axes vmin=0 vmax=220000，layout-map.json 11 个固定区域、comparison 为空，conclusion 基于实际数值；另按用户要求交付 round-01/monthly.csv(原始 6 月数据快照，未改输入)。",
+  "view_conclusions": [
+    "共 2 次 ViewImage：v1 首版 1 次发现缺陷、v2 修复版 1 次复查通过",
+    "v1 缺陷(真实观察)：底部脚注文字过长被水平裁切(左右两处)、表格右上『退款率 = 退款 ÷ 收入』溢出被裁、右下结论卡文字末行『…再扩大投放。』被下方数据块挤压裁切",
+    "v2 修复后逐项复查：脚注缩短为『口径：净收入=收入−退款；利润=净收入−成本；总体转化率=总订单÷总访问量（不平均月比例）。』与『© NORTHSTAR · SNAPSHOT DSL · R1』完整；表格副标题盒由 [830,686,196,26] 加宽为 [760,686,266,26] 后完整；结论文字盒加高至 162px、数据块下移 12px、三轮结论文案精简，结论完整读到『优先治理退款与转化。』、数据块数值完整；KPI/柱图/表格/两小图与首版一致，无新重叠/溢出",
+    "v1 全部产物(dashboard.png/dashboard.snapshot/computed-data.json/layout-map.json/monthly.csv + v1 版 build.py 脚本)保留在 tmp/<run_id>/A22/round-01/v1/"
+  ],
+  "changes": [
+    "首轮基线：建立 1600×1000 固定区域(KPI×4 / bar_chart / mini_sessions / mini_cvr / table / conclusion / header / footer)、正文≥22 的视觉系统；computed-data.applied_changes 为空、layout-map.comparison 为空"
+  ],
+  "pitfalls": "踩坑：v1 文字盒宽度/高度估计不足——22px 正文在 196px 盒里放不下 11 字副标题、1000px 盒放不下 50+ 字脚注、150px 高结论盒放不下 6 行结论且被下方数据块压住。修复：缩短脚注/结论文案、加宽表格副标题盒、加高结论文字盒(150→162)、数据块下移(872→884)、脚注盒 y 962→960 高 26→28。所有改动均为文本/盒参数，未改数据、公式或主区域边界。",
+  "unresolved": "无。v2 为该轮最终版，归档后按预置连续执行进入 round-02。"
+}

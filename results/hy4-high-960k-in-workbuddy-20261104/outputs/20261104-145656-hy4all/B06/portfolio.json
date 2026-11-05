@@ -1,0 +1,911 @@
+{
+  "schema_version": 1,
+  "path_base": "output_dir",
+  "task_id": "B06",
+  "run_id": "20261104-145656-hy4all",
+  "status": "完成",
+  "asset_policy": "dsl_only（本题选用纯 DSL，未嵌入辅助素材）",
+  "curatorial_statement": "10 件作品各自面对一个不同的日常信息难题：服药、比价、电费、营养、快递、末班车、垃圾分类、天气、停车、登机。每件先说清用户原本卡在哪里，再用一种不同的视觉组织（极坐标环、排序标尺、时间色带、同心仪表、垂直单轨、放射扇区、决策树、列网格、分区网格、超大数字时间轴）把信息重构成可直接使用的形态。素材与数值全部为自拟演示，不声称做过真实调研或用户实验。",
+  "cases": [
+    {
+      "id": "case-01",
+      "title": "一眼服药 · 24 小时服药环",
+      "audience": "需要按时吃三种药、看不清说明书小字的老年人及其家属",
+      "use_context": "1100×1100 方形图，打印贴在药盒上 / 家庭平板常驻显示",
+      "user_goal": "不读说明书就知道今天吃几次、下一顿几点、已经吃过没",
+      "content_basis": "自拟演示：氨氯地平片 5mg、一日 3 次 07:30/13:00/20:00；非真实医嘱",
+      "visual_intent": "把 24 小时压成一个环形时钟，三个服药窗口用彩色弧段标在环上，中心给出「3 次 / 已服 1 次」的结论；右侧三张卡给出具体剂量",
+      "problem": "药品说明书把用法用量、禁忌、不良反应混排成密密麻麻的小字，用户真正要找的「什么时候吃、吃几次」反而最不显眼",
+      "fix": "把时间维度变成极坐标环形时钟，剂量与状态拆成三张并列卡，关键信息一眼可见",
+      "png": "case-01/final.png",
+      "snapshot": "case-01/final.snapshot",
+      "dimensions": [
+        1100,
+        1100
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "donut 双圆 EVEN_ODD 环、arc A 弧扇段、ring_ticks 刻度、boxShadow 卡片、chip 状态标签、胶囊几何、LINEAR 渐变",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v2 版 case-01/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v2 版 case-01/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v2 版 case-01/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v2 版 case-01/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v2 版 case-01/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 基线发现 24 小时环形时钟只显示 00/06/18，正下方「12」被底部深色注意事项条遮挡。v2 把环形与圆心整体上移（CY 600→555），使「12」落在注意事项条上方。v2 实际打开复查：00/06/12/18 四个刻度齐全，三个彩色服药弧段、中央巨大「3」、右侧三张服药卡、胶囊图形与底部注意事项条全部完整清晰，无遮挡裁切。",
+      "request_ids": [
+        "B06-final-93503-0",
+        "B06-final-63572-0"
+      ],
+      "iteration_ids": [
+        "case-01-v1",
+        "case-01-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-02",
+      "title": "同价尺 · 每 100g 统一标尺",
+      "audience": "在超市货架前想买划算、但不想心算的普通购物者",
+      "use_context": "1200×900 横屏图，手机比价页 / 货架电子价签旁的小屏",
+      "user_goal": "不用心算就知道 5 种规格里哪一袋单价最低、能省多少",
+      "content_basis": "自拟演示：5 个虚构品牌、规格与总价，单价由脚本计算",
+      "visual_intent": "把 5 种包装换算到同一把「每 100g」标尺，按单价排序成横向条形，最划算项用金色高亮并在底部给出可执行的省钱结论",
+      "problem": "货架价签只标总价，不同净含量之间无法直接比较，购物者要么心算要么凭感觉",
+      "fix": "统一到每 100g 单价并排序，把「比价」从一个计算题变成一个看长度的动作",
+      "png": "case-02/final.png",
+      "snapshot": "case-02/final.snapshot",
+      "dimensions": [
+        1200,
+        900
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "脚本计算单价并排序、排序条形图、金色高亮描边、chip 角标、LINEAR 渐变头部、深色结论条",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v2 版 case-02/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v2 版 case-02/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v2 版 case-02/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v2 版 case-02/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v2 版 case-02/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 基线发现 5 行单价数值压在条形末端（「¥4.70 / 100g」被条形边缘切割），且底部「按每周买 3 袋算」文案与脚本 ×20 估算口径不一致。v2 把条形宽度收窄到独立绘图区、单价数值移到右侧专属列、「最划算」角标右移，并把结论文案改为「按每月 20 份的单价差累计估算」。v2 实际打开复查：5 个单价数值全部在条形外完整可读，金色高亮行与角标分离，条形仍按单价从低到高正确排序，底部结论与 ¥16.50 大数字清晰。",
+      "request_ids": [
+        "B06-final-77661-0",
+        "B06-final-67311-0"
+      ],
+      "iteration_ids": [
+        "case-02-v1",
+        "case-02-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-03",
+      "title": "峰谷光带 · 24 小时用电账单",
+      "audience": "收到电费单、想知道钱花在哪个时段的普通家庭",
+      "use_context": "1400×900 横屏图，电费 App 账单页 / 月度电子账单邮件",
+      "user_goal": "看出哪几个小时最贵、把哪几件家电挪一挪就能省钱",
+      "content_basis": "自拟演示：¥186.40 账单、逐时相对用电、峰平谷时段与节省额均为脚本设定",
+      "visual_intent": "把 24 小时摊成一条色带：颜色编码电价档、柱高编码用电量；右侧环形给出峰段占比，底部直接给出三条可执行建议",
+      "problem": "传统账单只给总金额与峰/谷/平三段电量，看不出具体哪个小时贵，也不告诉用户能怎么改",
+      "fix": "用时间×电价档×用电量的带状热力把「钱花在哪」变成可见的图案，并给出换时段的行动建议",
+      "png": "case-03/final.png",
+      "snapshot": "case-03/final.snapshot",
+      "dimensions": [
+        1400,
+        900
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "程序化 24 格色带、donut/arc 占比环、图例、深色建议卡、LINEAR 全屏渐变",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v1 版 case-03/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v1 版 case-03/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v1 版 case-03/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v1 版 case-03/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v1 版 case-03/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 首版实际打开即通过：24 格用电色带按峰/平/谷分色且柱高与数值对应，00:00–23:00 时间刻度、三色图例、右侧 61% 占比环、三条省电建议卡与底部结论条全部完整可读，无遮挡裁切。未发生修改。",
+      "request_ids": [
+        "B06-final-56690-1"
+      ],
+      "iteration_ids": [
+        "case-03-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-04",
+      "title": "三环限额 · 一包零食占多少",
+      "audience": "想快速判断零食能不能多吃、但看不懂 NRV% 表格的普通消费者",
+      "use_context": "1000×1200 竖屏图，包装背面替代说明 / 手机扫码页",
+      "user_goal": "不用读表格就知道糖、钠、脂肪各占一天建议上限多少、该不该吃整包",
+      "content_basis": "自拟演示：糖 12/50g、钠 1560/2000mg、脂肪 22/60g 与百分比由脚本计算",
+      "visual_intent": "三个同心环分别表达三种营养素占日上限的比例，中心直接给出「钠偏高」的判断，下方三行保留可核查的精确数值",
+      "problem": "营养成分表用 NRV% 小字表格呈现，用户要自己在脑子里把「每 100g」换算成「这一包」，很难形成整体判断",
+      "fix": "换算成「这一包占每日上限的百分比」，用三个同心环 + 一句中心结论代替表格",
+      "png": "case-04/final.png",
+      "snapshot": "case-04/final.snapshot",
+      "dimensions": [
+        1000,
+        1200
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "三层 donut + arc 同心仪表、EVEN_ODD 镂空、进度条、百分比脚本计算、阈值标记圆点",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v1 版 case-04/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v1 版 case-04/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v1 版 case-04/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v1 版 case-04/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v1 版 case-04/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 首版实际打开即通过：糖/钠/脂肪三层同心环比例正确（24%/78%/37%），中心「钠偏高」判定、三行精确数值与进度条、底部结论与虚构声明全部完整对齐。未发生修改。",
+      "request_ids": [
+        "B06-final-60919-0"
+      ],
+      "iteration_ids": [
+        "case-04-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-05",
+      "title": "一条轨 · 把 8 条时间戳压成一条线",
+      "audience": "等快递、只想知道「现在到哪、还要多久、什么时候在家」的收件人",
+      "use_context": "900×1400 竖屏图，物流 App 详情页 / 短信里的图片摘要",
+      "user_goal": "不逐条读时间戳就知道包裹进度与需要采取的行动",
+      "content_basis": "自拟演示：5 个阶段、时间、网点与 ETA 窗口均为脚本设定",
+      "visual_intent": "把 8 条原始时间戳归并成 4 阶段 + 1 个 ETA 窗口的垂直单轨，当前节点与预计窗口用底色高亮，底部直接给出「14:00 后在家」的行动结论",
+      "problem": "物流页把每一次扫描都列成一行时间戳，用户要在 8 行里自己找「现在在哪」和「什么时候能到」",
+      "fix": "按语义归并成阶段，用一条轨 + 高亮 ETA 窗口表达进度，并把结论写成一句话",
+      "png": "case-05/final.png",
+      "snapshot": "case-05/final.snapshot",
+      "dimensions": [
+        900,
+        1400
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "垂直时间轨 rect/circle、高亮底色卡、chip 状态、LINEAR 渐变头部、深色结论卡",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v1 版 case-05/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v1 版 case-05/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v1 版 case-05/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v1 版 case-05/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v1 版 case-05/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 首版实际打开即通过：绿色 ETA 横幅、5 阶段垂直单轨、当前「派送中」高亮卡、「预计签收」绿卡与底部「14:00 之后在家等就行」结论卡全部完整可读，节点文字互不重叠。未发生修改。",
+      "request_ids": [
+        "B06-final-64922-0"
+      ],
+      "iteration_ids": [
+        "case-05-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-06",
+      "title": "末班钟 · 还能赶上哪班",
+      "audience": "晚上 22:28 站在梧桐里站、只想快点知道要不要跑的乘客",
+      "use_context": "1100×1100 方形图，电子站牌 / 手机到站提醒卡片",
+      "user_goal": "不逐行比对时刻表，立刻知道剩几班车、各要等多久、来不来得及",
+      "content_basis": "自拟演示：4 班车、3/15/37 分钟倒计时与「已发走」均为脚本设定",
+      "visual_intent": "把「现在」放在圆心，把还能赶上的班次做成放射状扇形扇区，倒计时直接写在扇区里；赶不上的班次灰掉，形成一眼可判的极坐标时钟",
+      "problem": "公交站牌按时间顺序列出末班时刻，乘客要自己把每一班和「现在」相减，才能判断赶不赶得上、要等多久",
+      "fix": "以当前时刻为圆心，把剩余班次重构为按倒计时排列的放射扇区，把减法结果直接写成「3 分钟 / 还来得及」",
+      "png": "case-06/final.png",
+      "snapshot": "case-06/final.snapshot",
+      "dimensions": [
+        1100,
+        1100
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "RADIAL 渐变、donut 环、arc A 弧扇段、ring_ticks、极坐标标签卡、8 位色半透明边框",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v2 版 case-06/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v2 版 case-06/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v2 版 case-06/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v2 版 case-06/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v2 版 case-06/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 基线发现底部说明出现中英混杂「还要自己 subtract 出等待时间」。v2 改为通顺中文「还要自己算出等待时间」。v2 实际打开复查：四个放射扇区、圆心「现在 22:28」、四张扇区标签卡与底部说明条全部完整清晰，无重叠裁切。",
+      "request_ids": [
+        "B06-final-68672-0",
+        "B06-final-17050-0"
+      ],
+      "iteration_ids": [
+        "case-06-v1",
+        "case-06-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-07",
+      "title": "四色树 · 垃圾分类决策树",
+      "audience": "站在四个垃圾桶前、手里拿着奶茶杯不确定往哪扔的居民",
+      "use_context": "1300×1000 横屏图，垃圾站墙面指引 / 社区 App 查询页",
+      "user_goal": "不用背一长串清单，顺着几个问题就能确定该投哪个桶",
+      "content_basis": "自拟演示：3 个判断问题、4 类桶与 6 件常见物品速查均为简化示例规则",
+      "visual_intent": "把线性规则清单重构成树状分支：根节点 → 三个是非问题 → 四色终点桶，用贝塞尔曲线连接；底部补一行常见物品速查色块",
+      "problem": "垃圾分类规则通常是按物品罗列的长清单，遇到清单外的东西（奶茶杯、外卖盒）就要逐条查，且难以记住判断顺序",
+      "fix": "把规则改成「先问三个问题」的决策树，用曲线把判断路径连到四色终点，并给出常见物品的速查色块",
+      "png": "case-07/final.png",
+      "snapshot": "case-07/final.snapshot",
+      "dimensions": [
+        1300,
+        1000
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "X.curve 三次贝塞尔连线、四色终点卡、boxShadow 节点卡、圆角/描边、速查色条",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v2 版 case-07/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v2 版 case-07/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v2 版 case-07/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v2 版 case-07/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v2 版 case-07/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 基线发现根节点深绿圆偏小使「这是什么东西？」贴边，且「三个都不是」的长贝塞尔曲线从中间横跨到最右灰桶、与另三条连线交叉。v2 放大根节点圆并缩小字号、删除交叉长曲线，灰桶改用「三个都不是 → 这里」局部标注加短竖线。v2 实际打开复查：根节点文字完整落在圆内，三条问题→桶连线各自独立不交叉，四色桶卡与 6 个速查色块完整可读。",
+      "request_ids": [
+        "B06-final-71649-0",
+        "B06-final-23641-0"
+      ],
+      "iteration_ids": [
+        "case-07-v1",
+        "case-07-v2"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-08",
+      "title": "穿衣带 · 一周天气决策列",
+      "audience": "早上出门前 10 秒决定穿什么、带不带伞的上班族",
+      "use_context": "1400×900 横屏图，天气 App 周视图 / 家庭冰箱贴屏",
+      "user_goal": "不用逐列读最高/最低温与降水概率，直接得到每天的穿衣与带伞决定",
+      "content_basis": "自拟演示：7 天温度、降水概率与建议均为脚本设定",
+      "visual_intent": "7 列等宽卡片，每列用一条冷→暖渐变色带表达温度区间、一条降水条表达概率，底部把数字收敛成一句可执行决策；下方再用一条周降雨色带给出整体结论",
+      "problem": "天气预报按天堆叠最高/最低温、降水概率、风力等数字，用户真正要的决定（穿什么、带不带伞）要自己从数字里推",
+      "fix": "把每天压成一列「温度色带 + 降水条 + 一句决策」，并用周色带突出降雨集中的两天",
+      "png": "case-08/final.png",
+      "snapshot": "case-08/final.snapshot",
+      "dimensions": [
+        1400,
+        900
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "7 列网格、LINEAR 多色竖向渐变、程序化色带、max_lines 双行决策 chip、8 位色透明度",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v1 版 case-08/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v1 版 case-08/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v1 版 case-08/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v1 版 case-08/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v1 版 case-08/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 首版实际打开即通过：7 列等宽天气卡、橙→蓝温度渐变色带与最高/最低温、降水概率条、每列一句穿衣决策、底部周降雨色带与结论全部完整对齐，无裁切遮挡。未发生修改。",
+      "request_ids": [
+        "B06-final-46102-2"
+      ],
+      "iteration_ids": [
+        "case-08-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-09",
+      "title": "停车格 · 找车与计费一张卡",
+      "audience": "在大型地下车库停好车、几小时后回来找车并缴费的车主",
+      "use_context": "1100×1200 竖屏图，停车 App 记录卡 / 车库出口屏",
+      "user_goal": "记住车停在哪，并在缴费前就知道该付多少钱",
+      "content_basis": "自拟演示：B 区 12 排 07、2h47m、¥18 与三段计费阶梯均为脚本设定",
+      "visual_intent": "上半用三色分区网格 + 高亮车位做空间记忆卡，下半把阶梯计费拆成三段色卡并直接换算成「¥18」大数字",
+      "problem": "地下车库分区/排/号难记；出口计费牌只列首小时与超时单价，用户要把停车时长换算成金额",
+      "fix": "把车位做成一张带高亮格的空间记忆卡，把阶梯计费拆成三段并把当前时长直接算成一个大数字",
+      "png": "case-09/final.png",
+      "snapshot": "case-09/final.snapshot",
+      "dimensions": [
+        1100,
+        1200
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "程序化分区网格、高亮车位、米白记忆卡、阶梯卡、8 位色透明度、大数字",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v1 版 case-09/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v1 版 case-09/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v1 版 case-09/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v1 版 case-09/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v1 版 case-09/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 首版实际打开即通过：A/B/C 三区色块网格与 B 区「07」高亮车位、米白记忆卡、三段计费阶梯卡、巨大「¥18」与说明、「原本卡在哪」及虚构声明全部完整可读，无重叠。未发生修改。",
+      "request_ids": [
+        "B06-final-49753-0"
+      ],
+      "iteration_ids": [
+        "case-09-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    },
+    {
+      "id": "case-10",
+      "title": "登机条 · 一眼看清 B27",
+      "audience": "在航站楼里抬头找自己航班、担心误机的旅客",
+      "use_context": "1400×800 横屏图，登机口上方小屏 / 手机登机提醒",
+      "user_goal": "不用在几十行航班表里找，立刻知道登机口、是否还来得及、要不要现在走",
+      "content_basis": "自拟演示：MU 5738、B27、18:35 截止、9 分钟步行均为脚本设定",
+      "visual_intent": "把整块信息牌压缩成单个航班：左侧 190px 的超大登机口数字，中间一条水平时间轴标出「你在这里」，右侧给出步行分钟与「现在走还来得及」的绿灯结论",
+      "problem": "机场航班大屏把几十个航班堆成小字表格，旅客要逐行定位自己的航班号，再自行推断登机口、时间与是否该动身",
+      "fix": "只呈现当前航班，用超大登机口 + 时间轴 + 步行倒计时把「找信息」变成「看一个结论」",
+      "png": "case-10/final.png",
+      "snapshot": "case-10/final.snapshot",
+      "dimensions": [
+        1400,
+        800
+      ],
+      "supporting_assets": [],
+      "asset_note": "纯 DSL 构造；未使用任何外部图片/纹理/生成素材",
+      "dsl_capabilities": "LINEAR 全屏渐变、超大拉丁数字、水平时间轴 circle/rect、荧光绿状态 chip、结论面板",
+      "completion_criteria": [
+        {
+          "id": "C1",
+          "condition": "问题背景、重构后的关键数值与可执行结论完整出现在画面，无占位符或 lorem ipsum",
+          "check_method": "ViewImage 打开 final.png 逐项核对文字内容"
+        },
+        {
+          "id": "C2",
+          "condition": "正文≥17px、标题≥30px；目标观看尺寸下无遮挡、无裁切、无重叠、对比度足够",
+          "check_method": "ViewImage 打开并放大文字区逐处检查"
+        },
+        {
+          "id": "C3",
+          "condition": "构图、配色与信息结构与本套其余 9 张明显不同，解决的是不同的日常信息难题",
+          "check_method": "gallery.md 十图并列审查 + 逐张 ViewImage 比较"
+        },
+        {
+          "id": "C4",
+          "condition": "演示数值由脚本计算且画面与 problem-evidence.json 一致；明确标注虚构/演示",
+          "check_method": "核对 problem-evidence.json、脚本计算与各 case.md"
+        },
+        {
+          "id": "C5",
+          "condition": "PNG 为服务真实响应（文件头 89 50 4E 47）且同名 .snapshot 完整自包含",
+          "check_method": "读取 PNG 文件头 + 检查 requests.jsonl 200/image-png 记录"
+        }
+      ],
+      "criteria_history": [],
+      "criterion_results": [
+        {
+          "id": "C1",
+          "result": "passed",
+          "method": "ViewImage 打开最终 PNG 逐项核对问题背景、关键数值与可执行结论",
+          "evidence": "最终 v1 版 case-10/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C2",
+          "result": "passed",
+          "method": "ViewImage 打开并放大文字区检查字号、遮挡、裁切与对比度",
+          "evidence": "最终 v1 版 case-10/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C3",
+          "result": "passed",
+          "method": "gallery.md 十图并列 + 逐张 ViewImage 比较构图/配色/信息结构",
+          "evidence": "最终 v1 版 case-10/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C4",
+          "result": "passed",
+          "method": "核对 problem-evidence.json、脚本计算值与各 case.md / 画面文字",
+          "evidence": "最终 v1 版 case-10/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        },
+        {
+          "id": "C5",
+          "result": "passed",
+          "method": "读取 PNG 文件头 89 50 4E 47 并检查 requests.jsonl 的 200/image-png 记录",
+          "evidence": "最终 v1 版 case-10/final.png 已实际打开查看；逐图结论见 case.md、tmp/20261104-145656-hy4all/B06/visual-review-v1.md 与 design-review.md"
+        }
+      ],
+      "visual_review": "v1 首版实际打开即通过：巨大「B27」、绿色「现在登机」标、水平时间轴 4 节点与当前高亮、右侧 9 分钟步行面板、荧光绿「现在走 / 还来得及」两行结论与底部信息全部完整清晰，无裁切遮挡。未发生修改。",
+      "request_ids": [
+        "B06-final-55218-0"
+      ],
+      "iteration_ids": [
+        "case-10-v1"
+      ],
+      "unresolved_issues": [],
+      "plan_version": "B06-plan-v1"
+    }
+  ],
+  "final_collection_review": "10 张最终 PNG 均已逐张用 ViewImage 打开检查（v1 全 10 张基线 + 4 张 v2 复查）。其中 6 张首版即通过，4 张（case-01/02/06/07）经 1 轮真实视觉迭代修复后通过；所有已知的遮挡、裁切、重叠、中英混杂与连线交叉缺陷均已消除。10 件作品分别解决不同的日常信息难题，并采用不同的主导视觉组织（极坐标环 / 排序标尺 / 时间色带 / 同心仪表 / 垂直单轨 / 放射扇区 / 决策树 / 列网格色带 / 分区网格+阶梯 / 超大数字时间轴），构图、配色与信息结构互不相同，不是同模板换文案。全部数值为脚本计算的自拟演示数据并明确标注虚构；每张 PNG 文件头均为真实 89 50 4E 47，且都有同名完整自包含 .snapshot。未使用任何外部素材。未做真实用户实验，不声称实际效果提升。剩余事项：无。",
+  "unresolved_issues": []
+}

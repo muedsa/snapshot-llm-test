@@ -1,0 +1,593 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "note": "答案由同一份 make_objects() 几何程序计算，逐项可复算核验。Q13 为『无法确定』。",
+  "definitions": {
+    "coordinate_origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+    "grid_center": "(100+200*c,100+200*r)",
+    "id_numbering": "G01–G64 = 8*r+c+1（左→右、上→下）",
+    "strict_center_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算，不要求 y 相等）",
+    "distance": "欧氏距离，保留 2 位小数",
+    "bbox": "主体外接正方形框 [left,top,right,bottom]，不含 ID 文字；圆环按外径，内径=外径/2",
+    "two_step": "两步题的第二步候选集严格来自第一步结果",
+    "visible_only": "所有题目只能根据最终可见图回答，不能把隐藏对象数量作为标准答案"
+  },
+  "answers": [
+    {
+      "id": "Q01",
+      "answer": {
+        "count": 4,
+        "ids": [
+          "G03",
+          "G07",
+          "G35",
+          "G39"
+        ],
+        "centers": [
+          [
+            500,
+            100
+          ],
+          [
+            1300,
+            100
+          ],
+          [
+            500,
+            900
+          ],
+          [
+            1300,
+            900
+          ]
+        ]
+      },
+      "method": "筛选 color=='绿' AND shape=='圆环'；中心按格中心公式；按 G 编号升序输出。",
+      "referenced_objects": [
+        "G03",
+        "G07",
+        "G35",
+        "G39"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q02",
+      "answer": {
+        "count": 5,
+        "ids": [
+          "G08",
+          "G11",
+          "G29",
+          "G47",
+          "G50"
+        ]
+      },
+      "method": "第一步筛 size==80（主体直径/边长像素）；第二步在结果中筛 shape=='圆角方'；按编号升序。",
+      "referenced_objects": [
+        "G02",
+        "G05",
+        "G08",
+        "G11",
+        "G14",
+        "G17",
+        "G20",
+        "G23",
+        "G26",
+        "G29",
+        "G32",
+        "G35",
+        "G38",
+        "G41",
+        "G44",
+        "G47",
+        "G50",
+        "G53",
+        "G56",
+        "G59",
+        "G62"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "无（计数/编号）",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q03",
+      "answer": {
+        "left_object": "G09",
+        "x_G09": 100,
+        "x_G52": 700,
+        "abs_diff": 600
+      },
+      "method": "『严格更靠左』定义为中心 x 严格更小（不要求 y 相等，等号不算）；比较 G09.x 与 G52.x，差值取绝对值。",
+      "referenced_objects": [
+        "G09",
+        "G52"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q04",
+      "answer": {
+        "step1_count": 16,
+        "blue_count": 4,
+        "blue_ids": [
+          "G33",
+          "G43",
+          "G49",
+          "G59"
+        ]
+      },
+      "method": "第一步：中心 x 严格 <800 且中心 y 严格 >800（两个严格不等式）；第二步：在结果中统计 color=='蓝' 并给编号。",
+      "referenced_objects": [
+        "G33",
+        "G34",
+        "G35",
+        "G36",
+        "G41",
+        "G42",
+        "G43",
+        "G44",
+        "G49",
+        "G50",
+        "G51",
+        "G52",
+        "G57",
+        "G58",
+        "G59",
+        "G60"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q05",
+      "answer": {
+        "distance": 1979.9,
+        "p1": [
+          100,
+          100
+        ],
+        "p2": [
+          1500,
+          1500
+        ]
+      },
+      "method": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)，G01=(100,100)，G64=(1500,1500)，d=1400√2。",
+      "referenced_objects": [
+        "G01",
+        "G64"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "距离 ±0.01px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q06",
+      "answer": {
+        "set_ids": [
+          "G26",
+          "G30",
+          "G58",
+          "G62"
+        ],
+        "nearest_id": "G26",
+        "distance": 632.46
+      },
+      "method": "第一步筛 color=='紫' AND shape=='圆'；第二步求各中心到 G01 中心 (100,100) 的欧氏距离，取最小；并列取 G 编号最小者。",
+      "referenced_objects": [
+        "G26",
+        "G30",
+        "G58",
+        "G62"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "距离 ±0.01px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q07",
+      "answer": {
+        "first_3_ids": [
+          "G03",
+          "G06",
+          "G09"
+        ],
+        "full_order_preview": [
+          "G03",
+          "G06",
+          "G09"
+        ]
+      },
+      "method": "筛 size==64；按 (中心 y 升序, 中心 x 升序) 组合键排序（每格中心唯一，故无并列）；取前 3 个编号。",
+      "referenced_objects": [
+        "G03",
+        "G06",
+        "G09",
+        "G12",
+        "G15",
+        "G18",
+        "G21",
+        "G24",
+        "G27",
+        "G30",
+        "G33",
+        "G36",
+        "G39",
+        "G42",
+        "G45",
+        "G48",
+        "G51",
+        "G54",
+        "G57",
+        "G60",
+        "G63"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q08",
+      "answer": {
+        "first_2_ids": [
+          "G64",
+          "G48"
+        ]
+      },
+      "method": "第一步筛 color=='橙'；第二步按 (中心 x 降序, 中心 x 相同则中心 y 降序) 排序，取前 2 个编号。",
+      "referenced_objects": [
+        "G02",
+        "G06",
+        "G12",
+        "G16",
+        "G18",
+        "G22",
+        "G28",
+        "G32",
+        "G34",
+        "G38",
+        "G44",
+        "G48",
+        "G50",
+        "G54",
+        "G60",
+        "G64"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q09",
+      "answer": {
+        "bbox": [
+          1260.0,
+          460.0,
+          1340.0,
+          540.0
+        ],
+        "size": 80,
+        "center": [
+          1300,
+          500
+        ]
+      },
+      "method": "包围框=主体外接正方形框 [cx-s/2, cy-s/2, cx+s/2, cy+s/2]，不含 ID 文字；G23 为绿色圆 size=80 中心 (1300,500) → [1260,460,1340,540]。",
+      "referenced_objects": [
+        "G23"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q10",
+      "answer": {
+        "union_bbox": [
+          68.0,
+          268.0,
+          1332.0,
+          1532.0
+        ],
+        "set_ids": [
+          "G15",
+          "G21",
+          "G27",
+          "G33",
+          "G63"
+        ]
+      },
+      "method": "第一步筛 color=='蓝' AND size==64；第二步对全部主体框求最小覆盖矩形：[min left, min top, max right, max bottom]。",
+      "referenced_objects": [
+        "G15",
+        "G21",
+        "G27",
+        "G33",
+        "G63"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q11",
+      "answer": {
+        "color_counts": {
+          "蓝": 16,
+          "橙": 16,
+          "绿": 16,
+          "紫": 16
+        },
+        "shape_counts": {
+          "圆": 16,
+          "方": 16,
+          "圆环": 16,
+          "圆角方": 16
+        }
+      },
+      "method": "逐对象统计 color / shape 频数，顺序 蓝/橙/绿/紫 与 圆/方/圆环/圆角方。",
+      "referenced_objects": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10",
+        "G11",
+        "G12",
+        "G13",
+        "G14",
+        "G15",
+        "G16",
+        "G17",
+        "G18",
+        "G19",
+        "G20",
+        "G21",
+        "G22",
+        "G23",
+        "G24",
+        "G25",
+        "G26",
+        "G27",
+        "G28",
+        "G29",
+        "G30",
+        "G31",
+        "G32",
+        "G33",
+        "G34",
+        "G35",
+        "G36",
+        "G37",
+        "G38",
+        "G39",
+        "G40",
+        "G41",
+        "G42",
+        "G43",
+        "G44",
+        "G45",
+        "G46",
+        "G47",
+        "G48",
+        "G49",
+        "G50",
+        "G51",
+        "G52",
+        "G53",
+        "G54",
+        "G55",
+        "G56",
+        "G57",
+        "G58",
+        "G59",
+        "G60",
+        "G61",
+        "G62",
+        "G63",
+        "G64"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "无（整数计数）",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q12",
+      "answer": {
+        "step1_count": 32,
+        "ring_count": 8,
+        "ring_ids": [
+          "G07",
+          "G14",
+          "G21",
+          "G32",
+          "G39",
+          "G46",
+          "G53",
+          "G64"
+        ]
+      },
+      "method": "第一步：中心 x ≥ 800（含等号）；第二步：在结果中统计 shape=='圆环' 并给编号。",
+      "referenced_objects": [
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G13",
+        "G14",
+        "G15",
+        "G16",
+        "G21",
+        "G22",
+        "G23",
+        "G24",
+        "G29",
+        "G30",
+        "G31",
+        "G32",
+        "G37",
+        "G38",
+        "G39",
+        "G40",
+        "G45",
+        "G46",
+        "G47",
+        "G48",
+        "G53",
+        "G54",
+        "G55",
+        "G56",
+        "G61",
+        "G62",
+        "G63",
+        "G64"
+      ],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "坐标 ±1px",
+      "visibility_basis": "仅根据 grid-scene.png 的可见主体与 ID 文字回答；scene-data.json 给出逐对象真实几何供复算。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    },
+    {
+      "id": "Q13",
+      "answer": {
+        "determinate": false,
+        "value": "无法确定"
+      },
+      "method": "两版可见像素完全一致（equivalence.json 不同像素数=0），但隐藏内容不同；仅凭任一可见图无法区分被遮内容。",
+      "referenced_objects": [],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "不适用（定性）",
+      "visibility_basis": "仅根据 occlusion.png / occlusion-alternative.png 的可见内容回答；两版可见像素完全一致，见 equivalence.json；不得使用隐藏对象数量。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）",
+      "undecidable_reason": "occlusion.png 的场景 A 隐藏红色实心圆、occlusion-alternative.png 的场景 B 隐藏紫色实心方，两者都被同一不透明遮挡板 [200,600]×[200,600] 完全覆盖，全部绘制影响不可见；两版可见像素逐通道完全一致（见 equivalence.json），因此从可见图无法推断被遮内容的形状或颜色，也不能把隐藏对象数量当作标准答案。"
+    },
+    {
+      "id": "Q14",
+      "answer": {
+        "count": 3,
+        "circles": [
+          {
+            "center": [
+              120,
+              300
+            ],
+            "color": "蓝"
+          },
+          {
+            "center": [
+              680,
+              300
+            ],
+            "color": "橙"
+          },
+          {
+            "center": [
+              400,
+              720
+            ],
+            "color": "绿"
+          }
+        ]
+      },
+      "method": "在遮挡板之外，图中可见的实心圆逐个数出，中心坐标按像素读取。",
+      "referenced_objects": [],
+      "relation_definitions": {
+        "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+        "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+        "bbox": "[cx-s/2,cy-s/2,cx+s/2,cy+s/2] 主体外接正方形框，不含 ID 文字",
+        "sorting": "按题目给定组合键；并列时按题目给定打破规则（若有）保证唯一解"
+      },
+      "tolerance": "圆心 ±2px",
+      "visibility_basis": "3 个实心圆全部位于遮挡板 [200,600]×[200,600] 之外且未被任何元素覆盖，两版可见前景完全相同；仅按可见图计数，不涉及被遮内容。",
+      "computed_from": "build.py 内 make_objects() 确定性几何（非手写答案）"
+    }
+  ]
+}

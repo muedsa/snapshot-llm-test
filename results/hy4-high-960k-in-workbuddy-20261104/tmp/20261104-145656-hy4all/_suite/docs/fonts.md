@@ -1,0 +1,150 @@
+# 字体与跨平台文字
+
+> 把字体打包进应用，供 Kotlin 与文本 DSL 使用，并排查缺字和基线偏移。
+
+如果本机正常、服务器却出现方框、换行变化或文字上下偏移，先检查渲染进程使用的字体。`fontFamily` 只是字体名称，不会下载字体；网页 CSS 和浏览器字体也不会传给 JVM 或 Open Snapshot 服务。
+
+## 准备字体文件
+
+下面使用 Noto Sans CJK SC 的简体中文静态字体。打开官方仓库的文件页，通过 **Download raw file** 下载以下两个文件；链接固定到同一版本 `Sans2.004`，便于复现：
+
+| 文件                          | 用途        | 获取位置                                                                                                                       |
+| --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `NotoSansCJKsc-Regular.otf` | 常规字重（400） | [官方 Regular 文件](https://github.com/notofonts/noto-cjk/blob/Sans2.004/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf) |
+| `NotoSansCJKsc-Bold.otf`    | 粗体（700）   | [官方 Bold 文件](https://github.com/notofonts/noto-cjk/blob/Sans2.004/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf)       |
+
+将原始字体文件和同版本的 [SIL Open Font License](https://github.com/notofonts/noto-cjk/blob/Sans2.004/LICENSE) 放进应用资源目录。不要保存 GitHub 文件预览网页，也不需要把 `.otf` 改名成 `.ttf`：
+
+```text
+src/main/resources/fonts/
+  NotoSansCJKsc-Regular.otf
+  NotoSansCJKsc-Bold.otf
+  LICENSE
+```
+
+打包时这些文件会进入 classpath，读取不依赖应用的启动目录。也可以选择其他覆盖所需语言、允许随应用分发的字体，但要同步修改文件名并保留对应许可证。
+
+静态字体通常一个文件对应一个字重；可变字体则把多个字重放在一个文件中，两者不能只靠改文件名互换。本文用两个静态文件演示明确的 Regular / Bold 匹配；仅加载 Regular 再请求 `BOLD`，不能保证使用到设计好的粗体字形。
+
+## 注册字体并选择字重
+
+下面可作为完整的 `Main.kt`，依赖配置沿用[快速开始](/guides/quickstart/)。运行后得到 480×160 的 `font-demo.png`，上下两行分别使用常规和粗体：
+
+```kotlin
+import com.muedsa.geometry.EdgeInsets
+import com.muedsa.snapshot.SnapshotPNG
+import com.muedsa.snapshot.paint.text.TextPainter
+import com.muedsa.snapshot.paint.text.TextStyle
+import com.muedsa.snapshot.rendering.flex.CrossAxisAlignment
+import com.muedsa.snapshot.widget.Column
+import com.muedsa.snapshot.widget.Container
+import com.muedsa.snapshot.widget.SizedBox
+import com.muedsa.snapshot.widget.text.Text
+import org.jetbrains.skia.Data
+import org.jetbrains.skia.FontMgr
+import org.jetbrains.skia.FontStyle
+import org.jetbrains.skia.Typeface
+import org.jetbrains.skia.paragraph.TypefaceFontProvider
+import java.io.File
+
+
+object AppFonts {
+    const val FAMILY = "AppSans"
+    // 对象随进程保留；渲染期间不要关闭字体或 provider。
+    val regular = load("/fonts/NotoSansCJKsc-Regular.otf")
+    val bold = load("/fonts/NotoSansCJKsc-Bold.otf")
+    private val provider = TypefaceFontProvider()
+        .registerTypeface(regular, FAMILY)
+        .registerTypeface(bold, FAMILY)
+
+
+    private fun load(path: String): Typeface =
+        checkNotNull(AppFonts::class.java.getResourceAsStream(path)) {
+            "字体没有打包进应用：$path"
+        }.use { stream ->
+            Data.makeFromBytes(stream.readBytes()).use { data ->
+                checkNotNull(FontMgr.default.makeFromData(data)) { "无法解码字体：$path" }
+            }
+        }
+
+
+    fun install() {
+        TextPainter.FONT_COLLECTION.setAssetFontManager(provider)
+    }
+}
+
+
+fun main() {
+    AppFonts.install() // 应用启动时调用，在接收渲染请求之前完成。
+    val png = SnapshotPNG {
+        Container(width = 480f, height = 160f, padding = EdgeInsets.all(24f)) {
+            Column(crossAxisAlignment = CrossAxisAlignment.START) {
+                Text("常规 Regular 中文 Agjp", style = TextStyle(
+                    fontFamilies = listOf(AppFonts.FAMILY),
+                    fontStyle = FontStyle.NORMAL, fontSize = 28f,
+                ))
+                SizedBox(height = 12f)
+                Text("粗体 Bold 中文 Agjp", style = TextStyle(
+                    fontFamilies = listOf(AppFonts.FAMILY),
+                    fontStyle = FontStyle.BOLD, fontSize = 28f,
+                ))
+            }
+        }
+    }
+    File("font-demo.png").writeBytes(png)
+}
+```
+
+`AppSans` 是注册时选定的别名，使用别名可以避免依赖字体文件内部的族名。两个文件都注册为 `AppSans`，字重来自字体文件自身的元数据；`fontStyle` 再选择常规或粗体。只重命名文件不会改变字重，这两个文件也不提供真正的斜体字形。
+
+`TextPainter.FONT_COLLECTION` 是进程级共享对象，应该在启动阶段配置一次；不要按请求来回切换字体管理器。增加字体族时，将字体以另一个别名注册到同一个 provider，再一次性安装；重复设置新的 manager 会替换此前的配置。
+
+仅在 Kotlin 中使用时，也可直接写 `TextStyle(typeface = AppFonts.regular)` 或 `TextStyle(typeface = AppFonts.bold)` 选择具体文件。通过 `fontFamilies` + `fontStyle` 选择更适合与 DSL 共用命名配置。
+
+## 同一套字体供 DSL 使用
+
+在**运行 Parser 的 JVM** 中先调用 `AppFonts.install()`，再解析：
+
+```xml
+<Snapshot background="#FFFFFF">
+  <Container width="480" height="160" padding="24">
+    <Column crossAxisAlignment="START">
+      <Text fontFamily="AppSans" fontSize="28" fontStyle="NORMAL">常规 Regular 中文 Agjp</Text>
+      <SizedBox height="12" />
+      <Text fontFamily="AppSans" fontSize="28" fontStyle="BOLD">粗体 Bold 中文 Agjp</Text>
+    </Column>
+  </Container>
+</Snapshot>
+```
+
+相邻的两个 Text 是两个段落，需要各自设置字体。同一个 Text 内部则可让嵌套 Text / Raw 继承样式；例如 `<Text fontFamily="AppSans"><Text fontStyle="BOLD">标题</Text><Raw> 正文</Raw></Text>` 会保留同一字体族，只切换标题的字重。
+
+这个别名只在你配置过的渲染进程里存在。把模板复制到公共 Playground，并不会把本地字体一起上传；公共服务能使用哪些字体取决于服务的部署配置。
+
+## 缺字与备用字体
+
+中文字体不一定包含 Emoji、罕用符号或其他语言。发现方框或部分字符高低不同，先检查所用字体是否包含这些字符，再准备备用字体，避免只调整坐标掩盖缺字回退。
+
+例如将备用字体以 `AppSymbols` 别名注册到同一 provider 后，Kotlin 可写 `fontFamilies = listOf("AppSans", "AppSymbols")`，DSL 可写 `fontFamily="AppSans,AppSymbols"`。这里的 `AppSymbols` 是你注册的别名，不是 Snapshot 自带字体；逗号后不要加空格。
+
+字体列表仍未覆盖的字符可能回退到系统字体，因此仅注册一个族或两个字重，还不能保证所有平台逐像素一致。需要固定 Emoji 外观时，也可使用 [WidgetSpan / Emoji](/reference/parser-tags/#emoji) 放入明确的图片资源。
+
+## 中英文与图文混排怎样对齐
+
+字体的基线是排字参考线；文字盒还包含上方和下方的度量空间。字号相同、盒子居中，都不保证笔画顶部或底部一致。
+
+| 情况          | 先这样处理                                             |
+| ----------- | ------------------------------------------------- |
+| 一句话里中英文高低不一 | 放进同一个 Text / RichText，统一字体；检查是否缺字回退               |
+| 不同字号的价格与单位  | 使用 Row 的 `BASELINE` + `textBaseline = ALPHABETIC` |
+| 图标与标签文字同行   | 优先放进同一段落的 WidgetSpan，固定图标尺寸并显式设置 `MIDDLE`；检查透明留白  |
+| 图片跟随文字换行    | 用 WidgetSpan / Emoji 的 `MIDDLE` 或明确的基线位置          |
+| 多行文字行距跳动    | 固定字体后再配置 Strut，别先用固定偏移掩盖问题                        |
+
+可复制的 Kotlin 示例见[文本基线与混排](/guides/media-text/#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)，DSL 示例见[文本属性详解](/reference/parser-text/#%E5%9F%BA%E7%BA%BF%E4%B8%8E%E6%B7%B7%E6%8E%92)。其中也说明了当前 Padding / Align 基线转发的限制。
+
+## 部署后怎样验证
+
+先用固定输入 `中文 Agjp 0123` 出一张图，再加入实际业务会出现的 Emoji、重音字母、不同字重和长标题。检查缺字、换行点、基线及末行裁剪；最后在实际容器中重复一次。
+
+同一族名可能对应不同版本的字体文件。需要稳定结果时，把字体文件、字体许可证、Snapshot / Skiko 版本和运行平台一起纳入部署记录。测试方法见[测试与 Golden](/guides/testing/)，不要只比较本机浏览器中的显示效果。

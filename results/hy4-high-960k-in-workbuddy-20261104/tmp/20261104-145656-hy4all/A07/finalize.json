@@ -1,0 +1,34 @@
+{
+  "task": "A07",
+  "title": "三线换乘图与路线核验",
+  "status": "完成",
+  "end_reason": "需求满足并完成两图逐张视觉自检",
+  "outputs": [
+    {"file": "network-map.png", "dsl": "network-map.snapshot", "purpose": "1600×1000 全网示意图：16 站、3 线 45°/90° 折线、换乘双环、无障碍状态、线路字母、非地理声明与行程核验侧栏", "verdict": "完成；服务真实 PNG，242924 字节，1600×1000"},
+    {"file": "travel-card.png", "dsl": "travel-card.snapshot", "purpose": "720×1280 旅行卡：3 段普通最短旅程 + 无障碍判定 + Q2 替代无障碍最短旅程 + 图例规则", "verdict": "完成；服务真实 PNG，233262 字节，720×1280"}
+  ],
+  "extra_outputs": [
+    {"file": "routes.json", "purpose": "queries 的普通/无障碍路线（站序、线路段、区间数、换乘数、换乘站）、accessibility 逐站检查、optimality 计算依据、content_map 两图区域映射"}
+  ],
+  "requirements": "全网示意图与旅行卡视觉系统一致（同一 R 红/B 蓝/G 绿配色、线路字母、换乘双环、绿勾/灰叉无障碍徽标），分别排版。16 站编号 S01–S16 与中文名称完整、字号≥20；线路按站序用水平/垂直/45° 折线绘制，所有转折为 45° 或 90°；颜色 + 线路字母双重区分；换乘站为共享站（S04 R×B、S05 R×G、S08 B×G），单纯线条交叉不等于换乘并明确标注；明确标注非地理示意图；逐站标注 accessible 状态并给图例。queries 3 组按(最少站间边数, 换乘最少)求普通路线与无障碍路线；accessible=false 站仅可乘车途经，不可作端点/换乘站，不删除线路；站数≠区间数（区间数=站数−1）；换乘=改变乘坐线路、首次上车不计。routes.json 记录站序/线路段/边数/换乘数/最优性依据/内容映射。旅行卡正文≥20。",
+  "self_check": "逐张打开最终实际 PNG 并做局部放大检查。首版（v1）发现：全网图右侧『本图为非地理示意图…』声明溢出白色面板并与底部『A07 · SNAPSHOT DSL』文字重叠；白色站点名标签盒压住蓝色竖线（S08/S04 处）和绿色斜线（S15/S16 附近），造成线路视觉中断；旅行卡第 2 张卡底部『替代无障碍旅程』的换乘说明与规则文字被第 3 张卡遮挡/裁切，底部图例规则说明第二行被白卡底边截断。v2 把 16 个标签盒移到线路之外并加短引导线、面板加高到 y=980 并移除冲突页脚、重排三卡高度（260/410/260）与卡内行距，重新渲染并逐张打开复查：三线恢复连续、声明完整落入面板、Q2 替代路线完整显示；但页脚规则说明仍换行被裁切、部分小字低于 20px。v3 把卡内规则说明改为 20px 单行、图例标签提到 20px、页脚说明提到 18px 并调整文字盒，复查发现 18px 页脚说明仍两行且第二行被裁切。v4 把页脚说明缩短为单行，再次渲染并打开整图与底部放大局部复查：单行完整无裁切，三卡与图例全部完整，两张最终图内容/数据/对齐/可读性达标。另用 Pillow 校验两张 PNG 均为 89 50 4E 47 真实 PNG 且尺寸分别为 1600×1000、720×1280。地图 16 站标签、无障碍徽标（12 个绿勾、4 个灰叉）、3 个线路字母徽标、换乘双环、右侧行程核验 Q1/Q2/Q3 与 routes.json 完全一致。",
+  "dsl_capabilities": "使用 Snapshot 根节点 type=png + background；Stack + Positioned 绝对定位画布（固定尺寸 Container 作基准）；Container 的 color/borderRadius/border/gradient* 实现卡片、渐变头部与色带；ClipPath SVG 多边形路径（dsl.Canvas.line/poly/arrow_head）绘制 45°/90° 折线、引导线与勾/叉符号；Text 的 fontFamily/fontSize/fontStyle/color/textAlign + CDATA 文本；8 位 CSS 颜色 #RRGGBBAA 未用于本题主体（透明度由 Opacity 表达的场景留给 A10）。所有主体、图表、文字、图标均由 DSL 构造，无外部素材。",
+  "fonts_note": "/fonts 返回 Inter、Noto Sans CJK SC、Noto Serif CJK SC、Noto Sans Mono CJK SC 等；本题中文用 Noto Sans CJK SC，纯拉丁/数字（S01、R/B/G、A07）用 Inter，混排文本统一用中文族以避免箭头/括号缺字。缓存见 tmp/<run_id>/_suite/docs/fonts.txt。",
+  "iterations": [
+    {"id": "v1", "parent": null, "type": "baseline", "image": "outputs/20261104-145656-hy4all/A07/network-map.png, outputs/20261104-145656-hy4all/A07/travel-card.png (v1)", "observed": "首版查看两张图并放大局部：全网图右侧非地理声明溢出面板、与页脚文字重叠；白色站点名标签盒压住蓝色竖线与绿色斜线造成线路中断；旅行卡第 2 张卡底部内容被第 3 张卡遮挡/裁切，页脚规则说明被截断。", "cause": "实际渲染图逐项观察；标签盒位置未按线路几何避让，面板与卡片高度估计不足，多行文字盒高度不足。", "change": "生成首版基线 DSL（tmp/<run_id>/A07/v1/）并实际查看两张 PNG 及局部放大。", "result": "确认需修改，进入视觉迭代。", "complete": true},
+    {"id": "v2", "parent": "v1", "type": "visual", "image": "outputs/20261104-145656-hy4all/A07/network-map.png, outputs/20261104-145656-hy4all/A07/travel-card.png (v2)", "observed": "v1 的面板溢出、标签遮断线路、第 2 张卡裁切、页脚截断等缺陷。", "cause": "实际渲染图与局部放大观察；标签盒与线路相交、面板/卡片高度不足。", "change": "16 个站点标签盒按 R/B/G 线段几何移到线路外并加短引导线（连线/标记在其后绘制以保持线路连续）；右侧面板高度 762→852（到 y=980）并移除与之重叠的右下页脚文字；旅行卡头部 140→126、三卡高度改为 260/410/260 并压缩卡内行距，页脚下移并加高。", "result": "重新渲染并逐张打开复查：三线连续、16 站标签不压线、声明完整落入面板、Q2 替代路线与规则说明完整显示；但旅行卡页脚规则说明仍换行被裁切、部分小字低于 20px，继续迭代。", "complete": true},
+    {"id": "v3", "parent": "v2", "type": "visual", "image": "outputs/20261104-145656-hy4all/A07/travel-card.png (v3)", "observed": "页脚规则说明第二行被白卡底边裁切；卡内规则说明 18px、图例标签 19px、页脚说明 16px，低于或接近『手机正文≥20』的边界。", "cause": "底部放大局部观察；多行文字盒高度不足，字号偏小。", "change": "卡内规则说明改 20px 单行并缩短；图例『具备/不具备』标签提到 20px；页脚说明提到 18px 并改用 30px 高文字盒。", "result": "再次渲染并放大复查：18px 页脚说明仍换成两行且第二行被裁切，需再改。", "complete": true},
+    {"id": "v4", "parent": "v3", "type": "visual", "image": "outputs/20261104-145656-hy4all/A07/travel-card.png (v4，最终)", "observed": "18px 页脚规则说明两行、第二行被白卡底边裁切。", "cause": "底部放大局部观察；说明句过长导致换行。", "change": "页脚规则说明缩短为单行『换乘=改变乘坐线路（首次上车不计）；按(区间数,换乘数)取最优。』（非地理声明已在标题栏、卡内与全网图重复给出），文字盒给足 30px；全网图 DSL 与 v2/v3 相同，未改动。", "result": "最终逐张打开两张 PNG 并放大底部复查：旅行卡单行说明完整无裁切，三张卡、图例、标题全部完整；全网图线路连续、面板声明完整、16 站标签与徽标齐全；两张最终图达标。", "complete": true}
+  ],
+  "pitfalls": "踩坑：① Text 不做 HTML 实体解码，特殊字符必须用 CDATA（dsl.cdata 统一处理），且混排中文时应使用 Noto Sans CJK SC 而非 Inter，否则箭头/括号/圈号可能缺字；② 固定尺寸 Positioned 内用带显式宽高的 Container 会被父紧约束覆盖，故复杂嵌套需以根节点 Stack 的松约束子项构造；③ 白色站点名标签盒若压在线路上会让人误以为线路中断，需按线段几何避让并补引导线；④ 多行说明文字盒高度不足会被裁切，宁可缩短为单行；⑤ 服务出现一次瞬时连接重置（network-map 首请求 status 0，重试成功）与两次 SSL/读超时（travel-card，见 tmp/<run_id>/A07/responses/*.bin），因此改用后台任务执行渲染并保留全部失败响应，未把错误响应当作最终图。",
+  "design": "两图共用深蓝渐变头部、白卡片、R/B/G 三色与线路字母、换乘双环、绿勾/灰叉无障碍徽标，形成一致视觉系统。全网图采用八向（0°/45°/90°）网格：R 线水平后在 S06 转 45°、B 线竖直后在 S09 转 90°、G 线水平后在 S08 转 45°、在 S05 转 90°；所有线路交汇点恰为三个共享换乘站，避免非换乘交叉歧义，并在侧栏明确写出『单纯线条交叉不等于换乘』与『非地理示意图』声明。旅行卡把 3 段行程做成可核查卡片：站序、区间数/换乘数、按线路段着色的 R/B/G 色带、换乘站与方向，以及无障碍判定；Q2 因换乘站 S05 为 accessible=false 而另给最短无障碍替代路线（6 区间、2 换乘，改在 S08、S04 换乘），直观呈现约束差异。routes.json 用 Dijkstra（状态 = 站点×当前线路，边权 (1,0)/(0,1)）计算，断言『站数 = 区间数 + 1』，并记录逐站 accessibility 角色、最优性依据与两图内容映射。",
+  "closing": "最终实际图片已逐张打开检查：全网图 16 站编号/名称、三线 45°/90° 折线、颜色+字母、换乘双环、无障碍状态图例、非地理声明与行程核验齐全；旅行卡 3 段普通旅程、无障碍判定、Q2 替代无障碍旅程与图例规则完整可读，无遮挡/裁切/乱码，数据与 routes.json 一致，据此标为完成。",
+  "visual_review_evidence": [
+    "v1 network-map.png / travel-card.png 打开并放大 panel_bottom、blue_line、green_diag 局部，记录 4 类缺陷",
+    "v2 network-map.png / travel-card.png 打开逐项复查，线路连续性与面板/卡片裁切修复，发现页脚仍裁切",
+    "v3 travel-card.png 打开并放大 card_footer 局部，发现 18px 说明两行仍被裁切",
+    "v4 travel-card.png 打开并放大 card_footer_v4 局部，单行说明完整；最终 network-map.png 与 travel-card.png 均再次整图打开确认"
+  ],
+  "unresolved": "无。",
+  "unresolved_issues": []
+}

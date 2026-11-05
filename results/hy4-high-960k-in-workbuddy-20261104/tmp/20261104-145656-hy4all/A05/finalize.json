@@ -1,0 +1,63 @@
+{
+  "task": "A05",
+  "title": "不规则采样与缺测的仪表报告",
+  "outputs": [
+    {
+      "file": "sensor-report.png",
+      "dsl": "sensor-report.snapshot",
+      "purpose": "1440×1000 三联趋势与明细",
+      "verdict": "完成；服务真实 PNG"
+    }
+  ],
+  "extra_outputs": [
+    {
+      "file": "normalized-data.json",
+      "purpose": "12 采样分钟偏移/null 缺测、三指标统计、逐指标连接段、负压采样点与共享/独立坐标轴"
+    }
+  ],
+  "requirements": "08:00–12:30 共 270 分钟，x=190+minute×1190/270，三图共用真实时间比例横轴并对齐 12 条纵向参考线；温度/湿度在缺测采样点前后断开连线，不插值不补值；压差独立纵轴含清晰零线；每个真实读数有独立圆点标记，缺测以“—”/× 呈现；标注 09:40–10:50 的 3 个负压差采样点并明确不表示连续期间每一刻为负；上方三卡列出有效采样数与观察最小/最大值（温度 10 / 19.2–23.1 °C，湿度 11 / 34–41 %，压差 12 / −0.8–1.3 kPa）；下方 12 时点×3 指标简表，缺测用“—”；图例说明缺测与断线；正文≥20、轴/表≥18。",
+  "self_check": "实际打开 sensor-report.png 三次（v1、v2、v3）。v1 发现 12 个不规则时刻轴标签互相挤压、纵轴标题与顶部刻度重叠、压差“零线 0 kPa”标注压住 12:30 数据点；v2 改为整点刻度（全部 12 时点交由表格承载）、纵轴标题移到 x=200、零线说明并入标题并加粗零线；v3 把底部脚注上移 10px 避免贴边裁切。最终图复查：三图纵轴单位/刻度清楚、缺测×与断线正确、压差零线清晰且末点无遮挡、整点刻度齐全、12 列表格“—”正确、脚注完整。",
+  "dsl_capabilities": "Stack 固定画布；Positioned 绝对定位；Container 纯色/圆角/边框；ClipPath 路径绘折线段；dashed_vline 绘对齐参考线；ClipPath 圆点由 Container borderRadius 实现；Text 的 fontSize/textAlign/fontFamily 与 CDATA；Opacity 半透明负压区段。全部由 DSL 构造。",
+  "iterations": [
+    {
+      "id": "v1",
+      "parent": null,
+      "type": "baseline",
+      "image": "sensor-report.png (v1)",
+      "observed": "12 个不规则时刻轴标签互相重叠、纵轴标题压顶部刻度、零线标注压末点",
+      "change": "生成首版基线并查看",
+      "result": "记录 3 项缺陷",
+      "complete": true
+    },
+    {
+      "id": "v2",
+      "parent": "v1",
+      "type": "visual",
+      "image": "sensor-report.png (v2)",
+      "observed": "上述 3 项",
+      "cause": "实际渲染图观察；08:00 与 08:10 仅相隔 44px 而标签宽 104px",
+      "change": "轴上只保留 6 个整点刻度，全部 12 时点放入下方表格并加说明；纵轴标题移到 x=200；零线说明并入标题、零线加粗",
+      "result": "重渲染并查看，3 项消除；发现底部脚注距画布底边仅 4px",
+      "complete": true
+    },
+    {
+      "id": "v3",
+      "parent": "v2",
+      "type": "visual",
+      "image": "sensor-report.png (v3)",
+      "observed": "底部脚注可能被裁切",
+      "cause": "y=984+h20 超出 1000 画布",
+      "change": "脚注上移至 y=974",
+      "result": "最终图脚注完整可见，其余元素不变",
+      "complete": true
+    }
+  ],
+  "pitfalls": "踩坑：不规则采样的时刻标签不能等宽铺在真实比例轴上（08:00 与 08:10 只差 10 分钟≈44px），必须把完整时点清单移到表格，轴上只留整点；缺测绝不能用 0 或直线补值。",
+  "design": "用同一 x 映射把三张图锁在同一时间轴，12 条浅色虚线贯穿三图形成可核对的对齐网格；每张图独立纵轴与单位，压差用加粗黑零线区分正负；缺测用×而非连线，负压时段用半透明红带但文字明确只代表 3 个采样点。",
+  "closing": "最终图逐项核对 12 时点、三指标有效数与极值、断线段与 normalized-data.json 的 segments 一致，负压说明措辞未越界推断，据此标为完成。",
+  "visual_review_evidence": [
+    "sensor-report.png v1/v2/v3 opened; axis labels, axis titles, zero line and footer verified"
+  ],
+  "unresolved": "无。",
+  "unresolved_issues": []
+}

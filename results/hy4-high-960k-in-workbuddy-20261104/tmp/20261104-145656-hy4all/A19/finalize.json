@@ -1,0 +1,49 @@
+{
+  "task": "A19",
+  "title": "构造可核验的视觉题场",
+  "status": "完成",
+  "end_reason": "需求满足并完成三张图逐张视觉自检与像素等价实测",
+  "started_at": "2026-11-04T16:07:01+08:00",
+  "outputs": [
+    {"file": "grid-scene.png", "dsl": "grid-scene.snapshot", "purpose": "1600×1600 8×8 网格 / 64 个带编号对象 G01–G64 可问答场景", "verdict": "完成；服务真实 PNG 132317 字节，文件头 89 50 4E 47，尺寸 1600×1600"},
+    {"file": "occlusion.png", "dsl": "occlusion.snapshot", "purpose": "800×800 遮挡场景 A（隐藏红色实心圆）", "verdict": "完成；服务真实 PNG 52437 字节，首次请求读超时后重试成功"},
+    {"file": "occlusion-alternative.png", "dsl": "occlusion-alternative.snapshot", "purpose": "800×800 遮挡场景 B（隐藏紫色实心方），与 A 可见像素完全一致", "verdict": "完成；服务真实 PNG 52437 字节，文件 SHA-256 与 A 完全相同"}
+  ],
+  "extra_outputs": [
+    {"file": "scene-data.json", "purpose": "seed(null+确定性算法)、64 对象真实几何(行列/颜色/形状/尺寸/中心/主体框/ID文字盒)、三类属性频数、16 组合覆盖、逐行计数与 assert 检查依据"},
+    {"file": "questions.json", "purpose": "14 道题（12 网格 + 2 遮挡），每题含比较/排序规则、坐标原点、容差、是否两步；不含答案"},
+    {"file": "answers.json", "purpose": "14 题答案、计算方法、引用对象、关系/距离/包围框定义、容差、最终可见信息依据及 Q13 无法确定解释"},
+    {"file": "equivalence.json", "purpose": "A/B 两版 DSL/原始 PNG 路径、文件 SHA-256、隐藏差异、可见层不变依据；自实现 PNG→RGBA 解码器逐像素比较，不同像素数=0、最大通道差=0、结论 pixel-equivalent"}
+  ],
+  "requirements": "网格图 1600×1600 的 8×8=64 格，每格恰好一个主体、编号 G01–G64 从左到右从上到下、ID 在主体外不计入主体；4 颜色(蓝/橙/绿/紫)与 4 形状(圆/方/圆环/圆角方)各 16 个、每行至少 3 色 3 形、覆盖全部 16 种颜色×形状组合、每色每形均出现 48/64/80 三尺寸；圆环外径=size、内径=外径/2(ID 字号 22≥18)；不得外部图像，主体/文字全部由 DSL 构造。遮挡案例 800×800 两版：画布/可见前景/遮挡物/背景/渲染参数一致，隐藏内容不同且在 DSL 与审计中指出，全部绘制影响被不透明遮挡板完全覆盖，不画虚线泄漏，两版可见部分完全相同。12 道网格题覆盖复合属性检索、严格中心左右关系、距离、排序、包围框、颜色/形状计数且≥4 道两步关系，题目写明比较标准与坐标原点、避免并列多解、只能根据最终可见图回答、不把隐藏对象数量作答案；2 道遮挡题至少 1 题答案为『无法确定』。equivalence.json 按同一解码器解码为 8 位未预乘 RGBA 逐像素四通道比较、不同像素数须为 0，并记录文件 SHA-256、解码器/版本、数组哈希、最大通道差与结论。所有指定最终 PNG 为服务真实响应且有同名 .snapshot，附加 4 份 JSON 与报告/指标齐全。",
+  "self_check": "逐张用 ViewImage 打开最终 PNG 真实检查：(1) grid-scene.png — 8 行 8 列共 64 格网格线完整，G01–G64 编号全部清晰可读且位于主体上方不与主体重叠，蓝/橙/绿/紫四色分明，圆/方/圆环/圆角方四形状可辨，圆环中心确实镂空露出背景，无裁切/越格/互相遮挡/文字溢出；抽样核对 G23(绿大圆)、G03(绿圆环)、G64(橙圆环) 与 scene-data.json 一致。(2) occlusion.png — 中央 400×400 深色不透明遮挡板、板上白色『封存区/SEALED』与『400×400 不透明遮挡板』文字清晰，板外蓝(左)、橙(右)、绿(下)三个实心圆齐全，顶部标题与底部说明完整无裁切，画面无任何虚线/半透明轮廓/隐藏内容泄漏。(3) occlusion-alternative.png — 单独发起 ViewImage 逐张打开，系统返回 identical-image 去重：因两版服务返回 PNG 字节完全相同(文件 SHA-256 均为 3d9f9ce1…、均 52437 字节)，图像查看器识别为同一图像；据此结合更严格的像素级比较证明 B 版可见内容与 A 版逐像素一致。equivalence.json 由真实两张 PNG 计算：different_pixels=0、max_channel_diff=0、same_size=True、RGBA 数组 SHA-256 相同、conclusion=pixel-equivalent，通过；3 张 PNG 文件头均为 89 50 4E 47 且尺寸分别 1600×1600/800×800/800×800。14 题答案全部由 make_objects() 同一份几何程序计算(非手写)，两步题 6 道(≥4)，Q13 为『无法确定』。首版即满足全部要求，未做视觉修改；唯一重试为网络读超时(DSL 未改)。",
+  "dsl_capabilities": "使用 Snapshot 根节点 type=png + background；Stack + 固定尺寸 Container 定义画布、Positioned 绝对定位全部元素。网格图：Container(color/borderRadius/radius) 画细网格线、实心圆(rect+大圆角)、方、圆角方(radius=s/4)，圆环用『外实心圆 + 同背景色内圆(直径=外径/2)』形成镂空；Text(fontFamily/fontSize/fontStyle/textAlign + CDATA) 画 G 编号(Inter，字号 22)。遮挡图：Container 纯色不透明矩形作遮挡板(无圆角/边框/阴影)，circle/rect/text 构造隐藏内容与可见前景，绘制顺序保证隐藏内容先画、被后画的不透明遮挡板完全覆盖。所有主体、文字、几何结构由 DSL 构造，无外部图片素材；未使用 Image/ClipPath/Transform/滤镜。",
+  "fonts_note": "沿用 /fonts 缓存：中文用 Noto Sans CJK SC(Canvas 默认)，G 编号与拉丁数字用 Inter，缓存见 tmp/<run_id>/_suite/docs/fonts.txt。",
+  "iterations": [
+    {"id": "v1", "parent": null, "type": "baseline", "image": "outputs/<run_id>/A19/grid-scene.png + occlusion.png + occlusion-alternative.png (v1)", "viewed_at": "2026-11-04T16:16:30+08:00", "observed": "首版三张图逐张打开：网格 64 对象/编号/形状/颜色/圆环镂空/网格线全部清晰无裁切；遮挡 A 版板/文字/3 圆齐全无虚线泄漏；遮挡 B 版因与 A 字节级相同被查看器去重。像素等价实测 different_pixels=0、数组哈希相同。", "change": "生成首版确定性几何与 3 份 DSL、14 道题与 4 份审计 JSON 并实际渲染查看", "result": "三张图与全部数据均满足题面，首版即达标，无需视觉修改", "complete": true},
+    {"id": "v1-retry", "parent": "v1", "type": "retry", "image": "outputs/<run_id>/A19/occlusion.png (v1)", "viewed_at": "2026-11-04T16:16:40+08:00", "observed": "occlusion.png 首次渲染请求 HTTP 状态 0，transport_error=TimeoutError('The read operation timed out')，未取得图片；失败请求/响应已保留在 tmp/<run_id>/A19/requests 与 responses。", "cause": "网络读超时（render.py 记录 http_status=0），非 DSL 语法错误", "change": "按真实响应重试同一 DSL(未改动)，render_all.py --retries 2 覆盖 status=0 可重试", "result": "重试成功 HTTP 200 / image/png，52437 字节；DSL 未改动，图像与首版一致，失败响应保留", "complete": false}
+  ],
+  "pitfalls": "踩坑：(1) 环境无 Pillow(ModuleNotFoundError)，故在 build.py 内实现纯标准库 PNG→RGBA 解码器(zlib+struct，逐字节 Sub/Up/Average/Paeth 反滤波，8 位未预乘 RGBA、不合成白底/不缩放/不忽略透明像素 RGB)，服务返回恰为 colortype=6/bitdepth=8/非隔行，解码器对两张图逐通道比较得不同像素数=0。(2) 圆环为避免依赖 EVEN_ODD 镂空行为，采用外实心圆+背景色内圆实现，视觉中心确实镂空且不受网格线干扰。(3) 两版遮挡 PNG 文件 SHA-256 完全相同(字节级一致)，因此 ViewImage 对 B 版返回 identical-image 去重；等价判定以解码数组为准，文件哈希只作留痕，符合题面『不同哈希不据此判不等价』的口径(本例恰好相同，如实记录)。(4) occlusion 首次请求读超时，重试成功，DSL 未改；失败响应未删除。(5) 两版隐藏内容严格限制在遮挡板内且距板边≥90px、不使用阴影/滤镜/圆角，保证其绘制影响被完全覆盖、边缘抗锯齿也不泄漏。",
+  "design": "网格属性采用确定性双射构造：color=(2r+c)%4、shape=(r+c)%4，矩阵[[2,1],[1,2]]在 Z4 上 det=1 可逆，使 (r,c)→(颜色,形状) 为双射，16 组合各恰好 4 次、每色每形各 16 且每行 4 色 4 形；size=[48,64,80][(r+2c)%3] 保证每色每形覆盖三尺寸。全部约束由 build.py 的 verify() assert 实际通过并写入 scene-data.json，而非仅记录种子。题目答案由同一份几何程序计算(questions.json 不含答案、answers.json 含方法与引用对象)，保证可复算核验；两步题 6 道，排序/最近距离题给出明确组合键与并列打破规则避免多解。遮挡案例把隐藏差异收敛到 build_occlusion() 的单一分支，其余 DSL 节点逐字节相同，隐藏内容完全被不透明遮挡板覆盖，从而在可见像素完全一致的前提下构造『无法确定』题。",
+  "closing": "三张最终 PNG 均已实际打开检查：网格 64 目标与编号、遮挡 A/B 可见内容与无泄漏、像素等价(不同像素数=0)均满足；scene-data/questions/answers/equivalence 四份审计字段齐全且由真实几何与真实 PNG 计算；据此标为完成。",
+  "visual_review_evidence": [
+    "grid-scene.png v1 opened via ViewImage; 8x8=64 cells, G01-G64 labels, 4 colors/4 shapes, hollow rings all clear, no clipping",
+    "occlusion.png v1 opened via ViewImage; sealed board, white title, 3 outer circles, no dashed/leak, complete text",
+    "occlusion-alternative.png opened via independent ViewImage calls; viewer returned identical-image (byte-identical to occlusion.png, same SHA-256) - equivalence proven by pixel arrays",
+    "equivalence.json computed from real PNGs: differing_pixels=0, max_channel_diff=0, array SHA-256 equal, pixel-equivalent"
+  ],
+  "unresolved": "无。",
+  "unresolved_issues": [],
+  "metrics_extra": {
+    "grid_objects": 64,
+    "questions_total": 14,
+    "two_step_questions": 6,
+    "occlusion_hidden_variants": 2,
+    "pixel_differing_pixels": 0,
+    "pixel_max_channel_diff": 0,
+    "file_sha256_equal": true,
+    "png_decoder": "build.py:decode_rgba8 (stdlib zlib/struct, 8-bit straight RGBA)"
+  },
+  "independent_cases": 0,
+  "requirements_met": true
+}

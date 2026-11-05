@@ -1,0 +1,29 @@
+{
+  "task": "A01",
+  "title": "六个月经营诊断驾驶舱",
+  "status": "完成",
+  "end_reason": "需求满足并完成视觉自检",
+  "outputs": [
+    {"file": "operations.png", "dsl": "operations.snapshot", "purpose": "1600×1000 经营驾驶舱", "verdict": "完成；服务真实 PNG，282145 字节"}
+  ],
+  "extra_outputs": [
+    {"file": "computed-data.json", "purpose": "每月计算值、汇总、图轴定义与结论引用数值"}
+  ],
+  "requirements": "同屏包含四张 KPI（总净收入 ¥918,624、总经营利润 ¥262,124、总订单 3,045 笔、期间总体转化率 11.15%）、六个月净收入与经营利润分组柱图（共用零起点与 0–220,000 元同一比例）、访问量与转化率两个共享月份对齐的小图（各自独立单位与数轴）、六行明细表（月份/净收入/退款率/利润/转化率，金额整数、比例两位小数）及有证据的管理结论。总体转化率按 3,045÷27,300=11.1538% 计算，不平均月比例（月均 11.19% 已标注区别）；退款率=退款÷退款前收入。正文≥20、脚注≥16，柱图零起点、金额与百分比分轴。",
+  "self_check": "打开 outputs/…/A01/operations.png 两次（v1 首版、v2 修正版）。首版发现 KPI 右上英文标签换行溢出、左图轴单位与副标题重叠、柱顶数值为约数、月份标签与“月份”字样挤在一起、结论文字与底部数据块间距不足、转化率虚线标注压线；v2 逐项修复后再次打开实际 PNG 复查：短英文标签单行、轴单位并入副标题、柱顶改为精确金额 119,700…202,368、访问量改为精确 3,500…5,600、月份标签 04月–09月 完整且 09月 未裁切、结论文字与数据块分离、总体转化率改为带底色标注块且不再压线；表格 6 行数字右对齐、退款率 8.00% 高亮、最后一行 2026-09 完整；底部脚注完整可见。",
+  "dsl_capabilities": "使用 Snapshot 根节点 type=png + background；Stack 作为绝对定位画布，固定尺寸 Container 定义 1600×1000；Positioned 放置全部元素；Container 的 color/borderRadius/border/gradientType+gradientColors/gradientStops 实现卡片、渐变头部与柱体；Text 的 fontFamily/fontSize/fontStyle/color/textAlign 与 CDATA 文本；ClipPath SVG 路径实现斜线与几何面；Opacity 未使用。所有主体、图表、文字、图标均由 DSL 构造，无外部素材。",
+  "fonts_note": "/fonts 返回 Inter 系列、Noto Sans CJK SC、Noto Serif CJK SC、Noto Sans Mono CJK SC、DejaVu Sans 等；本题选 Noto Sans CJK SC 作中文、Inter 作数字与拉丁。缓存见 tmp/<run_id>/_suite/docs/fonts.txt。",
+  "iterations": [
+    {"id": "v1", "parent": null, "type": "baseline", "image": "outputs/<run_id>/A01/operations.png (v1)", "observed": "首版 KPI 英文长标签换行溢出；左图“金额/元”与副标题重叠；柱顶与访问量使用 k 约数；“月份”字样挤压 04月 标签；结论文字与底部数据块过近；CVR 虚线标注压线。", "change": "生成首版基线并实际查看", "result": "确认需修改，进入视觉迭代", "complete": true},
+    {"id": "v2", "parent": "v1", "type": "visual", "image": "outputs/<run_id>/A01/operations.png (v2)", "observed": "上述 6 项缺陷", "cause": "实际渲染图逐项观察；标签宽度与中文换行行数估计不足", "change": "英文标签缩短为 NET/PROFIT/ORDERS/CVR；删除独立轴单位标签并并入副标题；柱顶与访问量改精确数值；删除“月份”字样；结论文本框加高至 132px、底部数据块下移 12px；CVR 标注改为带底色圆角块并上移 23px", "result": "再次渲染并打开实际 PNG 复查，6 项缺陷全部消除，数据/对齐/遮挡/裁切正常", "complete": true}
+  ],
+  "pitfalls": "踩坑：Text 不做实体解码，含特殊字符必须用 CDATA（本题由 dsl.cdata() 统一处理）；Container 的 alignment 才能稳定垂直居中文字，fontSize 不是行盒高度；绝对值布局需在 Stack 中放一个固定尺寸 Container 作为画布基准；ClipPath 的子 Container 需与画布同尺寸才能让路径坐标等于画布坐标。这些均通过冒烟测试与 colortest 实际渲染确认。",
+  "design": "采用深蓝渐变头部 + 白色卡片 + 单一强调色（蓝/青/琥珀/紫）的信息层级；KPI 行给出结论性数字，主图承担对比，两个小图承担趋势，底部明细表提供可核查数值，右侧深色结论卡把数字转成行动建议。金额图与百分比图使用完全独立的数轴并在标题/副标题显式标注单位，避免共用混淆。",
+  "closing": "最终实际图片已逐张打开检查：四 KPI、分组柱图、两个小图、六行明细表与管理结论均完整可读，数值与 computed-data.json 一致，柱图共用零起点且金额/百分比分轴，09月 标签与底部脚注无裁切，据此标为完成。",
+  "visual_review_evidence": [
+    "v1 operations.png opened via image viewer; 6 defects recorded",
+    "v2 operations.png opened via image viewer; all defects resolved, final accepted"
+  ],
+  "unresolved": "无。",
+  "unresolved_issues": []
+}

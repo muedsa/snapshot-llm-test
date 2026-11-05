@@ -1,0 +1,41 @@
+{
+  "task": "A24",
+  "title": "双团队约束下的发布作战计划",
+  "started_at": "2026-11-04T18:37:20+08:00",
+  "status": "完成",
+  "state_status": "completed",
+  "end_reason": "需求满足并完成三图逐张视觉自检",
+  "outputs": [
+    {"file": "execution-board.png", "dsl": "execution-board.snapshot", "purpose": "1920×1080 团队泳道执行图,真实时间同尺度、任务块/空档/截止线/依赖索引/下界与排程依据", "verdict": "完成;服务真实 PNG,352958 字节,RGBA"},
+    {"file": "decision-brief.png", "dsl": "decision-brief.snapshot", "purpose": "1200×1600 决策简报,依赖概览、总工时、完成时间、剩余缓冲、三风险/对策与排程依据", "verdict": "完成;服务真实 PNG,397494 字节,RGBA"},
+    {"file": "action-card.png", "dsl": "action-card.snapshot", "purpose": "720×1280 手机行动卡,按时间序给 12 任务、团队、起止及风险提醒", "verdict": "完成;服务真实 PNG,212447 字节,RGBA"}
+  ],
+  "extra_outputs": [
+    {"file": "schedule.json", "purpose": "12 任务精确分钟偏移与带时区起止、执行团队、依赖、完工 260 分钟与完工时间"},
+    {"file": "schedule-audit.json", "purpose": "6 项真实核验(完整时长/0–420 窗口/半开资源占用/依赖/团队可选/下界缓冲)、两个下界、完工与缓冲、可行性与最优性如实标注"},
+    {"file": "content-map.json", "purpose": "12 任务与三风险在三图中的位置/显示起止/依赖映射及三图一致性核验"}
+  ],
+  "requirements": "依据 inputs/release.json,制作 1920×1080 执行泳道、1200×1600 决策简报、720×1280 手机行动卡。发布日 09:00 开工、16:00 截止(+08:00),连续 420 分钟窗口不扣休息;以 09:00 为第 0 分钟,start≥0、end≤420,end−start 严格等于 minutes,占用区间 [start,end)。design 与 engineering 各只有一个团队,同团队不可并行、不可抢占;tasks.teams 两项表示任选其一(不是占两团队);任务完整执行时长、先决完成后才能开始、不得改依赖缩时或删除检查环节;团队切换无额外耗时。自行计算使全部 12 任务最终完成时间尽早的排程,给忽略资源约束的关键路径时长与总工作量/两团队下界,不把未证明的最好方案称为最优。图中真实时间同尺度绘制,任务块起止/团队/编号/标签能读,依赖用编号索引表达不画满交叉线;执行图展示空档与截止线;简报展示依赖概览/总工时/完成时间/剩余缓冲/三风险对策/排程依据;手机卡按时间序给 12 任务、团队、起止与风险提醒。三图不矛盾;横屏正文≥20、竖页≥24、手机≥20;品牌「叠光 · 发布演练」。附 schedule.json、schedule-audit.json、content-map.json。",
+  "self_check": "v1 首次渲染后逐张打开 3 张实际 PNG:action-card 12 行按时间序(R01,R02,R04,R05,R03,R07,R06,R08,R09,R10,R11,R12)起止时刻/编号/长中文标签/团队徽标/依赖分钟齐全,K1/R02、K2/R05、K3/R10 风险提醒徽标位置正确,底部完工 13:20/截止 16:00/缓冲 160 分钟与风险汇总完整,无裁切;execution-board 两条泳道各 6 块按真实时长同尺度、20 分钟短块(R02/R05/R12)与长中文标签(服务与字体探测/产物与数据核验/视觉回归检查)分行居中可读、琥珀 5 分钟空档竖条、缓冲斜线区、绿色 13:20 完工线与红色 16:00 截止线、底部依赖索引/4 张统计卡/硬约束与排程依据完整;decision-brief 4 张 KPI、关键路径链、12 行依赖索引、排程依据 6 行、K1/K2/K3 三风险卡片、团队分配与口径完整。发现 2 项缺陷:execution-board 的「13:20 全部完成」「16:00 截止」彩色标签压住时间标尺 13:00/16:00 刻度;decision-brief 依赖概览最后一行与下方说明文字重叠。v2 修复后重渲染并再次逐张打开 3 图复查:执行图 13:00/16:00 刻度恢复完整、彩标移到标尺下方不遮挡刻度、虚线仍贯穿泳道、其余内容无回归;简报末行索引与说明文字分离且两处完整可读;行动卡 PNG 字节与 v1 完全一致、无回归。另用程序逐项核验 6 项排程审计(完整时长、0–420 窗口、同团队半开区间无重叠、全部依赖 end≤后继 start、团队属于可选集合、完工≥两下界且缓冲=420−260=160)全部 passed,并核验 8 张 PNG 之外三图尺寸为 1920×1080 / 1200×1600 / 720×1280、RGBA。",
+  "dsl_capabilities": "使用 Snapshot 根节点 type=png + background;Stack + 固定尺寸 Container 定义画布;Positioned 绝对定位全部卡片、时间刻度、泳道、任务块与文字;Container 的 color/borderRadius/border/gradientType+gradientColors 实现渐变头部、白底卡片、团队色任务块与徽标;Rect/ClipPath 通过 dashed_vline(dashed 由多个小 rect 拼接)绘制完工线、截止线与网格;Text 的 fontFamily/fontSize/fontStyle/color/textAlign 与 CDATA 文本,softWrap 让短任务块内长中文标签自动换行。三图均由同一份 SCHED/CALC 数据纯 DSL 构造,无外部素材、无整图嵌入。",
+  "fonts_note": "/fonts 返回 Inter 系列、Noto Sans CJK SC、Noto Sans Mono CJK SC 等;本题中文用 Noto Sans CJK SC,拉丁/数字用 Inter(时刻、编号、分钟数与英文标签)。字体清单缓存见 tmp/<run_id>/_suite/docs/fonts.txt。",
+  "iterations": [
+    {"id": "v1", "parent": null, "type": "baseline", "image": "outputs/<run_id>/A24/execution-board.png、decision-brief.png、action-card.png (v1)", "observed": "首次生成 v1 并逐张打开 3 张实际 PNG:三图内容完整、排程与三图数据一致、短任务与长中文标签可读;发现两处缺陷——执行图「13:20 全部完成」「16:00 截止」彩色标签压住时间标尺 13:00/16:00 刻度;简报依赖概览最后一行索引与下方说明文字重叠。", "change": "生成首版基线并逐张查看 3 张 PNG;用程序逐项核验 6 项排程审计与三图同源数据。", "result": "确认需修复两处遮挡/重叠,进入视觉迭代", "complete": true},
+    {"id": "v2", "parent": "v1", "type": "visual", "image": "outputs/<run_id>/A24/execution-board.png 与 decision-brief.png (v2)", "observed": "v1 执行图标尺刻度被彩标遮挡(13:00 只余「1」、16:00 只余「00」);简报依赖末行与说明文字重叠 16px。", "cause": "彩标与刻度数字同处标尺行 y≈116–146;简报依赖行距 40px 使末行(y=DY+296,h=32)与说明(y=DY+312)重叠。", "change": "执行图把两个彩标下移到标尺下方 y=158(字号 18→20)、两条泳道由 172/424 下移到 188/440、完工/截止虚线加长至贯穿泳道底部、底部信息区由 676 下移到 686;简报依赖行距 40→36 使末行与说明分离;其余构图 DSL 与全部数据不变。", "result": "用 BUILD_VERSION=v2 重跑并重渲染(3/3 ok),再次逐张打开 3 图复查:执行图 13:00/16:00 刻度完整、彩标不再遮挡、虚线与任务块/空档/缓冲/底部信息无回归;简报末行索引与说明两处完整可读;行动卡字节与 v1 一致、无回归。", "complete": true}
+  ],
+  "pitfalls": "本地排程脚本 schedule_calc.py 初版 critical_path() 第一轮用尚未填充的 EF 判断依赖,导致 while 无限循环(前台命令被工具超时终止、后台任务 6 分钟无输出);已改为拓扑 DP 一次完成并固定随机种子,修复后秒级出结果,该问题属本地计算、不影响服务请求。完整最优性穷举曾状态爆炸,改用题面允许的『8 种团队分配 × 多种优先级列表调度』得到 260 分钟,并如实标注未证明全局最优。执行图短任务块 20 分钟仅约 76.7px,采用 ID/分钟/中文标签自动换行/起止两行 HH:MM 的分行居中排版,依赖改用底部编号索引而不画交叉线,避免裁切与遮挡。服务在 A23 密集诊断期曾临时排队,但 A24 两次渲染均正常(v2 仅 17 秒)。Text 不做实体解码,文本必须用 CDATA;Container 需显式 width/height,Positioned 必须是 Stack 直接子节点;dashed_vline 由多个小 rect 拼接。所有版本 DSL、脚本与请求响应均保留,未覆盖。",
+  "design": "三图共用一份真实排程:CALC 由 schedule_calc.py 对 release.json 搜索得到(关键路径下界 255、工作量下界 242.5、综合下界 255、实际完工 260=13:20、缓冲 160、基线 285→260 改进 25 分钟,资源约束使比下界多 5 分钟,最优性未证明并如实标注)。执行图用两条团队泳道按 x=250+minute×(1610/420) 同尺度绘制 12 块,标尺 09:00–16:00、两处 5 分钟依赖等待空档(琥珀)、13:20 后 160 分钟缓冲(斜线)、绿色完工线与红色截止线、底部依赖索引与 4 张统计卡;简报以 KPI、依赖索引、下界/改进依据、三风险卡片承载决策信息;手机卡按开始时间排 12 行并在 R02/R05/R10 标注 K1/K2/K3 风险。团队用蓝/青区分,风险用琥珀,截止用红,完工用绿,三图品牌「叠光 · 发布演练」与全部数字同源,避免互相矛盾。",
+  "closing": "v2 最终 3 张实际 PNG 已逐张打开检查(两处遮挡/重叠缺陷已修复、行动卡无回归),schedule.json / schedule-audit.json / content-map.json 与三图一致,6 项排程审计全部通过,全部指定 PNG 均有同名 .snapshot 且为服务真实响应,据此标为完成。",
+  "visual_review_evidence": [
+    "v1: ViewImage 逐张打开 execution-board.png、decision-brief.png、action-card.png 共 3 张,记录彩标遮挡标尺刻度、简报末行与说明重叠 2 项缺陷",
+    "v2: ViewImage 再次逐张打开 3 张图复查,两处缺陷均消除、其余内容无回归,action-card.png 字节与 v1 完全一致",
+    "程序核验三图尺寸 1920×1080 / 1200×1600 / 720×1280、RGBA;6 项排程审计 checks 全部 passed"
+  ],
+  "metrics_extra": {
+    "request_count_note": "render_requests 统计含两次正式 render_all(各 3 张 DSL)共 6 条日志、7 次 attempt,其中 v1 的 decision-brief 首次为传输失败(status 0)后重试成功;v2 正式渲染 3/3 ok。",
+    "deliverable_note": "指定 3 张 PNG 全部交付,附加 schedule.json / schedule-audit.json / content-map.json 齐备;排程中间结果缓存于 tmp/<run_id>/A24/schedule_calc.json 供复现。",
+    "optimality_note": "完工 260 分钟是 8 种团队分配 × 307 种优先级搜索的最佳可行解,未做完备最优性证明,如实标注不宣称全局最优;下界 255 分钟来自忽略资源的关键路径 R01→R04→R07→R09→R10→R12。"
+  },
+  "unresolved": "无。",
+  "unresolved_issues": []
+}

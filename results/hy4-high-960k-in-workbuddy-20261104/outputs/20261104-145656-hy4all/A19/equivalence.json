@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "versions": [
+    {
+      "label": "A",
+      "dsl": "occlusion.snapshot",
+      "png": "occlusion.png",
+      "file_sha256": "3d9f9ce17ecb06b817bf1e7ea8de0f671860c6f4ddba93349c9a24919dc6d555",
+      "hidden_content": "红色实心圆 (400,400) r=110 + 白色文字 HIDDEN-A，均完全位于遮挡板内",
+      "visible_layers_identical_basis": "与 B 版除隐藏内容节点外 DSL 逐字节相同（同一 build_occlusion 函数，仅 hidden 分支不同）"
+    },
+    {
+      "label": "B",
+      "dsl": "occlusion-alternative.snapshot",
+      "png": "occlusion-alternative.png",
+      "file_sha256": "3d9f9ce17ecb06b817bf1e7ea8de0f671860c6f4ddba93349c9a24919dc6d555",
+      "hidden_content": "紫色实心方 (300,300,200,200) + 白色文字 HIDDEN-B，均完全位于遮挡板内",
+      "visible_layers_identical_basis": "与 A 版除隐藏内容节点外 DSL 逐字节相同；画布/背景/可见前景(3 圆+标题)/遮挡板/遮挡板上文字/底部说明/渲染参数一致"
+    }
+  ],
+  "occlusion_design": {
+    "canvas": [
+      800,
+      800
+    ],
+    "background": "#F3F6FC",
+    "occluder_rect": [
+      200,
+      200,
+      600,
+      600
+    ],
+    "occluder_color": "#1F2937",
+    "occluder_properties": "纯色不透明矩形，无圆角、无边框、无阴影、无滤镜、alpha=255",
+    "hidden_bounds_note": "A 隐藏圆 x∈[290,510] y∈[290,510]、B 隐藏方 x∈[300,500] y∈[300,500]、隐藏文字 x∈[330,470] y∈[380,420]，全部位于遮挡板 [200,600]×[200,600] 内且距板边缘 ≥90px；隐藏内容未使用阴影/滤镜/半透明/圆角等会外溢的绘制影响，全部被不透明遮挡板覆盖，不画任何虚线泄漏。",
+    "no_leak": "未绘制虚线轮廓或任何暗示隐藏内容的可见标记；隐藏差异仅在 DSL 与审计中指出。"
+  },
+  "comparison": {
+    "decoder": "自实现 PNG→RGBA 解码器（build.py:decode_rgba8）",
+    "decoder_version": "1.0 / Python 3.13.14 标准库 zlib+struct",
+    "decoder_notes": "解析 IHDR/IDAT，zlib 解压，逐字节 Sub/Up/Average/Paeth/None 反滤波；输出原始 8 位未预乘 RGBA 四通道字节数组；不合成白底、不缩放、不忽略透明通道，也不忽略透明像素的 RGB；逐像素比较全部 4 个通道。",
+    "same_size": true,
+    "size_a": [
+      800,
+      800
+    ],
+    "size_b": [
+      800,
+      800
+    ],
+    "rgba8_straight": true,
+    "channels": 4,
+    "bit_depth": 8,
+    "array_sha256_a": "51c2c285da6705c2666f692e18b2b76552bedb0e3fee9d527394231840f443df",
+    "array_sha256_b": "51c2c285da6705c2666f692e18b2b76552bedb0e3fee9d527394231840f443df",
+    "array_sha256_equal": true,
+    "differing_pixels": 0,
+    "max_channel_diff": 0,
+    "file_sha256_equal": true,
+    "file_hash_note": "文件 SHA-256 用于留痕；不同压缩/元数据可能导致文件哈希不同，不据此判定像素不等价；像素等价以同一解码器解码后的 8 位未预乘 RGBA 数组逐通道完全一致为准。",
+    "conclusion": "pixel-equivalent",
+    "passed": true
+  }
+}

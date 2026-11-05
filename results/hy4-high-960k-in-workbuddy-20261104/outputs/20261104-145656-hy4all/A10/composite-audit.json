@@ -1,0 +1,567 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "units": {
+    "rgb": "0-255 sRGB 8-bit channels",
+    "alpha": "#RRGGBBAA last byte / 255, or Opacity double",
+    "coordinates": "px, panel-local origin = panel top-left, canvas origin = image top-left"
+  },
+  "alpha_explanation": "① 两个矩形各自带 #80 = 128/255 ≈ 0.50196 的 alpha，与白底逐层 source-over；② 两个不透明矩形先在一层内合成（蓝盖红），整层再以 Opacity(0.5) 与白底混合一次。128/255 不是精确 0.5：若把 ① 误用 0.5 会得到 (128,64,191) 而不是 (127,63,191)，相差 1；更重要的是逐层混合 vs 整组单层混合使 G/B 通道差异巨大（63/191 对 128/255）。",
+  "panels": [
+    {
+      "id": 1,
+      "name": "逐层 50% alpha",
+      "origin_px": [
+        192,
+        180
+      ],
+      "size_px": [
+        320,
+        240
+      ],
+      "local_coordinates": "origin at panel top-left, x right / y down, px",
+      "scene": {
+        "rectangles": [
+          {
+            "x": 40,
+            "y": 40,
+            "w": 160,
+            "h": 120,
+            "color": "#FF000080"
+          },
+          {
+            "x": 120,
+            "y": 80,
+            "w": 160,
+            "h": 120,
+            "color": "#0000FF80"
+          }
+        ],
+        "paint_order": "red first, blue on top",
+        "background": "opaque white"
+      },
+      "effect_nodes": [
+        "Container color=#FF000080",
+        "Container color=#0000FF80"
+      ],
+      "caption_region_px": [
+        192,
+        112,
+        320,
+        56
+      ],
+      "description_region_px": [
+        192,
+        428,
+        320,
+        80
+      ]
+    },
+    {
+      "id": 2,
+      "name": "整组 Opacity(0.5)",
+      "origin_px": [
+        560,
+        180
+      ],
+      "size_px": [
+        320,
+        240
+      ],
+      "local_coordinates": "origin at panel top-left, x right / y down, px",
+      "scene": {
+        "rectangles": [
+          {
+            "x": 40,
+            "y": 40,
+            "w": 160,
+            "h": 120,
+            "color": "#FF0000"
+          },
+          {
+            "x": 120,
+            "y": 80,
+            "w": 160,
+            "h": 120,
+            "color": "#0000FF"
+          }
+        ],
+        "paint_order": "red first, blue on top (both opaque)",
+        "group": "Opacity(0.5)",
+        "background": "opaque white"
+      },
+      "effect_nodes": [
+        "Opacity opacity=0.5",
+        "Container color=#FF0000",
+        "Container color=#0000FF"
+      ],
+      "caption_region_px": [
+        560,
+        112,
+        320,
+        56
+      ],
+      "description_region_px": [
+        560,
+        428,
+        320,
+        80
+      ]
+    },
+    {
+      "id": 3,
+      "name": "背景模糊 / 字清晰",
+      "origin_px": [
+        928,
+        180
+      ],
+      "size_px": [
+        320,
+        240
+      ],
+      "local_coordinates": "origin at panel top-left, x right / y down, px",
+      "scene": {
+        "stripes": {
+          "period_px": 16,
+          "dark_width_px": 8,
+          "color": "#1B3A5F",
+          "phase": 0,
+          "background": "#FFFFFF"
+        },
+        "card": {
+          "local_xy": [
+            40,
+            40
+          ],
+          "size_px": [
+            240,
+            160
+          ],
+          "radius": 20,
+          "base_color": "#FFFFFF33"
+        },
+        "text": {
+          "content": "SHARP / BLUR",
+          "size": 24,
+          "color": "#0F172A"
+        },
+        "foreground_shape": {
+          "local_xy": [
+            20,
+            116
+          ],
+          "size_px": [
+            72,
+            20
+          ],
+          "color": "#0D9488"
+        },
+        "blur": {
+          "node": "ImageFiltered",
+          "sigmaX": 6,
+          "sigmaY": 6,
+          "applies_to": "background stripes copy only"
+        }
+      },
+      "effect_nodes": [
+        "ImageFiltered sigmaX=6 sigmaY=6 (background copy)",
+        "ClipRRect borderRadius=20",
+        "sharp Text + sharp foreground"
+      ],
+      "caption_region_px": [
+        928,
+        112,
+        320,
+        56
+      ],
+      "description_region_px": [
+        928,
+        428,
+        320,
+        80
+      ]
+    },
+    {
+      "id": 4,
+      "name": "子树模糊 / 字模糊",
+      "origin_px": [
+        192,
+        590
+      ],
+      "size_px": [
+        320,
+        240
+      ],
+      "local_coordinates": "origin at panel top-left, x right / y down, px",
+      "scene": {
+        "stripes": "same as panel 3",
+        "card": "same as panel 3",
+        "text": "same as panel 3",
+        "foreground_shape": "same as panel 3",
+        "blur": {
+          "node": "ImageFiltered",
+          "sigmaX": 6,
+          "sigmaY": 6,
+          "applies_to": "background + text + foreground as one subtree"
+        }
+      },
+      "effect_nodes": [
+        "ImageFiltered sigmaX=6 sigmaY=6 (whole card subtree)",
+        "ClipRRect borderRadius=20"
+      ],
+      "caption_region_px": [
+        192,
+        522,
+        320,
+        56
+      ],
+      "description_region_px": [
+        192,
+        838,
+        320,
+        80
+      ]
+    },
+    {
+      "id": 5,
+      "name": "滤色+模糊",
+      "origin_px": [
+        560,
+        590
+      ],
+      "size_px": [
+        320,
+        240
+      ],
+      "local_coordinates": "origin at panel top-left, x right / y down, px",
+      "scene": {
+        "shapes": "blue bar (20,100,280,40); red/green/purple bars at y=24 with transparent gaps; yellow square (224,150,60,60); dark rect (110,150,100,60) with boxShadow 0 6 10 0 #00000066",
+        "color_filter": {
+          "node": "ColorFiltered",
+          "color": "#F6B94A",
+          "blendMode": "MULTIPLY",
+          "position": "inner"
+        },
+        "blur": {
+          "node": "ImageFiltered",
+          "sigmaX": 6,
+          "sigmaY": 6,
+          "position": "outer"
+        },
+        "clip": null
+      },
+      "effect_nodes": [
+        "ColorFiltered color=#F6B94A blendMode=MULTIPLY",
+        "ImageFiltered sigmaX=6 sigmaY=6"
+      ],
+      "caption_region_px": [
+        560,
+        522,
+        320,
+        56
+      ],
+      "description_region_px": [
+        560,
+        838,
+        320,
+        80
+      ]
+    },
+    {
+      "id": 6,
+      "name": "滤色+模糊+圆裁剪",
+      "origin_px": [
+        928,
+        590
+      ],
+      "size_px": [
+        320,
+        240
+      ],
+      "local_coordinates": "origin at panel top-left, x right / y down, px",
+      "scene": {
+        "shapes": "identical to panel 5 (same filtered_scene XML)",
+        "color_filter": "same as panel 5",
+        "blur": "same as panel 5",
+        "clip": {
+          "node": "ClipOval",
+          "center_local": [
+            160,
+            120
+          ],
+          "radius_px": 100,
+          "bbox_local": [
+            60,
+            20,
+            260,
+            220
+          ],
+          "position": "outermost"
+        }
+      },
+      "effect_nodes": [
+        "ColorFiltered color=#F6B94A blendMode=MULTIPLY",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "ClipOval r=100"
+      ],
+      "caption_region_px": [
+        928,
+        522,
+        320,
+        56
+      ],
+      "description_region_px": [
+        928,
+        838,
+        320,
+        80
+      ]
+    }
+  ],
+  "paired_scenes": [
+    {
+      "pair": "3-4",
+      "shared_params": {
+        "stripes": {
+          "period_px": 16,
+          "dark_width_px": 8,
+          "color": "#1B3A5F",
+          "phase": 0,
+          "background": "#FFFFFF"
+        },
+        "card_local_xy": [
+          40,
+          40
+        ],
+        "card_size_px": [
+          240,
+          160
+        ],
+        "card_radius": 20,
+        "card_base_color": "#FFFFFF33",
+        "text": "SHARP / BLUR @ 24px #0F172A",
+        "foreground_shape": "teal 72x20 at local (20,116)",
+        "sigmaX": 6,
+        "sigmaY": 6,
+        "clip": "ClipRRect borderRadius=20"
+      },
+      "only_difference": "③ 只对背景条纹副本做 ImageFiltered，文字/前景在滤镜外保持清晰；④ 把背景+文字+前景整棵子树放进同一个 ImageFiltered。场景、位置、颜色、层次完全相同。",
+      "circle_clip": null
+    },
+    {
+      "pair": "5-6",
+      "shared_params": {
+        "shapes": "identical (blue bar crossing circle, 3 spaced bars with transparent gaps, yellow square, dark rect with boxShadow)",
+        "color_filter": "ColorFiltered #F6B94A MULTIPLY (inner)",
+        "blur": "ImageFiltered sigmaX=6 sigmaY=6 (outer)",
+        "order": "color filter first, then blur"
+      },
+      "only_difference": "⑥ 在最外层增加 ClipOval 圆形裁剪；⑤ 不加裁剪，效果外溢到整个 320×240 实验区。其余节点与参数逐字相同。",
+      "circle_clip": {
+        "center_local": [
+          160,
+          120
+        ],
+        "radius_px": 100,
+        "bbox_local": [
+          60,
+          20,
+          260,
+          220
+        ],
+        "crossing_shape": "blue bar (20,100)-(300,140) crosses the circle at x≈60 and x≈260; yellow square crosses near x=240"
+      }
+    }
+  ],
+  "samples": [
+    {
+      "panel": 1,
+      "local": [
+        180,
+        100
+      ],
+      "canvas_pixel": [
+        372,
+        280
+      ],
+      "compositing_steps": [
+        "white (255,255,255)",
+        "red (255,0,0) with a=128/255 over white -> (255, 255*127/255, 255*127/255)",
+        "blue (0,0,255) with a=128/255 over previous -> (255*127/255, (255*127/255)*(127/255), 255*128/255 + (255*127/255)*(127/255))"
+      ],
+      "alpha_used": "128/255 = 0.501960784 (#80)",
+      "theoretical_float_rgb": [
+        127.0,
+        63.25098,
+        191.25098
+      ],
+      "rounding": "floor(v+0.5)",
+      "rounded_rgb": [
+        127,
+        63,
+        191
+      ],
+      "actual_rgb": [
+        127,
+        63,
+        191
+      ],
+      "actual_alpha": 255,
+      "channel_errors": [
+        0,
+        0,
+        0
+      ],
+      "tolerance_per_channel": 3,
+      "passed": true,
+      "pending_reason": null,
+      "max_channel_error": 0,
+      "alpha_is_255": true
+    },
+    {
+      "panel": 2,
+      "local": [
+        180,
+        100
+      ],
+      "canvas_pixel": [
+        740,
+        280
+      ],
+      "compositing_steps": [
+        "inside the Opacity group: opaque blue covers opaque red -> (0,0,255,255)",
+        "composite the flattened group with alpha=0.5 over white -> (0*0.5+255*0.5, 0*0.5+255*0.5, 255*0.5+255*0.5)"
+      ],
+      "alpha_used": "0.5 (Opacity widget); Skia may quantise to 128/255, hence tolerance 3",
+      "theoretical_float_rgb": [
+        127.5,
+        127.5,
+        255.0
+      ],
+      "rounding": "floor(v+0.5)",
+      "rounded_rgb": [
+        128,
+        128,
+        255
+      ],
+      "actual_rgb": [
+        126,
+        126,
+        255
+      ],
+      "actual_alpha": 255,
+      "channel_errors": [
+        2,
+        2,
+        0
+      ],
+      "tolerance_per_channel": 3,
+      "passed": true,
+      "pending_reason": null,
+      "max_channel_error": 2,
+      "alpha_is_255": true,
+      "measured_note": "实测 (126,126,255) 比理论 0.5 的 (128,128,255) 低 2：Opacity(0.5) 在 Skia 中会量化为 8 位 alpha 并走预乘合成，与按精确 0.5 的浮点计算相差约 1–2 个 8 位单位；逐通道误差 (2,2,0) 均在 ≤3 容差内，未修改采样值或后处理图片。① 用 128/255 逐层混合得到 (127,63,191) 与实测完全一致，证明 128/255 与 0.5 不是同一个 alpha，且逐层与整组混合语义不同。"
+    }
+  ],
+  "visual_checks": [
+    {
+      "panel": 3,
+      "observation": "实际打开 2 倍放大图：卡片（局部 (40,40)、240×160、圆角 20）外的竖条纹是边缘锐利的深蓝/白相间条纹；卡片内同一条纹被柔化成浅灰波动纹，条纹走向仍可辨但无锐利边缘；『SHARP / BLUR』24px 文字笔画清晰可读，青色 72×20 前景块边缘锐利，圆角边界清楚。说明本服务上用 ClipRRect + ImageFiltered 作用于『背景条纹副本』确实只模糊背景，文字与前景在滤镜之外保持清晰，与 AGENT-BRIEF 所述『BackdropFilter 不产生可见模糊』的规避做法一致。",
+      "text_sharp": true,
+      "background_blurred": true,
+      "effect_spills": false,
+      "dsl_nodes": [
+        "ImageFiltered sigmaX=6 sigmaY=6 (background stripes copy only)",
+        "ClipRRect borderRadius=20",
+        "sharp Text fontSize=24 + sharp teal foreground (outside the filter)"
+      ],
+      "local_evidence": [
+        "outputs/20261104-145656-hy4all/A10/compositing-lab.png（整图）",
+        "tmp/20261104-145656-hy4all/A10/inspect/panel_3.png 与 panel_3_v2.png（该格 320×240 放大 2 倍）"
+      ],
+      "doc_sources": [
+        "tmp/20261104-145656-hy4all/_suite/docs/parser-tags.md — Opacity / ColorFiltered / ImageFiltered / BackdropFilter / ClipRRect / ClipOval / 8 位 #RRGGBBAA 颜色 / 透明间隙着色说明",
+        "tmp/20261104-145656-hy4all/_suite/AGENT-BRIEF.md — 本服务 BackdropFilter 不产生可见模糊，背景模糊改用 ClipRRect + ImageFiltered 作用于背景副本、文字放在滤镜之外"
+      ],
+      "pending_reason": null,
+      "based_on": "实际 ViewImage 打开最终 v2 PNG 与局部放大图的观察，不是预期描述"
+    },
+    {
+      "panel": 4,
+      "observation": "实际打开 2 倍放大图：卡片外条纹仍锐利；卡片内背景条纹同样被柔化，但『SHARP / BLUR』文字已糊成不可辨认的深色横块，青色前景块边缘也明显发虚。与第 3 格逐项对照：条纹颜色/宽度/间距/相位、卡片底色 #FFFFFF33、位置、文字、前景形状与绘制层次完全相同，唯一变化是文字与前景被放进同一个 ImageFiltered 子树（唯一变化项）。",
+      "text_sharp": false,
+      "background_blurred": true,
+      "effect_spills": false,
+      "dsl_nodes": [
+        "ImageFiltered sigmaX=6 sigmaY=6 (background + text + foreground as ONE subtree)",
+        "ClipRRect borderRadius=20"
+      ],
+      "local_evidence": [
+        "outputs/20261104-145656-hy4all/A10/compositing-lab.png（整图）",
+        "tmp/20261104-145656-hy4all/A10/inspect/panel_4.png 与 panel_4_v2.png（该格 320×240 放大 2 倍）"
+      ],
+      "doc_sources": [
+        "tmp/20261104-145656-hy4all/_suite/docs/parser-tags.md — Opacity / ColorFiltered / ImageFiltered / BackdropFilter / ClipRRect / ClipOval / 8 位 #RRGGBBAA 颜色 / 透明间隙着色说明",
+        "tmp/20261104-145656-hy4all/_suite/AGENT-BRIEF.md — 本服务 BackdropFilter 不产生可见模糊，背景模糊改用 ClipRRect + ImageFiltered 作用于背景副本、文字放在滤镜之外"
+      ],
+      "pending_reason": null,
+      "based_on": "实际 ViewImage 打开最终 v2 PNG 与局部放大图的观察，不是预期描述"
+    },
+    {
+      "panel": 5,
+      "observation": "实际打开 2 倍放大图：整个 320×240 白底实验区几乎被橙黄色（#F6B94A MULTIPLY）铺满，原本的透明间隙也被着色——与 parser-tags.md『部分混合模式也会给边界内的透明间隙着色』相符；红/绿/紫色块、蓝色横条、黄色方块与带 boxShadow 的深色矩形全部被 sigma=6 高斯模糊成柔边色块；效果外溢、不受任何卡片或圆形限制，白色留白只剩最外缘一圈。先 ColorFiltered 后 ImageFiltered 的节点顺序在 DSL 中可核对。",
+      "text_sharp": null,
+      "background_blurred": true,
+      "effect_spills": true,
+      "dsl_nodes": [
+        "ColorFiltered color=#F6B94A blendMode=MULTIPLY (inner)",
+        "ImageFiltered sigmaX=6 sigmaY=6 (outer)",
+        "no clip"
+      ],
+      "local_evidence": [
+        "outputs/20261104-145656-hy4all/A10/compositing-lab.png（整图）",
+        "tmp/20261104-145656-hy4all/A10/inspect/panel_5.png 与 panel_5_v2.png（该格 320×240 放大 2 倍）"
+      ],
+      "doc_sources": [
+        "tmp/20261104-145656-hy4all/_suite/docs/parser-tags.md — Opacity / ColorFiltered / ImageFiltered / BackdropFilter / ClipRRect / ClipOval / 8 位 #RRGGBBAA 颜色 / 透明间隙着色说明",
+        "tmp/20261104-145656-hy4all/_suite/AGENT-BRIEF.md — 本服务 BackdropFilter 不产生可见模糊，背景模糊改用 ClipRRect + ImageFiltered 作用于背景副本、文字放在滤镜之外"
+      ],
+      "pending_reason": null,
+      "based_on": "实际 ViewImage 打开最终 v2 PNG 与局部放大图的观察，不是预期描述"
+    },
+    {
+      "panel": 6,
+      "observation": "实际打开 2 倍放大图：与第 5 格相同的滤色+模糊图案被限制在一个边缘清晰锐利的圆形内（圆心局部 (160,120)、r=100），圆外为纯白；蓝绿色横条在圆左右两侧被圆边界整齐切断，顶部红/绿/紫色块被圆弧切掉上缘，深色矩形与阴影也在圆内被截断，因此裁剪边界可直接检查。与第 5 格内部图案一致，唯一差异是最外层 ClipOval 圆形裁剪（共用参数逐字相同）。",
+      "text_sharp": null,
+      "background_blurred": true,
+      "effect_spills": false,
+      "dsl_nodes": [
+        "ColorFiltered color=#F6B94A blendMode=MULTIPLY",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "ClipOval r=100 outermost (same filtered_scene XML as panel 5)"
+      ],
+      "local_evidence": [
+        "outputs/20261104-145656-hy4all/A10/compositing-lab.png（整图）",
+        "tmp/20261104-145656-hy4all/A10/inspect/panel_6.png 与 panel_6_v2.png（该格 320×240 放大 2 倍）"
+      ],
+      "doc_sources": [
+        "tmp/20261104-145656-hy4all/_suite/docs/parser-tags.md — Opacity / ColorFiltered / ImageFiltered / BackdropFilter / ClipRRect / ClipOval / 8 位 #RRGGBBAA 颜色 / 透明间隙着色说明",
+        "tmp/20261104-145656-hy4all/_suite/AGENT-BRIEF.md — 本服务 BackdropFilter 不产生可见模糊，背景模糊改用 ClipRRect + ImageFiltered 作用于背景副本、文字放在滤镜之外"
+      ],
+      "pending_reason": null,
+      "based_on": "实际 ViewImage 打开最终 v2 PNG 与局部放大图的观察，不是预期描述"
+    }
+  ],
+  "evidence": {
+    "png": "compositing-lab.png",
+    "dsl": "compositing-lab.snapshot",
+    "checks": [
+      "①② 采样点 alpha 须 255",
+      "每通道误差 ≤3",
+      "③④ 唯一差异为模糊层",
+      "⑤⑥ 唯一差异为圆形裁剪",
+      "③–⑥ 视觉判断引用实际整图/局部"
+    ]
+  }
+}

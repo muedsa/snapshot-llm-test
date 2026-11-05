@@ -1,0 +1,110 @@
+{
+  "task": "A17",
+  "title": "四页可实践的 DSL 入门手册",
+  "status": "完成",
+  "end_reason": "需求满足并逐图视觉自检",
+  "outputs": [
+    {
+      "file": "handbook-01.png",
+      "dsl": "handbook-01.snapshot",
+      "purpose": "1200×1600 教学第 1 页",
+      "verdict": "完成；服务真实 PNG，v2 复查通过"
+    },
+    {
+      "file": "handbook-02.png",
+      "dsl": "handbook-02.snapshot",
+      "purpose": "1200×1600 教学第 2 页",
+      "verdict": "完成；服务真实 PNG，v2 复查通过"
+    },
+    {
+      "file": "handbook-03.png",
+      "dsl": "handbook-03.snapshot",
+      "purpose": "1200×1600 教学第 3 页",
+      "verdict": "完成；服务真实 PNG，v2 复查通过"
+    },
+    {
+      "file": "handbook-04.png",
+      "dsl": "handbook-04.snapshot",
+      "purpose": "1200×1600 教学第 4 页",
+      "verdict": "完成；服务真实 PNG，v2 复查通过"
+    },
+    {
+      "file": "example-01.png",
+      "dsl": "example-01.snapshot",
+      "purpose": "400×240 第 1 页可运行示例",
+      "verdict": "完成；服务真实 PNG，实际打开检查通过"
+    },
+    {
+      "file": "example-02.png",
+      "dsl": "example-02.snapshot",
+      "purpose": "400×240 第 2 页可运行示例",
+      "verdict": "完成；服务真实 PNG，实际打开检查通过"
+    },
+    {
+      "file": "example-03.png",
+      "dsl": "example-03.snapshot",
+      "purpose": "400×240 第 3 页可运行示例",
+      "verdict": "完成；服务真实 PNG，实际打开检查通过"
+    },
+    {
+      "file": "example-04.png",
+      "dsl": "example-04.snapshot",
+      "purpose": "400×240 第 4 页可运行示例",
+      "verdict": "完成；服务真实 PNG，实际打开检查通过"
+    }
+  ],
+  "extra_outputs": [
+    {
+      "file": "sources.md",
+      "purpose": "每条关键技术结论指向实际阅读页面与对应示例"
+    },
+    {
+      "file": "examples.json",
+      "purpose": "4 个完整示例的 DSL/PNG 路径、核心子树与教学页定位、允许包装差异、印刷源码 1-based 行号与逐字原文、技术结论与实际响应/查看证据"
+    }
+  ],
+  "requirements": "四张 1200×1600 教学页（第1页调用契约/输入/输出/错误响应，第2页根尺寸与有界 Row/Column/Expanded 及 Stack 定位对照，第3页 Raw/CDATA/富文本与尾部 alpha 误解，第4页背景/子树滤镜、视觉自检与可复现交付），每页 8–18 行逐字 DSL 示例与由同一 DSL 构件直接绘制的教学插图（不嵌入预渲染整图）；另交付 4 个 400×240 独立真实渲染示例，示例必须能真实解析、代码印刷与独立运行是同一套；核心子树在教学页与独立示例中文字/属性/子节点顺序/效果范围/相对几何一致、1:1 比例；正文≥24、代码≥20、安全边距 48、明确页码/章节；附 sources.md 与 examples.json；手册与 4 示例都要实际查看。",
+  "self_check": "用 ViewImage 逐张打开 4 个独立示例（POST 卡 / 蓝橙 2:1 与 Stack 圆点 / a<b && c>d CDATA 与半透明对照 / ImageFiltered 模糊块与锐利字），全部完整清晰、示例 DSL 真实解析成功。手册页 v1 打开第 1、2 页，发现两处缺陷：教学插图与底部两条说明文字重叠、说明被遮挡；第 2 页导语第二行「对定位」被裁切。v2 把插图改为右置、说明左置并排，导语框加高到 78px、代码块压缩到 420px、页脚上移，重新渲染 4 页后逐页打开复查：4 页导语、4 条要点、代码块（12/11/11/12 行）、省略提示、1:1 教学插图、左侧说明与页脚均完整、无重叠无裁切，安全边距 48 满足。核对 examples.json：印刷片段对应完整示例 DSL 的 1-based 行范围与逐字原文，核心子树在两处 XML 逐字一致，独立渲染与教学插图效果一致。8 张 PNG 文件头均为 89 50 4E 47。",
+  "dsl_capabilities": "教学页：Snapshot 根 + 1200×1600 固定 Container + Stack/Positioned 绝对排版，Container 圆角/边框/描边、Text 的 fontFamily(Noto Sans Mono CJK SC 代码 / Noto Sans CJK SC 正文)/fontSize/fontStyle/color/textAlign/letterSpacing 与 CDATA 印刷 XML 源码，c.add 把同一核心子树原样放入 400×240 Positioned。示例：Snapshot + 400×240 Container + Stack/Positioned、Row+Expanded、嵌套 Text Span、8 位颜色 #245CE480、ImageFiltered sigmaX/sigmaY。全部由 DSL 构造，无 Image 嵌入。",
+  "fonts_note": "正文 Noto Sans CJK SC（≥24）、代码 Noto Sans Mono CJK SC（≥20）、页码与拉丁 Inter；服务 /fonts 列表缓存 docs/fonts.txt。",
+  "iterations": [
+    {
+      "id": "v1",
+      "parent": null,
+      "type": "baseline",
+      "image": "outputs/<run_id>/A17/handbook-01.png / handbook-02.png (v1)",
+      "observed": "4 个独立示例全部正确；手册页第 1、2 页的教学插图（y=1310..1550）与底部说明文字（y=1400 起）重叠，说明被深色插图遮挡；第 2 页导语第二行「对定位」被裁切。",
+      "cause": "插图居中且与说明共用同一垂直区间；导语文本框 60px 不足以容纳 2 行 26 号中文",
+      "change": "生成首版基线，逐张打开 4 示例 + 第 1/2 页手册查看",
+      "result": "确认 2 项版式缺陷，进入视觉迭代",
+      "complete": true
+    },
+    {
+      "id": "v2",
+      "parent": "v1",
+      "type": "visual",
+      "image": "outputs/<run_id>/A17/handbook-01..04.png (v2)",
+      "observed": "上述 2 项缺陷；4 页共用同一版式，第 3/4 页同样受影响",
+      "cause": "实际渲染图观察与几何核对（插图 400×240 与两条说明的 y 区间相交）",
+      "change": "插图右置 x=740、说明左置并排；导语框加高 60→78px；代码块 468→420px 并内缩边距；省略提示/插图标题/页脚整体上移重排；缩短第 1 页首条要点避免孤字成行",
+      "result": "重新渲染 4 页手册并逐页打开复查：插图与说明完全不重叠、导语完整、代码块 12/11/11/12 行逐行可读、页脚与安全边距合格；4 个独立示例未改动且已通过，两版示例内容一致",
+      "complete": true
+    }
+  ],
+  "pitfalls": "踩坑：Text 会把 XML 源码里的 < > 原样显示需靠 CDATA 包裹印刷文本（dsl.cdata 已处理）；长中文正文在固定高度文本框里自动换行会溢出边界，不能依赖 softWrap 自动排版；教学插图与说明必须错开垂直区间；含 <![CDATA[…]]> 的印刷行放进 CDATA 时需处理内层 ]]>（dsl.cdata 已转义）。服务层面：v2 第 3 页首次请求遇到一次读取超时（status=0），自动重试成功，失败响应保留在临时目录。",
+  "design": "四页统一版式：页眉/页码/章节 → 大标题 → 导语 → 4 条编号要点 → 深色代码块（逐字印出 DSL 关键 8–18 行）→ 独立省略提示 → 1:1 教学插图（右）与读图要点（左）→ 页脚。每个示例的完整 DSL 与手册页共享同一个 <Stack>…</Stack> 核心子树（逐字相同、400×240 逻辑区域），只在两种包装（独立 Snapshot+Container / 手册页 Positioned 平移）上不同，examples.json 记录 1-based 行号范围与逐字原文，可核对三者一致。",
+  "closing": "8 张最终图片均已逐张打开检查：4 页手册正文/代码/插图/页脚完整无遮挡，4 个独立示例真实渲染且与教学插图一致；正文≥24、代码≥20、安全边距 48 满足；sources.md 把每条技术结论指向实际阅读页面，examples.json 记录示例一致性、印刷源码与实际响应/查看证据，据此标为完成。",
+  "visual_review_evidence": [
+    "example-01..04.png opened via ViewImage (4 standalone 400x240 renders, all accepted)",
+    "handbook-01.png / handbook-02.png v1 opened via ViewImage; 2 layout defects recorded",
+    "handbook-01..04.png v2 opened via ViewImage (4 pages); all defects resolved"
+  ],
+  "unresolved": "无。",
+  "unresolved_issues": [],
+  "metrics_extra": {
+    "image_views": 10,
+    "independent_cases": 4,
+    "counts_note": "实际 ViewImage 打开 10 次：4 独立示例 + v1 手册 2 页 + v2 手册 4 页"
+  },
+  "started_at": "2026-11-04T16:32:11+08:00"
+}

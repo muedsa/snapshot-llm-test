@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "task_id": "A13",
+  "path_base": "output_dir",
+  "brand": {
+    "name_zh": "叠光",
+    "name_en": "Layerlight",
+    "concept": "信息叠加后仍然清晰",
+    "category": "结构化视觉工具"
+  },
+  "colors": {
+    "primary": {
+      "hex": "#1D4ED8",
+      "role": "后层 / 主品牌蓝"
+    },
+    "secondary": {
+      "hex": "#22D3EE",
+      "role": "前层 / 亮青"
+    },
+    "accent": {
+      "hex": "#FBBF24",
+      "role": "光点 / 琥珀"
+    },
+    "ink": {
+      "hex": "#0B1B35",
+      "role": "深色背景上的正文与标题"
+    },
+    "navy": {
+      "hex": "#0B2545",
+      "role": "海报深色舞台渐变起色"
+    },
+    "navy2": {
+      "hex": "#16386F",
+      "role": "海报深色舞台渐变止色"
+    },
+    "paper": {
+      "hex": "#F4F7FC",
+      "role": "浅色底 / 透明图标检查底"
+    },
+    "white": {
+      "hex": "#FFFFFF",
+      "role": "反白文字"
+    },
+    "muted": {
+      "hex": "#5B6B85",
+      "role": "辅助说明文字"
+    },
+    "black": {
+      "hex": "#000000",
+      "role": "纯黑图标唯一色（所有非透明像素 R=G=B=0）"
+    }
+  },
+  "geometry": {
+    "basis": "512×512 画布，左上原点，x 向右 / y 向下，像素；应用按 scale = size/512 线性映射",
+    "bounding_box": [
+      56,
+      56,
+      448,
+      448
+    ],
+    "core_negative_space": [
+      192,
+      192,
+      320,
+      320
+    ],
+    "layer_offset": [
+      56,
+      56
+    ],
+    "alignment_rule": "P1 与 P2 的内孔坐标完全相同 → 透明方孔贯穿两环；层错位只改变外轮廓",
+    "negative_space_rules": [
+      "每个方环用 EVEN_ODD 双轮廓裁剪：外圆角矩形 + 内圆角矩形，内孔为负空间不另计构件",
+      "两环内孔对齐，叠加后中央 [192,192,320,320] 保持 alpha=0",
+      "环与环之间的透明缝隙与阶梯轮廓共同构成可识别的小尺寸外形"
+    ],
+    "components_total": 3,
+    "counts_basis": "按可独立辨认的几何母形实例计数（不按 DSL 节点数）；每个带孔方环含外轮廓+内孔仍算 1 个母形，内孔为负空间不另计；分组/变换/定位不另计；3 ≤ 6",
+    "max_allowed": 6
+  },
+  "components": [
+    {
+      "id": "P1",
+      "shape": "圆角方环（圆角矩形外轮廓 − 圆角矩形内孔）",
+      "instance": "后层",
+      "outer": [
+        56,
+        56,
+        336,
+        336
+      ],
+      "outer_radius": 56,
+      "hole": [
+        192,
+        192,
+        128,
+        128
+      ],
+      "hole_radius": 22,
+      "fill_rule": "EVEN_ODD",
+      "negative_space": "与 P2 内孔完全对齐，形成贯穿所有层的透明方孔（关键负空间）",
+      "dsl": "c.path(rr_path(56,56,336,336,56) + ' ' + rr_path(192,192,128,128,22), BLUE, fill_rule='EVEN_ODD')",
+      "counts_as": 1
+    },
+    {
+      "id": "P2",
+      "shape": "圆角方环（圆角矩形外轮廓 − 圆角矩形内孔）",
+      "instance": "前层",
+      "outer": [
+        112,
+        112,
+        336,
+        336
+      ],
+      "outer_radius": 56,
+      "hole": [
+        192,
+        192,
+        128,
+        128
+      ],
+      "hole_radius": 22,
+      "fill_rule": "EVEN_ODD",
+      "negative_space": "内孔与 P1 对齐；相对 P1 向右下错位 56px 形成阶梯轮廓",
+      "dsl": "c.path(rr_path(112,112,336,336,56) + ' ' + rr_path(192,192,128,128,22), CYAN, fill_rule='EVEN_ODD')",
+      "counts_as": 1
+    },
+    {
+      "id": "P3",
+      "shape": "实心圆",
+      "instance": "光点",
+      "center": [
+        400,
+        112
+      ],
+      "radius": 30,
+      "dsl": "c.circle(400,112,30,AMBER)",
+      "counts_as": 1
+    }
+  ],
+  "clear_space": {
+    "basis": "512 基准下图形包围盒 [56,56,448,448]，四边最小留白均为 56px",
+    "value_px": 56,
+    "ratio_of_canvas": 0.109375,
+    "ratio_of_symbol_extent": 0.14285714285714285,
+    "rule": "任何应用四周留白 ≥ 0.14 × 图标边长（约 1/7 图标尺寸）"
+  },
+  "applications": [
+    {
+      "file": "symbol-color.png",
+      "dsl": "symbol-color.snapshot",
+      "canvas": [
+        512,
+        512
+      ],
+      "transparent": true,
+      "symbol_origin": [
+        0,
+        0
+      ],
+      "symbol_size": 512,
+      "scale": 1.0,
+      "palette": "color",
+      "role": "透明彩色图标（主交付）"
+    },
+    {
+      "file": "symbol-black.png",
+      "dsl": "symbol-black.snapshot",
+      "canvas": [
+        512,
+        512
+      ],
+      "transparent": true,
+      "symbol_origin": [
+        0,
+        0
+      ],
+      "symbol_size": 512,
+      "scale": 1.0,
+      "palette": "black",
+      "role": "透明纯黑图标（与彩色版几何相同，仅颜色不同）"
+    },
+    {
+      "file": "brand-banner.png",
+      "dsl": "brand-banner.snapshot",
+      "canvas": [
+        1200,
+        400
+      ],
+      "transparent": false,
+      "symbol_origin": [
+        60,
+        60
+      ],
+      "symbol_size": 280,
+      "scale": 0.546875,
+      "palette": "color",
+      "role": "横幅左侧主视觉（同一 draw_symbol 几何重绘）"
+    },
+    {
+      "file": "launch-poster.png",
+      "dsl": "launch-poster.snapshot",
+      "canvas": [
+        1080,
+        1350
+      ],
+      "transparent": false,
+      "symbol_origin": [
+        300,
+        108
+      ],
+      "symbol_size": 480,
+      "scale": 0.9375,
+      "palette": "color",
+      "extra_instance": {
+        "origin": [
+          876,
+          1124
+        ],
+        "size": 140,
+        "scale": 0.2734375
+      },
+      "role": "海报上半部主视觉 + 右下角签名实例；独立竖向构图，非横幅放大"
+    }
+  ],
+  "shared_geometry_rule": "build.py draw_symbol(c, ox, oy, s, palette)：所有几何坐标以 512 为基准线性缩放，四个应用调用同一函数；未使用任何 <Image> 或渲染 PNG 嵌入",
+  "black_check": {
+    "decoder": "Pillow 13.0.0 Image.open(...).convert('RGBA')",
+    "method": "遍历全部像素，对 alpha>0 的像素检查 R=G=B=0；统计违规像素数与实际 alpha 范围；alpha=0 的 RGB 不参与判断",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "alpha_gt0_pixels": 128848,
+    "violating_pixels": 0,
+    "result": "通过：alpha>0 像素全部 R=G=B=0",
+    "evidence": {
+      "path_base": "suite_root",
+      "path": "tmp/20261104-145656-hy4all/A13/black-check.json"
+    },
+    "alpha_range_nonzero": [
+      1,
+      255
+    ],
+    "transparent_pixels": 133296,
+    "total_pixels": 262144,
+    "passed": true
+  },
+  "small_size_review": {
+    "tool": {
+      "tool": "Pillow",
+      "version": "13.0.0",
+      "resample": "Image.LANCZOS",
+      "premultiply": "R'G'B' = round(RGB * alpha / 255) before resize; alpha kept",
+      "unpremultiply": "RGB = min(255, R'G'B' * 255 / alpha) after resize; alpha==0 -> RGB 0",
+      "square": true,
+      "keep_alpha": true,
+      "final_size": [
+        32,
+        32
+      ]
+    },
+    "light_background": "#F4F7FC",
+    "previews": [
+      {
+        "source": "symbol-color.png",
+        "thumb_rgba": "tmp/20261104-145656-hy4all/A13/preview/symbol-color-32.png",
+        "on_light_32": "tmp/20261104-145656-hy4all/A13/preview/symbol-color-32-on-light.png",
+        "zoom8": "tmp/20261104-145656-hy4all/A13/preview/symbol-color-32-zoom8.png"
+      },
+      {
+        "source": "symbol-black.png",
+        "thumb_rgba": "tmp/20261104-145656-hy4all/A13/preview/symbol-black-32.png",
+        "on_light_32": "tmp/20261104-145656-hy4all/A13/preview/symbol-black-32-on-light.png",
+        "zoom8": "tmp/20261104-145656-hy4all/A13/preview/symbol-black-32-zoom8.png"
+      }
+    ],
+    "viewed_at_actual_32px": true,
+    "observation": "在同一浅色底 #F4F7FC 上以真实 32×32 原尺寸打开彩色与黑色两张缩略及并排对比图：两版轮廓均可识别为错位叠层方块，中央透明方孔（关键负空间）在 32 像素仍清晰成孔，右上光点可见；两版形状一致。另用 8 倍 NEAREST 放大图辅助确认抗锯齿边缘平滑、无彩色残留与白边。原尺寸检查未被放大图替代。",
+    "viewed_files": [
+      "tmp/20261104-145656-hy4all/A13/preview/symbol-color-32-on-light.png (32×32 原尺寸)",
+      "tmp/20261104-145656-hy4all/A13/preview/symbol-black-32-on-light.png (32×32 原尺寸)",
+      "tmp/20261104-145656-hy4all/A13/preview/thumbs-compare-32.png (同一浅底并排，均为 32×32 原尺寸)",
+      "tmp/20261104-145656-hy4all/A13/preview/symbol-color-32-zoom8.png (8× 辅助)",
+      "tmp/20261104-145656-hy4all/A13/preview/symbol-black-32-zoom8.png (8× 辅助)"
+    ]
+  },
+  "direction_previews": {
+    "path_base": "suite_root",
+    "direction_A": "tmp/20261104-145656-hy4all/A13/v0-previews/direction-A.png",
+    "direction_B": "tmp/20261104-145656-hy4all/A13/v0-previews/direction-B.png",
+    "chosen": "A",
+    "choice_evidence": "两张 512 透明预览及 32×32 缩略均用 ViewImage 打开比较；见 rationale.md 与 finalize.json"
+  },
+  "icon_geometry_identity": {
+    "method": "比较彩色与黑色 512×512 图标的 alpha 通道：不透明掩码逐像素比对 + 差异像素定位",
+    "geometry_identical": true,
+    "opaque_mask_identical": true,
+    "opaque_pixels_color": 128213,
+    "opaque_pixels_black": 128213,
+    "differing_alpha_pixels": 12,
+    "max_alpha_delta": 1,
+    "all_differences_on_semitransparent_edges": true,
+    "alpha_bytes": 262144,
+    "color_alpha_range": [
+      0,
+      255
+    ],
+    "black_alpha_range": [
+      0,
+      255
+    ],
+    "conclusion": "两图标由同一 draw_symbol 几何规则生成，不透明掩码逐像素一致；仅 12 个半透明抗锯齿边缘像素 alpha 相差 ≤1，符合题面『两图标几何相同，抗锯齿 alpha 允许』"
+  },
+  "final_image_review": [
+    "outputs/20261104-145656-hy4all/A13/symbol-color.png — 浅底合成后打开，3 构件/负空间/色彩层次通过",
+    "outputs/20261104-145656-hy4all/A13/symbol-black.png — 浅底合成后打开，纯黑且几何一致通过",
+    "outputs/20261104-145656-hy4all/A13/brand-banner.png — 两条文案完整、图标同几何重绘",
+    "outputs/20261104-145656-hy4all/A13/launch-poster.png — 五条文案完整、独立竖向构图",
+    "tmp/20261104-145656-hy4all/A13/v0-previews/direction-A-on-light.png — 方向预览（入选）",
+    "tmp/20261104-145656-hy4all/A13/v0-previews/direction-B-on-light.png — 方向预览（未选）"
+  ],
+  "checks": [
+    {
+      "item": "透明背景",
+      "observed": "两张 512 图标均为 RGBA，alpha 范围 0–255，背景 alpha=0",
+      "verified": true
+    },
+    {
+      "item": "纯黑图标 RGB=0",
+      "observed": "解码未预乘 RGBA 后 alpha>0 的 128848 像素中违规 0 个，alpha 范围 0–255",
+      "verified": true
+    },
+    {
+      "item": "两图标几何相同",
+      "observed": "不透明掩码 128213 像素逐像素一致；仅 12 个半透明边缘像素 alpha 差 ≤1（题面允许）",
+      "verified": true
+    },
+    {
+      "item": "构件数 ≤6",
+      "observed": "P1/P2 两个带孔方环 + P3 光点 = 3；内孔为负空间不另计",
+      "verified": true
+    },
+    {
+      "item": "32×32 轮廓与负空间",
+      "observed": "原尺寸浅底查看，中央方孔与阶梯轮廓在彩色/黑色两版均清晰",
+      "verified": true
+    },
+    {
+      "item": "跨应用同几何、不嵌 PNG",
+      "observed": "横幅与海报均调用 draw_symbol 同一几何规则生成，四份 DSL 无 <Image>",
+      "verified": true
+    }
+  ]
+}

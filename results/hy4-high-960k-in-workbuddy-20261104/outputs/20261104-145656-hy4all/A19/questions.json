@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "note": "本题 questions 不含答案；答案、计算方法与可见性依据见 answers.json。",
+  "coordinate_system": {
+    "origin": "画布左上角 (0,0)，x 向右、y 向下，单位像素",
+    "grid_center": "(100+200*c,100+200*r)，r,c 从 0 计；G 编号=8*r+c+1",
+    "bbox": "[left,top,right,bottom] 主体外接正方形框，不含 ID 文字",
+    "distance": "欧氏距离 d=√((x2-x1)^2+(y2-y1)^2)",
+    "strict_lr": "A 严格在 B 左侧 ⇔ A.center.x < B.center.x（严格，等号不算）",
+    "tolerance_default": "坐标 ±1px；距离 ±0.01px；圆心 ±2px；整数计数无容差"
+  },
+  "questions": [
+    {
+      "id": "Q01",
+      "image": "grid-scene.png",
+      "type": "compound-attribute",
+      "text": "检索同时满足『颜色=绿』且『形状=圆环』的全部对象，按 G 编号升序给出其 G 编号列表，并逐个给出中心坐标 (x,y)。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "复合条件为逻辑 AND（两条件须同时满足）；按 G 编号升序；中心坐标容差 ±1px。",
+      "sorting_rule": "",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q02",
+      "image": "grid-scene.png",
+      "type": "compound-attribute",
+      "text": "两步检索：第一步筛出所有『尺寸=80』的对象（尺寸=主体直径/边长，像素）；第二步仅在第一步结果中筛出『形状=圆角方』的对象，给出其个数与 G 编号（升序）。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "两步串联，第二步的候选集严格来自第一步结果；尺寸按 scene-data 的 size 字段。",
+      "sorting_rule": "",
+      "tolerance": "无（计数/编号）",
+      "requires_two_step": true,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q03",
+      "image": "grid-scene.png",
+      "type": "strict-center-lr",
+      "text": "定义『A 严格在 B 左侧』为 A 的中心 x 严格小于 B 的中心 x（不要求 y 相等，x 相等不算）。判断 G09 与 G52 中哪一个中心严格更靠左，给出两者中心 x 与 |x 差|（像素）。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "严格小于（<），等号排左关系；仅比较中心 x，不比较 y；差值取绝对值。",
+      "sorting_rule": "",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q04",
+      "image": "grid-scene.png",
+      "type": "strict-center-lr",
+      "text": "两步：第一步找出所有满足『中心 x 严格小于 800 且中心 y 严格大于 800』的对象（均为严格不等式，等号不算）；第二步仅在第一步结果中统计『颜色=蓝』的对象个数并给出 G 编号。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "两个严格不等式（< 与 >，等号均不算）；第二步候选集严格来自第一步。",
+      "sorting_rule": "",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": true,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q05",
+      "image": "grid-scene.png",
+      "type": "distance",
+      "text": "计算 G01 与 G64 两对象中心的欧氏距离（像素）。公式 d=√((x2−x1)²+(y2−y1)²)。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "欧氏距离（非曼哈顿）；结果四舍五入保留 2 位小数。",
+      "sorting_rule": "",
+      "tolerance": "距离 ±0.01px",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q06",
+      "image": "grid-scene.png",
+      "type": "distance",
+      "text": "两步：第一步筛出所有『颜色=紫 且 形状=圆』的对象（集合 S）；第二步计算 S 中每个对象中心到 G01 中心 (100,100) 的欧氏距离，给出距离最小的对象 G 编号与该距离（像素，2 位小数）；若最小距离并列，取 G 编号最小者。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "欧氏距离；并列打破规则为『G 编号升序字典序最小』，保证唯一解；第二步候选集=S。",
+      "sorting_rule": "",
+      "tolerance": "距离 ±0.01px",
+      "requires_two_step": true,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q07",
+      "image": "grid-scene.png",
+      "type": "sorting",
+      "text": "把所有『尺寸=64』的对象排序：先按中心 y 升序，y 相同再按中心 x 升序；给出排序后前 3 个对象的 G 编号序列。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "排序键为 (y 升序, x 升序)；因各对象中心坐标互不相同，不存在并列，序列唯一。",
+      "sorting_rule": "先按中心 y 升序，y 相同按中心 x 升序；取前 3 项。",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q08",
+      "image": "grid-scene.png",
+      "type": "sorting",
+      "text": "两步：第一步筛出所有『颜色=橙』的对象；第二步将它们按中心 x 降序排列，x 相同按中心 y 降序排列，给出排序后前 2 个 G 编号。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "两步串联；排序键 (x 降序, y 降序)；用 y 打破同列 x 并列，保证唯一。",
+      "sorting_rule": "先按中心 x 降序，x 相同按中心 y 降序；取前 2 项。",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": true,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q09",
+      "image": "grid-scene.png",
+      "type": "bounding-box",
+      "text": "给出 G23 主体的包围框 [left, top, right, bottom]（像素）。包围框指主体外接正方形框（圆按直径、方按边长、圆环按外径、圆角方按边长），不含 ID 编号文字。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "包围框=[cx-s/2, cy-s/2, cx+s/2, cy+s/2]；ID 文字盒不计入主体（题目已声明 ID 在主体外）。",
+      "sorting_rule": "",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q10",
+      "image": "grid-scene.png",
+      "type": "bounding-box",
+      "text": "两步：第一步筛出所有『颜色=蓝 且 尺寸=64』的对象；第二步求这些对象主体包围框的并集（能覆盖全部这些框的最小轴对齐矩形），给出 [left,top,right,bottom]（像素）。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "并集矩形=[min(left_i), min(top_i), max(right_i), max(bottom_i)]；框定义同 Q09，不含 ID 文字。",
+      "sorting_rule": "",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": true,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q11",
+      "image": "grid-scene.png",
+      "type": "color-shape-count",
+      "text": "分别统计 4 种颜色（蓝、橙、绿、紫）各自的对象总数，以及 4 种形状（圆、方、圆环、圆角方）各自的对象总数；按 蓝/橙/绿/紫 与 圆/方/圆环/圆角方 的顺序给出 8 个整数。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "按最终可见图逐对象计数，不按隐藏信息；整数计数无容差。",
+      "sorting_rule": "",
+      "tolerance": "无（整数计数）",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q12",
+      "image": "grid-scene.png",
+      "type": "color-shape-count",
+      "text": "两步：第一步找出中心位于画布右半平面的对象（定义：中心 x ≥ 800 像素，含等号）；第二步仅在第一步结果中统计『形状=圆环』的对象个数。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "右半平面定义 x ≥ 800（含等号，非严格）；第二步候选集严格来自第一步。",
+      "sorting_rule": "",
+      "tolerance": "坐标 ±1px",
+      "requires_two_step": true,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q13",
+      "image": "occlusion.png | occlusion-alternative.png",
+      "type": "occlusion-undecidable",
+      "text": "在遮挡场景中，中央深色不透明遮挡板之下（被完全遮住、不可见的区域）隐藏的图形是什么形状与颜色？坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "仅根据最终可见图作答；不得把隐藏对象数量作为标准答案；需说明是否可确定。",
+      "sorting_rule": "",
+      "tolerance": "不适用（定性）",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    },
+    {
+      "id": "Q14",
+      "image": "occlusion.png | occlusion-alternative.png",
+      "type": "occlusion-visible-count",
+      "text": "在中央遮挡板之外，图中可见的实心圆共有几个？按圆心坐标 (x,y) 逐个列出（像素）。坐标原点为画布左上角 (0,0)，x 向右、y 向下，单位像素；第 r 行 c 列中心=(100+200c,100+200r)，G 编号=8r+c+1。",
+      "comparison_rule": "仅统计实心圆（不含遮挡板、文字、隐藏内容）；圆心坐标容差 ±2px；两版可见图答案相同。",
+      "sorting_rule": "",
+      "tolerance": "圆心 ±2px",
+      "requires_two_step": false,
+      "based_on": "final visible PNG only（仅根据最终可见图，不使用隐藏对象数量）"
+    }
+  ]
+}

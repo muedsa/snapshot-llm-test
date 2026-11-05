@@ -1,0 +1,30 @@
+{
+  "task": "A02",
+  "title": "三会场密集会议日程",
+  "outputs": [
+    {"file": "agenda-wide.png", "dsl": "agenda-wide.snapshot", "purpose": "1920×1200 三条会场泳道，按真实时长比例", "verdict": "完成；服务真实 PNG 378950 字节"},
+    {"file": "agenda-mobile.png", "dsl": "agenda-mobile.snapshot", "purpose": "720×1280 分时段列表手机导览", "verdict": "完成；服务真实 PNG 224938 字节"}
+  ],
+  "extra_outputs": [
+    {"file": "schedule-audit.json", "purpose": "15 场时长、20 段空档、冲突检查、两图内容映射与线性时间轴定义"}
+  ],
+  "requirements": "大图 1920×1200：09:00–16:00 共用线性时间轴，1 分钟 = 1700/420 = 4.047619 px，色块 x/width 由真实起止时间计算；三条 A/B/C 泳道空档保留；公共午休 12:00–13:00 独立跨三泳道（斜纹带 + 标签，不与任何会议合并）；15 项活动色块内显示编号、起止时间、类别，短块不拉长，完整标题与讲者由下方 3 列 × 5 行活动索引提供；标注会场容量 A 320 / B 80 / C 160 席与读图方法；正文≥20、时间标签≥18。手机图 720×1280：按 7 个时段重排（含独立午休条），15 项全部保留编号、标题、会场与起止时间，正文≥18，并明确写“讲者详见完整日程”，非大图缩放/裁切。schedule-audit.json 记录每场时长、各会场空档、冲突检查（同会场重叠或同讲者重叠才算冲突，实为 0，未捏造）、两图内容映射与时间轴。",
+  "self_check": "实际打开 agenda-wide.png 两次（v1、v2）与 agenda-mobile.png 一次。v1 宽版发现活动索引三行文字挤出卡片、午休标签宽度越过 12:00–13:00 时间带、底部图例贴近画布边缘；v2 将索引改为两行（元信息 + 标题/讲者）、卡片加宽留白、午休标签收进时间带并拆成两行、图例上移 30px，重渲染后再次打开实际 PNG：15 张索引卡文字均在卡片内、无重叠；10:00–11:10 密集区 A/B/C 三泳道色块互不相压（S04/S05/S06 分属不同泳道），编号与时间可读；09:00–16:00 八个整点刻度齐全；午休带跨三泳道且独立；底部读图方法与五色类别图例完整不裁切。手机图逐行核对 S01–S15 全部存在、编号/时间/会场+类别/标题齐全、S15 与底部两行说明均未超出 1280 画布。",
+  "dsl_capabilities": "Stack + 固定尺寸 Container 定义两张画布；Positioned 绝对布局保证色块像素位置与时长严格成比例；Container 的 color/borderRadius/border 画泳道与活动块；Opacity 叠加半透明午休带；ClipPath SVG 路径画 26 条斜纹与网格细线；Text 的 fontFamily/fontSize/fontStyle/textAlign/maxLines/overflow 与 CDATA；渐变头部。全部图形与文字由 DSL 构造，无外部图片。",
+  "fonts_note": "沿用 /fonts 缓存：中文 Noto Sans CJK SC、数字/时间 Inter、太阳符号由 Noto Color Emoji 回退。",
+  "iterations": [
+    {"id": "v1", "parent": null, "type": "baseline", "image": "agenda-wide.png / agenda-mobile.png (v1)", "observed": "宽版活动索引三行文字挤到卡片边界、午休标签宽度超出时间带、底部图例贴近画布下沿；手机版通过检查。", "change": "首版基线生成并逐图查看", "result": "记录 3 项宽版缺陷，进入视觉迭代", "complete": true},
+    {"id": "v2", "parent": "v1", "type": "visual", "image": "agenda-wide.png (v2)", "observed": "索引卡片文字越界；午休标签左右越出 12:00–13:00 带；图例贴边", "cause": "实际渲染图观察；卡片 70px 容纳 3 行 18–20px 文字不足，标签固定 300px 大于时段带宽 243px", "change": "索引改两行（元信息一行、标题+讲者一行），卡片 58px/行距 66px；午休标签宽度改为时段带内宽并拆成“公共午休 / 12:00–13:00”两行；图例与读图说明上移并重新计算 y", "result": "再次渲染并打开实际 PNG，3 项缺陷均消除；15 项索引、午休带、刻度、图例完整可读", "complete": true},
+    {"id": "v2-retry", "parent": "v2", "type": "retry", "image": "agenda-wide.png (v2)", "observed": "v2 首次提交遇到 SSL 握手超时，HTTP 状态 0，未取得图片", "cause": "render.py 记录 transport_error: urlopen error _ssl.c:1015 handshake timed out；原始响应已保留", "change": "按真实响应重试（客户端加入 status=0 可重试），未改变 DSL", "result": "重试成功，HTTP 200 / image/png，378950 字节；DSL 未改动，图像与 v2 一致", "complete": false}
+  ],
+  "pitfalls": "踩坑：一次真实的 TLS 握手超时（status 0）证明重试逻辑需覆盖传输层错误，已修正 render.py；原始错误记录保留在 requests.jsonl。另：固定宽度标签必须与实际像素比例算出的时段宽度比较后再写，否则会越出时间带；中文混排不要用纯拉丁字体承载整行元信息。",
+  "design": "宽版用“泳道 + 比例色块 + 外侧编号索引”解决 40 分钟短块与长标题的矛盾：色块严格按 4.047619 px/分钟绘制，只用编号/时间/类别占位，完整信息在下方索引，绝不把 40 分钟拉成 60 分钟。手机端彻底重排为时段分组列表，把讲者移到宽版以换取单屏可读密度，并显式声明信息去向。颜色同时编码类别而非会场，会场由泳道/文字表达，避免双重编码混淆。",
+  "closing": "两张最终 PNG 均已实际打开检查；数据来自 agenda.csv/venues.json 未修改，冲突按同会场或同讲者重叠判定为 0（16 对跨会场并行属于正常并行会话，未捏造为冲突）；所有指定信息与尺寸达标，据此标为完成。",
+  "visual_review_evidence": [
+    "agenda-wide.png v1 opened; 3 defects recorded",
+    "agenda-mobile.png v1 opened; accepted, all 15 events present",
+    "agenda-wide.png v2 opened after re-render; defects resolved, accepted"
+  ],
+  "unresolved": "无。",
+  "unresolved_issues": []
+}

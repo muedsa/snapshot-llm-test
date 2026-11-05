@@ -1,0 +1,53 @@
+{
+  "task": "A04",
+  "title": "分组改善与总体下降的数据解释",
+  "outputs": [
+    {
+      "file": "conversion-story.png",
+      "dsl": "conversion-story.snapshot",
+      "purpose": "1600×1000 转化率悖论信息图",
+      "verdict": "完成；服务真实 PNG"
+    }
+  ],
+  "extra_outputs": [
+    {
+      "file": "analysis.json",
+      "purpose": "四个分组精确分数/显示百分比、两期加权公式与构成、图轴定义、结论与因果限制"
+    }
+  ],
+  "requirements": "展示两期×两渠道的四个精确分数：前期直接 2400/8000=30.00%、前期推广 200/2000=10.00%、后期直接 700/2000=35.00%、后期推广 960/8000=12.00%；总体前期 2600/10000=26.00%、后期 1660/10000=16.60%（总成交÷总访问，不平均渠道比例）。三图：① 共用 0–100% 尺度的渠道分组率柱图；② 每期等长 390px、分段按真实占比（80/20 → 20/80）的访问构成堆叠图；③ 总体 26.00%→16.60% 对照并给出加权公式与错误口径均值 20.00%→23.50% 的反例。底部小表列出全部原始分子/分母，深色卡给出由数据支持的主结论与“不能由该数据证明因果”的限制说明。正文≥22、图标注≥18。",
+  "self_check": "实际打开 conversion-story.png 两次（v1、v2）。v1 发现率图轴单位与 100% 刻度相压、构成图 20% 窄分段标签被截断、表格首列渠道名被裁、结论正文末行压到限制小框、总体面板加权与错误口径均值间距不足；v2 删除轴单位标签、窄分段改用短百分比并补充颜色说明、首列缩短为“前期 直接”等、结论精简为三行、加权说明上移，重渲染并再次打开实际 PNG：三面板文字完整、构成图 80%/20% 分段清晰、6 行核对表对齐、结论与限制框分离、底部脚注完整。",
+  "dsl_capabilities": "Stack+固定画布绝对定位；Container 的 color/borderRadius/border 绘卡片与柱体；ClipPath 路径绘斜向趋势线（本题未用）；Text 的 fontSize/fontStyle/textAlign/maxLines/overflow 与 CDATA；渐变头部；c.bar/c.rect/c.text 组合三图。全部由 DSL 构造。",
+  "iterations": [
+    {
+      "id": "v1",
+      "parent": null,
+      "type": "baseline",
+      "image": "conversion-story.png (v1)",
+      "observed": "轴单位与100%刻度重叠、20%窄分段标签截断、表格首列裁切、结论末行压限制框、加权说明与均值贴在一起",
+      "change": "生成首版基线并查看",
+      "result": "记录 5 项缺陷，进入视觉迭代",
+      "complete": true
+    },
+    {
+      "id": "v2",
+      "parent": "v1",
+      "type": "visual",
+      "image": "conversion-story.png (v2)",
+      "observed": "上述 5 项",
+      "cause": "实际渲染图观察；固定宽度标签未考虑窄分段与中文换行行数",
+      "change": "删除轴单位标签；窄分段显示 20% 并补颜色图例；表格首列缩短；结论精简为 3 行；加权说明上移 2px",
+      "result": "重渲染并再次查看，5 项缺陷全部消除，数值与 analysis.json 一致",
+      "complete": true
+    }
+  ],
+  "pitfalls": "踩坑：堆叠图的窄分段（20%×390=78px）容不下“推广访问 20%”，需按实际像素宽度切换短标签；中文结论卡的 22px 文本按约 30 字/行估算，必须给限制框留足 120px 以上。",
+  "design": "三图从左到右分别呈现“分组改善 → 构成转移 → 总体下降”，用相同的蓝/橙渠道配色把三图关联起来，结论放在右下而非图上方，避免结论先行；把错误口径（平均比例）并列展示以说明为何不能只看平均。",
+  "closing": "最终图逐项核对四个精确分数、两期加权式、0–100% 共用尺度、等长构成图与因果限制说明，全部可读且无遮挡，据此标为完成。",
+  "visual_review_evidence": [
+    "conversion-story.png v1 opened; 5 defects recorded",
+    "conversion-story.png v2 opened; defects resolved, accepted"
+  ],
+  "unresolved": "无。",
+  "unresolved_issues": []
+}

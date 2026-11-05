@@ -1,0 +1,134 @@
+# Snapshot 使用情况说明与踩坑记录 — B02
+
+任务ID：B02
+任务名称：为一个自选项目设计完整视觉生态 · 城市沃土 URBAN LOAM
+本次运行ID：20261104-145656-hy4all
+完成状态：完成
+结束原因：10 个触点作品全部达成，逐张看图并完成整体最终审查，已知缺陷修复并复查
+输出目录：`outputs/20261104-145656-hy4all/B02/`
+临时目录：`tmp/20261104-145656-hy4all/B02/`
+路径基准：suite_root（记录内本地路径均相对总任务根；Markdown 链接相对本文档）
+
+## 1. 最终产物与需求完成情况
+
+| 文件 | 用途 | 对应DSL或图片 | 完成状态 |
+|---|---|---|---|
+| `case-01/final.png` | 1000×1500 触点作品 · 第 3 期志愿者招募主视觉海报 | `case-01/final.snapshot` | 完成；服务真实 PNG，158246 字节 |
+| `case-02/final.png` | 700×1500 触点作品 · 3 号投放点导视立牌 | `case-02/final.snapshot` | 完成；服务真实 PNG，102824 字节 |
+| `case-03/final.png` | 1400×1000 触点作品 · 厨余分类指南卡 | `case-03/final.snapshot` | 完成；服务真实 PNG，161380 字节 |
+| `case-04/final.png` | 1000×620 触点作品 · 志愿者会员卡 | `case-04/final.snapshot` | 完成；服务真实 PNG，72942 字节 |
+| `case-05/final.png` | 720×1400 触点作品 · App 首页界面 | `case-05/final.snapshot` | 完成；服务真实 PNG，107714 字节 |
+| `case-06/final.png` | 1600×1000 触点作品 · 十月影响力数据简报 | `case-06/final.snapshot` | 完成；服务真实 PNG，149162 字节 |
+| `case-07/final.png` | 1200×1200 触点作品 · 周六工作坊日程表 | `case-07/final.snapshot` | 完成；服务真实 PNG，136951 字节 |
+| `case-08/final.png` | 1280×640 触点作品 · 收获兑换券 | `case-08/final.snapshot` | 完成；服务真实 PNG，62329 字节 |
+| `case-09/final.png` | 1500×1000 触点作品 · 社区投放点地图 | `case-09/final.snapshot` | 完成；服务真实 PNG，140243 字节 |
+| `case-10/final.png` | 640×960 触点作品 · 种子包标签 | `case-10/final.snapshot` | 完成；服务真实 PNG，79259 字节 |
+| `portfolio.json` | 10 件作品逐一映射尺寸/触点/场景/DSL 能力/完成标准/真实检查证据 | — | 完成 |
+| `portfolio.md` | 策展逻辑：一个项目十个触点的统一与差异 | — | 完成 |
+| `gallery.md` | 逐图预览、原 PNG 与同名 .snapshot 离线链接 | — | 完成 |
+| `project-brief.md` | 项目问题、服务对象、运作方式、十件作品各自任务与诚实性说明 | — | 完成 |
+| `design-system.json` | 真正用到的色板/字体/组件/几何/密度比例/硬性规则 | — | 完成 |
+| `touchpoint-map.json` | 10 件作品与用户旅程阶段、触点情境的映射 | — | 完成 |
+| `asset-sources.json` | 素材来源与装饰性码说明（本套未使用外部素材） | — | 完成 |
+| `snapshot-usage.md` | 文档应用、逐件看图、修改与踩坑、最终审查（finalize.py 生成） | — | 完成 |
+| `task-metrics.json` | 墙钟、请求、迭代、看图与用例统计（finalize.py 生成） | — | 完成 |
+
+为同一个自拟项目「城市沃土 URBAN LOAM 社区堆肥与屋顶菜园」交付 10 件独立完整主作品（10 张最终 PNG + 10 份同名 final.snapshot + 各 case.md），并在输出根交付 portfolio.json、portfolio.md、gallery.md、snapshot-usage.md、task-metrics.json，另附 project-brief.md、design-system.json、touchpoint-map.json 与 asset-sources.json。十件共享 loam.py 的可复用设计系统（色板、字体、sprout 徽标、品牌页眉/页脚、胶囊/卡片、土壤点阵），但分别解决不同内容、状态、媒介与使用任务，尺寸从 640×960 到 1600×1000，不是同一海报换色换字，也未复用 B01 成品。全部主体由 Snapshot DSL 构造并经真实 open-snapshot 服务渲染，PNG 为服务原始字节（已校验 89 50 4E 47 文件头与 IHDR 尺寸）。自拟品牌、人物、点位、数值与活动在画面内标注为虚构演示；装饰性点阵码与条码注明不可扫描。
+
+**逐图自检证据**：用 ViewImage 逐张打开全部 10 张最终 PNG，并额外做 2 次 5 倍局部放大与 2 次 v2 复查，共 14 次看图。首版确认 8 张直接通过；case-04 发现全息角标遮挡有效期与统计卡、case-06 发现 y 轴刻度重复。v2 分别把角标缩小下移/文字左移、把刻度改为 0/500/1k/1.5k/2k，重渲染并再次打开复查后消除。局部放大确认 sprout 徽标在深色 64px 与浅色 62px 下均为两片可辨的叶子，验证复用组件在不同配色与尺寸下有效。最终整体复查：10 张内容、层级、对齐、留白、遮挡、裁切、文字可读性与图形效果均满足各用例完成标准，portfolio.json 的 30 条 criterion_results 全部 passed。
+
+## 2. 文档阅读与实际使用的能力
+
+服务基地址：`https://open-snapshot.muedsa.com`
+文档版本或访问日期：2026-11-04，服务 `/ai-guide.md`、`/openapi.yaml`、`/fonts` 与文档站 `llms.txt`、`parser.md`、`parser-tags.md`、`parser-text.md`、`parser-errors.md`、`examples.md`、`fonts.md`、`media-text.md`、`_llms-txt/dsl.txt` 已下载缓存于 `tmp/20261104-145656-hy4all/_suite/docs/`。
+
+AI使用指南：https://open-snapshot.muedsa.com/ai-guide.md
+
+实际应用的契约：`POST /snapshot`，请求体 UTF-8 纯文本 `text/plain; charset=utf-8`，成功响应 `image/png` 二进制；按 `X-Request-Id`、`Server-Timing`、`Content-Type` 校验，失败时读取 JSON 的 `code`/`diagnostic`；`GET /fonts` 返回纯文本字体族清单，本套统一使用 `Noto Sans CJK SC`（中文）与 `Inter`（拉丁/数字），必要时 `Noto Sans Mono CJK SC`。
+
+| 实际阅读的文档页面 | 本次使用的知识 | 对应文件或位置 |
+|---|---|---|
+| ai-guide.md + openapi.yaml | POST /snapshot、text/plain;charset=utf-8、image/png、X-Request-Id、错误处理 | render.py / fast_render.py / requests.jsonl |
+| reference/parser-tags.md | Snapshot/Container/Stack/Positioned/Text/ClipPath/Transform/Opacity/ImageFiltered 属性与颜色格式 | 10 份 final.snapshot |
+| reference/parser-text.md | fontFamily/fontSize/fontStyle/textAlign/letterSpacing、CDATA、嵌套 Text Span | 10 份 final.snapshot 全部文字 |
+| guides/examples.md | 固定画布 + ClipPath SVG 路径票券、viewBox/fit 语义 | case-08 兑换券 |
+| guides/fonts.md + fonts.txt | 可用字体族与回退 | 全部文字元素 |
+
+根节点 Snapshot(type=png,background) + Stack(TOP_LEFT, HARD_EDGE) + 固定尺寸 Container 画布；Positioned 绝对定位；Container 的 color/borderRadius/border 与 gradientType=LINEAR/RADIAL/SWEEP（gradientStops 硬停止、gradientBegin/End）实现卡面、招募带与票券；ClipPath SVG 路径（M/L/Q、fillRule=EVEN_ODD、多边形逼近）实现 sprout 双叶徽标、植株插画、环形进度/去向图、波状河道、SVG 半圆凹口票券、菱形与星形；Transform(matrix 16 列主序, alignment=CENTER) 旋转全息角标；Opacity 与 8 位 #RRGGBBAA 内联透明度；ImageFiltered(sigmaX/sigmaY) 当前位置光晕；Text/CDATA + Noto Sans CJK SC / Inter / Noto Serif CJK SC + fontSize/fontStyle/textAlign/letterSpacing/maxLines 与嵌套 Text 富文本 Span；参数化 soil_dots / qr_matrix / barcode / polyline / arc / ring / wave_band 等生成式几何。全部由 DSL 构造，无外部图片。
+
+字体查询：/fonts 清单（tmp/<run_id>/_suite/docs/fonts.txt）含 Inter、Noto Sans CJK SC、Noto Serif CJK SC、Noto Sans Mono CJK SC 等；中文用 Noto Sans CJK SC，拉丁/数字用 Inter，编辑性标题与标语用 Noto Serif CJK SC。
+
+## 3. 迭代过程、服务调用与图像检查
+
+请求记录文件：`tmp/20261104-145656-hy4all/B02/requests.jsonl`
+迭代记录文件：`tmp/20261104-145656-hy4all/B02/iterations.jsonl`
+渲染请求总数：16
+成功次数：12
+失败次数：4
+重试请求数：4
+DSL版本数：2
+实际图片查看次数：14
+完整视觉迭代数：2
+未完成视觉迭代数：0
+其他接口查询：`/ai-guide.md`、`/openapi.yaml`、`/fonts` 及文档站页面属共享准备，见 `tmp/20261104-145656-hy4all/_suite/requests.jsonl` 与 docs 缓存；本题不重复计为新增 HTTP 请求。
+
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-01/final.png (v1)` 发现：顶部品牌行与「第 3 期招募」胶囊完整；巨型 sprout 徽标（两片叶 + 茎 + 种子）清晰；两行衬线主标语「把果皮，/ 变成邻居的番茄」与副标题完整；三步参与卡 01/02/03 对齐；深绿 CTA 招募带含时间、…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-02/final.png (v1)` 发现：深绿信息头、巨大编号「03」、琥珀 DSL 箭头与「向前 120 米」完整；四条信息卡（开放时间 / 可投放 / 请勿投入 / 现场协助）对齐，绿/陶土左边条区分明确；底部提示、演示声明与页脚完整。另用 5 倍局部放大确…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-03/final.png (v1)` 发现：品牌页眉与 TOUCHPOINT 03/10 编号完整；左绿「可投 / YES」与右陶土「不可投 / NO」双栏对称，各 6 条（勾选 / 叉号 DSL 图标、名称、提示、描边标签）完整对齐；底部提示与页脚完整，无列重叠…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-04/final.png (v1)` 发现：v1 发现右下旋转全息角标压住「VALID THRU 2027.12」文字并覆盖第三格统计卡右缘；v2 把有效期文字左移、角标缩小并下移到卡面右下空白后消除。深绿渐变卡面、sprout 徽标、持卡人「林小满」、编号、圆形…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-05/final.png (v1)` 发现：圆角屏幕容器内状态栏、问候与 Lv.3、深绿积分主卡（1,260、63% 进度环）、本周概览三格、两个快捷操作按钮、三条邻里动态与底部四标签栏完整；所有元素未溢出圆角屏幕，底部演示声明可读；arc 进度环在手机密度下复用…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-06/final.png (v1)` 发现：v1 发现柱图 y 轴用 v//1000 生成刻度，500 与 1500 显示为重复的 0k/1k；v2 改为 0 / 500 / 1k / 1.5k / 2k 后消除。四 KPI 卡、六个月零起点柱图与柱顶精确数值（9…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-07/final.png (v1)` 发现：SAT 11/07 日期徽章、三格概要（地点 / 名额 / 费用）、纵向时间轴四场会话（09:30 / 10:30 / 13:30 / 15:00 标题、说明、主讲人胶囊）与时间轴节点完整对齐；报名说明、演示声明与页脚完…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-08/final.png (v1)` 发现：深绿 SVG 左右半圆凹口、标题「时令蔬菜兑换券」、琥珀-叶绿渐变分隔条、1 份 / 当日有效胶囊、编号、竖向虚线撕口、右侧装饰点阵码、有效期与条码完整；底部演示声明与 TP-08 编号完整，无重叠或裁切。…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-09/final.png (v1)` 发现：品牌页眉；参数化街道网格、波浪河道、陶土推荐路线、6 个编号节点与名称、当前位置琥珀光晕完整；右侧图例四项、覆盖范围数据与演示声明、页脚完整；节点标签无重叠、路线未越界，wave_band 与 polyline 在地图密…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 无）：查看 `outputs/20261104-145656-hy4all/B02/case-10/final.png (v1)` 发现：森林绿顶带与徽标、SEED LIBRARY 字标；「樱桃番茄」品种名与拉丁名；植株插画（茎、三片叶、红色果实、土壤线）；2×2 参数格（0.5 cm / 30 cm / 7 - 14 天 / 播后 70 天）；批次条码与…。改动：生成首版基线并实际 ViewImage 打开。复查：逐项记录；有缺陷的用例进入视觉迭代。
+- **v1**（baseline，父版本 v1）：查看 `tmp/20261104-145656-hy4all/B02/zoom/case-02-mark.png` 发现：整图缩略时深色小尺寸 sprout 徽标疑似呈箭头状，需局部放大确认。。改动：用 PIL 对 case-02 左上徽标 5 倍放大并 ViewImage 打开。复查：确认为两片分离的琥珀叶 + 白色茎 + 种子点，组件在深色 64px 下有效，无需修改。。
+- **v1**（baseline，父版本 v1）：查看 `tmp/20261104-145656-hy4all/B02/zoom/case-06-mark.png` 发现：整图缩略时浅色小尺寸页眉徽标疑似呈箭头状，需局部放大确认。。改动：用 PIL 对 case-06 左上徽标 5 倍放大并 ViewImage 打开。复查：确认为两片分离的叶绿 + 深绿茎与种子点，组件在浅色 62px 下有效，无需修改。。
+- **v2**（visual，父版本 v1）：查看 `outputs/20261104-145656-hy4all/B02/case-04/final.png (v2)` 发现：case-04 右下旋转全息角标压住「VALID THRU 2027.12」文字，并覆盖第三格统计卡「1,260 当前积分」右缘。。改动：有效期文字框改为 (560,512,260,30) 右对齐至 x=820；全息角标缩小为 64×64 并移到 (860,500) 的卡面右下空白。。复查：重渲染并 ViewImage 打开 v2 复查：有效期文字完整可读，第三格统计卡无遮挡，角标独立位于右下角。。
+- **v2**（visual，父版本 v1）：查看 `outputs/20261104-145656-hy4all/B02/case-06/final.png (v2)` 发现：case-06 柱图 y 轴五个刻度显示为 2k / 1k / 1k / 0k / 0，500 与 1500 的标签重复且含糊。。改动：刻度改为显式的 (0,'0')、(500,'500')、(1000,'1k')、(1500,'1.5k')、(2000,'2k') 五组。。复查：重渲染并 ViewImage 打开 v2 复查：五个刻度分别为 0 / 500 / 1k / 1.5k / 2k，六根柱与数值 980–1,840 完整、零起点比例正确。。
+
+## 4. 修改记录与踩坑
+
+| 迭代ID / 类型 / 父版本 | 问题或现象 | 原因及确认依据 | 采取的修改 | 前后对比、验证结果与剩余问题 |
+|---|---|---|---|---|
+| v1 / baseline / — | 顶部品牌行与「第 3 期招募」胶囊完整；巨型 sprout 徽标（两片叶 + 茎 + 种子）清晰；两行衬线主标语「把果皮，/ 变成邻居的番茄」与副标题完整；三步参与卡 01/02/03 对齐；深绿 CTA 招募带含时间、… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | 深绿信息头、巨大编号「03」、琥珀 DSL 箭头与「向前 120 米」完整；四条信息卡（开放时间 / 可投放 / 请勿投入 / 现场协助）对齐，绿/陶土左边条区分明确；底部提示、演示声明与页脚完整。另用 5 倍局部放大确… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | 品牌页眉与 TOUCHPOINT 03/10 编号完整；左绿「可投 / YES」与右陶土「不可投 / NO」双栏对称，各 6 条（勾选 / 叉号 DSL 图标、名称、提示、描边标签）完整对齐；底部提示与页脚完整，无列重叠… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | v1 发现右下旋转全息角标压住「VALID THRU 2027.12」文字并覆盖第三格统计卡右缘；v2 把有效期文字左移、角标缩小并下移到卡面右下空白后消除。深绿渐变卡面、sprout 徽标、持卡人「林小满」、编号、圆形… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | 圆角屏幕容器内状态栏、问候与 Lv.3、深绿积分主卡（1,260、63% 进度环）、本周概览三格、两个快捷操作按钮、三条邻里动态与底部四标签栏完整；所有元素未溢出圆角屏幕，底部演示声明可读；arc 进度环在手机密度下复用… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | v1 发现柱图 y 轴用 v//1000 生成刻度，500 与 1500 显示为重复的 0k/1k；v2 改为 0 / 500 / 1k / 1.5k / 2k 后消除。四 KPI 卡、六个月零起点柱图与柱顶精确数值（9… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | SAT 11/07 日期徽章、三格概要（地点 / 名额 / 费用）、纵向时间轴四场会话（09:30 / 10:30 / 13:30 / 15:00 标题、说明、主讲人胶囊）与时间轴节点完整对齐；报名说明、演示声明与页脚完… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | 深绿 SVG 左右半圆凹口、标题「时令蔬菜兑换券」、琥珀-叶绿渐变分隔条、1 份 / 当日有效胶囊、编号、竖向虚线撕口、右侧装饰点阵码、有效期与条码完整；底部演示声明与 TP-08 编号完整，无重叠或裁切。… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | 品牌页眉；参数化街道网格、波浪河道、陶土推荐路线、6 个编号节点与名称、当前位置琥珀光晕完整；右侧图例四项、覆盖范围数据与演示声明、页脚完整；节点标签无重叠、路线未越界，wave_band 与 polyline 在地图密… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / — | 森林绿顶带与徽标、SEED LIBRARY 字标；「樱桃番茄」品种名与拉丁名；植株插画（茎、三片叶、红色果实、土壤线）；2×2 参数格（0.5 cm / 30 cm / 7 - 14 天 / 播后 70 天）；批次条码与… | 实际渲染图目视观察 | 生成首版基线并实际 ViewImage 打开 | 逐项记录；有缺陷的用例进入视觉迭代 |
+| v1 / baseline / v1 | 整图缩略时深色小尺寸 sprout 徽标疑似呈箭头状，需局部放大确认。 | 整图缩放观感与真实图形不一致 | 用 PIL 对 case-02 左上徽标 5 倍放大并 ViewImage 打开 | 确认为两片分离的琥珀叶 + 白色茎 + 种子点，组件在深色 64px 下有效，无需修改。 |
+| v1 / baseline / v1 | 整图缩略时浅色小尺寸页眉徽标疑似呈箭头状，需局部放大确认。 | 整图缩放观感与真实图形不一致 | 用 PIL 对 case-06 左上徽标 5 倍放大并 ViewImage 打开 | 确认为两片分离的叶绿 + 深绿茎与种子点，组件在浅色 62px 下有效，无需修改。 |
+| v2 / visual / v1 | case-04 右下旋转全息角标压住「VALID THRU 2027.12」文字，并覆盖第三格统计卡「1,260 当前积分」右缘。 | ViewImage 目视：K.rot 的 Positioned 盒左上在 (866,452)、84×84，旋转 20° 后包围盒 y≈440–548、x≈854–962，与 y=512–542 的有效期文字及 y=398–490 的统计卡重叠 | 有效期文字框改为 (560,512,260,30) 右对齐至 x=820；全息角标缩小为 64×64 并移到 (860,500) 的卡面右下空白。 | 重渲染并 ViewImage 打开 v2 复查：有效期文字完整可读，第三格统计卡无遮挡，角标独立位于右下角。 |
+| v2 / visual / v1 | case-06 柱图 y 轴五个刻度显示为 2k / 1k / 1k / 0k / 0，500 与 1500 的标签重复且含糊。 | ViewImage 目视确认：刻度标签用 v//1000 生成，500→0k、1500→1k，与 0→0、1000→1k 撞标签 | 刻度改为显式的 (0,'0')、(500,'500')、(1000,'1k')、(1500,'1.5k')、(2000,'2k') 五组。 | 重渲染并 ViewImage 打开 v2 复查：五个刻度分别为 0 / 500 / 1k / 1.5k / 2k，六根柱与数值 980–1,840 完整、零起点比例正确。 |
+
+已确认踩坑：①本环境出现间歇性 `ssl handshake operation timed out`；已按要求执行 `render_all.py B02 --fresh --retries 2`，但 case-01 在 attempt 2 才成功、后续用例仍会触发每次约 180s 的空等，遂停止其后继等待，改用等价短超时客户端 fast_render.py（timeout=30、同 schema 日志、保存原始请求/响应字节）完成其余 9 张，成功 PNG 仍为真实服务响应。②K.rot 的 Positioned 盒参数是「左上角 + 宽高」而非中心，旋转后包围盒会向四周扩张，case-04 全息角标因此压住有效期文字与统计卡，缩小并下移后修复。③`v//1000` 生成 k 单位刻度会让 500 与 1500 撞成 0k/1k，须用显式标签表。④整图缩略时小尺寸双叶徽标易被误读为箭头，用 PIL 5 倍局部放大确认是观感问题而非图形缺陷，未做无意义修改。⑤Text 不做实体解码，特殊字符统一用 CDATA；Container 的 alignment 才能稳定垂直居中文字；ClipPath 的子 Container 需与画布同尺寸，故 arc/ring/poly 全部采用绝对画布像素多边形逼近，规避 SVG A 命令 large-arc/sweep 标志歧义。
+
+## 5. 任务耗时与请求统计
+
+结构化指标文件：`outputs/20261104-145656-hy4all/B02/task-metrics.json`
+
+| 指标 | 实际值 | 单位 | 数据来源与统计范围 |
+|---|---|---|---|
+| 任务开始、结束时间 | 2026-11-04T18:54:01+08:00 → 2026-11-04T19:06:45+08:00 | ISO8601+时区 | suite-state.json / 本地墙钟 |
+| 任务总耗时 | 见 task-metrics.json | 秒 | 起止墙钟差；不与请求耗时求和 |
+| 首次可用图耗时 | 近似首版渲染耗时 | 秒 | requests.jsonl 首条成功记录 |
+| 等待用户反馈 | 0 | 秒 | 全套自动连续执行，无逐题等待 |
+| 限流等待、排队等待 | 未发生（未收到 429/503） | 秒 | requests.jsonl |
+| 已记录请求耗时之和 | 341.763 | 秒 | requests.jsonl（可含重叠，不等于任务总耗时） |
+| 成功、失败、重试请求 | 12 / 4 / 4 | 次 | requests.jsonl |
+| 实际看图与完整视觉迭代 | 14 / 2 | 次 | iterations.jsonl 与实际查看记录 |
+
+## 6. 设计选择、经验与未解决事项
+
+以「一个真实项目 → 用户旅程 → 十个触点 → 各自媒介与信息密度」为推演顺序。视觉系统由「土壤」（森林绿/陶土/奶油/点阵颗粒）与「生长」（两片叶 + 茎 + 种子的 sprout 徽标）两套隐喻构成，通过 loam.py 统一色板、字体层级、品牌页眉/页脚、胶囊与卡片组件，让 10 件一眼可辨同源；再按观看距离重排版式：远距离立牌用巨大编号与箭头，近距离分类卡用双栏对照，手机竖屏用积分环与快捷按钮，大屏用 KPI + 柱图 + 环形图，极小种子标签用 2×2 参数网格。刻意把复用组件放进 640×960 到 1600×1000 的十种比例里压力测试，并用局部放大验证徽标一致性。
+
+最终 10 张实际 PNG 已逐张打开检查（含局部放大与缺陷复查）并完成整体最终审查：内容、数据标注、层级、对齐、留白、遮挡、裁切、文字可读性与图形效果均满足要求；2 处已发现缺陷修复并复查消除；10 份 final.snapshot 与 10 张 final.png 一一配对，PNG 文件头与 IHDR 尺寸已校验；project-brief.md / design-system.json / touchpoint-map.json 等附加交付齐备。据此标为完成。
+
+临时目录中的 DSL 版本、原始请求/响应、脚本与记录均保留，未删除或覆盖任何尝试；总任务根 `.gitignore` 已建立，仅排除 `__pycache__/`、`*.pyc` 等运行时缓存，未忽略 `tmp/`、`outputs/` 或过程证据。
+
+未解决事项：无。

@@ -1,0 +1,645 @@
+{
+  "schema_version": 1,
+  "task_id": "A07",
+  "path_base": "output_dir",
+  "units": {
+    "intervals": "站间边数（区间数）",
+    "transfers": "改变乘坐线路次数（首次上车不计）",
+    "length": "所有相邻站耗时相同，故只比较区间数与换乘数"
+  },
+  "graph": {
+    "lines": {
+      "R": {
+        "name": "红线",
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ]
+      },
+      "B": {
+        "name": "蓝线",
+        "stations": [
+          "S07",
+          "S08",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ]
+      },
+      "G": {
+        "name": "绿线",
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ]
+      }
+    },
+    "shared_transfer_stations": {
+      "S04": {
+        "lines": [
+          "R",
+          "B"
+        ],
+        "accessible": true
+      },
+      "S05": {
+        "lines": [
+          "R",
+          "G"
+        ],
+        "accessible": false
+      },
+      "S08": {
+        "lines": [
+          "B",
+          "G"
+        ],
+        "accessible": true
+      }
+    },
+    "note": "共享站为换乘站；单纯线条交叉不构成换乘。本图所有线路交汇点均为共享换乘站。"
+  },
+  "rules": {
+    "accessible_true": "可作起点、终点、换乘站及途经站。",
+    "accessible_false": "仅可乘车通过（途经），不可作无障碍旅程的起点、终点或换乘站；不删除线路。",
+    "transfer_definition": "改变乘坐线路即计 1 次换乘，第一次上车不计。",
+    "objective": "先最少站间边数（区间数），相同时再选换乘最少。",
+    "interval_vs_station": "区间数 = 站序长度 − 1，不可把站数当作区间数。"
+  },
+  "queries": [
+    {
+      "from": "S01",
+      "to": "S11",
+      "from_name": "松林",
+      "to_name": "会展",
+      "normal": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "edge_lines": [
+          "R",
+          "R",
+          "R",
+          "B",
+          "B",
+          "B"
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S04"
+        ],
+        "station_count": 7,
+        "note": "区间数 = 站数 − 1 = 7 − 1 = 6"
+      },
+      "accessible": {
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ],
+        "edge_lines": [
+          "R",
+          "R",
+          "R",
+          "B",
+          "B",
+          "B"
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S04"
+        ],
+        "station_count": 7,
+        "note": "区间数 = 站数 − 1 = 7 − 1 = 6"
+      },
+      "accessible_note": "端点与换乘站均具备无障碍设施，该最短普通路线可直接作为无障碍旅程。",
+      "normal_is_valid_accessible": true,
+      "normal_invalid_transfer_stations": []
+    },
+    {
+      "from": "S13",
+      "to": "S12",
+      "from_name": "石溪",
+      "to_name": "机场",
+      "normal": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "edge_lines": [
+          "G",
+          "G",
+          "G",
+          "G",
+          "R",
+          "R"
+        ],
+        "intervals": 6,
+        "transfers": 1,
+        "transfer_stations": [
+          "S05"
+        ],
+        "station_count": 7,
+        "note": "区间数 = 站数 − 1 = 7 − 1 = 6"
+      },
+      "accessible": {
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ],
+        "edge_lines": [
+          "G",
+          "G",
+          "B",
+          "R",
+          "R",
+          "R"
+        ],
+        "intervals": 6,
+        "transfers": 2,
+        "transfer_stations": [
+          "S08",
+          "S04"
+        ],
+        "station_count": 7,
+        "note": "区间数 = 站数 − 1 = 7 − 1 = 6"
+      },
+      "accessible_note": "最短普通路线在 S05 换乘（accessible=false），不可作无障碍换乘；另求满足约束的最短无障碍路线。",
+      "normal_is_valid_accessible": false,
+      "normal_invalid_transfer_stations": [
+        "S05"
+      ]
+    },
+    {
+      "from": "S07",
+      "to": "S16",
+      "from_name": "西港",
+      "to_name": "研究所",
+      "normal": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "edge_lines": [
+          "B",
+          "G",
+          "G",
+          "G"
+        ],
+        "intervals": 4,
+        "transfers": 1,
+        "transfer_stations": [
+          "S08"
+        ],
+        "station_count": 5,
+        "note": "区间数 = 站数 − 1 = 5 − 1 = 4"
+      },
+      "accessible": {
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ],
+        "edge_lines": [
+          "B",
+          "G",
+          "G",
+          "G"
+        ],
+        "intervals": 4,
+        "transfers": 1,
+        "transfer_stations": [
+          "S08"
+        ],
+        "station_count": 5,
+        "note": "区间数 = 站数 − 1 = 5 − 1 = 4"
+      },
+      "accessible_note": "端点与换乘站均具备无障碍设施，该最短普通路线可直接作为无障碍旅程。",
+      "normal_is_valid_accessible": true,
+      "normal_invalid_transfer_stations": []
+    }
+  ],
+  "accessibility": [
+    {
+      "id": "S01",
+      "name": "松林",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "R"
+      ],
+      "roles_in_queries": [
+        "Q1:normal:端点/accessible:端点"
+      ]
+    },
+    {
+      "id": "S02",
+      "name": "北门",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "R"
+      ],
+      "roles_in_queries": [
+        "Q1:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S03",
+      "name": "书院",
+      "accessible": false,
+      "shared_transfer_station": false,
+      "lines": [
+        "R"
+      ],
+      "roles_in_queries": [
+        "Q1:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S04",
+      "name": "中心",
+      "accessible": true,
+      "shared_transfer_station": true,
+      "lines": [
+        "R",
+        "B"
+      ],
+      "roles_in_queries": [
+        "Q1:normal:换乘/accessible:换乘",
+        "Q2:accessible:换乘"
+      ]
+    },
+    {
+      "id": "S05",
+      "name": "东桥",
+      "accessible": false,
+      "shared_transfer_station": true,
+      "lines": [
+        "R",
+        "G"
+      ],
+      "roles_in_queries": [
+        "Q2:normal:换乘/accessible:途经",
+        "Q3:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S06",
+      "name": "江湾",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "R"
+      ],
+      "roles_in_queries": [
+        "Q2:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S07",
+      "name": "西港",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "B"
+      ],
+      "roles_in_queries": [
+        "Q3:normal:端点/accessible:端点"
+      ]
+    },
+    {
+      "id": "S08",
+      "name": "工坊",
+      "accessible": true,
+      "shared_transfer_station": true,
+      "lines": [
+        "B",
+        "G"
+      ],
+      "roles_in_queries": [
+        "Q2:normal:途经/accessible:换乘",
+        "Q3:normal:换乘/accessible:换乘"
+      ]
+    },
+    {
+      "id": "S09",
+      "name": "花园",
+      "accessible": false,
+      "shared_transfer_station": false,
+      "lines": [
+        "B"
+      ],
+      "roles_in_queries": [
+        "Q1:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S10",
+      "name": "南门",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "B"
+      ],
+      "roles_in_queries": [
+        "Q1:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S11",
+      "name": "会展",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "B"
+      ],
+      "roles_in_queries": [
+        "Q1:normal:端点/accessible:端点"
+      ]
+    },
+    {
+      "id": "S12",
+      "name": "机场",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "R"
+      ],
+      "roles_in_queries": [
+        "Q2:normal:端点/accessible:端点"
+      ]
+    },
+    {
+      "id": "S13",
+      "name": "石溪",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "G"
+      ],
+      "roles_in_queries": [
+        "Q2:normal:端点/accessible:端点"
+      ]
+    },
+    {
+      "id": "S14",
+      "name": "公园",
+      "accessible": false,
+      "shared_transfer_station": false,
+      "lines": [
+        "G"
+      ],
+      "roles_in_queries": [
+        "Q2:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S15",
+      "name": "剧院",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "G"
+      ],
+      "roles_in_queries": [
+        "Q2:normal:途经",
+        "Q3:normal:途经/accessible:途经"
+      ]
+    },
+    {
+      "id": "S16",
+      "name": "研究所",
+      "accessible": true,
+      "shared_transfer_station": false,
+      "lines": [
+        "G"
+      ],
+      "roles_in_queries": [
+        "Q3:normal:端点/accessible:端点"
+      ]
+    }
+  ],
+  "optimality": [
+    {
+      "query": 1,
+      "mode": "normal",
+      "objective": "(区间数 intervals, 换乘数 transfers) 字典序最小",
+      "method": "以 (站点, 当前线路) 为状态做 Dijkstra/BFS；乘车边权(1,0)，换乘边权(0,1)；换乘仅在共享站；无障碍模式另要求端点 accessible=true 且换乘站 accessible=true。",
+      "result": {
+        "intervals": 6,
+        "transfers": 1,
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ]
+      },
+      "why_optimal": "所有候选按区间数升序、换乘数升序枚举；该状态值最小。区间数按站间边计，站数=区间数+1。"
+    },
+    {
+      "query": 1,
+      "mode": "accessible",
+      "objective": "(区间数 intervals, 换乘数 transfers) 字典序最小",
+      "method": "以 (站点, 当前线路) 为状态做 Dijkstra/BFS；乘车边权(1,0)，换乘边权(0,1)；换乘仅在共享站；无障碍模式另要求端点 accessible=true 且换乘站 accessible=true。",
+      "result": {
+        "intervals": 6,
+        "transfers": 1,
+        "stations": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S09",
+          "S10",
+          "S11"
+        ]
+      },
+      "why_optimal": "所有候选按区间数升序、换乘数升序枚举；该状态值最小。区间数按站间边计，站数=区间数+1。"
+    },
+    {
+      "query": 2,
+      "mode": "normal",
+      "objective": "(区间数 intervals, 换乘数 transfers) 字典序最小",
+      "method": "以 (站点, 当前线路) 为状态做 Dijkstra/BFS；乘车边权(1,0)，换乘边权(0,1)；换乘仅在共享站；无障碍模式另要求端点 accessible=true 且换乘站 accessible=true。",
+      "result": {
+        "intervals": 6,
+        "transfers": 1,
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S15",
+          "S05",
+          "S06",
+          "S12"
+        ]
+      },
+      "why_optimal": "所有候选按区间数升序、换乘数升序枚举；该状态值最小。区间数按站间边计，站数=区间数+1。"
+    },
+    {
+      "query": 2,
+      "mode": "accessible",
+      "objective": "(区间数 intervals, 换乘数 transfers) 字典序最小",
+      "method": "以 (站点, 当前线路) 为状态做 Dijkstra/BFS；乘车边权(1,0)，换乘边权(0,1)；换乘仅在共享站；无障碍模式另要求端点 accessible=true 且换乘站 accessible=true。",
+      "result": {
+        "intervals": 6,
+        "transfers": 2,
+        "stations": [
+          "S13",
+          "S14",
+          "S08",
+          "S04",
+          "S05",
+          "S06",
+          "S12"
+        ]
+      },
+      "why_optimal": "所有候选按区间数升序、换乘数升序枚举；该状态值最小。区间数按站间边计，站数=区间数+1。"
+    },
+    {
+      "query": 3,
+      "mode": "normal",
+      "objective": "(区间数 intervals, 换乘数 transfers) 字典序最小",
+      "method": "以 (站点, 当前线路) 为状态做 Dijkstra/BFS；乘车边权(1,0)，换乘边权(0,1)；换乘仅在共享站；无障碍模式另要求端点 accessible=true 且换乘站 accessible=true。",
+      "result": {
+        "intervals": 4,
+        "transfers": 1,
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ]
+      },
+      "why_optimal": "所有候选按区间数升序、换乘数升序枚举；该状态值最小。区间数按站间边计，站数=区间数+1。"
+    },
+    {
+      "query": 3,
+      "mode": "accessible",
+      "objective": "(区间数 intervals, 换乘数 transfers) 字典序最小",
+      "method": "以 (站点, 当前线路) 为状态做 Dijkstra/BFS；乘车边权(1,0)，换乘边权(0,1)；换乘仅在共享站；无障碍模式另要求端点 accessible=true 且换乘站 accessible=true。",
+      "result": {
+        "intervals": 4,
+        "transfers": 1,
+        "stations": [
+          "S07",
+          "S08",
+          "S15",
+          "S05",
+          "S16"
+        ]
+      },
+      "why_optimal": "所有候选按区间数升序、换乘数升序枚举；该状态值最小。区间数按站间边计，站数=区间数+1。"
+    }
+  ],
+  "content_map": [
+    {
+      "query": 1,
+      "route": "normal",
+      "network_map_region": "左侧全网示意图：站点 S01、S02、S03、S04、S09、S10、S11；线路段 RRRBBB",
+      "network_map_panel": "右侧『行程核验』第 1 行",
+      "travel_card_region": "第 1 张行程卡 y=152..422（普通 段）",
+      "check": "routes.json 站序/线路段/区间数/换乘数与两图文字一致；最短性由 optimality 计算依据支持；无障碍判定依据 accessible 属性（端点与换乘站）。"
+    },
+    {
+      "query": 1,
+      "route": "accessible",
+      "network_map_region": "左侧全网示意图：站点 S01、S02、S03、S04、S09、S10、S11；线路段 RRRBBB",
+      "network_map_panel": "右侧『行程核验』第 1 行",
+      "travel_card_region": "第 1 张行程卡 y=152..422（无障碍判定/替代 段）",
+      "check": "routes.json 站序/线路段/区间数/换乘数与两图文字一致；最短性由 optimality 计算依据支持；无障碍判定依据 accessible 属性（端点与换乘站）。"
+    },
+    {
+      "query": 2,
+      "route": "normal",
+      "network_map_region": "左侧全网示意图：站点 S13、S14、S08、S15、S05、S06、S12；线路段 GGGGRR",
+      "network_map_panel": "右侧『行程核验』第 2 行",
+      "travel_card_region": "第 2 张行程卡 y=434..834（普通 段）",
+      "check": "routes.json 站序/线路段/区间数/换乘数与两图文字一致；最短性由 optimality 计算依据支持；无障碍判定依据 accessible 属性（端点与换乘站）。"
+    },
+    {
+      "query": 2,
+      "route": "accessible",
+      "network_map_region": "左侧全网示意图：站点 S13、S14、S08、S04、S05、S06、S12；线路段 GGBRRR",
+      "network_map_panel": "右侧『行程核验』第 2 行",
+      "travel_card_region": "第 2 张行程卡 y=434..834（无障碍判定/替代 段）",
+      "check": "routes.json 站序/线路段/区间数/换乘数与两图文字一致；最短性由 optimality 计算依据支持；无障碍判定依据 accessible 属性（端点与换乘站）。"
+    },
+    {
+      "query": 3,
+      "route": "normal",
+      "network_map_region": "左侧全网示意图：站点 S07、S08、S15、S05、S16；线路段 BGGG",
+      "network_map_panel": "右侧『行程核验』第 3 行",
+      "travel_card_region": "第 3 张行程卡 y=846..1116（普通 段）",
+      "check": "routes.json 站序/线路段/区间数/换乘数与两图文字一致；最短性由 optimality 计算依据支持；无障碍判定依据 accessible 属性（端点与换乘站）。"
+    },
+    {
+      "query": 3,
+      "route": "accessible",
+      "network_map_region": "左侧全网示意图：站点 S07、S08、S15、S05、S16；线路段 BGGG",
+      "network_map_panel": "右侧『行程核验』第 3 行",
+      "travel_card_region": "第 3 张行程卡 y=846..1116（无障碍判定/替代 段）",
+      "check": "routes.json 站序/线路段/区间数/换乘数与两图文字一致；最短性由 optimality 计算依据支持；无障碍判定依据 accessible 属性（端点与换乘站）。"
+    }
+  ],
+  "evidence": {
+    "png": [
+      "network-map.png",
+      "travel-card.png"
+    ],
+    "dsl": [
+      "network-map.snapshot",
+      "travel-card.snapshot"
+    ],
+    "checks": [
+      "站数 = 区间数 + 1",
+      "换乘=改变线路且首次上车不计",
+      "无障碍端点/换乘站 accessible=true",
+      "false 站仅途经",
+      "按(区间数,换乘数)取最优"
+    ]
+  }
+}

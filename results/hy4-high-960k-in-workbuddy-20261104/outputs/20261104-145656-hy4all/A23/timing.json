@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "task_id": "A23",
+  "path_base": "output_dir",
+  "frames": [
+    {
+      "order": 1,
+      "id": "frame-01",
+      "png": "frame-01.png",
+      "dsl": "frame-01.snapshot",
+      "t_ms": 0,
+      "duration_ms": 250,
+      "action": "12 个结构碎片散布画布四周,朝向各异"
+    },
+    {
+      "order": 2,
+      "id": "frame-02",
+      "png": "frame-02.png",
+      "dsl": "frame-02.snapshot",
+      "t_ms": 250,
+      "duration_ms": 250,
+      "action": "开始向中心缓慢聚拢,余弦缓动起步"
+    },
+    {
+      "order": 3,
+      "id": "frame-03",
+      "png": "frame-03.png",
+      "dsl": "frame-03.snapshot",
+      "t_ms": 500,
+      "duration_ms": 250,
+      "action": "明显收拢,旋转角朝放射方向对齐"
+    },
+    {
+      "order": 4,
+      "id": "frame-04",
+      "png": "frame-04.png",
+      "dsl": "frame-04.snapshot",
+      "t_ms": 750,
+      "duration_ms": 250,
+      "action": "接近环状,角度基本对齐,间隙收窄"
+    },
+    {
+      "order": 5,
+      "id": "frame-05",
+      "png": "frame-05.png",
+      "dsl": "frame-05.snapshot",
+      "t_ms": 1000,
+      "duration_ms": 250,
+      "action": "几乎到位,单元逼近最终花位"
+    },
+    {
+      "order": 6,
+      "id": "frame-06",
+      "png": "frame-06.png",
+      "dsl": "frame-06.snapshot",
+      "t_ms": 1250,
+      "duration_ms": 250,
+      "action": "12 瓣放射星花成型,末帧构成可识别图形"
+    }
+  ],
+  "frame_count": 6,
+  "duration_ms": 250,
+  "period_ms": 1500,
+  "fps": 4.0,
+  "loop": true,
+  "seamless": false,
+  "cover": "cover.png",
+  "contact_sheet": "contact-sheet.png",
+  "seam_evidence": {
+    "statement": "末帧(frame-06, 汇聚态, 1250ms)循环回首帧(frame-01, 分散态, 0ms)存在可见跳变,不宣称无缝",
+    "location": "1250ms → 1500ms/0ms(一次循环末尾)",
+    "reason": "设计轨迹为单向『分散→汇聚』,非闭合;frame-06 与 frame-01 位置/旋转不一致,loop 播放设置不等于无缝",
+    "impact": "每循环出现一次『爆散/重置』视觉跳变;不改变 6 帧内部的连续汇聚",
+    "quantified": "接缝位移(最大 413.4 px)约为帧间最大步长(127.7 px)的 3.24 倍,且远大于最小步长 12.2 px;方向由向心汇聚反转为向外散开",
+    "reference": "frame-data.json#seam(逐 ID 位移与旋转差、方向/速度证据)",
+    "viewing": "逐帧与接触表实际查看确认;首尾两帧对比可直接核验跳变"
+  },
+  "notes": "本题仅交付 6 张 600x600 真透明 PNG 关键帧与时间数据,不合成 GIF、不新增中间帧、不造假目标格式文件;服务单次请求只返回单张静态位图"
+}

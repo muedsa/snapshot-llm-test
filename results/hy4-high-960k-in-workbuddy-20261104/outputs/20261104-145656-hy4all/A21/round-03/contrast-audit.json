@@ -1,0 +1,649 @@
+{
+  "schema_version": 1,
+  "task_id": "A21",
+  "path_base": "output_dir",
+  "round": 3,
+  "formula": {
+    "srgb": "8 位 sRGB，c=channel/255；c<=0.04045 时 c_linear=c/12.92，否则 ((c+0.055)/1.055)^2.4",
+    "luminance": "L=0.2126*R_linear+0.7152*G_linear+0.0722*B_linear",
+    "contrast": "(max(L文字,L背景)+0.05)/(min(L文字,L背景)+0.05)，使用未舍入结果与阈值 4.5 比较",
+    "threshold": 4.5,
+    "transparent_text": "本轮文字均为不透明纯色，无半透明文字；背景为不透明纯色文字区，无叠层需合成",
+    "antialias": "抗锯齿边缘部分覆盖像素不作为文字本色；按文字填充色与文字区不透明背景色计算"
+  },
+  "images": [
+    {
+      "image": "round-03/launch-portrait.png",
+      "text_runs": [
+        {
+          "id": "brand",
+          "text": "LAYERLIGHT  ·  叠光",
+          "box": [
+            70,
+            40,
+            630,
+            80
+          ],
+          "foreground": "#475569",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 7.577663953533317,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "online",
+          "text": "ONLINE LAUNCH",
+          "box": [
+            70,
+            618,
+            410,
+            670
+          ],
+          "foreground": "#3730A3",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 9.933329874512658,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "title",
+          "text": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+          "box": [
+            70,
+            688,
+            1010,
+            904
+          ],
+          "foreground": "#1E1B4B",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 15.986881422434319,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "datetime",
+          "text": "2026.11.07 19:30",
+          "box": [
+            70,
+            920,
+            970,
+            964
+          ],
+          "foreground": "#1D4ED8",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 6.701618401398807,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "box": [
+            70,
+            969,
+            970,
+            1013
+          ],
+          "foreground": "#475569",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 7.577663953533317,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "box": [
+            70,
+            1018,
+            970,
+            1062
+          ],
+          "foreground": "#1E1B4B",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 15.986881422434319,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "free",
+          "text": "免费参加 · 无需报名",
+          "box": [
+            70,
+            1067,
+            970,
+            1111
+          ],
+          "foreground": "#92400E",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 7.090048300172369,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "clarity",
+          "text": "Clarity through structure",
+          "box": [
+            70,
+            1116,
+            970,
+            1160
+          ],
+          "foreground": "#3730A3",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 9.933329874512658,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "url",
+          "text": "layerlight.example.org",
+          "box": [
+            70,
+            1165,
+            970,
+            1209
+          ],
+          "foreground": "#1E1B4B",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 15.986881422434319,
+          "threshold": 4.5,
+          "passed": true
+        }
+      ],
+      "min_contrast": 6.701618401398807,
+      "worst_run": "datetime",
+      "detailed_samples": [
+        {
+          "id": "datetime",
+          "text": "2026.11.07 19:30",
+          "coordinate": [
+            70,
+            920,
+            970,
+            964
+          ],
+          "foreground": "#1D4ED8",
+          "background": "#FFFFFF",
+          "L_foreground": 0.10667857181794133,
+          "L_background": 1.0,
+          "contrast": 6.701618401398807,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "free",
+          "text": "免费参加 · 无需报名",
+          "coordinate": [
+            70,
+            1067,
+            970,
+            1111
+          ],
+          "foreground": "#92400E",
+          "background": "#FFFFFF",
+          "L_foreground": 0.09809490084495939,
+          "L_background": 1.0,
+          "contrast": 7.090048300172369,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "brand",
+          "text": "LAYERLIGHT  ·  叠光",
+          "coordinate": [
+            70,
+            40,
+            630,
+            80
+          ],
+          "foreground": "#475569",
+          "background": "#FFFFFF",
+          "L_foreground": 0.08856513121176422,
+          "L_background": 1.0,
+          "contrast": 7.577663953533317,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "coordinate": [
+            70,
+            969,
+            970,
+            1013
+          ],
+          "foreground": "#475569",
+          "background": "#FFFFFF",
+          "L_foreground": 0.08856513121176422,
+          "L_background": 1.0,
+          "contrast": 7.577663953533317,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "online",
+          "text": "ONLINE LAUNCH",
+          "coordinate": [
+            70,
+            618,
+            410,
+            670
+          ],
+          "foreground": "#3730A3",
+          "background": "#FFFFFF",
+          "L_foreground": 0.05570473479332773,
+          "L_background": 1.0,
+          "contrast": 9.933329874512658,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "clarity",
+          "text": "Clarity through structure",
+          "coordinate": [
+            70,
+            1116,
+            970,
+            1160
+          ],
+          "foreground": "#3730A3",
+          "background": "#FFFFFF",
+          "L_foreground": 0.05570473479332773,
+          "L_background": 1.0,
+          "contrast": 9.933329874512658,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "title",
+          "text": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+          "coordinate": [
+            70,
+            688,
+            1010,
+            904
+          ],
+          "foreground": "#1E1B4B",
+          "background": "#FFFFFF",
+          "L_foreground": 0.015678850818680597,
+          "L_background": 1.0,
+          "contrast": 15.986881422434319,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "coordinate": [
+            70,
+            1018,
+            970,
+            1062
+          ],
+          "foreground": "#1E1B4B",
+          "background": "#FFFFFF",
+          "L_foreground": 0.015678850818680597,
+          "L_background": 1.0,
+          "contrast": 15.986881422434319,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "url",
+          "text": "layerlight.example.org",
+          "coordinate": [
+            70,
+            1165,
+            970,
+            1209
+          ],
+          "foreground": "#1E1B4B",
+          "background": "#FFFFFF",
+          "L_foreground": 0.015678850818680597,
+          "L_background": 1.0,
+          "contrast": 15.986881422434319,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        }
+      ],
+      "method": "所有普通文字(主标题/日期/讲者/ONLINE LAUNCH/网址/赞助方/参加方式/英语句/品牌名)逐段按实际背景合成色计算；文字区为不透明纯色 #FFFFFF，品牌渐变/半透明装饰全部位于文字框之外(build_poster 内 assert 品牌 bbox 与文字框无交)，故文字字形覆盖区域内无透明叠层与不均匀背景；ONLINE LAUNCH 胶囊底亦为白色+主色边框，白字改深靛蓝字按白底计算。去文字辅助渲染(保留其余层)用于复核文字区背景，见 evidence。"
+    },
+    {
+      "image": "round-03/launch-wide.png",
+      "text_runs": [
+        {
+          "id": "brand",
+          "text": "LAYERLIGHT  ·  叠光",
+          "box": [
+            70,
+            40,
+            630,
+            80
+          ],
+          "foreground": "#475569",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 7.577663953533317,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "online",
+          "text": "ONLINE LAUNCH",
+          "box": [
+            70,
+            118,
+            370,
+            166
+          ],
+          "foreground": "#3730A3",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 9.933329874512658,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "title",
+          "text": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+          "box": [
+            70,
+            172,
+            710,
+            370
+          ],
+          "foreground": "#1E1B4B",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 15.986881422434319,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "datetime",
+          "text": "2026.11.07 19:30",
+          "box": [
+            780,
+            150,
+            1320,
+            194
+          ],
+          "foreground": "#1D4ED8",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 6.701618401398807,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "box": [
+            780,
+            196,
+            1320,
+            240
+          ],
+          "foreground": "#475569",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 7.577663953533317,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "box": [
+            780,
+            242,
+            1320,
+            286
+          ],
+          "foreground": "#1E1B4B",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 15.986881422434319,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "free",
+          "text": "免费参加 · 无需报名",
+          "box": [
+            780,
+            288,
+            1320,
+            332
+          ],
+          "foreground": "#92400E",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 7.090048300172369,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "clarity",
+          "text": "Clarity through structure",
+          "box": [
+            780,
+            334,
+            1320,
+            378
+          ],
+          "foreground": "#3730A3",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 9.933329874512658,
+          "threshold": 4.5,
+          "passed": true
+        },
+        {
+          "id": "url",
+          "text": "layerlight.example.org",
+          "box": [
+            780,
+            380,
+            1320,
+            424
+          ],
+          "foreground": "#1E1B4B",
+          "background_source": "不透明纯色（#FFFFFF）文字区，无透明叠层",
+          "background": "#FFFFFF",
+          "contrast": 15.986881422434319,
+          "threshold": 4.5,
+          "passed": true
+        }
+      ],
+      "min_contrast": 6.701618401398807,
+      "worst_run": "datetime",
+      "detailed_samples": [
+        {
+          "id": "datetime",
+          "text": "2026.11.07 19:30",
+          "coordinate": [
+            780,
+            150,
+            1320,
+            194
+          ],
+          "foreground": "#1D4ED8",
+          "background": "#FFFFFF",
+          "L_foreground": 0.10667857181794133,
+          "L_background": 1.0,
+          "contrast": 6.701618401398807,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "free",
+          "text": "免费参加 · 无需报名",
+          "coordinate": [
+            780,
+            288,
+            1320,
+            332
+          ],
+          "foreground": "#92400E",
+          "background": "#FFFFFF",
+          "L_foreground": 0.09809490084495939,
+          "L_background": 1.0,
+          "contrast": 7.090048300172369,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "brand",
+          "text": "LAYERLIGHT  ·  叠光",
+          "coordinate": [
+            70,
+            40,
+            630,
+            80
+          ],
+          "foreground": "#475569",
+          "background": "#FFFFFF",
+          "L_foreground": 0.08856513121176422,
+          "L_background": 1.0,
+          "contrast": 7.577663953533317,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "speakers",
+          "text": "讲者：林川 / 苏言",
+          "coordinate": [
+            780,
+            196,
+            1320,
+            240
+          ],
+          "foreground": "#475569",
+          "background": "#FFFFFF",
+          "L_foreground": 0.08856513121176422,
+          "L_background": 1.0,
+          "contrast": 7.577663953533317,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "online",
+          "text": "ONLINE LAUNCH",
+          "coordinate": [
+            70,
+            118,
+            370,
+            166
+          ],
+          "foreground": "#3730A3",
+          "background": "#FFFFFF",
+          "L_foreground": 0.05570473479332773,
+          "L_background": 1.0,
+          "contrast": 9.933329874512658,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "clarity",
+          "text": "Clarity through structure",
+          "coordinate": [
+            780,
+            334,
+            1320,
+            378
+          ],
+          "foreground": "#3730A3",
+          "background": "#FFFFFF",
+          "L_foreground": 0.05570473479332773,
+          "L_background": 1.0,
+          "contrast": 9.933329874512658,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "title",
+          "text": "当所有信息都想成为标题：让复杂信息变得清晰的结构化方法",
+          "coordinate": [
+            70,
+            172,
+            710,
+            370
+          ],
+          "foreground": "#1E1B4B",
+          "background": "#FFFFFF",
+          "L_foreground": 0.015678850818680597,
+          "L_background": 1.0,
+          "contrast": 15.986881422434319,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "sponsor",
+          "text": "Northstar Research / 云构工具",
+          "coordinate": [
+            780,
+            242,
+            1320,
+            286
+          ],
+          "foreground": "#1E1B4B",
+          "background": "#FFFFFF",
+          "L_foreground": 0.015678850818680597,
+          "L_background": 1.0,
+          "contrast": 15.986881422434319,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        },
+        {
+          "id": "url",
+          "text": "layerlight.example.org",
+          "coordinate": [
+            780,
+            380,
+            1320,
+            424
+          ],
+          "foreground": "#1E1B4B",
+          "background": "#FFFFFF",
+          "L_foreground": 0.015678850818680597,
+          "L_background": 1.0,
+          "contrast": 15.986881422434319,
+          "passed": true,
+          "computation": "c=v/255; lin=c/12.92 if c<=0.04045 else ((c+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; ratio=(max(L)+0.05)/(min(L)+0.05); 未舍入判阈值 4.5"
+        }
+      ],
+      "method": "所有普通文字(主标题/日期/讲者/ONLINE LAUNCH/网址/赞助方/参加方式/英语句/品牌名)逐段按实际背景合成色计算；文字区为不透明纯色 #FFFFFF，品牌渐变/半透明装饰全部位于文字框之外(build_poster 内 assert 品牌 bbox 与文字框无交)，故文字字形覆盖区域内无透明叠层与不均匀背景；ONLINE LAUNCH 胶囊底亦为白色+主色边框，白字改深靛蓝字按白底计算。去文字辅助渲染(保留其余层)用于复核文字区背景，见 evidence。"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "tmp/<run_id>/A21/round-03/bg-portrait.png",
+      "kind": "去文字辅助渲染(保留背景/品牌装饰/信息卡，移除全部 Text)",
+      "note": "用于复核竖版文字区实际背景为纯白、品牌装饰未覆盖任何文字框"
+    },
+    {
+      "path": "tmp/<run_id>/A21/round-03/bg-wide.png",
+      "kind": "去文字辅助渲染",
+      "note": "用于复核横版文字区实际背景与品牌装饰位置"
+    },
+    {
+      "path": "tmp/<run_id>/A21/round-03/contrast_check.jsonl",
+      "kind": "程序计算留痕",
+      "note": "逐段文字 fg/bg/L/对比度未舍入值"
+    }
+  ],
+  "background_uniformity_proof": "round-3 画布与卡片均为 #FFFFFF 不透明纯色；品牌 4 构件的半透明叠层仅出现在装饰区，build_poster() 内对 round-3 断言 brand_bbox 与每个文字 box 均不相交，因此每段文字字形覆盖区域内(排除抗锯齿边缘)背景均匀且无叠层，取样对比度即该段最差对比度；去文字辅助图进一步实证。",
+  "checks_passed": true
+}

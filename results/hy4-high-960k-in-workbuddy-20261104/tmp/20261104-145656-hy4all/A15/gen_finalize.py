@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+"""Write A15 finalize.json from real observations, then hand off to finalize.py."""
+import datetime, json, os
+from pathlib import Path
+
+ROOT = Path(os.environ["SNAPSHOT_TASK_ROOT"])
+RID = os.environ["SNAPSHOT_RUN_ID"]
+T = ROOT / "tmp" / RID / "A15"
+
+files = [f for f in T.rglob("*") if f.is_file()]
+mt = min(f.stat().st_mtime for f in files)
+started = datetime.datetime.fromtimestamp(mt).astimezone().isoformat(timespec="seconds")
+
+spec = {
+    "task": "A15",
+    "title": "复杂界面视觉复刻",
+    "status": "完成",
+    "end_reason": "需求满足并完成逐图视觉自检",
+    "started_at": started,
+    "outputs": [
+        {"file": "reconstructed.png", "dsl": "reconstructed.snapshot",
+         "purpose": "1440×900 参考界面复刻（从零 DSL 构造，参考图仅供观察）",
+         "verdict": "完成；服务真实 PNG 120319 字节；16/16 视觉锚点满足 ±8px"}
+    ],
+    "extra_outputs": [
+        {"file": "reconstruction-audit.json",
+         "purpose": "16 个锚点的参考估计/重建实测/分量误差/测量方法/局部证据，颜色复核与逐项看图结论"},
+        {"file": "comparison.md",
+         "purpose": "可测误差表、原尺寸同背景颜色并排判断、字体与残余差异如实说明"},
+    ],
+    "requirements": (
+        "1440×900 输出，重建参考图的布局、背景、侧栏、卡片、图表、表格、状态标签与主要装饰，"
+        "不改成新设计、不嵌入/裁块/描图参考 PNG。content.json 全部文字逐字保真："
+        "NORTHSTAR、四个导航项、Workspace Overview、Saturday 07 November 2026、Export report、"
+        "三张 KPI（¥128,400/+12.4%、426/+8.1%、3.2%/−0.8 pp）、Net revenue/Apr–Sep/六个月/"
+        "¥ thousand/0–120 刻度、Team activity 三条、Recent projects 四列三行与状态编码、页脚。"
+        "图表按 chart_values×1.2px 真实比例重建，零线 y=549，六柱顶部实测与参考一致。"
+        "至少 12 个锚点覆盖四象限、图表与表格并逐分量记录误差（本题 16 个）。"
+        "交付 reconstruction-audit.json 与 comparison.md，逐项说明颜色与残余差异。"),
+    "self_check": (
+        "用 ViewImage 实际打开 reference.png 整体一次、参考局部放大 6 张（侧栏上/下、顶部、图表、活动、表格）；"
+        "v1 重建图打开一次，发现 3 项缺陷：Y 轴刻度 0 在顶部顺序颠倒、NORTHSTAR 右边缘 214 贴边、"
+        "「12 team members」换行与「Manage access」重叠。v2 修复后重新渲染并再次打开原尺寸全图，"
+        "三处缺陷全部消除；另生成重建图的图表/表格/侧栏底部 2 倍局部放大各打开一次，"
+        "确认 Y 轴 120→0 递减且与网格线对齐、六柱比例与顶部圆角/底部平齐正确、六个月份完整、"
+        "表格三行与三状态胶囊颜色编码正确、侧栏底部三行各占一行。"
+        "用 ffmpeg 转 raw + 纯 Python 逐像素对重建图同法测量 16 个锚点，"
+        "16/16 满足 ±8px（最大分量误差 3px）；PNG 文件头 89 50 4E 47 校验通过。"),
+    "dsl_capabilities": (
+        "使用 Snapshot 根节点 type=png + background；Stack + 固定尺寸 Container 作为 1440×900 绝对定位画布，"
+        "Positioned 放置全部元素；Container 的 color/borderRadius/border/alignment 实现侧栏、卡片、"
+        "导航选中态、状态胶囊与柱体（顶部圆角用 borderRadiusTopLeft/TopRight 经 c.add 原生片段）；"
+        "Text 的 fontFamily/fontSize/fontStyle/color/textAlign/letterSpacing 与 CDATA 文本；"
+        "ClipPath 未使用（本题无需 SVG 路径）；渐变用于顶部未启用。"
+        "全部主体、图表、文字、图标均由 DSL 构造，无外部图片素材，参考 PNG 未嵌入。"),
+    "fonts_note": (
+        "服务 /fonts 列表（缓存 tmp/<run_id>/_suite/docs/fonts.txt）含 Inter、Noto Sans CJK SC 等；"
+        "本题界面为拉丁/数字，统一使用 Inter，中文回退 Noto Sans CJK SC。"
+        "参考图字体未知，不同字体的字形宽度差异在 comparison.md 如实说明。"),
+    "iterations": [
+        {"id": "v1", "parent": None, "type": "baseline",
+         "image": "outputs/<run_id>/A15/reconstructed.png (v1)",
+         "observed": "首版 Y 轴刻度顺序颠倒（0 在顶部、120 在底部）；NORTHSTAR 右边缘 214 贴近侧栏右边界 220；「12 team members」在 155px 文本框内换行，第二行与 Manage access 重叠。",
+         "cause": "Y 轴 ticks 与 grid_ys 同序 zip；NORTHSTAR 字号/字距过大；底部行文本框过窄、字号 19 偏大",
+         "change": "生成首版基线并实际打开全图查看",
+         "result": "确认 3 项缺陷，进入视觉迭代", "complete": True},
+        {"id": "v2", "parent": "v1", "type": "visual",
+         "image": "outputs/<run_id>/A15/reconstructed.png (v2)",
+         "observed": "上述 3 项缺陷；其余结构与参考一致",
+         "cause": "实际渲染图逐项观察与像素测量（NORTHSTAR 右边缘 214 vs 参考约 192）",
+         "change": "Y 轴刻度改为 reversed(ticks) 对应 grid_ys（120→0 递减）；NORTHSTAR 改 19 号、字距 0.4、文本框 150px；「12 team members」改 18 号、文本框 165px，保证单行",
+         "result": "重新渲染并再次打开实际 PNG 及 3 张局部放大复查：3 项缺陷全部消除；Y 轴递减正确、NORTHSTAR 右边缘 189、底部三行各占一行；16/16 锚点满足 ±8px，图表比例/全部文字/状态编码/整体视觉通过",
+         "complete": True},
+    ],
+    "pitfalls": (
+        "踩坑：Text 不做 HTML 实体解码，含特殊字符必须用 CDATA（dsl.cdata 统一处理）；"
+        "Container 需 alignment=CENTER 才稳定垂直居中文字；绝对值布局必须在 Stack 中放固定尺寸 "
+        "Container 作画布基准；Y 轴刻度文字顺序需与从上到下的网格线反向对应，否则 0 会落在顶部；"
+        "侧栏内文本框宽度必须小于侧栏宽，否则长文字换行或贴边。"
+        "服务层面：v2 首次渲染遇到 3 次连续读取/SSL 握手超时（status=0，非解析错误），"
+        "保留全部失败响应于 tmp/<run_id>/A15/responses/，服务恢复后重渲染成功，未把错误响应写成图片。"),
+    "design": (
+        "以 reference.png 的像素扫描结果反推几何：侧栏 220px、主背景 #F3F6FB、卡片白色圆角 14px，"
+        "三张 KPI 卡 x=261/645/1029、图表卡 [261,311,1000,594]、活动卡 [1030,311,1398,594]、"
+        "表格卡 [261,625,1398,840]；图表零线 y=549、1.2px/单位，六柱按 chart_values 精确计算。"
+        "颜色全部取自参考纯色区采样。文字逐字取自 content.json，状态标签三色编码保真。"
+        "不追求与参考来源 DSL 树一致，只保证可测几何、数据、颜色与整体视觉一致。"),
+    "closing": (
+        "最终实际图片已逐张打开检查：侧栏、导航选中态、顶部标题与按钮、三张 KPI、Net revenue 图表、"
+        "Team activity、Recent projects 表格与页脚均完整可读；16 个锚点重建实测全部满足 ±8px；"
+        "图表按真实比例重建、表格三行顺序与状态编码准确、content.json 文字全部保真；"
+        "reconstruction-audit.json 与 comparison.md 用可测误差与人工并排判断说明残余差异，"
+        "据此标为完成。"),
+    "visual_review_evidence": [
+        "reference.png opened via ViewImage (full 1440x900)",
+        "reference local zooms: crop_top/crop_chart/crop_table/crop_activity/crop_sidebar_top/crop_sidebar_bottom opened",
+        "v1 reconstructed.png opened via ViewImage; 3 defects recorded",
+        "v2 reconstructed.png opened via ViewImage; all defects resolved",
+        "v2 local zooms v2_crop_chart / v2_crop_table / v2_crop_sidebar_bottom opened and accepted",
+    ],
+    "unresolved": "无。",
+    "unresolved_issues": [],
+    "metrics_extra": {
+        "image_views": 12,
+        "counts_note": "实际 ViewImage 打开 12 次：参考整体 1 + 参考局部放大 6 + v1 全图 1 + v2 全图 1 + v2 局部放大 3；iterations.jsonl 记 2 条版本查看，局部放大另在报告与审计中留痕",
+    },
+}
+(T / "finalize.json").write_text(
+    json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+print("wrote", T / "finalize.json", "started_at", started)

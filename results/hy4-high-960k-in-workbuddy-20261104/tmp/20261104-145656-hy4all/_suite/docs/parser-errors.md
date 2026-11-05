@@ -1,0 +1,349 @@
+# 错误处理与扩展
+
+> Parser 的属性诊断、异常分类、服务端映射和自定义标签与属性扩展。
+
+模板报错时，先根据 `pos` 找行列，再看属性填写提示；看起来没报错却效果不对时，检查拼写、空白和默认值。程序接入时先用下方的 ParseException 捕获示例，只有需要新增标签才读扩展部分。
+
+本文的“解析”是读取标签结构，“建树”是把标签转成组件，“渲染”是布局、绘制和编码。错误可能发生在不同阶段，所以应将 `parse()` 和 `snapshot()` 都放进同一个错误处理范围。
+
+## 文本与空白规则
+
+* `<Text>` 中的普通文本会 trim；`<Raw>` 原样保留；
+* 非文本标签内只能出现缩进、换行等纯空白；
+* `&` 不会进行 HTML 实体解码；`&amp;` 会保留为字面量；
+* 文本中需要 `<` 或 `>` 时使用 CDATA；
+* 支持 `<!-- ... -->` 注释（包括 `<!---->` 空注释）；可放在根标签前后、标签之间或文本中，内容不会进入元素树或文本；
+* CDATA 内的 `<!-- ... -->` 是普通文本；`<!DOCTYPE ...>` 仍不支持；
+* 标签可以在 EOF 时自动闭合，但不建议依赖此行为；
+* 不匹配的结束标签可能被忽略，因此应在输入前做格式校验或依赖测试覆盖。
+
+```xml
+<Text fontSize="20">
+  <Raw><![CDATA[保留空白与 <tag> 字符]]></Raw>
+</Text>
+```
+
+## ParseException
+
+解析与建树阶段的结构、属性错误会包装为 `ParseException`。位置存放在 `pos`，原始异常存放在 `cause`；`message` 是可读的错误提示，`toString()` 才会在提示前加上 `Pos[行:列]~偏移:`。
+
+行、列从 1 起，字符偏移从 0 起；位置未设置时为 `TrackPos.UNSET`（-1），在字符串中显示为 `UNSET`。不要从完整错误字符串中拆分位置或属性字段。
+
+属性诊断的版本要求
+
+以下填写说明和 `attributeDiagnostic` 字段对应包含提交 `a7974dd` 的 Parser 实现。使用这些 API 前请确认依赖版本已包含该变更；在线服务的提示取决于服务端部署版本，Kotlin 异常字段也不会自动成为 HTTP 响应字段。
+
+### 属性错误提示
+
+属性解析失败时，提示保留原有错误首行，并追加所在元素、实际输入、期望格式、可用值和示例。例如：
+
+```xml
+<Snapshot>
+  <Row mainAxisAlignment="MIDDLE"/>
+</Snapshot>
+```
+
+调用 `createWidget()` 时，`message` 包含以下内容（第一行的底层枚举异常细节已省略）：
+
+```text
+Attr [mainAxisAlignment] value is invalid: …
+元素：<Row>；实际值："MIDDLE"；格式：以下取值之一，区分大小写；可用值：START, END, CENTER, SPACE_BETWEEN, SPACE_AROUND, SPACE_EVENLY；示例：START
+```
+
+内置说明覆盖数值、CSS 颜色、对齐、边距、半径、偏移、矩阵、边框、阴影、渐变列表、文本装饰、字体特性、SVG 路径、`viewBox`、URL 和 Data URI。枚举候选从实际枚举定义生成；`ClipPath.fit` 仅列出 `FILL` / `CONTAIN`，`fillRule` 仅列出 `NON_ZERO` / `EVEN_ODD`。改名或带前缀的内置属性也保留类型说明，例如 `foregroundGradientBegin`。
+
+完整 `message` 会随填写说明变化，不建议依赖其精确字符串匹配；需要自动化处理时优先读取下面的结构化字段。
+
+### 读取结构化诊断
+
+需要分别展示字段时，读取 `ParseException.attributeDiagnostic: AttributeDiagnostic?`：
+
+| 字段                 | 类型                    | 含义                                            |
+| ------------------ | --------------------- | --------------------------------------------- |
+| `attributeName`    | `String`              | 出错的属性名，使用当前属性的实际名称                            |
+| `rawValue`         | `String?`             | Parser 读取的完整原始值；属性缺失或只写名称时为 null，空字符串保留为 `""` |
+| `attributePresent` | `Boolean`             | 输入中是否提供该属性，用于区分缺失与未赋值                         |
+| `valueInfo`        | `AttributeValueInfo?` | 属性填写说明；自定义属性可以不提供                             |
+| `elementName`      | `String?`             | 所在标签；根标签和嵌套行内节点也有上下文，直接使用属性 Map 接口时可为 null    |
+
+`AttributeValueInfo` 的字段为：
+
+| 字段              | 类型             | 含义                             |
+| --------------- | -------------- | ------------------------------ |
+| `format`        | `String`       | 期望的填写格式；不替代组件自身的范围或组合校验        |
+| `examples`      | `List<String>` | 示例值，默认空列表                      |
+| `allowedValues` | `List<String>` | 枚举项或关键字，默认空列表；复合格式中可能只对应其中一个字段 |
+
+例如边框格式中的可用值是样式枚举项，不能只填写 `SOLID`，仍需按 `format` 填写宽度、样式和颜色。
+
+```kotlin
+import com.muedsa.snapshot.parser.ParseException
+import com.muedsa.snapshot.parser.Parser
+import java.io.StringReader
+
+
+fun explainDocument(source: String) {
+    try {
+        Parser().parse(StringReader(source)).createWidget()
+    } catch (error: ParseException) {
+        println("位置：${error.pos.line}:${error.pos.column}，偏移：${error.pos.pos}")
+        error.attributeDiagnostic?.let { diagnostic ->
+            println("元素：${diagnostic.elementName}，属性：${diagnostic.attributeName}")
+            println("是否提供：${diagnostic.attributePresent}，原值：${diagnostic.rawValue}")
+            println("格式：${diagnostic.valueInfo?.format}")
+            println("可用值：${diagnostic.valueInfo?.allowedValues?.joinToString()}")
+            println("示例：${diagnostic.valueInfo?.examples?.joinToString()}")
+        }
+        println(error.message) // 完整可读提示；error.cause 保留原始异常
+    }
+}
+```
+
+### 缺失、未赋值与空字符串
+
+以下三种输入可以区分，但是否允许仍由具体属性定义决定：
+
+| 输入                              | `attributePresent` | `rawValue` | 提示中的实际值 |
+| ------------------------------- | ------------------ | ---------- | ------- |
+| `<AspectRatio/>`                | false              | null       | 未提供属性   |
+| `<AspectRatio aspectRatio/>`    | true               | null       | 未赋值     |
+| `<AspectRatio aspectRatio=""/>` | true               | `""`       | `""`    |
+
+属性值格式错误通常指向值的起始字符；只写属性名时指向属性名；缺少必填属性时指向所在标签的起始位置。直接解析属性 Map 时可能缺少标签位置，调用方应处理未设置的位置。
+
+提示中的“实际值”最多预览原值的前 120 个字符，并转义换行、制表符等字符；结构化的 `rawValue` 保留完整内容。用于日志或界面时，应自行选择展示长度。
+
+### 诊断边界
+
+* 仍然在首个错误处抛出异常，不汇总全部问题；根标签属性在 `parse()` 时校验，其余标签属性在 `createWidget()` / `snapshot()` 时校验。
+* 结构错误、组件组合约束以及统一属性解析入口之外的校验可能没有 `attributeDiagnostic`。自定义解析器主动抛出的 `ParseException` 也不会被自动补成属性诊断。
+* 填写说明不改变内置属性语法、默认值或布尔转换规则。例如已赋值的布尔文本只有 `true`（忽略大小写）转换为 true，其余文本转换为 false；不会因为增加格式说明就改成严格报错。
+
+### 解析阶段错误
+
+| 条件                         | 典型错误                                                                |
+| -------------------------- | ------------------------------------------------------------------- |
+| 首标签不是 Snapshot             | `First tag must be 'Snapshot'`                                      |
+| 输入为空或全是空白                  | `Document must contain root element [Snapshot]`                     |
+| 第二次出现 Snapshot             | `Tag 'Snapshot' only be used as the first`                          |
+| 未知标签                       | `Unknown element tag`                                               |
+| 重复属性                       | `exist duplicate attr`                                              |
+| 叶子标签出现子节点                  | `can not have child element`                                        |
+| 单子节点标签出现第二个子节点             | `only can have one child`                                           |
+| 普通容器内出现文本                  | `Not Support RAWTEXT`                                               |
+| 注释直到 EOF 仍未遇到 `-->`        | `Unexpectedly reached end of file (EOF) in input state [COMMENT]`   |
+| `<!DOCTYPE ...>` 等不支持的标记声明 | `Unexpected character '<' in input state [MARKUP_DECLARATION_OPEN]` |
+
+### 构建 Widget 阶段错误
+
+| 条件                                                     | 表现                                                                                |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Image / Emoji 未指定来源或同时指定两种来源                           | 必须且只能设置 `url` 或 `dataUri`                                                         |
+| Data URI 格式或图片数据错误                                     | 指向 `dataUri` 属性值                                                                  |
+| 颜色或 Insets 格式错误                                        | 对应 AttrDefine 的格式异常；颜色支持的写法见[标签与属性参考](/reference/parser-tags/#%E9%A2%9C%E8%89%B2) |
+| 枚举名无效                                                  | `IllegalArgumentException` 被包装，属性提示补充实际支持的可用值                                     |
+| Text 中出现非行内标签                                          | `Unknown inline span type`                                                        |
+| Raw / Emoji / WidgetSpan 用在 Text 外                     | `can only be used in the Text`                                                    |
+| WidgetSpan 缺少子标签                                       | `must have exactly one child element`                                             |
+| Expanded / Flexible / Spacer 不在 Flex、Row 或 Column 直属层级 | `must be a direct child of Flex, Row or Column`                                   |
+| Expanded 使用 `fit` 属性                                   | `does not support attr [fit]`                                                     |
+| Opacity 超出 0 到 1                                       | 参数范围异常                                                                            |
+| Transform 缺少矩阵或矩阵格式错误                                  | `Attr [matrix]` 对应格式异常                                                            |
+| ClipPath 缺少路径、路径语法或坐标无效                                | `path` 属性错误；缺少属性时指向标签，有值时通常指向属性值起始位置                                              |
+| ClipPath 的 viewBox、fit 或 fillRule 无效                   | 对应属性的格式或取值异常；viewBox 宽高须有限且大于 0，fit 仅支持 FILL / CONTAIN                            |
+| 约束的最小值大于最大值                                            | `BoxConstraints` 参数异常                                                             |
+| 装饰线修饰参数缺少 `decoration`                                 | `Attr [decoration] is required`                                                   |
+| 前景画笔修饰参数缺少 `foregroundColor`                           | `Attr [foregroundColor] is required`                                              |
+| `fontFeatures`、`textShadow` 或 `strut*` 格式错误            | 对应属性名及属性值起始位置                                                                     |
+
+这里的“建树”指调用 `createWidget()` 创建 Widget 树，并非仅调用 `parse()` 创建元素树。只验证 `parse()` 成功，不能保证所有属性和组件组合都有效。
+
+### 渲染阶段错误
+
+渲染错误不一定是 `ParseException`：
+
+| 条件                                          | 异常                                                  |
+| ------------------------------------------- | --------------------------------------------------- |
+| Snapshot 没有根 Widget                         | `IllegalStateException`                             |
+| 根布局尺寸为 0                                    | `IllegalArgumentException: Layout size is empty`    |
+| 根布局尺寸无限                                     | `IllegalArgumentException: Layout size is infinite` |
+| 图片重复平铺预计超过 `ImageRepeatConfig.maxTileCount` | `IllegalArgumentException`；默认上限为 100,000 个矩形        |
+
+## HTTP 服务错误映射
+
+建议将错误分层映射：
+
+```kotlin
+try {
+    val element = Parser().parse(StringReader(body))
+    val contentType = when (element.type) {
+        "png" -> ContentType.Image.PNG
+        "jpg" -> ContentType.Image.JPEG
+        "webp" -> ContentType.parse("image/webp")
+        else -> error("Unsupported image type")
+    }
+    call.respondBytes(element.snapshot(), contentType)
+} catch (e: ParseException) {
+    call.respond(HttpStatusCode.BadRequest, e.toString())
+} catch (e: IllegalArgumentException) {
+    call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: "Invalid layout")
+} catch (e: IllegalStateException) {
+    call.respond(HttpStatusCode.UnprocessableEntity, e.message ?: "Invalid widget tree")
+}
+```
+
+根标签的 `type` 决定实际编码格式；不要把所有响应都标记为 `image/png`。
+
+上例使用 `e.toString()` 同时返回位置和完整提示；若只返回 `e.message`，不会自动带上 `e.pos`。需要 JSON 字段化响应时，应由服务端定义 DTO，显式映射位置与可选的 `attributeDiagnostic`，并为没有属性诊断的错误保留普通消息。
+
+这里是自建 HTTP 服务的映射建议，不代表公开 Open Snapshot 服务的现有响应协议。接入已有服务时，应以其实际状态码与响应字段为准。
+
+异常映射不能替代安全限制
+
+对公网服务还必须增加请求体上限、标签深度限制、URL 与解析后 IP 校验、网络超时、图片大小限制、总体渲染超时及并发限制。网络图片应使用自行实现的安全 `NetworkImageCache`，不要直接依赖默认实现。
+
+## Parser 实例生命周期
+
+Parser 实例可以复用
+
+`Parser.parse()` 会先清空元素栈和根元素并创建新的 Tokenizer，因此同一实例可以重复解析多个文档；一次调用抛出异常也不会污染下一次调用。
+
+例如：
+
+```kotlin
+val parser = Parser()
+
+
+fun render(source: String): ByteArray =
+    parser.parse(StringReader(source)).snapshot()
+```
+
+`parse()` 使用 `@Synchronized`，同一 Parser 的解析调用会依次执行；但返回元素后的 `createWidget()` / `snapshot()` 并未被这把锁串行化。上面的 `render()` 函数因此不是整个渲染流程的同步封装。应用仍需独立控制渲染并发，且复用期间不要并发修改 `WidgetParserManager` 或共享全局配置。
+
+### 每一步成功意味着什么
+
+| 调用                       | 已完成的工作                            | 还不能保证的事              |
+| ------------------------ | --------------------------------- | -------------------- |
+| `parse(reader)`          | 读取标签结构，创建 Element 树，校验根标签属性       | 子标签属性合法、图片能下载、布局能完成  |
+| `element.createWidget()` | 解析子标签属性并构建 Widget；网络图片可能已在此阶段同步加载 | 根尺寸有限、文本布局正确、绘制和编码成功 |
+| `element.snapshot()`     | 重新建 Widget 树，完成布局、绘制和图片编码         | 图片内容符合业务预期，需要查看结果和测试 |
+
+不要把 `createWidget()` 当成没有副作用的纯校验器：它可能访问网络、解码图片。先调用它，再调用 `snapshot()`，也不会自动复用刚才的 Widget；通常直接对一次 `snapshot()` 调用捕获错误即可。
+
+返回的 Element 树保存可变属性和子节点，不是不可变的模板缓存。根标签的 `type`、`background`、`debug` 在解析时已经读取；之后修改 `attrs` 不会自动更新这些值。动态数据应在生成源文本时填入，再重新解析，见[业务数据模板](/guides/data-templates/)。
+
+## 自定义标签
+
+当一组固定样式需要在多个模板中复用，可以把它注册为标签。下面是使用 `snapshot-parser` 依赖的完整程序：新增 `<MyCard variant="small|large">`，固定宽 320，高度分别为 96 / 144，四周 padding 为 16；内容使用已有的 Text、Column 等标签。
+
+```kotlin
+import com.muedsa.geometry.EdgeInsets
+import com.muedsa.snapshot.parser.ContainerMode
+import com.muedsa.snapshot.parser.Element
+import com.muedsa.snapshot.parser.Parser
+import com.muedsa.snapshot.parser.attr.AttributeValueInfo
+import com.muedsa.snapshot.parser.attr.required.RequiredStringAttrDefine
+import com.muedsa.snapshot.parser.widget.WidgetParser
+import com.muedsa.snapshot.parser.widget.WidgetParserManager
+import com.muedsa.snapshot.widget.Container
+import com.muedsa.snapshot.widget.Widget
+import java.io.File
+import java.io.StringReader
+
+
+class MyCardParser : WidgetParser {
+    override val id: String = "MyCard"
+    override val containerMode = ContainerMode.SINGLE
+
+
+    private val variantAttr = RequiredStringAttrDefine(
+        name = "variant",
+        valueInfo = AttributeValueInfo.choices(listOf("small", "large")),
+    ) { attr, value ->
+        require(value == "small" || value == "large") {
+            "Attr [${attr.name}] must be small or large"
+        }
+    }
+
+
+    override fun buildWidget(element: Element): Widget {
+        val variant = WidgetParser.parseAttrValue(variantAttr, element.attrs)
+        return Container(
+            width = 320f,
+            height = if (variant == "small") 96f else 144f,
+            padding = EdgeInsets.all(16f),
+            color = 0xFFF1F5F9.toInt(),
+        ).also { WidgetParser.createWidgetForChildElement(it, element.children) }
+    }
+}
+
+
+fun main() {
+    val manager = WidgetParserManager.withDefaults().also {
+        it.register(MyCardParser())
+    }
+    val parser = Parser(manager)
+    val source = """
+        <Snapshot background="#FFFFFF" type="png">
+          <MyCard variant="small">
+            <Text fontSize="20" color="#0F172A">Reusable card</Text>
+          </MyCard>
+        </Snapshot>
+    """.trimIndent()
+    val bytes = parser.parse(StringReader(source)).snapshot()
+    File("custom-card.png").writeBytes(bytes)
+}
+```
+
+运行后生成 320×96 的 `custom-card.png`。将 `variant` 改为 `large` 得到 320×144；改为 `medium` 或删除该属性，会在 `snapshot()` 建树时得到带属性位置和候选值的 `ParseException`。
+
+`buildWidget()` 返回一个 Widget 对象，`createWidgetForChildElement()` 再把子标签转换为组件并挂载。这里的 Container 是构造器；在普通函数中只创建对象，不会自动挂到某个外部 DSL 上。
+
+| 容器模式       | 可以写哪些子节点 | 常见用途                           |
+| ---------- | -------- | ------------------------------ |
+| `NONE`     | 不允许      | 图片等叶子标签                        |
+| `SINGLE`   | 0 或 1 个  | 卡片、背景、裁剪包装                     |
+| `MULTIPLE` | 多个       | 自定义排列容器，返回的 Widget 也必须能容纳多个子节点 |
+
+`SINGLE` 不代表必须有一个子节点。若组件要求恰好一个，应在 `buildWidget()` 中额外校验数量。MyCard 可以为空；需要多段内容时，在它里面放一个 Column。声明容器模式也不会自动添加排版逻辑。
+
+`WidgetParserManager.withDefaults()` 每次创建独立的注册表和内置解析器，不要修改已弃用的全局 `DEFAULT_MANAGER`。`copy()` 只复制注册表，里面的 WidgetParser 对象仍是同一批引用；自定义解析器应避免保存“当前请求”等可变状态。`register()` 会替换同名标签，业务标签应使用清晰且不与内置标签冲突的名称。
+
+属性通过 `AttrDefine` 和 `WidgetParser.parseAttrValue` 解析，可以保留位置与统一异常格式。候选值只是说明，实际校验由上例的 `require` 执行；仅写 `AttributeValueInfo.choices()` 不会限制输入。
+
+这些自定义标签只在你配置的 Parser 实例中有效，不会自动出现在公共 Playground 或已部署服务中。编辑器补全也需要单独扩展 [LSP 标签目录](/guides/language-server/#%E4%B8%8E-parser-%E7%9A%84%E5%88%86%E5%B7%A5)。新增 Text 内的行内 Span 类型还需要扩展 `Element.parseInlineSpan()` 的分支，不能仅靠普通标签注册完成。
+
+### 自定义属性的填写说明
+
+继承 `AttrDefine` 时，可覆盖 `valueInfo: AttributeValueInfo?`。`AttributeValueInfo` 只描述填写方式，不执行校验；解析、范围检查仍需由属性实现负责。通过 `WidgetParser.parseAttrValue()` 调用属性解析，才能统一包装普通解析异常并保留原始 `cause`。
+
+已有的 `StringAttrDefine`、`RequiredStringAttrDefine` 和 `NullableEnumAttrDefine` 提供带 `valueInfo` 的构造器，原构造器仍可使用。例如，为必填的自定义卡片样式提供候选并执行校验：
+
+```kotlin
+import com.muedsa.snapshot.parser.Element
+import com.muedsa.snapshot.parser.attr.AttributeValueInfo
+import com.muedsa.snapshot.parser.attr.required.RequiredStringAttrDefine
+import com.muedsa.snapshot.parser.widget.WidgetParser
+
+
+val variantAttr = RequiredStringAttrDefine(
+    name = "variant",
+    valueInfo = AttributeValueInfo.choices(listOf("small", "large")),
+) { attr, value ->
+    require(value == "small" || value == "large") {
+        "Attr [${attr.name}] must be small or large"
+    }
+}
+
+
+val cardVariantAttr = variantAttr.copyWith(name = "cardVariant")
+
+
+// 在自定义 WidgetParser.buildWidget(element) 中调用。
+fun parseCardVariant(element: Element): String =
+    WidgetParser.parseAttrValue(cardVariantAttr, element.attrs)
+```
+
+输入 `cardVariant="medium"` 时，错误使用改名后的属性名，同时保留候选说明；缺失或只写 `cardVariant` 也会报错。`copyWith()` 会保留这里的说明与校验器。自行实现复制方法时，也应保留这些信息，避免属性改名后丢失提示或校验。
+
+`AttributeValueInfo.choices()` 适合有限的字符串取值；实际 Kotlin 枚举可用 `AttributeValueInfo.enum(MyEnum.entries)` 生成说明。自定义格式可直接构造 `AttributeValueInfo(format = ..., examples = ..., allowedValues = ...)`。没有填写说明的自定义属性仍可获得属性名、实际值和原始原因；直接调用基于属性 Map 的接口时，`elementName` 可以为 null。

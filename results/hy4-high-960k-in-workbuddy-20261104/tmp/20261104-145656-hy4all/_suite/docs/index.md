@@ -1,0 +1,133 @@
+# 把布局写成一棵树，直接渲染成图片
+
+> Snapshot 是一个运行在 JVM 上的声明式出图库。用 Kotlin DSL 组织 Widget、布局与绘制，再由 Skia 离线生成 PNG、JPEG 或 WebP。
+
+## Snapshot 是什么？
+
+Snapshot 是一个基于 Kotlin 与 Skia 的 JVM 声明式出图库。它借鉴 Flutter 的 Widget 树、约束布局和分层绘制模型，让复杂图片不再依赖难以维护的 Canvas 坐标代码。
+
+声明式 Widget DSL
+
+使用 `Container`、`Row`、`Column`、`Stack`、`Text` 与 `Image` 组合版面，把图片结构直接表达在代码中。
+
+确定性的离线渲染
+
+布局、绘制、图层和编码分层组织，适合服务端出图、报告、数据卡片与自动化素材生成。
+
+Kotlin 与文本两种入口
+
+既可以直接编写 Kotlin DSL，也可以把类 DOM 文本解析为同一套 Widget 树。
+
+可测试的渲染结果
+
+通过布局断言、像素采样和 Golden 基准测试逐层验证输出，及时发现视觉回归。
+
+## Kotlin DSL 快速预览
+
+```kotlin
+File("card.png").writeBytes(
+    SnapshotPNG(background = 0xFF020617.toInt()) {
+        Container(
+            width = 640f,
+            height = 360f,
+            padding = EdgeInsets.all(32f),
+            decoration = BoxDecoration(
+                color = 0xFF0F172A.toInt(),
+                borderRadius = BorderRadius.circular(24f),
+            ),
+        ) {
+            Column(crossAxisAlignment = CrossAxisAlignment.START) {
+                Text(
+                    "Snapshot",
+                    style = TextStyle(
+                        color = 0xFF38BDF8.toInt(),
+                        fontSize = 42f,
+                    ),
+                )
+                Text(
+                    "Layout first. Paint second.",
+                    style = TextStyle(
+                        color = 0xFFF8FAFC.toInt(),
+                        fontSize = 24f,
+                    ),
+                )
+            }
+        }
+    }
+)
+```
+
+[从安装依赖开始阅读 →](/guides/installation/)
+
+## 项目能力展示
+
+以下图片全部由 Snapshot 自身离线生成，没有使用外部图片素材。生成代码位于项目的 `ShowcaseSample.kt` 与 `ParserShowcaseSample.kt`。
+
+### 结构化 Bento 仪表盘
+
+使用 `Container`、`Row`、`Column`、`Stack` 和 `Positioned` 组合复杂布局，同时展示渐变、圆角、阴影、裁剪与内置字体。
+
+![由 Snapshot Widget 树生成的结构化 Bento 仪表盘](/showcase/showcase_dashboard.png)
+
+### 霓虹视觉海报
+
+通过线性、径向和扫描渐变叠加几何图形，再结合透明度、旋转变换和排版生成完整海报。
+
+![由 Snapshot 生成的霓虹视觉海报](/showcase/showcase_poster.png)
+
+### 类 DOM 数据卡片
+
+同一套渲染能力也可以由类 DOM 文本驱动。解析器把标签与属性转换为 Widget 树，最终直接输出图片字节。
+
+编写类 DOM DSL 时，可通过 [Snapshot DSL 语言服务](/guides/language-server/) 获得补全、悬停说明和实时诊断，也可直接在[在线 Playground](/playground/) 中体验。
+
+![由类 DOM 文本解析生成的数据卡片](/showcase/showcase_parser_card.png)
+
+[查看 Widget 与布局能力 →](/guides/widgets/)
+
+## 适合哪些场景？
+
+服务端动态出图
+
+把模板、业务数据和字体资源组合为分享卡片、报表、票据、社交图片或接口响应。
+
+可维护的复杂版面
+
+用结构化组件替代散落的 Canvas 坐标，让布局复用、重构和代码审查更可靠。
+
+配置驱动的图片模板
+
+使用类 DOM 文本定义受控模板，并按需注册自定义标签扩展业务组件。
+
+视觉回归测试
+
+使用 testkit 验证布局、关键像素和整张 Golden 图片，建立稳定的渲染契约。
+
+## 文档导航
+
+第一次使用可先阅读[文档导读](/guides/overview/)选择 Kotlin 或文本模板路线，也可直接运行[完整模板示例](/guides/examples/)。
+
+| 目标                         | 文档                                                          |
+| -------------------------- | ----------------------------------------------------------- |
+| 配置开发环境和项目依赖                | [安装与构建](/guides/installation/)                              |
+| 生成第一张图片                    | [快速开始](/guides/quickstart/)                                 |
+| 了解 PNG、JPEG、WebP 与 Surface | [渲染入口与输出](/guides/rendering/)                               |
+| 理解 Widget、RenderBox 与图层    | [核心概念](/guides/concepts/)                                   |
+| 排查宽高、约束和溢出问题               | [约束、布局与调试](/guides/layout/)                                 |
+| 查询布局 Widget                | [Widget 与布局](/guides/widgets/)                              |
+| 按组件查询用途、参数与示例              | [完整 Widget API（从 Container 开始）](/widgets/layout/container/) |
+| 使用渐变、阴影、裁剪和滤镜              | [绘制、装饰与效果](/guides/painting/)                               |
+| 使用图片、字体与富文本                | [图片、文本与富文本](/guides/media-text/)                            |
+| 使用文本模板生成图片                 | [类 DOM 解析器](/guides/parser/)                                |
+| 查询解析器全部标签与属性               | [标签与属性参考](/reference/parser-tags/)                          |
+| 编写布局、像素与 Golden 测试         | [测试与 Golden](/guides/testing/)                              |
+| 快速定位源码实现                   | [源码索引](/reference/source-index/)                            |
+
+## 项目状态
+
+当前仍为快照版本
+
+Snapshot 当前版本为 `0.0.0-SNAPSHOT`，并依赖 JetBrains Compose dev 仓库中的 Skiko 快照版本。接口和底层图形 API 仍可能变化，生产项目应固定已经验证的依赖版本。
+
+* [GitHub 仓库](https://github.com/muedsa/snapshot)
+* [安装与版本说明](/guides/installation/)

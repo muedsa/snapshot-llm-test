@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "groups": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "numerator": 2400,
+      "denominator": 8000,
+      "exact_fraction": "2400/8000",
+      "rate": 0.3,
+      "display_percent": "30.00%"
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "numerator": 200,
+      "denominator": 2000,
+      "exact_fraction": "200/2000",
+      "rate": 0.1,
+      "display_percent": "10.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "numerator": 700,
+      "denominator": 2000,
+      "exact_fraction": "700/2000",
+      "rate": 0.35,
+      "display_percent": "35.00%"
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "numerator": 960,
+      "denominator": 8000,
+      "exact_fraction": "960/8000",
+      "rate": 0.12,
+      "display_percent": "12.00%"
+    }
+  ],
+  "periods": [
+    {
+      "period": "前期",
+      "numerator": 2600,
+      "denominator": 10000,
+      "exact_fraction": "2600/10000",
+      "rate": 0.26,
+      "display_percent": "26.00%",
+      "weighted_formula": "0.8000×0.3000 + 0.2000×0.1000",
+      "composition": {
+        "直接访问": 0.8,
+        "推广访问": 0.2
+      }
+    },
+    {
+      "period": "后期",
+      "numerator": 1660,
+      "denominator": 10000,
+      "exact_fraction": "1660/10000",
+      "rate": 0.166,
+      "display_percent": "16.60%",
+      "weighted_formula": "0.2000×0.3500 + 0.8000×0.1200",
+      "composition": {
+        "直接访问": 0.2,
+        "推广访问": 0.8
+      }
+    }
+  ],
+  "axes": [
+    {
+      "chart": "group_rate",
+      "unit": "比例 / %",
+      "min": 0,
+      "max": 1.0,
+      "ticks": [
+        0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "zero_line_px": 560,
+      "pixel_mapping": "y = 560 - rate*(560-230)"
+    },
+    {
+      "chart": "composition",
+      "unit": "访问数占比",
+      "equal_length_px": 390,
+      "segments": "width = 390 * visits/10000",
+      "note": "两期总长相等"
+    },
+    {
+      "chart": "overall",
+      "unit": "比例 / %",
+      "values": [
+        0.26,
+        0.166
+      ]
+    }
+  ],
+  "conclusions": [
+    {
+      "claim": "两渠道各自转化率均上升但总体下降，源于访问构成从高转化的直接访问（80%）转向推广访问（80%）",
+      "referenced_values": [
+        "30.00%→35.00%",
+        "10.00%→12.00%",
+        "26.00%→16.60%",
+        "80%→20%"
+      ],
+      "method": "总体=总成交/总访问；加权式 Σ(占比×组率)"
+    },
+    {
+      "claim": "不能由该数据证明因果",
+      "type": "limitation",
+      "detail": "仅显示构成与结果的相关变化；无法识别渠道调整、流量质量或其他混杂因素；不得把绝对成交量当作转化率"
+    }
+  ],
+  "wrong_methods": {
+    "mean_of_channel_rates": [
+      "20.00%",
+      "23.50%"
+    ],
+    "note": "平均渠道比例会给出与总体相反的方向，仅作反例展示，不作为结论"
+  },
+  "evidence": {
+    "png": "conversion-story.png",
+    "dsl": "conversion-story.snapshot"
+  }
+}
