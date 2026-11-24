@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "task_id": "A04",
+  "path_base": "output_dir",
+  "source": "inputs/conversion.csv",
+  "groups": [
+    {
+      "period": "前期",
+      "channel": "直接访问",
+      "conversions": 2400,
+      "visits": 8000,
+      "exact_fraction": "2400/8000",
+      "fraction_reduced": "3/10",
+      "display_percentage": "30.0%",
+      "rate_decimal": 0.3
+    },
+    {
+      "period": "前期",
+      "channel": "推广访问",
+      "conversions": 200,
+      "visits": 2000,
+      "exact_fraction": "200/2000",
+      "fraction_reduced": "1/10",
+      "display_percentage": "10.0%",
+      "rate_decimal": 0.1
+    },
+    {
+      "period": "后期",
+      "channel": "直接访问",
+      "conversions": 700,
+      "visits": 2000,
+      "exact_fraction": "700/2000",
+      "fraction_reduced": "7/20",
+      "display_percentage": "35.0%",
+      "rate_decimal": 0.35
+    },
+    {
+      "period": "后期",
+      "channel": "推广访问",
+      "conversions": 960,
+      "visits": 8000,
+      "exact_fraction": "960/8000",
+      "fraction_reduced": "3/25",
+      "display_percentage": "12.0%",
+      "rate_decimal": 0.12
+    }
+  ],
+  "periods": [
+    {
+      "period": "前期",
+      "conversions": 2600,
+      "visits": 10000,
+      "exact_fraction": "2600/10000",
+      "display_percentage": "26.0%",
+      "weighted_formula": "(2600)/(10000)=2600/10000=0.260000",
+      "visit_mix": {
+        "直接访问": {
+          "visits": 8000,
+          "share_exact": "4/5",
+          "share_display": "80%"
+        },
+        "推广访问": {
+          "visits": 2000,
+          "share_exact": "1/5",
+          "share_display": "20%"
+        }
+      }
+    },
+    {
+      "period": "后期",
+      "conversions": 1660,
+      "visits": 10000,
+      "exact_fraction": "1660/10000",
+      "display_percentage": "16.6%",
+      "weighted_formula": "(1660)/(10000)=1660/10000=0.166000",
+      "visit_mix": {
+        "直接访问": {
+          "visits": 2000,
+          "share_exact": "1/5",
+          "share_display": "20%"
+        },
+        "推广访问": {
+          "visits": 8000,
+          "share_exact": "4/5",
+          "share_display": "80%"
+        }
+      }
+    }
+  ],
+  "axes": [
+    {
+      "chart": "channel_rate",
+      "unit": "%",
+      "minimum": 0,
+      "maximum": 100,
+      "plot_box": [
+        100,
+        282,
+        550,
+        452
+      ],
+      "mapping": "bar_height=rate*170",
+      "shared_scale": true
+    },
+    {
+      "chart": "visit_mix",
+      "unit": "%",
+      "minimum": 0,
+      "maximum": 100,
+      "plot_box": [
+        680,
+        298,
+        1030,
+        456
+      ],
+      "bar_lengths": [
+        350,
+        350
+      ],
+      "mapping": "segment_width=350*channel_visits/period_visits"
+    },
+    {
+      "chart": "overall_comparison",
+      "unit": "%",
+      "minimum": 0,
+      "maximum": 100,
+      "values_from": "total conversions / total visits"
+    }
+  ],
+  "comparisons": {
+    "direct_pp_change": 4.999999999999999,
+    "promotion_pp_change": 1.9999999999999991,
+    "overall_pp_change": -9.4,
+    "group_and_overall_same_direction": false
+  },
+  "conclusions": [
+    {
+      "claim": "两渠道分组转化率均改善：直接访问 30%→35%，推广访问 10%→12%。",
+      "references": [
+        "S01/S03",
+        "S02/S04"
+      ],
+      "evidence": "各组 conversions/visits"
+    },
+    {
+      "claim": "总体转化率下降 26.0%→16.6%，与分组变化不同向；同期访问构成从直接 80%/推广 20% 变为直接 20%/推广 80%。",
+      "references": [
+        "前期总计",
+        "后期总计"
+      ],
+      "evidence": "总成交/总访问与访问占比堆叠图"
+    },
+    {
+      "claim": "不能由该数据证明因果。",
+      "limitation": "这是两期汇总观测数据，未控制其他因素，分组率与构成的相关变化不等于渠道迁移的因果效应。"
+    }
+  ],
+  "method_notes": [
+    "未平均渠道比例",
+    "未将绝对成交量当作转化率",
+    "所有显示百分比四舍五入至 1 位；精确分数保留在 JSON"
+  ]
+}

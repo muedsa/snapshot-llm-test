@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "task_id": "A24",
+  "path_base": "output_dir",
+  "timezone": "Asia/Shanghai (+08:00)",
+  "interval_convention": "[start,end)",
+  "checks": [
+    {
+      "check": "full_duration",
+      "passed": true,
+      "items": [
+        {
+          "task_id": "R01",
+          "expected": 25,
+          "actual": 25,
+          "passed": true
+        },
+        {
+          "task_id": "R02",
+          "expected": 20,
+          "actual": 20,
+          "passed": true
+        },
+        {
+          "task_id": "R03",
+          "expected": 40,
+          "actual": 40,
+          "passed": true
+        },
+        {
+          "task_id": "R04",
+          "expected": 60,
+          "actual": 60,
+          "passed": true
+        },
+        {
+          "task_id": "R05",
+          "expected": 30,
+          "actual": 30,
+          "passed": true
+        },
+        {
+          "task_id": "R06",
+          "expected": 45,
+          "actual": 45,
+          "passed": true
+        },
+        {
+          "task_id": "R07",
+          "expected": 70,
+          "actual": 70,
+          "passed": true
+        },
+        {
+          "task_id": "R08",
+          "expected": 65,
+          "actual": 65,
+          "passed": true
+        },
+        {
+          "task_id": "R09",
+          "expected": 45,
+          "actual": 45,
+          "passed": true
+        },
+        {
+          "task_id": "R10",
+          "expected": 35,
+          "actual": 35,
+          "passed": true
+        },
+        {
+          "task_id": "R11",
+          "expected": 30,
+          "actual": 30,
+          "passed": true
+        },
+        {
+          "task_id": "R12",
+          "expected": 20,
+          "actual": 20,
+          "passed": true
+        }
+      ],
+      "method": "end_minute - start_minute 与输入 minutes 精确整数比较"
+    },
+    {
+      "check": "work_window",
+      "passed": true,
+      "items": [
+        {
+          "task_id": "R01",
+          "start_minute": 0,
+          "end_minute": 25,
+          "passed": true
+        },
+        {
+          "task_id": "R02",
+          "start_minute": 0,
+          "end_minute": 20,
+          "passed": true
+        },
+        {
+          "task_id": "R03",
+          "start_minute": 20,
+          "end_minute": 60,
+          "passed": true
+        },
+        {
+          "task_id": "R04",
+          "start_minute": 25,
+          "end_minute": 85,
+          "passed": true
+        },
+        {
+          "task_id": "R05",
+          "start_minute": 60,
+          "end_minute": 90,
+          "passed": true
+        },
+        {
+          "task_id": "R06",
+          "start_minute": 90,
+          "end_minute": 135,
+          "passed": true
+        },
+        {
+          "task_id": "R07",
+          "start_minute": 90,
+          "end_minute": 160,
+          "passed": true
+        },
+        {
+          "task_id": "R08",
+          "start_minute": 135,
+          "end_minute": 200,
+          "passed": true
+        },
+        {
+          "task_id": "R09",
+          "start_minute": 160,
+          "end_minute": 205,
+          "passed": true
+        },
+        {
+          "task_id": "R10",
+          "start_minute": 205,
+          "end_minute": 240,
+          "passed": true
+        },
+        {
+          "task_id": "R11",
+          "start_minute": 205,
+          "end_minute": 235,
+          "passed": true
+        },
+        {
+          "task_id": "R12",
+          "start_minute": 240,
+          "end_minute": 260,
+          "passed": true
+        }
+      ],
+      "method": "0 <= start_minute < end_minute <= 420，不扣午休"
+    },
+    {
+      "check": "resource_capacity",
+      "passed": true,
+      "items": [
+        {
+          "team": "design",
+          "task_order": [
+            "R01",
+            "R04",
+            "R07",
+            "R09",
+            "R10",
+            "R12"
+          ],
+          "workload_minutes": 255,
+          "overlaps": [],
+          "passed": true,
+          "idle_gaps_within_schedule": [
+            {
+              "start_minute": 85,
+              "end_minute": 90,
+              "start": "10:25",
+              "end": "10:30",
+              "minutes": 5
+            }
+          ]
+        },
+        {
+          "team": "engineering",
+          "task_order": [
+            "R02",
+            "R03",
+            "R05",
+            "R06",
+            "R08",
+            "R11"
+          ],
+          "workload_minutes": 230,
+          "overlaps": [],
+          "passed": true,
+          "idle_gaps_within_schedule": [
+            {
+              "start_minute": 200,
+              "end_minute": 205,
+              "start": "12:20",
+              "end": "12:25",
+              "minutes": 5
+            },
+            {
+              "start_minute": 235,
+              "end_minute": 260,
+              "start": "12:55",
+              "end": "13:20",
+              "minutes": 25
+            }
+          ]
+        }
+      ],
+      "method": "每团队按 start 排序，检查相邻 end > next start 的半开区间重叠；团队必须在 eligible_teams 中"
+    },
+    {
+      "check": "dependencies",
+      "passed": true,
+      "items": [
+        {
+          "predecessor": "R02",
+          "successor": "R03",
+          "predecessor_end_minute": 20,
+          "successor_start_minute": 20,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R01",
+          "successor": "R04",
+          "predecessor_end_minute": 25,
+          "successor_start_minute": 25,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R01",
+          "successor": "R05",
+          "predecessor_end_minute": 25,
+          "successor_start_minute": 60,
+          "gap_minutes": 35,
+          "passed": true
+        },
+        {
+          "predecessor": "R03",
+          "successor": "R06",
+          "predecessor_end_minute": 60,
+          "successor_start_minute": 90,
+          "gap_minutes": 30,
+          "passed": true
+        },
+        {
+          "predecessor": "R04",
+          "successor": "R07",
+          "predecessor_end_minute": 85,
+          "successor_start_minute": 90,
+          "gap_minutes": 5,
+          "passed": true
+        },
+        {
+          "predecessor": "R05",
+          "successor": "R07",
+          "predecessor_end_minute": 90,
+          "successor_start_minute": 90,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R04",
+          "successor": "R08",
+          "predecessor_end_minute": 85,
+          "successor_start_minute": 135,
+          "gap_minutes": 50,
+          "passed": true
+        },
+        {
+          "predecessor": "R06",
+          "successor": "R08",
+          "predecessor_end_minute": 135,
+          "successor_start_minute": 135,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R07",
+          "successor": "R09",
+          "predecessor_end_minute": 160,
+          "successor_start_minute": 160,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R07",
+          "successor": "R10",
+          "predecessor_end_minute": 160,
+          "successor_start_minute": 205,
+          "gap_minutes": 45,
+          "passed": true
+        },
+        {
+          "predecessor": "R08",
+          "successor": "R10",
+          "predecessor_end_minute": 200,
+          "successor_start_minute": 205,
+          "gap_minutes": 5,
+          "passed": true
+        },
+        {
+          "predecessor": "R09",
+          "successor": "R10",
+          "predecessor_end_minute": 205,
+          "successor_start_minute": 205,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R08",
+          "successor": "R11",
+          "predecessor_end_minute": 200,
+          "successor_start_minute": 205,
+          "gap_minutes": 5,
+          "passed": true
+        },
+        {
+          "predecessor": "R09",
+          "successor": "R11",
+          "predecessor_end_minute": 205,
+          "successor_start_minute": 205,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R10",
+          "successor": "R12",
+          "predecessor_end_minute": 240,
+          "successor_start_minute": 240,
+          "gap_minutes": 0,
+          "passed": true
+        },
+        {
+          "predecessor": "R11",
+          "successor": "R12",
+          "predecessor_end_minute": 235,
+          "successor_start_minute": 240,
+          "gap_minutes": 5,
+          "passed": true
+        }
+      ],
+      "method": "逐条检查 predecessor.end_minute <= successor.start_minute"
+    }
+  ],
+  "lower_bounds": {
+    "critical_path_minutes": 255,
+    "critical_paths": [
+      {
+        "minutes": 255,
+        "path": [
+          "R01",
+          "R04",
+          "R07",
+          "R09",
+          "R10",
+          "R12"
+        ]
+      }
+    ],
+    "critical_path_method": "仅使用输入依赖和完整时长，不加入资源等待；最长依赖路径为 R01→R04→R07→R09→R10→R12。",
+    "total_workload_minutes": 485,
+    "team_count": 2,
+    "resource_workload_lower_bound_minutes": 242.5,
+    "resource_workload_formula": "485 / 2 = 242.5，不提前取整",
+    "overall_lower_bound_minutes": 255
+  },
+  "finish": {
+    "finish_minute": 260,
+    "finish_time": "13:20",
+    "buffer_minutes": 160,
+    "buffer_time": "16:00",
+    "formula": "420 - max(end_minute)"
+  },
+  "optimality": {
+    "feasible": true,
+    "globally_optimal": true,
+    "optimality_proven": true,
+    "proof": "关键路径下界255分钟，但R05须等R01于25分钟完成，工程链的资源衔接使可行方案最早为260分钟。枚举所有满足依赖的团队串行拓扑顺序并按最早可行时间调度，搜索2338个状态后未发现小于260分钟的方案，因此260分钟为全局最优。",
+    "improvement_basis": "R05在engineering于R03后执行；R07从90分钟开始。R09分配给design，R10/R11于205分钟并行，R12由design在240分钟接续。",
+    "unknown_optimality": false,
+    "search_evidence": {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A24/optimality-search.json",
+      "nodes": 2338,
+      "best_finish_minute": 260,
+      "elapsed_seconds": 0.016
+    }
+  }
+}

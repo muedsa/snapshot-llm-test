@@ -1,0 +1,1440 @@
+{
+  "schema_version": 1,
+  "task_id": "B05",
+  "path_base": "suite_root",
+  "plan_version": "v001",
+  "established_at": "2026-11-24T17:23:28.386+08:00",
+  "asset_policy": "pure_dsl_invented_product_demo",
+  "cases": [
+    {
+      "id": "B05-case-01",
+      "title": "把药盒放进来",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "女儿在晚饭后首次为父亲建立清单",
+      "user_goal": "用手机拍摄或手动录入五种药品，并在保存前逐项确认",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "单一手机录入流；药品缩略图、识别置信与人工确认形成连续任务",
+      "dimensions": [
+        390,
+        844
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-01-C1",
+          "condition": "五种药品名称、规格与频次完整且可核对",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-01-C2",
+          "condition": "识别结果明确需要人工确认，不假装权威",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-01-C3",
+          "condition": "过敏与‘非医疗建议’边界可见",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 1,
+      "previous_case": null,
+      "next_case": "B05-case-02",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-02",
+      "title": "三份清单，先对齐",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "女儿在桌面端比较门诊单、家庭药盒和上次清单",
+      "user_goal": "找出两处差异，标记待医生确认而不是自动覆盖",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "三栏对照工作台；差异高亮、来源时间与待确认动作占据主视觉",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-02-C1",
+          "condition": "三份来源及更新时间可见",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-02-C2",
+          "condition": "Metformin数量与Atorvastatin停用状态两处差异一致",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-02-C3",
+          "condition": "没有自动作出临床判断，确认按钮指向专业人员",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 2,
+      "previous_case": "B05-case-01",
+      "next_case": "B05-case-03",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-03",
+      "title": "谁可以看见，谁来决定",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "父亲与女儿设置共享权限和紧急联系人",
+      "user_goal": "让父亲保留决定权，同时授权女儿协调和接收提醒",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "权限关系图与角色卡片并置，突出授权、撤销和隐私边界",
+      "dimensions": [
+        1200,
+        900
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-03-C1",
+          "condition": "父亲、女儿和医生角色权限不同且可撤销",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-03-C2",
+          "condition": "女儿不能修改处方，紧急联系人功能明确",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-03-C3",
+          "condition": "同意记录与数据范围说明可读",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 3,
+      "previous_case": "B05-case-02",
+      "next_case": "B05-case-04",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-04",
+      "title": "现在，只做这一件",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "父亲早晨在手机上查看当天用药",
+      "user_goal": "按大字号卡片完成08:00项目，需要时可选择稍后",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "大字单任务手机界面；时间、三项药品和两个主操作直接可见",
+      "dimensions": [
+        390,
+        844
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-04-C1",
+          "condition": "08:00三项与案例01清单一致",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-04-C2",
+          "condition": "已服用和稍后都有清楚反馈路径",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-04-C3",
+          "condition": "没有连续打卡压力或服药效果承诺",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 4,
+      "previous_case": "B05-case-03",
+      "next_case": "B05-case-05",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-05",
+      "title": "漏服了，先别加倍",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "父亲09:40发现早晨一片未确认，女儿远程协助",
+      "user_goal": "记录情况并联系药师，不自动建议补服",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "异常状态手机页；警示色只用于下一步动作，保留时间线和联系人",
+      "dimensions": [
+        390,
+        844
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-05-C1",
+          "condition": "明确不自动加倍、不自动补服",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-05-C2",
+          "condition": "记录Metformin 08:00未确认和09:40报告一致",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-05-C3",
+          "condition": "联系药师与通知女儿操作有合理结果说明",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 5,
+      "previous_case": "B05-case-04",
+      "next_case": "B05-case-06",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-06",
+      "title": "在见底之前安排补药",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "女儿在平板查看库存并提交演示补药申请",
+      "user_goal": "按每日用量估算见底日，核对后预约药店取药",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "横向库存刻度与补药队列；数量、日数和处理状态用同一数据计算",
+      "dimensions": [
+        1024,
+        768
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-06-C1",
+          "condition": "五种库存与每日次数一致",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-06-C2",
+          "condition": "Metformin 40片/每日2片=20天，处于14天提醒阈值",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-06-C3",
+          "condition": "补药是申请而非已购或已送达，药店待确认",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 6,
+      "previous_case": "B05-case-05",
+      "next_case": "B05-case-07",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-07",
+      "title": "今晚，换一个人接手",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "儿子在桌面端接管父亲晚间协调",
+      "user_goal": "查看未完成事项、确认责任并记录交接摘要",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "交接时间线与责任看板；过去记录和未来任务有清楚分界",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-07-C1",
+          "condition": "林澄接手、21:00 Atorvastatin和09:40异常跟进保持连续",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-07-C2",
+          "condition": "交接双方确认与时间戳可见",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-07-C3",
+          "condition": "不把父亲用药决定转移给家属",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 7,
+      "previous_case": "B05-case-06",
+      "next_case": "B05-case-08",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-08",
+      "title": "把问题带到诊室",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "女儿与父亲在门诊前打开可分享摘要",
+      "user_goal": "核对过敏、五种药品、两个待问问题和最近异常",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "移动就诊卡；一屏分层显示摘要、异常和给医生的问题",
+      "dimensions": [
+        430,
+        932
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-08-C1",
+          "condition": "五种药品、过敏和待问问题与全 journey 一致",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-08-C2",
+          "condition": "09:40异常被标为家属报告而非医生诊断",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-08-C3",
+          "condition": "分享对象、有效期和撤回入口明确",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 8,
+      "previous_case": "B05-case-07",
+      "next_case": "B05-case-09",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-09",
+      "title": "取药后，再核对一次",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "儿子在药袋交付点核对演示药品",
+      "user_goal": "比对取药清单、数量和待药师确认的标签差异",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "手机取药凭证与逐项勾选；凭证码为演示图形，异常状态不被绿色掩盖",
+      "dimensions": [
+        390,
+        844
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-09-C1",
+          "condition": "取药药品和数量与案例06补药队列一致",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-09-C2",
+          "condition": "标签差异保留待确认，不擅自判断可以服用",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-09-C3",
+          "condition": "演示凭证码和药店信息明确非真实交易",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 9,
+      "previous_case": "B05-case-08",
+      "next_case": "B05-case-10",
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    },
+    {
+      "id": "B05-case-10",
+      "title": "只看需要处理的三件事",
+      "audience": "承担家庭用药协调的成年家属与愿意参与记录的长者",
+      "use_context": "一周后女儿在平板做家庭照护复盘",
+      "user_goal": "处理一项待问、一项补药和一次授权检查，不带服药羞耻评分",
+      "content_basis": {
+        "name": "同频",
+        "english_name": "CAREFOLD",
+        "status": "invented_concept_demo",
+        "patient": {
+          "name": "林建国",
+          "age": 72,
+          "allergy": "青霉素（演示记录）"
+        },
+        "caregiver": {
+          "name": "林岚",
+          "relationship": "女儿",
+          "role": "主要协调人"
+        },
+        "handoff_caregiver": {
+          "name": "林澄",
+          "relationship": "儿子",
+          "role": "今晚接手"
+        },
+        "demo_date": "2026-11-24",
+        "medications": [
+          {
+            "id": "M01",
+            "name": "Amlodipine",
+            "strength": "5 mg",
+            "purpose": "血压（演示）",
+            "schedule": "每日 08:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 22,
+            "color": "#D06D4B",
+            "shape": "round",
+            "days_remaining": 22.0
+          },
+          {
+            "id": "M02",
+            "name": "Metformin",
+            "strength": "500 mg",
+            "purpose": "血糖（演示）",
+            "schedule": "每日 08:00 / 18:00 · 各1片",
+            "times_per_day": 2,
+            "quantity": 40,
+            "color": "#42776B",
+            "shape": "long",
+            "days_remaining": 20.0
+          },
+          {
+            "id": "M03",
+            "name": "Atorvastatin",
+            "strength": "20 mg",
+            "purpose": "血脂（演示）",
+            "schedule": "每日 21:00 · 1片",
+            "times_per_day": 1,
+            "quantity": 18,
+            "color": "#D3AA47",
+            "shape": "round",
+            "days_remaining": 18.0
+          },
+          {
+            "id": "M04",
+            "name": "Omeprazole",
+            "strength": "20 mg",
+            "purpose": "胃部症状（演示）",
+            "schedule": "每日 07:30 · 1片",
+            "times_per_day": 1,
+            "quantity": 12,
+            "color": "#607CA5",
+            "shape": "capsule",
+            "days_remaining": 12.0
+          },
+          {
+            "id": "M05",
+            "name": "Vitamin D3",
+            "strength": "1000 IU",
+            "purpose": "补充剂（演示）",
+            "schedule": "每日 08:00 · 1粒",
+            "times_per_day": 1,
+            "quantity": 30,
+            "color": "#8B719B",
+            "shape": "capsule",
+            "days_remaining": 30.0
+          }
+        ],
+        "boundaries": [
+          "不自动判断是否补服、加倍或停药",
+          "剂量变更须由医生或药师确认",
+          "所有人物、药品库存与记录均为演示，不构成医疗建议",
+          "未进行真实用户研究或临床验证"
+        ]
+      },
+      "visual_intent": "克制的例外队列与周时间线；突出三件可行动事项而非健康评分",
+      "dimensions": [
+        1180,
+        820
+      ],
+      "dsl_capabilities": [
+        "Container",
+        "Stack",
+        "Row",
+        "Column",
+        "Positioned",
+        "Text",
+        "ClipPath",
+        "ClipRRect",
+        "Opacity",
+        "LINEAR"
+      ],
+      "criteria": [
+        {
+          "id": "B05-10-C1",
+          "condition": "三件例外能追溯至案例02/05/06/08",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-10-C2",
+          "condition": "记录完成状态和负责人合理",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        },
+        {
+          "id": "B05-10-C3",
+          "condition": "没有把记录完整度等同健康改善或用户验证",
+          "method": "打开最终服务原图，核对目标尺寸下的文字、状态、前后用例数据与操作反馈。",
+          "established_at": "2026-11-24T17:23:28.386+08:00",
+          "plan_version": "v001"
+        }
+      ],
+      "journey_step": 10,
+      "previous_case": "B05-case-09",
+      "next_case": null,
+      "plan_version": "v001",
+      "plan_established_at": "2026-11-24T17:23:28.386+08:00",
+      "criteria_history": [],
+      "version": "v001"
+    }
+  ]
+}

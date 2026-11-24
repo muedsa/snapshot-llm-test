@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "task_id": "B06",
+  "run_id": "20261124T113838+0800-aac601",
+  "status": "preparation_only",
+  "path_base": "suite_root",
+  "plan_version": "B06-plan-v1",
+  "created_at": "2026-11-24T04:38:29.671639+00:00",
+  "curatorial_statement": "Ten everyday information failures rebuilt as ten purpose-specific reading tools. The set spans money, transport, housing, shopping, education, insurance, product repair, recycling, civic participation, and home networking; each artifact has a different visual logic because the user's decision is different.",
+  "evidence_policy": {
+    "observed_basis": "These are recurring information-design problems identified from common document and interface structures, not claims of field research.",
+    "research_completed": "Task-contract review and DSL capability review only; no interviews, usability tests, local-policy verification, or real customer data collection.",
+    "demonstration_rule": "All brands, people, listings, bills, assignments, policies, appliances, city rules, meeting items, floor plans, and measurements are fictional unless explicitly stated otherwise. Every artwork must carry a visible 'Fictional demo' label.",
+    "future_evidence": "Each case records a validation question so an executor can later replace demo content with verified local or user evidence without changing the core information structure."
+  },
+  "visual_strategy": "No house template. Use a cost waterfall, a service graph, a stacked-cost shelf, a shelf-tag comparison, a dependency map, a scenario tree, a repair/replace dial, a sorting conveyor, an agenda impact map, and a floor-plan diagnostic respectively.",
+  "cases": [
+    {
+      "id": "B06-case-01",
+      "title": "Why Did This Month's Bill Change?",
+      "audience": "A householder trying to understand an unexpected electricity bill",
+      "context": "A4-style portrait explainer next to a monthly statement",
+      "goal": "Identify which charges changed, by how much, and what action or question each change suggests.",
+      "content_basis": {
+        "problem_evidence": "A total and line items hide the bridge between last month and this month; design hypothesis only, no user study.",
+        "type": "fictional demonstration",
+        "demo_values": {"previous_total": 104, "current_total": 142, "difference": 38, "previous": {"service": 18, "energy": 65, "delivery": 22, "taxes": 6, "credit": -7}, "current": {"service": 18, "energy": 99, "delivery": 22, "taxes": 9, "credit": -6}},
+        "arithmetic": "Previous components sum to 104; current components sum to 142; change +34 energy, +3 taxes, +1 credit, total +38.",
+        "limitations": "Amounts are invented USD demonstration values. No tariff, tax rule, or utility provider is represented."
+      },
+      "visual_intent": "A waterfall from $104 to $142 with only changed components rising, plus a compact 'ask/check/do' rail that converts each line into an action.",
+      "dimensions": [1400, 1800],
+      "target_viewing": "Portrait print and tablet full-page reading",
+      "dsl_capabilities": ["Container", "Column", "Row", "Expanded", "Stack", "Positioned", "ClipRect", "ClipPath", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-01-C1", "observable_condition": "The waterfall reconciles exactly from $104 to $142 and labels the $38 total increase.", "inspection_method": "Recompute every bar and compare rendered totals with demo_values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-01-C2", "observable_condition": "Energy +$34, taxes +$3, and credit +$1 are shown with correct signs; unchanged charges are not presented as causes.", "inspection_method": "Inspect labels and compare each delta with the two component lists.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-01-C3", "observable_condition": "Every changed component has a plausible question or action, and no unverified cause is stated as fact.", "inspection_method": "Read the action rail and confirm it uses check/ask language rather than assertions.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-01-C4", "observable_condition": "All amounts, axis labels, and body text are legible with no bar-label collisions.", "inspection_method": "Inspect full PNG, 50% thumbnail, and waterfall-label crops.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A reconciliatory financial waterfall with an action rail is unique in the set; it does not reuse the rental cost-stack layout or the repair decision dial.",
+      "validation_question": "Can a householder name the largest driver and the next useful question without reading the original statement?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-02",
+      "title": "Can I Still Get There?",
+      "audience": "A commuter facing a partial train-line disruption",
+      "context": "Landscape station display and mobile companion view",
+      "goal": "Determine whether the destination is still reachable, which stations are affected, and where to change or wait.",
+      "content_basis": {
+        "problem_evidence": "A line diagram shows geography but not service state; a disruption list shows state but not journey consequence. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"line": "Blue Line", "closed_segment": "Harbor–Market", "origin": "Harbor", "destination": "Museum", "replacement_bus": "Harbor–Market", "remaining_train": "Market–Museum", "extra_minutes": 12},
+        "limitations": "All stations, service states, times, and the replacement bus are fictional. This is not live transit information."
+      },
+      "visual_intent": "A service-state graph where the closed segment becomes a broken rail bridged by a bus ribbon; the user's origin/destination remain anchored while unaffected service recedes.",
+      "dimensions": [1600, 1000],
+      "target_viewing": "Landscape station display at a distance and 50% overview",
+      "dsl_capabilities": ["Container", "Row", "Column", "Expanded", "Stack", "Positioned", "Transform", "ClipPath", "ClipRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-02-C1", "observable_condition": "The closed Harbor–Market rail segment, replacement bus, and continuing Market–Museum train are unambiguous.", "inspection_method": "Trace the full Harbor-to-Museum path and read every service-state label.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-02-C2", "observable_condition": "The answer to 'Can I still get there?' is visible before detailed disruption information.", "inspection_method": "Inspect the top-level journey answer and visual hierarchy.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-02-C3", "observable_condition": "The 12-minute extra time is marked demo and is not presented as a live estimate.", "inspection_method": "Inspect the time badge and fictional-demo notice.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-02-C4", "observable_condition": "Station labels remain readable at display distance and no route line crosses text.", "inspection_method": "Review full PNG at target distance and crops around the interchange.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "Its primary logic is a partial-service network and interchange consequence, not a timetable list, price comparison, or generic route line.",
+      "validation_question": "Can a commuter identify the transfer point and remaining service within a few seconds?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-03",
+      "title": "Which Home Is Actually Affordable?",
+      "audience": "A renter comparing listings with different fees and included utilities",
+      "context": "Portrait comparison sheet used during an apartment search",
+      "goal": "Compare complete recurring monthly cost and one-time entry cost instead of headline rent alone.",
+      "content_basis": {
+        "problem_evidence": "Listings separate rent, utilities, parking, laundry, and deposits, making the recurring total hard to compare. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"A": {"rent": 1450, "utilities_estimate": 180, "parking": 35, "laundry": 0, "monthly_total": 1665, "entry_fees": 500}, "B": {"rent": 1320, "utilities_estimate": 230, "parking": 0, "laundry": 60, "monthly_total": 1610, "entry_fees": 350}, "C": {"rent": 1550, "utilities_estimate": 140, "parking": 120, "laundry": 0, "monthly_total": 1810, "entry_fees": 600}},
+        "arithmetic": "A: 1450+180+35=1665. B: 1320+230+60=1610. C: 1550+140+120=1810.",
+        "limitations": "All amounts are fictional USD demonstration values. Utility figures are estimates; entry fees are shown separately and excluded from monthly totals."
+      },
+      "visual_intent": "Three vertical cost stacks rise from a shared baseline, with recurring and one-time costs deliberately separated and a value-for-space strip that does not hide total cost.",
+      "dimensions": [1500, 1800],
+      "target_viewing": "Portrait tablet/print comparison",
+      "dsl_capabilities": ["Container", "Column", "Row", "Expanded", "Stack", "Positioned", "ClipRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-03-C1", "observable_condition": "Monthly totals are exactly $1,665, $1,610, and $1,810 and each stack reconciles to its components.", "inspection_method": "Recompute all three stacks and compare with demo_values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-03-C2", "observable_condition": "One-time entry fees are visually separated from recurring monthly cost and not silently included.", "inspection_method": "Inspect the top/bottom separation and all labels.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-03-C3", "observable_condition": "Estimated utilities are labelled estimates and the lowest monthly total is not framed as an absolute recommendation.", "inspection_method": "Read all qualifiers and the decision note.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-03-C4", "observable_condition": "Stack labels align, no amount is clipped, and comparisons remain readable at 50% view.", "inspection_method": "Inspect full PNG, thumbnail, and crops around each stack total.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This is a multi-option recurring-cost stack with separate entry fees, structurally different from the single-bill waterfall and from grocery unit comparison.",
+      "validation_question": "Can renters rank total monthly cost without accidentally counting deposits as monthly rent?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-04",
+      "title": "The Better Price per Kilogram",
+      "audience": "A shopper comparing two pack sizes under time pressure",
+      "context": "Shelf-edge portrait card and phone shopping companion",
+      "goal": "Compare unit price while seeing upfront cost, likely usable quantity, and expiry/waste risk.",
+      "content_basis": {
+        "problem_evidence": "Pack sizes and promotion labels differ, so shoppers must normalize price and quantity mentally while also considering waste. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"A": {"mass_g": 850, "price": 5.1, "price_per_kg": 6.0, "expiry_days": 10}, "B": {"mass_g": 500, "price": 3.3, "price_per_kg": 6.6, "expiry_days": 5}},
+        "arithmetic": "A: 5.10/0.850=$6.00/kg. B: 3.30/0.500=$6.60/kg. A is $0.60/kg cheaper but costs $1.80 more upfront.",
+        "limitations": "Product, prices, masses, and expiry days are fictional demonstration values; no nutrition or health claim."
+      },
+      "visual_intent": "Two oversized shelf tags joined by a common per-kilogram ruler, with a lower waste-risk band that prevents unit price from becoming the only answer.",
+      "dimensions": [1200, 1500],
+      "target_viewing": "Phone/shelf-edge portrait at full size",
+      "dsl_capabilities": ["Container", "Column", "Row", "Expanded", "Stack", "ClipRRect", "ClipRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-04-C1", "observable_condition": "Unit prices are exactly $6.00/kg and $6.60/kg with visible calculation inputs.", "inspection_method": "Recompute from mass and price and compare rendered values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-04-C2", "observable_condition": "The $1.80 higher upfront cost and expiry/waste tradeoff are visible beside the unit-price result.", "inspection_method": "Inspect the lower tradeoff band and labels.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-04-C3", "observable_condition": "The piece does not claim the larger pack is always better; it gives a conditional choice.", "inspection_method": "Read the decision line and verify no absolute recommendation.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-04-C4", "observable_condition": "Shelf-tag typography, ruler ticks, and tradeoff labels remain readable without overlap.", "inspection_method": "Inspect full PNG and crops around the per-kilogram ruler.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A normalized unit-price ruler with waste tradeoff is a distinct comparison model from both financial cases; its shelf-edge scale is also unique.",
+      "validation_question": "Can shoppers explain why the lower unit price may still be the wrong purchase for their household?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-05",
+      "title": "What Should I Do First?",
+      "audience": "A university student juggling interdependent assignments",
+      "context": "Portrait study-planning poster and phone companion",
+      "goal": "See which assignment unlocks others, estimate effort, and choose a realistic next action before the nearest deadline.",
+      "content_basis": {
+        "problem_evidence": "A chronological deadline list hides dependencies and effort, so equal urgency can conceal very different next steps. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"outline": {"due": "2026-12-02", "weight": 20, "effort_hours": 3, "unlocks": ["draft"]}, "draft": {"due": "2026-12-05", "weight": 30, "effort_hours": 6, "unlocks": ["peer_review"]}, "peer_review": {"due": "2026-12-08", "weight": 10, "effort_hours": 2, "unlocks": ["final"]}, "final": {"due": "2026-12-12", "weight": 40, "effort_hours": 5}},
+        "arithmetic": "Weights sum to 100%; planned effort sums to 16 hours.",
+        "limitations": "Course, dates, weights, and effort estimates are fictional. Effort is a planning estimate, not measured productivity."
+      },
+      "visual_intent": "A dependency river from outline to final, with deadline gates and effort stones; the nearest actionable step is highlighted without implying that all tasks are equal-sized.",
+      "dimensions": [1400, 1800],
+      "target_viewing": "Portrait study poster and tablet reading",
+      "dsl_capabilities": ["Container", "Column", "Row", "Expanded", "Stack", "Positioned", "ClipPath", "Transform", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-05-C1", "observable_condition": "Outline unlocks draft, draft unlocks peer review, and peer review unlocks final; the path is complete.", "inspection_method": "Trace all dependency arrows and compare with demo_values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-05-C2", "observable_condition": "Dates, weights, and effort estimates are accurate, sum correctly, and are labelled fictional/estimated.", "inspection_method": "Recompute 100% and 16 hours and inspect all qualifiers.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-05-C3", "observable_condition": "The recommended next action follows dependency logic and is not simply the task with the largest grade weight.", "inspection_method": "Inspect the highlighted start point and explanation.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-05-C4", "observable_condition": "Arrows, gates, dates, and effort labels remain readable with no crossing or clipped text.", "inspection_method": "Review full PNG, 50% thumbnail, and crops around each gate.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A dependency-and-effort planning river is structurally unlike every other case; it visualizes unlock order rather than chronology alone or monetary cost.",
+      "validation_question": "Can the student identify the first action and explain how it affects the final deadline?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-06",
+      "title": "Is This Kind of Damage Covered?",
+      "audience": "A policyholder trying to understand a home-insurance scenario before calling support",
+      "context": "Portrait decision guide beside a fictional policy summary",
+      "goal": "Follow a scenario from event description to relevant policy section, exclusions, documentation, and the next question to ask.",
+      "content_basis": {
+        "problem_evidence": "Policy wording is organized by legal sections rather than the user's event; exclusions and conditions are hard to connect to a real scenario. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"event": "Burst pipe damages kitchen floor", "relevant_section": "Section 4: Sudden accidental water escape", "exclusion_to_check": "Gradual leakage exclusion", "documents": ["photos", "plumber report", "receipts"], "outcome": "Needs adjuster review; no coverage decision is claimed."},
+        "limitations": "Policy language and scenario are fictional and simplified. The artwork must state that it is not legal advice or a real coverage determination."
+      },
+      "visual_intent": "A branching scenario tree that narrows from event to policy section to exclusion check, ending in a document checklist rather than a false yes/no verdict.",
+      "dimensions": [1300, 1700],
+      "target_viewing": "Portrait guide at full-page size",
+      "dsl_capabilities": ["Container", "Column", "Row", "Expanded", "Stack", "Positioned", "ClipPath", "ClipRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-06-C1", "observable_condition": "The scenario, relevant section, exclusion check, documents, and next step form one traceable path.", "inspection_method": "Trace the tree from event to outcome and compare with demo_values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-06-C2", "observable_condition": "The outcome does not say covered or denied; it says needs adjuster review and explains why.", "inspection_method": "Inspect the terminal node and all outcome wording.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-06-C3", "observable_condition": "Fictional-policy and not-legal-advice notices are visible and readable.", "inspection_method": "Inspect the top/bottom notices and case metadata.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-06-C4", "observable_condition": "Branches, labels, and checklist items do not overlap or imply missing policy facts.", "inspection_method": "Inspect full PNG and crops around every branch and the terminal node.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A conditional policy-scenario tree ending in documentation is distinct from financial comparisons, deadline planning, and civic maps; it avoids the common dashboard template.",
+      "validation_question": "Can a reader identify which exclusion and documents matter without mistaking the guide for a coverage decision?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-07",
+      "title": "Repair It or Replace It?",
+      "audience": "A householder deciding what to do after an appliance failure",
+      "context": "Portrait decision card beside a repair quote",
+      "goal": "Compare immediate cost, remaining-life assumptions, warranty status, and non-price factors before choosing a next step.",
+      "content_basis": {
+        "problem_evidence": "Repair quotes and replacement prices are incomparable without remaining-life and warranty context. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"appliance": "Refrigerator", "repair_cost": 220, "replacement_cost": 780, "repair_remaining_years": 4, "replacement_assumed_years": 8, "repair_cost_per_year": 55, "replacement_cost_per_year": 97.5, "warranty": "expired"},
+        "arithmetic": "220/4=$55 per assumed year; 780/8=$97.50 per assumed year.",
+        "limitations": "All costs and life assumptions are fictional and exclude energy, disposal, installation, and future failures. The result is conditional, not a universal recommendation."
+      },
+      "visual_intent": "A two-sided decision dial with repair and replacement cost-per-year arcs, plus a warranty gate and a small non-price factors tray.",
+      "dimensions": [1400, 1600],
+      "target_viewing": "Portrait tablet/print at full-page size",
+      "dsl_capabilities": ["Container", "Column", "Row", "Expanded", "Stack", "Positioned", "Transform", "ClipOval", "ClipPath", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-07-C1", "observable_condition": "Repair and replacement totals, life assumptions, and per-year figures are exact and labelled demo assumptions.", "inspection_method": "Recompute $55 and $97.50 and compare all rendered inputs.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-07-C2", "observable_condition": "Warranty status is shown as a decision gate, not buried in fine print.", "inspection_method": "Inspect the gate and its connection to both options.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-07-C3", "observable_condition": "Energy, disposal, installation, and future failures are acknowledged as excluded factors; no absolute recommendation appears.", "inspection_method": "Read the limitations line and decision wording.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-07-C4", "observable_condition": "Dial arcs, labels, and factors tray are readable with no overlap or misleading scale.", "inspection_method": "Inspect full PNG, 50% thumbnail, and crops around both arcs.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A radial repair/replace dial with life assumptions and a warranty gate is a unique decision form; it is not a cost bar or timeline reused from another case.",
+      "validation_question": "Can the reader state why repair looks cheaper under these assumptions and what could change that result?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-08",
+      "title": "Where Does This Actually Go?",
+      "audience": "A resident unsure how to sort six ambiguous household items",
+      "context": "Portrait kitchen-side recycling guide",
+      "goal": "Sort each item by material and condition, identify contamination risks, and find the correct next action for non-curbside items.",
+      "content_basis": {
+        "problem_evidence": "Material symbols and accepted-item lists do not always explain condition, preparation, or special drop-off requirements. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"city": "Harbor City (fictional)", "items": [{"item": "Clean paper", "route": "paper recycling", "prep": "clean and dry"}, {"item": "Greasy pizza box", "route": "organics if accepted", "prep": "remove clean lid"}, {"item": "Rigid plastic bottle", "route": "plastics recycling", "prep": "empty, cap on"}, {"item": "Soft plastic bag", "route": "store drop-off", "prep": "not curbside"}, {"item": "Battery", "route": "battery drop-off", "prep": "tape terminals"}, {"item": "Glass jar", "route": "glass recycling", "prep": "rinse, no ceramics"}]},
+        "limitations": "Harbor City and every rule are fictional. The artwork must not be used as real local recycling guidance."
+      },
+      "visual_intent": "Six illustrated items travel down a sorting conveyor into labelled routes; condition tags and special-drop-off branches prevent a simple colour-bin chart.",
+      "dimensions": [1400, 1800],
+      "target_viewing": "Portrait kitchen-side poster and phone view",
+      "dsl_capabilities": ["Container", "Column", "Row", "Expanded", "Stack", "Positioned", "Transform", "ClipPath", "ClipRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-08-C1", "observable_condition": "All six items have a visible route and preparation instruction matching the fictional rule set.", "inspection_method": "Trace each item to its destination and compare with demo_values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-08-C2", "observable_condition": "Soft plastic bags and batteries route to special drop-off rather than curbside bins.", "inspection_method": "Inspect branch destinations and labels.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-08-C3", "observable_condition": "The fictional-city warning is prominent enough that the guide cannot be mistaken for real local policy.", "inspection_method": "Inspect title/subtitle, city label, and case metadata.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-08-C4", "observable_condition": "Conveyor paths, item labels, and route destinations remain readable with no crossings or clutter.", "inspection_method": "Review full PNG, 50% thumbnail, and crops around each branch.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A physical sorting conveyor with preparation tags and special-drop-off branches is a unique spatial taxonomy, not a generic table or icon grid.",
+      "validation_question": "Can residents correctly route the soft bag and battery without assuming all recyclable materials share one bin?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-09",
+      "title": "What Decision Affects My Block?",
+      "audience": "A resident scanning a long public-meeting agenda",
+      "context": "Landscape civic agenda map before a neighborhood meeting",
+      "goal": "Find agenda items by personal impact, understand what decision is being made, and know when and how to comment.",
+      "content_basis": {
+        "problem_evidence": "Agendas are ordered by procedure and department, not by who is affected or what action residents can take. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"meeting": "District 4 Community Meeting (fictional)", "items": [{"item": "School crossing timing", "impact": "families on Oak Street", "decision": "approve trial timing", "comment_by": "2026-12-01"}, {"item": "Park hours", "impact": "evening park users", "decision": "extend closing to 22:00", "comment_by": "2026-12-03"}, {"item": "Bus lane pilot", "impact": "drivers and bus riders on 3rd Avenue", "decision": "approve six-month pilot", "comment_by": "2026-12-04"}, {"item": "Tree removal request", "impact": "residents near Cedar Court", "decision": "approve or deny removal", "comment_by": "2026-12-05"}]},
+        "limitations": "Meeting, district, locations, decisions, and deadlines are fictional. The map is an agenda reordering demonstration, not an official notice."
+      },
+      "visual_intent": "A neighborhood impact map surrounded by four agenda cards, each connected to the place and people affected; a comment-deadline rail makes participation concrete.",
+      "dimensions": [1600, 1200],
+      "target_viewing": "Landscape meeting handout and desktop view",
+      "dsl_capabilities": ["Container", "Row", "Column", "Expanded", "Stack", "Positioned", "Transform", "ClipPath", "ClipRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-09-C1", "observable_condition": "Each agenda item shows the decision, affected group/place, and comment deadline without procedural jargon.", "inspection_method": "Read all four cards and compare with demo_values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-09-C2", "observable_condition": "The map makes impact geography visible without implying exact boundaries or real district data.", "inspection_method": "Inspect map labels, impact connections, and demo notice.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-09-C3", "observable_condition": "Participation actions and deadlines are visible, and the artwork does not claim that public comment changes a predetermined outcome.", "inspection_method": "Inspect the deadline rail and participation wording.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-09-C4", "observable_condition": "Cards, map labels, and connectors remain readable with no overlap or clipped deadlines.", "inspection_method": "Review full PNG, 50% thumbnail, and crops around each card-map connection.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A civic impact map organized by affected people and decisions is unique in the set; it is not a timetable, service graph, or deadline dependency chart.",
+      "validation_question": "Can a resident identify one relevant item and its comment deadline without reading the full procedural agenda?",
+      "unresolved_before_render": []
+    },
+    {
+      "id": "B06-case-10",
+      "title": "Fix the Room, Not the Whole House",
+      "audience": "A householder troubleshooting weak Wi-Fi in one room",
+      "context": "Landscape home floor-plan diagnostic",
+      "goal": "Locate the likely weak-signal area, test one change at a time, and choose a proportionate next action.",
+      "content_basis": {
+        "problem_evidence": "Router status pages report house-level connection health while users experience room-level dead zones. Design hypothesis only.",
+        "type": "fictional demonstration",
+        "demo_values": {"router": "living room", "signal_demo": {"living_room": -42, "bedroom": -58, "kitchen": -72}, "actions": ["move router higher and away from the microwave", "test kitchen again in the same spot", "add a mesh point only if the test still fails"]},
+        "limitations": "Floor plan, signal values in dBm, device locations, and actions are fictional. The guide must not claim a guaranteed fix or a measured survey."
+      },
+      "visual_intent": "A clean floor plan with signal contours, one highlighted test point, and a three-step action rail; the weakest room is obvious without turning the whole house into a heat map.",
+      "dimensions": [1600, 1100],
+      "target_viewing": "Landscape tablet/print diagnostic",
+      "dsl_capabilities": ["Container", "Row", "Column", "Expanded", "Stack", "Positioned", "ClipRect", "ClipPath", "Transform", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B06-10-C1", "observable_condition": "Router location, three demo signal readings, and the kitchen test point are visible and correctly associated.", "inspection_method": "Inspect each room label and compare with demo_values.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-10-C2", "observable_condition": "The action sequence tests one change before recommending a mesh point, avoiding an immediate upsell.", "inspection_method": "Trace the three-step rail and inspect conditional wording.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-10-C3", "observable_condition": "Signal contours and dBm values are labelled fictional demonstration data, not a measured or guaranteed diagnosis.", "inspection_method": "Inspect the legend, demo notice, and limitation copy.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B06-10-C4", "observable_condition": "Contours do not obscure room labels or action text, and the floor plan remains readable at 50%.", "inspection_method": "Review full PNG, thumbnail, and crops around the kitchen test point.", "established_in": "B06-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A room-level spatial diagnostic with test-first actions is unique in the set; it is not a service map or agenda map despite using spatial composition.",
+      "validation_question": "Can the householder identify the next test and avoid buying hardware before checking router placement?",
+      "unresolved_before_render": []
+    }
+  ],
+  "collection_independence_review": {
+    "minimum_cases": 10,
+    "planned_cases": 10,
+    "problem_domains": ["household energy", "public transport", "rental housing", "grocery pricing", "education planning", "insurance comprehension", "appliance repair", "recycling", "civic participation", "home networking"],
+    "primary_visual_logics": ["financial waterfall", "service-state network", "recurring-cost stacks", "unit-price shelf ruler", "dependency river", "scenario tree", "decision dial", "sorting conveyor", "civic impact map", "floor-plan diagnostic"],
+    "non_independence_guard": "A shared footer or source-note style is allowed, but no two cases may count as independent if they differ only in text, icons, or colour. Each must preserve its own information transformation and decision task.",
+    "different_from_B01": "B06 does not present ten unrelated client showcases; it presents ten independent reinventions of everyday information friction.",
+    "different_from_B02": "B06 has no single client or brand system to carry across touchpoints.",
+    "different_from_B03": "B06's novel visual forms must improve a concrete reading or decision task; DSL experimentation alone is not the objective."
+  },
+  "next_execution_boundary": "Preparation ends here. No Snapshot request, final PNG/DSL, suite-state update, or output-directory write is authorized in this phase."
+}

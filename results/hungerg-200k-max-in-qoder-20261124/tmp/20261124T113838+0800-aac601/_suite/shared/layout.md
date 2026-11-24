@@ -1,0 +1,198 @@
+# 约束、布局与调试
+
+> 深入理解 BoxConstraints、Flex、Stack、溢出和布局自省。
+
+排版不符合预期时，先问三个问题：外层给了多大空间，内容想占多大，剩下的空间放在哪里。不要一开始就同时修改 width、fit、alignment 和 Transform；它们分别管尺寸、图片绘制、位置与绘制变换。
+
+## 从固定画布算起
+
+例如做一张 600×160 的卡片，四周 padding 为 20：留给内容的区域是 560×120。里面放一行，左边图标宽 80，中间间距 16，右边文字就应放进 Expanded，占剩余的 464 宽。这个宽度决定文字什么时候换行。
+
+| 设置               | 直观含义            | 常见误解             |
+| ---------------- | --------------- | ---------------- |
+| 固定宽度 600         | 这一层需要占 600 宽    | 子节点仍不能突破更严格的父约束  |
+| 最大宽度 600         | 可以比 600 窄       | 不保证提供用于居中的空白     |
+| padding 20       | 从本层可用空间扣除左右各 20 | 不总是在父级固定尺寸之外额外加宽 |
+| alignment CENTER | 在剩余空间里居中        | 不会把内容缩小到能放下      |
+
+完整组合见[固定图标与自适应文本](/guides/examples/#%E5%9B%BA%E5%AE%9A%E5%9B%BE%E6%A0%87%E4%B8%8E%E8%87%AA%E9%80%82%E5%BA%94%E6%96%87%E6%9C%AC)。下面再解释这些尺寸是怎样传递的。
+
+## 父节点给约束，子节点报尺寸
+
+Snapshot 采用与 Flutter 相同的 Box 布局协议：父节点向子节点传递 `BoxConstraints`，子节点必须在范围内选择尺寸，父节点再决定子节点的位置。
+
+```kotlin
+data class BoxConstraints(
+    val minWidth: Float = 0f,
+    val maxWidth: Float = Float.POSITIVE_INFINITY,
+    val minHeight: Float = 0f,
+    val maxHeight: Float = Float.POSITIVE_INFINITY,
+)
+```
+
+常用工厂：
+
+| 工厂                        | 结果               |
+| ------------------------- | ---------------- |
+| `tight(size)`             | 宽高都固定            |
+| `tightFor(width, height)` | 只固定指定的维度         |
+| `loose(size)`             | 最小为 0，最大为给定尺寸    |
+| `expand(width, height)`   | 尽可能扩张，未指定维度默认为无限 |
+
+### 有上限，不等于固定尺寸
+
+“有界”只表示最大值有限；“紧约束”表示最小值和最大值相等。两者的区别直接决定子组件的 `width` 是否有选择余地：
+
+| 父级给出的宽度范围      | 子节点请求宽 80 | 子节点请求宽 300            |
+| -------------- | --------- | --------------------- |
+| 0 到 200（有界、宽松） | 可以取 80    | 最多取 200               |
+| 200 到 200（紧约束） | 仍须取 200   | 仍须取 200               |
+| 0 到无限（无界）      | 可以取 80    | 可以取 300，但不能计算“填满剩余宽度” |
+
+这里说的是普通 SizedBox / Container 接收约束时的结果。OverflowBox 等组件会改变传给子节点的约束，不能用它们推断所有组件都能自行越界。
+
+下面两个模板都输出 200×100，却画出不同大小的蓝色矩形。第一个模板把固定约束直接传给 Container，因此 `width="80" height="40"` 不会把蓝色区域缩小：
+
+```xml
+<Snapshot background="#FFFFFF">
+  <SizedBox width="200" height="100">
+    <Container width="80" height="40" color="#38BDF8" />
+  </SizedBox>
+</Snapshot>
+```
+
+若希望保留大画布，让蓝色矩形按自己的尺寸居中，需要在中间加 Align。Align 自身占满 200×100，但会放松传给子节点的最小尺寸，蓝色矩形才有空间选择 80×40：
+
+```xml
+<Snapshot background="#FFFFFF">
+  <SizedBox width="200" height="100">
+    <Align alignment="CENTER">
+      <Container width="80" height="40" color="#38BDF8" />
+    </Align>
+  </SizedBox>
+</Snapshot>
+```
+
+第二个模板的蓝色左上角为 `(60,30)`。Kotlin 中对应 `SizedBox { Align { Container(...) } }`；也可以给外层 Container 设置 `alignment`，让它内部生成 Align。仅将 `width` 改得更小无法解除父级的紧约束。
+
+## Container 的组合顺序
+
+`Container` 不是单一 RenderBox，而是按属性组合多个 Widget。大致顺序为：子节点 → 对齐 → padding → 颜色/裁剪/装饰 → 约束 → margin → transform。
+
+这带来几个重要规则：
+
+* `width` / `height` 会收紧 `constraints`；
+* `margin` 实际是最外层 Padding；
+* `color` 与 `decoration` 不能同时传入；需要同时使用时把颜色放进 `BoxDecoration`；
+* `clipBehavior != NONE` 时必须提供可生成裁剪路径的 `decoration`；
+* 没有子节点、没有约束的空 Container 在无界根约束下会收缩为零尺寸；根出图仍需非零宽高。
+
+## Flex 布局
+
+Row 的主轴是左右、交叉轴是上下；Column 正好相反。可以先把 `mainAxisAlignment` 读成“沿排列方向分布”，把 `crossAxisAlignment` 读成“横过排列方向对齐”。
+
+`Row` 与 `Column` 都是 `Flex` 的特化：
+
+| 参数                   | 作用                  |
+| -------------------- | ------------------- |
+| `mainAxisAlignment`  | 子节点在主轴上的分布方式        |
+| `mainAxisSize`       | Flex 自身在主轴上取最大或最小尺寸 |
+| `crossAxisAlignment` | 子节点在交叉轴上的对齐方式       |
+| `textDirection`      | 水平方向的 start/end 解释  |
+| `verticalDirection`  | 垂直方向排列顺序            |
+| `textBaseline`       | 基线对齐时使用的基线类型        |
+| `clipBehavior`       | 溢出时的裁剪策略            |
+
+`Expanded` 相当于 `Flexible(fit = TIGHT)`，强制占满分配到的空间；`Flexible(fit = LOOSE)` 允许子节点更小。两者只能是 Flex 的直接子节点。
+
+弹性分配只改变主轴约束，不解除交叉轴的最大尺寸限制。`Column` 中的弹性子节点仍受父级最大宽度约束，文本可据此换行；`Row` 中则保留最大高度约束。非 `STRETCH` 对齐允许子节点更窄或更矮，只有 `crossAxisAlignment = STRETCH` 才强制填满交叉轴。若父级交叉轴本来无界，Flex 不会凭空增加有限约束。
+
+```kotlin
+SizedBox(width = 600f, height = 160f) {
+    Row(crossAxisAlignment = CrossAxisAlignment.STRETCH) {
+        Expanded(flex = 2) { Container(color = 0xFF38BDF8.toInt()) }
+        Flexible(flex = 1) { Container(width = 120f, color = 0xFFA78BFA.toInt()) }
+    }
+}
+```
+
+Flex 子项需要有限的主轴空间
+
+当 Flex 主轴约束无限时，无法计算可分配的“剩余空间”。请先通过外层 `SizedBox`、`Container` 或 `ConstrainedBox` 提供有限主轴尺寸，再使用 `Expanded` 或紧约束的 `Flexible`。
+
+上例中 Expanded 分到 400 宽，Flexible 最多分到 200，但它只需要 120，于是行尾还剩 80。STRETCH 让两块内容都高 160。Flexible 没用完的份额不会再分给 Expanded；[比例对比图](/guides/visual-reference/#%E5%BC%B9%E6%80%A7%E5%B8%83%E5%B1%80%E7%9A%84%E4%BB%BD%E9%A2%9D)可以直观看到这种区别。
+
+## Stack 与 Positioned
+
+`Stack` 先布局非 Positioned 子节点，再按 `left` / `top` / `right` / `bottom` / `width` / `height` 放置 Positioned 子节点。
+
+```kotlin
+Stack(
+    alignment = BoxAlignment.CENTER,
+    fit = StackFit.LOOSE,
+    clipBehavior = ClipBehavior.NONE,
+) {
+    Container(width = 400f, height = 240f)
+    Positioned(right = 16f, bottom = 16f) {
+        Container(width = 80f, height = 32f)
+    }
+}
+```
+
+同一轴上 `left`、`right`、`width` 最多只能给两个，垂直轴规则相同。
+
+Stack 按布局越界决定是否裁剪
+
+`Stack` 和 `IndexedStack` 默认使用 `HARD_EDGE`：任一直接子节点的布局矩形越界时启用裁剪，后续未越界子节点不会取消已有的裁剪需求。阴影、变换或更深子孙的绘制越界不一定触发裁剪。需要始终裁到容器边界时，在 Stack 外包一层 `ClipRect`；要允许越界绘制，设置 `clipBehavior = ClipBehavior.NONE`，并确认祖先未裁剪。
+
+## 溢出相关 Widget
+
+`AspectRatio` 用有限宽高比确定尺寸，父约束至少一轴有界；`FractionallySizedBox` 按父约束最大宽高的倍数设置子节点尺寸，设置比例的轴必须有界。`UnconstrainedBox` 可以解除传给子节点的轴约束，但自身仍遵守父约束。`Spacer` 可作为 Flex 的直属子项填满剩余空间。`IndexedStack` 会布局全部子项，只绘制指定索引。
+
+| Widget                                             | 行为                    |
+| -------------------------------------------------- | --------------------- |
+| `OverflowBox`                                      | 给子节点一套不同的约束，允许子节点超出父盒 |
+| `SizedOverflowBox`                                 | 自身使用指定尺寸，子节点仍按父约束布局   |
+| `LimitedBox`                                       | 仅在收到无限约束时施加最大宽高       |
+| `ClipRect` / `ClipRRect` / `ClipOval` / `ClipPath` | 显式裁剪绘制结果              |
+
+布局溢出和绘制裁剪是两个不同问题：子节点可以布局得更大，但最终是否显示取决于父级和裁剪 Widget。
+
+## 布局自省
+
+```kotlin
+val root = layoutWidget {
+    Container(width = 320f, height = 180f) { /* ... */ }
+}
+val tree: LayoutNode = root.toLayoutNode()
+```
+
+`LayoutNode` 用于只读布局自省，包含 RenderBox 类型、尺寸、局部偏移、累计布局偏移和子节点。偏移与结构在调用时固化，尺寸仍读取 RenderBox；布局或树结构改变后应重新构建。它忽略 Transform 等画布矩阵，适合打印布局信息或写结构断言，但不代表变换后的可见边界。
+
+### 查询到祖先的绘制坐标变换
+
+在布局完成后，可通过 `RenderBox.getTransformTo(ancestor)` 获取当前节点局部绘制坐标到指定祖先局部坐标的矩阵：
+
+```kotlin
+// child 与 ancestor 来自同一棵已布局的 RenderBox 树。
+val transform = child.getTransformTo(ancestor)
+```
+
+* 目标只能是自身或祖先；自身返回单位矩阵，兄弟节点、子孙或另一棵树中的节点会触发 `IllegalArgumentException`。
+* 从祖先向当前节点累计每一级 `applyPaintTransform`，包含布局偏移及沿途的绘制变换；不包含目标祖先到其父节点的变换。
+* 缩放或旋转会作用于内层布局偏移，不能简单把所有偏移相加。例如外层偏移 `(5,7)`、中间缩放 `(2,3)`、内层偏移 `(11,13)`，内层原点映射到祖先后为 `(27,46)`。
+* 布局偏移和依赖组件尺寸的 `origin` / `alignment` 应在布局后查询；重新布局后需重新获取矩阵。
+
+`getTransformTo` 描述坐标映射，不计算裁剪后的可见区域，也不是任意两节点间的坐标转换 API。
+
+## 按现象排查
+
+| 看到的现象                          | 先检查                                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| 空图片或尺寸异常                       | 根节点是否有有限且大于 0 的宽高                                                                                                               |
+| CENTER / SPACE\_BETWEEN 看起来没生效 | 父级是否只给了最大尺寸，实际盒子没有剩余空间                                                                                                          |
+| Row 里的长文本跑出边界                  | 用 Expanded / Flexible 给文本有限宽度                                                                                                   |
+| 子组件没有高度                        | Expanded 只控制主轴；显式给高度或在 Row 上使用 STRETCH                                                                                          |
+| 阴影、旋转后内容被截掉                    | 检查输出画布边界和每一层 Clip / Stack                                                                                                       |
+| parentData 类型错误                | Expanded / Positioned 是否直接放在正确父组件下                                                                                              |
+| 盒子位置正确，文字仍高低不齐                 | 看[文本基线](/reference/text-layout/#%E6%96%87%E6%9C%AC%E5%9F%BA%E7%BA%BF%E4%B8%8E%E5%8F%AF%E8%A7%81%E8%BE%B9%E7%95%8C)，别把字体留白当成布局偏移 |

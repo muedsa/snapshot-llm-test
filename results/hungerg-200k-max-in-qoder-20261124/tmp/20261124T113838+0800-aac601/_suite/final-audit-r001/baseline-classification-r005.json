@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "revision": "r005",
+  "path_base": "suite_root",
+  "raw_logs_modified": false,
+  "classification_basis": "逐行语义核对 baseline 的 observable_issues、changes、review_and_comparison 与实际查看证据；accepted_short_ids 为明确接受的首版/修复后基线，其他已查看且非占位、非中性记录按实际缺陷计为 failed。",
+  "counting_rule": "accepted 与 failed 均按 task/case/version/SHA-256/type 去重；v001-final-review 归一为同一 v001 来源，同字节复核行继承明确接受状态。待视觉检查占位、非服务衍生图和 neutral_baselines 不计入两者。",
+  "accepted_short_ids": {
+    "A01": ["A01-a37acb4444"],
+    "A02": ["A02-f60db9f44b"],
+    "A05": ["A05-f4ad15eb87"],
+    "A07": ["A07-a43bd3c366", "A07-0f3f675e2a"],
+    "A09": ["A09-e5d7422966"],
+    "A12": ["A12-4b29f7ad12", "A12-015a018bb5"],
+    "A13": ["A13-e95062f765", "A13-3635f95458", "A13-0ee755a169", "A13-cfb6f49799", "A13-a9c97a4ee5", "A13-bf00e3f605"],
+    "A14": ["A14-d09624d3c3", "A14-0958a0f91d", "A14-4f02c4b88c", "A14-a9ec2599e4", "A14-9cfa1c76bc", "A14-6ebc831e76"],
+    "A16": ["A16-cc31edc7f3"],
+    "A18": ["A18-baseline-02"],
+    "A21": ["A21-round-01-portrait", "A21-round-01-wide"],
+    "A22": ["A22-round-01-dashboard"],
+    "A23": ["A23-v001-cover", "A23-v002-cover", "A23-v002-frame_01", "A23-v002-frame_02", "A23-v002-frame_03", "A23-v002-frame_04", "A23-v002-frame_05", "A23-v002-frame_06"],
+    "A24": ["A24-d59f3537d1"],
+    "B01": ["B01-6a326b8c03", "B01-fa139b0e29", "B01-93d98d1cce", "B01-e1cef8934a", "B01-6a9f3e18aa", "B01-34f254ce36", "B01-c78c71d1f8"],
+    "B02": ["B02-36afdc83bd", "B02-fba8eff7b4", "B02-e38002f879", "B02-ddbfb124d3", "B02-87152db119", "B02-a139b73c59", "B02-c1fc3c584c"],
+    "B04": ["B04-8cb6b3ee22", "B04-629c4399f7", "B04-98350fd3d4", "B04-cdc1cce88a", "B04-e8cdbf8209"],
+    "B05": ["B05-6026eee6ed", "B05-9b043c837c", "B05-df41c6eb20", "B05-7ec8820608", "B05-ba820b6b80"],
+    "B06": ["B06-b2b2b2e9cd", "B06-daa2ba354a", "B06-b11ff59fe6"]
+  },
+  "failed_short_ids": {
+    "A01": ["A01-7dd9d46ed8"]
+  },
+  "failed_override_evidence": {
+    "A01-7dd9d46ed8": "r005终审实际Read打开v001服务原图，确认Text.height误用导致标题、KPI、图例、表格与结论文字全部裁切；该占位日志未及时记录缺陷。v002服务原图实际查看正常，e173行的缺陷描述属于v001但version_id误写v002。"
+  },
+  "neutral_baselines": {
+    "A19-baseline-01": "网格基线记录明确写有“待最终复核”，无缺陷判定，也不作为已接受基线。",
+    "A19-baseline-02": "遮挡版本A基线未作接受或缺陷判定，保持中性。"
+  },
+  "supersedes": "reconcile_task_metrics_v004.py 的 observable_issues 文本前缀启发式",
+  "known_r004_defects_corrected": [
+    "A18 radial 的预览路径与版本路径属于同一服务响应，r004 将预览路径重复计为一个来源。",
+    "文本前缀把 A16 明确通过的基线漏计，并把 A23 八张明确通过的基线误计为失败。",
+    "B05 五张无缺陷基线与五张有缺陷基线需按内容区分，不能统一计为失败。",
+    "B06 三张首版合格与七张首版不合格需按内容区分。"
+  ]
+}

@@ -1,0 +1,536 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+<title>Heat Forecast Tools</title>
+<meta name="DC.title" content="Heat Forecast Tools" />
+<meta name="DC.description" content="Heat Forecasts Tools, wet bulb globe temperature, National weather service, hot, heat index" />
+<meta name="DC.creator" content="US Department of Commerce, NOAA, National Weather Service" />
+<meta name="DC.date.created" scheme="ISO8601" content="February 25th 2025 5:00 PM" />
+<meta name="DC.language" scheme="DCTERMS.RFC1766" content="EN-US" />
+<meta name="DC.keywords" content="Heat Forecasts Tools, wet bulb globe temperature, National weather service, hot, heat indix" />
+<meta name="DC.publisher" content="NOAA's National Weather Service" />
+<meta name="DC.contributor" content="National Weather Service" />
+<meta name="DC.rights" content="/disclaimer.php" />
+<meta name="rating" content="General" />
+<meta name="robots" content="index,follow" />
+
+
+        <link href="/css/weatherstyle.css" rel="stylesheet" type="text/css" />
+        <link href="/css/template.css" rel="stylesheet" type="text/css" />
+        <link href="/css/myfcst.css" rel="stylesheet" type="text/css" />
+        <link href="/css/ForecastSearch.css" rel="stylesheet" type="text/css" />
+        <link href="/css/pointforecast.css" rel="stylesheet" type="text/css" />
+        <link href="/css/jqueryui10_3_1custom/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-migrate-1.4.1.js"></script>        <script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js"></script>        <script type="text/javascript" src="/js/jquery.hoverIntent.minified.js"></script>        <script type="text/javascript" src="/js/ForecastSearch.js"></script>        <script type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOC&sub-agency=NOAA&yt=true&pga4=G-736JJ6NL0V"></script>        <script type="text/javascript" src="/js/topNavMenu.js"></script>        <script type="text/javascript" src="/js/NidsESRI.js"></script>        <script type="text/javascript" src="/js/nwsexit.js"></script>
+
+
+        <link href="/css/widgets.css" rel="stylesheet" type="text/css" />
+        <link href="/css/colorbox/colorbox.css" rel="stylesheet" type="text/css" />
+
+        <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-migrate-1.4.1.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.hoverIntent.minified.js"></script>
+        <script type="text/javascript" src="/js/ForecastSearch.js"></script>
+        <script type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOC&subagency=NOAA&pua=G-736JJ6NL0V"></script>	
+        <script type="text/javascript" src="/js/topNavMenu.js"></script>
+        <script type="text/javascript" src="/js/NidsESRI.js"></script>
+        <script type="text/javascript" src="/js/widgets.js"></script>
+        <script type="text/javascript" src="/js/jquery.cycle2.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.colorbox-min.js"></script>
+        <script type="text/javascript" src="/js/nwsexit.js"></script>
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-736JJ6NL0V"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+            gtag('config', 'G-736JJ6NL0V');
+            gtag('config', 'UA-40768555-2');
+    </script>
+
+    </head>
+
+    <body>
+        <div class="header">
+    <div class="header-content">
+        <a href="https://www.weather.gov" class="header-nws"><img src="/bundles/templating/images/header/header.png" alt="National Weather Service"/></a>
+        <a href="http://www.commerce.gov" class="header-doc"><img src="/bundles/templating/images/header/header_doc.png" alt="United States Department of Commerce"/></a>
+        <a href="http://www.noaa.gov" class="header-noaa" title="National Oceanic and Atmospheric Administration"></a>
+    </div>
+    <div style="clear:both"></div>
+</div>
+<div class="header-shadow">
+    <div class="header-shadow-content"></div>
+</div>
+<script>
+    var domains = {
+        weather: "https://www.weather.gov",
+        forecast: "https://forecast.weather.gov",
+        airquality: "https://airquality.weather.gov",
+        aviation: "https://aviationweather.gov",
+        water: "https://water.weather.gov",
+        graphical: "https://graphical.weather.gov",
+        api: "https://api.weather.gov",
+        radar: "https://radar.weather.gov",
+        esriGeocode: "https://geocode.arcgis.com"
+    }
+</script>
+
+
+        <div class="center">
+
+            <div class="content">
+    <div class="topnav">
+        <ul id="topnav">
+            <li>
+                <script type="text/javascript">
+                    function goBack() {
+                        if (document.referrer.toLowerCase().indexOf("weather.gov") != -1) {
+                            history.back();
+                        } else {
+                            document.location.href = "https://www.weather.gov";
+                        }
+                    }
+                </script>
+                <div class="topMenuNavList home">
+                    <a href="#" onclick="goBack();">HOME</a>
+                </div>
+            </li>
+                            <li>
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/forecastmaps/">FORECAST</a>
+                    </div>
+                                                                        <div style="opacity: 0;" class="sub">
+                                <ul>
+                                                                            <li>
+                                            <a href="https://www.weather.gov">Local</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://digital.weather.gov">Graphical</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://aviationweather.gov">Aviation</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/marine/">Marine</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://water.noaa.gov">Rivers and Lakes</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.nhc.noaa.gov">Hurricanes</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.spc.noaa.gov">Severe Weather</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/fire/">Fire Weather</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://gml.noaa.gov/grad/solcalc/">Sunrise/Sunset</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.cpc.ncep.noaa.gov">Long Range Forecasts</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.cpc.ncep.noaa.gov">Climate Prediction</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.swpc.noaa.gov">Space Weather</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                                            </li>
+                            <li>
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/wrh/climate">PAST WEATHER</a>
+                    </div>
+                                                                        <div style="opacity: 0;" class="sub">
+                                <ul>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/wrh/climate">Past Weather</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://gml.noaa.gov/grad/solcalc/">Astronomical Data</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table">Certified Weather Data</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                                            </li>
+                            <li>
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/safety/">SAFETY</a>
+                    </div>
+                                                                                </li>
+                            <li>
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/informationcenter">INFORMATION</a>
+                    </div>
+                                                                        <div style="opacity: 0;" class="sub">
+                                <ul>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/wrn/wea">Wireless Emergency Alerts</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/wrn/">Weather-Ready Nation</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/owlie/publication_brochures">Brochures</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/coop/">Cooperative Observers</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/briefing/">Daily Briefing</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/hazstat">Damage/Fatality/Injury Statistics</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="http://mag.ncep.noaa.gov">Forecast Models</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/gis/">GIS Data Portal</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/nwr">NOAA Weather Radio</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/publications/">Publications</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/skywarn/">SKYWARN Storm Spotters</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/stormready">StormReady</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/tsunamiready/">TsunamiReady</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/notification/">Service Change Notices</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                                            </li>
+                            <li>
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/education/">EDUCATION</a>
+                    </div>
+                                                                                </li>
+                            <li>
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/news">NEWS</a>
+                    </div>
+                                                                                </li>
+                            <li>
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/search/">SEARCH</a>
+                    </div>
+                                            <div style="opacity: 0;" class="sub">
+                            <ul class="no-links">
+                            <li><!-- Begin search code -->
+                                <div id="site-search">
+                                    <form method="get" action="https://search.usa.gov/search" style="margin-bottom: 0; margin-top: 0;">
+                                        <input type="hidden" name="v:project" value="firstgov" />
+                                        <label for="query">Search For</label>
+                                        <input type="text" name="query" id="query" size="12" />
+                                        <input type="submit" value="Go" />
+                                        <p>
+                                            <input type="radio" name="affiliate" checked="checked" value="nws.noaa.gov" id="nws" />
+                                            <label for="nws" class="search-scope">NWS</label>
+                                            <input type="radio" name="affiliate" value="noaa.gov" id="noaa" />
+                                            <label for="noaa" class="search-scope">All NOAA</label>
+                                        </p>
+                                    </form>
+                                </div>
+                            </li>
+                            </ul>
+                        </div>
+                                    </li>
+                            <li class="last">
+                    <div class="topMenuNavList section-link">
+                        <a href="https://www.weather.gov/about/">ABOUT</a>
+                    </div>
+                                                                        <div style="opacity: 0;" class="sub">
+                                <ul>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/about/">About NWS</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/organization">Organization</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://sites.google.com/a/noaa.gov/nws-insider/">For NWS Employees</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/ncep/">National Centers</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.noaa.gov/nws-careers">Careers</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/contact">Contact Us</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://forecast.weather.gov/glossary.php">Glossary</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.weather.gov/socialmedia">Social Media</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="https://www.noaa.gov/NWStransformation">NWS Transformation</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                                            </li>
+                    </ul>
+    </div>
+</div>
+
+
+            <div class="center-content">
+
+                
+                
+
+                <div class="full-width-border">
+                    <div class="partial-width-borderbottom">
+
+                        <!-- area for the myforecast widget and wwamap data -->
+
+                        <div class="div-full">    
+                        <div class="div-full breadcrumb">
+    <div class="sitename">
+        <p class="sitename-name">Safety</p>
+        <p class="sitename-class">National Program</p>
+    </div>
+    <div class="location">
+        <h1 class='location-pagetitle'>Heat Forecast Tools</h1>
+        <div class='location-breadcrumb'>
+            <a href="https://www.weather.gov">Weather.gov</a>
+                                                &gt; <a href="https://www.weather.gov/safety">Safety</a>
+                                &gt; Heat Forecast Tools
+                    </div>
+    </div>
+</div>
+
+                        
+                        
+                        
+                        <div class="div-full">
+<div class="cms-content"><script>
+window.location.replace("https://www.weather.gov/safety/heat-tools");
+</script>
+<style type="text/css">.coin-slider { overflow: hidden; zoom: 1; position: relative; }
+.coin-slider a{ text-decoration: none; outline: none; border: none; }
+.coin-slider img{
+	border:5px inset #CC6600;
+}
+.cs-buttons { font-size: 0px; float: left; }
+.cs-buttons a { margin-left: 5px; height: 5px; width: 5px; float: left; border: 1px solid #B8C4CF; color: #B8C4CF; text-indent: -1000px; }
+.cs-active { background-color: #B8C4CF; color: #FFFFFF; }
+.cs-prev, 
+.cs-next {
+	background-color: #000000;
+	color: #007CC4;
+	padding: 0px 10px;
+}
+</style>
+<div class="two-third-first">
+<div id="hmenu">&nbsp;</div>
+
+<div align="left" class="content_slider" style="margin-top:15px;">
+<p id="coin-slider"><!--
+	first Slider image
+--><a href="/images/safety/heatindexchart-650.jpg"><img alt="heat index chart" src="/images/safety/heatindexchart-650-2024.jpg" style="height: 350px; width: 600px; float: left;" /></a> <a href="/images/safety/heat/WBGT-03.jpg"><img alt="ho can benefit from the use of Web bulb globe temperature: outdoor workers, active people athletes and marching bands" src="/images/safety/heat/WBGT-03.jpg" style="width: 600px; height: 350px;" /></a> <a href="/images/safety/HeatRisk-graphics-6b-4-18-2024.jpg"><img alt="NWS Heat Risk " src="/images/safety/HeatRisk-graphics-6b-2024.jpg" style="width: 600px; height: 350px;" /></a></p>
+</div>
+</div>
+
+<div align="right" class="one-third-last"><a href="https://www.weather.gov/wrn/"><img alt="" src="/images/wrn/Icons/161022_wrn.png" style="width: 115px; margin-top: 8px; margin-bottom: 8px;" /></a>
+
+<div style=" border-top-left-radius:10px; width: 250px; background: #1a2757; padding-bottom: 6px;
+    padding-top: 6px; text-align: center; border-bottom: 1px solid white;"><span style="font-size:16px;"><strong><span style="color:#FFFFFF;">Heat Safety Resources</span></strong></span></div>
+
+<div id="id01">&nbsp;</div>
+</div>
+
+<div class="div-full">
+<p>&nbsp;</p>
+
+<p>The National Weather Service (NWS) has multiple tools to assess the potential for heat stress due to extreme temperatures. The following tools can inform the issuance of NWS official heat watches, warnings, and advisories. Each of these tools integrate other weather parameters to provide a deeper level of information beyond what the actual air temperature can tell us. View the <a href="/media/safety/Heat-Tools-Reference-Sheet4-18-2024.pdf">NWS Heat Tools reference sheet</a> for more details.</p>
+
+<h2><b>Heat Index</b></h2>
+
+<p>The Heat Index is a measure of how hot it really feels when <a href="https://forecast.weather.gov/glossary.php?word=relative+humidity">relative humidity</a> is factored in with the actual air temperature. To find the Heat Index temperature, look at the Heat Index Chart above or check our <a href="http://www.wpc.ncep.noaa.gov/html/heatindex.shtml">Heat Index Calculator</a>. As an example, if the air temperature is 96&deg;F and the relative humidity is 65%, the heat index--how hot it feels--is 121&deg;F. The red area without numbers indicates extreme danger.&nbsp;</p>
+
+<p>Since heat index values were devised for shady, light wind conditions, exposure to full sunshine can increase heat index values by up to 15&deg;F. Also, strong winds, particularly with very hot, dry air, can be extremely hazardous.</p>
+
+<h2>Wet Bulb Globe Temperature (WBGT)</h2>
+
+<p>What is Wet Bulb Globe Temperature (WBGT)? Check out this <a href="https://www.weather.gov/images/safety/WBGT-01.jpg">handout</a> and <a href="https://www.youtube.com/watch?v=jstHHkm_6vQ">video</a> to learn about WBGT.</p>
+
+<p>WBGT uses temperature, humidity, wind, solar radiation, and other weather parameters. It&rsquo;s a particularly effective indicator of heat stress for active populations such as outdoor workers and athletes.</p>
+
+<p>WBGT can be used to inform activity modifications during exercise or outdoor work. For instance, The American College of Sports Medicine bases its guidelines for the intensity of sport practices on WBGT, and it is therefore utilized by athletic programs in many school districts.</p>
+
+<p>The Occupational Safety and Health Administration (OSHA) recommends protective measures for outdoor work:</p>
+
+<ul>
+	<li>Acclimatize workers starting the first day working in the heat and after any extended absences</li>
+	<li>Provide shade for outdoor work sites</li>
+	<li>Schedule work earlier or later in the day</li>
+	<li>Use work/rest schedules</li>
+	<li>Limit strenuous work (eg., carrying heavy loads)</li>
+	<li>Use relief workers when needed</li>
+</ul>
+
+<p>For more information:</p>
+
+<ul>
+	<li><a href="https://digital.mdl.nws.noaa.gov/?zoom=4&amp;lat=37&amp;lon=-96.5&amp;layers=F000BTTTFTT&amp;region=0&amp;element=8&amp;mxmz=false&amp;barbs=false&amp;subl=TFFFFF&amp;units=english&amp;wunits=nautical&amp;coords=latlon&amp;tunits=localt">WBGT Forecast</a> | Video: <a href="https://www.youtube.com/watch?v=wjmAqEy2IT4">How to use this tool</a></li>
+	<li><a href="https://www.weather.gov/media/safety/heat/2020-WBGT-Handout.pdf">WBGT Informational Guide</a></li>
+	<li><a href="/images/safety/WBGT-05.jpg">Why is it called Wet Bulb Globe Temperature?</a></li>
+	<li><a href="/images/safety/WBGT-02.jpg">How does WBGT differ from Heat Index?</a></li>
+	<li><a href="/images/safety/WBGT-04.jpg">How can Wet Bulb Globe Temperature be used?</a></li>
+	<li><a href="/images/safety/WBGT-03.jpg">Who can benefit from the use of Wet Bulb Globe Temperature?</a></li>
+</ul>
+
+<h2>HeatRisk</h2>
+
+<p>Please Note: HeatRisk is an experimental product and is not supported 24/7.&nbsp;</p>
+
+<p>The NWS HeatRisk forecast provides a color and numeric value that places forecast heat for a specific location into an appropriate level of heat concern, along with identifying groups potentially most at risk at that level. HeatRisk is accompanied by recommendations for heat protection and is a useful tool for planning for upcoming heat and its associated potential risk.</p>
+
+<p>Based on the high resolution NWS national gridded forecast database, a daily HeatRisk value is calculated for each location from the current date through seven days in the future.</p>
+
+<p>HeatRisk takes into consideration:</p>
+
+<ul>
+	<li>How significantly above normal the temperatures are at your location,</li>
+	<li>Time of year (for example, is this early season heat that you likely haven&#39;t become used to, or late season heat that you have become more used to),</li>
+	<li>Duration of unusual heat (for example, are temperatures overnight at levels that would lower heat stress, or will warm overnight low temperatures continue to add to heat stress into the next day), and</li>
+	<li>If those temperatures are at levels that pose an elevated risk for heat complications, such as heat stress, based on CDC heat-health thresholds.</li>
+</ul>
+
+<p>For more information<meta charset="utf-8" /></p>
+
+<ul>
+	<li role="presentation"><a href="/media/safety/NWS-HeatRisk-X3-2024.pdf"><b id="docs-internal-guid-c0f5500f-7fff-1c5c-0e58-2518103aabbe">HeatRisk Fact Sheet</b></a></li>
+	<li role="presentation"><b><a href="/media/safety/NWS-HeatRisk-Fact-Sheet-Spanish.pdf">HeatRisk Fact Sheet </a>(Spanish)</b></li>
+	<li role="presentation"><b id="docs-internal-guid-c0f5500f-7fff-1c5c-0e58-2518103aabbe"><a href="https://www.wpc.ncep.noaa.gov/heatrisk/pdf/HeatRisk-v2.5-Overview.pdf">HeatRisk Overview</a>&nbsp;</b></li>
+	<li role="presentation"><b id="docs-internal-guid-c0f5500f-7fff-1c5c-0e58-2518103aabbe"><a href="https://www.wpc.ncep.noaa.gov/heatrisk/pdf/HeatRisk-v2.5-Whats-in-HeatRisk.pdf">What&rsquo;s in HeatRisk?</a>&nbsp;</b></li>
+	<li role="presentation"><b id="docs-internal-guid-c0f5500f-7fff-1c5c-0e58-2518103aabbe"><a href="https://www.wpc.ncep.noaa.gov/heatrisk/pdf/HeatRisk-v2.5-Understanding-HeatRisk.pdf">Understanding HeatRisk</a>&nbsp;</b></li>
+	<li role="presentation"><b id="docs-internal-guid-c0f5500f-7fff-1c5c-0e58-2518103aabbe"><a href="https://www.wpc.ncep.noaa.gov/heatrisk/pdf/HeatRisk-v2.5-CDC-NWS-Collaboration.pdf">CDC-NWS Collaboration</a>&nbsp;</b></li>
+	<li role="presentation"><b id="docs-internal-guid-c0f5500f-7fff-1c5c-0e58-2518103aabbe"><a href="https://www.wpc.ncep.noaa.gov/heatrisk/pdf/HeatRisk-v2.5-Verification.pdf">Verification</a></b></li>
+</ul>
+</div>
+<link href="/source/safety/css/menuFd.css" rel="stylesheet" type="text/css" /><script src="/source/safety/js/menu.js">
+</script><script src="/source/safety/js/heatMenu.js">
+</script><script src="/source/safety/js/heatMenuRs.js"></script><script src="/source/safety/js/menuWrap.js"></script><script type="text/javascript">
+	$(document).ready(function() {
+		$('#coin-slider').coinslider({ width:600, height:350 ,hoverPause: true, navigation: true, effect: 'straight', delay: 4000, spw: 3, sph: 2 });
+	});
+    </script><script type="text/javascript">
+					$(document).ready(function() {
+						function toggleBlock() {
+							$($(this).attr("id")).toggle();
+							if ($($(this).attr("id")).css("display") == "none" ) {
+								$(this).children(".control").html("&#43;");
+							}
+							else {
+								$(this).children(".control").html("&ndash;");
+							};
+							return false;
+						}						
+
+						$("div.toggle:gt(0)").css({'display':'none'});
+						$("a.toggle").attr("title","Click to expand and contract");
+						$("a.toggle").click(toggleBlock);
+						$(".atoggle").keypress(toggleBlock);						
+
+					});
+			</script><script type="text/javascript" src="/source/wrn/js/coin-slider.min.js"></script>
+<link href="/source/safety/css/menuTs.css" rel="stylesheet" type="text/css" /><script src="/source/safety/js/menu.js">
+
+</div>
+</div>
+<div style="clear:both"></div>
+                        </div>
+  
+                    </div><!-- end of <div class="partial-width-borderbottom"> -->
+                </div><!-- <div class="full-width-border"> -->
+
+                <div class="partial-width-borderbottom feature-block">
+                    <!-- area for features, frontpage thumbs, and custom page -->
+                    
+                    
+                </div><!-- end of <div class="partial-width-borderbottom feature-block"> -->
+
+                <div class="full-width-first">
+                    
+                </div>
+
+
+                <div style="clear:both;"></div>
+
+            </div><!-- <div class="center-content"> -->
+
+        </div><!-- end of <div class="center"> -->
+
+        <!-- sitemap area -->
+        <div class="footer">
+            
+        </div><!-- end of <div class="footer"> -->
+
+        <!-- legal footer area -->
+        <div class="footer-legal">
+            <div class="footer-legal">
+    <div class="footer-legal-content">
+
+        <div class="one-sixth-first" id="footer_legal_gov">
+            <a href="http://www.usa.gov"><img src="/bundles/templating/images/footer/usa_gov.png" alt="usa.gov" width="110" height="30" /></a>
+        </div>
+
+        <div class="one-half-first" id="footer_legal_info">
+            <p>
+                <a href="http://www.commerce.gov">US Dept of Commerce</a><br />
+                <a href="http://www.noaa.gov">National Oceanic and Atmospheric Administration</a><br />
+                <a href="https://www.weather.gov">National Weather Service</a><br />
+                Safety<br />                1325 East West Highway<br />
+                                Silver Spring, MD 20910
+                <br /><br />
+                <br /><a href="mailto:wrn.feedback@noaa.gov">Comments? Questions? Please Contact Us.</a>
+            </p>
+        </div>
+
+        <div class="one-third-last" id="footer_required_links">
+            <div class="div-half">
+                <a href="https://www.weather.gov/disclaimer">Disclaimer</a><br />
+                <a href="http://www.cio.noaa.gov/services_programs/info_quality.html">Information Quality</a><br />
+                <a href="https://www.weather.gov/help">Help</a><br />
+                <a href="/glossary">Glossary</a>
+            </div>
+
+            <div class="div-half">
+                <a href="https://www.weather.gov/privacy">Privacy Policy</a><br />
+                <a href="https://www.noaa.gov/foia-freedom-of-information-act">Freedom of Information Act (FOIA)</a><br />
+                <a href="https://www.weather.gov/about">About Us</a><br />
+                <a href="https://www.weather.gov/careers">Career Opportunities</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </div><!-- end of <div class="footer-legal"> -->
+
+        <script type="text/javascript" src="//www.weather.gov/js/govshutdown.js"></script>
+    </body>
+</html>

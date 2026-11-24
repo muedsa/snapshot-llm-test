@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "purpose": "专用审计JSON最小字段说明；不是已完成记录",
+  "common_rules": {
+    "required": "artifacts中各对象的required_fields为最小必需字段，允许扩展；数组项字段由该字段说明规定。模板说明不是执行数据，不复制说明为答案。",
+    "identity": "每份最终JSON另含schema_version:1、task_id和path_base:output_dir；多轮文件的round须与目录一致。",
+    "paths": "PNG/DSL和其他交付路径相对本题输出根。临时证据用对象{path_base:suite_root,path:tmp/<run_id>/<task_id>/...}明确基准；不写机器路径。",
+    "coordinates": "有几何时默认画布左上原点、x向右/y向下、像素单位，框为[left,top,right,bottom]；题面另定义的网格/逻辑坐标须单列并记录映射。",
+    "numbers": "单位与精度以题面为准，未指定数值容差的精确数据保持原值，不自行发明合格阈值；几何检查记录未舍入值及方法。",
+    "evidence": "结果由实际计算/图片/响应支持；passed类字段附方法与证据。无法取得值时用null并写原因，不预填成功。",
+    "rounds": "artifacts以文件基本名索引，各轮复用同一字段约定；实际交付位置以task.json完整路径为准。"
+  },
+  "artifacts": {
+    "frame-data.json": {
+      "required_fields": {
+        "coordinate_system": "object；左上像素原点、自身中心旋转、顺时针度数",
+        "units": "array；U01–U12固定几何/未旋转宽高/RGB/alpha",
+        "frames": "array；6帧的id/t_ms/PNG/DSL及12单元实际位置/尺寸/角度/可见性",
+        "trajectories": "array；逐ID相邻帧位移/角差和插值/缓动公式",
+        "seam": "object；1250→1500/0的各ID差值、闭合及方向/速度证据、实际跳变结论"
+      }
+    },
+    "timing.json": {
+      "required_fields": {
+        "frames": "array；按播放顺序列6帧ID与文件路径、duration_ms=250",
+        "loop": "boolean；本题循环播放",
+        "period_ms": "number；1500",
+        "seamless": "boolean；依据frame-data与实际查看填写",
+        "seam_evidence": "object；循环接缝的核验引用及跳变限制（如有）"
+      }
+    }
+  }
+}

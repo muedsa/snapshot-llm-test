@@ -1,0 +1,272 @@
+{
+  "task_id": "A16",
+  "run_id": "20261124T113838+0800-aac601",
+  "mode": "preparation_only",
+  "service_requests": 0,
+  "source_sha256": "b81df1558c86a4073599c09d30d611a902baa0c36816cde15980e76413ea737a",
+  "flawed_sha256": "05089f8a0bdfa6c4577bb758fd369f3adad3bb383300e71dfa808703e78f4864",
+  "data": [
+    {
+      "quarter": "Q1",
+      "revenue": 120,
+      "cost": 90,
+      "profit": 30,
+      "profit_margin_percent": 25.0,
+      "revenue_change": null,
+      "cost_change": null,
+      "profit_change": null,
+      "revenue_local_rect": [
+        109,
+        244.8,
+        163,
+        450
+      ],
+      "revenue_rect": [
+        165,
+        414.8,
+        219,
+        620
+      ],
+      "revenue_color": "#245CE4",
+      "cost_local_rect": [
+        177,
+        296.1,
+        231,
+        450
+      ],
+      "cost_rect": [
+        233,
+        466.1,
+        287,
+        620
+      ],
+      "cost_color": "#E88E35"
+    },
+    {
+      "quarter": "Q2",
+      "revenue": 135,
+      "cost": 108,
+      "profit": 27,
+      "profit_margin_percent": 20.0,
+      "revenue_change": 15,
+      "cost_change": 18,
+      "profit_change": -3,
+      "revenue_local_rect": [
+        279,
+        219.15,
+        333,
+        450
+      ],
+      "revenue_rect": [
+        335,
+        389.15,
+        389,
+        620
+      ],
+      "revenue_color": "#245CE4",
+      "cost_local_rect": [
+        347,
+        265.32,
+        401,
+        450
+      ],
+      "cost_rect": [
+        403,
+        435.32,
+        457,
+        620
+      ],
+      "cost_color": "#E88E35"
+    },
+    {
+      "quarter": "Q3",
+      "revenue": 128,
+      "cost": 96,
+      "profit": 32,
+      "profit_margin_percent": 25.0,
+      "revenue_change": -7,
+      "cost_change": -12,
+      "profit_change": 5,
+      "revenue_local_rect": [
+        449,
+        231.12,
+        503,
+        450
+      ],
+      "revenue_rect": [
+        505,
+        401.12,
+        559,
+        620
+      ],
+      "revenue_color": "#245CE4",
+      "cost_local_rect": [
+        517,
+        285.84000000000003,
+        571,
+        450
+      ],
+      "cost_rect": [
+        573,
+        455.84000000000003,
+        627,
+        620
+      ],
+      "cost_color": "#E88E35"
+    },
+    {
+      "quarter": "Q4",
+      "revenue": 180,
+      "cost": 126,
+      "profit": 54,
+      "profit_margin_percent": 30.0,
+      "revenue_change": 52,
+      "cost_change": 30,
+      "profit_change": 22,
+      "revenue_local_rect": [
+        619,
+        142.2,
+        673,
+        450
+      ],
+      "revenue_rect": [
+        675,
+        312.2,
+        729,
+        620
+      ],
+      "revenue_color": "#245CE4",
+      "cost_local_rect": [
+        687,
+        234.54,
+        741,
+        450
+      ],
+      "cost_rect": [
+        743,
+        404.53999999999996,
+        797,
+        620
+      ],
+      "cost_color": "#E88E35"
+    }
+  ],
+  "plot": {
+    "left": 90,
+    "right": 772,
+    "top": 108,
+    "bottom": 450,
+    "minimum": 0,
+    "maximum": 200,
+    "ticks": [
+      0,
+      50,
+      100,
+      150,
+      200
+    ],
+    "pixels_per_wan": 1.71
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "category": "series_encoding",
+      "image_location": "图表右上图例；四组柱顶标签",
+      "observed_phenomenon": "图例把蓝色标为“成本”、橙色标为“收入”，但蓝色柱标签为 120/135/128/180，橙色为 90/108/96/126。",
+      "source_data_check": "source.csv 的 revenue_wan=120/135/128/180，cost_wan=90/108/96/126；原图标签数值本身与 CSV 一致，但图例角色倒置。",
+      "impact": "读者会把收入与成本读反，并误判利润和利润率。",
+      "correction": "明确蓝色=收入、橙色=成本，图例、柱顶数值和明细表使用同一编码。",
+      "evidence": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A16/flawed-inspection/flawed-chart-2x.png"
+      }
+    },
+    {
+      "id": "F02",
+      "category": "axis_baseline",
+      "image_location": "图表纵轴与全部柱体基线",
+      "observed_phenomenon": "纵轴最低刻度为 100，八根柱都从 100 刻度所在基线起画，而不是金额零起点。",
+      "source_data_check": "CSV 给出的是绝对金额（万元）；柱图比较绝对值时应从 0 起画，没有排除 0–100 的领域依据。",
+      "impact": "截断基线夸大柱间差异，也使 90 万元成本在视觉上失去正确的零起点含义。",
+      "correction": "改用共同零起点、0–200 万元轴和 50 万元刻度。",
+      "evidence": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A16/flawed-inspection/flawed-chart-2x.png"
+      }
+    },
+    {
+      "id": "F03",
+      "category": "narrative_conclusion",
+      "image_location": "主标题与右下“重点观察·Q3”卡片",
+      "observed_phenomenon": "标题称“Q3利润最高”，重点观察建议把资源集中到 Q3；同图明细却显示 Q4 利润 54 万元。",
+      "source_data_check": "按 CSV 计算利润=收入−成本：Q1=30、Q2=27、Q3=32、Q4=54；Q4 严格最高。",
+      "impact": "标题和资源建议指向错误季度，与图表及明细自相矛盾。",
+      "correction": "标题、重点卡片和结论改为 Q4，并引用收入 180、成本 126、利润 54 万元。",
+      "evidence": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A16/flawed-inspection/flawed-header-2x.png"
+      }
+    },
+    {
+      "id": "F04",
+      "category": "trend_statement",
+      "image_location": "主标题下方副标题",
+      "observed_phenomenon": "副标题写“收入持续上升，全年保持增长”。",
+      "source_data_check": "收入 Q2=135、Q3=128，环比减少 7 万元；只有 Q4=180 高于 Q3。",
+      "impact": "趋势叙述与数据和柱图矛盾，掩盖 Q3 回落。",
+      "correction": "改为“Q3 收入较 Q2 回落 7 万元；Q4 收入与利润均最高”。",
+      "evidence": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A16/flawed-inspection/flawed-header-2x.png"
+      }
+    },
+    {
+      "id": "F05",
+      "category": "arithmetic",
+      "image_location": "下方“利润明细”的 Q3 单元格",
+      "observed_phenomenon": "Q3 利润印为 42 万元。",
+      "source_data_check": "CSV 的 Q3 收入 128、成本 96，因此利润=128−96=32 万元，不是 42。",
+      "impact": "明细算术错误，并错误支撑 Q3 利润最高的叙事。",
+      "correction": "Q3 利润改为 32 万元；四季度均直接由 CSV 计算。",
+      "evidence": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A16/flawed-inspection/flawed-details-2x.png"
+      }
+    },
+    {
+      "id": "F06",
+      "category": "plot_coverage",
+      "image_location": "图表网格右端与 Q4 柱组",
+      "observed_phenomenon": "六条水平网格线右端为 x≈899，而 Q4 蓝/橙柱分别位于 x=932–996、1008–1072，整组在轴网格覆盖范围之外。",
+      "source_data_check": "Q4 收入 180、成本 126 是有效数据，不应因布局而失去上方和横向网格参照。",
+      "impact": "Q4 数值缺少对应网格参照，图表阅读路径在最关键季度中断。",
+      "correction": "重排四组等距柱，并把网格延伸到全部柱组右侧。",
+      "evidence": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A16/flawed-inspection/measurement.json"
+      }
+    },
+    {
+      "id": "F07",
+      "category": "bar_geometry",
+      "image_location": "八根柱顶与纵轴刻度",
+      "observed_phenomenon": "按原图 20 万元=54px 的网格比例反推，柱顶与标签普遍不符；例如 Q1 蓝柱顶对应约 155.56 万元而标签为 120，Q3 橙柱顶对应约 147.41 万元而标签为 96。",
+      "source_data_check": "CSV 是唯一可信数值；八根柱的理论顶位应为 y=565−(标签值−100)×2.7。实测八根柱均偏离该位置。",
+      "impact": "即使只读纵轴也会得到错误金额，柱高并未真实表达标签数值。",
+      "correction": "八根柱均按 source.csv 数值和同一 1.71px/万元比例重新计算高度，不只改标签。",
+      "evidence": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A16/flawed-inspection/measurement.json"
+      }
+    }
+  ],
+  "uncertainties": [
+    {
+      "id": "U01",
+      "matter": "原图柱高失真和布局错位的生成原因",
+      "reason": "输入不包含旧 DSL 或生成代码，无法确认是手工调整还是布局计算错误。",
+      "needed_evidence": "若需归因，需要旧 DSL 或生成脚本；当前修正不依赖该原因，CSV 与可测图像已足以确认并修复问题。"
+    }
+  ],
+  "static_errors": []
+}

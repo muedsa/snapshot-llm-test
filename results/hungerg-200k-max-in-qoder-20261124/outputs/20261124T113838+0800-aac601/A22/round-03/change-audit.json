@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "task_id": "A22",
+  "path_base": "output_dir",
+  "round": 3,
+  "baseline": {
+    "round": 2,
+    "png": "round-02/dashboard.png",
+    "dsl": "round-02/dashboard.snapshot",
+    "computed_data": "round-02/computed-data.json"
+  },
+  "changes": [
+    {
+      "month": "2026-10",
+      "field": "entire_row",
+      "old": null,
+      "new": {
+        "orders": 640,
+        "gross_revenue": 224000,
+        "refund_amount": 11200,
+        "operating_cost": 142000,
+        "sessions": 5900
+      },
+      "propagation": [
+        "新增月份净收入212800、利润70800及两项月度率",
+        "KPI期间汇总与总体转化率",
+        "柱图新增一组、表格新增一行",
+        "结论最后月份改为2026-10"
+      ],
+      "output_locations": [
+        "round-03/dashboard.png",
+        "round-03/computed-data.json",
+        "round-03/layout-map.json"
+      ]
+    }
+  ],
+  "preserved": [
+    {
+      "item": "画布与八个主区域",
+      "evidence": "layout-map.json comparison所有分量差为0"
+    },
+    {
+      "item": "字体与视觉系统",
+      "evidence": "Noto Sans CJK SC；主标题42px、正文不低于22px；配色与卡片/图表样式不变"
+    },
+    {
+      "item": "历史月份和上一轮更正",
+      "evidence": "逐月原始字段回归检查"
+    },
+    {
+      "item": "原始CSV",
+      "evidence": "tasks/A22-staged-data-correction/inputs/monthly.csv 未被修改"
+    }
+  ],
+  "regression": [
+    {
+      "check": "month_formula:2026-04",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-05",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-06",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-07",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-08",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-09",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-10",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "period_totals",
+      "passed": true,
+      "method": "七项期间总量逐项求和复算"
+    },
+    {
+      "check": "weighted_rates",
+      "passed": true,
+      "method": "总体率使用期间总量相除"
+    },
+    {
+      "check": "axis_contains_values",
+      "passed": true,
+      "method": "未舍入柱值全部位于共同纵轴范围内"
+    },
+    {
+      "check": "prior_corrections_and_rows_retained",
+      "passed": true,
+      "method": "与上一轮逐月原始字段比较"
+    },
+    {
+      "check": "main_region_bounds",
+      "passed": true,
+      "method": "逐区域四边界与上一轮比较，容差±2px",
+      "evidence": "round-03/layout-map.json"
+    },
+    {
+      "check": "actual_image_review",
+      "passed": true,
+      "method": "实际打开最终服务PNG并核对内容、表格、柱图、负值、坐标与结论",
+      "evidence": [
+        {
+          "image": "tmp/20261124T113838+0800-aac601/A22/round-03/v001/dashboard.png",
+          "viewed_at": "2026-11-24T07:00:07.950Z"
+        }
+      ]
+    },
+    {
+      "check": "provenance",
+      "passed": true,
+      "method": "最终PNG与原始响应字节一致，DSL与UTF-8请求一致",
+      "evidence": "tmp/20261124T113838+0800-aac601/A22/round-03/v001/provenance.json"
+    }
+  ]
+}

@@ -1,0 +1,642 @@
+{
+  "schema_version": 1,
+  "task_id": "A10",
+  "path_base": "output_dir",
+  "run_id": "20261124T113838+0800-aac601",
+  "status": "completed",
+  "canvas": {
+    "width": 1440,
+    "height": 1100,
+    "coordinate_origin": "top-left",
+    "x_direction": "right",
+    "y_direction": "down",
+    "unit": "px"
+  },
+  "final_png": "compositing-lab.png",
+  "final_dsl": "compositing-lab.snapshot",
+  "png_sha256": "ab8b6497c83419e9fd952de9d19307a23602876c2352c12ff62cce847397862c",
+  "png_bytes_equal_raw_v003_response": true,
+  "dsl_bytes_equal_v003_request_after_crlf_normalization": true,
+  "panels": [
+    {
+      "id": 1,
+      "name": "对象 Alpha",
+      "canvas_origin": [
+        208,
+        220
+      ],
+      "local_size": [
+        320,
+        240
+      ],
+      "background": "#FFFFFF",
+      "scene_parameters": {
+        "red": {
+          "rect": [
+            40,
+            40,
+            160,
+            120
+          ],
+          "color": "#FF000080"
+        },
+        "blue": {
+          "rect": [
+            120,
+            80,
+            160,
+            120
+          ],
+          "color": "#0000FF80"
+        },
+        "draw_order": [
+          "red",
+          "blue"
+        ],
+        "composite": "source-over"
+      },
+      "effect_nodes": [
+        "Container#FF000080",
+        "Container#0000FF80"
+      ],
+      "sample_local": [
+        180,
+        100
+      ]
+    },
+    {
+      "id": 2,
+      "name": "组透明度",
+      "canvas_origin": [
+        560,
+        220
+      ],
+      "local_size": [
+        320,
+        240
+      ],
+      "background": "#FFFFFF",
+      "scene_parameters": {
+        "red": {
+          "rect": [
+            40,
+            40,
+            160,
+            120
+          ],
+          "color": "#FF0000"
+        },
+        "blue": {
+          "rect": [
+            120,
+            80,
+            160,
+            120
+          ],
+          "color": "#0000FF"
+        },
+        "draw_order": [
+          "red",
+          "blue"
+        ],
+        "group_opacity": 0.5
+      },
+      "effect_nodes": [
+        "Opacity opacity=0.5",
+        "Stack/red",
+        "Stack/blue"
+      ],
+      "sample_local": [
+        180,
+        100
+      ]
+    },
+    {
+      "id": 3,
+      "name": "仅背景模糊",
+      "canvas_origin": [
+        912,
+        220
+      ],
+      "local_size": [
+        320,
+        240
+      ],
+      "background": "#FFFFFF",
+      "scene_parameters": {
+        "stripe_period": 36,
+        "stripe_width": 18,
+        "stripe_colors": [
+          "#1E3A5F",
+          "#F6B94A"
+        ],
+        "stripe_phase_local_x": 0,
+        "card_origin_local": [
+          40,
+          40
+        ],
+        "card_size": [
+          240,
+          160
+        ],
+        "card_radius": 20,
+        "card_color": "#F4F7FBCC",
+        "text": "SHARP / BLUR",
+        "text_font_size": 24,
+        "foreground": [
+          "circle(72,126,r=18,#E54B4B)",
+          "rounded_box(126,108,58,36,r=8,#2364DB)"
+        ],
+        "sigma": [
+          6,
+          6
+        ]
+      },
+      "effect_nodes": [
+        "Positioned card",
+        "ClipRRect borderRadius=20",
+        "BackdropFilter sigmaX=6 sigmaY=6",
+        "sharp Text",
+        "sharp circle",
+        "sharp rounded box"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "子树模糊",
+      "canvas_origin": [
+        208,
+        600
+      ],
+      "local_size": [
+        320,
+        240
+      ],
+      "background": "#FFFFFF",
+      "scene_parameters": {
+        "stripe_period": 36,
+        "stripe_width": 18,
+        "stripe_colors": [
+          "#1E3A5F",
+          "#F6B94A"
+        ],
+        "stripe_phase_local_x": 0,
+        "card_origin_local": [
+          40,
+          40
+        ],
+        "card_size": [
+          240,
+          160
+        ],
+        "card_radius": 20,
+        "card_color": "#F4F7FBCC",
+        "text": "SHARP / BLUR",
+        "text_font_size": 24,
+        "foreground": [
+          "circle(72,126,r=18,#E54B4B)",
+          "rounded_box(126,108,58,36,r=8,#2364DB)"
+        ],
+        "sigma": [
+          6,
+          6
+        ]
+      },
+      "effect_nodes": [
+        "Positioned card",
+        "ClipRRect borderRadius=20",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "Stack stripes/card/text/circle/box"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "MULTIPLY 后高斯模糊",
+      "canvas_origin": [
+        560,
+        600
+      ],
+      "local_size": [
+        320,
+        240
+      ],
+      "background": "#FFFFFF",
+      "scene_parameters": {
+        "scene_origin_local": [
+          60,
+          20
+        ],
+        "scene_size": [
+          200,
+          200
+        ],
+        "circle_center_local": [
+          160,
+          120
+        ],
+        "circle_radius": 100,
+        "multiply_color": "#F6B94A",
+        "sigma": [
+          6,
+          6
+        ],
+        "tile_mode": "CLAMP",
+        "scene_elements": [
+          "shadowed dark panel",
+          "left dark rounded rectangle",
+          "right deep rectangle",
+          "cyan rectangle crossing circle",
+          "red circle crossing circle",
+          "transparent gaps",
+          "white rectangle"
+        ]
+      },
+      "effect_nodes": [
+        "ColorFiltered color=#F6B94A blendMode=MULTIPLY",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "Stack shared scene"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "同一结果圆形裁剪",
+      "canvas_origin": [
+        912,
+        600
+      ],
+      "local_size": [
+        320,
+        240
+      ],
+      "background": "#FFFFFF",
+      "scene_parameters": {
+        "scene_origin_local": [
+          60,
+          20
+        ],
+        "scene_size": [
+          200,
+          200
+        ],
+        "circle_center_local": [
+          160,
+          120
+        ],
+        "circle_radius": 100,
+        "multiply_color": "#F6B94A",
+        "sigma": [
+          6,
+          6
+        ],
+        "tile_mode": "CLAMP",
+        "scene_elements": [
+          "shadowed dark panel",
+          "left dark rounded rectangle",
+          "right deep rectangle",
+          "cyan rectangle crossing circle",
+          "red circle crossing circle",
+          "transparent gaps",
+          "white rectangle"
+        ]
+      },
+      "effect_nodes": [
+        "ClipOval clipBehavior=ANTI_ALIAS",
+        "ColorFiltered color=#F6B94A blendMode=MULTIPLY",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "Stack shared scene"
+      ]
+    }
+  ],
+  "paired_scenes": [
+    {
+      "pair": [
+        3,
+        4
+      ],
+      "shared_parameters": {
+        "stripe_period": 36,
+        "stripe_width": 18,
+        "stripe_colors": [
+          "#1E3A5F",
+          "#F6B94A"
+        ],
+        "stripe_phase_local_x": 0,
+        "card_origin_local": [
+          40,
+          40
+        ],
+        "card_size": [
+          240,
+          160
+        ],
+        "card_radius": 20,
+        "card_color": "#F4F7FBCC",
+        "text": "SHARP / BLUR",
+        "text_font_size": 24,
+        "foreground": [
+          "circle(72,126,r=18,#E54B4B)",
+          "rounded_box(126,108,58,36,r=8,#2364DB)"
+        ],
+        "sigma": [
+          6,
+          6
+        ]
+      },
+      "shared_base_scene": "同一相位条纹、半透明卡底、Text SHARP / BLUR、圆形与圆角矩形；卡局部原点(40,40)，尺寸240×160，圆角20。区外条纹始终清晰且逐像素同相位。",
+      "only_change": "③把BackdropFilter作用于卡片覆盖的既有背景，清晰前景位于其后；④把相同的条纹、卡底、文字和前景置于ImageFiltered子树内整体模糊。",
+      "clip_geometry": null
+    },
+    {
+      "pair": [
+        5,
+        6
+      ],
+      "shared_parameters": {
+        "scene_origin_local": [
+          60,
+          20
+        ],
+        "scene_size": [
+          200,
+          200
+        ],
+        "circle_center_local": [
+          160,
+          120
+        ],
+        "circle_radius": 100,
+        "multiply_color": "#F6B94A",
+        "sigma": [
+          6,
+          6
+        ],
+        "tile_mode": "CLAMP",
+        "scene_elements": [
+          "shadowed dark panel",
+          "left dark rounded rectangle",
+          "right deep rectangle",
+          "cyan rectangle crossing circle",
+          "red circle crossing circle",
+          "transparent gaps",
+          "white rectangle"
+        ]
+      },
+      "shared_base_scene": "完全相同的位置、颜色、透明间隙、深色矩形、阴影、跨圆周有色形状、#F6B94A MULTIPLY与sigma=6高斯模糊。",
+      "only_change": "⑥在最外层增加ClipOval；⑤不增加圆形裁剪。",
+      "clip_geometry": {
+        "center_local": [
+          160,
+          120
+        ],
+        "radius": 100,
+        "bounds_local": [
+          60,
+          20,
+          260,
+          220
+        ]
+      }
+    }
+  ],
+  "samples": [
+    {
+      "panel_id": 1,
+      "local_pixel_index": [
+        180,
+        100
+      ],
+      "canvas_pixel_index": [
+        388,
+        320
+      ],
+      "coordinate_convention": "origin_x+180, origin_y+100; zero-based decoded PNG pixel index",
+      "alpha_rule": "128/255",
+      "theoretical_rgb_float": [
+        127.0,
+        63.25098039215686,
+        191.25098039215686
+      ],
+      "rounded_rgb_floor_value_plus_half": [
+        127,
+        63,
+        191
+      ],
+      "actual_rgba_unpremultiplied_8bit": [
+        127,
+        63,
+        191,
+        255
+      ],
+      "expected_alpha": 255,
+      "absolute_channel_error": [
+        0,
+        0,
+        0
+      ],
+      "channel_tolerance": 3,
+      "per_channel_within_tolerance": [
+        true,
+        true,
+        true
+      ],
+      "passed": true,
+      "explanation": "128/255对象Alpha：红rect先over白底，蓝rect再以同一Alpha over中间红；中间值不取整。红rect单独处为[255,127,127]，重叠处由蓝rect覆盖红rect后再合成白底。"
+    },
+    {
+      "panel_id": 2,
+      "local_pixel_index": [
+        180,
+        100
+      ],
+      "canvas_pixel_index": [
+        740,
+        320
+      ],
+      "coordinate_convention": "origin_x+180, origin_y+100; zero-based decoded PNG pixel index",
+      "alpha_rule": "group opacity 0.5 applied after opaque subtree composition",
+      "theoretical_rgb_float": [
+        127.5,
+        127.5,
+        255.0
+      ],
+      "rounded_rgb_floor_value_plus_half": [
+        128,
+        128,
+        255
+      ],
+      "actual_rgba_unpremultiplied_8bit": [
+        126,
+        126,
+        255,
+        255
+      ],
+      "expected_alpha": 255,
+      "absolute_channel_error": [
+        2,
+        2,
+        0
+      ],
+      "channel_tolerance": 3,
+      "per_channel_within_tolerance": [
+        true,
+        true,
+        true
+      ],
+      "passed": true,
+      "explanation": "0.5组Opacity：不透明蓝rect先在不透明子树内覆盖不透明红rect，形成不透明蓝；随后整个0.5透明组over白底。因此R=G=127.5，B=255。"
+    }
+  ],
+  "sample_method": "PIL只解码最终服务PNG并读取RGBA；不缩放、不裁剪、不后处理最终图，也不修改采样值。理论中间值为浮点，最终按floor(value+0.5)。",
+  "visual_checks": [
+    {
+      "panel_id": 3,
+      "text_sharp": true,
+      "background_blurred": true,
+      "effect_spills_outside_card": false,
+      "observation": "SHARP / BLUR字形边缘锐利，红圆与蓝圆角矩形轮廓清楚；卡内两侧条纹明显柔化，卡外条纹保持清晰硬边，圆角外没有背景模糊光晕。",
+      "dsl_nodes": [
+        "ClipRRect borderRadius=20",
+        "BackdropFilter sigmaX=6 sigmaY=6",
+        "Text fontSize=24",
+        "circle",
+        "rounded box"
+      ],
+      "local_crop": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-03.png"
+      },
+      "documentation": {
+        "source": "https://snapshot.muedsa.com/",
+        "sections": [
+          "Opacity 与 Transform",
+          "ColorFiltered、ImageFiltered 与 BackdropFilter",
+          "ClipRect、ClipOval 与 ClipRRect"
+        ],
+        "cache": {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/_suite/shared/parser-tags.md"
+        }
+      }
+    },
+    {
+      "panel_id": 4,
+      "text_sharp": false,
+      "background_blurred": true,
+      "effect_spills_outside_card": false,
+      "observation": "SHARP / BLUR字样可辨但边缘明显模糊，红圆与蓝圆角矩形同时失去清晰轮廓；卡内条纹与文字一起柔化，卡外相同条纹仍是清晰硬边，圆角边界之外没有效果。",
+      "dsl_nodes": [
+        "ClipRRect borderRadius=20",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "Stack stripes/card/Text/circle/box"
+      ],
+      "local_crop": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-04.png"
+      },
+      "documentation": {
+        "source": "https://snapshot.muedsa.com/",
+        "sections": [
+          "Opacity 与 Transform",
+          "ColorFiltered、ImageFiltered 与 BackdropFilter",
+          "ClipRect、ClipOval 与 ClipRRect"
+        ],
+        "cache": {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/_suite/shared/parser-tags.md"
+        }
+      }
+    },
+    {
+      "panel_id": 5,
+      "text_sharp": null,
+      "background_blurred": false,
+      "effect_spills_outside_circle": true,
+      "observation": "MULTIPLY后场景呈琥珀色调，透明间隙也被着色；深色块、青色跨圆矩形、红圆和阴影边缘均有sigma=6柔化。左上、右上及下方仍可见圆外效果，证明没有圆形裁剪。",
+      "dsl_nodes": [
+        "ColorFiltered MULTIPLY",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "shared Stack scene"
+      ],
+      "local_crop": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-05.png"
+      },
+      "documentation": {
+        "source": "https://snapshot.muedsa.com/",
+        "sections": [
+          "Opacity 与 Transform",
+          "ColorFiltered、ImageFiltered 与 BackdropFilter",
+          "ClipRect、ClipOval 与 ClipRRect"
+        ],
+        "cache": {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/_suite/shared/parser-tags.md"
+        }
+      }
+    },
+    {
+      "panel_id": 6,
+      "text_sharp": null,
+      "background_blurred": false,
+      "effect_spills_outside_circle": false,
+      "observation": "内部颜色、形状、阴影与模糊程度和⑤一致；圆内青色矩形和红圆被圆周截断，圆外为纯白。圆周边缘仅有抗锯齿过渡，没有圆外模糊内容。",
+      "dsl_nodes": [
+        "outer ClipOval",
+        "ColorFiltered MULTIPLY",
+        "ImageFiltered sigmaX=6 sigmaY=6",
+        "shared Stack scene"
+      ],
+      "local_crop": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-06.png"
+      },
+      "documentation": {
+        "source": "https://snapshot.muedsa.com/",
+        "sections": [
+          "Opacity 与 Transform",
+          "ColorFiltered、ImageFiltered 与 BackdropFilter",
+          "ClipRect、ClipOval 与 ClipRRect"
+        ],
+        "cache": {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/_suite/shared/parser-tags.md"
+        }
+      }
+    }
+  ],
+  "visual_review_evidence": [
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-overview.png"
+    },
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-footer.png"
+    },
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-01.png"
+    },
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-02.png"
+    },
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-03.png"
+    },
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-04.png"
+    },
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-05.png"
+    },
+    {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A10/inspect-panel-06.png"
+    }
+  ],
+  "unresolved_issues": []
+}

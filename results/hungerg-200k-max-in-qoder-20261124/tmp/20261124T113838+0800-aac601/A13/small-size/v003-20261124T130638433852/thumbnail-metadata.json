@@ -1,0 +1,45 @@
+{
+  "version": "v003",
+  "tool": "Pillow 10.0.0",
+  "algorithm": "premultiply RGBA float; resize each premultiplied channel with LANCZOS to 32x32; divide RGB by resampled alpha; round to 8-bit; alpha=0 RGB ignored",
+  "parameters": {
+    "source": "service PNG decoded to unpremultiplied RGBA",
+    "target_px": [
+      32,
+      32
+    ],
+    "filter": "LANCZOS",
+    "background_for_native_review": "#F5F7FC",
+    "supplementary_scale": "8x nearest neighbor only; not used instead of native review"
+  },
+  "paths": {
+    "symbol-color": {
+      "preview_32": "tmp/20261124T113838+0800-aac601/A13/small-size/v003-20261124T130638433852/symbol-color-32.png",
+      "supplementary_8x": "tmp/20261124T113838+0800-aac601/A13/small-size/v003-20261124T130638433852/symbol-color-32-nearest-8x.png"
+    },
+    "symbol-black": {
+      "preview_32": "tmp/20261124T113838+0800-aac601/A13/small-size/v003-20261124T130638433852/symbol-black-32.png",
+      "supplementary_8x": "tmp/20261124T113838+0800-aac601/A13/small-size/v003-20261124T130638433852/symbol-black-32-nearest-8x.png"
+    }
+  },
+  "native_comparison": "tmp/20261124T113838+0800-aac601/A13/small-size/v003-20261124T130638433852/small-size-native.png",
+  "black_check": {
+    "decoder": "Pillow 10.0.0 Image.open().convert('RGBA'); 8-bit unpremultiplied RGBA",
+    "source_mode": "RGBA",
+    "size_px": [
+      512,
+      512
+    ],
+    "checked_pixels": 262144,
+    "visible_pixels": 58362,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "alpha_zero_pixels": 203782,
+    "nonzero_rgb_where_alpha_positive": 0,
+    "passed": true,
+    "method": "every decoded pixel with alpha>0 must have R=G=B=0; alpha=0 RGB ignored"
+  },
+  "alpha_mask_sha256": "cefb82b8ca39ea45107f666a3af00563d884dc42337a1faf73a0a5808e858a08",
+  "geometry_equal": true,
+  "created_at": "2026-11-24T13:06:39.302+08:00"
+}

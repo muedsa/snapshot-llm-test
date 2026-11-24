@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "task_id": "A22",
+  "path_base": "output_dir",
+  "round": 2,
+  "baseline": {
+    "round": 1,
+    "png": "round-01/dashboard.png",
+    "dsl": "round-01/dashboard.snapshot",
+    "computed_data": "round-01/computed-data.json"
+  },
+  "changes": [
+    {
+      "month": "2026-08",
+      "field": "refund_amount",
+      "old": {
+        "refund_amount": 15048,
+        "net_revenue": 173052
+      },
+      "new": {
+        "refund_amount": 25048,
+        "net_revenue": 163052
+      },
+      "propagation": [
+        "8月净收入与利润各减少10000元",
+        "KPI汇总、8月双柱、表格与结论",
+        "经营利润仍为正",
+        "8月退款率由8.00%精确值更新为13.31%展示值"
+      ],
+      "output_locations": [
+        "round-02/dashboard.png",
+        "round-02/computed-data.json",
+        "round-02/layout-map.json"
+      ]
+    },
+    {
+      "month": "2026-09",
+      "field": "operating_cost",
+      "old": {
+        "operating_cost": 138000,
+        "operating_profit": 64368
+      },
+      "new": {
+        "operating_cost": 208000,
+        "operating_profit": -5632
+      },
+      "propagation": [
+        "9月利润由64368元变为-5632元",
+        "共同纵轴新增-20000元负刻度",
+        "KPI汇总、9月利润柱、表格与结论"
+      ],
+      "output_locations": [
+        "round-02/dashboard.png",
+        "round-02/computed-data.json",
+        "round-02/layout-map.json"
+      ]
+    }
+  ],
+  "preserved": [
+    {
+      "item": "画布与八个主区域",
+      "evidence": "layout-map.json comparison所有分量差为0"
+    },
+    {
+      "item": "字体与视觉系统",
+      "evidence": "Noto Sans CJK SC；主标题42px、正文不低于22px；配色与卡片/图表样式不变"
+    },
+    {
+      "item": "历史月份和上一轮更正",
+      "evidence": "逐月原始字段回归检查"
+    },
+    {
+      "item": "原始CSV",
+      "evidence": "tasks/A22-staged-data-correction/inputs/monthly.csv 未被修改"
+    }
+  ],
+  "regression": [
+    {
+      "check": "month_formula:2026-04",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-05",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-06",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-07",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-08",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-09",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "period_totals",
+      "passed": true,
+      "method": "七项期间总量逐项求和复算"
+    },
+    {
+      "check": "weighted_rates",
+      "passed": true,
+      "method": "总体率使用期间总量相除"
+    },
+    {
+      "check": "axis_contains_values",
+      "passed": true,
+      "method": "未舍入柱值全部位于共同纵轴范围内"
+    },
+    {
+      "check": "prior_corrections_and_rows_retained",
+      "passed": false,
+      "method": "与上一轮逐月原始字段比较"
+    },
+    {
+      "check": "main_region_bounds",
+      "passed": true,
+      "method": "逐区域四边界与上一轮比较，容差±2px",
+      "evidence": "round-02/layout-map.json"
+    },
+    {
+      "check": "actual_image_review",
+      "passed": true,
+      "method": "实际打开最终服务PNG并核对内容、表格、柱图、负值、坐标与结论",
+      "evidence": [
+        {
+          "image": "tmp/20261124T113838+0800-aac601/A22/round-02/v001/dashboard.png",
+          "viewed_at": "2026-11-24T06:59:30.094Z"
+        }
+      ]
+    },
+    {
+      "check": "provenance",
+      "passed": true,
+      "method": "最终PNG与原始响应字节一致，DSL与UTF-8请求一致",
+      "evidence": "tmp/20261124T113838+0800-aac601/A22/round-02/v001/provenance.json"
+    }
+  ]
+}

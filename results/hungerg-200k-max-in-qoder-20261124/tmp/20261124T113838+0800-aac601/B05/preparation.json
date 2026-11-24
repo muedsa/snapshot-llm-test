@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "task_id": "B05",
+  "run_id": "20261124T113838+0800-aac601",
+  "status": "preparation_only",
+  "path_base": "suite_root",
+  "plan_version": "B05-plan-v1",
+  "created_at": "2026-11-24T04:38:29.671639+00:00",
+  "product": {
+    "name": "Cairn",
+    "name_status": "fictional product and brand",
+    "category": "Accessibility-first journey companion",
+    "one_sentence": "Cairn helps mobility-disabled travelers plan a step-free route, verify the difficult segments, and recover when an accessibility feature fails.",
+    "problem": "A route can be short and still unusable: a single stair, missing curb cut, unavailable elevator, or unconfirmed entrance can break the whole trip. Existing generic route options often optimize time without explaining access uncertainty.",
+    "product_mechanism": "Cairn combines traveler-defined access constraints, route-level access attributes, freshness/confidence labels for community reports, downloadable route bundles, and explicit interruption recovery. It is a static design concept here, not an implemented or deployed service.",
+    "primary_users": ["Wheelchair users", "People using walkers or canes", "Older adults with variable stamina", "Companions assisting with a journey"],
+    "value_boundaries": [
+      "Cairn does not claim live accessibility coverage or guarantee that a route is open.",
+      "Confidence is based on visible source/freshness metadata, not an unexplained score.",
+      "The product never silently substitutes a stair-based route for a step-free route.",
+      "Location sharing is user-initiated and time-limited in the concept."
+    ]
+  },
+  "demo_scenario": {
+    "label": "Fictional demonstration — not a real user, place, route, service, or live dataset",
+    "traveler": "Maya Chen, fictional wheelchair user",
+    "companion": "Leo Chen, fictional adult companion",
+    "origin": "Dock Lane Stop, fictional",
+    "destination": "Eastside Library, fictional",
+    "planned_departure": "14:10",
+    "desired_arrival": "14:45",
+    "base_route": {"route_id": "Cairn-R1", "duration_min": 28, "distance_km": 2.4, "step_free": true, "confidence": "medium", "last_verified": "2 hours ago", "demo_arrival": "14:38"},
+    "interruption": "Central Station elevator E2 is reported unavailable; report timestamp 14:06.",
+    "recovered_route": {"route_id": "Cairn-R3", "duration_min": 34, "distance_km": 2.7, "step_free": true, "confidence": "medium-high", "last_verified": "18 minutes ago", "demo_arrival": "14:44"},
+    "continuity_rules": [
+      "Maya's destination, arrival target, step-free requirement, and maximum acceptable extra time remain consistent across all ten screens.",
+      "R1 appears as the initial plan; R3 appears only after the elevator interruption.",
+      "The recovered route adds 6 minutes and 0.3 km relative to R1; those are fictional demo calculations.",
+      "The library entrance note and companion handoff refer to the same Eastside Library and the same arrival target."
+    ]
+  },
+  "visual_system": {
+    "core": "A calm off-white surface, deep ink typography, cobalt for the active route, amber for uncertainty, and coral for an interrupted access feature. Colour is always paired with words/icons.",
+    "layout_principles": [
+      "Phone-first vertical screens with large touch targets and one dominant next action.",
+      "Tablet and wearable states are intentionally different compositions, not resized phone mockups.",
+      "Route confidence shows evidence and timestamp beside the label.",
+      "Access requirements appear before travel time so speed cannot hide incompatibility.",
+      "Every button-shaped control has an explained function in the case content."
+    ],
+    "asset_policy": "DSL-primary; maps, icons, entrance diagrams, route profiles, and interface components are built from Snapshot DSL. No external photograph is required."
+  },
+  "journey_arc": [
+    "Define constraints and arrival target",
+    "Compare compatible routes",
+    "Inspect a difficult street segment",
+    "Prepare the transit transfer",
+    "Carry the plan offline",
+    "Receive a specific accessibility interruption",
+    "Recalculate without violating constraints",
+    "Understand the destination entrance",
+    "Coordinate companion assistance",
+    "Arrive, preserve evidence, and improve future information"
+  ],
+  "cases": [
+    {
+      "id": "B05-case-01",
+      "title": "Start with What Makes the Trip Work",
+      "audience": "A mobility-disabled traveler beginning a familiar destination journey",
+      "context": "Phone in portrait at home before departure",
+      "goal": "Enter the destination and arrival target, then define non-negotiable access needs.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "Maya Chen, Dock Lane Stop, Eastside Library, 14:45 arrival, and all route data are invented for the concept. No user interview or field study is claimed.",
+        "consistency_keys": ["Maya", "Eastside Library", "14:45", "step-free required"]
+      },
+      "visual_intent": "A phone setup screen organized as a vertical journey ticket rather than a settings form; access needs are large selectable tokens and the arrival target anchors the page.",
+      "dimensions": [1200, 2200],
+      "target_viewing": "1200×2200 phone portrait, plus a 360px-wide readability reduction",
+      "dsl_capabilities": ["Container", "Column", "Expanded", "Row", "Stack", "ClipRRect", "Text", "WidgetSpan"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-01-C1", "observable_condition": "Destination, desired arrival, and access requirements are all visible and use the canonical demo values.", "inspection_method": "Read the rendered fields and compare with demo_scenario continuity rules.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-01-C2", "observable_condition": "Step-free access is visually non-negotiable and cannot be mistaken for an optional preference.", "inspection_method": "Inspect requirement hierarchy, labels, and selected states at full size.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-01-C3", "observable_condition": "The primary action is unambiguous and secondary controls do not compete with it.", "inspection_method": "Review the phone composition at reduced width and count competing high-emphasis actions.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-01-C4", "observable_condition": "Fictional demo status is visible in the artwork or its persistent prototype banner.", "inspection_method": "Inspect the top/bottom prototype label and case metadata.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This case establishes constraints through a pre-trip setup state. It is not a map, route comparison, disruption alert, or receipt; its structure is a journey ticket and requirement token set.",
+      "journey_relationship": {"previous": null, "next": "B05-case-02", "state_change": "A compatible-route search becomes available."}
+    },
+    {
+      "id": "B05-case-02",
+      "title": "Compatible First, Fastest Second",
+      "audience": "A traveler choosing among routes for the same Eastside Library trip",
+      "context": "Phone route results during active planning",
+      "goal": "Compare routes by access compatibility, evidence freshness, extra time, and walking/rolling effort before duration.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "R1 is the canonical 28-minute, 2.4 km, medium-confidence route. R2 is intentionally incompatible because it contains stairs. R3 is a 34-minute alternative reserved for the later recovery state.",
+        "consistency_keys": ["R1 28 min / 2.4 km", "14:45 target", "R2 stairs", "evidence timestamps"]
+      },
+      "visual_intent": "Three full-width route cards with access badges above duration; R1 expands into a small route spine while incompatible R2 is visibly demoted but remains inspectable.",
+      "dimensions": [1200, 2200],
+      "target_viewing": "Phone portrait at full size and reduced-width preview",
+      "dsl_capabilities": ["Container", "Column", "Expanded", "Row", "Stack", "Positioned", "ClipRRect", "ClipPath", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-02-C1", "observable_condition": "Access compatibility is read before travel time, and R2's stair conflict is explicit rather than hidden in details.", "inspection_method": "Inspect visual hierarchy and read every route badge.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-02-C2", "observable_condition": "Confidence labels include evidence type and last-verified time, with no unexplained numeric score.", "inspection_method": "Inspect each confidence block and compare R1 values to the demo scenario.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-02-C3", "observable_condition": "R1 values remain 28 minutes and 2.4 km, and its arrival is compatible with 14:45.", "inspection_method": "Compare rendered route summary with demo_scenario.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-02-C4", "observable_condition": "Cards do not overflow, all route names and controls are readable, and the selected route has a clear next action.", "inspection_method": "Inspect full PNG and card-boundary crops.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A multi-option decision state with incompatibility and evidence hierarchy is a distinct task from setup and from single-route inspection; it uses route cards rather than a reused form layout.",
+      "journey_relationship": {"previous": "B05-case-01", "next": "B05-case-03", "state_change": "R1 is selected for segment inspection."}
+    },
+    {
+      "id": "B05-case-03",
+      "title": "Inspect the Street, Not Just the Line",
+      "audience": "A traveler checking whether the selected route works at street level",
+      "context": "Tablet landscape while reviewing a difficult curb-cut segment",
+      "goal": "Inspect gradient, curb cuts, surface, and crossing information for the selected route before committing.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "The route profile, 5% maximum grade preference, curb-cut notes, and segment labels are invented. They demonstrate information design only, not surveyed geometry.",
+        "consistency_keys": ["R1", "Dock Lane to Market Crossing", "step-free", "demo grade"]
+      },
+      "visual_intent": "A landscape tablet split between a route strip and an enlarged street cross-section; the elevation line is subordinate to concrete access annotations.",
+      "dimensions": [1280, 1600],
+      "target_viewing": "1280×1600 tablet portrait held at reading distance",
+      "dsl_capabilities": ["Container", "Row", "Column", "Expanded", "Stack", "Positioned", "ClipPath", "ClipRect", "Transform", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-03-C1", "observable_condition": "Gradient, curb cuts, surface, and crossing information are attached to specific route segments.", "inspection_method": "Trace each annotation to a segment on the route strip.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-03-C2", "observable_condition": "All measurements are visibly marked demo and the profile is not presented as a surveyed slope model.", "inspection_method": "Inspect labels and the demo notice.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-03-C3", "observable_condition": "The tablet layout uses its width intentionally and does not merely stretch a phone screen.", "inspection_method": "Compare the side-by-side map/profile composition with phone case layouts.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-03-C4", "observable_condition": "No annotation, leader line, or route shape obscures another, and body text remains legible.", "inspection_method": "Inspect full PNG and crops around each access-feature callout.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This is a segment-level spatial inspection on tablet, not route ranking or transit planning; its cross-section and leader-line system solve a different information problem.",
+      "journey_relationship": {"previous": "B05-case-02", "next": "B05-case-04", "state_change": "The transfer plan is prepared for the selected route."}
+    },
+    {
+      "id": "B05-case-04",
+      "title": "Make the Transfer Explicit",
+      "audience": "A traveler who needs an elevator and staff assistance to board",
+      "context": "Phone transit boarding card before reaching Central Station",
+      "goal": "Understand the elevator path, platform, boarding point, assistance arrangement, and fallback if the elevator is unavailable.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "Central Station, elevator E2, platform 2, and the assistance meeting point are fictional. This screen intentionally precedes the later E2 outage alert.",
+        "consistency_keys": ["E2", "Platform 2", "R1", "14:45 target", "assistance requested"]
+      },
+      "visual_intent": "A phone boarding pass with a vertical station path diagram, a precise meeting-point icon, and a separate 'if unavailable' strip that prepares the user for interruption.",
+      "dimensions": [1200, 2200],
+      "target_viewing": "Phone portrait full size and reduced-width preview",
+      "dsl_capabilities": ["Container", "Column", "Expanded", "Stack", "Positioned", "ClipPath", "ClipRRect", "Text", "WidgetSpan"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-04-C1", "observable_condition": "Elevator, platform, boarding point, and assistance meeting point are shown in one coherent path.", "inspection_method": "Trace the vertical diagram top to bottom and read each label.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-04-C2", "observable_condition": "Assistance status is explicit and does not imply confirmation that has not occurred.", "inspection_method": "Inspect wording such as requested versus confirmed and compare the demo scenario.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-04-C3", "observable_condition": "The fallback strip prepares for elevator loss without pretending the later disruption has already happened.", "inspection_method": "Review temporal wording and visual state.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-04-C4", "observable_condition": "The boarding card is readable at a glance and contains no clipped labels or ambiguous controls.", "inspection_method": "Inspect full PNG and crops of the meeting point and fallback strip.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This case is a station-path and assistance state, distinct from street-level inspection and later outage recovery; its vertical transit diagram is not a generic route card.",
+      "journey_relationship": {"previous": "B05-case-03", "next": "B05-case-05", "state_change": "The route bundle is saved for offline use."}
+    },
+    {
+      "id": "B05-case-05",
+      "title": "Take the Route Offline",
+      "audience": "A traveler entering an area with unreliable connectivity",
+      "context": "Phone offline mode before departure",
+      "goal": "Confirm that the route, access notes, and transfer instructions are available without a network connection, while stale information is clearly marked.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "Offline bundle, file size, download completion, and cache timestamps are fictional. No network capability or actual device behavior is being demonstrated.",
+        "consistency_keys": ["R1", "Eastside Library", "E2", "last synced 14:08", "offline"]
+      },
+      "visual_intent": "An offline route sheet with a large completed-sync seal, simplified DSL map, and a three-item availability checklist. Staleness is calm but unmistakable.",
+      "dimensions": [1080, 1920],
+      "target_viewing": "1080×1920 phone portrait, including low-brightness readability review",
+      "dsl_capabilities": ["Container", "Column", "Expanded", "Row", "Stack", "ClipRRect", "ClipPath", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-05-C1", "observable_condition": "Offline status, last-sync time, and available route/access content are visible without relying on colour alone.", "inspection_method": "Inspect status labels and checklist at full size and reduced width.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-05-C2", "observable_condition": "The screen does not claim live elevator status while offline; stale information is labelled.", "inspection_method": "Read offline limitation copy and confirm E2 is not shown as live-verified.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-05-C3", "observable_condition": "R1 and destination values match earlier screens, with no accidental route substitution.", "inspection_method": "Compare route summary, destination, and transfer labels with cases 02–04.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-05-C4", "observable_condition": "The simplified map retains enough orientation and access information without pretending to be a full navigation map.", "inspection_method": "Inspect map labels, route endpoints, and legend at target size.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This is a connectivity-state and evidence-freshness screen, not a route choice or station card; its offline sheet and sync seal form a distinct composition.",
+      "journey_relationship": {"previous": "B05-case-04", "next": "B05-case-06", "state_change": "A specific elevator interruption is received."}
+    },
+    {
+      "id": "B05-case-06",
+      "title": "Elevator E2 Is Unavailable",
+      "audience": "A traveler receiving a high-priority accessibility interruption",
+      "context": "Compact wearable alert, followed by phone detail if needed",
+      "goal": "Understand exactly what failed, when it was reported, what part of the trip is affected, and what action is available now.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "The E2 outage and 14:06 community report are fictional. The interface demonstrates transparent provenance, not live emergency monitoring.",
+        "consistency_keys": ["E2", "Central Station", "14:06", "R1 affected", "14:45 target still visible"]
+      },
+      "visual_intent": "A high-contrast wearable alert with a simple station-level glyph, oversized issue statement, and two clear actions. Severity is communicated by wording and shape, not red alone.",
+      "dimensions": [700, 900],
+      "target_viewing": "700×900 compact display viewed at arm's length, plus full-size crop review",
+      "dsl_capabilities": ["Container", "Column", "Stack", "Positioned", "ClipPath", "ClipRRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-06-C1", "observable_condition": "The alert names E2, Central Station, the 14:06 report time, and the affected R1 transfer.", "inspection_method": "Read every alert field and compare with the interruption record.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-06-C2", "observable_condition": "The traveler can distinguish the failed feature from the whole station and from the whole trip.", "inspection_method": "Inspect the station glyph and scope wording.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-06-C3", "observable_condition": "The primary action is recovery, and the secondary action opens evidence/details rather than dismissing the alert silently.", "inspection_method": "Review action labels and hierarchy at compact size.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-06-C4", "observable_condition": "Text remains legible at wearable scale and no decorative content competes with the interruption.", "inspection_method": "Inspect full PNG at 100% and a scaled arm's-length preview.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "A compact interruption alert on a wearable is a materially different device, urgency, and state from every phone/tablet planning screen; it is not a resized version of the route cards.",
+      "journey_relationship": {"previous": "B05-case-05", "next": "B05-case-07", "state_change": "The traveler requests a compatible alternative."}
+    },
+    {
+      "id": "B05-case-07",
+      "title": "Recalculate Without Breaking the Rules",
+      "audience": "A traveler deciding whether the new route still meets access and arrival needs",
+      "context": "Phone recovery screen after the E2 outage",
+      "goal": "Compare the recovered R3 against R1 and see exactly what changed in time, distance, transfers, and evidence.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "R3 is 34 minutes and 2.7 km, both fictional. The 6-minute and 0.3 km differences are arithmetic from demo values, not measured travel outcomes.",
+        "consistency_keys": ["R3 34 min / 2.7 km", "+6 min / +0.3 km", "step-free", "14:45 target", "E2 avoided"]
+      },
+      "visual_intent": "A before/after route comparison with a delta bridge, updated route spine, and an explicit constraints-preserved checklist.",
+      "dimensions": [1200, 2200],
+      "target_viewing": "Phone portrait full size and reduced-width preview",
+      "dsl_capabilities": ["Container", "Column", "Expanded", "Row", "Stack", "Positioned", "ClipPath", "ClipRect", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-07-C1", "observable_condition": "R3 is step-free and avoids E2; the screen states that the non-negotiable constraints are preserved.", "inspection_method": "Trace R3 on the route spine and read the constraints checklist.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-07-C2", "observable_condition": "R1-to-R3 deltas are correct: +6 minutes and +0.3 km, clearly identified as demo calculations.", "inspection_method": "Recalculate from 28/2.4 and 34/2.7 and inspect the visible delta labels.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-07-C3", "observable_condition": "The 14:45 arrival target remains visible and is not silently changed.", "inspection_method": "Inspect the top status and compare with the canonical scenario.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-07-C4", "observable_condition": "The before/after comparison is readable, and R3 has one unambiguous confirmation action.", "inspection_method": "Review full PNG, delta bridge crop, and reduced-width view.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This is a recovery decision with before/after deltas and constraint validation, distinct from initial route comparison and from the interruption alert.",
+      "journey_relationship": {"previous": "B05-case-06", "next": "B05-case-08", "state_change": "R3 is confirmed and the destination entrance is opened."}
+    },
+    {
+      "id": "B05-case-08",
+      "title": "Know the Entrance Before You Arrive",
+      "audience": "A traveler who needs a specific accessible entrance and a place to wait",
+      "context": "Tablet venue preview while travelling",
+      "goal": "Locate the step-free library entrance, door approach, welcome desk, seating, and the last verified access note.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "Eastside Library, the south entrance, door width, desk, seating, and verification time are all fictional. The diagram is not an architectural survey.",
+        "consistency_keys": ["Eastside Library", "south entrance", "R3", "last verified 14:24", "waiting seat"]
+      },
+      "visual_intent": "A tablet floor/entrance diagram beside a concise arrival card, with a dotted accessible path and clearly labelled waiting and assistance points.",
+      "dimensions": [1400, 1200],
+      "target_viewing": "1400×1200 tablet landscape at reading distance",
+      "dsl_capabilities": ["Container", "Row", "Column", "Expanded", "Stack", "Positioned", "ClipPath", "ClipRect", "Transform", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-08-C1", "observable_condition": "South entrance, door approach, welcome desk, and waiting seat are visible and spatially related.", "inspection_method": "Trace the dotted path and inspect every venue label.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-08-C2", "observable_condition": "The last-verified timestamp is visible and the diagram is labelled fictional/not surveyed.", "inspection_method": "Inspect venue card and diagram notice.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-08-C3", "observable_condition": "The layout uses tablet width to separate venue orientation from arrival instructions.", "inspection_method": "Compare the composition with phone screens and inspect column alignment.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-08-C4", "observable_condition": "No path line, room boundary, or label obscures another; all venue text is readable.", "inspection_method": "Review full PNG and crops around the entrance and desk.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This case handles destination-level orientation and waiting, not street routing or transit transfer; its floor-plan and arrival-card pairing is unique in the journey.",
+      "journey_relationship": {"previous": "B05-case-07", "next": "B05-case-09", "state_change": "Companion assistance is coordinated for the same R3 plan."}
+    },
+    {
+      "id": "B05-case-09",
+      "title": "Hand Off the Help, Not the Control",
+      "audience": "A traveler coordinating time-limited assistance from a chosen companion",
+      "context": "Phone companion-sharing screen near departure",
+      "goal": "Share the current R3 plan and arrival target with Leo while retaining control of location sharing and assistance scope.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "Leo Chen, the sharing duration, consent states, and messages are fictional. No real messaging or location service is represented.",
+        "consistency_keys": ["Leo", "R3", "Eastside Library", "14:45", "share until arrival", "location consent"]
+      },
+      "visual_intent": "A phone consent-and-handoff card with a compact itinerary, two explicit sharing controls, and a prepared assistance message that can be reviewed before sending.",
+      "dimensions": [1200, 2200],
+      "target_viewing": "Phone portrait full size and reduced-width preview",
+      "dsl_capabilities": ["Container", "Column", "Expanded", "Row", "Stack", "ClipRRect", "Text", "WidgetSpan"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-09-C1", "observable_condition": "The shared itinerary is R3 to Eastside Library with the 14:45 target, matching the recovered plan.", "inspection_method": "Compare all itinerary fields with case-07.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-09-C2", "observable_condition": "Location sharing is off or explicitly time-limited until the traveler chooses it, and the scope is explained.", "inspection_method": "Inspect control states, duration, and consent copy.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-09-C3", "observable_condition": "The assistance message is specific, editable, and does not imply that Leo has already accepted.", "inspection_method": "Read the message and status wording.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-09-C4", "observable_condition": "Consent, itinerary, and message remain legible without overlapping controls or tiny legal text.", "inspection_method": "Inspect full PNG and crops around sharing controls and the send action.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "This case is about consent and collaboration, not navigation. Its itinerary-plus-consent composition and time-limited sharing state are distinct from venue orientation and route planning.",
+      "journey_relationship": {"previous": "B05-case-08", "next": "B05-case-10", "state_change": "The trip completes and a structured access report becomes available."}
+    },
+    {
+      "id": "B05-case-10",
+      "title": "Arrive With a Record You Can Use",
+      "audience": "A traveler completing the trip and improving future accessibility information",
+      "context": "Tablet arrival summary after reaching Eastside Library",
+      "goal": "Review what happened, confirm the accessible entrance, report the E2 outage experience, and understand how the report will be labelled and moderated.",
+      "content_basis": {
+        "type": "fictional demonstration",
+        "details": "Arrival time, report status, confirmation count, and moderation states are fictional. The screen does not claim that a report has been independently verified.",
+        "consistency_keys": ["R3", "Eastside Library", "south entrance", "E2 outage", "14:45 target", "reported vs verified"]
+      },
+      "visual_intent": "A landscape arrival receipt with a timeline on the left and an evidence-report card on the right; the final action contributes information without gamifying risk.",
+      "dimensions": [1440, 1200],
+      "target_viewing": "1440×1200 tablet landscape, full size and 50% overview",
+      "dsl_capabilities": ["Container", "Row", "Column", "Expanded", "Stack", "Positioned", "ClipRRect", "ClipPath", "Text"],
+      "pre_render_completion_criteria": [
+        {"id": "B05-10-C1", "observable_condition": "The receipt uses R3, Eastside Library, south entrance, and the E2 event consistently with the full journey.", "inspection_method": "Cross-check timeline and report fields against cases 06–09.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-10-C2", "observable_condition": "Reported, confirmed, and verified states are visibly distinct; the fictional report is not labelled verified.", "inspection_method": "Inspect status badges and moderation explanation.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-10-C3", "observable_condition": "The trip outcome and the contribution action are both clear, with no deceptive success score or health claim.", "inspection_method": "Review full composition and all result wording.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"},
+        {"id": "B05-10-C4", "observable_condition": "The tablet layout closes the journey legibly and preserves whitespace around the final action.", "inspection_method": "Inspect full PNG, 50% thumbnail, and crops of timeline and report card.", "established_in": "B05-plan-v1", "established_at": "2026-11-24T04:38:29.671639+00:00"}
+      ],
+      "criteria_history": [],
+      "independence_rationale": "The arrival receipt and evidence-report workflow are a post-trip state, distinct from every planning and interruption screen; its two-column closure resolves the product journey rather than repeating a dashboard.",
+      "journey_relationship": {"previous": "B05-case-09", "next": null, "state_change": "Journey complete; the access report enters a clearly labelled moderation state."}
+    }
+  ],
+  "collection_independence_review": {
+    "minimum_cases": 10,
+    "planned_cases": 10,
+    "coherent_journey": "All screens follow one fictional trip from constraint setting to arrival and evidence contribution.",
+    "state_diversity": ["setup", "route decision", "segment inspection", "transfer preparation", "offline state", "interruption", "recovery", "venue orientation", "consent/handoff", "post-trip report"],
+    "device_diversity": ["phone", "tablet portrait", "tablet landscape", "compact wearable"],
+    "non_independence_guard": "The same brand system may repeat, but no case may count as independent if it only changes text or colour. Each case must preserve its distinct task, state, device, and primary composition.",
+    "different_from_B01": "B05 is one product mechanism and one continuous user journey, not a set of unrelated industry showcases.",
+    "different_from_B02": "B05 is not ten touchpoints for one client brand; its consistency comes from the product's state model and user task sequence.",
+    "different_from_B03": "B05 does not pursue visual experimentation for its own sake; layout and DSL effects must make complex accessibility decisions understandable."
+  },
+  "validation_boundaries": {
+    "completed": "Concept definition, journey logic, fictional scenario consistency, and pre-render criteria only.",
+    "not_completed": ["No user interviews", "No accessibility audit", "No field test", "No live routing or elevator data", "No claim of deployment"],
+    "future_validation_questions": [
+      "Do travelers understand confidence and freshness without a numeric score?",
+      "Does recovery preserve the user's non-negotiable constraints under time pressure?",
+      "Can a companion handoff support autonomy rather than take control?",
+      "Are offline access notes useful without becoming misleadingly current?"
+    ]
+  },
+  "next_execution_boundary": "Preparation ends here. No Snapshot request, final PNG/DSL, suite-state update, or output-directory write is authorized in this phase."
+}

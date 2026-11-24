@@ -1,0 +1,476 @@
+{
+  "schema_version": 1,
+  "task_id": "A03",
+  "path_base": "output_dir",
+  "initial_attempt": {
+    "request_id": "20261124T113838+0800-aac601-A03-render-f0af23071ab4",
+    "http_status": 400,
+    "response_path": {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A03/render-115033325094-01.response"
+    },
+    "dsl_path": {
+      "path_base": "suite_root",
+      "path": "tmp/20261124T113838+0800-aac601/A03/original-broken.snapshot"
+    },
+    "unchanged_input": true
+  },
+  "issues": [
+    {
+      "id": "I01",
+      "source_line": 10,
+      "node": "Transform",
+      "category": "explicit_parse_error",
+      "observation": "原样请求返回 400 PARSE_ERROR：缺少必填属性 matrix",
+      "documentation": "tmp/20261124T113838+0800-aac601/_suite/shared/parser-tags.md#transform；rotate 必须写入 matrix 且角度带 deg/rad",
+      "fix": "改为 matrix=\"rotate(-8deg)\" alignment=\"CENTER\"，保留原 REVIEW 区块",
+      "verification": "v001 提交后显式 PARSE_ERROR 消失；后续真实 PNG 中 REVIEW 保持逆时针 8°"
+    },
+    {
+      "id": "I02",
+      "source_line": 7,
+      "node": "Positioned under Row",
+      "category": "explicit_render_error",
+      "observation": "v001–v004 返回 400 RENDER_ERROR：renderBox.parentData must be StackParentData",
+      "documentation": "layout.md 的 Stack 与 Positioned：Positioned 只能直接位于 Stack；Expanded 只能直接位于 Flex",
+      "fix": "LIVE 移出 Row 成为 Stack 直接子节点；用有界 SizedBox 包住 Stack，保留 LIVE 96×36",
+      "verification": "v005 首次成功返回 PNG；LIVE 位于右上且不覆盖标题"
+    },
+    {
+      "id": "I03",
+      "source_line": 1,
+      "node": "Snapshot width/height",
+      "category": "silently_ignored_attribute",
+      "observation": "Snapshot 标签不支持 width/height；画布由根 Widget 尺寸决定",
+      "documentation": "parser-tags.md#snapshot 仅列 background/debug/type；layout.md 从有限根尺寸算起",
+      "fix": "移除根节点未知 width/height，在根 Container 显式设置 1280×800",
+      "verification": "PNG 头解析为 1280×800；最终 DSL 无未知属性"
+    },
+    {
+      "id": "I04",
+      "source_line": 4,
+      "node": "Text font-size",
+      "category": "silently_ignored_attribute",
+      "observation": "属性名区分大小写，font-size 被忽略，标题回退默认字号",
+      "documentation": "parser-tags.md 开头与 parser-text.md：属性名区分大小写，使用 fontSize",
+      "fix": "改为 fontSize=\"44\"",
+      "verification": "最终图标题为 44 字号，实际查看与 USAGE 文案形成明确层级"
+    },
+    {
+      "id": "I05",
+      "source_line": 10,
+      "node": "REVIEW color #33FFFFFF",
+      "category": "silently_wrong_alpha_semantics",
+      "observation": "现代 CSS 八位色为 #RRGGBBAA；#33FFFFFF 是青色且 alpha=FF，不是白色 20%",
+      "documentation": "parser-tags.md#颜色：八位最后两位为 alpha，#FF000080 示例",
+      "fix": "背景改 #FFFFFF33；文字作为兄弟层保持 #FFFFFF 不透明，字号 24",
+      "verification": "最终图 REVIEW 为浅白透明底、白色实字；旋转后可见边界在安全边距内"
+    },
+    {
+      "id": "I06",
+      "source_line": 11,
+      "node": "ImageFiltered around card and Text",
+      "category": "visual_only_wrong_filter_target",
+      "observation": "v005 实际图片中 Background-only blur 文字与卡片被子树滤镜一起模糊",
+      "documentation": "painting.md：ImageFiltered 模糊子树，BackdropFilter 模糊已经画好的背景；parser-tags.md 滤镜章节",
+      "fix": "先画穿过卡片左右边界的彩色细条；卡内用 ClipRRect+BackdropFilter；文字放到滤镜之外",
+      "verification": "最终图卡内条带柔化、卡外保持锐利，说明文字清晰；圆角 24，卡片 500×150"
+    },
+    {
+      "id": "I07",
+      "source_line": "3-13",
+      "node": "unbounded Column/Row and missing metrics",
+      "category": "layout_and_content_gap",
+      "observation": "原稿仅一张 USAGE 卡；Spacer 在无界 Column 中不能可靠分配剩余空间，REVIEW 与说明卡位置不符合最终布局",
+      "documentation": "layout.md：Flex 主轴需要有限空间；画布由有限根决定",
+      "fix": "采用 1280×800 有界根与绝对定位；三张等宽卡 394/395/395，间距 16；保留所有功能区块并补全 LATENCY/SUCCESS",
+      "verification": "最终图三卡右边界为 426/837/1248，左边界 32/442/853；所有元素在 32 像素安全区内"
+    }
+  ],
+  "versions": [
+    {
+      "version_id": "v000-original",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-f0af23071ab4",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v000-original/broken-original.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115033325094-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "v001",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-0a5935f81bd5",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v001/stage1-transform-fix.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115047647325-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "v002",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-7c294c5c68a6",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v002/stage2-structure-bounds.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115101536485-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "v003",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-eecc91c09864",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v003/stage3-bounded-stack.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115121950609-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "v004",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-f66c38a9d5e1",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v004/stage4-positioned-full.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115132185435-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-minimal",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-3a9f5850939a",
+      "http_status": 200,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-minimal/probe-minimal.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115150791373-01.response"
+      },
+      "png": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-minimal/probe-minimal-01.png"
+        }
+      ],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-row",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-908a3364623e",
+      "http_status": 200,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-row/probe-row.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115155895345-01.response"
+      },
+      "png": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-row/probe-row-01.png"
+        }
+      ],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-no-transform",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-5b3090a9000a",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-no-transform/probe-no-transform.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115215913332-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-no-filter",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-89ad8b355894",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-no-filter/probe-no-filter.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115218602532-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-no-spacer",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-dda4d76898e6",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-no-spacer/probe-no-spacer.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115220308434-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-no-positioned",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-7f7131271f17",
+      "http_status": 200,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-no-positioned/probe-no-positioned.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115221997855-01.response"
+      },
+      "png": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-no-positioned/probe-no-positioned-01.png"
+        }
+      ],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-col-after-row",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-d0c7c381b5d0",
+      "http_status": 200,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-col-after-row/probe-col-after-row.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115233281060-01.response"
+      },
+      "png": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-col-after-row/probe-col-after-row-01.png"
+        }
+      ],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-col-before-row",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-1968b39bfe81",
+      "http_status": 200,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-col-before-row/probe-col-before-row.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115235002597-01.response"
+      },
+      "png": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-col-before-row/probe-col-before-row-01.png"
+        }
+      ],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "probe-col-inside-row",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-69de3ac2b96a",
+      "http_status": 400,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/probe-col-inside-row/probe-col-inside-row.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115237228138-01.response"
+      },
+      "png": [],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "v005",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-c6523dcb793f",
+      "http_status": 200,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v005/stage5-valid-stack.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115301936707-01.response"
+      },
+      "png": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v005/stage5-valid-stack-01.png"
+        }
+      ],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    },
+    {
+      "version_id": "v006-final-candidate",
+      "parent_version": null,
+      "request_id": "20261124T113838+0800-aac601-A03-render-acf610e3b2f3",
+      "http_status": 200,
+      "dsl": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v006-final-candidate/system-pulse.snapshot"
+        }
+      ],
+      "response": {
+        "path_base": "suite_root",
+        "path": "tmp/20261124T113838+0800-aac601/A03/render-115424072971-01.response"
+      },
+      "png": [
+        {
+          "path_base": "suite_root",
+          "path": "tmp/20261124T113838+0800-aac601/A03/versions/v006-final-candidate/system-pulse-01.png"
+        }
+      ],
+      "view_record": "See iterations.jsonl; successful images were opened with Read, failures were not treated as images"
+    }
+  ],
+  "final_geometry": {
+    "canvas": [
+      1280,
+      800
+    ],
+    "safe_margin": 32,
+    "title_font_size": 44,
+    "metric_font_size": 28,
+    "explanation_font_size": 28,
+    "review_font_size": 24,
+    "metric_cards": [
+      [
+        32,
+        150,
+        426,
+        330
+      ],
+      [
+        442,
+        150,
+        837,
+        330
+      ],
+      [
+        853,
+        150,
+        1248,
+        330
+      ]
+    ],
+    "live_box": [
+      1152,
+      44,
+      1248,
+      80
+    ],
+    "explanation_box": [
+      390,
+      360,
+      890,
+      510
+    ],
+    "review_unrotated_box": [
+      1040,
+      650,
+      1200,
+      706
+    ],
+    "review_rotated_visible_box": [
+      1036.8817076737926,
+      639.1386459984309,
+      1203.1182923262074,
+      716.8613540015691
+    ],
+    "review_angle_degrees": -8,
+    "review_background_alpha": 0.2,
+    "backdrop_sigma": 10,
+    "coordinate_system": "canvas top-left origin; x right, y down; pixels"
+  },
+  "final_dsl": "system-pulse.snapshot",
+  "final_png": "system-pulse.png"
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "task_id": "A19",
+  "path_base": "output_dir",
+  "questions": [
+    {
+      "id": "Q01",
+      "image": "grid-scene.png",
+      "type": "composite_retrieval",
+      "text": "唯一同时满足颜色为blue、形状为circle、尺寸为64px的对象编号是什么？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": false
+    },
+    {
+      "id": "Q02",
+      "image": "grid-scene.png",
+      "type": "two_step_filter_extreme",
+      "text": "先筛选所有紫色且形状为圆或圆角方的对象，再取主体包围框面积最大者；面积并列时取中心y更小者，仍并列取ID更小者。答案编号是什么？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": true
+    },
+    {
+      "id": "Q03",
+      "image": "grid-scene.png",
+      "type": "strict_relation",
+      "text": "在blue色对象中，中心x严格小于G02的中心x、且中心y严格大于G02的中心y的对象编号是什么？严格不等号，不含相等。",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": true
+    },
+    {
+      "id": "Q04",
+      "image": "grid-scene.png",
+      "type": "distance",
+      "text": "除G27自身外，哪个对象的中心与G27中心的欧氏距离最小？距离按sqrt((x2-x1)^2+(y2-y1)^2)。",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": false
+    },
+    {
+      "id": "Q05",
+      "image": "grid-scene.png",
+      "type": "ordering",
+      "text": "将全部64个对象按中心y升序排列；中心y相同时按中心x升序；仍相同时按ID升序。第17个对象编号是什么？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": false
+    },
+    {
+      "id": "Q06",
+      "image": "grid-scene.png",
+      "type": "bbox",
+      "text": "哪个对象的主体包围框面积最大？面积按(right-left)×(bottom-top)；并列时取中心x更小者，仍并列取ID更小者。",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": false
+    },
+    {
+      "id": "Q07",
+      "image": "grid-scene.png",
+      "type": "color_count",
+      "text": "第1行共有多少个蓝色主体？只统计主体，不把编号文字计入。",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": false
+    },
+    {
+      "id": "Q08",
+      "image": "grid-scene.png",
+      "type": "shape_count",
+      "text": "整个网格中共有多少个绿色圆环？圆环按外径判断形状，内径不计为另一个主体。",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": false
+    },
+    {
+      "id": "Q09",
+      "image": "grid-scene.png",
+      "type": "two_step_count",
+      "text": "先筛选尺寸不小于64px的紫色对象，再计算其中圆形数量减去圆角方数量，结果是多少？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": true
+    },
+    {
+      "id": "Q10",
+      "image": "grid-scene.png",
+      "type": "two_step_distance",
+      "text": "先筛选全部橙色对象，再问其中哪个对象的中心距G43中心最近？使用欧氏中心距离。",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": true
+    },
+    {
+      "id": "Q11",
+      "image": "grid-scene.png",
+      "type": "two_step_bbox",
+      "text": "在蓝色对象中，只保留中心x严格介于G01与G04中心x之间的对象，再取主体框right坐标最大者；right并列时取ID更小者。答案编号是什么？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": true
+    },
+    {
+      "id": "Q12",
+      "image": "grid-scene.png",
+      "type": "two_step_ordering",
+      "text": "先筛选全部蓝色对象，再按主体框面积降序、中心x升序、ID升序排列。第2个对象编号是什么？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "几何比较容差0.01px；距离排序若并列依次按中心x、中心y、ID升序。",
+      "requires_two_step": true
+    },
+    {
+      "id": "Q13",
+      "image": "occlusion.png",
+      "type": "insufficient_information",
+      "text": "完全不透明遮挡物覆盖的区域内，蓝色圆主体共有多少个？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "只能依据最终可见像素；遮挡物后方内容不可见。",
+      "requires_two_step": false
+    },
+    {
+      "id": "Q14",
+      "image": "occlusion.png",
+      "type": "visible_relation",
+      "text": "在未被遮挡的可见主体中，右上绿色圆的中心x是否严格大于左下橙色方块的中心x？",
+      "coordinate_origin": "画布左上角为(0,0)，x向右、y向下，单位像素；中心坐标与主体框均以最终图实际几何为准。",
+      "comparison_rules": "严格大于；中心坐标容差0.01px。",
+      "requires_two_step": false
+    }
+  ]
+}

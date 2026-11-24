@@ -1,0 +1,116 @@
+# 绘制、装饰与效果
+
+> BoxDecoration、渐变、阴影、裁剪、透明度和滤镜。
+
+先确定要改变什么：卡片自己的背景用 BoxDecoration，子树整体变淡用 Opacity，裁掉边缘用 Clip，模糊前景用 ImageFiltered，模糊已经画好的背景用 BackdropFilter。它们可以组合，但顺序会改变结果。
+
+下面的卡片示例放进 `SnapshotPNG { … }`，会得到 420×220 的渐变卡片。padding 为文字留白；圆角只改变装饰轮廓，**不会自动裁掉内部图片**。需要内容也沿圆角裁剪时，给 Container 设置 `clipBehavior` 或在内容外包 ClipRRect。
+
+阴影会画到卡片外，但不会自动扩大输出画布；想保留完整阴影，应在卡片外再留足 Padding。实际效果见[裁剪对比](/guides/visual-reference/)。
+
+## BoxDecoration
+
+`BoxDecoration` 是最常用的视觉装饰对象，可组合：
+
+* `color`：纯色背景；
+* `gradient`：线性、径向或扫描渐变；
+* `image`：DecorationImage；
+* `border`：四边边框；
+* `borderRadius`：矩形圆角；
+* `boxShadow`：一组阴影；
+* `backgroundBlendMode`：背景混合模式；
+* `shape`：矩形或圆形。
+
+```kotlin
+Container(
+    width = 420f,
+    height = 220f,
+    padding = EdgeInsets.all(24f),
+    decoration = BoxDecoration(
+        gradient = LinearGradient(
+            begin = BoxAlignment.TOP_LEFT,
+            end = BoxAlignment.BOTTOM_RIGHT,
+            colors = intArrayOf(0xFF0F172A.toInt(), 0xFF312E81.toInt()),
+        ),
+        borderRadius = BorderRadius.circular(28f),
+        boxShadow = ELEVATION_MAP.getValue(8),
+    ),
+) {
+    Text("Snapshot", style = TextStyle(color = 0xFFFFFFFF.toInt(), fontSize = 28f))
+}
+```
+
+`shape = CIRCLE` 时不要同时设置矩形圆角。设置 `backgroundBlendMode` 时必须提供 color 或 gradient，否则 BoxDecoration 构造时会抛异常；仅有 image 也不满足这个条件。
+
+完整字段与绘制顺序见 [BoxDecoration](/reference/box-decoration/)，背景图片见 [DecorationImage](/reference/decoration-image/)。
+
+## 边框与圆角
+
+`Border` 由四个 `BorderSide` 组成，可以统一设置或分别控制。`BorderSide` 主要包含颜色、宽度和 `BorderStyle`。
+
+```kotlin
+Border.all(
+    color = 0xFF38BDF8.toInt(),
+    width = 2f,
+)
+```
+
+`BorderRadius.circular(16f)` 适用于四角一致；也可以通过 `only`、`vertical`、`horizontal` 为不同角设置半径。
+
+描边位置 strokeAlign、四边默认值与复杂组合限制见 [Border、BorderSide 与圆角](/reference/borders/)。
+
+## 渐变
+
+| 类型               | 核心参数                                              |
+| ---------------- | ------------------------------------------------- |
+| `LinearGradient` | `begin`、`end`、`colors`、`stops`、`tileMode`         |
+| `RadialGradient` | `center`、`radius`、`focal`、`colors`、`stops`        |
+| `SweepGradient`  | `center`、`startAngle`、`endAngle`、`colors`、`stops` |
+
+`colors` 至少应有两个颜色。传入 `stops` 时，其数量应和颜色数量一致，值在 0 到 1 之间且非递减，允许相同位置。角度使用弧度。
+
+完整默认值、半径单位、focalRadius 与 GradientRotation 见[渐变参考](/reference/gradients/)，直观区别见[参数效果对比](/guides/visual-reference/#%E4%B8%89%E7%A7%8D%E6%B8%90%E5%8F%98)。
+
+## 阴影
+
+`BoxShadow` 包含颜色、偏移、模糊半径、扩散半径和模糊模式。`com.muedsa.snapshot.material.ELEVATION_MAP` 提供 0、1、2、3、4、6、8、9、12、16、24 级的 Material 风格阴影数组，适合快速获得一致的卡片深度。
+
+阴影会绘制到盒子边界之外；如果外层 Stack 或 Clip Widget 启用了裁剪，阴影可能被截断。
+
+全部参数、blurRadius 与 sigma 的区别、多层阴影示例见 [BoxShadow](/reference/box-shadow/)。
+
+## 透明度与颜色滤镜
+
+| Widget           | 用途                                  |
+| ---------------- | ----------------------------------- |
+| `Opacity`        | 把整个子树作为一层合成透明度                      |
+| `ColorFiltered`  | 对子树应用 `ColorFilter`，在绘制边界可确定时限制作用范围 |
+| `ImageFiltered`  | 对子树结果应用 `ImageFilter`               |
+| `BackdropFilter` | 对已经绘制在当前内容背后的区域应用滤镜                 |
+
+`Opacity` 的值应在 `0f..1f`。复杂子树的透明度通常需要离屏图层，频繁使用会增加内存和合成成本。
+
+模糊示例：
+
+```kotlin
+ImageFiltered(
+    imageFilter = ImageFilter.makeBlur(8f, 8f, FilterTileMode.CLAMP),
+    outputBounds = blurImageFilterBounds(8f, 8f),
+) {
+    Container(width = 160f, height = 100f, color = 0xFF38BDF8.toInt())
+}
+```
+
+`BackdropFilter` 只有在其背后已经有内容时才有可见效果，常用于毛玻璃样式。
+
+ColorFiltered 根据子树的绘制范围限制颜色滤镜，合法溢出和阴影也包含在内。通用 ImageFiltered 的输出范围不能从 Skia 滤镜自动查询；上例通过 `outputBounds` 给外层颜色滤镜提供范围，参数不改变独立使用时的裁剪行为。具体边界规则见 [ColorFiltered](/widgets/painting/color-filtered/#%E7%BB%98%E5%88%B6%E8%BE%B9%E7%95%8C) 与 [ImageFiltered](/widgets/painting/image-filtered/#%E4%B8%8E-colorfiltered-%E5%B5%8C%E5%A5%97)。BackdropFilter 读取已有背景，通常需要 ClipRect 或 ClipRRect 限定区域。
+
+Parser 现提供 `<ColorFiltered color="…" blendMode="…">`、`<ImageFiltered sigmaX="…" sigmaY="…">` 和 `<BackdropFilter sigmaX="…" sigmaY="…">`。后两者只支持高斯模糊，复杂 Skia 滤镜仍需 Kotlin DSL。`Container`、`Border`、`DecoratedBox` 也可通过 `gradientType`、`gradientColors` 等属性表达基础渐变。
+
+Parser 的 `<ImageFiltered>` 会自动按 sigma 提供模糊输出边界，嵌套在 `<ColorFiltered>` 内时无需手动配置 `outputBounds`。
+
+## Transform
+
+`Transform` 支持传入 `Matrix44CMO`，也提供旋转、平移等便捷方式。旋转角度使用弧度，`alignment` 决定变换中心。
+
+变换只改变绘制坐标，不会重新参与父节点的布局尺寸计算。因此旋转后的内容可能超出原布局边界，需要配合溢出和裁剪策略。

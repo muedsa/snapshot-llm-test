@@ -1,0 +1,607 @@
+{
+  "schema_version": 2,
+  "task_id": "A22",
+  "path_base": "output_dir",
+  "round": 2,
+  "baseline": {
+    "round": 1,
+    "png": "round-01/dashboard.png",
+    "dsl": "round-01/dashboard.snapshot",
+    "computed_data": "round-01/computed-data.json"
+  },
+  "changes": [
+    {
+      "month": "2026-08",
+      "field": "refund_amount",
+      "old": {
+        "refund_amount": 15048,
+        "net_revenue": 173052
+      },
+      "new": {
+        "refund_amount": 25048,
+        "net_revenue": 163052
+      },
+      "propagation": [
+        "8月净收入与利润各减少10000元",
+        "KPI汇总、8月双柱、表格与结论",
+        "经营利润仍为正",
+        "8月退款率由8.00%精确值更新为13.31%展示值"
+      ],
+      "output_locations": [
+        "round-02/dashboard.png",
+        "round-02/computed-data.json",
+        "round-02/layout-map.json"
+      ]
+    },
+    {
+      "month": "2026-09",
+      "field": "operating_cost",
+      "old": {
+        "operating_cost": 138000,
+        "operating_profit": 64368
+      },
+      "new": {
+        "operating_cost": 208000,
+        "operating_profit": -5632
+      },
+      "propagation": [
+        "9月利润由64368元变为-5632元",
+        "共同纵轴新增-20000元负刻度",
+        "KPI汇总、9月利润柱、表格与结论"
+      ],
+      "output_locations": [
+        "round-02/dashboard.png",
+        "round-02/computed-data.json",
+        "round-02/layout-map.json"
+      ]
+    }
+  ],
+  "preserved": [
+    {
+      "item": "画布与八个主区域",
+      "evidence": "layout-map.json comparison所有分量差为0"
+    },
+    {
+      "item": "字体与视觉系统",
+      "evidence": "Noto Sans CJK SC；主标题42px、正文不低于22px；配色与卡片/图表样式不变"
+    },
+    {
+      "item": "历史月份和上一轮更正",
+      "evidence": "逐月原始字段回归检查"
+    },
+    {
+      "item": "原始CSV",
+      "evidence": "tasks/A22-staged-data-correction/inputs/monthly.csv 未被修改"
+    }
+  ],
+  "regression": [
+    {
+      "check": "month_formula:2026-04",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-05",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-06",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-07",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-08",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "month_formula:2026-09",
+      "passed": true,
+      "method": "整数金额公式逐月复算"
+    },
+    {
+      "check": "period_totals",
+      "passed": true,
+      "method": "七项期间总量逐项求和复算"
+    },
+    {
+      "check": "weighted_rates",
+      "passed": true,
+      "method": "总体率使用期间总量相除"
+    },
+    {
+      "check": "axis_contains_values",
+      "passed": true,
+      "method": "未舍入柱值全部位于共同纵轴范围内"
+    },
+    {
+      "check": "prior_corrections_and_rows_retained",
+      "passed": true,
+      "method": "从原始CSV建立预期原始字段，仅允许round-02指定的两项更正；逐月逐字段比较round-01、round-02、round-03，排除派生字段和有意变更。",
+      "original_false_marking": {
+        "artifact": "round-02/change-audit.json",
+        "passed": false,
+        "reason": "原检查把两项有意数据更正也当成未保留字段，导致自相矛盾的失败标记；原始文件保留不覆盖。"
+      },
+      "allowed_changes": [
+        {
+          "month": "2026-08",
+          "field": "refund_amount",
+          "old": 15048,
+          "new": 25048
+        },
+        {
+          "month": "2026-09",
+          "field": "operating_cost",
+          "old": 138000,
+          "new": 208000
+        }
+      ],
+      "unchanged_field_checks": [
+        {
+          "month": "2026-04",
+          "field": "orders",
+          "value": 420,
+          "passed": true
+        },
+        {
+          "month": "2026-04",
+          "field": "gross_revenue",
+          "value": 126000,
+          "passed": true
+        },
+        {
+          "month": "2026-04",
+          "field": "refund_amount",
+          "value": 6300,
+          "passed": true
+        },
+        {
+          "month": "2026-04",
+          "field": "operating_cost",
+          "value": 82000,
+          "passed": true
+        },
+        {
+          "month": "2026-04",
+          "field": "sessions",
+          "value": 3500,
+          "passed": true
+        },
+        {
+          "month": "2026-05",
+          "field": "orders",
+          "value": 460,
+          "passed": true
+        },
+        {
+          "month": "2026-05",
+          "field": "gross_revenue",
+          "value": 142600,
+          "passed": true
+        },
+        {
+          "month": "2026-05",
+          "field": "refund_amount",
+          "value": 7130,
+          "passed": true
+        },
+        {
+          "month": "2026-05",
+          "field": "operating_cost",
+          "value": 93500,
+          "passed": true
+        },
+        {
+          "month": "2026-05",
+          "field": "sessions",
+          "value": 4100,
+          "passed": true
+        },
+        {
+          "month": "2026-06",
+          "field": "orders",
+          "value": 445,
+          "passed": true
+        },
+        {
+          "month": "2026-06",
+          "field": "gross_revenue",
+          "value": 137950,
+          "passed": true
+        },
+        {
+          "month": "2026-06",
+          "field": "refund_amount",
+          "value": 11036,
+          "passed": true
+        },
+        {
+          "month": "2026-06",
+          "field": "operating_cost",
+          "value": 99000,
+          "passed": true
+        },
+        {
+          "month": "2026-06",
+          "field": "sessions",
+          "value": 4200,
+          "passed": true
+        },
+        {
+          "month": "2026-07",
+          "field": "orders",
+          "value": 530,
+          "passed": true
+        },
+        {
+          "month": "2026-07",
+          "field": "gross_revenue",
+          "value": 169600,
+          "passed": true
+        },
+        {
+          "month": "2026-07",
+          "field": "refund_amount",
+          "value": 8480,
+          "passed": true
+        },
+        {
+          "month": "2026-07",
+          "field": "operating_cost",
+          "value": 112000,
+          "passed": true
+        },
+        {
+          "month": "2026-07",
+          "field": "sessions",
+          "value": 4700,
+          "passed": true
+        },
+        {
+          "month": "2026-08",
+          "field": "orders",
+          "value": 570,
+          "passed": true
+        },
+        {
+          "month": "2026-08",
+          "field": "gross_revenue",
+          "value": 188100,
+          "passed": true
+        },
+        {
+          "month": "2026-08",
+          "field": "operating_cost",
+          "value": 132000,
+          "passed": true
+        },
+        {
+          "month": "2026-08",
+          "field": "sessions",
+          "value": 5200,
+          "passed": true
+        },
+        {
+          "month": "2026-09",
+          "field": "orders",
+          "value": 620,
+          "passed": true
+        },
+        {
+          "month": "2026-09",
+          "field": "gross_revenue",
+          "value": 210800,
+          "passed": true
+        },
+        {
+          "month": "2026-09",
+          "field": "refund_amount",
+          "value": 8432,
+          "passed": true
+        },
+        {
+          "month": "2026-09",
+          "field": "sessions",
+          "value": 5600,
+          "passed": true
+        }
+      ],
+      "round_03_retained": true
+    },
+    {
+      "check": "main_region_bounds",
+      "passed": true,
+      "method": "逐区域四边界与上一轮比较，容差±2px",
+      "evidence": "round-02/layout-map.json"
+    },
+    {
+      "check": "actual_image_review",
+      "passed": true,
+      "method": "实际打开最终服务PNG并核对内容、表格、柱图、负值、坐标与结论",
+      "evidence": [
+        {
+          "image": "tmp/20261124T113838+0800-aac601/A22/round-02/v001/dashboard.png",
+          "viewed_at": "2026-11-24T06:59:30.094Z"
+        }
+      ]
+    },
+    {
+      "check": "provenance",
+      "passed": true,
+      "method": "最终PNG与原始响应字节一致，DSL与UTF-8请求一致",
+      "evidence": "tmp/20261124T113838+0800-aac601/A22/round-02/v001/provenance.json"
+    }
+  ],
+  "revision": "r002-corrected",
+  "corrected_at": "2026-11-24T19:04:38.499646+08:00",
+  "revision_of": "round-02/change-audit.json",
+  "correction_reason": "独立复算确认数据、公式、行保留与布局均正确；仅修正 prior_corrections_and_rows_retained 的错误失败标记。",
+  "source_sha256": "033ba864d35bdc65aa95e45f78194d00e93ec55b5981a248411669a96179ae8b",
+  "source_modified": false,
+  "independent_recomputation": {
+    "monthly_formulas": [
+      {
+        "month": "2026-04",
+        "checks": {
+          "raw_fields": true,
+          "net_revenue": true,
+          "operating_profit": true,
+          "refund_rate": true,
+          "conversion_rate": true
+        },
+        "passed": true
+      },
+      {
+        "month": "2026-05",
+        "checks": {
+          "raw_fields": true,
+          "net_revenue": true,
+          "operating_profit": true,
+          "refund_rate": true,
+          "conversion_rate": true
+        },
+        "passed": true
+      },
+      {
+        "month": "2026-06",
+        "checks": {
+          "raw_fields": true,
+          "net_revenue": true,
+          "operating_profit": true,
+          "refund_rate": true,
+          "conversion_rate": true
+        },
+        "passed": true
+      },
+      {
+        "month": "2026-07",
+        "checks": {
+          "raw_fields": true,
+          "net_revenue": true,
+          "operating_profit": true,
+          "refund_rate": true,
+          "conversion_rate": true
+        },
+        "passed": true
+      },
+      {
+        "month": "2026-08",
+        "checks": {
+          "raw_fields": true,
+          "net_revenue": true,
+          "operating_profit": true,
+          "refund_rate": true,
+          "conversion_rate": true
+        },
+        "passed": true
+      },
+      {
+        "month": "2026-09",
+        "checks": {
+          "raw_fields": true,
+          "net_revenue": true,
+          "operating_profit": true,
+          "refund_rate": true,
+          "conversion_rate": true
+        },
+        "passed": true
+      }
+    ],
+    "period_totals": {
+      "expected": {
+        "orders": 3045,
+        "gross_revenue": 975050,
+        "refund_amount": 66426,
+        "operating_cost": 726500,
+        "sessions": 27300,
+        "net_revenue": 908624,
+        "operating_profit": 182124
+      },
+      "checks": {
+        "orders": true,
+        "gross_revenue": true,
+        "refund_amount": true,
+        "operating_cost": true,
+        "sessions": true,
+        "net_revenue": true,
+        "operating_profit": true,
+        "refund_rate": true,
+        "conversion_rate": true
+      },
+      "passed": true
+    },
+    "layout": {
+      "eight_regions": {
+        "header": {
+          "round_01": [
+            48,
+            36,
+            1552,
+            144
+          ],
+          "round_02": [
+            48,
+            36,
+            1552,
+            144
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "kpi_net": {
+          "round_01": [
+            48,
+            176,
+            412,
+            314
+          ],
+          "round_02": [
+            48,
+            176,
+            412,
+            314
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "kpi_profit": {
+          "round_01": [
+            428,
+            176,
+            792,
+            314
+          ],
+          "round_02": [
+            428,
+            176,
+            792,
+            314
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "kpi_orders": {
+          "round_01": [
+            808,
+            176,
+            1172,
+            314
+          ],
+          "round_02": [
+            808,
+            176,
+            1172,
+            314
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "kpi_conversion": {
+          "round_01": [
+            1188,
+            176,
+            1552,
+            314
+          ],
+          "round_02": [
+            1188,
+            176,
+            1552,
+            314
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "conclusion": {
+          "round_01": [
+            48,
+            336,
+            1552,
+            404
+          ],
+          "round_02": [
+            48,
+            336,
+            1552,
+            404
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "chart": {
+          "round_01": [
+            48,
+            432,
+            944,
+            948
+          ],
+          "round_02": [
+            48,
+            432,
+            944,
+            948
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "table": {
+          "round_01": [
+            968,
+            432,
+            1552,
+            948
+          ],
+          "round_02": [
+            968,
+            432,
+            1552,
+            948
+          ],
+          "delta": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "passed": true
+    },
+    "all_passed": true
+  }
+}
